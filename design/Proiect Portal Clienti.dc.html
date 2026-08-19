@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/svg+xml" href="assets/codepedia-favicon-square-filled.svg" />
+<style>
+  html, body { margin: 0; padding: 0; background: #FAF8F4; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #FF4D14; text-decoration: none; }
+  a:hover { color: #0B0B0B; text-decoration: underline; text-underline-offset: 3px; }
+  ::selection { background: #FF4D14; color: #FAF8F4; }
+</style>
+</helmet>
+<div ref="{{ rootRef }}" style="background:#FAF8F4;color:#0B0B0B;font-family:'Inter Tight',Helvetica,Arial,sans-serif;font-size:17px;line-height:1.6;letter-spacing:-0.004em">
+
+  <header style="position:sticky;top:0;z-index:20;background:#FAF8F4;border-bottom:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px);display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px">
+      <a href="Codepedia.dc.html" aria-label="Codepedia" style="display:flex;align-items:center;color:#0B0B0B;text-decoration:none">
+        <img src="assets/codepedia-wordmark.svg" alt="Codepedia" width="183" height="18" style="display:block;height:18px;width:auto" />
+      </a>
+      <nav style="display:flex;align-items:center;gap:clamp(14px,2vw,28px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+        <a href="Codepedia.dc.html#proiecte" data-en="← All work" style="color:#6B6862;border-right:1px solid #E2DED6;padding-right:clamp(14px,2vw,28px)">← Toate proiectele</a>
+        <span style="display:flex;align-items:center;gap:6px">
+          <button type="button" onClick="{{ pickRo }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;background:none;border:0;padding:0;cursor:pointer;color: {{ roColor }}">RO</button>
+          <span style="color:#E2DED6">|</span>
+          <button type="button" onClick="{{ pickEn }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;background:none;border:0;padding:0;cursor:pointer;color: {{ enColor }}">EN</button>
+        </span>
+      </nav>
+    </div>
+  </header>
+
+  <section data-screen-label="Proiect">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,7vw,96px) clamp(20px,5vw,64px) clamp(32px,4vw,56px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">00</span> / <span data-en="Case study">Studiu de caz</span></div>
+      </div>
+      <div style="flex:1 1 560px;min-width:0">
+        <div style="display:flex;flex-wrap:wrap;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span>Next.js</span><span>·</span><span>Postgres</span><span>·</span><span>2026</span></div>
+        <h1 data-en="An accounting firm stopped sending documents by email" style="margin:20px 0 0;font-size:clamp(30px,5vw,56px);line-height:1.05;letter-spacing:-0.025em;font-weight:600;max-width:22ch;text-wrap:pretty">O firmă de contabilitate a încetat să trimită documente pe email</h1>
+        <p data-en="Documents, invoices and approvals for 120 client companies, in one portal with permissions per client." style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:60ch;color:#6B6862;font-size:clamp(16px,1.4vw,18px)">Documente, facturi și aprobări pentru 120 de firme-client, într-un singur portal cu permisiuni pe fiecare client.</p>
+      </div>
+    </div>
+    <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px) clamp(32px,4vw,56px)">
+      <div style="border:1px solid #E2DED6;border-radius:4px;aspect-ratio:16/9;background-image:url(assets/codepedia-mark-watermark.svg),repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px">
+        <span data-en="[ main screenshot — 1600 × 900 ]" style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">[ captură principală — 1600 × 900 ]</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Date" style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,5vw,72px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">01</span> / <span data-en="Facts">Date</span></div>
+      </div>
+      <div style="flex:1 1 560px;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
+        <div style="border:1px solid #E2DED6;border-radius:4px;padding:20px">
+          <div data-en="Client" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Client</div>
+          <div data-en="Accounting firm, Germany" style="margin-top:8px;font-size:16px;font-weight:500">Firmă de contabilitate, Germania</div>
+        </div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;padding:20px">
+          <div data-en="Duration" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Durată</div>
+          <div data-en="11 weeks to production" style="margin-top:8px;font-size:16px;font-weight:500">11 săptămâni până în producție</div>
+        </div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;padding:20px">
+          <div data-en="Team" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Echipă</div>
+          <div data-en="2 people, no subcontractors" style="margin-top:8px;font-size:16px;font-weight:500">2 oameni, fără subcontractori</div>
+        </div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;padding:20px">
+          <div data-en="Users" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Utilizatori</div>
+          <div data-en="120 client companies, 3 roles" style="margin-top:8px;font-size:16px;font-weight:500">120 firme-client, 3 roluri</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Context" style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">02</span> / <span data-en="Context">Context</span></div>
+      </div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h2 data-en="Every document went through one inbox" style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:26ch">Fiecare document trecea prin aceeași cutie poștală</h2>
+        <p data-en="Clients sent balance sheets and invoices as email attachments. Staff renamed files by hand and stored them in shared folders. Nobody could say whether a document had been received, approved or was still waiting, and a wrong attachment meant one client&#39;s data reached another." style="margin:24px 0 0;max-width:64ch;color:#6B6862;font-size:17px">Clienții trimiteau bilanțuri și facturi ca atașamente pe email. Angajații redenumeau fișierele manual și le puneau în foldere partajate. Nimeni nu putea spune dacă un document a fost primit, aprobat sau încă așteaptă, iar un atașament greșit însemna că datele unui client ajungeau la altul.</p>
+        <p data-en="Two off-the-shelf portals had been tried. Neither could model the firm&#39;s approval chain." style="margin:20px 0 0;max-width:64ch;color:#6B6862;font-size:17px">Fuseseră încercate două portaluri gata făcute. Niciunul nu putea reproduce lanțul de aprobări al firmei.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Soluție" style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">03</span> / <span data-en="Solution">Soluție</span></div>
+      </div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h2 data-en="Isolation first, convenience second" style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:26ch">Mai întâi izolarea datelor, apoi confortul</h2>
+        <div style="margin-top:clamp(24px,3vw,36px);display:flex;flex-direction:column">
+          <div style="border-top:1px solid #E2DED6;padding:20px 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">01</div>
+            <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+              <h3 data-en="Permissions per client" style="flex:0 0 200px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Permisiuni pe client</h3>
+              <p data-en="Row-level security in Postgres: a client sees only its own documents, enforced by the database rather than by the interface." style="flex:1 1 280px;margin:0;color:#6B6862;font-size:16px;max-width:58ch">Permisiuni la nivel de rând în Postgres: un client vede doar documentele lui, garantat de baza de date, nu de interfață.</p>
+            </div>
+          </div>
+          <div style="border-top:1px solid #E2DED6;padding:20px 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">02</div>
+            <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+              <h3 data-en="Approval chain" style="flex:0 0 200px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Lanț de aprobări</h3>
+              <p data-en="Upload, review, approval and archiving as explicit states. Each transition is logged with author and timestamp." style="flex:1 1 280px;margin:0;color:#6B6862;font-size:16px;max-width:58ch">Încărcare, verificare, aprobare și arhivare ca stări explicite. Fiecare trecere este înregistrată cu autor și oră.</p>
+            </div>
+          </div>
+          <div style="border-top:1px solid #E2DED6;padding:20px 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">03</div>
+            <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+              <h3 data-en="Client interface" style="flex:0 0 200px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Interfața clientului</h3>
+              <p data-en="One page per client: what is required this month, what has been submitted, what is missing. Built in Next.js, usable on a phone." style="flex:1 1 280px;margin:0;color:#6B6862;font-size:16px;max-width:58ch">O pagină per client: ce se cere luna aceasta, ce a fost depus, ce lipsește. Construit în Next.js, funcțional și pe telefon.</p>
+            </div>
+          </div>
+          <div style="border-top:1px solid #E2DED6;border-bottom:1px solid #E2DED6;padding:20px 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">04</div>
+            <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+              <h3 data-en="Archive migration" style="flex:0 0 200px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Migrarea arhivei</h3>
+              <p data-en="Four years of documents imported from shared folders, deduplicated and attached to the right client." style="flex:1 1 280px;margin:0;color:#6B6862;font-size:16px;max-width:58ch">Patru ani de documente importate din folderele partajate, deduplicate și atașate clientului corect.</p>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:clamp(24px,3vw,36px);display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
+          <div style="border:1px solid #E2DED6;border-radius:4px;aspect-ratio:4/3;background-image:url(assets/codepedia-mark-watermark.svg),repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px">
+            <span data-en="[ client dashboard ]" style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">[ tablou de bord client ]</span>
+          </div>
+          <div style="border:1px solid #E2DED6;border-radius:4px;aspect-ratio:4/3;background-image:url(assets/codepedia-mark-watermark.svg),repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px">
+            <span data-en="[ document detail ]" style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">[ detaliu document ]</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Rezultat" style="background:#0B0B0B;color:#FAF8F4">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,104px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880"><span style="color:#0B0B0B">04</span> / <span data-en="Result">Rezultat</span></div>
+      </div>
+      <div style="flex:1 1 560px;min-width:0">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:clamp(20px,3vw,40px)">
+          <div>
+            <div style="font-size:clamp(40px,5vw,64px);font-weight:600;letter-spacing:-0.03em;line-height:1">[ X ]%</div>
+            <div data-en="less time spent chasing documents" style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">mai puțin timp pe urmărirea documentelor</div>
+          </div>
+          <div>
+            <div style="font-size:clamp(40px,5vw,64px);font-weight:600;letter-spacing:-0.03em;line-height:1">0</div>
+            <div data-en="documents sent to the wrong client" style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">documente trimise clientului greșit</div>
+          </div>
+          <div>
+            <div style="font-size:clamp(40px,5vw,64px);font-weight:600;letter-spacing:-0.03em;line-height:1">[ X ] €</div>
+            <div data-en="saved monthly on manual work" style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">economisiți lunar pe muncă manuală</div>
+          </div>
+        </div>
+        <blockquote data-en="[ Client quote — one or two sentences on what changed after launch. ]" style="margin:clamp(32px,4vw,52px) 0 0;padding:0;font-size:clamp(20px,2.4vw,28px);line-height:1.35;letter-spacing:-0.02em;font-weight:500;max-width:34ch">[ Citat client — una sau două propoziții despre ce s-a schimbat după lansare. ]</blockquote>
+        <div data-en="[ Name ], [ role ], [ company ]" style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">[ Nume ], [ funcție ], [ companie ]</div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Contact" style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">05</span> / <span data-en="Next">Următorul pas</span></div>
+      </div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h2 data-en="Are your documents still living in email?" style="margin:0;font-size:clamp(26px,3.4vw,40px);line-height:1.1;letter-spacing:-0.025em;font-weight:600;max-width:22ch">Documentele tale încă trăiesc pe email?</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:clamp(20px,2.5vw,32px)">
+          <a href="mailto:contact@codepedia.md" style="display:inline-block;background:#FF4D14;color:#FAF8F4;border-radius:4px;padding:14px 22px;font-size:15px;font-weight:500;text-decoration:none" style-hover="background:#0B0B0B;color:#FAF8F4;text-decoration:none">contact@codepedia.md</a>
+          <a href="Codepedia.dc.html#proiecte" data-en="Other projects" style="display:inline-block;border:1px solid #0B0B0B;color:#0B0B0B;border-radius:4px;padding:13px 22px;font-size:15px;font-weight:500;text-decoration:none" style-hover="border-color:#6B6862;color:#0B0B0B;text-decoration:none">Alte proiecte</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:24px clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+      <span style="display:flex;align-items:center;gap:8px"><img src="assets/codepedia-mark.svg" alt="" width="19" height="12" style="display:block;height:12px;width:auto;opacity:0.5" />Codepedia SRL · Chișinău, Moldova</span>
+      <span>© 2026</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    let saved = null;
+    try { saved = window.localStorage.getItem('codepedia:lang'); } catch (e) {}
+    this.state = { lang: saved === 'en' ? 'en' : 'ro' };
+    this.rootRef = React.createRef();
+  }
+  componentDidMount() { this.applyLang(); }
+  componentDidUpdate() { this.applyLang(); }
+  applyLang() {
+    const root = this.rootRef.current;
+    if (!root) return;
+    const en = this.state.lang === 'en';
+    root.querySelectorAll('[data-en]').forEach((el) => {
+      if (el.dataset.ro === undefined) el.dataset.ro = el.textContent;
+      const next = en ? el.dataset.en : el.dataset.ro;
+      if (el.textContent !== next) el.textContent = next;
+    });
+  }
+  setLang(lang) {
+    if (lang === this.state.lang) return;
+    this.setState({ lang: lang });
+    try { window.localStorage.setItem('codepedia:lang', lang); } catch (e) {}
+  }
+  renderVals() {
+    const en = this.state.lang === 'en';
+    return {
+      rootRef: this.rootRef,
+      roColor: en ? '#6B6862' : '#0B0B0B',
+      enColor: en ? '#0B0B0B' : '#6B6862',
+      pickRo: () => this.setLang('ro'),
+      pickEn: () => this.setLang('en')
+    };
+  }
+}
+</script>
+</body>
+</html>

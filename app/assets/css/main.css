@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — single source of truth (see README.md "Design Tokens").
+ * Default Tailwind palette is disabled: only these colors exist.
+ */
+@theme {
+  --color-*: initial;
+  --color-paper: #FAF8F4;
+  --color-ink: #0B0B0B;
+  --color-signal: #FF4D14;
+  --color-muted: #6B6862;
+  --color-hairline: #E2DED6;
+  --color-hatch: #F1EEE7;
+  --color-muted-ink: #8D8880;
+  --color-body-ink: #B4AFA6;
+  --color-hairline-ink: rgba(250, 248, 244, 0.18);
+
+  --font-sans: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Single explicit breakpoint: nav switches to burger at ≤820px */
+  --breakpoint-nav: 51.3125rem;
+
+  /* Container + section rhythm used on every section */
+  --spacing-gutter: clamp(20px, 5vw, 64px);
+  --spacing-section-gap: clamp(24px, 4vw, 48px);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    letter-spacing: -0.004em;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-signal);
+    color: var(--color-paper);
+  }
+
+  a {
+    color: var(--color-signal);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 2px;
+  }
+}

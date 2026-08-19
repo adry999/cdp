@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/svg+xml" href="assets/codepedia-favicon-square-filled.svg" />
+<style>
+  html, body { margin: 0; padding: 0; background: #FAF8F4; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #FF4D14; text-decoration: none; }
+  a:hover { color: #0B0B0B; text-decoration: underline; text-underline-offset: 3px; }
+  ::selection { background: #FF4D14; color: #FAF8F4; }
+</style>
+</helmet>
+<div ref="{{ rootRef }}" style="background:#FAF8F4;color:#0B0B0B;font-family:'Inter Tight',Helvetica,Arial,sans-serif;font-size:17px;line-height:1.6;letter-spacing:-0.004em">
+
+  <header style="position:{{ headerPosition }};top:0;z-index:20;background:#FAF8F4;border-bottom:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px);display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px">
+      <a href="#top" aria-label="Codepedia" style="display:flex;align-items:center;color:#0B0B0B;text-decoration:none">
+        <img src="assets/codepedia-wordmark.svg" alt="Codepedia" width="183" height="18" style="display:block;height:18px;width:auto" />
+      </a>
+      <nav style="display:flex;align-items:center;gap:clamp(14px,2vw,28px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+        <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:clamp(14px,2vw,28px);border-right:1px solid #E2DED6;padding-right:clamp(14px,2vw,28px)">
+            <a href="#servicii" data-en="Services" style="color:#6B6862">Servicii</a>
+            <a href="#stack" data-en="Stack" style="color:#6B6862">Stack</a>
+            <a href="#proces" data-en="Process" style="color:#6B6862">Proces</a>
+            <a href="#proiecte" data-en="Work" style="color:#6B6862">Proiecte</a>
+            <a href="#contact" data-en="Contact" style="color:#6B6862">Contact</a>
+          </div>
+        </sc-if>
+        <span style="display:flex;align-items:center;gap:6px">
+          <button type="button" onClick="{{ pickRo }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;background:none;border:0;padding:0;cursor:pointer;color: {{ roColor }}">RO</button>
+          <span style="color:#E2DED6">|</span>
+          <button type="button" onClick="{{ pickEn }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;background:none;border:0;padding:0;cursor:pointer;color: {{ enColor }}">EN</button>
+        </span>
+        <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+          <button type="button" onClick="{{ toggleMenu }}" aria-label="Meniu" aria-expanded="{{ menuOpen }}" style="width:44px;height:44px;display:flex;flex-direction:column;justify-content:center;gap:5px;padding:0 11px;background:none;border:1px solid #E2DED6;border-radius:4px;cursor:pointer">
+            <span style="display:block;height:1px;background:#0B0B0B"></span>
+            <span style="display:block;height:1px;background: {{ burgerMidColor }}"></span>
+            <span style="display:block;height:1px;background:#0B0B0B"></span>
+          </button>
+        </sc-if>
+      </nav>
+    </div>
+    <sc-if value="{{ menuVisible }}" hint-placeholder-val="{{ false }}">
+      <div style="border-top:1px solid #E2DED6;padding:8px clamp(20px,5vw,64px) 20px;display:flex;flex-direction:column">
+        <a href="#servicii" onClick="{{ closeMenu }}" data-en="Services" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#0B0B0B;border-bottom:1px solid #E2DED6;padding:16px 0">Servicii</a>
+        <a href="#stack" onClick="{{ closeMenu }}" data-en="Stack" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#0B0B0B;border-bottom:1px solid #E2DED6;padding:16px 0">Stack</a>
+        <a href="#proces" onClick="{{ closeMenu }}" data-en="Process" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#0B0B0B;border-bottom:1px solid #E2DED6;padding:16px 0">Proces</a>
+        <a href="#proiecte" onClick="{{ closeMenu }}" data-en="Work" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#0B0B0B;border-bottom:1px solid #E2DED6;padding:16px 0">Proiecte</a>
+        <a href="#contact" onClick="{{ closeMenu }}" data-en="Contact" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14;padding:16px 0">Contact</a>
+      </div>
+    </sc-if>
+  </header>
+
+  <section id="top" data-screen-label="Hero">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,8vw,120px) clamp(20px,5vw,64px) clamp(40px,5vw,72px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">00</span> / <span data-en="Studio">Studio</span></div>
+      </div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h1 data-en="Web applications built properly, from database schema to deployment." style="margin:0;font-size:clamp(34px,6vw,64px);line-height:1.04;letter-spacing:-0.025em;font-weight:600;max-width:20ch;text-wrap:pretty">Aplicații web construite corect, de la schema bazei de date până la deployment.</h1>
+        <p data-en="Codepedia is a small full-stack studio in Moldova. We work with founders and business owners in Romania, Moldova and Western Europe who need senior-level execution instead of another half-finished project." style="margin:clamp(24px,3vw,32px) 0 0;max-width:62ch;color:#6B6862;font-size:clamp(16px,1.4vw,18px)">Codepedia este un studio mic de dezvoltare full-stack din Moldova. Lucrăm cu fondatori și proprietari de business din România, Moldova și Europa de Vest care au nevoie de execuție de nivel senior, nu de încă un proiect neterminat.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:clamp(28px,3vw,40px)">
+          <a href="#contact" data-en="Discuss your project" style="display:inline-block;background:#0B0B0B;color:#FAF8F4;border-radius:4px;padding:14px 22px;font-size:15px;font-weight:500;text-decoration:none" style-hover="background:#FF4D14;color:#FAF8F4;text-decoration:none">Discută proiectul</a>
+          <a href="#proces" data-en="How we work" style="display:inline-block;border:1px solid #0B0B0B;color:#0B0B0B;border-radius:4px;padding:13px 22px;font-size:15px;font-weight:500;text-decoration:none" style-hover="border-color:#6B6862;color:#0B0B0B;text-decoration:none">Cum lucrăm</a>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px) clamp(40px,5vw,64px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
+        <div style="background:#FAF8F4;padding:20px;border:1px solid #E2DED6;border-radius:4px">
+          <div data-en="Location" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Locație</div>
+          <div style="margin-top:8px;font-size:16px;font-weight:500">Chișinău, Moldova</div>
+        </div>
+        <div style="background:#FAF8F4;padding:20px;border:1px solid #E2DED6;border-radius:4px">
+          <div data-en="Markets" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Piețe</div>
+          <div data-en="Romania · Moldova · EU · remote" style="margin-top:8px;font-size:16px;font-weight:500">România · Moldova · UE · remote</div>
+        </div>
+        <div style="background:#FAF8F4;padding:20px;border:1px solid #E2DED6;border-radius:4px">
+          <div data-en="Stack" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Stack</div>
+          <div data-en="TypeScript, end to end" style="margin-top:8px;font-size:16px;font-weight:500">TypeScript, end-to-end</div>
+        </div>
+        <div style="background:#FAF8F4;padding:20px;border:1px solid #E2DED6;border-radius:4px">
+          <div data-en="Concurrent projects" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Proiecte simultane</div>
+          <div style="margin-top:8px;font-size:16px;font-weight:500">2 – 3</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="servicii" data-screen-label="Servicii" style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">01</span> / <span data-en="Services">Servicii</span></div>
+      </div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h2 data-en="Two levels of work. Both delivered end to end." style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:26ch">Două niveluri de lucru. Ambele livrate cap-coadă.</h2>
+
+        <div style="margin-top:clamp(28px,3vw,40px);border:1px solid #E2DED6;border-radius:4px;padding:clamp(20px,2.5vw,28px)">
+          <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;justify-content:space-between">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">Nivel 01</span> / <span data-en="Websites">Site-uri</span></div>
+            <div data-en="1 – 3 weeks · from [ X ] EUR" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">1 – 3 săptămâni · de la [ X ] EUR</div>
+          </div>
+          <h3 data-en="Websites that are simply built well" style="margin:16px 0 10px;font-size:20px;font-weight:500;letter-spacing:-0.02em">Site-uri făcute pur și simplu bine</h3>
+          <p data-en="Presentation sites, landing pages and online stores. Written by hand, fast, indexable, editable by you. No page builder to slow the site down." style="margin:0 0 20px;color:#6B6862;font-size:16px;max-width:62ch">Site de prezentare, landing page, magazin online. Scrise de mână, rapide, indexabile, editabile de tine. Fără page builder care încetinește site-ul.</p>
+          <div style="display:flex;flex-direction:column">
+            <div style="border-top:1px solid #E2DED6;padding:14px 0;display:flex;flex-wrap:wrap;gap:16px">
+              <div data-en="Presentation site" style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Site de prezentare</div>
+              <div data-en="Up to 8 pages, CMS for text and images, contact form." style="flex:1 1 280px;font-size:16px;max-width:56ch">Până la 8 pagini, CMS pentru texte și imagini, formular de contact.</div>
+            </div>
+            <div style="border-top:1px solid #E2DED6;padding:14px 0;display:flex;flex-wrap:wrap;gap:16px">
+              <div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Landing page</div>
+              <div data-en="One page built for conversion, analytics and A/B testing included." style="flex:1 1 280px;font-size:16px;max-width:56ch">O pagină construită pentru conversie, cu analytics și testare A/B.</div>
+            </div>
+            <div style="border-top:1px solid #E2DED6;padding:14px 0;display:flex;flex-wrap:wrap;gap:16px">
+              <div data-en="Online store" style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Magazin online</div>
+              <div data-en="Catalogue, cart, card payments, invoicing and delivery integrations." style="flex:1 1 280px;font-size:16px;max-width:56ch">Catalog, coș, plată cu cardul, integrări de facturare și livrare.</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:clamp(28px,3vw,40px);display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;justify-content:space-between;border-top:1px solid #E2DED6;padding-top:16px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">Nivel 02</span> / <span data-en="Web applications">Aplicații web</span></div>
+          <div data-en="6 – 12 weeks · from [ X ] EUR" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">6 – 12 săptămâni · de la [ X ] EUR</div>
+        </div>
+        <p data-en="When the work is business logic rather than pages: roles and permissions, data modelling, integrations, automation." style="margin:16px 0 0;color:#6B6862;font-size:16px;max-width:62ch">Când munca este logică de business, nu pagini: roluri și permisiuni, modelare de date, integrări, automatizări.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:20px">
+          <div style="background:#FAF8F4;padding:clamp(20px,2.5vw,28px);border:1px solid #E2DED6;border-radius:4px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">01</div>
+            <h3 data-en="Custom web applications" style="margin:14px 0 10px;font-size:20px;font-weight:500;letter-spacing:-0.02em">Aplicații web pe măsură</h3>
+            <p data-en="Interfaces and business logic written from scratch in Vue/Nuxt or React/Next with strict TypeScript. No purchased themes, no plugins glued together." style="margin:0;color:#6B6862;font-size:16px">Interfețe și logică de business scrise de la zero în Vue/Nuxt sau React/Next, cu TypeScript strict. Fără teme cumpărate, fără plugin-uri lipite unul de altul.</p>
+          </div>
+          <div style="background:#FAF8F4;padding:clamp(20px,2.5vw,28px);border:1px solid #E2DED6;border-radius:4px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">02</div>
+            <h3 data-en="Backend, database, deployment" style="margin:14px 0 10px;font-size:20px;font-weight:500;letter-spacing:-0.02em">Backend, bază de date, deployment</h3>
+            <p data-en="Postgres schema, authentication, row-level security, storage and APIs on Supabase. CI, domains and monitoring configured, then full access handed to you." style="margin:0;color:#6B6862;font-size:16px">Schemă Postgres, autentificare, permisiuni la nivel de rând, storage și API pe Supabase. Configurăm CI, domenii și monitorizare, apoi predăm accesul complet.</p>
+          </div>
+          <div style="background:#FAF8F4;padding:clamp(20px,2.5vw,28px);border:1px solid #E2DED6;border-radius:4px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">03</div>
+            <h3 data-en="AI-integrated features" style="margin:14px 0 10px;font-size:20px;font-weight:500;letter-spacing:-0.02em">Funcționalități cu AI</h3>
+            <p data-en="LLM integrations that solve one concrete task: extracting data from documents, semantic search, internal assistants. With cost limits and evaluation, not demos." style="margin:0;color:#6B6862;font-size:16px">Integrări LLM care rezolvă o sarcină concretă: extragerea datelor din documente, căutare semantică, asistenți interni. Cu limite de cost și evaluare, nu demo-uri.</p>
+          </div>
+          <div style="background:#FAF8F4;padding:clamp(20px,2.5vw,28px);border:1px solid #E2DED6;border-radius:4px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">04</div>
+            <h3 data-en="Taking over stalled projects" style="margin:14px 0 10px;font-size:20px;font-weight:500;letter-spacing:-0.02em">Preluarea proiectelor blocate</h3>
+            <p data-en="An audit of an unfinished no-code build or an inherited codebase, a written report on what can be kept and what has to be rewritten, then we take the project to production." style="margin:0;color:#6B6862;font-size:16px">Audit al unui build no-code neterminat sau al unui cod moștenit, raport scris cu ce se poate păstra și ce trebuie rescris, apoi ducem proiectul în producție.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack" data-screen-label="Stack" style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">02</span> / Stack</div>
+      </div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h2 data-en="One stack, chosen so it stays maintainable after handover." style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:28ch">Un stack, ales ca să rămână întreținut după predare.</h2>
+        <div style="margin-top:clamp(28px,3vw,40px);display:flex;flex-direction:column">
+          <div style="border-top:1px solid #E2DED6;padding:20px 0;display:flex;flex-wrap:wrap;gap:16px">
+            <div style="flex:0 0 120px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Frontend</div>
+            <div style="flex:1 1 320px;display:flex;flex-wrap:wrap;gap:8px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">Vue 3</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">Nuxt</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">React</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">Next.js</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">TypeScript</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">Tailwind</span>
+            </div>
+          </div>
+          <div style="border-top:1px solid #E2DED6;padding:20px 0;display:flex;flex-wrap:wrap;gap:16px">
+            <div style="flex:0 0 120px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Backend</div>
+            <div style="flex:1 1 320px;display:flex;flex-wrap:wrap;gap:8px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">Supabase</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">PostgreSQL</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">Node</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">Drizzle</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">Edge Functions</span>
+            </div>
+          </div>
+          <div style="border-top:1px solid #E2DED6;padding:20px 0;display:flex;flex-wrap:wrap;gap:16px">
+            <div style="flex:0 0 120px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Infra</div>
+            <div style="flex:1 1 320px;display:flex;flex-wrap:wrap;gap:8px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">Vercel</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">Cloudflare</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">Docker</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">GitHub Actions</span>
+            </div>
+          </div>
+          <div style="border-top:1px solid #E2DED6;border-bottom:1px solid #E2DED6;padding:20px 0;display:flex;flex-wrap:wrap;gap:16px">
+            <div style="flex:0 0 120px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">AI</div>
+            <div style="flex:1 1 320px;display:flex;flex-wrap:wrap;gap:8px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">OpenAI</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">Anthropic</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">pgvector</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px">Streaming</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="proces" data-screen-label="Proces" style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">03</span> / <span data-en="Process">Proces</span></div>
+      </div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h2 data-en="Four steps, fixed price per step." style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:26ch">Patru pași, preț fix pe fiecare pas.</h2>
+        <div style="margin-top:clamp(28px,3vw,40px);display:flex;flex-direction:column">
+          <div style="border-top:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">01</div>
+            <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)"><h3 data-en="Diagnostic call" style="flex:0 0 200px;margin:0;font-size:20px;font-weight:500;letter-spacing:-0.02em">Diagnostic</h3>
+            <p data-en="Sixty minutes on the problem, the constraints and the budget. You get a written assessment with scope, duration and risks within 48 hours." style="flex:1 1 280px;margin:0;color:#6B6862;font-size:16px;max-width:60ch">Șaizeci de minute despre problemă, constrângeri și buget. Primești o evaluare scrisă cu scope, durată și riscuri în 48 de ore.</p></div>
+          </div>
+          <div style="border-top:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">02</div>
+            <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)"><h3 data-en="Specification" style="flex:0 0 200px;margin:0;font-size:20px;font-weight:500;letter-spacing:-0.02em">Specificație</h3>
+            <p data-en="Scope broken into modules, wireframes for the main screens, a fixed price per stage. Nothing starts before it is signed." style="flex:1 1 280px;margin:0;color:#6B6862;font-size:16px;max-width:60ch">Scope împărțit pe module, machete pentru ecranele principale, preț fix pe etapă. Nimic nu începe înainte de a fi semnat.</p></div>
+          </div>
+          <div style="border-top:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">03</div>
+            <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)"><h3 data-en="Two-week iterations" style="flex:0 0 200px;margin:0;font-size:20px;font-weight:500;letter-spacing:-0.02em">Iterații de două săptămâni</h3>
+            <p data-en="A staging environment from the first week. You see the running product, not status reports." style="flex:1 1 280px;margin:0;color:#6B6862;font-size:16px;max-width:60ch">Environment de staging din prima săptămână. Vezi produsul care rulează, nu rapoarte de status.</p></div>
+          </div>
+          <div style="border-top:1px solid #E2DED6;border-bottom:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">04</div>
+            <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)"><h3 data-en="Full handover" style="flex:0 0 200px;margin:0;font-size:20px;font-weight:500;letter-spacing:-0.02em">Predare completă</h3>
+            <p data-en="Code in your repository, deployment documentation, one handover session and 30 days of bug support." style="flex:1 1 280px;margin:0;color:#6B6862;font-size:16px;max-width:60ch">Cod în repo-ul tău, documentație de deployment, o sesiune de handover și 30 de zile de suport pentru bug-uri.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="proiecte" data-screen-label="Proiecte" style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">04</span> / <span data-en="Work">Proiecte</span></div>
+      </div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h2 data-en="Selected work." style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500">Proiecte selectate.</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:clamp(28px,3vw,40px)">
+          <div style="background:#FAF8F4;padding:clamp(18px,2vw,22px);border:1px solid #E2DED6;border-radius:4px">
+            <div style="aspect-ratio:16/10;border:1px solid #E2DED6;border-radius:4px;background-image:url(assets/codepedia-mark-watermark.svg),repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">[ captură dashboard ]</span>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span>Nuxt</span><span>·</span><span>Supabase</span></div>
+            <h3 data-en="Logistics SaaS, Romania" style="margin:10px 0 8px;font-size:19px;font-weight:500;letter-spacing:-0.02em">SaaS de logistică, România</h3>
+            <p data-en="Order and fleet management for 40 internal users. Rebuilt from an Airtable and Zapier setup that had stopped scaling." style="margin:0;color:#6B6862;font-size:16px">Gestiune de comenzi și flotă pentru 40 de utilizatori interni. Reconstruit dintr-un setup Airtable și Zapier care nu mai făcea față.</p>
+            <a href="Proiect SaaS Logistica.dc.html" data-en="Read the case study →" style="display:inline-block;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">Vezi studiul de caz →</a>
+          </div>
+          <div style="background:#FAF8F4;padding:clamp(18px,2vw,22px);border:1px solid #E2DED6;border-radius:4px">
+            <div style="aspect-ratio:16/10;border:1px solid #E2DED6;border-radius:4px;background-image:url(assets/codepedia-mark-watermark.svg),repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">[ captură portal ]</span>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span>Next.js</span><span>·</span><span>Postgres</span></div>
+            <h3 data-en="Client portal, Germany" style="margin:10px 0 8px;font-size:19px;font-weight:500;letter-spacing:-0.02em">Portal de clienți, Germania</h3>
+            <p data-en="Documents, invoices and approvals for an accounting firm. Row-level security per client, audit log on every action." style="margin:0;color:#6B6862;font-size:16px">Documente, facturi și aprobări pentru o firmă de contabilitate. Permisiuni pe fiecare client, jurnal de audit pentru orice acțiune.</p>
+            <a href="Proiect Portal Clienti.dc.html" data-en="Read the case study →" style="display:inline-block;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">Vezi studiul de caz →</a>
+          </div>
+          <div style="background:#FAF8F4;padding:clamp(18px,2vw,22px);border:1px solid #E2DED6;border-radius:4px">
+            <div style="aspect-ratio:16/10;border:1px solid #E2DED6;border-radius:4px;background-image:url(assets/codepedia-mark-watermark.svg),repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">[ captură asistent ]</span>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span>Vue</span><span>·</span><span>pgvector</span></div>
+            <h3 data-en="Document assistant, Moldova" style="margin:10px 0 8px;font-size:19px;font-weight:500;letter-spacing:-0.02em">Asistent pe documente, Moldova</h3>
+            <p data-en="Semantic search across 12,000 contracts with answers grounded in citations. Response cost capped per query." style="margin:0;color:#6B6862;font-size:16px">Căutare semantică în 12.000 de contracte, cu răspunsuri bazate pe citate. Cost limitat pe fiecare interogare.</p>
+            <a href="Proiect Asistent Documente.dc.html" data-en="Read the case study →" style="display:inline-block;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">Vezi studiul de caz →</a>
+          </div>
+        </div>
+        <p data-en="Some projects are under NDA. Detailed references available on the diagnostic call." style="margin:20px 0 0;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Unele proiecte sunt sub NDA. Referințe detaliate la discuția de diagnostic.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Despre" style="background:#0B0B0B;color:#FAF8F4">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(56px,7vw,112px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880"><span style="color:#0B0B0B">05</span> / <span data-en="About">Despre</span></div>
+      </div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h2 data-en="A small studio with senior people on every project." style="margin:0;font-size:clamp(26px,3.4vw,40px);line-height:1.12;letter-spacing:-0.025em;font-weight:500;max-width:24ch">Un studio mic, cu oameni seniori pe fiecare proiect.</h2>
+        <p data-en="Codepedia runs two to three projects at a time. There is no account manager and no junior for you to train. The person who discusses the scope is the person who writes the code." style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:62ch;color:#B4AFA6;font-size:clamp(16px,1.4vw,18px)">Codepedia lucrează cu două-trei proiecte simultan. Nu există account manager și nu există junior pe care să îl înveți tu. Persoana cu care discuți scopul este persoana care scrie codul.</p>
+        <div style="margin-top:clamp(28px,3vw,44px);display:flex;flex-direction:column">
+          <div style="border-top:1px solid rgba(250,248,244,0.18);padding:18px 0;display:flex;flex-wrap:wrap;gap:16px">
+            <div data-en="Ownership" style="flex:0 0 180px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">Proprietate</div>
+            <div data-en="Code, database and infrastructure are in your accounts from day one." style="flex:1 1 320px;font-size:16px;max-width:58ch">Codul, baza de date și infrastructura sunt în conturile tale din prima zi.</div>
+          </div>
+          <div style="border-top:1px solid rgba(250,248,244,0.18);padding:18px 0;display:flex;flex-wrap:wrap;gap:16px">
+            <div data-en="Estimates" style="flex:0 0 180px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">Estimări</div>
+            <div data-en="Fixed price per stage. If we get an estimate wrong, that is our cost, not yours." style="flex:1 1 320px;font-size:16px;max-width:58ch">Preț fix pe etapă. Dacă greșim o estimare, costul este al nostru, nu al tău.</div>
+          </div>
+          <div style="border-top:1px solid rgba(250,248,244,0.18);border-bottom:1px solid rgba(250,248,244,0.18);padding:18px 0;display:flex;flex-wrap:wrap;gap:16px">
+            <div data-en="Languages" style="flex:0 0 180px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">Limbi</div>
+            <div data-en="Romanian, Russian, English. Written specs in the language you prefer." style="flex:1 1 320px;font-size:16px;max-width:58ch">Română, rusă, engleză. Specificații scrise în limba pe care o preferi.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ showFaq }}" hint-placeholder-val="{{ true }}">
+  <section data-screen-label="Intrebari" style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">06</span> / <span data-en="Questions">Întrebări</span></div>
+      </div>
+      <div style="flex:1 1 560px;min-width:0;display:flex;flex-direction:column">
+        <div style="border-top:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+          <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)"><h3 data-en="What does a project cost?" style="flex:0 0 240px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Cât costă un proiect?</h3>
+          <p data-en="Most projects start at 6,000 EUR for a working first version and move in stages from there. The written assessment after the diagnostic call always contains a number." style="flex:1 1 320px;margin:0;color:#6B6862;font-size:16px;max-width:60ch">Majoritatea proiectelor pornesc de la 6.000 EUR pentru o primă versiune funcțională și continuă pe etape. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră.</p></div>
+        </div>
+        <div style="border-top:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+          <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)"><h3 data-en="Do you take over someone else's project?" style="flex:0 0 240px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Preluați proiecte începute de altcineva?</h3>
+          <p data-en="Yes, after a paid audit. The audit is a written document: what works, what has to be rewritten, and what it costs to reach production." style="flex:1 1 320px;margin:0;color:#6B6862;font-size:16px;max-width:60ch">Da, după un audit plătit. Auditul este un document scris: ce funcționează, ce trebuie rescris și cât costă până în producție.</p></div>
+        </div>
+        <div style="border-top:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+          <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)"><h3 data-en="How long does delivery take?" style="flex:0 0 240px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Cât durează livrarea?</h3>
+          <p data-en="A first production version is usually six to twelve weeks, depending on how much of the domain has to be modelled in the database." style="flex:1 1 320px;margin:0;color:#6B6862;font-size:16px;max-width:60ch">O primă versiune în producție durează de obicei șase până la douăsprezece săptămâni, în funcție de cât din domeniu trebuie modelat în bază de date.</p></div>
+        </div>
+        <div style="border-top:1px solid #E2DED6;border-bottom:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+          <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)"><h3 data-en="What happens after handover?" style="flex:0 0 240px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Ce se întâmplă după predare?</h3>
+          <p data-en="Thirty days of bug support are included. After that you can keep us on a monthly retainer or run the project with your own team. Both work." style="flex:1 1 320px;margin:0;color:#6B6862;font-size:16px;max-width:60ch">Treizeci de zile de suport pentru bug-uri sunt incluse. După aceea poți continua cu un abonament lunar sau cu echipa ta. Ambele variante funcționează.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </sc-if>
+
+  <section id="contact" data-screen-label="Contact" style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px) clamp(56px,6vw,104px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">07</span> / Contact</div>
+      </div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h2 data-en="Tell us what needs to be built." style="margin:0;font-size:clamp(28px,4vw,48px);line-height:1.08;letter-spacing:-0.025em;font-weight:600;max-width:22ch">Spune-ne ce trebuie construit.</h2>
+        <p data-en="A short description of the problem is enough. You get a written answer within one working day, with an honest opinion on whether we are the right studio for it." style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:60ch;color:#6B6862;font-size:clamp(16px,1.4vw,18px)">O descriere scurtă a problemei este suficientă. Primești un răspuns scris într-o zi lucrătoare, cu o părere sinceră despre dacă suntem studioul potrivit.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:clamp(24px,3vw,36px)">
+          <a href="mailto:contact@codepedia.md" style="display:inline-block;background:#FF4D14;color:#FAF8F4;border-radius:4px;padding:14px 22px;font-size:15px;font-weight:500;text-decoration:none" style-hover="background:#0B0B0B;color:#FAF8F4;text-decoration:none">contact@codepedia.md</a>
+          <a href="tel:+37360000000" style="display:inline-block;border:1px solid #0B0B0B;color:#0B0B0B;border-radius:4px;padding:13px 22px;font-size:15px;font-weight:500;text-decoration:none" style-hover="border-color:#6B6862;color:#0B0B0B;text-decoration:none">+373 600 000 00</a>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:clamp(28px,3vw,44px)">
+          <div style="background:#FAF8F4;padding:20px;border:1px solid #E2DED6;border-radius:4px">
+            <div data-en="Response time" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Timp de răspuns</div>
+            <div data-en="1 working day" style="margin-top:8px;font-size:16px;font-weight:500">1 zi lucrătoare</div>
+          </div>
+          <div style="background:#FAF8F4;padding:20px;border:1px solid #E2DED6;border-radius:4px">
+            <div data-en="Hours" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Program</div>
+            <div style="margin-top:8px;font-size:16px;font-weight:500">09:00 – 18:00 EET</div>
+          </div>
+          <div style="background:#FAF8F4;padding:20px;border:1px solid #E2DED6;border-radius:4px">
+            <div data-en="Next opening" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Următoarea disponibilitate</div>
+            <div data-en="October 2026" style="margin-top:8px;font-size:16px;font-weight:500">Octombrie 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:24px clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+      <span style="display:flex;align-items:center;gap:8px"><img src="assets/codepedia-mark.svg" alt="" width="19" height="12" style="display:block;height:12px;width:auto;opacity:0.5" />Codepedia SRL · Chișinău, Moldova</span>
+      <span data-en="Full-stack web development · Vue · React · Supabase">Dezvoltare web full-stack · Vue · React · Supabase</span>
+      <span>© 2026</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ro&quot;,&quot;en&quot;],&quot;default&quot;:&quot;ro&quot;,&quot;tsType&quot;:&quot;'ro' | 'en'&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;showFaq&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;stickyHeader&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    let saved = null;
+    try { saved = window.localStorage.getItem('codepedia:lang'); } catch (e) {}
+    const initial = saved === 'en' || saved === 'ro' ? saved : (props.defaultLang === 'en' ? 'en' : 'ro');
+    this.state = { lang: initial, menuOpen: false, isMobile: false };
+    this.rootRef = React.createRef();
+    this.mq = null;
+    this.onMq = () => this.setState({ isMobile: this.mq.matches, menuOpen: false });
+  }
+  componentDidMount() {
+    this.applyLang();
+    if (window.matchMedia) {
+      this.mq = window.matchMedia('(max-width: 820px)');
+      this.setState({ isMobile: this.mq.matches });
+      this.mq.addEventListener ? this.mq.addEventListener('change', this.onMq) : this.mq.addListener(this.onMq);
+    }
+  }
+  componentWillUnmount() {
+    if (this.mq) this.mq.removeEventListener ? this.mq.removeEventListener('change', this.onMq) : this.mq.removeListener(this.onMq);
+  }
+  componentDidUpdate() { this.applyLang(); }
+  applyLang() {
+    const root = this.rootRef.current;
+    if (!root) return;
+    const en = this.state.lang === 'en';
+    root.querySelectorAll('[data-en]').forEach((el) => {
+      if (el.dataset.ro === undefined) el.dataset.ro = el.textContent;
+      const next = en ? el.dataset.en : el.dataset.ro;
+      if (el.textContent !== next) el.textContent = next;
+    });
+  }
+  setLang(lang) {
+    if (lang === this.state.lang) return;
+    this.setState({ lang: lang });
+    try { window.localStorage.setItem('codepedia:lang', lang); } catch (e) {}
+  }
+  renderVals() {
+    const en = this.state.lang === 'en';
+    const mobile = this.state.isMobile;
+    return {
+      rootRef: this.rootRef,
+      isMobile: mobile,
+      isDesktop: !mobile,
+      menuOpen: this.state.menuOpen,
+      menuVisible: mobile && this.state.menuOpen,
+      burgerMidColor: this.state.menuOpen ? '#FF4D14' : '#0B0B0B',
+      toggleMenu: () => this.setState((st) => ({ menuOpen: !st.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      showFaq: this.props.showFaq !== false,
+      headerPosition: this.props.stickyHeader === false ? 'static' : 'sticky',
+      roColor: en ? '#6B6862' : '#0B0B0B',
+      enColor: en ? '#0B0B0B' : '#6B6862',
+      pickRo: () => this.setLang('ro'),
+      pickEn: () => this.setLang('en')
+    };
+  }
+}
+</script>
+</body>
+</html>

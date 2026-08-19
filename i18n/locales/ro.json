@@ -1,0 +1,130 @@
+{
+  "seo": {
+    "home": {
+      "title": "Dezvoltare web full-stack, Chișinău",
+      "description": "Aplicații web construite corect, de la schema bazei de date până la deployment. Studio full-stack din Chișinău pentru clienți din România, Moldova și UE."
+    }
+  },
+  "nav": {
+    "services": "Servicii",
+    "stack": "Stack",
+    "process": "Proces",
+    "work": "Proiecte",
+    "contact": "Contact",
+    "menu": "Meniu"
+  },
+  "footer": {
+    "legal": "Codepedia SRL · Chișinău, Moldova",
+    "tagline": "Dezvoltare web full-stack · Vue · React · Supabase",
+    "copyright": "© 2026"
+  },
+  "home": {
+    "hero": {
+      "sectionLabel": "Studio",
+      "title": "Aplicații web construite corect, de la schema bazei de date până la deployment.",
+      "lead": "Codepedia este un studio mic de dezvoltare full-stack din Moldova. Lucrăm cu fondatori și proprietari de business din România, Moldova și Europa de Vest care au nevoie de execuție de nivel senior, nu de încă un proiect neterminat.",
+      "ctaPrimary": "Discută proiectul",
+      "ctaSecondary": "Cum lucrăm",
+      "facts": {
+        "location": "Locație",
+        "locationValue": "Chișinău, Moldova",
+        "markets": "Piețe",
+        "marketsValue": "România · Moldova · UE · remote",
+        "stack": "Stack",
+        "stackValue": "TypeScript, end-to-end",
+        "concurrent": "Proiecte simultane",
+        "concurrentValue": "2 – 3"
+      }
+    },
+    "services": {
+      "sectionLabel": "Servicii",
+      "title": "Două niveluri de lucru. Ambele livrate cap-coadă.",
+      "level1": {
+        "badge": "Site-uri",
+        "meta": "1 – 3 săptămâni · de la [ X ] EUR",
+        "title": "Site-uri făcute pur și simplu bine",
+        "lead": "Site de prezentare, landing page, magazin online. Scrise de mână, rapide, indexabile, editabile de tine. Fără page builder care încetinește site-ul."
+      },
+      "level2": {
+        "badge": "Aplicații web",
+        "meta": "6 – 12 săptămâni · de la [ X ] EUR",
+        "lead": "Când munca este logică de business, nu pagini: roluri și permisiuni, modelare de date, integrări, automatizări."
+      },
+      "note": "Unele proiecte sunt sub NDA. Referințe detaliate la discuția de diagnostic."
+    },
+    "stack": {
+      "sectionLabel": "Stack",
+      "title": "Un stack, ales ca să rămână întreținut după predare."
+    },
+    "process": {
+      "sectionLabel": "Proces",
+      "title": "Patru pași, preț fix pe fiecare pas."
+    },
+    "work": {
+      "sectionLabel": "Proiecte",
+      "title": "Proiecte selectate.",
+      "caseStudyLink": "Vezi studiul de caz →"
+    },
+    "about": {
+      "sectionLabel": "Despre",
+      "title": "Un studio mic, cu oameni seniori pe fiecare proiect.",
+      "lead": "Codepedia lucrează cu două-trei proiecte simultan. Nu există account manager și nu există junior pe care să îl înveți tu. Persoana cu care discuți scopul este persoana care scrie codul."
+    },
+    "faq": {
+      "sectionLabel": "Întrebări"
+    },
+    "contact": {
+      "sectionLabel": "Contact",
+      "title": "Spune-ne ce trebuie construit.",
+      "lead": "O descriere scurtă a problemei este suficientă. Primești un răspuns scris într-o zi lucrătoare, cu o părere sinceră despre dacă suntem studioul potrivit.",
+      "form": {
+        "name": "Nume",
+        "email": "Email",
+        "company": "Companie (opțional)",
+        "message": "Descrierea problemei",
+        "budget": "Buget",
+        "budgetPlaceholder": "Alege un interval",
+        "budgetOptions": {
+          "under5k": "sub 5.000 EUR",
+          "5to15k": "5.000 – 15.000 EUR",
+          "15to30k": "15.000 – 30.000 EUR",
+          "over30k": "peste 30.000 EUR",
+          "unsure": "Nu știu încă"
+        },
+        "source": "Cum ai aflat de noi (opțional)",
+        "submit": "Trimite",
+        "submitting": "Se trimite…",
+        "success": "Trimis. Primești un răspuns într-o zi lucrătoare.",
+        "error": "Ceva n-a mers. Încearcă din nou sau scrie direct pe email.",
+        "errorRequired": "Câmp obligatoriu.",
+        "errorEmail": "Adresă de email invalidă."
+      },
+      "facts": {
+        "responseTime": "Timp de răspuns",
+        "responseTimeValue": "1 zi lucrătoare",
+        "hours": "Program",
+        "hoursValue": "09:00 – 18:00 EET",
+        "nextOpening": "Următoarea disponibilitate",
+        "nextOpeningValue": "Octombrie 2026"
+      }
+    }
+  },
+  "caseStudy": {
+    "back": "← Toate proiectele",
+    "otherProjects": "Alte proiecte",
+    "sections": {
+      "hero": "Studiu de caz",
+      "facts": "Date",
+      "context": "Context",
+      "solution": "Soluție",
+      "result": "Rezultat",
+      "next": "Următorul pas"
+    },
+    "facts": {
+      "client": "Client",
+      "duration": "Durată",
+      "team": "Echipă",
+      "users": "Utilizatori"
+    }
+  }
+}

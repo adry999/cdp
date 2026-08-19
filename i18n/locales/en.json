@@ -1,0 +1,130 @@
+{
+  "seo": {
+    "home": {
+      "title": "Full-stack web development, Chișinău",
+      "description": "Web applications built properly, from database schema to deployment. Full-stack studio in Chișinău for clients in Romania, Moldova and the EU."
+    }
+  },
+  "nav": {
+    "services": "Services",
+    "stack": "Stack",
+    "process": "Process",
+    "work": "Work",
+    "contact": "Contact",
+    "menu": "Menu"
+  },
+  "footer": {
+    "legal": "Codepedia SRL · Chișinău, Moldova",
+    "tagline": "Full-stack web development · Vue · React · Supabase",
+    "copyright": "© 2026"
+  },
+  "home": {
+    "hero": {
+      "sectionLabel": "Studio",
+      "title": "Web applications built properly, from database schema to deployment.",
+      "lead": "Codepedia is a small full-stack studio in Moldova. We work with founders and business owners in Romania, Moldova and Western Europe who need senior-level execution instead of another half-finished project.",
+      "ctaPrimary": "Discuss your project",
+      "ctaSecondary": "How we work",
+      "facts": {
+        "location": "Location",
+        "locationValue": "Chișinău, Moldova",
+        "markets": "Markets",
+        "marketsValue": "Romania · Moldova · EU · remote",
+        "stack": "Stack",
+        "stackValue": "TypeScript, end to end",
+        "concurrent": "Concurrent projects",
+        "concurrentValue": "2 – 3"
+      }
+    },
+    "services": {
+      "sectionLabel": "Services",
+      "title": "Two levels of work. Both delivered end to end.",
+      "level1": {
+        "badge": "Websites",
+        "meta": "1 – 3 weeks · from [ X ] EUR",
+        "title": "Websites that are simply built well",
+        "lead": "Presentation sites, landing pages and online stores. Written by hand, fast, indexable, editable by you. No page builder to slow the site down."
+      },
+      "level2": {
+        "badge": "Web applications",
+        "meta": "6 – 12 weeks · from [ X ] EUR",
+        "lead": "When the work is business logic rather than pages: roles and permissions, data modelling, integrations, automation."
+      },
+      "note": "Some projects are under NDA. Detailed references available on the diagnostic call."
+    },
+    "stack": {
+      "sectionLabel": "Stack",
+      "title": "One stack, chosen so it stays maintainable after handover."
+    },
+    "process": {
+      "sectionLabel": "Process",
+      "title": "Four steps, fixed price per step."
+    },
+    "work": {
+      "sectionLabel": "Work",
+      "title": "Selected work.",
+      "caseStudyLink": "Read the case study →"
+    },
+    "about": {
+      "sectionLabel": "About",
+      "title": "A small studio with senior people on every project.",
+      "lead": "Codepedia runs two to three projects at a time. There is no account manager and no junior for you to train. The person who discusses the scope is the person who writes the code."
+    },
+    "faq": {
+      "sectionLabel": "Questions"
+    },
+    "contact": {
+      "sectionLabel": "Contact",
+      "title": "Tell us what needs to be built.",
+      "lead": "A short description of the problem is enough. You get a written answer within one working day, with an honest opinion on whether we are the right studio for it.",
+      "form": {
+        "name": "Name",
+        "email": "Email",
+        "company": "Company (optional)",
+        "message": "Describe the problem",
+        "budget": "Budget",
+        "budgetPlaceholder": "Choose a range",
+        "budgetOptions": {
+          "under5k": "under 5,000 EUR",
+          "5to15k": "5,000 – 15,000 EUR",
+          "15to30k": "15,000 – 30,000 EUR",
+          "over30k": "over 30,000 EUR",
+          "unsure": "Not sure yet"
+        },
+        "source": "How did you hear about us (optional)",
+        "submit": "Send",
+        "submitting": "Sending…",
+        "success": "Sent. You'll get a reply within one working day.",
+        "error": "Something went wrong. Try again or email us directly.",
+        "errorRequired": "Required field.",
+        "errorEmail": "Invalid email address."
+      },
+      "facts": {
+        "responseTime": "Response time",
+        "responseTimeValue": "1 working day",
+        "hours": "Hours",
+        "hoursValue": "09:00 – 18:00 EET",
+        "nextOpening": "Next opening",
+        "nextOpeningValue": "October 2026"
+      }
+    }
+  },
+  "caseStudy": {
+    "back": "← All work",
+    "otherProjects": "Other projects",
+    "sections": {
+      "hero": "Case study",
+      "facts": "Facts",
+      "context": "Context",
+      "solution": "Solution",
+      "result": "Result",
+      "next": "Next"
+    },
+    "facts": {
+      "client": "Client",
+      "duration": "Duration",
+      "team": "Team",
+      "users": "Users"
+    }
+  }
+}
