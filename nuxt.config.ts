@@ -14,6 +14,8 @@ export default defineNuxtConfig({
     compressPublicAssets: { gzip: true, brotli: true },
   },
 
+  sourcemap: { client: true },
+
   routeRules: {
     '/': { swr: 60 },
     '/en': { swr: 60 },

@@ -1,9 +1,17 @@
-import { projects } from '~/data/projects'
+import { serverSupabaseClient } from '#supabase/server'
 
 const BASE_URL = 'https://codepedia.md'
 
-export default defineEventHandler((event) => {
-  const slugs = projects.ro.map((p) => p.slug)
+export default defineEventHandler(async (event) => {
+  const client = await serverSupabaseClient(event)
+  const { data, error } = await client
+    .from('projects')
+    .select('slug_ro, slug_en')
+    .not('published_at', 'is', null)
+    .order('sort_order')
+
+  if (error) throw createError({ statusCode: 500, statusMessage: error.message })
+  const slugs = (data ?? []).map((p) => ({ ro: p.slug_ro, en: p.slug_en ?? p.slug_ro }))
 
   const urls: { loc: string; alt?: { hreflang: string; href: string }[] }[] = [
     {
@@ -20,19 +28,19 @@ export default defineEventHandler((event) => {
         { hreflang: 'en', href: `${BASE_URL}/en` },
       ],
     },
-    ...slugs.flatMap((slug) => [
+    ...slugs.flatMap(({ ro, en }) => [
       {
-        loc: `${BASE_URL}/proiecte/${slug}`,
+        loc: `${BASE_URL}/proiecte/${ro}`,
         alt: [
-          { hreflang: 'ro', href: `${BASE_URL}/proiecte/${slug}` },
-          { hreflang: 'en', href: `${BASE_URL}/en/work/${slug}` },
+          { hreflang: 'ro', href: `${BASE_URL}/proiecte/${ro}` },
+          { hreflang: 'en', href: `${BASE_URL}/en/work/${en}` },
         ],
       },
       {
-        loc: `${BASE_URL}/en/work/${slug}`,
+        loc: `${BASE_URL}/en/work/${en}`,
         alt: [
-          { hreflang: 'ro', href: `${BASE_URL}/proiecte/${slug}` },
-          { hreflang: 'en', href: `${BASE_URL}/en/work/${slug}` },
+          { hreflang: 'ro', href: `${BASE_URL}/proiecte/${ro}` },
+          { hreflang: 'en', href: `${BASE_URL}/en/work/${en}` },
         ],
       },
     ]),

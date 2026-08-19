@@ -21,7 +21,7 @@ useSeoMeta({
   description: () => project.value.caseStudy.heroLead,
   ogTitle: () => project.value.caseStudy.heroTitle,
   ogDescription: () => project.value.caseStudy.heroLead,
-  ogImage: 'https://codepedia.md/og-image.png',
+  ogImage: () => project.value.caseStudy.heroPath ?? 'https://codepedia.md/og-image.png',
   ogType: 'article',
   twitterCard: 'summary_large_image',
 })
