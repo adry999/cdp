@@ -17,8 +17,6 @@ export default defineNuxtConfig({
   sourcemap: { client: true },
 
   routeRules: {
-    '/': { swr: 60 },
-    '/en': { swr: 60 },
     '/proiecte/**': { swr: 300 },
     '/en/work/**': { swr: 300 },
     '/api/home': { swr: 60 },
