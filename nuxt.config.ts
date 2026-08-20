@@ -53,6 +53,7 @@ export default defineNuxtConfig({
     baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
     defaultLocale: 'ro',
     strategy: 'prefix_except_default',
+    detectBrowserLanguage: false,
     locales: [
       { code: 'ro', language: 'ro-RO', name: 'Română', file: 'ro.json' },
       { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
