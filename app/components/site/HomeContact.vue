@@ -22,16 +22,12 @@ const settings = computed(() => data.value?.settings)
         {{ settings.contact_phone }}
       </AppButton>
     </div>
-    <div v-if="settings" class="mt-[clamp(28px,3vw,44px)] grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
+    <div v-if="settings" class="mt-[clamp(28px,3vw,44px)] grid max-w-[560px] grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
       <FactCard
         :label="t('home.contact.facts.responseTime')"
         :value="pick(settings.response_time_ro ?? '', settings.response_time_en, locale)"
       />
       <FactCard :label="t('home.contact.facts.hours')" :value="settings.hours ?? ''" />
-      <FactCard
-        :label="t('home.contact.facts.nextOpening')"
-        :value="pick(settings.next_opening_ro ?? '', settings.next_opening_en, locale)"
-      />
     </div>
     <ContactForm />
   </SiteSection>

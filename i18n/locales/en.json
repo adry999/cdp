@@ -15,7 +15,7 @@
   },
   "footer": {
     "legal": "Codepedia SRL · Chișinău, Moldova",
-    "tagline": "Full-stack web development · Vue · React · Supabase",
+    "tagline": "Full-stack web development · Websites, web apps, WordPress, Shopify",
     "copyright": "© 2026"
   },
   "home": {
@@ -31,9 +31,7 @@
         "markets": "Markets",
         "marketsValue": "Romania · Moldova · EU · remote",
         "stack": "Stack",
-        "stackValue": "TypeScript, end to end",
-        "concurrent": "Concurrent projects",
-        "concurrentValue": "2 – 3"
+        "stackValue": "TypeScript, end to end"
       }
     },
     "services": {
@@ -85,10 +83,10 @@
         "budget": "Budget",
         "budgetPlaceholder": "Choose a range",
         "budgetOptions": {
-          "under5k": "under 5,000 EUR",
-          "5to15k": "5,000 – 15,000 EUR",
-          "15to30k": "15,000 – 30,000 EUR",
-          "over30k": "over 30,000 EUR",
+          "under1k": "under 1,000 EUR",
+          "1to2k": "1,000 – 2,000 EUR",
+          "2to5k": "2,000 – 5,000 EUR",
+          "over5k": "over 5,000 EUR",
           "unsure": "Not sure yet"
         },
         "source": "How did you hear about us (optional)",
@@ -103,9 +101,7 @@
         "responseTime": "Response time",
         "responseTimeValue": "1 working day",
         "hours": "Hours",
-        "hoursValue": "09:00 – 18:00 EET",
-        "nextOpening": "Next opening",
-        "nextOpeningValue": "October 2026"
+        "hoursValue": "09:00 – 18:00 EET"
       }
     }
   },

@@ -31,7 +31,6 @@ const { t } = useI18n()
         <FactCard :label="t('home.hero.facts.location')" :value="t('home.hero.facts.locationValue')" />
         <FactCard :label="t('home.hero.facts.markets')" :value="t('home.hero.facts.marketsValue')" />
         <FactCard :label="t('home.hero.facts.stack')" :value="t('home.hero.facts.stackValue')" />
-        <FactCard :label="t('home.hero.facts.concurrent')" :value="t('home.hero.facts.concurrentValue')" />
       </div>
     </div>
   </section>

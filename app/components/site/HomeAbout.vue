@@ -20,8 +20,8 @@ const rows = [
   {
     label: { ro: 'Limbi', en: 'Languages' },
     text: {
-      ro: 'Română, rusă, engleză. Specificații scrise în limba pe care o preferi.',
-      en: 'Romanian, Russian, English. Written specs in the language you prefer.',
+      ro: 'Română, engleză, rusă. Specificații scrise în limba pe care o preferi.',
+      en: 'English, Romanian, Russian. Written specs in the language you prefer.',
     },
   },
 ] as const

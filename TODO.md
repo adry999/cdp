@@ -11,10 +11,7 @@ rămâne vizibil ca placeholder.
 
 ## Contact
 
-- [ ] Număr de telefon real (`+373 600 000 00` este provizoriu)
 - [ ] Confirmare că `contact@codepedia.md` este adresa corectă
-- [ ] Următoarea disponibilitate — acum `Octombrie 2026`, de actualizat la lansare
-- [ ] Denumire juridică exactă pentru footer (acum `Codepedia SRL`)
 
 ## Studii de caz — per proiect
 
@@ -42,7 +39,5 @@ niciun vizual — este mai bună decât stock photography.
 
 - [ ] Câte proiecte se afișează în grila de pe homepage înainte de a apărea paginare
       sau o pagină `/proiecte` separată (designul e testat la 3)
-- [ ] Dacă formularul de contact înlocuiește butoanele `mailto:` / `tel:` sau le
-      completează
 - [ ] Traducerile EN pentru studiile de caz există în prototipuri; de verificat de
       un vorbitor nativ înainte de lansare

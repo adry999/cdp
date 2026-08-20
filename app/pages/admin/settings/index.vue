@@ -16,8 +16,6 @@ const form = reactive({
   contactPhone: s?.contact_phone ?? '',
   hours: s?.hours ?? '',
   responseTime: { ro: s?.response_time_ro ?? '', en: s?.response_time_en ?? '' },
-  nextOpening: { ro: s?.next_opening_ro ?? '', en: s?.next_opening_en ?? '' },
-  concurrentProjects: s?.concurrent_projects ?? '',
   ndaNote: { ro: s?.nda_note_ro ?? '', en: s?.nda_note_en ?? '' },
   footerLine: { ro: s?.footer_line_ro ?? '', en: s?.footer_line_en ?? '' },
   copyrightYear: s?.copyright_year != null ? String(s.copyright_year) : '',
@@ -36,9 +34,6 @@ async function save() {
     hours: form.hours || null,
     response_time_ro: form.responseTime.ro || null,
     response_time_en: form.responseTime.en || null,
-    next_opening_ro: form.nextOpening.ro || null,
-    next_opening_en: form.nextOpening.en || null,
-    concurrent_projects: form.concurrentProjects || null,
     nda_note_ro: form.ndaNote.ro || null,
     nda_note_en: form.ndaNote.en || null,
     footer_line_ro: form.footerLine.ro || null,
@@ -82,10 +77,6 @@ async function save() {
           </div>
           <div class="mt-4 flex flex-col gap-4">
             <AdminFieldPair label="Timp de răspuns" v-model:ro="form.responseTime.ro" v-model:en="form.responseTime.en" />
-            <AdminFieldPair label="Următoarea disponibilitate" v-model:ro="form.nextOpening.ro" v-model:en="form.nextOpening.en" />
-          </div>
-          <div class="mt-4">
-            <AdminField label="Proiecte simultane" v-model="form.concurrentProjects" />
           </div>
         </section>
 

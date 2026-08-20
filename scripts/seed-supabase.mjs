@@ -277,9 +277,10 @@ check(
   'stack_groups',
   await supabase.from('stack_groups').insert([
     { name: 'Frontend', items: ['Vue 3', 'Nuxt', 'React', 'Next.js', 'TypeScript', 'Tailwind'], sort_order: 0 },
-    { name: 'Backend', items: ['Supabase', 'PostgreSQL', 'Node', 'Drizzle', 'Edge Functions'], sort_order: 1 },
+    { name: 'Backend', items: ['PostgreSQL', 'Node', 'Supabase', 'Drizzle', 'Edge Functions'], sort_order: 1 },
     { name: 'Infra', items: ['Vercel', 'Cloudflare', 'Docker', 'GitHub Actions'], sort_order: 2 },
     { name: 'AI', items: ['OpenAI', 'Anthropic', 'pgvector', 'Streaming'], sort_order: 3 },
+    { name: 'Site-uri', items: ['WordPress', 'Shopify'], sort_order: 4 },
   ]),
 )
 
@@ -316,13 +317,10 @@ check(
   await supabase.from('site_settings').upsert({
     id: 1,
     contact_email: 'contact@codepedia.md',
-    contact_phone: '+373 600 000 00',
+    contact_phone: '+373 69 117 329',
     hours: '09:00 – 18:00 EET',
     response_time_ro: '1 zi lucrătoare',
     response_time_en: '1 working day',
-    next_opening_ro: 'Octombrie 2026',
-    next_opening_en: 'October 2026',
-    concurrent_projects: '2 – 3',
     nda_note_ro: 'Unele proiecte sunt sub NDA. Referințe detaliate la discuția de diagnostic.',
     nda_note_en: 'Some projects are under NDA. Detailed references available on the diagnostic call.',
     footer_line_ro: 'Codepedia SRL · Chișinău, Moldova',

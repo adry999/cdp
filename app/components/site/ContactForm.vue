@@ -2,7 +2,7 @@
 const { t, locale } = useI18n()
 const route = useRoute()
 
-const budgetKeys = ['under5k', '5to15k', '15to30k', 'over30k', 'unsure'] as const
+const budgetKeys = ['under1k', '1to2k', '2to5k', 'over5k', 'unsure'] as const
 
 const form = reactive({
   name: '',

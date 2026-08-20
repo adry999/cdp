@@ -1,4 +1,4 @@
 export const siteSettings = {
   email: 'contact@codepedia.md',
-  phone: '+373 600 000 00',
+  phone: '+373 69 117 329',
 }
