@@ -3,6 +3,16 @@ const { locale, t } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 const localePath = useLocalePath()
 
+const localeOverride = useCookie<string | null>(LOCALE_COOKIE_NAME, {
+  maxAge: 60 * 60 * 24 * 365,
+  sameSite: 'lax',
+  path: '/',
+})
+
+function setLocaleOverride(loc: 'ro' | 'en') {
+  localeOverride.value = loc
+}
+
 const menuOpen = ref(false)
 
 const navLinks = [
@@ -48,6 +58,7 @@ onMounted(() => {
             :to="switchLocalePath('ro')"
             class="no-underline hover:no-underline"
             :class="locale === 'ro' ? 'text-ink hover:text-ink' : 'text-muted hover:text-muted'"
+            @click="setLocaleOverride('ro')"
           >
             RO
           </NuxtLink>
@@ -56,6 +67,7 @@ onMounted(() => {
             :to="switchLocalePath('en')"
             class="no-underline hover:no-underline"
             :class="locale === 'en' ? 'text-ink hover:text-ink' : 'text-muted hover:text-muted'"
+            @click="setLocaleOverride('en')"
           >
             EN
           </NuxtLink>
