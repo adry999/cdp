@@ -64,6 +64,10 @@ export default defineNuxtConfig({
         ro: '/proiecte/[slug]',
         en: '/work/[slug]',
       },
+      confidentialitate: {
+        ro: '/confidentialitate',
+        en: '/privacy',
+      },
     },
   },
 
