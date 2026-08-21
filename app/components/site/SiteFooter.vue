@@ -2,6 +2,7 @@
 withDefaults(defineProps<{ compact?: boolean }>(), { compact: false })
 
 const { t } = useI18n()
+const { openSettings } = useCookieConsent()
 </script>
 
 <template>
@@ -20,6 +21,9 @@ const { t } = useI18n()
         {{ t('footer.legal') }}
       </span>
       <span v-if="!compact">{{ t('footer.tagline') }}</span>
+      <button type="button" class="cursor-pointer bg-transparent text-muted hover:text-ink" @click="openSettings">
+        {{ t('footer.cookieSettings') }}
+      </button>
       <span>{{ t('footer.copyright') }}</span>
     </div>
   </footer>
