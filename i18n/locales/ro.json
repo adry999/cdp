@@ -18,6 +18,16 @@
     "tagline": "Dezvoltare web full-stack · Site-uri, aplicații web, WordPress, Shopify",
     "copyright": "© 2026"
   },
+  "cookieBanner": {
+    "message": "Folosim cookie-uri necesare pentru funcționarea site-ului. Cu acordul tău, folosim și cookie-uri de analiză și marketing.",
+    "policyLinkText": "Detalii în politica de confidențialitate",
+    "acceptAll": "Acceptă tot",
+    "rejectAll": "Doar necesare",
+    "customize": "Personalizează",
+    "save": "Salvează preferințele",
+    "analyticsLabel": "Analiză (Google Analytics)",
+    "marketingLabel": "Marketing (Meta Pixel)"
+  },
   "home": {
     "hero": {
       "sectionLabel": "Studio",

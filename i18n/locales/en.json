@@ -18,6 +18,16 @@
     "tagline": "Full-stack web development · Websites, web apps, WordPress, Shopify",
     "copyright": "© 2026"
   },
+  "cookieBanner": {
+    "message": "We use cookies necessary for the site to work. With your consent, we also use analytics and marketing cookies.",
+    "policyLinkText": "Details in the privacy policy",
+    "acceptAll": "Accept all",
+    "rejectAll": "Necessary only",
+    "customize": "Customize",
+    "save": "Save preferences",
+    "analyticsLabel": "Analytics (Google Analytics)",
+    "marketingLabel": "Marketing (Meta Pixel)"
+  },
   "home": {
     "hero": {
       "sectionLabel": "Studio",

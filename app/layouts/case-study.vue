@@ -5,5 +5,6 @@
       <slot />
     </main>
     <SiteFooter compact />
+    <CookieBanner />
   </div>
 </template>
