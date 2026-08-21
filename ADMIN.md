@@ -139,8 +139,6 @@ Valori globale, un singur formular:
 - email de contact, telefon
 - program (text bilingv, ex. `09:00 – 18:00 EET`)
 - timp de răspuns (bilingv)
-- următoarea disponibilitate (bilingv, ex. `Octombrie 2026`)
-- proiecte simultane (text, ex. `2 – 3`)
 - linia de footer (bilingvă), an de copyright
 - nota de sub grila de proiecte („Unele proiecte sunt sub NDA…")
 - meta title / description per limbă, imagine OG

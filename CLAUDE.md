@@ -75,6 +75,24 @@ bibliotecă de iconuri (designul nu folosește iconuri).
 Nu trece la pasul următor înainte ca pasul curent să fie complet și verificat în
 browser, în ambele limbi.
 
+## Lucru suplimentar (dincolo de pașii de mai sus)
+
+Două subsisteme au fost adăugate ulterior, la cererea clientului, dincolo de
+scopul inițial al acestui fișier. Documentate integral (design + plan de
+implementare) în `docs/superpowers/specs/` și `docs/superpowers/plans/`:
+
+- **Detectare automată a limbii** — `server/middleware/locale-redirect.ts`.
+  Geo-IP (header Vercel `x-vercel-ip-country`) e semnalul principal: RO/MD →
+  română, altfel engleză. Fallback pe domeniu (`.md`/`.ro`) doar când geo
+  lipsește. Alegerea manuală din switcher (cookie `codepedia_locale`) are
+  mereu prioritate. Acționează doar pe `/` și `/en` — nu pe pagini adânci.
+- **Consimțământ cookie-uri + politică de confidențialitate** —
+  `app/composables/useCookieConsent.ts`, `app/components/site/CookieBanner.vue`,
+  `app/plugins/analytics.client.ts`, pagina `/confidentialitate` (`/en/privacy`).
+  Google Analytics (Consent Mode v2) și Meta Pixel sunt gata de activare prin
+  `NUXT_PUBLIC_GA_ID` / `NUXT_PUBLIC_META_PIXEL_ID` — fără ID-uri setate,
+  sistemul e complet inert.
+
 ## Ce lipsește
 
 `TODO.md` listează datele reale care încă nu există (prețuri, cifre de rezultat,

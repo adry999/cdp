@@ -5,8 +5,12 @@
 Codepedia este un studio mic de dezvoltare full-stack din Chișinău. Site-ul are două
 scopuri: (1) să califice clienți serioși din RO / MD / UE, (2) să facă lucrarea
 verificabilă prin studii de caz. Poziționarea este pentru clienți care au fost
-arși de agenții ieftine sau de build-uri no-code neterminate; capacitatea limitată
-(2–3 proiecte simultan) este un semnal de calitate, nu o scuză.
+arși de agenții ieftine sau de build-uri no-code neterminate.
+
+Notă (decizie ulterioară handoff-ului): mesajele care semnalează capacitate
+limitată — „proiecte simultane", „următoarea disponibilitate" — au fost scoase
+intenționat din site. Obiectivul de business este cât mai multe solicitări
+inbound, nu limitarea lor; vezi `TODO.md` / istoricul git pentru context.
 
 Site-ul este bilingv **RO / EN** din start. RO este limba implicită.
 
@@ -44,7 +48,6 @@ Excepții cunoscute, de completat cu date reale (vezi și `TODO.md`):
 - prețurile din secțiunea Servicii: `[ X ] EUR`
 - cifrele de rezultat din studiile de caz: `[ X ]%`, `[ X ] €`
 - citatele clienților și atribuirea: `[ Citat client … ]`, `[ Nume ], [ funcție ], [ companie ]`
-- numărul de telefon: `+373 600 000 00` este provizoriu
 - toate capturile de ecran sunt placeholder-uri hașurate
 
 ## Design Tokens
@@ -162,8 +165,9 @@ Secțiuni, în ordine:
 **00 / Studio (hero)** — H1: „Aplicații web construite corect, de la schema bazei
 de date până la deployment." Lead-ul descrie studioul și piețele. Două butoane:
 „Discută proiectul" (primar ink → `#contact`), „Cum lucrăm" (secundar → `#proces`).
-Sub ele, patru carduri de fapte: Locație (Chișinău, Moldova), Piețe (România ·
-Moldova · UE · remote), Stack (TypeScript, end-to-end), Proiecte simultane (2 – 3).
+Sub ele, trei carduri de fapte: Locație (Chișinău, Moldova), Piețe (România ·
+Moldova · UE · remote), Stack (TypeScript, end-to-end). (Un al patrulea card,
+„Proiecte simultane", a fost scos — vezi nota din Overview.)
 
 **01 / Servicii** — H2: „Două niveluri de lucru. Ambele livrate cap-coadă."
 - *Nivel 01 / Site-uri* — într-un card cu bordură: durată `1 – 3 săptămâni · de la [ X ] EUR`,
@@ -196,14 +200,16 @@ Secțiunea este opțională (există un flag care o ascunde) — în Nuxt, o afi
 dacă există intrări publicate în tabelul `faqs`.
 
 **07 / Contact** — H2 „Spune-ne ce trebuie construit.", lead, două butoane
-(`contact@codepedia.md` primar signal, telefonul secundar), apoi trei carduri:
-Timp de răspuns (1 zi lucrătoare), Program (09:00 – 18:00 EET), Următoarea
-disponibilitate (Octombrie 2026).
+(`contact@codepedia.md` primar signal, telefonul secundar), apoi două carduri:
+Timp de răspuns (1 zi lucrătoare), Program (09:00 – 18:00 EET). (Un al treilea
+card, „Următoarea disponibilitate", a fost scos — vezi nota din Overview.)
 
 **Footer** — o linie mono 11px uppercase, trei blocuri distribuite; primul este
 precedat de simbolul `</>` la 12px, opacitate 0,5:
-„Codepedia SRL · Chișinău, Moldova", „Dezvoltare web full-stack · Vue · React ·
-Supabase", „© 2026".
+„Codepedia SRL · Chișinău, Moldova", „Dezvoltare web full-stack · Site-uri,
+aplicații web, WordPress, Shopify", „© 2026". (Tagline actualizat ulterior
+handoff-ului — cea inițială numea Vue/React/Supabase, înlocuită cu termeni
+relevanți SEO pentru publicul țintă.)
 
 ### 2. Studiu de caz — `/proiecte/[slug]` și `/en/work/[slug]`
 
