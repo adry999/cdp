@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { t, locale } = useI18n()
 const route = useRoute()
+const localePath = useLocalePath()
 
 const budgetKeys = ['under1k', '1to2k', '2to5k', 'over5k', 'unsure'] as const
 
@@ -141,6 +142,13 @@ async function handleSubmit() {
     </div>
 
     <p v-if="status === 'error'" class="font-mono text-xs text-ink">{{ t('home.contact.form.error') }}</p>
+
+    <p class="text-xs text-muted">
+      {{ t('home.contact.form.privacyNotice') }}
+      <NuxtLink :to="localePath('confidentialitate')" class="text-ink underline">{{
+        t('home.contact.form.privacyNoticeLink')
+      }}</NuxtLink>
+    </p>
 
     <AppButton type="submit" variant="ink" class="w-fit text-center">
       {{ status === 'submitting' ? t('home.contact.form.submitting') : t('home.contact.form.submit') }}

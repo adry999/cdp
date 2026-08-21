@@ -101,6 +101,8 @@
           "unsure": "Nu știu încă"
         },
         "source": "Cum ai aflat de noi (opțional)",
+        "privacyNotice": "Trimițând acest formular, ești de acord cu",
+        "privacyNoticeLink": "politica de confidențialitate",
         "submit": "Trimite",
         "submitting": "Se trimite…",
         "success": "Trimis. Primești un răspuns într-o zi lucrătoare.",

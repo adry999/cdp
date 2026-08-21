@@ -101,6 +101,8 @@
           "unsure": "Not sure yet"
         },
         "source": "How did you hear about us (optional)",
+        "privacyNotice": "By submitting this form, you agree to our",
+        "privacyNoticeLink": "privacy policy",
         "submit": "Send",
         "submitting": "Sending…",
         "success": "Sent. You'll get a reply within one working day.",
