@@ -3,6 +3,7 @@ export function useCookieConsent() {
     maxAge: 60 * 60 * 24 * 30 * 6,
     sameSite: 'lax',
     path: '/',
+    default: () => null,
   })
 
   const forceOpen = useState<boolean>('cookie-banner-open', () => false)
