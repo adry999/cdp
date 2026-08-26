@@ -3,6 +3,7 @@
 .output
 .data
 dist
+*.tsbuildinfo
 
 # Node
 node_modules
@@ -17,6 +18,17 @@ node_modules
 test-results
 playwright-report
 blob-report
+playwright/.cache
+coverage
 
-# Misc
+# Deploy
+.vercel
+
+# Editors / OS
+.vscode
+.idea
 .DS_Store
+Thumbs.db
+
+# Local agent config
+.claude/settings.local.json
