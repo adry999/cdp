@@ -1,0 +1,22 @@
+# Normalize every text file to LF in the repo, regardless of platform.
+* text=auto eol=lf
+
+# Binaries — never touch line endings, never diff as text.
+*.png binary
+*.ico binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
+
+# SVG is text, but it is brand artwork — keep it out of noisy diffs.
+*.svg -diff
+
+# Generated; collapse in reviews.
+package-lock.json linguist-generated=true -diff
+
+# Design handoff prototypes are reference artifacts, not app source.
+design/** linguist-vendored=true
