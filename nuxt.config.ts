@@ -1,5 +1,15 @@
 import tailwindcss from '@tailwindcss/vite'
 
+// A production build with no site URL set would silently ship canonical and
+// hreflang tags pointing at localhost — the i18n.baseUrl default below.
+// nuxt dev runs with NODE_ENV=development, so local dev is unaffected; every
+// real build (Vercel included) sets NODE_ENV=production and must supply it.
+if (process.env.NODE_ENV === 'production' && !process.env.NUXT_PUBLIC_SITE_URL) {
+  throw new Error(
+    'NUXT_PUBLIC_SITE_URL is not set. Required for a production build — see .env.example.',
+  )
+}
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-08-05',
   devtools: { enabled: true },
@@ -11,6 +21,7 @@ export default defineNuxtConfig({
     public: {
       gaId: process.env.NUXT_PUBLIC_GA_ID || '',
       metaPixelId: process.env.NUXT_PUBLIC_META_PIXEL_ID || '',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://codepedia.md',
     },
   },
 
@@ -18,7 +29,11 @@ export default defineNuxtConfig({
     compressPublicAssets: { gzip: true, brotli: true },
   },
 
-  sourcemap: { client: true },
+  // Client maps were being served from the public output directory — the
+  // largest one was ~3 MB of original application source. Server maps stay on
+  // for the trace we can actually read; nothing plugs the client half into an
+  // error monitor yet, so there's nothing to gain from shipping it publicly.
+  sourcemap: { client: false, server: true },
 
   routeRules: {
     '/proiecte/**': { swr: 300 },
@@ -29,7 +44,13 @@ export default defineNuxtConfig({
   },
 
   image: {
-    domains: ['xlrkuaxnkidslrhdelpm.supabase.co'],
+    // On Vercel, delegate resizing to Vercel's own Image Optimization API
+    // instead of bundling IPX/sharp — sharp is a native binary and building
+    // locally on Windows produces a win32-x64 binary that Vercel's Linux
+    // functions cannot load. The ipx fallback keeps `npm run dev` working
+    // everywhere else.
+    provider: process.env.VERCEL ? 'vercel' : 'ipx',
+    domains: [new URL(process.env.NUXT_PUBLIC_SUPABASE_URL || 'https://xlrkuaxnkidslrhdelpm.supabase.co').hostname],
   },
 
   supabase: {

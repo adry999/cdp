@@ -31,13 +31,23 @@ function validate() {
   return !fieldErrors.name && !fieldErrors.email && !fieldErrors.message
 }
 
+const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const
+
+function captureUtm(): Record<string, string> | undefined {
+  const entries = UTM_KEYS.filter((key) => typeof route.query[key] === 'string').map((key) => [
+    key,
+    route.query[key] as string,
+  ])
+  return entries.length ? Object.fromEntries(entries) : undefined
+}
+
 async function handleSubmit() {
-  if (!validate()) return
+  if (!validate() || status.value === 'submitting') return
   status.value = 'submitting'
   try {
     await $fetch('/api/leads', {
       method: 'POST',
-      body: { ...form, lang: locale.value, page: route.fullPath },
+      body: { ...form, lang: locale.value, page: route.fullPath, utm: captureUtm() },
     })
     status.value = 'success'
   } catch {
@@ -123,7 +133,7 @@ async function handleSubmit() {
         class="mt-2 w-full rounded border border-hairline bg-paper px-3.5 py-3 text-base outline-none focus:border-ink"
       >
         <option value="">{{ t('home.contact.form.budgetPlaceholder') }}</option>
-        <option v-for="key in budgetKeys" :key="key" :value="t(`home.contact.form.budgetOptions.${key}`)">
+        <option v-for="key in budgetKeys" :key="key" :value="key">
           {{ t(`home.contact.form.budgetOptions.${key}`) }}
         </option>
       </select>
@@ -150,7 +160,7 @@ async function handleSubmit() {
       }}</NuxtLink>
     </p>
 
-    <AppButton type="submit" variant="ink" class="w-fit text-center">
+    <AppButton type="submit" variant="ink" class="w-fit text-center" :disabled="status === 'submitting'">
       {{ status === 'submitting' ? t('home.contact.form.submitting') : t('home.contact.form.submit') }}
     </AppButton>
   </form>

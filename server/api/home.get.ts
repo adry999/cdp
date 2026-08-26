@@ -1,4 +1,5 @@
 import { serverSupabaseClient } from '#supabase/server'
+import { logAndThrow } from '~~/shared/utils/apiError'
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)
@@ -20,7 +21,7 @@ export default defineEventHandler(async (event) => {
   ])
 
   for (const r of [services, stackGroups, processSteps, faqs, settings]) {
-    if (r.error) throw createError({ statusCode: 500, statusMessage: r.error.message })
+    if (r.error) logAndThrow('GET /api/home', r.error)
   }
 
   return {

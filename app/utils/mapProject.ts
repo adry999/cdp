@@ -72,8 +72,15 @@ function pick(ro: string, en: string | null | undefined, locale: Locale): string
   return locale === 'en' && en ? en : ro
 }
 
+/** Frames the case-study design reserves for gallery screenshots. */
+const GALLERY_PLACEHOLDER_COUNT = 2
+
 export function mapProject(row: ProjectRow, locale: Locale) {
   const slug = (locale === 'en' && row.slug_en) || row.slug_ro
+
+  const galleryImages = [...row.project_images]
+    .filter((img) => !!img.path?.trim())
+    .sort((a, b) => a.sort_order - b.sort_order)
 
   const attribution =
     row.quote_author || row.quote_role_ro || row.quote_company
@@ -113,10 +120,17 @@ export function mapProject(row: ProjectRow, locale: Locale) {
           title: pick(s.title_ro, s.title_en, locale),
           text: pick(s.body_ro, s.body_en, locale),
         })),
-      gallery: [...row.project_images]
-        .sort((a, b) => a.sort_order - b.sort_order)
-        .map((img) => `[ ${pick(img.alt_ro, img.alt_en, locale)} ]`),
-      galleryPaths: [...row.project_images].sort((a, b) => a.sort_order - b.sort_order).map((img) => img.path),
+      // The design shows two 4/3 frames. Until real screenshots exist the frames
+      // stay as visible placeholders — rendered from nothing, not from blank
+      // rows in project_images (a NOT NULL path of '' renders a broken image).
+      gallery: galleryImages.length
+        ? galleryImages.map((img) => `[ ${pick(img.alt_ro, img.alt_en, locale)} ]`)
+        : Array.from({ length: GALLERY_PLACEHOLDER_COUNT }, () =>
+            locale === 'en' ? '[ screenshot ]' : '[ captură ]',
+          ),
+      galleryPaths: galleryImages.length
+        ? galleryImages.map((img) => img.path)
+        : Array.from({ length: GALLERY_PLACEHOLDER_COUNT }, () => null),
       resultStats: [...row.project_stats]
         .sort((a, b) => a.sort_order - b.sort_order)
         .map((s) => ({ value: s.value, label: pick(s.label_ro, s.label_en, locale) })),

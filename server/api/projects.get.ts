@@ -1,4 +1,5 @@
 import { serverSupabaseClient } from '#supabase/server'
+import { logAndThrow } from '~~/shared/utils/apiError'
 
 const PROJECT_SELECT = `
   slug_ro, slug_en, title_ro, title_en, card_title_ro, card_title_en,
@@ -26,6 +27,6 @@ export default defineEventHandler(async (event) => {
     .order('sort_order', { foreignTable: 'project_stats' })
     .order('sort_order', { foreignTable: 'project_images' })
 
-  if (error) throw createError({ statusCode: 500, statusMessage: error.message })
+  if (error) logAndThrow('GET /api/projects', error)
   return data
 })

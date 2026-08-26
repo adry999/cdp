@@ -6,7 +6,6 @@ const content = computed(() => privacyPolicy[locale.value as 'ro' | 'en'])
 
 useSeoMeta({
   title: () => content.value.title,
-  robots: 'noindex, follow',
 })
 </script>
 

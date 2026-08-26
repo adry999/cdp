@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ProjectRow } from '~/utils/mapProject'
+import { usableGallery, validateProjectPayload } from '~~/shared/utils/projectPayload'
 
 definePageMeta({ layout: 'admin' })
 
@@ -9,25 +10,26 @@ const isNew = slug === 'nou'
 const supabase = useSupabaseClient()
 
 const PROJECT_SELECT = `
-  slug_ro, slug_en, title_ro, title_en, card_title_ro, card_title_en,
+  id, slug_ro, slug_en, title_ro, title_en, card_title_ro, card_title_en,
   summary_ro, summary_en, lead_ro, lead_en, year, tech, published_at,
   cover_path, cover_alt_ro, cover_alt_en, hero_path, hero_alt_ro, hero_alt_en,
   context_heading_ro, context_heading_en, context_body_ro, context_body_en,
   solution_heading_ro, solution_heading_en,
   quote_ro, quote_en, quote_author, quote_role_ro, quote_role_en, quote_company,
+  next_title_ro, next_title_en,
   project_facts(label_ro,label_en,value_ro,value_en,sort_order),
   project_steps(title_ro,title_en,body_ro,body_en,sort_order),
   project_stats(value,label_ro,label_en,sort_order),
   project_images(path,alt_ro,alt_en,sort_order)
 `
 
-const { data: existing } = await useAsyncData<(ProjectRow & { published_at: string | null }) | null>(
+const { data: existing } = await useAsyncData<(ProjectRow & { id: string; published_at: string | null }) | null>(
   `admin-project-${slug}`,
   async () => {
     if (isNew) return null
     const { data, error } = await supabase.from('projects').select(PROJECT_SELECT).eq('slug_ro', slug).maybeSingle()
     if (error) throw error
-    return data as (ProjectRow & { published_at: string | null }) | null
+    return data as (ProjectRow & { id: string; published_at: string | null }) | null
   },
 )
 
@@ -36,6 +38,7 @@ function bilingual(ro = '', en = '') {
 }
 
 const e = existing.value
+const projectId = ref<string | null>(e?.id ?? null)
 
 const form = reactive({
   slugRo: e?.slug_ro ?? '',
@@ -52,8 +55,13 @@ const form = reactive({
   coverAlt: bilingual(e?.cover_alt_ro ?? '', e?.cover_alt_en ?? ''),
   heroPath: e?.hero_path ?? null,
   heroAlt: bilingual(e?.hero_alt_ro ?? '', e?.hero_alt_en ?? ''),
+  // Blank slots are UI-only scaffolding for the "add image" flow — never
+  // written as project_images rows (a NOT NULL path of '' renders a broken
+  // <img> on the public site). usableGallery() strips them again on save.
   gallery: (
-    e?.project_images?.length ? e.project_images : [{ path: null, alt_ro: '', alt_en: '' }, { path: null, alt_ro: '', alt_en: '' }]
+    e?.project_images?.filter((img) => img.path)?.length
+      ? e.project_images.filter((img) => img.path)
+      : []
   ).map((img) => ({ path: img.path ?? null, altRo: img.alt_ro ?? '', altEn: img.alt_en ?? '' })),
 
   facts: (
@@ -81,6 +89,8 @@ const form = reactive({
   quoteRole: bilingual(e?.quote_role_ro ?? '', e?.quote_role_en ?? ''),
   quoteCompany: e?.quote_company ?? '',
 
+  nextTitle: bilingual(e?.next_title_ro ?? '', e?.next_title_en ?? ''),
+
   published: !!e?.published_at,
 })
 
@@ -107,6 +117,18 @@ function addStat() {
 function removeStat(i: number) {
   form.stats.splice(i, 1)
 }
+function addFact() {
+  form.facts.push({ label: bilingual(), value: bilingual() })
+}
+function removeFact(i: number) {
+  if (form.facts.length > 1) form.facts.splice(i, 1)
+}
+function addGalleryImage() {
+  form.gallery.push({ path: null, altRo: '', altEn: '' })
+}
+function removeGalleryImage(i: number) {
+  form.gallery.splice(i, 1)
+}
 
 const dragInfo = ref<{ list: 'facts' | 'steps' | 'stats'; index: number } | null>(null)
 
@@ -126,146 +148,106 @@ const saveError = ref('')
 
 async function save() {
   saveError.value = ''
-  if (!form.slugRo.trim() || !form.title.ro.trim() || !form.cardTitle.ro.trim() || !form.summary.ro.trim() || !form.lead.ro.trim() || !form.contextHeading.ro.trim()) {
+
+  const issues = validateProjectPayload({
+    id: projectId.value,
+    slugRo: form.slugRo,
+    slugEn: form.slugEn,
+    published: form.published,
+    title: form.title,
+    cardTitle: form.cardTitle,
+    summary: form.summary,
+    lead: form.lead,
+    contextHeading: form.contextHeading,
+    gallery: form.gallery,
+  })
+
+  if (issues.length) {
     saveState.value = 'error'
-    saveError.value = 'Slug, titlu, titlu card, descriere card, lead și titlu context sunt obligatorii (RO).'
+    saveError.value = issues.map((i) => i.message).join(' ')
     return
   }
 
   saveState.value = 'saving'
 
-  const { data: project, error: projectError } = await supabase
-    .from('projects')
-    .upsert(
-      {
-        slug_ro: form.slugRo.trim(),
-        slug_en: form.slugEn.trim() || form.slugRo.trim(),
-        title_ro: form.title.ro,
-        title_en: form.title.en || null,
-        card_title_ro: form.cardTitle.ro,
-        card_title_en: form.cardTitle.en || null,
-        summary_ro: form.summary.ro,
-        summary_en: form.summary.en || null,
-        lead_ro: form.lead.ro,
-        lead_en: form.lead.en || null,
-        year: form.year ? Number(form.year) : null,
-        tech: form.tech,
-        cover_path: form.coverPath,
-        cover_alt_ro: form.coverAlt.ro || null,
-        cover_alt_en: form.coverAlt.en || null,
-        hero_path: form.heroPath,
-        hero_alt_ro: form.heroAlt.ro || null,
-        hero_alt_en: form.heroAlt.en || null,
-        context_heading_ro: form.contextHeading.ro,
-        context_heading_en: form.contextHeading.en || null,
-        context_body_ro: form.contextBody.ro || null,
-        context_body_en: form.contextBody.en || null,
-        solution_heading_ro: form.solutionHeading.ro || null,
-        solution_heading_en: form.solutionHeading.en || null,
-        quote_ro: form.quote.ro || null,
-        quote_en: form.quote.en || null,
-        quote_author: form.quoteAuthor || null,
-        quote_role_ro: form.quoteRole.ro || null,
-        quote_role_en: form.quoteRole.en || null,
-        quote_company: form.quoteCompany || null,
-        published_at: form.published ? (existing.value?.published_at ?? new Date().toISOString()) : null,
-        updated_at: new Date().toISOString(),
-        updated_by: (await supabase.auth.getUser()).data.user?.id ?? null,
-      },
-      { onConflict: 'slug_ro' },
-    )
-    .select('id')
-    .single()
+  // Single RPC, single transaction: either the whole project saves — project
+  // row, facts, steps, stats, gallery, redirect on slug change — or none of it
+  // does. See supabase/migrations/20260826120200_save_project_rpc.sql.
+  const { data, error } = await supabase.rpc('save_project', {
+    payload: {
+      id: projectId.value,
+      slug_ro: form.slugRo.trim(),
+      slug_en: form.slugEn.trim() || form.slugRo.trim(),
+      published: form.published,
+      title_ro: form.title.ro,
+      title_en: form.title.en || null,
+      card_title_ro: form.cardTitle.ro,
+      card_title_en: form.cardTitle.en || null,
+      summary_ro: form.summary.ro,
+      summary_en: form.summary.en || null,
+      lead_ro: form.lead.ro,
+      lead_en: form.lead.en || null,
+      year: form.year ? Number(form.year) : null,
+      tech: form.tech,
+      cover_path: form.coverPath,
+      cover_alt_ro: form.coverAlt.ro || null,
+      cover_alt_en: form.coverAlt.en || null,
+      hero_path: form.heroPath,
+      hero_alt_ro: form.heroAlt.ro || null,
+      hero_alt_en: form.heroAlt.en || null,
+      context_heading_ro: form.contextHeading.ro,
+      context_heading_en: form.contextHeading.en || null,
+      context_body_ro: form.contextBody.ro || null,
+      context_body_en: form.contextBody.en || null,
+      solution_heading_ro: form.solutionHeading.ro || null,
+      solution_heading_en: form.solutionHeading.en || null,
+      quote_ro: form.quote.ro || null,
+      quote_en: form.quote.en || null,
+      quote_author: form.quoteAuthor || null,
+      quote_role_ro: form.quoteRole.ro || null,
+      quote_role_en: form.quoteRole.en || null,
+      quote_company: form.quoteCompany || null,
+      next_title_ro: form.nextTitle.ro || null,
+      next_title_en: form.nextTitle.en || null,
+      sort_order: null,
+      facts: form.facts.map((f) => ({
+        label_ro: f.label.ro,
+        label_en: f.label.en || null,
+        value_ro: f.value.ro,
+        value_en: f.value.en || null,
+      })),
+      steps: form.steps.map((s) => ({
+        title_ro: s.title.ro,
+        title_en: s.title.en || null,
+        body_ro: s.body.ro,
+        body_en: s.body.en || null,
+      })),
+      stats: form.stats.map((s) => ({
+        value: s.value,
+        label_ro: s.label.ro,
+        label_en: s.label.en || null,
+      })),
+      images: usableGallery(form.gallery).map((img) => ({
+        path: img.path,
+        alt_ro: img.altRo || null,
+        alt_en: img.altEn || null,
+        aspect: '4/3',
+      })),
+    },
+  })
 
-  if (projectError) {
+  if (error) {
     saveState.value = 'error'
-    saveError.value = projectError.message
+    saveError.value = error.message
     return
   }
 
-  const projectId = project.id
-
-  const childOps = [
-    supabase
-      .from('project_facts')
-      .delete()
-      .eq('project_id', projectId)
-      .then(() =>
-        supabase.from('project_facts').insert(
-          form.facts.map((f, i) => ({
-            project_id: projectId,
-            label_ro: f.label.ro,
-            label_en: f.label.en || null,
-            value_ro: f.value.ro,
-            value_en: f.value.en || null,
-            sort_order: i,
-          })),
-        ),
-      ),
-    supabase
-      .from('project_steps')
-      .delete()
-      .eq('project_id', projectId)
-      .then(() =>
-        supabase.from('project_steps').insert(
-          form.steps.map((s, i) => ({
-            project_id: projectId,
-            title_ro: s.title.ro,
-            title_en: s.title.en || null,
-            body_ro: s.body.ro,
-            body_en: s.body.en || null,
-            sort_order: i,
-          })),
-        ),
-      ),
-    supabase
-      .from('project_stats')
-      .delete()
-      .eq('project_id', projectId)
-      .then(() =>
-        form.stats.length
-          ? supabase.from('project_stats').insert(
-              form.stats.map((s, i) => ({
-                project_id: projectId,
-                value: s.value,
-                label_ro: s.label.ro,
-                label_en: s.label.en || null,
-                sort_order: i,
-              })),
-            )
-          : Promise.resolve({ error: null }),
-      ),
-    supabase
-      .from('project_images')
-      .delete()
-      .eq('project_id', projectId)
-      .then(() =>
-        supabase.from('project_images').insert(
-          form.gallery.map((img, i) => ({
-            project_id: projectId,
-            path: img.path ?? '',
-            alt_ro: img.altRo || '—',
-            alt_en: img.altEn || null,
-            aspect: '4/3',
-            sort_order: i,
-          })),
-        ),
-      ),
-  ]
-
-  const results = await Promise.all(childOps)
-  const childError = results.find((r) => r.error)?.error
-
-  if (childError) {
-    saveState.value = 'error'
-    saveError.value = childError.message
-    return
-  }
-
+  const result = data as { id: string; slug_ro: string; slug_en: string }
+  projectId.value = result.id
   saveState.value = 'saved'
 
-  if (isNew) {
-    await navigateTo(`/admin/projects/${form.slugRo.trim()}`)
+  if (isNew || form.slugRo.trim() !== slug) {
+    await navigateTo(`/admin/projects/${result.slug_ro}`)
   }
 }
 </script>
@@ -358,17 +340,30 @@ async function save() {
               </div>
             </div>
             <div>
-              <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Galerie (minim 2)</div>
-              <div class="mt-2 grid grid-cols-2 gap-4">
-                <div v-for="(img, i) in form.gallery" :key="i">
+              <div class="flex items-center justify-between">
+                <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Galerie (minim 2 la publicare)</div>
+                <button type="button" class="cursor-pointer border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-[0.08em] text-signal" @click="addGalleryImage">
+                  + Imagine
+                </button>
+              </div>
+              <div v-if="!form.gallery.length" class="mt-2 rounded border border-dashed border-hairline p-4 text-center text-[13px] text-muted">
+                Fără imagini încă — apasă „+ Imagine".
+              </div>
+              <div v-else class="mt-2 grid grid-cols-2 gap-4">
+                <div v-for="(img, i) in form.gallery" :key="i" class="relative">
                   <AdminImageUpload
                     v-model="img.path"
                     ratio="4/3"
                     :label="`[ galerie ${i + 1} ]`"
                     :path-prefix="`${form.slugRo || 'proiect-nou'}/gallery-${i}`"
                   />
-                  <div class="mt-3">
-                    <AdminFieldPair label="Text alternativ" v-model:ro="img.altRo" v-model:en="img.altEn" />
+                  <div class="mt-3 flex items-start gap-3">
+                    <div class="flex-1">
+                      <AdminFieldPair label="Text alternativ" v-model:ro="img.altRo" v-model:en="img.altEn" />
+                    </div>
+                    <button type="button" class="mt-6 cursor-pointer border-0 bg-transparent p-0 font-mono text-[11px] uppercase tracking-[0.08em] text-muted hover:text-signal" @click="removeGalleryImage(i)">
+                      Șterge
+                    </button>
                   </div>
                 </div>
               </div>
@@ -378,20 +373,35 @@ async function save() {
 
         <!-- Date -->
         <section class="rounded border border-hairline p-6">
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Date (secțiunea 01)</div>
+          <div class="flex items-center justify-between">
+            <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Date (secțiunea 01)</div>
+            <button type="button" class="cursor-pointer border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-[0.08em] text-signal" @click="addFact">
+              + Fapt
+            </button>
+          </div>
           <div class="mt-4 flex flex-col gap-4">
             <div
               v-for="(fact, i) in form.facts"
               :key="i"
               draggable="true"
-              class="grid cursor-grab grid-cols-2 gap-4 border-t border-hairline pt-4 first:border-t-0 first:pt-0"
+              class="flex cursor-grab gap-4 border-t border-hairline pt-4 first:border-t-0 first:pt-0"
               :class="{ 'opacity-40': dragInfo?.list === 'facts' && dragInfo.index === i }"
               @dragstart="reorderStart('facts', i)"
               @dragover.prevent
               @drop="reorderDrop('facts', i)"
             >
-              <AdminFieldPair label="Etichetă" v-model:ro="fact.label.ro" v-model:en="fact.label.en" />
-              <AdminFieldPair label="Valoare" v-model:ro="fact.value.ro" v-model:en="fact.value.en" />
+              <div class="grid flex-1 grid-cols-2 gap-4">
+                <AdminFieldPair label="Etichetă" v-model:ro="fact.label.ro" v-model:en="fact.label.en" />
+                <AdminFieldPair label="Valoare" v-model:ro="fact.value.ro" v-model:en="fact.value.en" />
+              </div>
+              <button
+                v-if="form.facts.length > 1"
+                type="button"
+                class="mt-6 h-fit cursor-pointer border-0 bg-transparent p-0 font-mono text-[11px] uppercase tracking-[0.08em] text-muted hover:text-signal"
+                @click="removeFact(i)"
+              >
+                Șterge
+              </button>
             </div>
           </div>
         </section>
@@ -489,6 +499,14 @@ async function save() {
           </div>
         </section>
 
+        <!-- Următorul pas -->
+        <section class="rounded border border-hairline p-6">
+          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Următorul pas (secțiunea 05)</div>
+          <div class="mt-4">
+            <AdminFieldPair label="Titlu CTA de final" v-model:ro="form.nextTitle.ro" v-model:en="form.nextTitle.en" />
+          </div>
+        </section>
+
         <!-- Publicare -->
         <section class="rounded border border-hairline p-6">
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Publicare</div>
@@ -501,7 +519,6 @@ async function save() {
             </label>
             <div class="flex gap-3 font-mono text-xs uppercase tracking-[0.08em]">
               <NuxtLink :to="`/proiecte/${form.slugRo}`" class="text-muted hover:text-ink">Vezi pe site</NuxtLink>
-              <span class="text-muted">Vezi ca draft — token disponibil după prima salvare</span>
             </div>
           </div>
         </section>

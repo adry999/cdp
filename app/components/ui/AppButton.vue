@@ -7,12 +7,13 @@ const props = withDefaults(
     href?: string
     inverted?: boolean
     type?: 'button' | 'submit'
+    disabled?: boolean
   }>(),
-  { variant: 'ink', inverted: false, type: 'button' },
+  { variant: 'ink', inverted: false, type: 'button', disabled: false },
 )
 
 const base =
-  'inline-block rounded text-[15px] font-medium no-underline transition-colors duration-[120ms] ease-out hover:no-underline'
+  'inline-block rounded text-[15px] font-medium no-underline transition-colors duration-[120ms] ease-out hover:no-underline disabled:cursor-not-allowed disabled:opacity-60'
 
 const variantClass = computed(() => {
   if (props.variant === 'signal') {
@@ -31,7 +32,7 @@ const variantClass = computed(() => {
   <NuxtLink v-if="href" :to="href" :class="variantClass">
     <slot />
   </NuxtLink>
-  <button v-else :type="type" :class="variantClass">
+  <button v-else :type="type" :disabled="disabled" :class="variantClass">
     <slot />
   </button>
 </template>

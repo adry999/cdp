@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { budgetLabel } from '~~/shared/utils/leadLabels'
+
 definePageMeta({ layout: 'admin' })
 
 const supabase = useSupabaseClient()
@@ -49,7 +51,7 @@ const statusClass: Record<string, string> = {
           <div class="min-w-0 flex-[1_1_160px] text-[15px] text-ink">{{ lead.name }}</div>
           <div class="min-w-0 flex-[1_1_180px] text-[15px] text-muted">{{ lead.email }}</div>
           <div class="min-w-0 flex-[1_1_140px] text-[15px] text-muted">{{ lead.company || '—' }}</div>
-          <div class="flex-[0_0_140px] text-[15px] text-muted">{{ lead.budget || '—' }}</div>
+          <div class="flex-[0_0_140px] text-[15px] text-muted">{{ budgetLabel(lead.budget) }}</div>
           <div class="min-w-0 flex-[2_1_200px] truncate text-[15px] text-muted">{{ lead.message }}</div>
           <div class="flex-[0_0_100px] font-mono text-xs uppercase tracking-[0.08em]" :class="statusClass[lead.status]">
             {{ statusLabel[lead.status] ?? lead.status }}

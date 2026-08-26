@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { budgetLabel } from '~~/shared/utils/leadLabels'
+
 definePageMeta({ layout: 'admin' })
 
 const route = useRoute()
@@ -68,7 +70,7 @@ async function archive() {
             </div>
             <div>
               <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Buget</div>
-              <div class="mt-1 text-[15px]">{{ lead.budget || '—' }}</div>
+              <div class="mt-1 text-[15px]">{{ budgetLabel(lead.budget) }}</div>
             </div>
           </div>
           <div class="mt-4 border-t border-hairline pt-4">
@@ -81,12 +83,22 @@ async function archive() {
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Sursă</div>
           <div class="mt-3 grid grid-cols-2 gap-4">
             <div>
+              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">Cum a aflat</div>
+              <div class="mt-1 text-[15px] text-muted">{{ lead.source || '—' }}</div>
+            </div>
+            <div>
               <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">Pagină</div>
               <div class="mt-1 text-[15px] text-muted">{{ lead.page || '—' }}</div>
             </div>
             <div>
               <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">Referrer</div>
               <div class="mt-1 truncate text-[15px] text-muted">{{ lead.referrer || '—' }}</div>
+            </div>
+            <div>
+              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">UTM</div>
+              <div class="mt-1 truncate text-[15px] text-muted">
+                {{ lead.utm ? Object.entries(lead.utm).map(([k, v]) => `${k}=${v}`).join(' · ') : '—' }}
+              </div>
             </div>
             <div>
               <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">Limbă</div>
