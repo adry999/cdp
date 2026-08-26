@@ -10,7 +10,8 @@ administrare din care se adaugă proiectele și se editează conținutul.
 Design-ul este **deja finalizat** și livrat ca prototipuri HTML în
 `design_handoff_codepedia_nuxt/design/`. Documentația completă de design este în
 `README.md` din același folder. Specificația admin-ului: `ADMIN.md`. Schema bazei
-de date: `DATA_MODEL.sql`.
+de date: fișierele din `supabase/migrations/`, în ordine — nu `DATA_MODEL.sql`,
+care e doar primul fișier din acel istoric, păstrat separat pentru context.
 
 **Nu reinventa designul.** Fidelitate pixel-perfect față de prototipuri. Dacă un
 lucru nu e specificat, întreabă înainte de a improviza.

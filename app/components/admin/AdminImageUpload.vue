@@ -39,8 +39,6 @@ async function onFileChange(e: Event) {
 
   uploading.value = true
 
-  const previousPath = storageKeyFromPublicUrl(props.modelValue, 'project-media')
-
   const ext = file.name.split('.').pop() || 'jpg'
   const path = `${props.pathPrefix}/${Date.now()}.${ext}`
 
@@ -54,12 +52,14 @@ async function onFileChange(e: Event) {
     return
   }
 
-  // Best-effort: the new image is already live, so a failure here just
-  // leaves one orphaned file rather than blocking the save.
-  if (previousPath && previousPath !== path) {
-    await supabase.storage.from('project-media').remove([previousPath]).catch(() => {})
-  }
-
+  // The previous file is deliberately NOT deleted here. Deleting it the
+  // moment a replacement is uploaded — before the project's Save button
+  // commits — broke the currently *published* page if the admin closed the
+  // tab, hit Back, lost connectivity, or the save failed afterward:
+  // production still pointed at a file that had just been deleted. Cleanup
+  // now happens only after a successful save (see the project editor's
+  // save()), which is the first point where "this URL is really no longer
+  // needed" is actually true.
   const { data } = supabase.storage.from('project-media').getPublicUrl(path)
   emit('update:modelValue', data.publicUrl)
   uploading.value = false

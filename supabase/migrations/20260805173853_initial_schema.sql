@@ -1,14 +1,6 @@
--- Codepedia — schema inițială (PostgreSQL / Supabase)
+-- Codepedia — schema propusă (PostgreSQL / Supabase)
 -- Convenție: textul editabil are variantă _ro (obligatorie) și _en (opțională,
 -- fallback pe RO la randare). Ordinea listelor se ține în sort_order.
---
--- NU e sursa de adevăr curentă a schemei — e identic cu
--- supabase/migrations/20260805173853_initial_schema.sql, primul fișier dintr-un
--- istoric complet de migrări. Schema live e baza asta + fiecare fișier din
--- supabase/migrations/, în ordine. Acest fișier a rămas nesincronizat cu baza
--- reală luni de zile (lipseau next_title_ro/en, bucket-ul de Storage și
--- politicile lui) exact pentru că exista în paralel cu migrările în loc să
--- fie generat din ele — păstrat doar ca fișierul cu care a pornit proiectul.
 
 create extension if not exists "pgcrypto";
 

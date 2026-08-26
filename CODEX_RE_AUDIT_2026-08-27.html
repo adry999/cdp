@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Codepedia Re-audit — 27 August 2026</title>
+  <style>
+    :root { --paper:#faf8f4; --ink:#0b0b0b; --muted:#625f59; --line:#d8d3ca; --red:#c7390d; --amber:#9a6400; --green:#166534; --blue:#1d4ed8; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.58 Arial, sans-serif; }
+    main { width:min(1120px, calc(100% - 40px)); margin:auto; padding:56px 0 96px; }
+    h1,h2,h3 { line-height:1.16; letter-spacing:-.02em; }
+    h1 { max-width:860px; margin:0 0 12px; font-size:clamp(34px,6vw,70px); }
+    h2 { margin:64px 0 18px; padding-top:22px; border-top:2px solid var(--ink); font-size:30px; }
+    h3 { margin:28px 0 8px; font-size:20px; }
+    p { max-width:82ch; }
+    a { color:var(--blue); }
+    code { padding:.1em .32em; border-radius:3px; background:#eeeae2; font:13px/1.45 Consolas, monospace; overflow-wrap:anywhere; }
+    .eyebrow,.tag { font:700 11px/1.2 Consolas, monospace; letter-spacing:.09em; text-transform:uppercase; }
+    .lede { max-width:820px; color:var(--muted); font-size:20px; }
+    .verdict { margin:32px 0; padding:22px; border:2px solid var(--red); border-radius:8px; background:#fff7f3; }
+    .verdict strong { color:var(--red); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; }
+    .metric,.card { padding:18px; border:1px solid var(--line); border-radius:7px; background:#fff; }
+    .metric b { display:block; margin-top:5px; font-size:28px; }
+    .ok { color:var(--green); } .partial { color:var(--amber); } .bad { color:var(--red); }
+    .finding { margin:14px 0; padding:20px; border:1px solid var(--line); border-left:5px solid var(--amber); border-radius:6px; background:#fff; }
+    .finding.critical { border-left-color:#8b0000; } .finding.high { border-left-color:var(--red); } .finding.low { border-left-color:#64748b; }
+    .finding h3 { margin:0 0 7px; }
+    .finding p:last-child { margin-bottom:0; }
+    .tag { display:inline-block; margin-right:8px; padding:4px 7px; border-radius:3px; background:#eeeae2; }
+    .tag.critical { background:#8b0000; color:white; } .tag.high { background:var(--red); color:white; }
+    .tag.medium { background:#f4d58d; } .tag.low { background:#dbe4ee; }
+    table { width:100%; border-collapse:collapse; background:#fff; }
+    th,td { padding:11px 12px; border:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { background:#eeeae2; font-size:13px; }
+    ul,ol { max-width:90ch; padding-left:24px; }
+    li { margin:.38em 0; }
+    .note { padding:14px 16px; border-left:4px solid var(--blue); background:#eef4ff; }
+    .small { color:var(--muted); font-size:13px; }
+    @media (max-width:700px) { main { width:min(100% - 24px,1120px); padding-top:28px; } table { display:block; overflow-x:auto; } }
+  </style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Independent second-pass audit · repository + live data-backed runtime</div>
+  <h1>Codepedia project re-audit</h1>
+  <p class="lede">Verification of the changes made after <code>AUDIT.html</code> and <code>PROJECT_AUDIT.md</code>. Audited on 27 August 2026 at commit <code>2b9ee57</code>. No application code or production data was changed during this audit.</p>
+
+  <div class="verdict">
+    <strong>Verdict: substantial improvement, but not everything was completed and the project is not yet safely launch-ready.</strong>
+    The public site builds and its smoke tests pass. The strongest earlier defects—known high-severity Nuxt advisories, non-transactional project saving, discarded attribution, weak server error exposure, locale switching, and several accessibility/SEO basics—were addressed. However, database recovery is still not reproducible, redirects are recorded but never served, media handling can delete files used by published projects, cache invalidation is absent, and launch content is incomplete.
+  </div>
+
+  <div class="grid">
+    <div class="metric"><span class="eyebrow">Overall readiness</span><b>6.2 / 10</b><span>Improved, not production-ready</span></div>
+    <div class="metric"><span class="eyebrow">Automated checks</span><b class="ok">4 pass</b><span>Type, unit, build, E2E</span></div>
+    <div class="metric"><span class="eyebrow">Dependency audit</span><b>1 low</b><span>0 critical/high/moderate</span></div>
+    <div class="metric"><span class="eyebrow">Launch blockers</span><b class="bad">6</b><span>Schema, media, routing, cache, email/content</span></div>
+  </div>
+
+  <h2>1. What the project is and what it should do best</h2>
+  <p>Codepedia is a bilingual Romanian/English lead-generation and portfolio website for a small full-stack development studio. It combines a public marketing site, localized case studies, a contact funnel, and a private Supabase-backed CMS/lead inbox.</p>
+  <p>At its best, the project should do four things extremely well:</p>
+  <ol>
+    <li><strong>Convert qualified visitors:</strong> explain the offer, show credible work and pricing, and reliably deliver every inquiry to the studio.</li>
+    <li><strong>Publish safely:</strong> let an administrator preview, validate, publish, rename, reorder, duplicate and unpublish content without partial writes, broken images, duplicate URLs or stale public pages.</li>
+    <li><strong>Earn trust:</strong> be fast, accessible, localized, privacy-accurate, SEO-canonical and resilient when a dependency is degraded.</li>
+    <li><strong>Be recoverable:</strong> a new environment must be reproducible from versioned migrations, seeds, Storage policy and documented deployment steps.</li>
+  </ol>
+
+  <h2>2. Verification performed</h2>
+  <table>
+    <thead><tr><th>Check</th><th>Result</th><th>Meaning / limitation</th></tr></thead>
+    <tbody>
+      <tr><td><code>npm run typecheck</code></td><td class="ok">Pass</td><td><code>vue-tsc --noEmit</code> reported no type errors.</td></tr>
+      <tr><td><code>npm test</code></td><td class="ok">49/49 pass</td><td>Eight unit-test files pass. There is no coverage threshold.</td></tr>
+      <tr><td><code>npm run build</code></td><td class="ok">Pass</td><td>Production Nitro build completed. Local Node is 22.17.0 while the package requires ≥22.19.0.</td></tr>
+      <tr><td><code>npm run test:e2e</code></td><td class="ok">16/16 pass</td><td>Re-run with network access against the configured Supabase project. Covers public pages, locale behavior, cookie focus/trapping, case-study navigation and admin login—not authenticated CMS writes or leads.</td></tr>
+      <tr><td><code>npm run lint</code></td><td class="partial">0 errors, 98 warnings</td><td>CI passes because warnings are not treated as failures. Most concern Vue attribute/void-element style and missing prop defaults.</td></tr>
+      <tr><td><code>npm audit --json</code></td><td class="partial">1 low advisory</td><td>The former Nuxt high-severity findings are gone. Remaining advisory: transitive <code>esbuild</code> in <code>fontless</code>, Windows dev-server arbitrary-file-read conditions.</td></tr>
+      <tr><td>Live CMS content read</td><td class="partial">Healthy but incomplete</td><td>2 services, 5 stack groups, 4 process steps, 4 FAQs and 3 published projects. All 3 projects have no cover, hero or gallery images; both service prices are null.</td></tr>
+      <tr><td>Database migration reset</td><td class="bad">Not runnable safely</td><td>No isolated local Supabase reset harness/base migration exists. Production was not mutated. Static inspection shows a clean migration path is incomplete.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. Critical and high-priority findings</h2>
+
+  <article class="finding critical">
+    <h3><span class="tag critical">P0 Critical</span>The database cannot be recreated reliably from the repository</h3>
+    <p><code>DATA_MODEL.sql</code> is still the documented base schema, but it lacks <code>projects.next_title_ro/en</code>, <code>leads.source</code>, the rate-limit table/function, integrity constraints/triggers, and all Storage bucket/policy setup. Conversely, the first files under <code>supabase/migrations/</code> are ALTER migrations that assume the base tables already exist; the save RPC then references the absent <code>next_title_*</code> columns. A normal clean migration run therefore has no complete starting point.</p>
+    <p><strong>Impact:</strong> disaster recovery, staging, contributor onboarding and a fresh Supabase project can fail or silently differ from production. The <code>project-media</code> bucket and policies are still manual/undocumented infrastructure.</p>
+    <p><strong>Fix:</strong> capture the complete current remote schema as an initial migration, add every subsequent migration in order, version Storage bucket/policies, add seed data, and prove it with an automated local <code>supabase db reset</code> test.</p>
+  </article>
+
+  <article class="finding high">
+    <h3><span class="tag high">P1 High · regression</span>Replacing an image can break the currently published page before Save</h3>
+    <p><code>AdminImageUpload.vue:42–60</code> uploads the replacement and immediately deletes <code>previousPath</code>. The project database row is updated only later when the editor Save button calls the RPC. If the administrator uploads a replacement and closes the page, hits Back, loses connectivity or the save fails, production still points to the now-deleted old file.</p>
+    <p><strong>Fix:</strong> never delete the old asset from the upload component. Persist the new project transaction first, then enqueue old unreferenced assets for verified cleanup. Track references rather than assuming one URL belongs to one row.</p>
+  </article>
+
+  <article class="finding high">
+    <h3><span class="tag high">P1 High · regression</span>Duplicated projects share media; editing or deleting a copy can damage the original</h3>
+    <p><code>admin/projects/index.vue:95–135</code> copies project and child database rows but reuses all cover, hero and gallery URLs. Deletion later removes those shared Storage keys (<code>:83–87</code>), and replacing an image in either copy deletes the shared old key. Duplication is also multi-step and ignores child-select/insert errors, so a partially copied project can be left behind.</p>
+    <p><strong>Fix:</strong> make duplication one server-side transaction and either physically copy each Storage object into the new project namespace or introduce a media table with reference counting. Cleanup must delete only assets with zero references.</p>
+  </article>
+
+  <article class="finding high">
+    <h3><span class="tag high">P1 High</span>Slug redirects are written but never executed</h3>
+    <p>The new <code>save_project</code> RPC inserts rows into <code>redirects</code>, but no server route or middleware reads that table. Repository-wide search finds only locale redirect middleware. Renamed published URLs therefore still return 404 after caches expire.</p>
+    <p>There is also an edge case: renaming and unpublishing in one save creates a redirect to an unpublished destination, which would redirect to a 404 even after a redirect handler is added.</p>
+    <p><strong>Fix:</strong> add tested request middleware that normalizes the path, looks up an exact allow-listed redirect, prevents loops, applies 301/308, and caches safely. Create redirects only when the destination is public, or hold them until publication.</p>
+  </article>
+
+  <article class="finding high">
+    <h3><span class="tag high">P1 High</span>Localized slugs can collide across columns and both language routes accept the wrong slug</h3>
+    <p>The database makes <code>slug_ro</code> unique and <code>slug_en</code> unique separately, but does not prevent one project's Romanian slug from equaling another project's English slug. <code>server/api/projects/[slug].get.ts:28–33</code> queries both columns with OR and calls <code>maybeSingle()</code>; a cross-column collision produces multiple rows and a 500.</p>
+    <p>Even without a collision, both <code>/proiecte/{slug_en}</code> and <code>/en/work/{slug_ro}</code> resolve, creating duplicate localized pages. The locale-switch fix only produces the preferred link; it does not reject or redirect non-canonical paths.</p>
+    <p><strong>Fix:</strong> resolve by current locale, enforce a global slug namespace (or allow overlap only across the same project), and 301 every wrong-locale slug to its canonical route. Add collision and canonicalization tests.</p>
+  </article>
+
+  <article class="finding high">
+    <h3><span class="tag high">P1 High</span>Admin publishing does not invalidate the public SWR cache</h3>
+    <p><code>nuxt.config.ts:46–52</code> caches home/API responses for 60 seconds and case studies for 300 seconds. Admin writes go directly from the browser to Supabase; no code calls a purge/revalidation endpoint. A corrected page remains stale, and an urgently unpublished or sensitive case study can remain publicly served for up to five minutes.</p>
+    <p><strong>Fix:</strong> route CMS mutations through authenticated server endpoints/RPC orchestration, then purge all affected API and page cache keys. Treat unpublish/delete as immediate invalidation.</p>
+  </article>
+
+  <article class="finding high">
+    <h3><span class="tag high">P1 Launch blocker</span>The live content is visibly unfinished</h3>
+    <p>The current live data has three published case studies but zero cover, hero or gallery images. Both services have null prices and the public UI prints <code>de la [ X ] EUR</code> / <code>from [ X ] EUR</code>. Placeholders are intentional development fallbacks, not a credible final portfolio.</p>
+    <p><strong>Fix:</strong> upload optimized real case-study media with meaningful bilingual alt text, enter approved pricing or replace the placeholder with honest “price on request” copy, and complete a content/legal review before launch.</p>
+  </article>
+
+  <h2>4. Medium-priority correctness, privacy and operational issues</h2>
+
+  <article class="finding">
+    <h3><span class="tag medium">P2 Medium</span>Google Analytics still loads before consent when an ID is configured</h3>
+    <p><code>analytics.client.ts:73</code> calls <code>initGa()</code> whenever <code>gaId</code> exists, regardless of consent. Consent Mode defaults storage to denied, but the Google script is fetched and <code>gtag('config')</code> is called. That is “advanced consent mode,” not the privacy policy's plain-language promise that Google Analytics is used only after explicit consent.</p>
+    <p>The E2E test does not verify this: its environment deliberately has empty analytics IDs, and it clicks Accept before checking requests. Either defer loading until analytics consent or explicitly adopt/document advanced consent mode after legal review, then test with dummy configured IDs and blocked external requests.</p>
+  </article>
+
+  <article class="finding">
+    <h3><span class="tag medium">P2 Medium</span>The privacy policy does not match data processing</h3>
+    <ul>
+      <li>Rate limiting stores raw IP addresses in <code>lead_rate_limits</code>. Cleanup only runs on a later lead attempt; if traffic stops, an entry can remain indefinitely, contradicting “temporarily (10 minutes).” Use a keyed HMAC of the IP and scheduled TTL cleanup.</li>
+      <li>When enabled, Resend receives the full inquiry by email, but Resend is not listed as a processor/recipient.</li>
+      <li>Actual analytics/marketing cookie names and retention are not described, and the update date predates these implementation changes.</li>
+    </ul>
+  </article>
+
+  <article class="finding">
+    <h3><span class="tag medium">P2 Medium</span>Lead notification is not production-ready</h3>
+    <p>The current local environment has no <code>RESEND_API_KEY</code>, the sender remains <code>onboarding@resend.dev</code>, and notification failures are swallowed without logging, retry or alerting. The lead may exist only in the admin inbox with no one aware of it.</p>
+    <p><strong>Fix:</strong> verify a Codepedia sending domain, configure production secrets, log provider message IDs, queue/retry failures, alert on repeated failures, and add a safe deployment smoke test.</p>
+  </article>
+
+  <article class="finding">
+    <h3><span class="tag medium">P2 Medium</span>Published-project validation is incomplete and exists only in the browser</h3>
+    <p>The shared validator requires a few Romanian text fields and two gallery images, but does not require cover/hero images, meaningful alt text, context body, solution content, facts or steps. More importantly, the RPC validates only authorization and slug shape; a stale or direct authenticated client can bypass all browser validation and publish incomplete data.</p>
+    <p><strong>Fix:</strong> enforce publication invariants in the RPC/database and return structured field errors. Validate every child collection and both localized variants according to an explicit publishing policy.</p>
+  </article>
+
+  <article class="finding">
+    <h3><span class="tag medium">P2 Medium</span>Several CMS writes still fail partially or report false success</h3>
+    <ul>
+      <li>Project reordering uses parallel updates and ignores each returned <code>error</code>.</li>
+      <li>Service + service-item saving is sequential and can stop after partially committing.</li>
+      <li>FAQ reorder ignores the upsert result and then calls <code>markSaved()</code>, so a failed persistence attempt can suppress the unsaved-changes warning.</li>
+      <li>Lead status, notes and archive operations ignore update errors; notes can display “Saved” after failure and archive navigates away regardless.</li>
+      <li>Project duplication is multi-step, non-transactional and silently ignores child errors.</li>
+    </ul>
+    <p>Move compound operations into RPCs/server transactions and make every UI state derive from checked results.</p>
+  </article>
+
+  <article class="finding">
+    <h3><span class="tag medium">P2 Medium</span>CMS settings are still partly decorative</h3>
+    <p>The admin saves <code>meta_title_*</code>, <code>meta_description_*</code>, <code>footer_line_*</code> and <code>copyright_year</code>, but public components do not read them. <code>next_opening_*</code>, <code>concurrent_projects</code> and <code>og_image_path</code> exist in the schema/types but are not fully editable/rendered. Homepage SEO, footer text, copyright and organization URL/logo remain hardcoded.</p>
+  </article>
+
+  <article class="finding">
+    <h3><span class="tag medium">P2 Medium</span>A cold Supabase outage still takes down the public site</h3>
+    <p>The added SWR cache reduces frequency but does not provide a durable fallback. <code>/api/home</code>, projects and sitemap throw a generic 500 on database errors. An empty/cold cache during Supabase or network failure leaves the marketing site unavailable. Add stale-on-error behavior, monitored fallback content or deployment-time snapshots.</p>
+  </article>
+
+  <article class="finding">
+    <h3><span class="tag medium">P2 Medium</span>Accessibility fixes are incomplete</h3>
+    <ul>
+      <li>Most admin fields display text in <code>div</code>/<code>span</code> elements instead of associated <code>label</code> elements, so inputs lack accessible names.</li>
+      <li>Drag-only ordering has no keyboard controls or screen-reader announcements.</li>
+      <li>The burger publishes <code>aria-expanded</code> but no <code>aria-controls</code>.</li>
+    </ul>
+  </article>
+
+  <article class="finding">
+    <h3><span class="tag medium">P2 Medium</span>Important admin/product features remain absent</h3>
+    <p>There is still no draft preview despite <code>preview_token</code>, no “View on site” action, no page for authenticated <code>/admin</code>, no revision/rollback history, no Ctrl/Cmd+S, and incomplete audit metadata outside projects. The server logs confirm <code>/admin</code> has no matching Vue route; unauthenticated users happen to be intercepted and sent to login.</p>
+  </article>
+
+  <article class="finding">
+    <h3><span class="tag medium">P2 Medium</span>Security headers are not configured in the repository</h3>
+    <p>No Content-Security-Policy, Referrer-Policy, Permissions-Policy, X-Content-Type-Options or frame restriction is defined in Nuxt/Vercel configuration. The local response also exposes <code>X-Powered-By: Nuxt</code>. Add a tested production header policy; the inline Meta bootstrap will need a nonce/hash or a non-inline loader.</p>
+  </article>
+
+  <h2>5. Lower-priority quality and performance issues</h2>
+  <ul>
+    <li><strong>Image pipeline:</strong> MIME and 8 MB checks are an improvement, but dimensions, decode validity and aspect are not checked; originals are not resized/converted; removing one gallery slot can leave an orphan.</li>
+    <li><strong>Bundle:</strong> the largest client chunk remains about 301 kB raw / 87 kB gzip, consistent with the globally installed Supabase client. Public pages only need server APIs; scope the browser Supabase client to admin/auth if possible.</li>
+    <li><strong>Tooling drift:</strong> local Node 22.17.0 is below the declared ≥22.19.0 engine, and <code>npm ls</code> reports several extraneous Sharp/WASM packages. Use the same pinned patch release in local development and CI, then verify from a clean <code>npm ci</code>.</li>
+    <li><strong>Lint quality:</strong> 98 warnings means lint exists but does not yet enforce a clean baseline. Fix the warnings and run CI with <code>--max-warnings=0</code>.</li>
+    <li><strong>SEO enhancements:</strong> add canonical redirects for wrong-locale slugs, <code>x-default</code> alternates, optional FAQ structured data, and derive OG/Organization URLs from <code>siteUrl</code>.</li>
+    <li><strong>Analytics correctness:</strong> Meta sends only the initial PageView; explicit route-change tracking and conversion events are absent.</li>
+  </ul>
+
+  <h2>6. Status of the earlier audits</h2>
+  <table>
+    <thead><tr><th>Earlier finding group</th><th>Status now</th><th>Re-audit conclusion</th></tr></thead>
+    <tbody>
+      <tr><td>Nuxt/dependency high-severity advisories</td><td class="ok">Fixed</td><td>Nuxt 4.5.2; only one low transitive advisory remains.</td></tr>
+      <tr><td>Project save keyed by slug; partial child writes</td><td class="ok">Fixed for Save</td><td>ID-based, transactional RPC now replaces children atomically. Duplication/reordering remain unsafe.</td></tr>
+      <tr><td>Blank gallery rows / invalid slugs / stale updated_at</td><td class="ok">Fixed in migration</td><td>Cleanup, checks and trigger exist, but clean-schema parity is broken.</td></tr>
+      <tr><td>Source and UTM discarded</td><td class="ok">Fixed</td><td>Captured, persisted and shown in lead details.</td></tr>
+      <tr><td>Serverless in-memory rate limiter</td><td class="ok">Functionally fixed</td><td>Atomic Postgres limiter exists; IP privacy/TTL design still needs correction.</td></tr>
+      <tr><td>Raw database errors exposed</td><td class="ok">Fixed</td><td>Public APIs log internal errors and return generic messages.</td></tr>
+      <tr><td>FAQ published date, delete confirmation, reorder</td><td class="ok">Mostly fixed</td><td>Date is preserved and delete confirms; reorder error is ignored.</td></tr>
+      <tr><td>Case-study locale switch and cookie</td><td class="ok">Fixed</td><td>Correct target-language slug and cookie are used; non-canonical alternate slugs still resolve.</td></tr>
+      <tr><td>Homepage localized SEO reactivity</td><td class="ok">Fixed</td><td>Meta getters react to locale, but CMS SEO fields remain unused.</td></tr>
+      <tr><td>Locale redirect cache headers</td><td class="ok">Fixed</td><td>302 includes private/no-store and Vary.</td></tr>
+      <tr><td>Sitemap escaping / configurable origin</td><td class="ok">Fixed</td><td>Escaping and required production site URL implemented.</td></tr>
+      <tr><td>Responsive images / hardcoded Supabase host / client maps</td><td class="ok">Fixed</td><td>NuxtImg sizing, dynamic host and disabled client source maps verified.</td></tr>
+      <tr><td>Skip link, reduced motion, focus and form ARIA</td><td class="partial">Mostly fixed publicly</td><td>Cookie focus/trapping now has a passing browser test; admin labels and keyboard reorder remain.</td></tr>
+      <tr><td>Consent Mode signals and Meta withdrawal</td><td class="partial">Partly fixed</td><td>Signals/reload withdrawal added; GA still initializes before consent.</td></tr>
+      <tr><td>Slug redirect engine</td><td class="bad">Not fixed end-to-end</td><td>Rows are generated but never read by request handling.</td></tr>
+      <tr><td>Cache invalidation after CMS changes</td><td class="bad">Not fixed</td><td>Caching was added, invalidation was not.</td></tr>
+      <tr><td>Draft preview, admin root, audit metadata</td><td class="bad">Not fixed</td><td>Still absent/incomplete.</td></tr>
+      <tr><td>Email delivery hardening</td><td class="bad">Not fixed</td><td>Example env added, but sender/config/retry/monitoring are not production-ready.</td></tr>
+      <tr><td>Real media and final pricing/content</td><td class="bad">Not fixed</td><td>Live content still exposes placeholders.</td></tr>
+      <tr><td>CI and automated tests</td><td class="partial">Improved</td><td>Static/unit/build CI exists; E2E job is commented out and DB/admin flows are untested.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>7. Recommended remediation order</h2>
+  <ol>
+    <li><strong>Make the database reproducible:</strong> canonical base migration, Storage policy, seed, local reset test.</li>
+    <li><strong>Stop media data loss:</strong> remove pre-save deletion, fix duplication ownership/reference handling, add cleanup jobs.</li>
+    <li><strong>Finish URL correctness:</strong> consume redirects, prevent cross-column slug collisions, canonicalize locale routes.</li>
+    <li><strong>Move publishing behind a server boundary:</strong> authoritative validation, atomic compound operations, checked errors and immediate cache invalidation.</li>
+    <li><strong>Finish the contact operation:</strong> verified Resend sender, alerts/retries, accurate privacy policy, privacy-preserving rate-limit keys.</li>
+    <li><strong>Complete launch content:</strong> real images/alt text, pricing, legal identity/review and English copy review.</li>
+    <li><strong>Close QA gaps:</strong> isolated Supabase integration tests, authenticated admin E2E, lead API tests, configured-consent tests, accessibility automation, E2E in CI.</li>
+    <li><strong>Then add product improvements:</strong> draft previews, revision history/rollback, media library, lead search/export/CRM integration, analytics conversions, health/error monitoring and backup-restore drills.</li>
+  </ol>
+
+  <h2>8. Suggested acceptance gate before launch</h2>
+  <p>The site should not be called launch-ready until all of the following are demonstrated:</p>
+  <ul>
+    <li>A blank Supabase project can be created from versioned files only.</li>
+    <li>Authenticated E2E proves create → preview → publish → rename → redirect → unpublish → delete.</li>
+    <li>Replacing/duplicating/deleting media cannot break another project or an unsaved published record.</li>
+    <li>Unpublished content disappears immediately from page and API caches.</li>
+    <li>A real lead is stored and a monitored notification is delivered from the verified domain.</li>
+    <li>Consent tests run with GA/Meta IDs present and prove the chosen legal behavior before and after withdrawal.</li>
+    <li>Real case-study images and final service pricing/copy are present in both languages.</li>
+    <li>Typecheck, unit, lint with zero warnings, DB integration, accessibility, E2E, build and dependency audit all pass in CI.</li>
+  </ul>
+
+  <p class="note"><strong>Bottom line:</strong> the remediation work was real and materially improved the project. The current danger is assuming that green type/unit/build/smoke checks prove the CMS and deployment path. They do not yet cover the areas with the highest remaining risk: schema reconstruction, authenticated writes, media ownership, redirects, cache invalidation, lead delivery and configured analytics.</p>
+  <p class="small">Generated by Codex from direct repository inspection and non-destructive verification. Existing <code>AUDIT.html</code> and <code>PROJECT_AUDIT.md</code> were preserved.</p>
+</main>
+</body>
+</html>

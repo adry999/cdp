@@ -98,6 +98,7 @@ const titleWarn = computed(() => form.title.ro.length > 60)
 const summaryWarn = computed(() => form.summary.ro.length > 200)
 
 const { markSaved: markProjectSaved } = useUnsavedChangesGuard(form)
+const revalidatePublicCache = useRevalidatePublicCache()
 
 function addTech() {
   const value = form.techInput.trim()
@@ -249,8 +250,46 @@ async function save() {
   saveState.value = 'saved'
   markProjectSaved()
 
+  await revalidatePublicCache()
+  await cleanupReplacedMedia()
+
   if (isNew || form.slugRo.trim() !== slug) {
     await navigateTo(`/admin/projects/${result.slug_ro}`)
+  }
+}
+
+const MEDIA_BUCKET = 'project-media'
+
+// Deletes an old cover/hero/gallery file only once the replacement has
+// actually been saved — AdminImageUpload no longer deletes anything itself
+// (see its own comment: deleting at upload time broke the *published* page
+// if the admin never finished saving). This is also the point where "no
+// longer needed" can be checked safely: by now the RPC has already replaced
+// this project's own rows, so if any project row still references the old
+// URL, it can only be a different project — e.g. one created before
+// duplicate() was fixed to copy media independently — and the file is left
+// alone rather than breaking it.
+async function cleanupReplacedMedia() {
+  const oldPaths = [e?.cover_path, e?.hero_path, ...(e?.project_images?.map((img) => img.path) ?? [])].filter(
+    (p): p is string => !!p,
+  )
+  const newPaths = new Set(
+    [form.coverPath, form.heroPath, ...form.gallery.map((g) => g.path)].filter((p): p is string => !!p),
+  )
+  const removed = oldPaths.filter((p) => !newPaths.has(p))
+  if (!removed.length) return
+
+  for (const url of removed) {
+    const key = storageKeyFromPublicUrl(url, MEDIA_BUCKET)
+    if (!key) continue
+
+    const [{ count: projectCount }, { count: imageCount }] = await Promise.all([
+      supabase.from('projects').select('id', { count: 'exact', head: true }).or(`cover_path.eq.${url},hero_path.eq.${url}`),
+      supabase.from('project_images').select('id', { count: 'exact', head: true }).eq('path', url),
+    ])
+    if ((projectCount ?? 0) > 0 || (imageCount ?? 0) > 0) continue
+
+    await supabase.storage.from(MEDIA_BUCKET).remove([key]).catch(() => {})
   }
 }
 </script>

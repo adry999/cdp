@@ -32,6 +32,7 @@ const levels = reactive(
 
 const saveState = ref<'idle' | 'saving' | 'saved' | 'error'>('idle')
 const { markSaved } = useUnsavedChangesGuard(levels)
+const revalidatePublicCache = useRevalidatePublicCache()
 
 async function save() {
   saveState.value = 'saving'
@@ -67,6 +68,7 @@ async function save() {
     }
     saveState.value = 'saved'
     markSaved()
+    await revalidatePublicCache()
   } catch {
     saveState.value = 'error'
   }

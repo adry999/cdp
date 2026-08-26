@@ -25,6 +25,8 @@ const canReorder = computed(() => filter.value === 'toate')
 
 const dragIndex = ref<number | null>(null)
 const reordering = ref(false)
+const reorderError = ref(false)
+const revalidatePublicCache = useRevalidatePublicCache()
 
 function onDragStart(i: number) {
   if (!canReorder.value) return
@@ -39,10 +41,13 @@ async function onDrop(i: number) {
   dragIndex.value = null
 
   reordering.value = true
-  await Promise.all(
+  reorderError.value = false
+  const results = await Promise.all(
     list.map((project, idx) => supabase.from('projects').update({ sort_order: idx }).eq('slug_ro', project.slug_ro)),
   )
+  reorderError.value = results.some((r) => r.error)
   reordering.value = false
+  if (!reorderError.value) await revalidatePublicCache()
 }
 
 const thumbnailStyle = {
@@ -65,12 +70,12 @@ function cancelDelete() {
 async function confirmDelete(slug: string) {
   busy.value = slug
 
-  // Read the image paths before the row (and its child project_images rows,
-  // cascade-deleted with it) are gone — otherwise there's nothing left to
-  // clean up from Storage and the files sit there forever.
+  // Read the image paths (and slugs, for redirect cleanup below) before the
+  // row — and its child project_images rows, cascade-deleted with it — is
+  // gone, or there's nothing left to clean up from.
   const { data: project } = await supabase
     .from('projects')
-    .select('cover_path, hero_path, project_images(path)')
+    .select('slug_ro, slug_en, cover_path, hero_path, project_images(path)')
     .eq('slug_ro', slug)
     .single()
 
@@ -80,19 +85,64 @@ async function confirmDelete(slug: string) {
     return
   }
 
+  // Deleting the project doesn't delete redirects that point *at* it — a
+  // project renamed once, then deleted, otherwise leaves a 301 chaining into
+  // a 404. save_project() does this same cleanup when a save unpublishes;
+  // deletion needs its own, since it never goes through that RPC.
   if (project) {
-    const keys = [project.cover_path, project.hero_path, ...project.project_images.map((i) => i.path)]
-      .map((url) => storageKeyFromPublicUrl(url, 'project-media'))
-      .filter((key): key is string => !!key)
+    await supabase
+      .from('redirects')
+      .delete()
+      .or(`to_path.eq./proiecte/${project.slug_ro},to_path.eq./en/work/${project.slug_en ?? project.slug_ro}`)
+  }
+
+  if (project) {
+    // Skip a URL still referenced by another project — protects any project
+    // duplicated before duplicate() was fixed to copy media independently
+    // instead of reusing the source's Storage keys.
+    const urls = [project.cover_path, project.hero_path, ...project.project_images.map((i) => i.path)].filter(
+      (url): url is string => !!url,
+    )
+    const keys: string[] = []
+    for (const url of urls) {
+      const [{ count: projectCount }, { count: imageCount }] = await Promise.all([
+        supabase.from('projects').select('id', { count: 'exact', head: true }).or(`cover_path.eq.${url},hero_path.eq.${url}`),
+        supabase.from('project_images').select('id', { count: 'exact', head: true }).eq('path', url),
+      ])
+      if ((projectCount ?? 0) === 0 && (imageCount ?? 0) === 0) {
+        const key = storageKeyFromPublicUrl(url, 'project-media')
+        if (key) keys.push(key)
+      }
+    }
     if (keys.length) await supabase.storage.from('project-media').remove(keys).catch(() => {})
   }
 
   pendingDelete.value = null
   busy.value = null
+  await revalidatePublicCache()
   await refresh()
 }
 
 const CHILD_TABLES = ['project_facts', 'project_steps', 'project_stats', 'project_images'] as const
+const MEDIA_BUCKET = 'project-media'
+
+// Copies the underlying Storage object rather than reusing its URL. The
+// previous version pointed the duplicate's cover/hero/gallery fields at the
+// exact same Storage keys as the source project — deleting either project,
+// or replacing an image in either one, then deleted a file the other project
+// still displayed. Independent files restore the "one URL belongs to one
+// project" assumption the rest of the admin (delete cleanup, replace
+// cleanup) already relies on.
+async function copyMedia(url: string | null, newPrefix: string): Promise<string | null> {
+  if (!url) return null
+  const oldKey = storageKeyFromPublicUrl(url, MEDIA_BUCKET)
+  if (!oldKey) return null
+  const ext = oldKey.split('.').pop() || 'jpg'
+  const newKey = `${newPrefix}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
+  const { error } = await supabase.storage.from(MEDIA_BUCKET).copy(oldKey, newKey)
+  if (error) return null
+  return supabase.storage.from(MEDIA_BUCKET).getPublicUrl(newKey).data.publicUrl
+}
 
 async function duplicate(slug: string) {
   busy.value = slug
@@ -108,11 +158,18 @@ async function duplicate(slug: string) {
     newSlug = `${slug}-copie-${n++}`
   }
 
-  const { id, created_at, updated_at, preview_token, ...rest } = project
+  const { id, created_at, updated_at, preview_token, cover_path, hero_path, ...rest } = project
+  const [newCoverPath, newHeroPath] = await Promise.all([
+    copyMedia(cover_path, `${newSlug}/cover`),
+    copyMedia(hero_path, `${newSlug}/hero`),
+  ])
+
   const { data: created, error } = await supabase
     .from('projects')
     .insert({
       ...rest,
+      cover_path: newCoverPath,
+      hero_path: newHeroPath,
       slug_ro: newSlug,
       slug_en: newSlug,
       card_title_ro: `${project.card_title_ro} (copie)`,
@@ -126,16 +183,28 @@ async function duplicate(slug: string) {
     return
   }
 
+  let childError = false
   for (const table of CHILD_TABLES) {
     const { data: children } = await supabase.from(table).select('*').eq('project_id', id)
-    if (children?.length) {
-      await supabase.from(table).insert(
-        children.map(({ id: _childId, ...c }) => ({ ...c, project_id: created.id })),
-      )
-    }
+    if (!children?.length) continue
+
+    const rows = await Promise.all(
+      children.map(async (child) => {
+        const { id: _childId, ...c } = child as Record<string, unknown> & { id: string }
+        if (table === 'project_images' && typeof c.path === 'string') {
+          c.path = (await copyMedia(c.path, `${newSlug}/gallery`)) ?? c.path
+        }
+        return { ...c, project_id: created.id }
+      }),
+    )
+    const { error: insertError } = await supabase.from(table).insert(rows)
+    if (insertError) childError = true
   }
 
   busy.value = null
+  // Best-effort duplication landed, but not everything copied cleanly —
+  // surfacing this beats a silent partial copy the admin doesn't know about.
+  if (childError) window.alert('Proiectul a fost duplicat, dar unele elemente nu s-au copiat corect. Verifică proiectul nou.')
   await refresh()
 }
 </script>
@@ -162,8 +231,12 @@ async function duplicate(slug: string) {
             {{ opt }}
           </button>
         </div>
-        <span v-if="canReorder" class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">
-          {{ reordering ? 'Se salvează ordinea…' : 'Trage ⠿ pentru a reordona' }}
+        <span
+          v-if="canReorder"
+          class="font-mono text-[11px] uppercase tracking-[0.08em]"
+          :class="reorderError ? 'text-signal' : 'text-muted-ink'"
+        >
+          {{ reorderError ? 'Ordinea nu s-a salvat — reîncearcă' : reordering ? 'Se salvează ordinea…' : 'Trage ⠿ pentru a reordona' }}
         </span>
       </div>
 

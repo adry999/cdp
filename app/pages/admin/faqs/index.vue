@@ -24,6 +24,7 @@ const items = reactive(
 )
 
 const { markSaved } = useUnsavedChangesGuard(items)
+const revalidatePublicCache = useRevalidatePublicCache()
 
 function addItem() {
   items.push({
@@ -43,6 +44,7 @@ async function removeItem(i: number) {
   if (item.id) {
     const { error } = await supabase.from('faqs').delete().eq('id', item.id)
     if (error) return
+    await revalidatePublicCache()
   }
   items.splice(i, 1)
 }
@@ -74,6 +76,7 @@ async function save() {
     }
     saveState.value = 'saved'
     markSaved()
+    await revalidatePublicCache()
   } catch {
     saveState.value = 'error'
   }
@@ -91,11 +94,10 @@ async function onDrop(i: number) {
   dragIndex.value = null
 
   // A single batched upsert instead of N sequential awaited updates — a
-  // failure partway through no longer leaves the order half-applied, and
-  // errors are no longer silently dropped.
+  // failure partway through no longer leaves the order half-applied.
   const reordered = items.filter((item): item is typeof item & { id: string } => !!item.id)
   if (!reordered.length) return
-  await supabase.from('faqs').upsert(
+  const { error } = await supabase.from('faqs').upsert(
     reordered.map((item, idx) => ({
       id: item.id,
       question_ro: item.question.ro,
@@ -106,11 +108,18 @@ async function onDrop(i: number) {
       published_at: item.publishedAt,
     })),
   )
+  if (error) {
+    saveState.value = 'error'
+    return
+  }
   // The reorder just persisted, but the unsaved-changes guard's snapshot was
-  // taken at page load and doesn't know that — without this, navigating away
-  // right after a drag would falsely prompt "unsaved changes" for a change
-  // that's already saved.
+  // taken at page load and doesn't know that — without checking `error`
+  // above first, this would mark a *failed* persist as saved too, which is
+  // worse than the false-positive prompt it was meant to fix: the admin
+  // would be told nothing needs saving when the reorder never actually
+  // landed.
   markSaved()
+  await revalidatePublicCache()
 }
 </script>
 
