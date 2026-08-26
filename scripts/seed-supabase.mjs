@@ -183,7 +183,7 @@ const projects = [
 ]
 
 for (const p of projects) {
-  const { slug, facts, steps, stats, images, ...row } = p
+  const { facts, steps, stats, images, ...row } = p
   const { data: inserted, error } = await supabase
     .from('projects')
     .upsert(

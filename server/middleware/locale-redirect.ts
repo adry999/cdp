@@ -13,6 +13,11 @@ export default defineEventHandler((event) => {
   const current = pathname === '/en' ? 'en' : 'ro'
 
   if (target !== current) {
+    // The decision varies per visitor (cookie, geo). A shared HTTP/CDN cache
+    // must never store this redirect, or the first visitor's outcome gets
+    // served to everyone behind that cache until it expires.
+    setResponseHeader(event, 'Cache-Control', 'private, no-store')
+    setResponseHeader(event, 'Vary', 'Cookie, X-Vercel-IP-Country')
     return sendRedirect(event, target === 'en' ? '/en' : '/', 302)
   }
 })

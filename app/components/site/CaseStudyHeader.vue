@@ -2,6 +2,26 @@
 const { t, locale } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 const localePath = useLocalePath()
+const caseStudySlugs = useCaseStudySlugs()
+
+const localeOverride = useCookie<string | null>(LOCALE_COOKIE_NAME, {
+  maxAge: 60 * 60 * 24 * 365,
+  sameSite: 'lax',
+  path: '/',
+})
+
+function setLocaleOverride(loc: 'ro' | 'en') {
+  localeOverride.value = loc
+}
+
+// Falls back to switchLocalePath() before the page has set the slug pair
+// (e.g. mid-navigation, before hydration completes). See resolveCaseStudySlug
+// for why this can't just reuse the current route's slug.
+function caseStudyLocalePath(target: 'ro' | 'en') {
+  const slug = resolveCaseStudySlug(caseStudySlugs.value, target)
+  if (!slug) return switchLocalePath(target)
+  return localePath({ name: 'proiecte-slug', params: { slug } }, target)
+}
 </script>
 
 <template>
@@ -25,17 +45,19 @@ const localePath = useLocalePath()
         </NuxtLink>
         <span class="flex items-center gap-1.5">
           <NuxtLink
-            :to="switchLocalePath('ro')"
+            :to="caseStudyLocalePath('ro')"
             class="no-underline hover:no-underline"
             :class="locale === 'ro' ? 'text-ink hover:text-ink' : 'text-muted hover:text-muted'"
+            @click="setLocaleOverride('ro')"
           >
             RO
           </NuxtLink>
           <span class="text-hairline">|</span>
           <NuxtLink
-            :to="switchLocalePath('en')"
+            :to="caseStudyLocalePath('en')"
             class="no-underline hover:no-underline"
             :class="locale === 'en' ? 'text-ink hover:text-ink' : 'text-muted hover:text-muted'"
+            @click="setLocaleOverride('en')"
           >
             EN
           </NuxtLink>

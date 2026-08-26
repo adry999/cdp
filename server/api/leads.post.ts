@@ -4,7 +4,7 @@ import { budgetLabel } from '~~/shared/utils/leadLabels'
 import { logAndThrow } from '~~/shared/utils/apiError'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000
+const RATE_LIMIT_WINDOW_SECONDS = 10 * 60
 const RATE_LIMIT_MAX = 3
 
 // Generous enough for a real submission, tight enough that a scripted flood
@@ -53,16 +53,20 @@ export default defineEventHandler(async (event) => {
   }
 
   const ip = getRequestIP(event, { xForwardedFor: true }) ?? 'unknown'
-  const storage = useStorage('leads-rate-limit')
-  const key = `ip:${ip}`
-  const hits = ((await storage.getItem<number[]>(key)) ?? []).filter(
-    (t) => Date.now() - t < RATE_LIMIT_WINDOW_MS,
-  )
-  if (hits.length >= RATE_LIMIT_MAX) {
+  const client = serverSupabaseServiceRole<Database>(event)
+
+  // Postgres-backed, not in-memory: an in-memory counter resets on every cold
+  // serverless instance, which made the limit effectively unenforced on
+  // Vercel. See supabase/migrations/20260826130000_lead_rate_limit.sql.
+  const { data: withinBudget, error: rateLimitError } = await client.rpc('check_lead_rate_limit', {
+    p_ip: ip,
+    p_max: RATE_LIMIT_MAX,
+    p_window_seconds: RATE_LIMIT_WINDOW_SECONDS,
+  })
+  if (rateLimitError) logAndThrow('POST /api/leads (rate limit)', rateLimitError)
+  if (!withinBudget) {
     throw createError({ statusCode: 429, statusMessage: 'Too many requests' })
   }
-  hits.push(Date.now())
-  await storage.setItem(key, hits, { ttl: RATE_LIMIT_WINDOW_MS / 1000 })
 
   const utm =
     body.utm && Object.keys(body.utm).length
@@ -72,7 +76,6 @@ export default defineEventHandler(async (event) => {
   const company = clip(body.company, 'company')
   const budget = clip(body.budget, 'budget')
 
-  const client = serverSupabaseServiceRole<Database>(event)
   const { error } = await client.from('leads').insert({
     name,
     email,

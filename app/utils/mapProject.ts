@@ -96,7 +96,11 @@ export function mapProject(row: ProjectRow, locale: Locale) {
     tech: row.tech,
     title: pick(row.card_title_ro, row.card_title_en, locale),
     text: pick(row.summary_ro, row.summary_en, locale),
+    // Bracketed *Label strings caption the hatched placeholder frame when no
+    // image exists yet. *Alt carries the real text — bound to <img alt> once
+    // an image is uploaded — never the bracketed placeholder wording.
     thumbnailLabel: `[ ${pick(row.cover_alt_ro ?? row.card_title_ro, row.cover_alt_en, locale)} ]`,
+    coverAlt: pick(row.cover_alt_ro ?? row.card_title_ro, row.cover_alt_en, locale),
     coverPath: row.cover_path,
     caseStudy: {
       tech: row.tech,
@@ -104,6 +108,7 @@ export function mapProject(row: ProjectRow, locale: Locale) {
       heroTitle: pick(row.title_ro, row.title_en, locale),
       heroLead: pick(row.lead_ro, row.lead_en, locale),
       mainScreenshotLabel: `[ ${pick(row.hero_alt_ro ?? row.title_ro, row.hero_alt_en, locale)} ]`,
+      heroAlt: pick(row.hero_alt_ro ?? row.title_ro, row.hero_alt_en, locale),
       heroPath: row.hero_path,
       facts: [...row.project_facts]
         .sort((a, b) => a.sort_order - b.sort_order)
@@ -128,6 +133,9 @@ export function mapProject(row: ProjectRow, locale: Locale) {
         : Array.from({ length: GALLERY_PLACEHOLDER_COUNT }, () =>
             locale === 'en' ? '[ screenshot ]' : '[ captură ]',
           ),
+      galleryAlt: galleryImages.length
+        ? galleryImages.map((img) => pick(img.alt_ro, img.alt_en, locale))
+        : Array.from({ length: GALLERY_PLACEHOLDER_COUNT }, () => ''),
       galleryPaths: galleryImages.length
         ? galleryImages.map((img) => img.path)
         : Array.from({ length: GALLERY_PLACEHOLDER_COUNT }, () => null),

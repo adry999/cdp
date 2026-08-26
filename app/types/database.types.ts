@@ -65,6 +65,24 @@ export type Database = {
         }
         Relationships: []
       }
+      lead_rate_limits: {
+        Row: {
+          hits: number
+          ip: string
+          window_start: string
+        }
+        Insert: {
+          hits?: number
+          ip: string
+          window_start: string
+        }
+        Update: {
+          hits?: number
+          ip?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           archived_at: string | null
@@ -643,6 +661,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_lead_rate_limit: {
+        Args: { p_ip: string; p_max: number; p_window_seconds: number }
+        Returns: boolean
+      }
       is_admin: { Args: never; Returns: boolean }
       save_project: { Args: { payload: Json }; Returns: Json }
     }

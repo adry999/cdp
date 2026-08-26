@@ -16,8 +16,14 @@ const items = reactive(
     question: { ro: r.question_ro, en: r.question_en ?? '' },
     answer: { ro: r.answer_ro, en: r.answer_en ?? '' },
     published: !!r.published_at,
+    // The date a question was first published shouldn't move just because
+    // the page got saved again — only a genuine unpublished -> published
+    // transition should stamp a new date.
+    publishedAt: r.published_at as string | null,
   })),
 )
+
+const { markSaved } = useUnsavedChangesGuard(items)
 
 function addItem() {
   items.push({
@@ -26,7 +32,19 @@ function addItem() {
     question: { ro: '', en: '' },
     answer: { ro: '', en: '' },
     published: false,
+    publishedAt: null,
   })
+}
+
+async function removeItem(i: number) {
+  const item = items[i]
+  if (!item) return
+  if (!window.confirm('Ștergi această întrebare definitiv?')) return
+  if (item.id) {
+    const { error } = await supabase.from('faqs').delete().eq('id', item.id)
+    if (error) return
+  }
+  items.splice(i, 1)
 }
 
 const saveState = ref<'idle' | 'saving' | 'saved' | 'error'>('idle')
@@ -35,13 +53,14 @@ async function save() {
   saveState.value = 'saving'
   try {
     for (const [i, item] of items.entries()) {
+      const publishedAt = item.published ? (item.publishedAt ?? new Date().toISOString()) : null
       const payload = {
         question_ro: item.question.ro,
         question_en: item.question.en || null,
         answer_ro: item.answer.ro,
         answer_en: item.answer.en || null,
         sort_order: i,
-        published_at: item.published ? new Date().toISOString() : null,
+        published_at: publishedAt,
       }
       if (item.id) {
         const { error } = await supabase.from('faqs').update(payload).eq('id', item.id)
@@ -51,8 +70,10 @@ async function save() {
         if (error) throw error
         item.id = data.id
       }
+      item.publishedAt = publishedAt
     }
     saveState.value = 'saved'
+    markSaved()
   } catch {
     saveState.value = 'error'
   }
@@ -69,9 +90,22 @@ async function onDrop(i: number) {
   items.splice(i, 0, moved)
   dragIndex.value = null
 
-  for (const [idx, item] of items.entries()) {
-    if (item.id) await supabase.from('faqs').update({ sort_order: idx }).eq('id', item.id)
-  }
+  // A single batched upsert instead of N sequential awaited updates — a
+  // failure partway through no longer leaves the order half-applied, and
+  // errors are no longer silently dropped.
+  const reordered = items.filter((item): item is typeof item & { id: string } => !!item.id)
+  if (!reordered.length) return
+  await supabase.from('faqs').upsert(
+    reordered.map((item, idx) => ({
+      id: item.id,
+      question_ro: item.question.ro,
+      question_en: item.question.en || null,
+      answer_ro: item.answer.ro,
+      answer_en: item.answer.en || null,
+      sort_order: idx,
+      published_at: item.publishedAt,
+    })),
+  )
 }
 </script>
 
@@ -108,12 +142,21 @@ async function onDrop(i: number) {
               <span aria-hidden="true">⠿</span>
               Întrebarea {{ i + 1 }}
             </span>
-            <label class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.08em]">
-              <input v-model="item.published" type="checkbox" class="accent-signal" />
-              <span :class="item.published ? 'text-signal' : 'text-muted'">
-                {{ item.published ? 'Publicat' : 'Draft' }}
-              </span>
-            </label>
+            <div class="flex items-center gap-4">
+              <label class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.08em]">
+                <input v-model="item.published" type="checkbox" class="accent-signal" />
+                <span :class="item.published ? 'text-signal' : 'text-muted'">
+                  {{ item.published ? 'Publicat' : 'Draft' }}
+                </span>
+              </label>
+              <button
+                type="button"
+                class="cursor-pointer border-0 bg-transparent p-0 font-mono text-[11px] uppercase tracking-[0.08em] text-muted hover:text-signal"
+                @click="removeItem(i)"
+              >
+                Șterge
+              </button>
+            </div>
           </div>
           <AdminFieldPair label="Întrebare" v-model:ro="item.question.ro" v-model:en="item.question.en" required />
           <AdminFieldPair label="Răspuns" textarea v-model:ro="item.answer.ro" v-model:en="item.answer.en" required />

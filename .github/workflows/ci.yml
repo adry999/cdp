@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    env:
+      # The build never calls Supabase — these just need to be well-formed so
+      # the module can construct a client without throwing. Real e2e still
+      # needs real project secrets (see the note on the e2e job below) and
+      # isn't run here yet.
+      NUXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+      NUXT_PUBLIC_SUPABASE_ANON_KEY: placeholder
+      SUPABASE_SERVICE_ROLE_KEY: placeholder
+      NUXT_PUBLIC_SITE_URL: https://codepedia.md
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - run: npm run typecheck
+
+      - run: npm test
+
+      - run: npm run build
+
+  # e2e/smoke.spec.ts and e2e/cookie-consent.spec.ts hit the real, deployed
+  # Supabase project (there's no seeded test fixture or mocked API yet — see
+  # the smoke tests' comment on why they resolve a project dynamically rather
+  # than hardcoding one). Running this job needs the real project's URL/anon
+  # key as repository secrets (Settings -> Secrets and variables -> Actions):
+  #   NUXT_PUBLIC_SUPABASE_URL, NUXT_PUBLIC_SUPABASE_ANON_KEY
+  # Uncomment once those are set.
+  # e2e:
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     NUXT_PUBLIC_SUPABASE_URL: ${{ secrets.NUXT_PUBLIC_SUPABASE_URL }}
+  #     NUXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NUXT_PUBLIC_SUPABASE_ANON_KEY }}
+  #     NUXT_PUBLIC_SITE_URL: https://codepedia.md
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 22
+  #         cache: npm
+  #     - run: npm ci
+  #     - run: npx playwright install --with-deps chromium
+  #     - run: npm run test:e2e

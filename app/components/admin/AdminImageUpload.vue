@@ -12,16 +12,34 @@ const fileInput = ref<HTMLInputElement>()
 const uploading = ref(false)
 const error = ref('')
 
+const MAX_BYTES = 8 * 1024 * 1024
+const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
+
 function pick() {
   fileInput.value?.click()
 }
 
 async function onFileChange(e: Event) {
-  const file = (e.target as HTMLInputElement).files?.[0]
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
   if (!file) return
 
   error.value = ''
+
+  if (!ACCEPTED_TYPES.includes(file.type)) {
+    error.value = 'Format neacceptat. Folosește JPG, PNG, WebP sau AVIF.'
+    input.value = ''
+    return
+  }
+  if (file.size > MAX_BYTES) {
+    error.value = `Fișier prea mare (${(file.size / 1024 / 1024).toFixed(1)} MB). Maxim ${MAX_BYTES / 1024 / 1024} MB.`
+    input.value = ''
+    return
+  }
+
   uploading.value = true
+
+  const previousPath = storageKeyFromPublicUrl(props.modelValue, 'project-media')
 
   const ext = file.name.split('.').pop() || 'jpg'
   const path = `${props.pathPrefix}/${Date.now()}.${ext}`
@@ -34,6 +52,12 @@ async function onFileChange(e: Event) {
     error.value = 'Upload eșuat: ' + uploadError.message
     uploading.value = false
     return
+  }
+
+  // Best-effort: the new image is already live, so a failure here just
+  // leaves one orphaned file rather than blocking the save.
+  if (previousPath && previousPath !== path) {
+    await supabase.storage.from('project-media').remove([previousPath]).catch(() => {})
   }
 
   const { data } = supabase.storage.from('project-media').getPublicUrl(path)

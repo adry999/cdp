@@ -16,6 +16,12 @@ if (!row.value) {
 
 const project = computed(() => mapProject(row.value as ProjectRow, locale.value as 'ro' | 'en'))
 
+const caseStudySlugs = useCaseStudySlugs()
+caseStudySlugs.value = {
+  ro: row.value.slug_ro,
+  en: row.value.slug_en ?? row.value.slug_ro,
+}
+
 useSeoMeta({
   title: () => project.value.caseStudy.heroTitle,
   description: () => project.value.caseStudy.heroLead,

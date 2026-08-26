@@ -14,7 +14,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-08-05',
   devtools: { enabled: true },
 
-  modules: ['@nuxtjs/i18n', '@nuxt/image', '@nuxt/fonts', '@nuxtjs/supabase'],
+  modules: ['@nuxtjs/i18n', '@nuxt/image', '@nuxt/fonts', '@nuxtjs/supabase', '@nuxt/eslint'],
 
   runtimeConfig: {
     resendApiKey: process.env.RESEND_API_KEY,
@@ -36,6 +36,15 @@ export default defineNuxtConfig({
   sourcemap: { client: false, server: true },
 
   routeRules: {
+    // The locale-redirect middleware (server/middleware/locale-redirect.ts)
+    // always runs first regardless of this cache — it's global h3 middleware,
+    // upstream of route-rule caching, not part of the cached handler. Once a
+    // request lands on / or /en without being redirected away, the rendered
+    // page is locale-fixed and identical for everyone, so caching it here is
+    // safe; only the redirect *decision* must stay uncached (see the
+    // Cache-Control: private, no-store header the middleware sets on 302s).
+    '/': { swr: 60 },
+    '/en': { swr: 60 },
     '/proiecte/**': { swr: 300 },
     '/en/work/**': { swr: 300 },
     '/api/home': { swr: 60 },

@@ -24,6 +24,7 @@ const form = reactive({
 })
 
 const saveState = ref<'idle' | 'saving' | 'saved' | 'error'>('idle')
+const { markSaved } = useUnsavedChangesGuard(form)
 
 async function save() {
   saveState.value = 'saving'
@@ -46,6 +47,7 @@ async function save() {
     updated_at: new Date().toISOString(),
   })
   saveState.value = error ? 'error' : 'saved'
+  if (!error) markSaved()
 }
 </script>
 

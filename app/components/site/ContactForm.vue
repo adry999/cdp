@@ -80,9 +80,12 @@ async function handleSubmit() {
         id="lead-name"
         v-model="form.name"
         type="text"
+        required
+        :aria-invalid="!!fieldErrors.name"
+        :aria-describedby="fieldErrors.name ? 'lead-name-error' : undefined"
         class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-ink"
       />
-      <p v-if="fieldErrors.name" class="mt-1 font-mono text-xs text-ink">{{ fieldErrors.name }}</p>
+      <p v-if="fieldErrors.name" id="lead-name-error" class="mt-1 font-mono text-xs text-ink">{{ fieldErrors.name }}</p>
     </div>
 
     <div>
@@ -93,9 +96,13 @@ async function handleSubmit() {
         id="lead-email"
         v-model="form.email"
         type="email"
+        required
+        autocomplete="email"
+        :aria-invalid="!!fieldErrors.email"
+        :aria-describedby="fieldErrors.email ? 'lead-email-error' : undefined"
         class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-ink"
       />
-      <p v-if="fieldErrors.email" class="mt-1 font-mono text-xs text-ink">{{ fieldErrors.email }}</p>
+      <p v-if="fieldErrors.email" id="lead-email-error" class="mt-1 font-mono text-xs text-ink">{{ fieldErrors.email }}</p>
     </div>
 
     <div>
@@ -106,6 +113,7 @@ async function handleSubmit() {
         id="lead-company"
         v-model="form.company"
         type="text"
+        autocomplete="organization"
         class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-ink"
       />
     </div>
@@ -118,9 +126,14 @@ async function handleSubmit() {
         id="lead-message"
         v-model="form.message"
         rows="4"
+        required
+        :aria-invalid="!!fieldErrors.message"
+        :aria-describedby="fieldErrors.message ? 'lead-message-error' : undefined"
         class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-ink"
       />
-      <p v-if="fieldErrors.message" class="mt-1 font-mono text-xs text-ink">{{ fieldErrors.message }}</p>
+      <p v-if="fieldErrors.message" id="lead-message-error" class="mt-1 font-mono text-xs text-ink">
+        {{ fieldErrors.message }}
+      </p>
     </div>
 
     <div>
@@ -151,7 +164,9 @@ async function handleSubmit() {
       />
     </div>
 
-    <p v-if="status === 'error'" class="font-mono text-xs text-ink">{{ t('home.contact.form.error') }}</p>
+    <p v-if="status === 'error'" role="alert" aria-live="polite" class="font-mono text-xs text-ink">
+      {{ t('home.contact.form.error') }}
+    </p>
 
     <p class="text-xs text-muted">
       {{ t('home.contact.form.privacyNotice') }}

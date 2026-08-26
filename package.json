@@ -14,7 +14,9 @@
     "favicons": "node scripts/generate-favicons.mjs",
     "og-image": "node scripts/generate-og-image.mjs",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "lint": "eslint .",
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@nuxt/fonts": "^0.14.0",
@@ -28,11 +30,14 @@
     "vue-router": "^5.2.0"
   },
   "devDependencies": {
+    "@nuxt/eslint": "^1.17.0",
     "@playwright/test": "^1.62.1",
+    "eslint": "^10.9.1",
     "png-to-ico": "^3.0.2",
     "sharp": "^0.35.3",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.11",
+    "vue-tsc": "^3.3.11"
   },
   "overrides": {
     "nanoid": "^3.3.18"

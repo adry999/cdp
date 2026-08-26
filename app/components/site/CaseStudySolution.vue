@@ -30,7 +30,9 @@ const { t } = useI18n()
         :key="label"
         ratio="4/3"
         :src="project.caseStudy.galleryPaths[i] ?? undefined"
+        :alt="project.caseStudy.galleryAlt[i]"
         :label="label"
+        sizes="(min-width: 768px) 33vw, 100vw"
       />
     </div>
   </SiteSection>

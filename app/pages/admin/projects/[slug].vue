@@ -97,6 +97,8 @@ const form = reactive({
 const titleWarn = computed(() => form.title.ro.length > 60)
 const summaryWarn = computed(() => form.summary.ro.length > 200)
 
+const { markSaved: markProjectSaved } = useUnsavedChangesGuard(form)
+
 function addTech() {
   const value = form.techInput.trim()
   if (value && !form.tech.includes(value)) form.tech.push(value)
@@ -245,6 +247,7 @@ async function save() {
   const result = data as { id: string; slug_ro: string; slug_en: string }
   projectId.value = result.id
   saveState.value = 'saved'
+  markProjectSaved()
 
   if (isNew || form.slugRo.trim() !== slug) {
     await navigateTo(`/admin/projects/${result.slug_ro}`)

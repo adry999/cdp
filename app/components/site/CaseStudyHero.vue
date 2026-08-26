@@ -35,7 +35,14 @@ const chips = computed(() => [...props.project.caseStudy.tech, props.project.cas
       </div>
     </div>
     <div class="mx-auto max-w-[1280px] px-gutter" style="padding-bottom: clamp(32px, 4vw, 56px)">
-      <MediaFrame ratio="16/9" :src="project.caseStudy.heroPath ?? undefined" :label="project.caseStudy.mainScreenshotLabel" />
+      <MediaFrame
+        ratio="16/9"
+        :src="project.caseStudy.heroPath ?? undefined"
+        :alt="project.caseStudy.heroAlt"
+        :label="project.caseStudy.mainScreenshotLabel"
+        sizes="(min-width: 1280px) 1216px, 100vw"
+        loading="eager"
+      />
     </div>
   </section>
 </template>

@@ -5,6 +5,25 @@ declare global {
   }
 }
 
+// Consent Mode v2 requires all four signals, not just analytics_storage —
+// GA4 and Google Ads both read ad_storage/ad_user_data/ad_personalization.
+// ad_* map to marketing consent (remarketing/ads), not analytics ("can you
+// count me" is a different question from "can you retarget me").
+function consentSignals(analyticsGranted: boolean, marketingGranted: boolean) {
+  const analytics = analyticsGranted ? 'granted' : 'denied'
+  const marketing = marketingGranted ? 'granted' : 'denied'
+  return {
+    analytics_storage: analytics,
+    ad_storage: marketing,
+    ad_user_data: marketing,
+    ad_personalization: marketing,
+  }
+}
+
+function clearCookie(name: string) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`
+}
+
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig()
   const { consent } = useCookieConsent()
@@ -18,7 +37,8 @@ export default defineNuxtPlugin(() => {
     window.dataLayer = window.dataLayer || []
     window.gtag = (...args: unknown[]) => window.dataLayer.push(args)
     window.gtag('consent', 'default', {
-      analytics_storage: hasConsent(consent.value, 'analytics') ? 'granted' : 'denied',
+      ...consentSignals(hasConsent(consent.value, 'analytics'), hasConsent(consent.value, 'marketing')),
+      wait_for_update: 500,
     })
     window.gtag('js', new Date())
     window.gtag('config', gaId)
@@ -31,9 +51,7 @@ export default defineNuxtPlugin(() => {
 
   function updateGaConsent() {
     if (!gaId || !window.gtag) return
-    window.gtag('consent', 'update', {
-      analytics_storage: hasConsent(consent.value, 'analytics') ? 'granted' : 'denied',
-    })
+    window.gtag('consent', 'update', consentSignals(hasConsent(consent.value, 'analytics'), hasConsent(consent.value, 'marketing')))
   }
 
   function injectMetaPixelIfConsented() {
@@ -52,11 +70,25 @@ export default defineNuxtPlugin(() => {
     document.head.appendChild(script)
   }
 
+  // The Pixel SDK has no official "uninstall" call — once fbq is loaded it
+  // keeps running. A reload is the only way to guarantee it's actually gone
+  // when marketing consent is withdrawn, so withdrawal is as effective as
+  // consent (GDPR requires that symmetry). Guarded to fire only on an actual
+  // true -> false transition, never on the initial denied-by-default state.
+  function revokeMetaPixelIfWithdrawn() {
+    if (!metaInjected || hasConsent(consent.value, 'marketing')) return
+    clearCookie('_fbp')
+    clearCookie('_fbc')
+    metaInjected = false
+    window.location.reload()
+  }
+
   if (gaId) initGa()
   injectMetaPixelIfConsented()
 
   watch(consent, () => {
     updateGaConsent()
     injectMetaPixelIfConsented()
+    revokeMetaPixelIfWithdrawn()
   })
 })

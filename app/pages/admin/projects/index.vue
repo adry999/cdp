@@ -6,7 +6,7 @@ const supabase = useSupabaseClient()
 const { data: rows, refresh } = await useAsyncData('admin-projects', async () => {
   const { data, error } = await supabase
     .from('projects')
-    .select('slug_ro, card_title_ro, tech, published_at, sort_order')
+    .select('slug_ro, card_title_ro, tech, cover_path, published_at, sort_order')
     .order('sort_order')
   if (error) throw error
   return data ?? []
@@ -18,6 +18,32 @@ const filtered = computed(() => {
   if (filter.value === 'publicate') return (rows.value ?? []).filter((r) => !!r.published_at)
   return rows.value ?? []
 })
+// sort_order is a global ordering; reordering a filtered subset would leave
+// the other rows' positions ambiguous, so drag reorder only applies to the
+// unfiltered list.
+const canReorder = computed(() => filter.value === 'toate')
+
+const dragIndex = ref<number | null>(null)
+const reordering = ref(false)
+
+function onDragStart(i: number) {
+  if (!canReorder.value) return
+  dragIndex.value = i
+}
+
+async function onDrop(i: number) {
+  if (!canReorder.value || dragIndex.value === null || dragIndex.value === i || !rows.value) return
+  const list = rows.value
+  const [moved] = list.splice(dragIndex.value, 1)
+  list.splice(i, 0, moved)
+  dragIndex.value = null
+
+  reordering.value = true
+  await Promise.all(
+    list.map((project, idx) => supabase.from('projects').update({ sort_order: idx }).eq('slug_ro', project.slug_ro)),
+  )
+  reordering.value = false
+}
 
 const thumbnailStyle = {
   backgroundImage:
@@ -38,7 +64,29 @@ function cancelDelete() {
 }
 async function confirmDelete(slug: string) {
   busy.value = slug
-  await supabase.from('projects').delete().eq('slug_ro', slug)
+
+  // Read the image paths before the row (and its child project_images rows,
+  // cascade-deleted with it) are gone — otherwise there's nothing left to
+  // clean up from Storage and the files sit there forever.
+  const { data: project } = await supabase
+    .from('projects')
+    .select('cover_path, hero_path, project_images(path)')
+    .eq('slug_ro', slug)
+    .single()
+
+  const { error } = await supabase.from('projects').delete().eq('slug_ro', slug)
+  if (error) {
+    busy.value = null
+    return
+  }
+
+  if (project) {
+    const keys = [project.cover_path, project.hero_path, ...project.project_images.map((i) => i.path)]
+      .map((url) => storageKeyFromPublicUrl(url, 'project-media'))
+      .filter((key): key is string => !!key)
+    if (keys.length) await supabase.storage.from('project-media').remove(keys).catch(() => {})
+  }
+
   pendingDelete.value = null
   busy.value = null
   await refresh()
@@ -101,17 +149,22 @@ async function duplicate(slug: string) {
     </AdminTopbar>
 
     <div class="flex-1 px-6 py-6">
-      <div class="mb-4 flex gap-2 font-mono text-xs uppercase tracking-[0.08em]">
-        <button
-          v-for="opt in (['toate', 'draft', 'publicate'] as const)"
-          :key="opt"
-          type="button"
-          class="cursor-pointer rounded border px-3 py-1.5"
-          :class="filter === opt ? 'border-ink bg-ink text-paper' : 'border-hairline text-muted hover:border-ink hover:text-ink'"
-          @click="filter = opt"
-        >
-          {{ opt }}
-        </button>
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex gap-2 font-mono text-xs uppercase tracking-[0.08em]">
+          <button
+            v-for="opt in (['toate', 'draft', 'publicate'] as const)"
+            :key="opt"
+            type="button"
+            class="cursor-pointer rounded border px-3 py-1.5"
+            :class="filter === opt ? 'border-ink bg-ink text-paper' : 'border-hairline text-muted hover:border-ink hover:text-ink'"
+            @click="filter = opt"
+          >
+            {{ opt }}
+          </button>
+        </div>
+        <span v-if="canReorder" class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">
+          {{ reordering ? 'Se salvează ordinea…' : 'Trage ⠿ pentru a reordona' }}
+        </span>
       </div>
 
       <div v-if="!filtered.length" class="rounded border border-hairline p-8 text-center text-muted">
@@ -121,10 +174,21 @@ async function duplicate(slug: string) {
         <div
           v-for="(project, i) in filtered"
           :key="project.slug_ro"
+          :draggable="canReorder"
           class="flex flex-wrap items-center gap-4 border-t border-hairline py-3"
-          :class="{ 'border-b': i === filtered.length - 1 }"
+          :class="[{ 'border-b': i === filtered.length - 1 }, canReorder ? 'cursor-grab' : undefined, dragIndex === i ? 'opacity-40' : undefined]"
+          @dragstart="onDragStart(i)"
+          @dragover.prevent
+          @drop="onDrop(i)"
         >
-          <div class="h-[30px] w-12 flex-none rounded border border-hairline" :style="thumbnailStyle" />
+          <span v-if="canReorder" aria-hidden="true" class="flex-none font-mono text-xs text-muted">⠿</span>
+          <img
+            v-if="project.cover_path"
+            :src="project.cover_path"
+            alt=""
+            class="h-[30px] w-12 flex-none rounded border border-hairline object-cover"
+          />
+          <div v-else class="h-[30px] w-12 flex-none rounded border border-hairline" :style="thumbnailStyle" />
           <div class="min-w-0 flex-[2_1_200px] text-[15px]">{{ project.card_title_ro }}</div>
           <div class="flex flex-[1_1_160px] flex-wrap gap-1.5">
             <TechChip v-for="tech in project.tech" :key="tech" :label="tech" />
