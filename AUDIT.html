@@ -1,0 +1,1003 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Codepedia Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+  /* Tokens lifted from the project's own theme (app/assets/css/main.css).
+     Light = the paper palette. Dark = the project's own inverted "ink section" palette. */
+  :root {
+    --paper: #FAF8F4;
+    --ground: #FAF8F4;
+    --surface: #F1EEE7;
+    --ink: #0B0B0B;
+    --body: #0B0B0B;
+    --muted: #6B6862;
+    --hairline: #E2DED6;
+    --signal: #FF4D14;
+    --signal-soft: rgba(255, 77, 20, 0.10);
+    --chip: rgba(11, 11, 11, 0.04);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0B0B0B;
+      --surface: #131312;
+      --ink: #FAF8F4;
+      --body: #B4AFA6;
+      --muted: #8D8880;
+      --hairline: rgba(250, 248, 244, 0.18);
+      --signal: #FF5F2B;
+      --signal-soft: rgba(255, 95, 43, 0.12);
+      --chip: rgba(250, 248, 244, 0.06);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #0B0B0B;
+    --surface: #131312;
+    --ink: #FAF8F4;
+    --body: #B4AFA6;
+    --muted: #8D8880;
+    --hairline: rgba(250, 248, 244, 0.18);
+    --signal: #FF5F2B;
+    --signal-soft: rgba(255, 95, 43, 0.12);
+    --chip: rgba(250, 248, 244, 0.06);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--body);
+    font-family: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    letter-spacing: -0.004em;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+  }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 64px); }
+
+  .mono {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Masthead ─────────────────────────────────────────────── */
+
+  .masthead { border-bottom: 1px solid var(--hairline); padding: clamp(40px, 6vw, 80px) 0 clamp(28px, 4vw, 44px); }
+  .eyebrow { color: var(--muted); margin: 0 0 clamp(20px, 3vw, 32px); }
+  .eyebrow .sig { color: var(--signal); }
+
+  h1 {
+    font-size: clamp(30px, 5vw, 52px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin: 0;
+    max-width: 20ch;
+    text-wrap: balance;
+  }
+
+  .standfirst { margin: clamp(18px, 2.5vw, 26px) 0 0; max-width: 62ch; font-size: clamp(16px, 1.4vw, 18px); color: var(--muted); }
+
+  /* ── Verified strip ───────────────────────────────────────── */
+
+  .verified { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1px; background: var(--hairline); border-bottom: 1px solid var(--hairline); }
+  .vcell { background: var(--ground); padding: 18px clamp(20px, 5vw, 24px); }
+  .vcell .mono { color: var(--muted); display: block; margin-bottom: 6px; }
+  .vcell b { color: var(--ink); font-weight: 500; font-size: 15px; display: block; }
+  .vcell b.warn { color: var(--signal); }
+
+  /* ── Section shell: 160px label column, project's signature ── */
+
+  section { border-top: 1px solid var(--hairline); }
+  section:first-of-type { border-top: 0; }
+  .row { display: flex; flex-wrap: wrap; gap: clamp(24px, 4vw, 48px); padding: clamp(40px, 5vw, 72px) 0; }
+  .label-col { flex: 0 0 160px; }
+  .body-col { flex: 1 1 560px; min-width: 0; }
+
+  .sec-num { color: var(--signal); display: block; }
+  .sec-label { color: var(--muted); display: block; margin-top: 4px; }
+  .sec-note { color: var(--muted); font-size: 13px; line-height: 1.5; margin: 14px 0 0; }
+
+  h2 { font-size: clamp(22px, 3vw, 30px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; color: var(--ink); margin: 0 0 6px; text-wrap: balance; }
+  .lede { margin: 0 0 clamp(24px, 3vw, 32px); max-width: 62ch; color: var(--muted); }
+
+  h3 { font-size: 19px; font-weight: 500; letter-spacing: -0.02em; color: var(--ink); margin: 0 0 8px; }
+  p { margin: 0 0 12px; max-width: 68ch; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── Findings ─────────────────────────────────────────────── */
+
+  .findings { display: flex; flex-direction: column; }
+
+  .f { display: grid; grid-template-columns: 92px 1fr; gap: clamp(14px, 2vw, 28px); border-top: 1px solid var(--hairline); padding: 22px 0; }
+  .f:last-child { border-bottom: 1px solid var(--hairline); }
+
+  .fid { display: flex; align-items: baseline; gap: 8px; color: var(--muted); }
+  .sev { width: 8px; height: 8px; flex: none; border: 1px solid var(--signal); transform: translateY(-1px); }
+  .sev.p0 { background: var(--signal); }
+  .sev.p1 { background: transparent; }
+  .sev.p2 { background: transparent; border-color: var(--ink); }
+  .sev.p3 { background: transparent; border-color: var(--muted); }
+
+  .ftitle { color: var(--ink); font-size: 17px; font-weight: 500; letter-spacing: -0.015em; margin: 0 0 8px; }
+  .fbody { margin: 0; max-width: 70ch; font-size: 15px; }
+  .fbody + .fbody { margin-top: 8px; }
+
+  code {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.86em;
+    background: var(--chip);
+    padding: 1px 5px;
+    border-radius: 2px;
+    color: var(--ink);
+    word-break: break-word;
+  }
+
+  .loc { display: block; margin: 10px 0 0; color: var(--muted); word-break: break-word; }
+  .loc span { color: var(--ink); }
+
+  .fix { margin: 10px 0 0; padding-left: 12px; border-left: 2px solid var(--signal); font-size: 15px; max-width: 70ch; }
+  .fix .mono { color: var(--signal); display: block; margin-bottom: 3px; }
+
+  /* ── Feature list ─────────────────────────────────────────── */
+
+  .feat { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--hairline); }
+  .feat > div { border-bottom: 1px solid var(--hairline); padding: 18px 0; display: grid; grid-template-columns: 92px 1fr; gap: clamp(14px, 2vw, 28px); }
+  .feat .mono { color: var(--muted); }
+  .feat b { color: var(--ink); font-weight: 500; display: block; margin-bottom: 4px; font-size: 16px; }
+  .feat p { font-size: 15px; margin: 0; }
+
+  /* ── Callout ──────────────────────────────────────────────── */
+
+  .callout { background: var(--signal-soft); border-left: 2px solid var(--signal); padding: 18px 20px; margin: 0 0 24px; max-width: 70ch; }
+  .callout p { font-size: 15px; }
+
+  .stack { display: flex; flex-direction: column; gap: 26px; }
+
+  footer { border-top: 1px solid var(--hairline); }
+  footer .row { padding: 26px 0; align-items: baseline; justify-content: space-between; }
+  footer .mono { color: var(--muted); }
+
+  a { color: var(--signal); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+  @media (max-width: 720px) {
+    .label-col { flex: 1 1 100%; }
+    .f, .feat > div { grid-template-columns: 1fr; gap: 10px; }
+  }
+</style>
+
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <p class="mono eyebrow">Audit · 26 August 2026 · <span class="sig">32 findings</span></p>
+    <h1>Codepedia is close. Six things quietly lose data.</h1>
+    <p class="standfirst">
+      A full pass over the Nuxt 4 + Supabase studio site and its admin. The public site is in
+      good shape — the design is faithful, the content model is sound, and the discipline about
+      not inventing numbers held. The damage is concentrated in the admin write paths, where
+      several actions destroy or discard data without saying so.
+    </p>
+  </div>
+</header>
+
+<div class="verified">
+  <div class="vcell"><span class="mono">Unit tests</span><b>27 passing</b></div>
+  <div class="vcell"><span class="mono">Production build</span><b>Succeeds</b></div>
+  <div class="vcell"><span class="mono">Type checker</span><b class="warn">Not installed</b></div>
+  <div class="vcell"><span class="mono">Lint / CI</span><b class="warn">Neither exists</b></div>
+  <div class="vcell"><span class="mono">Client JS, entry chunk</span><b class="warn">508 KB</b></div>
+  <div class="vcell"><span class="mono">Secrets in git history</span><b>Clean</b></div>
+</div>
+
+<section>
+  <div class="wrap row">
+    <div class="label-col">
+      <span class="mono sec-num">00</span>
+      <span class="mono sec-label">Premisa</span>
+    </div>
+    <div class="body-col">
+      <h2>What this project is, and what it is for</h2>
+      <p class="lede">Read the repo end to end, the intent is unusually clear — worth stating plainly, because several findings below are only bugs relative to it.</p>
+      <div class="stack">
+        <div>
+          <h3>A sales instrument, not a brochure</h3>
+          <p>
+            Codepedia is a two-to-three person studio in Chișinău. The site has exactly one job:
+            convince a prospect who has never heard of you that you build serious software, then
+            capture them in the contact form. Everything else — the bilingual routing, the case
+            study template, the admin — exists to serve that single conversion.
+          </p>
+        </div>
+        <div>
+          <h3>The site is itself the portfolio piece</h3>
+          <p>
+            For a studio that sells web work, the site is the strongest sample in the deck. That is
+            why the pixel-fidelity rule and the Lighthouse ≥ 95 target are not vanity: a slow or
+            sloppy site is a counter-argument to the pitch. It also raises the stakes on
+            <b>P3-1</b> — half a megabyte of database client on a marketing page is the kind of
+            thing a technical prospect notices.
+          </p>
+        </div>
+        <div>
+          <h3>The admin exists so nobody has to redeploy to add a project</h3>
+          <p>
+            The whole point is that a non-engineer can add a case study, publish it, and see it live.
+            That makes the admin's silent failures the most expensive class of bug in the codebase —
+            worse than an equivalent bug on the public site, because there is no one watching the
+            console when a lead's answer gets dropped or a project gets duplicated.
+          </p>
+        </div>
+        <div>
+          <h3>What holds up</h3>
+          <p>
+            The design system is genuinely single-source — no hardcoded colors anywhere. The
+            RO-fallback content model (<code>*_ro</code> required, <code>*_en</code> optional) is the right
+            call for a bilingual studio that will always write Romanian first. Row-level security is
+            correctly designed: public read only for published rows, writes gated behind an
+            <code>app_users</code> membership check that a self-signup cannot satisfy. And the
+            <code>TODO.md</code> discipline held — every missing price and result figure still renders as
+            <code>[ X ]</code> rather than a plausible invention.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap row">
+    <div class="label-col">
+      <span class="mono sec-num">01</span>
+      <span class="mono sec-label">Pierdere de date</span>
+      <p class="sec-note">Seven paths that destroy or discard content with no error shown. Fix these before anything else.</p>
+    </div>
+    <div class="body-col">
+      <h2>Data loss and silent no-ops</h2>
+      <p class="lede">Each of these fails quietly. The admin sees "Salvat" and believes the work was saved.</p>
+
+      <div class="findings">
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p0"></span>P0-1</div>
+          <div>
+            <p class="ftitle">Renaming a slug duplicates the project instead of renaming it</p>
+            <p class="fbody">
+              The editor saves with <code>upsert(..., { onConflict: 'slug_ro' })</code>. If the admin
+              edits the slug field, the conflict target no longer matches any existing row, so
+              Postgres <em>inserts</em>. You end up with two projects: the original at the old slug,
+              still live, and a full copy at the new one — with the child rows (facts, steps, stats,
+              images) attached only to the new record.
+            </p>
+            <p class="mono loc"><span>app/pages/admin/projects/[slug].vue</span> : 139, 175</p>
+            <div class="fix">
+              <span class="mono">Fix</span>
+              Key the write on <code>id</code>, not the slug. Insert when new, update by id when editing,
+              and write a <code>redirects</code> row for the old path (see <b>P1-6</b>).
+            </div>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p0"></span>P0-2</div>
+          <div>
+            <p class="ftitle">Child rows are deleted before the replacement insert is known to succeed</p>
+            <p class="fbody">
+              Every save does <code>delete().eq('project_id', …)</code> then <code>.then(() => insert(…))</code>
+              for facts, steps, stats and images. Two problems: the delete's own error is never read, so
+              a failed delete still proceeds to insert and duplicates every row; and if the insert
+              fails — dropped connection, a constraint, an expired token — the old rows are already
+              gone. The case study loses its entire content body with no way back.
+            </p>
+            <p class="mono loc"><span>app/pages/admin/projects/[slug].vue</span> : 188–254</p>
+            <div class="fix">
+              <span class="mono">Fix</span>
+              Move the whole save into one Postgres function called via <code>rpc()</code> so it runs in a
+              single transaction. Short of that, check the delete's error before inserting.
+            </div>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p0"></span>P0-3</div>
+          <div>
+            <p class="ftitle">The contact form asks "how did you hear about us" and throws the answer away</p>
+            <p class="fbody">
+              <code>ContactForm</code> collects <code>source</code> and posts it. The server declares it on
+              <code>LeadBody</code> — and never inserts it. There is no <code>source</code> column in
+              <code>leads</code> at all. Every visitor who fills that field has their answer discarded,
+              100% of the time. It is the one attribution question on the whole site.
+            </p>
+            <p class="mono loc"><span>ContactForm.vue</span> : 14 · <span>server/api/leads.post.ts</span> : 14 · <span>DATA_MODEL.sql</span> : 200</p>
+            <div class="fix">
+              <span class="mono">Fix</span>
+              Add the column, insert the value, show it in the lead detail view. While there:
+              <code>leads.utm</code> exists and is never populated either — capture the query string on submit.
+            </div>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p0"></span>P0-4</div>
+          <div>
+            <p class="ftitle">Half the Settings screen edits fields the site never reads</p>
+            <p class="fbody">
+              <code>footer_line_ro/en</code>, <code>copyright_year</code>, <code>meta_title_*</code> and
+              <code>meta_description_*</code> are all editable in <code>/admin/settings</code> and saved to
+              the database. Nothing renders them. <code>SiteFooter</code> uses <code>t('footer.copyright')</code>
+              from the locale JSON; the homepage uses <code>t('seo.home.title')</code>. An admin who
+              changes the site's meta description sees a confirmation and gets no change.
+            </p>
+            <p class="fbody">
+              Three more columns — <code>og_image_path</code>, <code>next_opening_ro/en</code>,
+              <code>concurrent_projects</code> — exist in the schema and the generated types and are
+              neither editable nor rendered. The OG image control is a hardcoded label reading
+              "disponibil după conectare".
+            </p>
+            <p class="mono loc"><span>app/pages/admin/settings/index.vue</span> · <span>SiteFooter.vue</span> : 21, 27 · <span>app/pages/index.vue</span> : 5</p>
+            <div class="fix">
+              <span class="mono">Fix</span>
+              Pick a direction per field and commit: either wire it into the render path, or take the
+              control out of the UI. A control that does nothing is worse than a missing one.
+            </div>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p0"></span>P0-5</div>
+          <div>
+            <p class="ftitle">Empty gallery slots are saved as image rows with an empty path</p>
+            <p class="fbody">
+              The editor seeds two blank gallery slots. On save it inserts
+              <code>path: img.path ?? ''</code> for each — and <code>project_images.path</code> is
+              <code>not null</code>, so an empty string passes. A project saved without gallery uploads
+              gets image rows that render <code>&lt;img src=""&gt;</code> on the case study, which browsers
+              resolve to the page URL and re-request.
+            </p>
+            <p class="mono loc"><span>app/pages/admin/projects/[slug].vue</span> : 246</p>
+            <div class="fix">
+              <span class="mono">Fix</span>
+              Skip slots with no uploaded path. Add a <code>check (path &lt;&gt; '')</code> constraint so the
+              class of bug cannot recur.
+            </div>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p0"></span>P0-6</div>
+          <div>
+            <p class="ftitle">Saving the FAQ screen resets every publish date, and nothing can be deleted</p>
+            <p class="fbody">
+              <code>published_at: item.published ? new Date().toISOString() : null</code> — so any save
+              re-stamps every published question with today's date. The projects editor gets this
+              right (<code>existing.published_at ?? now</code>); the FAQ screen does not. Separately,
+              there is no delete: questions can be added and edited forever, never removed. Drag
+              reordering fires N sequential updates with no error handling, so a failure mid-way
+              leaves the order half-applied.
+            </p>
+            <p class="mono loc"><span>app/pages/admin/faqs/index.vue</span> : 44, 72–75</p>
+            <div class="fix">
+              <span class="mono">Fix</span>
+              Preserve the existing timestamp, add a delete with confirmation, and batch the reorder
+              into a single upsert.
+            </div>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p0"></span>P0-7</div>
+          <div>
+            <p class="ftitle"><code>DATA_MODEL.sql</code> no longer matches the live database</p>
+            <p class="fbody">
+              <code>next_title_ro</code> and <code>next_title_en</code> exist in the generated types, in the
+              seed script, in both API queries and in <code>mapProject</code> — and are absent from
+              <code>DATA_MODEL.sql</code>. Applying that file to a fresh Supabase project produces a
+              database on which every project query returns a 500. There is no migrations directory;
+              the schema file is being hand-maintained and has already drifted.
+            </p>
+            <p class="fbody">
+              Two related gaps: the <code>project-media</code> storage bucket's policies are not in the
+              file at all, so a rebuild has no defined upload authorization; and
+              <code>app_users.role</code> distinguishes <code>admin</code> from <code>editor</code> while
+              <code>is_admin()</code> only checks row existence — every editor is a full admin.
+            </p>
+            <p class="mono loc"><span>DATA_MODEL.sql</span> : 23–61, 230–287</p>
+            <div class="fix">
+              <span class="mono">Fix</span>
+              Move to <code>supabase/migrations/</code> and generate the schema file from the database
+              rather than the other way round.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap row">
+    <div class="label-col">
+      <span class="mono sec-num">02</span>
+      <span class="mono sec-label">Public</span>
+      <p class="sec-note">Visible to prospects and to Google. Two are deployment blockers.</p>
+    </div>
+    <div class="body-col">
+      <h2>Bugs a visitor or a crawler will hit</h2>
+      <p class="lede">Ordered by how much they cost on the way to a lead.</p>
+
+      <div class="findings">
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p1"></span>P1-1</div>
+          <div>
+            <p class="ftitle">Sharp is compiled for Windows; Vercel runs Linux</p>
+            <p class="fbody">
+              The build prints it outright: <em>"sharp binaries have been included in your build for
+              win32-x64. Make sure you deploy to the same architecture."</em> There is no
+              <code>nitro.preset</code> and no <code>vercel.json</code>, so <code>@nuxt/image</code> will ship a
+              binary the runtime cannot load. Every project image breaks on the first deploy.
+            </p>
+            <div class="fix">
+              <span class="mono">Fix</span>
+              Build on Vercel rather than locally, and set the image provider explicitly so Vercel's
+              own optimizer handles resizing instead of a bundled IPX.
+            </div>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p1"></span>P1-2</div>
+          <div>
+            <p class="ftitle">Canonical and hreflang tags fall back to <code>localhost:3000</code></p>
+            <p class="fbody">
+              <code>i18n.baseUrl</code> reads <code>NUXT_PUBLIC_SITE_URL</code> with a localhost default. That
+              variable appears nowhere else in the repo — not in <code>.env</code>, not in
+              <code>.env.example</code>, not in the README. If it is not set in the Vercel dashboard at
+              build time, every canonical and alternate link in production points at localhost.
+              <code>RESEND_API_KEY</code> has the same problem: undocumented, and unset it silently
+              disables lead notification emails entirely.
+            </p>
+            <p class="mono loc"><span>nuxt.config.ts</span> : 10, 57 · <span>.env.example</span></p>
+            <div class="fix">
+              <span class="mono">Fix</span>
+              Add both to <code>.env.example</code>. Fail the build loudly when the site URL is missing
+              rather than defaulting to localhost.
+            </div>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p1"></span>P1-3</div>
+          <div>
+            <p class="ftitle">Every project image on the site has an empty <code>alt</code></p>
+            <p class="fbody">
+              <code>MediaFrame</code> defaults <code>alt</code> to <code>''</code> and no caller passes one.
+              Covers, hero screenshots, gallery — all empty. The alt text exists: it is in the
+              database as <code>cover_alt_ro</code>, <code>hero_alt_ro</code>, <code>alt_ro</code>, the admin
+              form marks those fields <em>required</em>, and <code>mapProject</code> reads them — only to
+              wrap them in brackets as the hatched-placeholder caption. The real value is written,
+              stored, mapped, and then not used for the one thing it is for.
+            </p>
+            <p class="mono loc"><span>MediaFrame.vue</span> : 11 · <span>HomeWork.vue</span> : 30 · <span>CaseStudyHero.vue</span> : 38</p>
+            <div class="fix">
+              <span class="mono">Fix</span>
+              Return the raw alt alongside the bracketed label from <code>mapProject</code> and bind it.
+            </div>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p1"></span>P1-4</div>
+          <div>
+            <p class="ftitle">Switching to English on a case study keeps the Romanian slug</p>
+            <p class="fbody">
+              <code>switchLocalePath('en')</code> reuses the current route params, so
+              <code>/proiecte/saas-logistica</code> becomes <code>/en/work/saas-logistica</code> — the
+              Romanian slug in an English URL. It resolves, because the API matches either slug
+              column, which is exactly what makes it a duplicate-content problem: the same page is
+              reachable at two English URLs, and the one the sitemap advertises
+              (<code>/en/work/{slug_en}</code>) is not the one your own header links to.
+            </p>
+            <p class="fbody">
+              <code>HomeWork</code> gets this right — it builds the link from the locale-aware slug.
+              Only the case study header is wrong.
+            </p>
+            <p class="mono loc"><span>CaseStudyHeader.vue</span> : 28, 36 · <span>server/routes/sitemap.xml.ts</span> : 40</p>
+            <div class="fix">
+              <span class="mono">Fix</span>
+              Pass the mapped slug into <code>switchLocalePath</code> explicitly, the way the homepage
+              grid does.
+            </div>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p1"></span>P1-5</div>
+          <div>
+            <p class="ftitle">The language switcher only remembers your choice on the homepage</p>
+            <p class="fbody">
+              <code>SiteHeader</code> writes the <code>codepedia_locale</code> cookie on click.
+              <code>CaseStudyHeader</code> does not. Switch to English on a case study, navigate home,
+              and geo-IP silently switches you back to Romanian — which is precisely the override the
+              cookie exists to prevent.
+            </p>
+            <p class="mono loc"><span>CaseStudyHeader.vue</span> : 27–41 vs <span>SiteHeader.vue</span> : 6–14</p>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p1"></span>P1-6</div>
+          <div>
+            <p class="ftitle">The <code>redirects</code> table exists and no code reads it</p>
+            <p class="fbody">
+              A table designed for exactly one purpose — keeping old URLs alive when a published slug
+              changes — with a <code>from_path</code>, a <code>to_path</code>, a status code, RLS policies,
+              and zero references anywhere in <code>app/</code> or <code>server/</code>. Combined with
+              <b>P0-1</b>, renaming a published project both duplicates the record and permanently
+              breaks every existing link to it.
+            </p>
+            <div class="fix">
+              <span class="mono">Fix</span>
+              A server middleware that looks up the path and issues the stored status, plus an
+              automatic row whenever a published slug changes.
+            </div>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p1"></span>P1-7</div>
+          <div>
+            <p class="ftitle">The admin can publish a project at a URL that returns 404</p>
+            <p class="fbody">
+              The slug field is free text with no validation or slugification. The public API rejects
+              anything that is not <code>^[a-z0-9-]+$</code>. Type <code>Proiect Nou</code> or anything with
+              a diacritic, tick "Publicat", and the admin shows a published project whose page does
+              not resolve. The editor's own "Vezi pe site" link goes to the 404.
+            </p>
+            <p class="fbody">
+              Related: the create route is the literal path <code>/admin/projects/nou</code>, so
+              <code>nou</code> can never be a real slug — an unguarded collision.
+            </p>
+            <p class="mono loc"><span>app/pages/admin/projects/[slug].vue</span> : 8, 129 · <span>server/api/projects/[slug].get.ts</span> : 19</p>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p1"></span>P1-8</div>
+          <div>
+            <p class="ftitle">The homepage title and description do not update on language switch</p>
+            <p class="fbody">
+              <code>useSeoMeta</code> is called with the resolved strings <code>t('seo.home.title')</code>
+              rather than getters. Client-side navigation between <code>/</code> and <code>/en</code> reuses
+              the page component, so setup does not re-run and the meta tags keep the previous
+              locale's text. The case study page does it correctly with <code>() =&gt;</code> getters.
+            </p>
+            <p class="mono loc"><span>app/pages/index.vue</span> : 4–12</p>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p1"></span>P1-9</div>
+          <div>
+            <p class="ftitle">The lead rate limiter does not survive a serverless cold start</p>
+            <p class="fbody">
+              <code>useStorage('leads-rate-limit')</code> with no mount configured in
+              <code>nitro.storage</code> resolves to in-memory. On Vercel each function instance keeps
+              its own counter, so the three-per-ten-minutes limit is effectively unenforced. The
+              honeypot is doing all the real work.
+            </p>
+            <p class="fbody">
+              The same handler accepts unbounded field lengths — no maximum on name, message or
+              company — and stores the <em>translated</em> budget label rather than a stable key, so
+              the same budget band lands in the database as two different strings depending on the
+              visitor's language.
+            </p>
+            <p class="mono loc"><span>server/api/leads.post.ts</span> : 37–46, 55</p>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p1"></span>P1-10</div>
+          <div>
+            <p class="ftitle">The locale redirect sets no cache headers</p>
+            <p class="fbody">
+              The 302 on <code>/</code> and <code>/en</code> varies by cookie and by geo-IP header, and sends
+              neither <code>Cache-Control</code> nor <code>Vary</code>. Nothing caches it today because
+              those two routes have no route rule — but that is an accident, not a guard. The first
+              person who adds ISR to the homepage will pin one audience's redirect for everyone.
+            </p>
+            <p class="mono loc"><span>server/middleware/locale-redirect.ts</span> : 15–17</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap row">
+    <div class="label-col">
+      <span class="mono sec-num">03</span>
+      <span class="mono sec-label">Conformitate</span>
+      <p class="sec-note">The consent system is well-built and incomplete in two specific ways that matter legally.</p>
+    </div>
+    <div class="body-col">
+      <h2>Consent and accessibility</h2>
+      <p class="lede">The architecture is right — inert without IDs, cookie-backed, reopenable from the footer. These are gaps in it, not objections to it.</p>
+
+      <div class="findings">
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p2"></span>P2-1</div>
+          <div>
+            <p class="ftitle">Consent Mode v2 is missing three of its four signals</p>
+            <p class="fbody">
+              The plugin sets <code>analytics_storage</code> only. Consent Mode v2 requires
+              <code>ad_storage</code>, <code>ad_user_data</code> and <code>ad_personalization</code> as well —
+              and without <code>wait_for_update</code>, gtag may fire before the stored consent is read
+              on a slow first paint. The documentation calls this Consent Mode v2; as written it is v1.
+            </p>
+            <p class="mono loc"><span>app/plugins/analytics.client.ts</span> : 20–22, 34–36</p>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p2"></span>P2-2</div>
+          <div>
+            <p class="ftitle">Marketing consent can be given but not withdrawn</p>
+            <p class="fbody">
+              <code>injectMetaPixelIfConsented</code> guards on a <code>metaInjected</code> flag that is
+              never cleared. Once the pixel is on the page, revoking marketing consent updates the
+              cookie and changes nothing — <code>fbq</code> keeps running and its cookies stay set for
+              the rest of the session. GDPR treats withdrawal as needing to be as easy as consent.
+            </p>
+            <p class="fbody">
+              No first-party analytics cookies are cleared on reject either.
+            </p>
+            <p class="mono loc"><span>app/plugins/analytics.client.ts</span> : 39–41, 58–61</p>
+            <div class="fix">
+              <span class="mono">Fix</span>
+              On withdrawal, clear the vendor cookies and reload. A reload is the honest way to
+              guarantee third-party scripts are actually gone.
+            </div>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p2"></span>P2-3</div>
+          <div>
+            <p class="ftitle">The privacy policy is <code>noindex</code> and absent from the sitemap</p>
+            <p class="fbody">
+              <code>robots: 'noindex, follow'</code> on the one page whose entire purpose is public
+              transparency, and it is the page the cookie banner links to. The sitemap also omits it
+              and carries no <code>x-default</code> hreflang or <code>lastmod</code> on any entry.
+            </p>
+            <p class="mono loc"><span>app/pages/confidentialitate.vue</span> : 9 · <span>server/routes/sitemap.xml.ts</span> : 16</p>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p2"></span>P2-4</div>
+          <div>
+            <p class="ftitle">Accessibility gaps that a Lighthouse ≥ 95 target will surface</p>
+            <p class="fbody">
+              No skip-to-content link in any layout. <code>scroll-behavior: smooth</code> is set with no
+              <code>prefers-reduced-motion</code> guard. The cookie banner is a fixed overlay with no
+              <code>role="dialog"</code>, no focus move, and no focus trap. Contact form errors are plain
+              paragraphs with no <code>aria-invalid</code> or <code>aria-describedby</code> tying them to
+              their inputs. The mobile menu button sets <code>aria-expanded</code> but no
+              <code>aria-controls</code>. Every drag-to-reorder list in the admin is mouse-only.
+            </p>
+            <p class="fbody">
+              Separately, the <code>signal</code> button contrast is 3.13:1 against paper — below AA. Noted
+              as a deliberate match to the prototype and left alone; flagged here only so it does not
+              read as an oversight when the Lighthouse report lands.
+            </p>
+            <p class="mono loc"><span>main.css</span> : 32 · <span>CookieBanner.vue</span> : 22–26 · <span>ContactForm.vue</span> : 75, 88</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap row">
+    <div class="label-col">
+      <span class="mono sec-num">04</span>
+      <span class="mono sec-label">Performanță</span>
+      <p class="sec-note">The Lighthouse ≥ 95 target is currently out of reach for one reason.</p>
+    </div>
+    <div class="body-col">
+      <h2>Weight and rendering</h2>
+
+      <div class="findings">
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p3"></span>P3-1</div>
+          <div>
+            <p class="ftitle">508 KB of Supabase client ships to every marketing page</p>
+            <p class="fbody">
+              The entry chunk is 508 KB of the 675 KB total client JavaScript. Grepping it turns up
+              <code>@supabase/auth-js</code>, <code>@supabase/ssr</code>, <code>realtime-js</code> and the
+              GoTrue client — the whole SDK, on a homepage that fetches everything through
+              <code>/api/*</code> server routes and needs no database client in the browser at all. It is
+              there because <code>@nuxtjs/supabase</code> registers a global plugin.
+            </p>
+            <p class="fbody">
+              Recorded as a deliberate deferral. Worth restating that it is the single largest
+              obstacle to the stated Lighthouse target, and the fix is bounded: scope the Supabase
+              plugin to <code>/admin</code> routes.
+            </p>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p3"></span>P3-2</div>
+          <div>
+            <p class="ftitle"><code>NuxtImg</code> is used without dimensions, sizes, or lazy loading</p>
+            <p class="fbody">
+              <code>MediaFrame</code> renders <code>&lt;NuxtImg&gt;</code> with only <code>src</code>, <code>alt</code>
+              and classes. No <code>width</code>/<code>height</code> means layout shift on every project card;
+              no <code>sizes</code> means no responsive srcset, so mobile downloads the 1600×900 hero. The
+              aspect-ratio class prevents the worst of the CLS but does not replace intrinsic
+              dimensions.
+            </p>
+            <p class="mono loc"><span>MediaFrame.vue</span> : 30–35</p>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p3"></span>P3-3</div>
+          <div>
+            <p class="ftitle">The homepage is fully server-rendered on every request</p>
+            <p class="fbody">
+              <code>routeRules</code> caches the case studies and the API routes but not <code>/</code> or
+              <code>/en</code> — necessarily, because the geo redirect runs there. The result is that the
+              most-visited page is the only uncached one. Moving the redirect decision to the edge
+              would let the homepage shell cache like everything else.
+            </p>
+            <p class="mono loc"><span>nuxt.config.ts</span> : 24–30</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap row">
+    <div class="label-col">
+      <span class="mono sec-num">05</span>
+      <span class="mono sec-label">Proces</span>
+      <p class="sec-note">Nothing enforces the rules the project sets for itself.</p>
+    </div>
+    <div class="body-col">
+      <h2>Tooling and dead weight</h2>
+
+      <div class="findings">
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p3"></span>P4-1</div>
+          <div>
+            <p class="ftitle">"TypeScript strict, no <code>any</code>" is a rule with no enforcement</p>
+            <p class="fbody">
+              <code>nuxi typecheck</code> exits immediately: <em>"A type checker is required."</em> There is
+              no <code>vue-tsc</code>, no <code>typecheck</code> script, no ESLint config, and no CI workflow
+              anywhere in the repo. Strict mode is on in the generated tsconfig and the code does
+              hold to it — a grep for <code>any</code>, <code>@ts-ignore</code> and stray
+              <code>console.log</code> across <code>app/</code>, <code>server/</code> and <code>shared/</code>
+              comes back empty. That is discipline, not tooling, and discipline does not survive a
+              second contributor.
+            </p>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p3"></span>P4-2</div>
+          <div>
+            <p class="ftitle">536 lines of superseded content files nobody imports</p>
+            <p class="fbody">
+              <code>app/data/projects.ts</code> (391 lines), <code>services.ts</code> (94) and
+              <code>faq.ts</code> (51) are the step-2 hardcoded content, orphaned when the pages moved to
+              Supabase. They are a second copy of the case study text that will silently diverge from
+              the database. <code>settings.ts</code> survives only to feed a contact email into the
+              JSON-LD block — the same value <code>site_settings.contact_email</code> already holds.
+            </p>
+            <div class="fix">
+              <span class="mono">Fix</span>
+              Delete the three, and read the JSON-LD email from the settings API like every other
+              consumer.
+            </div>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p3"></span>P4-3</div>
+          <div>
+            <p class="ftitle">The e2e suite cannot run without production credentials</p>
+            <p class="fbody">
+              <code>playwright.config.ts</code> runs <code>npm run build</code> as its web server, and the
+              smoke tests navigate to <code>/proiecte/saas-logistica</code> — a real row in the live
+              database. There is no fixture or seeded test project, so the suite depends on
+              production content staying exactly as it is. Coupled with the absence of CI, the tests
+              only ever run when someone remembers to run them.
+            </p>
+          </div>
+        </div>
+
+        <div class="f">
+          <div class="fid mono"><span class="sev p3"></span>P4-4</div>
+          <div>
+            <p class="ftitle">Smaller sharp edges</p>
+            <p class="fbody">
+              No unsaved-changes guard on any admin form — navigating away loses everything silently.
+              The project duplicate action swallows every error and just stops. Deleting a project
+              leaves its uploaded images in storage forever. <code>robots.txt</code> does not disallow
+              <code>/api/</code>. The Supabase project reference is hardcoded in
+              <code>nuxt.config.ts</code>'s image domains. The <code>preview_token</code> column is
+              generated for every project and read by nothing, while the editor displays "Vezi ca
+              draft — token disponibil după prima salvare", promising a feature that does not exist.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap row">
+    <div class="label-col">
+      <span class="mono sec-num">06</span>
+      <span class="mono sec-label">Extindere</span>
+      <p class="sec-note">Ordered by effect on the one thing the site is for.</p>
+    </div>
+    <div class="body-col">
+      <h2>What to build next</h2>
+      <p class="lede">Most of these are half-built already — the schema anticipated them and the code stopped short.</p>
+
+      <div class="feat">
+        <div>
+          <span class="mono">Schema ready</span>
+          <div>
+            <b>Redirect engine</b>
+            <p>The table is designed and empty. A middleware plus an automatic row on slug change closes <b>P1-6</b> and makes renaming a published project safe for the first time.</p>
+          </div>
+        </div>
+        <div>
+          <span class="mono">Schema ready</span>
+          <div>
+            <b>Draft preview links</b>
+            <p><code>preview_token</code> already exists on every project. A tokenized route lets a client review an unpublished case study — the workflow the admin UI already advertises.</p>
+          </div>
+        </div>
+        <div>
+          <span class="mono">Schema ready</span>
+          <div>
+            <b>Lead attribution</b>
+            <p>Capture UTM parameters into <code>leads.utm</code> and add the missing <code>source</code> column. Without them there is no way to tell which channel produces business.</p>
+          </div>
+        </div>
+        <div>
+          <span class="mono">Missing</span>
+          <div>
+            <b>Project ordering in the admin</b>
+            <p><code>sort_order</code> controls the homepage grid and is unreachable from the interface. The order of the three case studies is the site's strongest editorial lever.</p>
+          </div>
+        </div>
+        <div>
+          <span class="mono">Missing</span>
+          <div>
+            <b>Add and remove rows in the project editor</b>
+            <p>The gallery is frozen at two slots and the facts list at whatever exists — despite a label reading "minim 2". Steps and stats have add buttons; facts and gallery do not.</p>
+          </div>
+        </div>
+        <div>
+          <span class="mono">SEO</span>
+          <div>
+            <b>FAQPage and BreadcrumbList structured data</b>
+            <p>A published Q&amp;A section already renders from the database. <code>FAQPage</code> markup is close to free and earns expanded search results; <code>Organization</code> alone is leaving that on the table.</p>
+          </div>
+        </div>
+        <div>
+          <span class="mono">Decision</span>
+          <div>
+            <b>A <code>/proiecte</code> index page</b>
+            <p><code>TODO.md</code> raises this as open. The grid is designed for three; a fourth case study forces the question, and the sitemap has no listing page to point at.</p>
+          </div>
+        </div>
+        <div>
+          <span class="mono">Considered</span>
+          <div>
+            <b>Russian as a third locale</b>
+            <p>Under discussion, not decided. Worth noting that the <code>*_ro</code>/<code>*_en</code> column-pair model does not extend to a third language without a schema change — that cost should be priced into the decision rather than discovered during it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap row">
+    <div class="label-col">
+      <span class="mono sec-num">07</span>
+      <span class="mono sec-label">Concluzie</span>
+    </div>
+    <div class="body-col">
+      <h2>At its best</h2>
+      <div class="callout">
+        <p>
+          The single change with the most leverage is not on this list as a bug: make the admin
+          incapable of failing silently. Every one of the seven P0 findings is the same defect wearing
+          a different costume — an action reports success while doing nothing, or something worse than
+          nothing.
+        </p>
+      </div>
+      <div class="stack">
+        <div>
+          <h3>The finished version of this project</h3>
+          <p>
+            A fast bilingual site that loads in well under a second because it ships almost no
+            JavaScript, three case studies with real screenshots and real numbers replacing the
+            <code>[ X ]</code> placeholders, and an admin where every control does something visible
+            and every save is atomic. Leads arrive attributed. Slugs can be renamed without breaking
+            the web. The Lighthouse report is a screenshot you can put in a pitch deck.
+          </p>
+        </div>
+        <div>
+          <h3>The order I would work in</h3>
+          <p>
+            Fix the seven data-loss paths first — they are cheap and they are actively destroying
+            work. Then the two deployment blockers (<b>P1-1</b>, <b>P1-2</b>), because nothing else
+            matters if the first production deploy serves broken images and localhost canonicals.
+            Then scope the Supabase plugin to the admin, which buys back most of the performance
+            budget in one change. The accessibility and consent items are a contained afternoon after
+            that. Everything in section 06 is genuinely optional until the content in
+            <code>TODO.md</code> arrives.
+          </p>
+        </div>
+        <div>
+          <h3>One thing to keep doing</h3>
+          <p>
+            The placeholders held. Every missing price still reads <code>de la [ X ] EUR</code>, every
+            missing result figure is still bracketed, and the seed script declines to invent a single
+            number. For a studio whose entire pitch is that it does careful work, that restraint is
+            worth more than any feature on this page.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <span class="mono">Codepedia · audit de cod</span>
+    <span class="mono">32 findings · 7 critical</span>
+    <span class="mono">26.08.2026</span>
+  </div>
+</footer>
+</body>
+</html>
