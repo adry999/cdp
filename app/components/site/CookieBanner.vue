@@ -7,7 +7,6 @@ const customizing = ref(false)
 const draft = reactive({ analytics: false, marketing: false })
 
 const bannerRef = ref<HTMLElement>()
-const firstFocusable = ref<InstanceType<typeof AppButton>>()
 
 function openCustomize() {
   draft.analytics = consent.value?.analytics ?? false
@@ -20,16 +19,34 @@ function save() {
   customizing.value = false
 }
 
+function focusableElements(): HTMLElement[] {
+  return Array.from(bannerRef.value?.querySelectorAll<HTMLElement>('button, a[href], input') ?? [])
+}
+
 // A banner appearing over content is a dialog, and a dialog moves focus to
 // itself and keeps it there — otherwise a keyboard user tabbing through the
 // page lands on it by accident with no idea why, or tabs straight past it.
-watch(showBanner, (visible) => {
-  if (visible) nextTick(() => firstFocusable.value?.$el?.focus())
+// The initial-focus target and the trap's first/last must come from the same
+// query: an earlier version focused a specific button directly while the
+// trap computed "first" from the whole dialog (which starts with the policy
+// link in the message paragraph) — the two disagreed, so Shift+Tab from the
+// focused button didn't match the trap's "first" and silently escaped instead
+// of wrapping.
+//
+// Watching the ref itself, not showBanner + nextTick: the banner is wrapped
+// in <ClientOnly>, whose real content mounts on a tick *after* hydration —
+// later than a single nextTick() reaches. Tying this to the ref's own mount
+// is correct regardless of when ClientOnly gets around to it. Caught by an
+// e2e test asserting real focus, not just that the code runs without
+// throwing.
+watch(bannerRef, (el) => {
+  if (!el || !showBanner.value) return
+  focusableElements()[0]?.focus()
 })
 
 function trapFocus(event: KeyboardEvent) {
-  const focusable = bannerRef.value?.querySelectorAll<HTMLElement>('button, a[href], input')
-  if (!focusable?.length) return
+  const focusable = focusableElements()
+  if (!focusable.length) return
   const first = focusable[0]
   const last = focusable[focusable.length - 1]
   if (event.shiftKey && document.activeElement === first) {
@@ -62,7 +79,7 @@ function trapFocus(event: KeyboardEvent) {
         </p>
 
         <div v-if="!customizing" class="flex flex-wrap items-center gap-3">
-          <AppButton ref="firstFocusable" variant="outline" type="button" @click="openCustomize">{{
+          <AppButton variant="outline" type="button" @click="openCustomize">{{
             t('cookieBanner.customize')
           }}</AppButton>
           <AppButton variant="outline" type="button" @click="rejectAll">{{ t('cookieBanner.rejectAll') }}</AppButton>

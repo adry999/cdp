@@ -106,6 +106,11 @@ async function onDrop(i: number) {
       published_at: item.publishedAt,
     })),
   )
+  // The reorder just persisted, but the unsaved-changes guard's snapshot was
+  // taken at page load and doesn't know that — without this, navigating away
+  // right after a drag would falsely prompt "unsaved changes" for a change
+  // that's already saved.
+  markSaved()
 }
 </script>
 
