@@ -3,8 +3,10 @@
  *
  * Two independent classifications drive the flow:
  *  - the visitor's project *stage* (step 1), each tied to a fixed internal tag
- *  - their *budget* range (step 2), reusing the same keys as the plain contact
- *    form so the admin reads one budget vocabulary regardless of entry point
+ *  - their *budget* range (step 2). The sub-1k band is split finer than the
+ *    plain contact form's (`under500` / `500to1k` vs a single `under1k`);
+ *    leadLabels.ts carries labels for all of them so the admin still reads one
+ *    vocabulary.
  *
  * From those two we resolve a single delivery *route*, which decides the offer
  * card shown in step 3 and the "Allocated Route" line in the notification email.
@@ -35,11 +37,10 @@ export const STAGE_TAGS: Record<StageId, string> = {
 }
 
 /**
- * The modal offers the four concrete tiers only. `unsure` exists on the plain
- * contact form but has no place in a routing decision, so it is deliberately
- * absent here.
+ * The modal offers concrete tiers only — no `unsure`, and the low end is split
+ * into `under500` / `500to1k` so a small-budget visitor lands somewhere exact.
  */
-export const QUALIFIER_BUDGET_KEYS = ['under1k', '1to2k', '2to5k', 'over5k'] as const
+export const QUALIFIER_BUDGET_KEYS = ['under500', '500to1k', '1to2k', '2to5k', 'over5k'] as const
 export type QualifierBudgetKey = (typeof QUALIFIER_BUDGET_KEYS)[number]
 
 export type QualifierRoute = 'mass-market-express' | 'custom-engineering-ai'
@@ -55,11 +56,15 @@ export const ROUTE_LABELS: Record<QualifierRoute, string> = {
  *  - Mass-Market Express  ⟵  stage E ("just a simple page")  OR  budget < 1k
  *  - Custom Engineering/AI ⟵  stage A–D  AND  budget ≥ 1k
  *
- * Stage E can never reach the custom route: a "simple fast page" ask stays on
- * the express track no matter the stated budget.
+ * The < 1k boundary is unchanged by the finer low-end tiers: both `under500`
+ * and `500to1k` sit below it and route to express. Stage E can never reach the
+ * custom route — a "simple fast page" ask stays on the express track no matter
+ * the stated budget.
  */
+const SUB_1K: readonly QualifierBudgetKey[] = ['under500', '500to1k']
+
 export function resolveRoute(stage: StageId, budget: QualifierBudgetKey): QualifierRoute {
-  if (stage === 'E' || budget === 'under1k') return 'mass-market-express'
+  if (stage === 'E' || SUB_1K.includes(budget)) return 'mass-market-express'
   return 'custom-engineering-ai'
 }
 

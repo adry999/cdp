@@ -18,7 +18,8 @@ describe('resolveRoute', () => {
 
   it('routes any sub-1k budget to mass-market regardless of stage', () => {
     for (const stage of STAGE_IDS) {
-      expect(resolveRoute(stage, 'under1k')).toBe('mass-market-express')
+      expect(resolveRoute(stage, 'under500')).toBe('mass-market-express')
+      expect(resolveRoute(stage, '500to1k')).toBe('mass-market-express')
     }
   })
 
@@ -66,9 +67,11 @@ describe('guards', () => {
     expect(isStageId(2)).toBe(false)
   })
 
-  it('isQualifierBudgetKey accepts the four tiers but not unsure', () => {
-    expect(isQualifierBudgetKey('under1k')).toBe(true)
+  it('isQualifierBudgetKey accepts the modal tiers but not under1k or unsure', () => {
+    expect(isQualifierBudgetKey('under500')).toBe(true)
+    expect(isQualifierBudgetKey('500to1k')).toBe(true)
     expect(isQualifierBudgetKey('over5k')).toBe(true)
+    expect(isQualifierBudgetKey('under1k')).toBe(false)
     expect(isQualifierBudgetKey('unsure')).toBe(false)
     expect(isQualifierBudgetKey(undefined)).toBe(false)
   })

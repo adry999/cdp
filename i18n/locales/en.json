@@ -105,6 +105,7 @@
         "budget": "Budget",
         "budgetPlaceholder": "Choose a range",
         "budgetOptions": {
+          
           "under1k": "under 1,000 EUR",
           "1to2k": "1,000 – 2,000 EUR",
           "2to5k": "2,000 – 5,000 EUR",
@@ -159,15 +160,15 @@
       "legend": "Where is your project right now?",
       "options": {
         "A": {
-          "title": "I have Figma files or design assets ready.",
+          "title": "I have Figma files,design assets ready. At least a brand book and some specs.",
           "hint": "Full build in Next.js or Nuxt — components, database, API wiring.",
           "budget": "From 2,000 EUR",
           "timeline": "3–6 weeks"
         },
         "B": {
           "title": "I have a raw product concept or a business idea.",
-          "hint": "We shape it into wireframes, a sitemap and a locked spec.",
-          "budget": "From 1,000 EUR",
+          "hint": "We validate and shape it into wireframes, a sitemap and a locked spec.",
+          "budget": "From 500 EUR",
           "timeline": "~1 week"
         },
         "C": {
@@ -177,7 +178,7 @@
           "timeline": "4–8 weeks"
         },
         "D": {
-          "title": "I need custom AI tools or workflow automations.",
+          "title": "I want to automate some parts of my business with custom AI tools or workflow automations.",
           "hint": "LLM pipelines, n8n / Make workflows, internal dashboards.",
           "budget": "From 5,000 EUR",
           "timeline": "6–12 weeks"
@@ -185,13 +186,20 @@
         "E": {
           "title": "I just need a simple, fast website or landing page.",
           "hint": "1–2 pages with a contact form and social links, in 2–3 days.",
-          "budget": "Under 1,000 EUR",
+          "budget": "Under 500 EUR",
           "timeline": "2–3 days"
         }
       }
     },
     "budget": {
-      "legend": "What's your starting budget?"
+      "legend": "What's your starting budget?",
+      "options": {
+        "under500": "Under 500 EUR",
+        "500to1k": "500 – 1,000 EUR",
+        "1to2k": "1,000 – 2,000 EUR",
+        "2to5k": "2,000 – 5,000 EUR",
+        "over5k": "Over 5,000 EUR"
+      }
     },
     "offer": {
       "massMarket": {
