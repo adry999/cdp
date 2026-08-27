@@ -45,7 +45,7 @@
       "titleSuffix": "built to bring you lasting results.",
       "problem": "While most agencies leave you with a half-finished project you can't maintain, we deliver solutions that help you outright.",
       "lead": "Codepedia works with starting entrepreneurs, startup founders and businesses worldwide, from Europe to North America. No limit on that.",
-      "ctaPrimary": "Discuss your project",
+      "ctaPrimary": "Find out if we can help",
       "ctaSecondary": "How we work",
       "facts": {
         "location": "Location",
@@ -160,23 +160,33 @@
       "options": {
         "A": {
           "title": "I have Figma files or design assets ready.",
-          "hint": "Full build in Next.js or Nuxt — components, database, API wiring."
+          "hint": "Full build in Next.js or Nuxt — components, database, API wiring.",
+          "budget": "From 2,000 EUR",
+          "timeline": "3–6 weeks"
         },
         "B": {
           "title": "I have a raw product concept or a business idea.",
-          "hint": "We shape it into wireframes, a sitemap and a locked spec."
+          "hint": "We shape it into wireframes, a sitemap and a locked spec.",
+          "budget": "From 1,000 EUR",
+          "timeline": "~1 week"
         },
         "C": {
           "title": "I have a live product that needs more dev power or speed.",
-          "hint": "Codebase cleanup, database tuning, performance and integrations."
+          "hint": "Codebase cleanup, database tuning, performance and integrations.",
+          "budget": "From 2,000 EUR",
+          "timeline": "4–8 weeks"
         },
         "D": {
           "title": "I need custom AI tools or workflow automations.",
-          "hint": "LLM pipelines, n8n / Make workflows, internal dashboards."
+          "hint": "LLM pipelines, n8n / Make workflows, internal dashboards.",
+          "budget": "From 5,000 EUR",
+          "timeline": "6–12 weeks"
         },
         "E": {
           "title": "I just need a simple, fast website or landing page.",
-          "hint": "1–2 pages with a contact form and social links, in 2–3 days."
+          "hint": "1–2 pages with a contact form and social links, in 2–3 days.",
+          "budget": "Under 1,000 EUR",
+          "timeline": "2–3 days"
         }
       }
     },

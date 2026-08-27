@@ -17,6 +17,14 @@
 export const STAGE_IDS = ['A', 'B', 'C', 'D', 'E'] as const
 export type StageId = (typeof STAGE_IDS)[number]
 
+/**
+ * Display order for step 1: lightest / cheapest engagement first, most involved
+ * last (simple page → scoping → build from designs → work inside a live
+ * codebase → custom AI engineering). The tag IDs above stay canonical; only
+ * the order the cards render in changes.
+ */
+export const STAGE_ORDER = ['E', 'B', 'A', 'C', 'D'] as const satisfies readonly StageId[]
+
 /** Stable, English, never translated — this is what lands in our inbox / CRM. */
 export const STAGE_TAGS: Record<StageId, string> = {
   A: 'Design-to-Code',

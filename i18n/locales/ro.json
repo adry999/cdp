@@ -45,7 +45,7 @@
       "titleSuffix": "construite ca să-ți aducă rezultate de durată.",
       "problem": "În timp ce majoritatea agențiilor îți lasă un proiect pe jumătate făcut, pe care nu-l poți întreține, noi livrăm soluții care te ajută pe deplin.",
       "lead": "Codepedia lucrează cu antreprenori la început de drum, fondatori de startup-uri și companii din toată lumea, din Europa până în America de Nord. Fără limite.",
-      "ctaPrimary": "Discută proiectul",
+      "ctaPrimary": "Vezi dacă te putem ajuta",
       "ctaSecondary": "Cum lucrăm",
       "facts": {
         "location": "Locație",
@@ -160,23 +160,33 @@
       "options": {
         "A": {
           "title": "Am fișiere Figma sau resurse de design gata.",
-          "hint": "Construcție completă în Next.js sau Nuxt — componente, bază de date, integrare API."
+          "hint": "Construcție completă în Next.js sau Nuxt — componente, bază de date, integrare API.",
+          "budget": "De la 2.000 EUR",
+          "timeline": "3–6 săptămâni"
         },
         "B": {
           "title": "Am o idee de produs sau de business, încă brută.",
-          "hint": "O transformăm în wireframe-uri, un sitemap și o specificație blocată."
+          "hint": "O transformăm în wireframe-uri, un sitemap și o specificație blocată.",
+          "budget": "De la 1.000 EUR",
+          "timeline": "~1 săptămână"
         },
         "C": {
           "title": "Am un produs live care are nevoie de mai multă forță de dezvoltare sau viteză.",
-          "hint": "Curățare de cod, optimizare de bază de date, performanță și integrări."
+          "hint": "Curățare de cod, optimizare de bază de date, performanță și integrări.",
+          "budget": "De la 2.000 EUR",
+          "timeline": "4–8 săptămâni"
         },
         "D": {
           "title": "Am nevoie de instrumente AI sau automatizări de flux, făcute la comandă.",
-          "hint": "Pipeline-uri LLM, fluxuri n8n / Make, dashboard-uri interne."
+          "hint": "Pipeline-uri LLM, fluxuri n8n / Make, dashboard-uri interne.",
+          "budget": "De la 5.000 EUR",
+          "timeline": "6–12 săptămâni"
         },
         "E": {
           "title": "Am nevoie doar de un site simplu și rapid sau o pagină de destinație.",
-          "hint": "1–2 pagini cu formular de contact și linkuri sociale, în 2–3 zile."
+          "hint": "1–2 pagini cu formular de contact și linkuri sociale, în 2–3 zile.",
+          "budget": "Sub 1.000 EUR",
+          "timeline": "2–3 zile"
         }
       }
     },

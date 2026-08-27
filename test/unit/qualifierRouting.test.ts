@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   QUALIFIER_BUDGET_KEYS,
   STAGE_IDS,
+  STAGE_ORDER,
   isQualifierBudgetKey,
   isStageId,
   offerKey,
@@ -41,6 +42,17 @@ describe('offerKey', () => {
     expect(offerKey('B', 'custom-engineering-ai')).toBe('blueprint')
     expect(offerKey('C', 'custom-engineering-ai')).toBe('refactor')
     expect(offerKey('D', 'custom-engineering-ai')).toBe('automation')
+  })
+})
+
+describe('STAGE_ORDER', () => {
+  it('is a permutation of every stage id', () => {
+    expect([...STAGE_ORDER].sort()).toEqual([...STAGE_IDS].sort())
+  })
+
+  it('leads with the mass-market page and ends with custom AI', () => {
+    expect(STAGE_ORDER[0]).toBe('E')
+    expect(STAGE_ORDER[STAGE_ORDER.length - 1]).toBe('D')
   })
 })
 
