@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import type { HomeApiResponse } from '~/types/home'
-
 const { t, locale } = useI18n()
-const { data } = await useAsyncData<HomeApiResponse>('home', () => $fetch('/api/home'))
+const { data } = await useHomeData()
 const settings = computed(() => data.value?.settings)
+const { enabled: qualifierEnabled, open: openQualifier } = useQualifier()
 </script>
 
 <template>
@@ -29,6 +28,9 @@ const settings = computed(() => data.value?.settings)
       />
       <FactCard :label="t('home.contact.facts.hours')" :value="settings.hours ?? ''" />
     </div>
-    <ContactForm />
+    <div v-if="qualifierEnabled" class="mt-[clamp(28px,3vw,40px)]">
+      <AppButton variant="ink" @click="openQualifier">{{ t('qualifier.trigger') }}</AppButton>
+    </div>
+    <ContactForm v-else />
   </SiteSection>
 </template>

@@ -146,5 +146,80 @@
       "team": "Echipă",
       "users": "Utilizatori"
     }
+  },
+  "qualifier": {
+    "trigger": "Începe un proiect",
+    "eyebrow": "Începe un proiect",
+    "title": "Hai să-ți plasăm proiectul.",
+    "close": "Închide",
+    "next": "Continuă",
+    "back": "Înapoi",
+    "progress": "Pasul {current} din {total}",
+    "stage": {
+      "legend": "Unde e proiectul tău acum?",
+      "options": {
+        "A": {
+          "title": "Am fișiere Figma sau resurse de design gata.",
+          "hint": "Construcție completă în Next.js sau Nuxt — componente, bază de date, integrare API."
+        },
+        "B": {
+          "title": "Am o idee de produs sau de business, încă brută.",
+          "hint": "O transformăm în wireframe-uri, un sitemap și o specificație blocată."
+        },
+        "C": {
+          "title": "Am un produs live care are nevoie de mai multă forță de dezvoltare sau viteză.",
+          "hint": "Curățare de cod, optimizare de bază de date, performanță și integrări."
+        },
+        "D": {
+          "title": "Am nevoie de instrumente AI sau automatizări de flux, făcute la comandă.",
+          "hint": "Pipeline-uri LLM, fluxuri n8n / Make, dashboard-uri interne."
+        },
+        "E": {
+          "title": "Am nevoie doar de un site simplu și rapid sau o pagină de destinație.",
+          "hint": "1–2 pagini cu formular de contact și linkuri sociale, în 2–3 zile."
+        }
+      }
+    },
+    "budget": {
+      "legend": "Care e bugetul de pornire?"
+    },
+    "offer": {
+      "massMarket": {
+        "kicker": "Pagină Express",
+        "title": "Un site de 1–2 pagini, live în 2–3 zile.",
+        "body": "Construim o pagină de destinație de 1–2 pagini, cu formular de contact integrat și linkuri sociale, livrată în 2–3 zile. Nivelul nostru de intrare."
+      },
+      "fullStack": {
+        "kicker": "Design-to-Code",
+        "title": "Construcție full-stack din design-urile tale.",
+        "body": "Figma-ul tău devine un produs funcțional: front-end în Next.js sau Nuxt, bază de date și integrare API."
+      },
+      "blueprint": {
+        "kicker": "Concept-to-Spec",
+        "title": "Scop și blueprint AI.",
+        "body": "Wireframe-uri rapide, un sitemap generat și o specificație funcțională blocată — ca build-ul să pornească dintr-un plan clar."
+      },
+      "refactor": {
+        "kicker": "Existing-Site-Refactor",
+        "title": "Modernizare și refactorizare.",
+        "body": "Curățare .NET / Node / Nest, optimizare Postgres, un salt real de performanță și integrări cu terți."
+      },
+      "automation": {
+        "kicker": "Custom-AI-Automation",
+        "title": "Inginerie AI.",
+        "body": "Pipeline-uri LLM la comandă, fluxuri n8n / Make și dashboard-uri interne conectate la sistemele tale."
+      }
+    },
+    "contact": {
+      "email": "Email de lucru sau date de contact",
+      "handle": "Instagram / LinkedIn / site (opțional)",
+      "notes": "Note despre proiect sau o cerere anume (opțional)",
+      "submit": "Trimite solicitarea"
+    },
+    "success": {
+      "title": "Mulțumim — am primit detaliile.",
+      "body": "Analizăm ce ai trimis și revenim într-o zi lucrătoare cu pașii următori.",
+      "done": "Închide"
+    }
   }
 }

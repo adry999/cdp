@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n()
+const { enabled: qualifierEnabled } = useQualifier()
 </script>
 
 <template>
@@ -11,5 +12,6 @@ const { t } = useI18n()
     </main>
     <SiteFooter />
     <CookieBanner />
+    <QualifierModal v-if="qualifierEnabled" />
   </div>
 </template>

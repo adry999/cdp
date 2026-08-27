@@ -146,5 +146,80 @@
       "team": "Team",
       "users": "Users"
     }
+  },
+  "qualifier": {
+    "trigger": "Start a project",
+    "eyebrow": "Start a project",
+    "title": "Let's place your project.",
+    "close": "Close",
+    "next": "Continue",
+    "back": "Back",
+    "progress": "Step {current} of {total}",
+    "stage": {
+      "legend": "Where is your project right now?",
+      "options": {
+        "A": {
+          "title": "I have Figma files or design assets ready.",
+          "hint": "Full build in Next.js or Nuxt — components, database, API wiring."
+        },
+        "B": {
+          "title": "I have a raw product concept or a business idea.",
+          "hint": "We shape it into wireframes, a sitemap and a locked spec."
+        },
+        "C": {
+          "title": "I have a live product that needs more dev power or speed.",
+          "hint": "Codebase cleanup, database tuning, performance and integrations."
+        },
+        "D": {
+          "title": "I need custom AI tools or workflow automations.",
+          "hint": "LLM pipelines, n8n / Make workflows, internal dashboards."
+        },
+        "E": {
+          "title": "I just need a simple, fast website or landing page.",
+          "hint": "1–2 pages with a contact form and social links, in 2–3 days."
+        }
+      }
+    },
+    "budget": {
+      "legend": "What's your starting budget?"
+    },
+    "offer": {
+      "massMarket": {
+        "kicker": "Fast-Track Express Page",
+        "title": "A sleek 1–2 page site, live in 2–3 days.",
+        "body": "We build a 1–2 page landing page with an integrated contact form and social links, delivered in 2–3 days. Our lightest entry tier."
+      },
+      "fullStack": {
+        "kicker": "Design-to-Code",
+        "title": "Full-stack build from your designs.",
+        "body": "Your Figma becomes a working product: a component front end in Next.js or Nuxt, database and API integration."
+      },
+      "blueprint": {
+        "kicker": "Concept-to-Spec",
+        "title": "Scope & AI blueprinting.",
+        "body": "Fast wireframes, a generated sitemap and a locked functional spec — so the build starts from a clear plan."
+      },
+      "refactor": {
+        "kicker": "Existing-Site-Refactor",
+        "title": "Modernisation & refactoring.",
+        "body": ".NET / Node / Nest cleanup, Postgres optimisation, a real performance boost and third-party integrations."
+      },
+      "automation": {
+        "kicker": "Custom-AI-Automation",
+        "title": "AI engineering.",
+        "body": "Custom LLM pipelines, n8n / Make workflows and internal dashboards wired to your systems."
+      }
+    },
+    "contact": {
+      "email": "Work email or contact info",
+      "handle": "Instagram / LinkedIn / website (optional)",
+      "notes": "Project notes or a specific request (optional)",
+      "submit": "Send request"
+    },
+    "success": {
+      "title": "Thanks — we've got your details.",
+      "body": "We'll review what you sent and get back to you within one working day with next steps.",
+      "done": "Close"
+    }
   }
 }
