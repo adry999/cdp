@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import type { ProjectRow } from '~/utils/mapProject'
-import type { HomeApiResponse } from '~/types/home'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
 const { data: rows } = await useAsyncData<ProjectRow[]>('projects', () => $fetch('/api/projects'))
-const { data: home } = await useAsyncData<HomeApiResponse>('home', () => $fetch('/api/home'))
+const { data: home } = await useHomeData()
 
 const list = computed(() => (rows.value ?? []).map((row) => mapProject(row, locale.value as 'ro' | 'en')))
 const ndaNote = computed(() => {

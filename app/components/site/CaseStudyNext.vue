@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import type { MappedProject } from '~/utils/mapProject'
-import type { HomeApiResponse } from '~/types/home'
 
 defineProps<{ project: MappedProject }>()
 const { t } = useI18n()
 const localePath = useLocalePath()
 
-const { data: home } = await useAsyncData<HomeApiResponse>('home', () => $fetch('/api/home'))
+const { data: home } = await useHomeData()
 const email = computed(() => home.value?.settings?.contact_email ?? '')
 </script>
 

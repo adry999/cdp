@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import type { HomeApiResponse } from '~/types/home'
-
 const { t } = useI18n()
-const { data } = await useAsyncData<HomeApiResponse>('home', () => $fetch('/api/home'))
+const { data } = await useHomeData()
 const groups = computed(() => data.value?.stackGroups ?? [])
 </script>
 

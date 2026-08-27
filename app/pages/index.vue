@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import type { HomeApiResponse } from '~/types/home'
-
 const { t, locale } = useI18n()
 const config = useRuntimeConfig()
 
 // Shares the 'home' cache key with HomeContact/HomeWork/etc. — every child
 // section below fetches the same key, so this doesn't add a request.
-const { data: home } = await useAsyncData<HomeApiResponse>('home', () => $fetch('/api/home'))
+const { data: home } = await useHomeData()
 const settings = computed(() => home.value?.settings)
 
 // CMS meta_title/meta_description/og_image were being saved from Setări and

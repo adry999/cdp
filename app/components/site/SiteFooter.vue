@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { HomeApiResponse } from '~/types/home'
-
 withDefaults(defineProps<{ compact?: boolean }>(), { compact: false })
 
 const { t, locale } = useI18n()
@@ -8,7 +6,7 @@ const { openSettings } = useCookieConsent()
 
 // Shares the 'home' cache key with HomeContact/HomeWork/app.vue/etc., so this
 // doesn't add a second round trip on pages that already fetch it.
-const { data: home } = await useAsyncData<HomeApiResponse>('home', () => $fetch('/api/home'))
+const { data: home } = await useHomeData()
 const settings = computed(() => home.value?.settings)
 
 // CMS values were being saved (Setări → Footer) and silently ignored — the
