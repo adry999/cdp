@@ -48,12 +48,12 @@
       "ctaPrimary": "Vezi dacă te putem ajuta",
       "ctaSecondary": "Cum lucrăm",
       "facts": {
-        "location": "Locație",
+        "location": "Bazați în",
         "locationValue": "Chișinău, Moldova",
         "markets": "Piețe",
-        "marketsValue": "România · Moldova · UE · remote",
-        "stack": "Stack",
-        "stackValue": "TypeScript, end-to-end"
+        "marketsValue": "Moldova/România · UE · America de Nord · Lumea întreagă",
+        "stack": "Stack tehnologic",
+        "stackValue": "React (Next.js), Vue (Nuxt.js), .NET, Node.js, PostgreSQL, Supabase, n8n, Make, LLM pipelines"
       }
     },
     "services": {
