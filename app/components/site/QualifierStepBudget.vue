@@ -24,7 +24,8 @@ const { t } = useI18n()
           name="qualifier-budget"
           :value="key"
           :selected="props.modelValue === key"
-          :title="t(`qualifier.budget.options.${key}`)"
+          :title="t(`qualifier.budget.options.${key}.label`)"
+          :hint="t(`qualifier.budget.options.${key}.hint`)"
           @select="emit('update:modelValue', $event as QualifierBudgetKey)"
         />
       </div>

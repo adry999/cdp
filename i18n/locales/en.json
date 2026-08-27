@@ -194,11 +194,11 @@
     "budget": {
       "legend": "What's your starting budget?",
       "options": {
-        "under500": "Under 500 EUR",
-        "500to1k": "500 – 1,000 EUR",
-        "1to2k": "1,000 – 2,000 EUR",
-        "2to5k": "2,000 – 5,000 EUR",
-        "over5k": "Over 5,000 EUR"
+        "under500": { "label": "Under 500 EUR", "hint": "Fast-track 1–2 page landing" },
+        "500to1k": { "label": "500 – 1,000 EUR", "hint": "Small site or a short scoped sprint" },
+        "1to2k": { "label": "1,000 – 2,000 EUR", "hint": "Blueprint, or a focused build" },
+        "2to5k": { "label": "2,000 – 5,000 EUR", "hint": "Full build from designs or an existing codebase" },
+        "over5k": { "label": "Over 5,000 EUR", "hint": "Heavier engineering or custom AI" }
       }
     },
     "offer": {

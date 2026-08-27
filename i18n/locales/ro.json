@@ -193,11 +193,11 @@
     "budget": {
       "legend": "Care e bugetul de pornire?",
       "options": {
-        "under500": "Sub 500 EUR",
-        "500to1k": "500 – 1.000 EUR",
-        "1to2k": "1.000 – 2.000 EUR",
-        "2to5k": "2.000 – 5.000 EUR",
-        "over5k": "Peste 5.000 EUR"
+        "under500": { "label": "Sub 500 EUR", "hint": "Landing rapid, 1–2 pagini" },
+        "500to1k": { "label": "500 – 1.000 EUR", "hint": "Site mic sau un sprint scurt, bine delimitat" },
+        "1to2k": { "label": "1.000 – 2.000 EUR", "hint": "Blueprint, sau o construcție focusată" },
+        "2to5k": { "label": "2.000 – 5.000 EUR", "hint": "Construcție completă, din design sau cod existent" },
+        "over5k": { "label": "Peste 5.000 EUR", "hint": "Inginerie mai amplă sau AI custom" }
       }
     },
     "offer": {
