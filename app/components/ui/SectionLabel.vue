@@ -14,6 +14,6 @@ withDefaults(
     class="font-mono text-xs uppercase tracking-[0.08em]"
     :class="inverted ? 'text-muted-ink' : 'text-muted'"
   >
-    <span :class="inverted ? 'text-paper' : 'text-ink'">{{ number }}</span> / {{ label }}
+    <span class="text-signal">{{ number }}</span> / {{ label }}
   </div>
 </template>

@@ -17,7 +17,7 @@ const { t } = useI18n()
         class="flex flex-wrap gap-[clamp(16px,3vw,40px)] border-t border-hairline py-5"
         :class="{ 'border-b': i === project.caseStudy.steps.length - 1 }"
       >
-        <div class="flex-[0_0_80px] font-mono text-xs tracking-[0.08em] text-muted">{{ step.number }}</div>
+        <div class="flex-[0_0_80px] font-mono text-xs tracking-[0.08em] text-signal">{{ step.number }}</div>
         <div class="flex min-w-0 flex-[1_1_340px] flex-wrap gap-[clamp(16px,3vw,40px)]">
           <h3 class="m-0 flex-[0_0_200px] text-[19px] font-medium tracking-[-0.02em]">{{ step.title }}</h3>
           <p class="m-0 max-w-[58ch] flex-[1_1_280px] text-base text-muted">{{ step.text }}</p>

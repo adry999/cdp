@@ -25,7 +25,7 @@ function caseStudyLocalePath(target: 'ro' | 'en') {
 </script>
 
 <template>
-  <header class="sticky top-0 z-20 border-b border-hairline bg-paper">
+  <header class="sticky top-0 z-20 bg-paper">
     <div class="mx-auto flex min-h-16 max-w-[1280px] items-center justify-between gap-6 px-gutter">
       <NuxtLink :to="localePath('index')" aria-label="Codepedia" class="flex items-center">
         <img
@@ -64,5 +64,7 @@ function caseStudyLocalePath(target: 'ro' | 'en') {
         </span>
       </nav>
     </div>
+
+    <div class="h-[2px] bg-signal" />
   </header>
 </template>

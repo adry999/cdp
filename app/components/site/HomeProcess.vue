@@ -18,7 +18,7 @@ const steps = computed(() => data.value?.processSteps ?? [])
         class="flex flex-wrap gap-[clamp(16px,3vw,40px)] border-t border-hairline py-[clamp(20px,2.5vw,28px)]"
         :class="{ 'border-b': i === steps.length - 1 }"
       >
-        <div class="flex-[0_0_80px] font-mono text-xs tracking-[0.08em] text-muted">
+        <div class="flex-[0_0_80px] font-mono text-xs tracking-[0.08em] text-signal">
           {{ String(i + 1).padStart(2, '0') }}
         </div>
         <div class="flex min-w-0 flex-[1_1_340px] flex-wrap gap-[clamp(16px,3vw,40px)]">

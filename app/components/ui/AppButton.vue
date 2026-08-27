@@ -16,15 +16,13 @@ const base =
   'inline-block rounded text-[15px] font-medium no-underline transition-colors duration-[120ms] ease-out hover:no-underline disabled:cursor-not-allowed disabled:opacity-60'
 
 const variantClass = computed(() => {
-  if (props.variant === 'signal') {
-    return `${base} bg-signal px-[22px] py-[14px] text-paper hover:bg-ink hover:text-paper`
-  }
   if (props.variant === 'outline') {
     return props.inverted
       ? `${base} border border-paper px-[21px] py-[13px] text-paper hover:border-body-ink hover:text-paper`
       : `${base} border border-ink px-[21px] py-[13px] text-ink hover:border-muted hover:text-ink`
   }
-  return `${base} bg-ink px-[22px] py-[14px] text-paper hover:bg-signal hover:text-paper`
+  // Solid buttons (`ink` and `signal`) share one look: orange fill, ink on hover.
+  return `${base} bg-signal px-[22px] py-[14px] text-paper hover:bg-ink hover:text-paper`
 })
 
 // <script setup> components are closed by default — a parent's template ref

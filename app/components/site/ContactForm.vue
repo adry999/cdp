@@ -83,9 +83,9 @@ async function handleSubmit() {
         required
         :aria-invalid="!!fieldErrors.name"
         :aria-describedby="fieldErrors.name ? 'lead-name-error' : undefined"
-        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-ink"
+        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
       />
-      <p v-if="fieldErrors.name" id="lead-name-error" class="mt-1 font-mono text-xs text-ink">{{ fieldErrors.name }}</p>
+      <p v-if="fieldErrors.name" id="lead-name-error" class="mt-1 font-mono text-xs text-signal">{{ fieldErrors.name }}</p>
     </div>
 
     <div>
@@ -100,9 +100,9 @@ async function handleSubmit() {
         autocomplete="email"
         :aria-invalid="!!fieldErrors.email"
         :aria-describedby="fieldErrors.email ? 'lead-email-error' : undefined"
-        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-ink"
+        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
       />
-      <p v-if="fieldErrors.email" id="lead-email-error" class="mt-1 font-mono text-xs text-ink">{{ fieldErrors.email }}</p>
+      <p v-if="fieldErrors.email" id="lead-email-error" class="mt-1 font-mono text-xs text-signal">{{ fieldErrors.email }}</p>
     </div>
 
     <div>
@@ -114,7 +114,7 @@ async function handleSubmit() {
         v-model="form.company"
         type="text"
         autocomplete="organization"
-        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-ink"
+        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
       />
     </div>
 
@@ -129,9 +129,9 @@ async function handleSubmit() {
         required
         :aria-invalid="!!fieldErrors.message"
         :aria-describedby="fieldErrors.message ? 'lead-message-error' : undefined"
-        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-ink"
+        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
       />
-      <p v-if="fieldErrors.message" id="lead-message-error" class="mt-1 font-mono text-xs text-ink">
+      <p v-if="fieldErrors.message" id="lead-message-error" class="mt-1 font-mono text-xs text-signal">
         {{ fieldErrors.message }}
       </p>
     </div>
@@ -143,7 +143,7 @@ async function handleSubmit() {
       <select
         id="lead-budget"
         v-model="form.budget"
-        class="mt-2 w-full rounded border border-hairline bg-paper px-3.5 py-3 text-base outline-none focus:border-ink"
+        class="mt-2 w-full rounded border border-hairline bg-paper px-3.5 py-3 text-base outline-none focus:border-signal"
       >
         <option value="">{{ t('home.contact.form.budgetPlaceholder') }}</option>
         <option v-for="key in budgetKeys" :key="key" :value="key">
@@ -160,11 +160,11 @@ async function handleSubmit() {
         id="lead-source"
         v-model="form.source"
         type="text"
-        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-ink"
+        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
       />
     </div>
 
-    <p v-if="status === 'error'" role="alert" aria-live="polite" class="font-mono text-xs text-ink">
+    <p v-if="status === 'error'" role="alert" aria-live="polite" class="font-mono text-xs text-signal">
       {{ t('home.contact.form.error') }}
     </p>
 

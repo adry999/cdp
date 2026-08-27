@@ -34,7 +34,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <header class="sticky top-0 z-20 border-b border-hairline bg-paper">
+  <header class="sticky top-0 z-20 bg-paper">
     <div class="mx-auto flex min-h-16 max-w-[1280px] items-center justify-between gap-6 px-gutter">
       <NuxtLink :to="localePath('index')" aria-label="Codepedia" class="flex items-center">
         <img
@@ -48,7 +48,12 @@ onMounted(() => {
 
       <nav class="flex items-center gap-[clamp(14px,2vw,28px)] font-mono text-xs uppercase tracking-[0.08em]">
         <div class="hidden items-center gap-[clamp(14px,2vw,28px)] border-r border-hairline pr-[clamp(14px,2vw,28px)] nav:flex">
-          <a v-for="link in navLinks" :key="link.hash" :href="link.hash" class="text-muted">
+          <a
+            v-for="link in navLinks"
+            :key="link.hash"
+            :href="link.hash"
+            class="text-muted hover:text-signal"
+          >
             {{ t(link.label) }}
           </a>
         </div>
@@ -95,12 +100,17 @@ onMounted(() => {
         v-for="(link, i) in navLinks"
         :key="link.hash"
         :href="link.hash"
-        class="py-4 text-ink"
-        :class="{ 'border-b border-hairline': i !== navLinks.length - 1 }"
+        class="py-4"
+        :class="[
+          i === navLinks.length - 1 ? 'text-signal' : 'text-ink',
+          { 'border-b border-hairline': i !== navLinks.length - 1 },
+        ]"
         @click="menuOpen = false"
       >
         {{ t(link.label) }}
       </a>
     </div>
+
+    <div class="h-[2px] bg-signal" />
   </header>
 </template>
