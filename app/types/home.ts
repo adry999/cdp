@@ -61,6 +61,11 @@ export interface SiteSettingsRow {
   footer_line_ro: string | null
   footer_line_en: string | null
   copyright_year: number | null
+  meta_title_ro: string | null
+  meta_title_en: string | null
+  meta_description_ro: string | null
+  meta_description_en: string | null
+  og_image_path: string | null
 }
 
 export interface HomeApiResponse {

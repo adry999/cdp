@@ -86,15 +86,6 @@ export function validateProjectPayload(input: ProjectPayloadInput): ValidationIs
     }
   }
 
-  // A published project with no gallery image renders an empty frame; a blank
-  // path stored in the database renders a broken <img src="">.
-  if (input.published) {
-    const usable = input.gallery.filter((img) => img.path?.trim())
-    if (usable.length < 2) {
-      issues.push({ field: 'gallery', message: 'Un proiect publicat are nevoie de minim 2 imagini în galerie.' })
-    }
-  }
-
   return issues
 }
 

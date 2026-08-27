@@ -10,6 +10,30 @@ if (process.env.NODE_ENV === 'production' && !process.env.NUXT_PUBLIC_SITE_URL) 
   )
 }
 
+const supabaseHost = new URL(
+  process.env.NUXT_PUBLIC_SUPABASE_URL || 'https://xlrkuaxnkidslrhdelpm.supabase.co',
+).hostname
+
+// No CSP/frame/sniffing headers were configured anywhere — Nitro/Vercel ship
+// none by default. 'unsafe-inline' on script-src is a real gap, not an
+// oversight: the GA bootstrap and the Meta Pixel loader (app/plugins/
+// analytics.client.ts) both inject inline <script> tags with no nonce/hash
+// wiring in place, and both are currently inert (no ID configured) so this
+// is the safe moment to add the header without breaking anything live.
+// Tightening script-src to a nonce is real follow-up work, not done here.
+const CSP = [
+  `default-src 'self'`,
+  `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net`,
+  `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
+  `font-src 'self' https://fonts.gstatic.com`,
+  `img-src 'self' data: https://${supabaseHost} https://www.facebook.com`,
+  `connect-src 'self' https://www.google-analytics.com https://${supabaseHost}`,
+  `frame-ancestors 'none'`,
+  `base-uri 'self'`,
+  `form-action 'self'`,
+  `object-src 'none'`,
+].join('; ')
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-08-05',
   devtools: { enabled: true },
@@ -50,6 +74,16 @@ export default defineNuxtConfig({
     '/api/home': { swr: 60 },
     '/api/projects': { swr: 60 },
     '/api/projects/**': { swr: 300 },
+
+    '/**': {
+      headers: {
+        'Content-Security-Policy': CSP,
+        'X-Content-Type-Options': 'nosniff',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
+        'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+        'X-Frame-Options': 'DENY',
+      },
+    },
   },
 
   image: {
@@ -59,7 +93,7 @@ export default defineNuxtConfig({
     // functions cannot load. The ipx fallback keeps `npm run dev` working
     // everywhere else.
     provider: process.env.VERCEL ? 'vercel' : 'ipx',
-    domains: [new URL(process.env.NUXT_PUBLIC_SUPABASE_URL || 'https://xlrkuaxnkidslrhdelpm.supabase.co').hostname],
+    domains: [supabaseHost],
   },
 
   supabase: {

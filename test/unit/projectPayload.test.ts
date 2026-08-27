@@ -62,20 +62,16 @@ describe('validateProjectPayload', () => {
     expect(issues.map((i) => i.field)).toEqual(expect.arrayContaining(['title', 'lead']))
   })
 
-  it('requires two real gallery images before publishing', () => {
-    const withBlanks = base({
-      published: true,
-      gallery: [
-        { path: null, altRo: '', altEn: '' },
-        { path: '  ', altRo: '', altEn: '' },
-      ],
-    })
-    expect(validateProjectPayload(withBlanks).map((i) => i.field)).toContain('gallery')
-  })
-
-  it('does not block an unpublished draft on gallery count', () => {
-    const draft = base({ published: false, gallery: [{ path: null, altRo: '', altEn: '' }] })
-    expect(validateProjectPayload(draft).map((i) => i.field)).not.toContain('gallery')
+  it('allows publishing with no gallery images', () => {
+    // There was a rule requiring 2 real gallery images before publishing —
+    // removed because all 3 currently-published projects have zero (see
+    // TODO.md: no case-study screenshots exist yet), which meant this rule
+    // blocked the admin from re-saving *any* of their real, live projects.
+    // mapProject.ts already renders a placeholder frame for an empty
+    // gallery rather than a broken <img>, so there was never a rendering
+    // reason to require this at save time.
+    const noGallery = base({ published: true, gallery: [] })
+    expect(validateProjectPayload(noGallery)).toEqual([])
   })
 })
 

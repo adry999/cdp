@@ -21,6 +21,7 @@ const form = reactive({
   copyrightYear: s?.copyright_year != null ? String(s.copyright_year) : '',
   metaTitle: { ro: s?.meta_title_ro ?? '', en: s?.meta_title_en ?? '' },
   metaDescription: { ro: s?.meta_description_ro ?? '', en: s?.meta_description_en ?? '' },
+  ogImagePath: s?.og_image_path ?? null as string | null,
 })
 
 const saveState = ref<'idle' | 'saving' | 'saved' | 'error'>('idle')
@@ -45,6 +46,7 @@ async function save() {
     meta_title_en: form.metaTitle.en || null,
     meta_description_ro: form.metaDescription.ro || null,
     meta_description_en: form.metaDescription.en || null,
+    og_image_path: form.ogImagePath,
     updated_at: new Date().toISOString(),
   })
   saveState.value = error ? 'error' : 'saved'
@@ -104,10 +106,11 @@ async function save() {
             <AdminFieldPair label="Meta description" textarea v-model:ro="form.metaDescription.ro" v-model:en="form.metaDescription.en" />
           </div>
           <div class="mt-4">
-            <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Imagine OG</div>
-            <div class="mt-2 flex items-center gap-3 rounded border border-hairline px-3.5 py-3 text-[15px] text-muted">
-              Se încarcă din Supabase Storage — disponibil după conectare.
+            <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Imagine OG (1200 × 630)</div>
+            <div class="mt-2 max-w-[320px]">
+              <AdminImageUpload v-model="form.ogImagePath" ratio="16/9" label="[ imagine OG — 1200 × 630 ]" path-prefix="site/og-image" />
             </div>
+            <p class="mt-2 text-[13px] text-muted">Dacă lipsește, se folosește og-image.png din site.</p>
           </div>
         </section>
       </div>

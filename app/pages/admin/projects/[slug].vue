@@ -383,7 +383,7 @@ async function cleanupReplacedMedia() {
             </div>
             <div>
               <div class="flex items-center justify-between">
-                <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Galerie (minim 2 la publicare)</div>
+                <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Galerie</div>
                 <button type="button" class="cursor-pointer border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-[0.08em] text-signal" @click="addGalleryImage">
                   + Imagine
                 </button>
