@@ -3,7 +3,7 @@ import type { StageId, QualifierBudgetKey } from '~~/shared/utils/qualifierRouti
 import { STAGE_TAGS, resolveRoute, ROUTE_LABELS } from '~~/shared/utils/qualifierRouting'
 import type { QualifierContactPayload } from './QualifierStepContact.vue'
 
-const { isOpen, close } = useQualifier()
+const { isOpen, initialStage, close } = useQualifier()
 const { t, locale } = useI18n()
 
 const TOTAL_STEPS = 3
@@ -99,6 +99,8 @@ watch(isOpen, (open) => {
     restoreOverflow = document.documentElement.style.overflow
     document.documentElement.style.overflow = 'hidden'
     reset()
+    // A caller (the homepage growth timeline) may have named a stage to land on.
+    if (initialStage.value) stage.value = initialStage.value
     nextTick(() => {
       focusables()[0]?.focus()
     })
