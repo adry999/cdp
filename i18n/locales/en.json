@@ -33,8 +33,18 @@
   "home": {
     "hero": {
       "sectionLabel": "Studio",
-      "title": "Web applications built properly, from database schema to deployment.",
-      "lead": "Codepedia is a small full-stack studio in Moldova. We work with founders and business owners in Romania, Moldova and Western Europe who need senior-level execution instead of another half-finished project.",
+      "titlePhrases": [
+        "Landing Page",
+        "Business Websites",
+        "Product Websites",
+        "Marketing Websites",
+        "Web Applications",
+        "Custom APIs",
+        "Third Party Integrations"
+      ],
+      "titleSuffix": "built to bring you lasting results.",
+      "problem": "While most agencies leave you with a half-finished project you can't maintain, we deliver solutions that help you outright.",
+      "lead": "Codepedia works with starting entrepreneurs, startup founders and businesses worldwide, from Europe to North America. No limit on that.",
       "ctaPrimary": "Discuss your project",
       "ctaSecondary": "How we work",
       "facts": {

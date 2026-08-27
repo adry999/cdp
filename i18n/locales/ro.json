@@ -33,8 +33,18 @@
   "home": {
     "hero": {
       "sectionLabel": "Studio",
-      "title": "Aplicații web construite corect, de la schema bazei de date până la deployment.",
-      "lead": "Codepedia este un studio mic de dezvoltare full-stack din Moldova. Lucrăm cu fondatori și proprietari de business din România, Moldova și Europa de Vest care au nevoie de execuție de nivel senior, nu de încă un proiect neterminat.",
+      "titlePhrases": [
+        "Landing page-uri",
+        "Site-uri de business",
+        "Site-uri de produs",
+        "Site-uri de marketing",
+        "Aplicații web",
+        "API-uri custom",
+        "Integrări cu terți"
+      ],
+      "titleSuffix": "construite pentru rezultate de durată.",
+      "problem": "Majoritatea agențiilor îți lasă un proiect pe jumătate făcut, pe care nu-l poți întreține, sau un sistem no-code care se blochează la scalare. Noi livrăm cod de nivel producție, care îți aparține integral.",
+      "lead": "Codepedia lucrează cu fondatori și companii din toată lumea, din Europa până în America de Nord.",
       "ctaPrimary": "Discută proiectul",
       "ctaSecondary": "Cum lucrăm",
       "facts": {
