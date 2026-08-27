@@ -58,17 +58,13 @@
     },
     "services": {
       "sectionLabel": "Servicii",
-      "title": "Două niveluri de lucru. Ambele livrate cap-coadă.",
-      "level1": {
-        "badge": "Site-uri",
-        "meta": "1 – 3 săptămâni · de la [ X ] EUR",
-        "title": "Site-uri făcute pur și simplu bine",
-        "lead": "Site de prezentare, landing page, magazin online. Scrise de mână, rapide, indexabile, editabile de tine. Fără page builder care încetinește site-ul."
-      },
-      "level2": {
-        "badge": "Aplicații web",
-        "meta": "6 – 12 săptămâni · de la [ X ] EUR",
-        "lead": "Când munca este logică de business, nu pagini: roluri și permisiuni, modelare de date, integrări, automatizări."
+      "title": "De unde ai vrea să începem munca? Vezi fiecare etapă.",
+      "intro": "Cinci etape, de la o pagină rapidă până la inginerie AI la comandă. Alege unde ești acum — de acolo pornim.",
+      "timeline": {
+        "clientStage": "Unde ești",
+        "whatYouGet": "Ce primești",
+        "cta": "Începe de la această etapă",
+        "nodeLabel": "Etapa {step}: {label}"
       },
       "note": "Unele proiecte sunt sub NDA. Referințe detaliate la discuția de diagnostic."
     },

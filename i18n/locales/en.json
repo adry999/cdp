@@ -58,17 +58,13 @@
     },
     "services": {
       "sectionLabel": "Services",
-      "title": "Two levels of work. Both delivered end to end.",
-      "level1": {
-        "badge": "Websites",
-        "meta": "1 – 3 weeks · from [ X ] EUR",
-        "title": "Websites that are simply built well",
-        "lead": "Presentation sites, landing pages and online stores. Written by hand, fast, indexable, editable by you. No page builder to slow the site down."
-      },
-      "level2": {
-        "badge": "Web applications",
-        "meta": "6 – 12 weeks · from [ X ] EUR",
-        "lead": "When the work is business logic rather than pages: roles and permissions, data modelling, integrations, automation."
+      "title": "Where do you want to start? See each stage.",
+      "intro": "Five stages, from a fast one-page launch to custom AI engineering. Pick where you are now — that's where we begin.",
+      "timeline": {
+        "clientStage": "Where you are",
+        "whatYouGet": "What you get",
+        "cta": "Start at this stage",
+        "nodeLabel": "Stage {step}: {label}"
       },
       "note": "Some projects are under NDA. Detailed references available on the diagnostic call."
     },
