@@ -200,8 +200,22 @@
     },
     "about": {
       "sectionLabel": "Despre",
-      "title": "Un studio mic, cu oameni seniori pe fiecare proiect.",
-      "lead": "Codepedia lucrează cu două-trei proiecte simultan. Nu există account manager și nu există junior pe care să îl înveți tu. Persoana cu care discuți scopul este persoana care scrie codul."
+      "title": "Studio boutique. Ingineri seniori. Acces direct.",
+      "lead": "Codepedia preia un număr limitat de proiecte simultan pentru a garanta atenție maximă. Fără intermediari care traduc greșit cerințele și fără juniori care învață pe bugetul tău. Discuți direct cu inginerul care îți construiește produsul.",
+      "pillars": {
+        "ownership": {
+          "title": "Proprietate 100% din prima zi",
+          "body": "Codul sursă, baza de date și infrastructura sunt configurate direct în conturile tale. Ai control total și zero lock-in."
+        },
+        "pricing": {
+          "title": "Estimări fixe și cost asumat",
+          "body": "Preț fix pe fiecare etapă agreată. Dacă subestimăm complexitatea unei sarcini, absorbim costul orelor suplimentare."
+        },
+        "communication": {
+          "title": "Comunicare directă și multilingvă",
+          "body": "Discuții tehnice și specificații clare în română, engleză sau rusă. Fără jargon inutil, doar decizii rapide de inginerie."
+        }
+      }
     },
     "faq": {
       "sectionLabel": "Întrebări"

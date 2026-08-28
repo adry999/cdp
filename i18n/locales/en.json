@@ -200,8 +200,22 @@
     },
     "about": {
       "sectionLabel": "About",
-      "title": "A small studio with senior people on every project.",
-      "lead": "Codepedia runs two to three projects at a time. There is no account manager and no junior for you to train. The person who discusses the scope is the person who writes the code."
+      "title": "Boutique studio. Senior engineers. Direct access.",
+      "lead": "Codepedia takes on a limited number of projects at a time to guarantee full attention. No middlemen mistranslating the requirements, no juniors learning on your budget. You talk directly to the engineer building your product.",
+      "pillars": {
+        "ownership": {
+          "title": "100% ownership from day one",
+          "body": "Source code, database and infrastructure are set up directly in your own accounts. Full control and zero lock-in."
+        },
+        "pricing": {
+          "title": "Fixed estimates, owned cost",
+          "body": "A fixed price for every agreed stage. If we underestimate the complexity of a task, we absorb the cost of the extra hours."
+        },
+        "communication": {
+          "title": "Direct, multilingual communication",
+          "body": "Technical discussion and clear specs in Romanian, English or Russian. No needless jargon, just fast engineering decisions."
+        }
+      }
     },
     "faq": {
       "sectionLabel": "Questions"
