@@ -34,24 +34,24 @@
     "hero": {
       "sectionLabel": "Studio",
       "titlePhrases": [
-        "Landing Page",
+        "Landing Pages",
         "Business Websites",
         "Product Websites",
         "Marketing Websites",
         "Web Applications",
         "Custom APIs",
-        "Third Party Integrations"
+        "Third-Party Integrations"
       ],
       "titleSuffix": "built to bring you lasting results.",
-      "problem": "While most agencies leave you with a half-finished project you can't maintain, we deliver solutions that help you outright.",
-      "lead": "Codepedia works with starting entrepreneurs, startup founders and businesses worldwide, from Europe to North America. No limit on that.",
+      "problem": "While most agencies leave you with a half-finished project you can't maintain, we deliver solutions that support you all the way.",
+      "lead": "Codepedia works with early-stage entrepreneurs, startup founders and companies worldwide, from Europe to North America. No limits.",
       "ctaPrimary": "Find out if we can help",
       "ctaSecondary": "How we work",
       "facts": {
         "location": "Base Location",
         "locationValue": "Chișinău, Moldova",
         "markets": "Markets",
-        "marketsValue": "Moldova/România · UE · North America · Worldwide",
+        "marketsValue": "Moldova/Romania · EU · North America · Worldwide",
         "stack": "Tech Stack",
         "stackValue": "React (Next.js), Vue (Nuxt.js), .NET, Node.js, PostgreSQL, Supabase, n8n, Make, LLM pipelines"
       }
@@ -140,7 +140,6 @@
         "budget": "Budget",
         "budgetPlaceholder": "Choose a range",
         "budgetOptions": {
-          
           "under1k": "under 1,000 EUR",
           "1to2k": "1,000 – 2,000 EUR",
           "2to5k": "2,000 – 5,000 EUR",
@@ -195,15 +194,15 @@
       "legend": "Where is your project right now?",
       "options": {
         "A": {
-          "title": "I have Figma files,design assets ready. At least a brand book and some specs.",
+          "title": "I have Figma files or design assets ready.",
           "hint": "Full build in Next.js or Nuxt — components, database, API wiring.",
           "budget": "From 2,000 EUR",
           "timeline": "3–6 weeks"
         },
         "B": {
-          "title": "I have a raw product concept or a business idea.",
-          "hint": "We validate and shape it into wireframes, a sitemap and a locked spec.",
-          "budget": "From 500 EUR",
+          "title": "I have a product or business idea, but it's still theoretical and I need full clarity before investing in development.",
+          "hint": "The full execution plan: from user flows and a visual prototype to a clear technical spec, ready to hand to a dev team.",
+          "budget": "From 1,000 EUR",
           "timeline": "~1 week"
         },
         "C": {
@@ -213,15 +212,15 @@
           "timeline": "4–8 weeks"
         },
         "D": {
-          "title": "I want to automate some parts of my business with custom AI tools or workflow automations.",
+          "title": "I need custom-built AI tools or workflow automation.",
           "hint": "LLM pipelines, n8n / Make workflows, internal dashboards.",
           "budget": "From 5,000 EUR",
           "timeline": "6–12 weeks"
         },
         "E": {
-          "title": "I just need a simple, fast website or landing page.",
-          "hint": "1–2 pages with a contact form and social links, in 2–3 days.",
-          "budget": "Under 500 EUR",
+          "title": "I need a modern, fast page to validate an idea, win my first customers or replace an outdated site.",
+          "hint": "An ultra-fast 1–3 page landing site, mobile-optimised, wired straight to Telegram or a form to capture enquiries from day one.",
+          "budget": "Under 1,000 EUR",
           "timeline": "2–3 days"
         }
       }
