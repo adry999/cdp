@@ -224,6 +224,7 @@
       "sectionLabel": "Contact",
       "title": "Tell us what needs to be built.",
       "lead": "A short description of the problem is enough. You get a written answer within one working day, with an honest opinion on whether we are the right studio for it.",
+      "preferMessage": "Prefer to write a message?",
       "form": {
         "name": "Name",
         "email": "Email",

@@ -224,6 +224,7 @@
       "sectionLabel": "Contact",
       "title": "Spune-ne ce trebuie construit.",
       "lead": "O descriere scurtă a problemei este suficientă. Primești un răspuns scris într-o zi lucrătoare, cu o părere sinceră despre dacă suntem studioul potrivit.",
+      "preferMessage": "Preferi să scrii un mesaj?",
       "form": {
         "name": "Nume",
         "email": "Email",
