@@ -137,7 +137,61 @@
     },
     "process": {
       "sectionLabel": "Proces",
-      "title": "Patru pași, preț fix pe fiecare pas."
+      "title": "Proces clar, adaptat la amploarea proiectului.",
+      "subtitle": "Fără birocrație inutilă pentru proiecte rapide. Arhitectură riguroasă pentru sisteme complexe.",
+      "trackLabel": "Alege traseul",
+      "stepLabel": "Pasul {step}",
+      "disclaimer": "*Garanția acoperă erorile tehnice și conformitatea cu specificația agreată; modificările de design sau funcționalitățile noi reprezintă extinderi de scop.",
+      "tracks": {
+        "fast": {
+          "badge": "Fast-Track",
+          "name": "Express & Design-to-Code",
+          "scope": "2–3 zile – 3 săptămâni",
+          "summary": "Pentru pagini de prezentare, build-uri Express și translatare din Figma. Livrare rapidă, fără pași redundanți.",
+          "steps": [
+            {
+              "title": "Onboarding rapid",
+              "body": "Call de 30 de minute sau aliniere pe brief în aceeași zi. Confirmăm scopul, accesele și livrabilele."
+            },
+            {
+              "title": "Execuție directă",
+              "body": "Începem build-ul imediat sau translatăm pixel-perfect din Figma. Fără faze intermediare de wireframing."
+            },
+            {
+              "title": "Staging rapid",
+              "body": "Link de preview live în 24–48 de ore. Feedback pe versiunea reală, nu pe un mockup."
+            },
+            {
+              "title": "Lansare + 7 zile suport",
+              "body": "Handover complet și 7 zile de remedieri pentru erori tehnice după lansare."
+            }
+          ]
+        },
+        "deep": {
+          "badge": "Deep Build",
+          "name": "Concept-to-Spec, scalare și automatizări AI",
+          "scope": "4–12 săptămâni",
+          "summary": "Pentru aplicații custom, refactorizare și automatizări AI. Arhitectură riguroasă și sprinturi cu demo la fiecare etapă.",
+          "steps": [
+            {
+              "title": "Diagnostic și blueprint",
+              "body": "Discovery de 60 de minute, analiză de riscuri și specificație de scop în 48 de ore."
+            },
+            {
+              "title": "Wireframing și arhitectură",
+              "body": "Modele de date, contracte API și prototipuri interactive înainte de prima linie de cod."
+            },
+            {
+              "title": "Sprinturi de două săptămâni",
+              "body": "Mediu de staging actualizat bi-săptămânal, cu demo-uri de milestone la fiecare iterație."
+            },
+            {
+              "title": "Handover + garanție 30 de zile",
+              "body": "Transfer de repository, documentație, sesiune de handover și 30 de zile de suport."
+            }
+          ]
+        }
+      }
     },
     "work": {
       "sectionLabel": "Proiecte",

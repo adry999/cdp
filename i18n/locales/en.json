@@ -137,7 +137,61 @@
     },
     "process": {
       "sectionLabel": "Process",
-      "title": "Four steps, fixed price per step."
+      "title": "A clear process, scaled to the size of the project.",
+      "subtitle": "No needless bureaucracy for fast projects. Rigorous architecture for complex systems.",
+      "trackLabel": "Pick a track",
+      "stepLabel": "Step {step}",
+      "disclaimer": "*The guarantee covers technical errors and conformance with the agreed specification; design changes or new functionality are scope extensions.",
+      "tracks": {
+        "fast": {
+          "badge": "Fast-Track",
+          "name": "Express & Design-to-Code",
+          "scope": "2–3 days – 3 weeks",
+          "summary": "For landing pages, Express builds and Figma-to-code. Fast delivery with no redundant steps.",
+          "steps": [
+            {
+              "title": "Fast onboarding & setup",
+              "body": "A 30-minute call or same-day brief alignment. We confirm scope, access and deliverables."
+            },
+            {
+              "title": "Direct execution",
+              "body": "We start the build immediately, or translate pixel-perfect from Figma. No intermediate wireframing phase."
+            },
+            {
+              "title": "Rapid staging",
+              "body": "A live preview link within 24–48 hours. Feedback on the real build, not a mockup."
+            },
+            {
+              "title": "Launch & 7-day support",
+              "body": "Full handover plus 7 days of technical bug fixes after launch."
+            }
+          ]
+        },
+        "deep": {
+          "badge": "Deep Build",
+          "name": "Concept-to-Spec, scale & AI automations",
+          "scope": "4–12 weeks",
+          "summary": "For custom apps, refactoring and AI automations. Rigorous architecture and sprints with a demo at every milestone.",
+          "steps": [
+            {
+              "title": "Diagnostic & blueprint",
+              "body": "A 60-minute discovery, risk analysis and a scope specification within 48 hours."
+            },
+            {
+              "title": "Wireframing & architecture",
+              "body": "Data models, API contracts and interactive prototypes before the first line of code."
+            },
+            {
+              "title": "Two-week sprints",
+              "body": "A staging environment updated bi-weekly, with milestone demos at every iteration."
+            },
+            {
+              "title": "Handover & 30-day guarantee",
+              "body": "Repository transfer, documentation, a handover session and 30 days of support."
+            }
+          ]
+        }
+      }
     },
     "work": {
       "sectionLabel": "Work",
