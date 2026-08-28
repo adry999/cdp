@@ -109,7 +109,31 @@
     },
     "stack": {
       "sectionLabel": "Stack",
-      "title": "Un stack, ales ca să rămână întreținut după predare."
+      "title": "Tehnologii moderne. Zero datorie tehnică.",
+      "subtitle": "Construim pe un ecosistem de elită, TypeScript-first, optimizat pentru viteză, securitate și scalabilitate. Fără framework-uri învechite, fără cod imposibil de întreținut.",
+      "integrationNote": "Ai deja un magazin pe Shopify sau un CMS existent? Ne integrăm nativ prin API-uri headless.",
+      "groups": {
+        "frontend": {
+          "name": "Frontend & UI",
+          "benefit": "Performanță & SEO: Paginile se încarcă instant, sunt optimizate nativ pentru Google și arată impecabil pe orice ecran.",
+          "tags": ["React", "Next.js", "Vue 3", "Nuxt", "TypeScript", "Tailwind CSS"]
+        },
+        "backend": {
+          "name": "Backend & Data",
+          "benefit": "Infrastructură Solidă: Date securizate, interogări ultra-rapide și arhitectură pregătită să reziste la mii de utilizatori simultani.",
+          "tags": ["PostgreSQL", "Supabase", "Drizzle ORM", "Node.js", "Edge Functions"]
+        },
+        "infra": {
+          "name": "Cloud & Infra",
+          "benefit": "Uptime & Deployment Automat: Protecție globală la atacuri, CDN ultra-rapid și actualizări continue fără întreruperi.",
+          "tags": ["Vercel", "Cloudflare", "Docker", "GitHub Actions"]
+        },
+        "ai": {
+          "name": "AI & Vector Data",
+          "benefit": "Automatizare Inteligentă: Integrare nativă de LLM-uri și procesare de date în timp real pentru fluxuri de lucru automatizate.",
+          "tags": ["OpenAI API", "Anthropic", "pgvector", "Streaming"]
+        }
+      }
     },
     "process": {
       "sectionLabel": "Proces",

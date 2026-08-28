@@ -109,7 +109,31 @@
     },
     "stack": {
       "sectionLabel": "Stack",
-      "title": "One stack, chosen so it stays maintainable after handover."
+      "title": "Modern technology. Zero technical debt.",
+      "subtitle": "We build on an elite, TypeScript-first ecosystem tuned for speed, security and scale. No dated frameworks, no code nobody can maintain.",
+      "integrationNote": "Already running a Shopify store or an existing CMS? We integrate natively over headless APIs.",
+      "groups": {
+        "frontend": {
+          "name": "Frontend & UI",
+          "benefit": "Performance & SEO: Pages load instantly, are optimized for Google out of the box and look flawless on any screen.",
+          "tags": ["React", "Next.js", "Vue 3", "Nuxt", "TypeScript", "Tailwind CSS"]
+        },
+        "backend": {
+          "name": "Backend & Data",
+          "benefit": "Solid Infrastructure: Secured data, ultra-fast queries and an architecture built to withstand thousands of concurrent users.",
+          "tags": ["PostgreSQL", "Supabase", "Drizzle ORM", "Node.js", "Edge Functions"]
+        },
+        "infra": {
+          "name": "Cloud & Infra",
+          "benefit": "Uptime & Automated Deployment: Global attack protection, an ultra-fast CDN and continuous releases with no downtime.",
+          "tags": ["Vercel", "Cloudflare", "Docker", "GitHub Actions"]
+        },
+        "ai": {
+          "name": "AI & Vector Data",
+          "benefit": "Intelligent Automation: Native LLM integration and real-time data processing for automated workflows.",
+          "tags": ["OpenAI API", "Anthropic", "pgvector", "Streaming"]
+        }
+      }
     },
     "process": {
       "sectionLabel": "Process",
