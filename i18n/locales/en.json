@@ -60,13 +60,52 @@
       "sectionLabel": "Services",
       "title": "Where do you want to start? See each stage.",
       "intro": "Five stages, from a fast one-page launch to custom AI engineering. Pick where you are now — that's where we begin.",
-      "timeline": {
-        "clientStage": "Where you are",
-        "whatYouGet": "What you get",
-        "cta": "Start at this stage",
-        "nodeLabel": "Stage {step}: {label}"
-      },
-      "note": "Some projects are under NDA. Detailed references available on the diagnostic call."
+      "note": "Some projects are under NDA. Detailed references available on the diagnostic call.",
+      "nodeLabel": "Stage {step}: {name}",
+      "whereYouAreLabel": "Where you are",
+      "whatYouGetLabel": "What you get",
+      "stages": {
+        "E": {
+          "name": "EXPRESS PAGE",
+          "priceTime": "Under 1,000 EUR · 2–3 days",
+          "whereYouAre": "You need a modern, fast page to validate an idea, win your first customers or replace an outdated site.",
+          "whatYouGet": "An ultra-fast 1–3 page landing site, mobile-optimised, wired straight to Telegram or a form so enquiries reach you from day one.",
+          "badges": ["Fast Launch", "Modern Design", "Mobile-Optimised", "Conversion-Ready"],
+          "cta": "Launch my page"
+        },
+        "B": {
+          "name": "CONCEPT TO SPEC",
+          "priceTime": "From 1,000 EUR · ~1 week",
+          "whereYouAre": "You have a product or business idea, but it's still theoretical and you need full clarity before investing in development.",
+          "whatYouGet": "A complete execution plan: from user flows and a visual prototype to a clear technical spec, ready to hand to a dev team.",
+          "badges": ["AI Prototyping", "Wireframing", "Product Scope"],
+          "cta": "Map out my concept"
+        },
+        "A": {
+          "name": "DESIGN TO CODE",
+          "priceTime": "From 2,000 EUR · 3–6 weeks",
+          "whereYouAre": "Your design is ready in Figma, or your visual assets are prepared, and you want a technical team to turn them into production code with no compromise on quality.",
+          "whatYouGet": "A complete full-stack architecture: a pixel-perfect front end, a scalable database, secure API integrations and top performance on every device.",
+          "badges": ["Pixel-Perfect", "Full-Stack Architecture", "Peak Performance", "Scalable Code"],
+          "cta": "Turn my design into code"
+        },
+        "C": {
+          "name": "SCALE & EXTEND",
+          "priceTime": "From 2,000 EUR · 4–8 weeks",
+          "whereYouAre": "You have a live product but need engineering capacity to ship new modules, clear performance bottlenecks or increase delivery speed.",
+          "whatYouGet": "New feature development, code refactoring, database tuning and an architecture ready to scale — with zero downtime.",
+          "badges": ["New Features", "Speed Optimisation", "Scalable Architecture", "Zero Downtime"],
+          "cta": "Scale my product"
+        },
+        "D": {
+          "name": "AI PROCESS AUTOMATION",
+          "priceTime": "From 5,000 EUR · 6–12 weeks",
+          "whereYouAre": "Your team loses dozens of hours on repetitive tasks, manual data processing or fragmented workflows that slow your growth.",
+          "whatYouGet": "Custom AI systems built into your workflow: intelligent agents, end-to-end automation and dedicated dashboards for full control.",
+          "badges": ["Lower Ops Costs", "Custom AI Integrations", "Automated Processing", "Control & Audit"],
+          "cta": "Automate my workflow"
+        }
+      }
     },
     "stack": {
       "sectionLabel": "Stack",

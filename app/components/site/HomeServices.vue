@@ -3,10 +3,10 @@ import type { ComponentPublicInstance } from 'vue'
 import type { StageId } from '~/types/services'
 
 // Section 01 — the "growth timeline". Five milestone nodes on an animated
-// connector line (horizontal ≥768px, vertical below) that mirror the qualifier
-// modal's stages. Clicking a node expands a detail card; its CTA opens the
-// qualifier pre-set to that stage. All copy comes from useServiceStages(); no
-// figure is hardcoded here (see app/types/services.ts).
+// connector line (horizontal ≥768px, vertical below), one per qualifier stage.
+// Clicking a node expands a detail card; its CTA opens the qualifier pre-set to
+// that stage. All copy comes from useServiceStages(), which reads the
+// `home.services` i18n block — nothing is hardcoded here or in app/types/services.ts.
 //
 // The connector is drawn with CSS transforms, not an SVG-path library — the
 // project ships no animation dependency and Framer Motion is React-only.
@@ -115,7 +115,7 @@ onMounted(() => {
         :aria-selected="idx === active"
         :aria-controls="`svc-panel-${stage.id}`"
         :tabindex="idx === active ? 0 : -1"
-        :aria-label="t('home.services.timeline.nodeLabel', { step: idx + 1, label: stage.stageLabel })"
+        :aria-label="t('home.services.nodeLabel', { step: idx + 1, name: stage.name })"
         class="node relative flex min-h-[76px] cursor-pointer items-center gap-4 rounded text-left md:min-h-0 md:flex-1 md:flex-col md:gap-3 md:pb-2 md:text-center"
         @click="select(idx)"
       >
@@ -142,7 +142,7 @@ onMounted(() => {
             class="text-[15px] font-medium leading-tight md:text-[13px]"
             :class="idx === active ? 'text-ink' : 'text-muted'"
           >
-            {{ stage.stageLabel }}
+            {{ stage.name }}
           </span>
         </span>
       </button>
@@ -158,17 +158,18 @@ onMounted(() => {
         class="mt-[clamp(24px,3vw,36px)] rounded border border-hairline p-[clamp(20px,2.5vw,28px)]"
       >
         <div class="flex flex-wrap items-baseline justify-between gap-3">
-          <span class="font-mono text-xs uppercase tracking-[0.08em] text-signal">{{ stages[active].stageLabel }}</span>
-          <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ stages[active].priceOrTime }}</span>
+          <h3 class="m-0 font-mono text-[clamp(18px,2.2vw,22px)] font-medium uppercase leading-tight tracking-[0.04em] text-signal">
+            {{ stages[active].name }}
+          </h3>
+          <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ stages[active].priceTime }}</span>
         </div>
-        <h3 class="mb-1 mt-4 text-xl font-medium tracking-[-0.02em]">{{ stages[active].title }}</h3>
 
-        <div class="mt-4 flex flex-col">
-          <TableRow :label="t('home.services.timeline.clientStage')" label-width="150px">
-            <p class="m-0 max-w-[58ch] text-base text-muted">{{ stages[active].clientReality }}</p>
+        <div class="mt-6 flex flex-col">
+          <TableRow :label="t('home.services.whereYouAreLabel')" label-width="150px">
+            <p class="m-0 max-w-[58ch] text-base text-muted">{{ stages[active].whereYouAre }}</p>
           </TableRow>
-          <TableRow :label="t('home.services.timeline.whatYouGet')" label-width="150px" :last="true">
-            <p class="m-0 max-w-[58ch] text-base">{{ stages[active].delivery }}</p>
+          <TableRow :label="t('home.services.whatYouGetLabel')" label-width="150px" :last="true">
+            <p class="m-0 max-w-[58ch] text-base">{{ stages[active].whatYouGet }}</p>
           </TableRow>
         </div>
 
@@ -178,7 +179,7 @@ onMounted(() => {
 
         <div class="mt-6">
           <AppButton variant="signal" @click="startAt(stages[active].id)">
-            {{ t('home.services.timeline.cta') }}
+            {{ stages[active].cta }}
           </AppButton>
         </div>
       </div>

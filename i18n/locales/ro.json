@@ -60,13 +60,52 @@
       "sectionLabel": "Servicii",
       "title": "De unde ai vrea să începem munca? Vezi fiecare etapă.",
       "intro": "Cinci etape, de la o pagină rapidă până la inginerie AI la comandă. Alege unde ești acum — de acolo pornim.",
-      "timeline": {
-        "clientStage": "Unde ești",
-        "whatYouGet": "Ce primești",
-        "cta": "Începe de la această etapă",
-        "nodeLabel": "Etapa {step}: {label}"
-      },
-      "note": "Unele proiecte sunt sub NDA. Referințe detaliate la discuția de diagnostic."
+      "note": "Unele proiecte sunt sub NDA. Referințe detaliate la discuția de diagnostic.",
+      "nodeLabel": "Etapa {step}: {name}",
+      "whereYouAreLabel": "Unde ești",
+      "whatYouGetLabel": "Ce primești",
+      "stages": {
+        "E": {
+          "name": "PAGINĂ EXPRESS",
+          "priceTime": "Sub 1.000 EUR · 2–3 zile",
+          "whereYouAre": "Ai nevoie de o pagină modernă și rapidă care să-ți valideze ideea, să atragă primii clienți sau să înlocuiască un site învechit.",
+          "whatYouGet": "Un landing page (1–3 pagini) ultra-rapid, optimizat pentru mobil, cu integrare directă Telegram/formular ca să primești cereri de ofertă din prima zi.",
+          "badges": ["Lansare Rapidă", "Design Modern", "Optimizat Mobil", "Pregătit de Conversie"],
+          "cta": "Lansează pagina"
+        },
+        "B": {
+          "name": "DE LA CONCEPT LA SPECIFICAȚIE",
+          "priceTime": "De la 1.000 EUR · ~1 săptămână",
+          "whereYouAre": "Ai o idee de produs sau afacere, dar este încă la nivel teoretic și ai nevoie de claritate maximă înainte de a investi în dezvoltare.",
+          "whatYouGet": "Planul complet de execuție: de la scenariul utilizatorului și prototip vizual, până la specificația tehnică clară, gata de transmis echipei de dev.",
+          "badges": ["AI Prototyping", "Wireframing", "Product Scope"],
+          "cta": "Clarifică-mi conceptul"
+        },
+        "A": {
+          "name": "DIN DESIGN ÎN COD",
+          "priceTime": "De la 2.000 EUR · 3–6 săptămâni",
+          "whereYouAre": "Ai designul gata în Figma sau resursele vizuale pregătite și cauți o echipă tehnică care să le transforme în cod real, fără compromisuri de calitate.",
+          "whatYouGet": "Arhitectură full-stack completă: frontend pixel-perfect, bază de date scalabilă, integrări API securizate și performanță maximă pe orice dispozitiv.",
+          "badges": ["Pixel-Perfect", "Arhitectură Full-Stack", "Performanță Optimă", "Cod Scalabil"],
+          "cta": "Transformă designul în cod"
+        },
+        "C": {
+          "name": "SCALARE ȘI EXTINDERE",
+          "priceTime": "De la 2.000 EUR · 4–8 săptămâni",
+          "whereYouAre": "Ai un produs deja lansat, dar ai nevoie de resurse tehnice pentru a adăuga module noi, a rezolva blocajele de performanță sau a crește viteza de livrare.",
+          "whatYouGet": "Dezvoltare de feature-uri noi, refactorizare de cod, optimizare de bază de date și arhitectură pregătită pentru scalare — fără timp de nefuncționare.",
+          "badges": ["Features Noi", "Optimizare Viteză", "Arhitectură Scalabilă", "Zero Downtime"],
+          "cta": "Extinde-mi produsul"
+        },
+        "D": {
+          "name": "AUTOMATIZAREA PROCESELOR CU AI",
+          "priceTime": "De la 5.000 EUR · 6–12 săptămâni",
+          "whereYouAre": "Echipa ta pierde zeci de ore pe sarcini repetitive, procesare manuală de date sau fluxuri fragmentate care îți încetinesc creșterea.",
+          "whatYouGet": "Sisteme AI custom integrate în fluxul tău de lucru: agenți inteligenți, automatizare end-to-end și dashboard-uri dedicate pentru control total.",
+          "badges": ["Reducere Costuri Ops", "Integrări AI Custom", "Procesare Automată", "Control & Audit"],
+          "cta": "Automatizează-mi fluxul"
+        }
+      }
     },
     "stack": {
       "sectionLabel": "Stack",
@@ -161,8 +200,8 @@
           "timeline": "3–6 săptămâni"
         },
         "B": {
-          "title": "Am o idee de produs sau de business, încă brută.",
-          "hint": "O transformăm în wireframe-uri, un sitemap și o specificație blocată.",
+          "title": "Am o idee de produs sau afacere, dar este încă la nivel teoretic și am nevoie de claritate maximă înainte de a investi în dezvoltare.",
+          "hint": "Planul complet de execuție: de la scenariul utilizatorului și prototip vizual, până la specificația tehnică clară, gata de transmis echipei de dev.",
           "budget": "De la 1.000 EUR",
           "timeline": "~1 săptămână"
         },
@@ -179,8 +218,8 @@
           "timeline": "6–12 săptămâni"
         },
         "E": {
-          "title": "Am nevoie doar de un site simplu și rapid sau o pagină de destinație.",
-          "hint": "1–2 pagini cu formular de contact și linkuri sociale, în 2–3 zile.",
+          "title": "Am nevoie de o pagină modernă și rapidă care să-mi valideze ideea, să atragă primii clienți sau să înlocuiască un site învechit.",
+          "hint": "Un landing page (1-3 pagini) ultra-rapid, optimizat pentru mobil, cu integrare directă de Telegram/Formular pentru a primi cereri de ofertă din prima zi.",
           "budget": "Sub 1.000 EUR",
           "timeline": "2–3 zile"
         }
@@ -199,7 +238,7 @@
     "offer": {
       "massMarket": {
         "kicker": "Pagină Express",
-        "title": "Un site de 1–2 pagini, live în 2–3 zile.",
+        "title": "Un site de 1–3 pagini, live în 2–3 zile.",
         "body": "Construim o pagină de destinație de 1–2 pagini, cu formular de contact integrat și linkuri sociale, livrată în 2–3 zile. Nivelul nostru de intrare."
       },
       "fullStack": {
