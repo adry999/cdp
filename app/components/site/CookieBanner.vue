@@ -88,11 +88,11 @@ function trapFocus(event: KeyboardEvent) {
 
         <div v-else class="flex flex-wrap items-center gap-4">
           <label class="flex items-center gap-2 text-sm">
-            <input v-model="draft.analytics" type="checkbox" />
+            <input v-model="draft.analytics" type="checkbox" >
             {{ t('cookieBanner.analyticsLabel') }}
           </label>
           <label class="flex items-center gap-2 text-sm">
-            <input v-model="draft.marketing" type="checkbox" />
+            <input v-model="draft.marketing" type="checkbox" >
             {{ t('cookieBanner.marketingLabel') }}
           </label>
           <AppButton variant="ink" type="button" @click="save">{{ t('cookieBanner.save') }}</AppButton>

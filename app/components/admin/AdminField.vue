@@ -12,6 +12,6 @@ const fieldId = useId()
       v-model="model"
       :type="type"
       class="mt-2 w-full rounded border border-hairline px-3 py-2.5 text-[15px] outline-none focus:border-ink"
-    />
+    >
   </div>
 </template>

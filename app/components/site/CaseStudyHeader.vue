@@ -34,7 +34,7 @@ function caseStudyLocalePath(target: 'ro' | 'en') {
           width="183"
           height="18"
           class="block h-[18px] w-auto"
-        />
+        >
       </NuxtLink>
       <nav class="flex items-center gap-[clamp(14px,2vw,28px)] font-mono text-xs uppercase tracking-[0.08em]">
         <NuxtLink

@@ -260,7 +260,7 @@ async function duplicate(slug: string) {
             :src="project.cover_path"
             alt=""
             class="h-[30px] w-12 flex-none rounded border border-hairline object-cover"
-          />
+          >
           <div v-else class="h-[30px] w-12 flex-none rounded border border-hairline" :style="thumbnailStyle" />
           <div class="min-w-0 flex-[2_1_200px] text-[15px]">{{ project.card_title_ro }}</div>
           <div class="flex flex-[1_1_160px] flex-wrap gap-1.5">

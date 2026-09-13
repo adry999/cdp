@@ -12,7 +12,7 @@ const props = withDefaults(
     paddingY?: string
     topBorder?: boolean
   }>(),
-  { inverted: false, padding: 'default', topBorder: true },
+  { sectionId: undefined, inverted: false, padding: 'default', paddingY: undefined, topBorder: true },
 )
 
 const paddingClass = computed(() => {

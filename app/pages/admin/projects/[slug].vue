@@ -319,13 +319,13 @@ async function cleanupReplacedMedia() {
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Identitate</div>
           <div class="mt-4 flex flex-col gap-4">
             <div class="grid grid-cols-2 gap-4">
-              <AdminField label="Slug RO" v-model="form.slugRo" />
-              <AdminField label="Slug EN" v-model="form.slugEn" />
+              <AdminField v-model="form.slugRo" label="Slug RO" />
+              <AdminField v-model="form.slugEn" label="Slug EN" />
             </div>
-            <AdminFieldPair label="Titlu (H1 studiu de caz)" v-model:ro="form.title.ro" v-model:en="form.title.en" required />
-            <AdminFieldPair label="Titlu card (homepage)" v-model:ro="form.cardTitle.ro" v-model:en="form.cardTitle.en" required />
+            <AdminFieldPair v-model:ro="form.title.ro" v-model:en="form.title.en" label="Titlu (H1 studiu de caz)" required />
+            <AdminFieldPair v-model:ro="form.cardTitle.ro" v-model:en="form.cardTitle.en" label="Titlu card (homepage)" required />
             <div>
-              <AdminFieldPair label="Descriere card" textarea v-model:ro="form.summary.ro" v-model:en="form.summary.en" required />
+              <AdminFieldPair v-model:ro="form.summary.ro" v-model:en="form.summary.en" label="Descriere card" textarea required />
               <div class="mt-1 text-right font-mono text-[11px] uppercase tracking-[0.08em]" :class="summaryWarn ? 'text-signal' : 'text-muted-ink'">
                 {{ form.summary.ro.length }} / 200
               </div>
@@ -333,9 +333,9 @@ async function cleanupReplacedMedia() {
             <div v-if="titleWarn" class="font-mono text-[11px] uppercase tracking-[0.08em] text-signal">
               Titlul RO depășește 60 de caractere — designul se poate strica.
             </div>
-            <AdminFieldPair label="Lead (sub H1)" textarea v-model:ro="form.lead.ro" v-model:en="form.lead.en" required />
+            <AdminFieldPair v-model:ro="form.lead.ro" v-model:en="form.lead.en" label="Lead (sub H1)" textarea required />
             <div class="grid grid-cols-2 gap-4">
-              <AdminField label="An" v-model="form.year" />
+              <AdminField v-model="form.year" label="An" />
               <div>
                 <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Tech</div>
                 <div class="mt-2 flex flex-wrap items-center gap-2">
@@ -348,7 +348,7 @@ async function cleanupReplacedMedia() {
                     placeholder="+ enter"
                     class="w-24 border-0 border-b border-hairline bg-transparent py-1 text-sm outline-none focus:border-ink"
                     @keydown.enter.prevent="addTech"
-                  />
+                  >
                 </div>
               </div>
             </div>
@@ -367,7 +367,7 @@ async function cleanupReplacedMedia() {
                 :path-prefix="`${form.slugRo || 'proiect-nou'}/cover`"
               />
               <div class="mt-3">
-                <AdminFieldPair label="Text alternativ copertă" v-model:ro="form.coverAlt.ro" v-model:en="form.coverAlt.en" required />
+                <AdminFieldPair v-model:ro="form.coverAlt.ro" v-model:en="form.coverAlt.en" label="Text alternativ copertă" required />
               </div>
             </div>
             <div>
@@ -378,7 +378,7 @@ async function cleanupReplacedMedia() {
                 :path-prefix="`${form.slugRo || 'proiect-nou'}/hero`"
               />
               <div class="mt-3">
-                <AdminFieldPair label="Text alternativ captură principală" v-model:ro="form.heroAlt.ro" v-model:en="form.heroAlt.en" required />
+                <AdminFieldPair v-model:ro="form.heroAlt.ro" v-model:en="form.heroAlt.en" label="Text alternativ captură principală" required />
               </div>
             </div>
             <div>
@@ -401,7 +401,7 @@ async function cleanupReplacedMedia() {
                   />
                   <div class="mt-3 flex items-start gap-3">
                     <div class="flex-1">
-                      <AdminFieldPair label="Text alternativ" v-model:ro="img.altRo" v-model:en="img.altEn" />
+                      <AdminFieldPair v-model:ro="img.altRo" v-model:en="img.altEn" label="Text alternativ" />
                     </div>
                     <button type="button" class="mt-6 cursor-pointer border-0 bg-transparent p-0 font-mono text-[11px] uppercase tracking-[0.08em] text-muted hover:text-signal" @click="removeGalleryImage(i)">
                       Șterge
@@ -433,8 +433,8 @@ async function cleanupReplacedMedia() {
               @drop="reorderDrop('facts', i)"
             >
               <div class="grid flex-1 grid-cols-2 gap-4">
-                <AdminFieldPair label="Etichetă" v-model:ro="fact.label.ro" v-model:en="fact.label.en" />
-                <AdminFieldPair label="Valoare" v-model:ro="fact.value.ro" v-model:en="fact.value.en" />
+                <AdminFieldPair v-model:ro="fact.label.ro" v-model:en="fact.label.en" label="Etichetă" />
+                <AdminFieldPair v-model:ro="fact.value.ro" v-model:en="fact.value.en" label="Valoare" />
               </div>
               <button
                 v-if="form.facts.length > 1"
@@ -452,8 +452,8 @@ async function cleanupReplacedMedia() {
         <section class="rounded border border-hairline p-6">
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Context (secțiunea 02)</div>
           <div class="mt-4 flex flex-col gap-4">
-            <AdminFieldPair label="Titlu" v-model:ro="form.contextHeading.ro" v-model:en="form.contextHeading.en" required />
-            <AdminFieldPair label="Text (paragrafe separate de o linie goală)" textarea v-model:ro="form.contextBody.ro" v-model:en="form.contextBody.en" required />
+            <AdminFieldPair v-model:ro="form.contextHeading.ro" v-model:en="form.contextHeading.en" label="Titlu" required />
+            <AdminFieldPair v-model:ro="form.contextBody.ro" v-model:en="form.contextBody.en" label="Text (paragrafe separate de o linie goală)" textarea required />
           </div>
         </section>
 
@@ -466,7 +466,7 @@ async function cleanupReplacedMedia() {
             </button>
           </div>
           <div class="mt-4 flex flex-col gap-4">
-            <AdminFieldPair label="Titlu secțiune" v-model:ro="form.solutionHeading.ro" v-model:en="form.solutionHeading.en" required />
+            <AdminFieldPair v-model:ro="form.solutionHeading.ro" v-model:en="form.solutionHeading.en" label="Titlu secțiune" required />
             <div
               v-for="(step, i) in form.steps"
               :key="i"
@@ -488,8 +488,8 @@ async function cleanupReplacedMedia() {
                   Șterge
                 </button>
               </div>
-              <AdminFieldPair label="Titlu pas" v-model:ro="step.title.ro" v-model:en="step.title.en" />
-              <AdminFieldPair label="Descriere" textarea v-model:ro="step.body.ro" v-model:en="step.body.en" />
+              <AdminFieldPair v-model:ro="step.title.ro" v-model:en="step.title.en" label="Titlu pas" />
+              <AdminFieldPair v-model:ro="step.body.ro" v-model:en="step.body.en" label="Descriere" textarea />
             </div>
           </div>
         </section>
@@ -519,10 +519,10 @@ async function cleanupReplacedMedia() {
               @drop="reorderDrop('stats', i)"
             >
               <div class="w-32 flex-none">
-                <AdminField label="Valoare" v-model="stat.value" />
+                <AdminField v-model="stat.value" label="Valoare" />
               </div>
               <div class="flex-1">
-                <AdminFieldPair label="Etichetă" v-model:ro="stat.label.ro" v-model:en="stat.label.en" />
+                <AdminFieldPair v-model:ro="stat.label.ro" v-model:en="stat.label.en" label="Etichetă" />
               </div>
               <button type="button" class="mb-2.5 cursor-pointer border-0 bg-transparent p-0 font-mono text-[11px] uppercase tracking-[0.08em] text-muted hover:text-signal" @click="removeStat(i)">
                 Șterge
@@ -530,13 +530,13 @@ async function cleanupReplacedMedia() {
             </div>
 
             <div class="border-t border-hairline pt-4">
-              <AdminFieldPair label="Citat client" textarea v-model:ro="form.quote.ro" v-model:en="form.quote.en" />
+              <AdminFieldPair v-model:ro="form.quote.ro" v-model:en="form.quote.en" label="Citat client" textarea />
               <p class="mt-1 text-[13px] text-muted">Dacă citatul lipsește, blocul nu se randează pe site.</p>
             </div>
             <div class="grid grid-cols-3 gap-4">
-              <AdminField label="Nume" v-model="form.quoteAuthor" />
-              <AdminFieldPair label="Funcție" v-model:ro="form.quoteRole.ro" v-model:en="form.quoteRole.en" />
-              <AdminField label="Companie" v-model="form.quoteCompany" />
+              <AdminField v-model="form.quoteAuthor" label="Nume" />
+              <AdminFieldPair v-model:ro="form.quoteRole.ro" v-model:en="form.quoteRole.en" label="Funcție" />
+              <AdminField v-model="form.quoteCompany" label="Companie" />
             </div>
           </div>
         </section>
@@ -545,7 +545,7 @@ async function cleanupReplacedMedia() {
         <section class="rounded border border-hairline p-6">
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Următorul pas (secțiunea 05)</div>
           <div class="mt-4">
-            <AdminFieldPair label="Titlu CTA de final" v-model:ro="form.nextTitle.ro" v-model:en="form.nextTitle.en" />
+            <AdminFieldPair v-model:ro="form.nextTitle.ro" v-model:en="form.nextTitle.en" label="Titlu CTA de final" />
           </div>
         </section>
 
@@ -554,7 +554,7 @@ async function cleanupReplacedMedia() {
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Publicare</div>
           <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
             <label class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.08em]">
-              <input v-model="form.published" type="checkbox" class="accent-signal" />
+              <input v-model="form.published" type="checkbox" class="accent-signal" >
               <span :class="form.published ? 'text-signal' : 'text-muted'">
                 {{ form.published ? 'Publicat' : 'Draft' }}
               </span>

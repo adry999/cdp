@@ -44,7 +44,7 @@ const enFieldId = useId()
           type="text"
           :aria-labelledby="`${groupId} ${roLabelId}`"
           :class="fieldClass"
-        />
+        >
       </div>
       <div>
         <label :id="enLabelId" :for="enFieldId" class="mb-1 block font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">EN</label>
@@ -63,7 +63,7 @@ const enFieldId = useId()
           type="text"
           :aria-labelledby="`${groupId} ${enLabelId}`"
           :class="fieldClass"
-        />
+        >
       </div>
     </div>
   </div>

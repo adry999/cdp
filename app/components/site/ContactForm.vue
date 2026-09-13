@@ -70,7 +70,7 @@ async function handleSubmit() {
       autocomplete="off"
       aria-hidden="true"
       class="absolute -left-[9999px] h-0 w-0"
-    />
+    >
 
     <div>
       <label class="block font-mono text-xs uppercase tracking-[0.08em] text-muted" for="lead-name">
@@ -84,7 +84,7 @@ async function handleSubmit() {
         :aria-invalid="!!fieldErrors.name"
         :aria-describedby="fieldErrors.name ? 'lead-name-error' : undefined"
         class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
-      />
+      >
       <p v-if="fieldErrors.name" id="lead-name-error" class="mt-1 font-mono text-xs text-signal">{{ fieldErrors.name }}</p>
     </div>
 
@@ -101,7 +101,7 @@ async function handleSubmit() {
         :aria-invalid="!!fieldErrors.email"
         :aria-describedby="fieldErrors.email ? 'lead-email-error' : undefined"
         class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
-      />
+      >
       <p v-if="fieldErrors.email" id="lead-email-error" class="mt-1 font-mono text-xs text-signal">{{ fieldErrors.email }}</p>
     </div>
 
@@ -115,7 +115,7 @@ async function handleSubmit() {
         type="text"
         autocomplete="organization"
         class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
-      />
+      >
     </div>
 
     <div>
@@ -161,7 +161,7 @@ async function handleSubmit() {
         v-model="form.source"
         type="text"
         class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
-      />
+      >
     </div>
 
     <p v-if="status === 'error'" role="alert" aria-live="polite" class="font-mono text-xs text-signal">

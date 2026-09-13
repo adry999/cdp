@@ -9,7 +9,7 @@ const props = withDefaults(
     type?: 'button' | 'submit'
     disabled?: boolean
   }>(),
-  { variant: 'ink', inverted: false, type: 'button', disabled: false },
+  { variant: 'ink', href: undefined, inverted: false, type: 'button', disabled: false },
 )
 
 const base =

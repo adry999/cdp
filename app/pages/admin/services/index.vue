@@ -110,10 +110,10 @@ function reorderDrop(levelIndex: number, itemIndex: number) {
             {{ level.levelLabel.ro }} / {{ level.name.ro }}
           </div>
           <div class="mt-4 flex flex-col gap-4">
-            <AdminFieldPair label="Titlu" v-model:ro="level.heading.ro" v-model:en="level.heading.en" required />
-            <AdminFieldPair label="Descriere" textarea v-model:ro="level.body.ro" v-model:en="level.body.en" />
-            <AdminFieldPair label="Durată" v-model:ro="level.duration.ro" v-model:en="level.duration.en" />
-            <AdminField label="Preț de la (EUR)" type="number" v-model="level.priceFrom" />
+            <AdminFieldPair v-model:ro="level.heading.ro" v-model:en="level.heading.en" label="Titlu" required />
+            <AdminFieldPair v-model:ro="level.body.ro" v-model:en="level.body.en" label="Descriere" textarea />
+            <AdminFieldPair v-model:ro="level.duration.ro" v-model:en="level.duration.en" label="Durată" />
+            <AdminField v-model="level.priceFrom" label="Preț de la (EUR)" type="number" />
           </div>
 
           <div class="mt-6 border-t border-hairline pt-5">
@@ -132,8 +132,8 @@ function reorderDrop(levelIndex: number, itemIndex: number) {
                 @dragover.prevent
                 @drop="reorderDrop(i, j)"
               >
-                <AdminFieldPair label="Etichetă" v-model:ro="item.label.ro" v-model:en="item.label.en" />
-                <AdminFieldPair label="Descriere" textarea v-model:ro="item.body.ro" v-model:en="item.body.en" />
+                <AdminFieldPair v-model:ro="item.label.ro" v-model:en="item.label.en" label="Etichetă" />
+                <AdminFieldPair v-model:ro="item.body.ro" v-model:en="item.body.en" label="Descriere" textarea />
               </div>
             </div>
           </div>

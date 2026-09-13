@@ -15,7 +15,7 @@ const props = withDefaults(
      *  candidate); everything else should stay lazy. */
     loading?: 'lazy' | 'eager'
   }>(),
-  { ratio: '16/10', alt: '', sizes: '100vw', loading: 'lazy' },
+  { ratio: '16/10', src: undefined, alt: '', label: undefined, sizes: '100vw', loading: 'lazy' },
 )
 
 const aspectClass = computed(() => {

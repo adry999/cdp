@@ -33,7 +33,7 @@ const copyrightLine = computed(() =>
           width="19"
           height="12"
           class="block h-3 w-auto opacity-50"
-        />
+        >
         {{ legalLine }}
       </span>
       <span v-if="!compact">{{ t('footer.tagline') }}</span>

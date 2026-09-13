@@ -77,33 +77,33 @@ async function save() {
         <section class="rounded border border-hairline p-6">
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Contact</div>
           <div class="mt-4 grid grid-cols-2 gap-4">
-            <AdminField label="Email de contact" type="email" v-model="form.contactEmail" />
-            <AdminField label="Telefon" type="tel" v-model="form.contactPhone" />
+            <AdminField v-model="form.contactEmail" label="Email de contact" type="email" />
+            <AdminField v-model="form.contactPhone" label="Telefon" type="tel" />
           </div>
           <div class="mt-4">
-            <AdminField label="Program" v-model="form.hours" />
+            <AdminField v-model="form.hours" label="Program" />
           </div>
           <div class="mt-4 flex flex-col gap-4">
-            <AdminFieldPair label="Timp de răspuns" v-model:ro="form.responseTime.ro" v-model:en="form.responseTime.en" />
+            <AdminFieldPair v-model:ro="form.responseTime.ro" v-model:en="form.responseTime.en" label="Timp de răspuns" />
           </div>
         </section>
 
         <section class="rounded border border-hairline p-6">
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Site</div>
           <div class="mt-4 flex flex-col gap-4">
-            <AdminFieldPair label="Notă NDA (sub grila de proiecte)" textarea v-model:ro="form.ndaNote.ro" v-model:en="form.ndaNote.en" />
-            <AdminFieldPair label="Linia din footer" v-model:ro="form.footerLine.ro" v-model:en="form.footerLine.en" />
+            <AdminFieldPair v-model:ro="form.ndaNote.ro" v-model:en="form.ndaNote.en" label="Notă NDA (sub grila de proiecte)" textarea />
+            <AdminFieldPair v-model:ro="form.footerLine.ro" v-model:en="form.footerLine.en" label="Linia din footer" />
           </div>
           <div class="mt-4">
-            <AdminField label="An copyright" v-model="form.copyrightYear" />
+            <AdminField v-model="form.copyrightYear" label="An copyright" />
           </div>
         </section>
 
         <section class="rounded border border-hairline p-6">
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">SEO</div>
           <div class="mt-4 flex flex-col gap-4">
-            <AdminFieldPair label="Meta title" v-model:ro="form.metaTitle.ro" v-model:en="form.metaTitle.en" />
-            <AdminFieldPair label="Meta description" textarea v-model:ro="form.metaDescription.ro" v-model:en="form.metaDescription.en" />
+            <AdminFieldPair v-model:ro="form.metaTitle.ro" v-model:en="form.metaTitle.en" label="Meta title" />
+            <AdminFieldPair v-model:ro="form.metaDescription.ro" v-model:en="form.metaDescription.en" label="Meta description" textarea />
           </div>
           <div class="mt-4">
             <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Imagine OG (1200 × 630)</div>
