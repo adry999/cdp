@@ -56,7 +56,7 @@ Un modul = un Nuxt layer în `layers/<nume>/`. Nuxt îl înregistrează automat,
 | Secțiune pe homepage | componenta în `home` (`HomeTestimonials.vue`); datele vin din API-ul public al modulului care deține entitatea (`#layers/content`) |
 | Ecran în admin pentru o entitate | pagina în modulul care deține entitatea (`layers/content/app/pages/admin/testimonials/`) |
 
-Prefixul componentei este **numele modulului** care o conține, fără alte variante: în `content` → `ContentTestimonialEditor.vue`, în `home` → `HomeTestimonials.vue`. `Admin*` și `App*` sunt rezervate primitivelor din `core`.
+Prefixul componentei este **numele modulului** care o conține, fără alte variante: în `content` → `ContentTestimonialEditor.vue`, în `home` → `HomeTestimonials.vue`. `App*` e rezervat primitivelor din `core`. `Admin*` îl folosesc atât primitivele de formular din `core` (`AdminField`), cât și layer-ul `admin`; proprietarul se stabilește după calea fișierului.
 
 ### Structura internă a unui modul
 
@@ -110,7 +110,7 @@ layers/<modul>/
 - Fixture-uri în `layers/<modul>/test-support/`, ca factory cu overrides.
 - Serviciile primesc dependențele ca parametru; testele dau fake-uri in-memory. Fără `vi.mock` pe module.
 - E2E în `e2e/` la rădăcină: un spec per rută publică și per flux critic, rulat pe build de producție.
-- `layers/core/tests/architecture.test.ts` pică la orice componentă sau auto-import folosit peste graniță. Proprietarul unei componente e layer-ul în care stă fișierul. Un layer nou se adaugă în `LAYER_DEPENDENCIES`, în același commit.
+- `layers/core/tests/architecture.test.ts` pică atunci când un fișier dintr-un layer folosește o componentă sau un nume auto-importat al unui proprietar din afara dependențelor sale. Proprietarul unei componente e layer-ul în care stă fișierul. Importurile sunt verificate de ESLint. Dependențele fiecărui layer stau într-un singur loc, `layers/dependencies.json`, citit și de ESLint, și de test; un layer nou se adaugă acolo în commit-ul care îl creează.
 - `npm run typecheck` = `vue-tsc -b --noEmit`. Fără `-b` nu se verifică niciun fișier.
 
 ### Medii

@@ -17,7 +17,7 @@ Cookie consent: the visitor's choice, the banner that records it, the analytics 
 
 ## Routes
 
-- `/confidentialitate` and `/en/privacy` — `app/pages/confidentialitate.vue`. The localized paths are declared in the root `nuxt.config.ts` under `i18n.pages`.
+- `/confidentialitate` and `/en/privacy` — `layers/consent/app/pages/confidentialitate.vue`. The localized paths are declared in the root `nuxt.config.ts` under `i18n.pages`.
 
 ## State
 

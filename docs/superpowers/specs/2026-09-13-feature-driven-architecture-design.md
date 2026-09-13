@@ -200,10 +200,7 @@ without an import statement, invisible to review. Rules:
 - Only `layers/core` keeps scanned `composables/` and `shared/utils/`.
 - Components stay auto-registered (templates need them) with a mandatory
   feature prefix: `LeadsContactForm`, `QualifierModal`.
-- Enforcement: ESLint `no-restricted-imports` for `#layers/*/(domain|data|server/services)/**`
-  from outside the owning layer, plus an architecture test in Vitest
-  (`layers/core/tests/architecture.test.ts`) that fails when a template
-  uses another feature's component prefix outside an allow-list.
+- Enforcement: `layers/dependencies.json` declares each layer's dependencies. ESLint (`layerBoundary`) allows a layer its own files, any `#layers/core/...` path and only `#layers/<dep>` or `#layers/<dep>/server` of other dependencies. Root code imports layers only through those aliases, never by file path. The Vitest architecture test (`layers/core/tests/architecture.test.ts`) reports components and auto-imported names used across those boundaries.
 
 ### D3 — Aliases
 
@@ -465,7 +462,7 @@ Step 3 adjustments:
   - It attributes components by file path, so `AdminField` belongs to `core` despite its prefix.
   - Feature components sit directly in `app/components/` and start with the layer name.
   - Names auto-imported from another owner's scanned folders are reported.
-  - Every layer is declared in `LAYER_DEPENDENCIES`.
+  - Every layer and its dependencies are declared once in `layers/dependencies.json`, read by ESLint and the test.
 - **ESLint.** `layerBoundary(layer, dependencies)` generates each layer's block. Root `app/`, `server/` and `shared/` may import a feature only as `#layers/<layer>` or `#layers/<layer>/server`.
 - **Consent layer.** The banner is renamed `ConsentBanner`. The composable keeps the name `useCookieConsent`. The policy copy lives in `domain/privacyPolicy.ts`, and i18n keys are unchanged.
 
