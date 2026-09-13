@@ -81,8 +81,10 @@ function reorderStart(levelIndex: number, itemIndex: number) {
 }
 function reorderDrop(levelIndex: number, itemIndex: number) {
   if (!dragInfo.value || dragInfo.value.levelIndex !== levelIndex || dragInfo.value.itemIndex === itemIndex) return
-  const items = levels[levelIndex].items
+  const items = levels[levelIndex]?.items
+  if (!items) return
   const [moved] = items.splice(dragInfo.value.itemIndex, 1)
+  if (!moved) return
   items.splice(itemIndex, 0, moved)
   dragInfo.value = null
 }

@@ -90,6 +90,7 @@ function onDragStart(i: number) {
 async function onDrop(i: number) {
   if (dragIndex.value === null || dragIndex.value === i) return
   const [moved] = items.splice(dragIndex.value, 1)
+  if (!moved) return
   items.splice(i, 0, moved)
   dragIndex.value = null
 

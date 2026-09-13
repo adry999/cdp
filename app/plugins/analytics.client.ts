@@ -60,7 +60,7 @@ export default defineNuxtPlugin(() => {
   // fresh load after this simply never re-injects the tag.
   function revokeGaIfWithdrawn() {
     if (!gaInjected || hasConsent(consent.value, 'analytics')) return
-    for (const name of document.cookie.split(';').map((c) => c.split('=')[0].trim())) {
+    for (const name of document.cookie.split(';').map((c) => (c.split('=')[0] ?? '').trim())) {
       if (name === '_ga' || name === '_gid' || name === '_gat' || name.startsWith('_ga_')) clearCookie(name)
     }
     gaInjected = false

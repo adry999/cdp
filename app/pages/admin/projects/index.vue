@@ -37,6 +37,7 @@ async function onDrop(i: number) {
   if (!canReorder.value || dragIndex.value === null || dragIndex.value === i || !rows.value) return
   const list = rows.value
   const [moved] = list.splice(dragIndex.value, 1)
+  if (!moved) return
   list.splice(i, 0, moved)
   dragIndex.value = null
 
@@ -197,7 +198,8 @@ async function duplicate(slug: string) {
         return { ...c, project_id: created.id }
       }),
     )
-    const { error: insertError } = await supabase.from(table).insert(rows)
+    // Each row is a copy of a row just read from this same table.
+    const { error: insertError } = await supabase.from(table).insert(rows as never)
     if (insertError) childError = true
   }
 
