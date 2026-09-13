@@ -30,6 +30,10 @@ const AUTO_IMPORT_PATH =
   /^(?:layers\/[^/]+\/)?(?:app\/(?:composables|utils)|shared\/(?:utils|types)|server\/utils)\/[^/]+\.ts$/
 const EXPORTED_NAME = /^export\s+(?:async\s+)?(?:function|const|let|class|interface|type|enum)\s+([A-Za-z_$][\w$]*)/gm
 const TEMPLATE_TAG = /<([A-Z][A-Za-z0-9]*|[a-z][a-z0-9]*(?:-[a-z0-9]+)+)[\s/>]/g
+const DECLARED_NAME = /\b(?:function|const|let|var|class|interface|type|enum)\s+([A-Za-z_$][\w$]*)/g
+const NAMED_IMPORT = /import\s+(?:type\s+)?\{([^}]*)\}\s*from/g
+const NAMESPACE_IMPORT = /import\s+\*\s+as\s+([A-Za-z_$][\w$]*)\s*from/g
+const DEFAULT_IMPORT = /import\s+([A-Za-z_$][\w$]*)\s*from/g
 
 function ownerOf(path: string): string {
   return path.match(/^layers\/([^/]+)\//)?.[1] ?? ROOT_OWNER
@@ -50,7 +54,40 @@ function stripComments(content: string): string {
   return content
     .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/\/\*[\s\S]*?\*\//g, '')
-    .replace(/(^|[^:])\/\/.*$/gm, '$1')
+    .replace(/(^|[^:"'`])\/\/.*$/gm, '$1')
+}
+
+function collectLocalNames(code: string): Set<string> {
+  const names = new Set<string>()
+  for (const [, name] of code.matchAll(DECLARED_NAME)) {
+    if (name) names.add(name)
+  }
+  for (const [, specifiers] of code.matchAll(NAMED_IMPORT)) {
+    if (!specifiers) continue
+    for (const rawSpecifier of specifiers.split(',')) {
+      const specifier = rawSpecifier.trim().replace(/^type\s+/, '')
+      if (!specifier) continue
+      const [, imported, local] = specifier.match(/^([A-Za-z_$][\w$]*)(?:\s+as\s+([A-Za-z_$][\w$]*))?$/) ?? []
+      if (imported) names.add(local ?? imported)
+    }
+  }
+  for (const [, name] of code.matchAll(NAMESPACE_IMPORT)) {
+    if (name) names.add(name)
+  }
+  for (const [, name] of code.matchAll(DEFAULT_IMPORT)) {
+    if (name) names.add(name)
+  }
+  return names
+}
+
+function isMemberOrKeyUsage(code: string, name: string, index: number): boolean {
+  let before = index - 1
+  while (before >= 0 && /\s/.test(code[before] ?? '')) before--
+  if (code[before] === '.') return true
+  if (code[before] !== '{' && code[before] !== ',') return false
+  let after = index + name.length
+  while (after < code.length && /\s/.test(code[after] ?? '')) after++
+  return code[after] === ':'
 }
 
 function templateOf(content: string): string {
@@ -127,7 +164,9 @@ export function checkArchitecture(files: readonly SourceFile[], layerDependencie
       const reported = new Set<string>()
       for (const [, tag] of templateOf(code).matchAll(TEMPLATE_TAG)) {
         if (!tag) continue
-        const name = toPascalCase(tag).replace(/^Lazy(?=[A-Z])/, '')
+        const pascalName = toPascalCase(tag)
+        const strippedName = pascalName.replace(/^Lazy(?=[A-Z])/, '')
+        const name = components.has(pascalName) ? pascalName : strippedName
         const component = components.get(name)
         if (!component || allowed.has(component.owner) || reported.has(name)) continue
         reported.add(name)
@@ -135,9 +174,21 @@ export function checkArchitecture(files: readonly SourceFile[], layerDependencie
       }
     }
 
+    const localNames = collectLocalNames(code)
+
     for (const [name, owners] of autoImports) {
       if ([...owners].some((owner) => allowed.has(owner))) continue
-      if (new RegExp(`\\b${name.replace(/\$/g, '\\$')}\\b`).test(code)) {
+      if (localNames.has(name)) continue
+      const pattern = new RegExp(`\\b${name.replace(/\$/g, '\\$')}\\b`, 'g')
+      let match: RegExpExecArray | null
+      let isUsed = false
+      while ((match = pattern.exec(code))) {
+        if (!isMemberOrKeyUsage(code, name, match.index)) {
+          isUsed = true
+          break
+        }
+      }
+      if (isUsed) {
         violations.push({
           rule: 'foreign-auto-import',
           file: path,

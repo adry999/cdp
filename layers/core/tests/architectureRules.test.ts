@@ -136,4 +136,77 @@ describe('checkArchitecture', () => {
     ]
     expect(checkArchitecture(files, dependencies)).toEqual([])
   })
+
+  it('does not report a name a layer declares itself', () => {
+    const files = [
+      source('app/composables/useQualifier.ts', 'export function useQualifier() {}'),
+      source(
+        'layers/core/app/components/ui/AppButton.vue',
+        '<script setup lang="ts">function useQualifier() {}\nuseQualifier()</script>',
+      ),
+    ]
+    expect(checkArchitecture(files, dependencies)).toEqual([])
+  })
+
+  it('does not report a name a layer imports explicitly', () => {
+    const files = [
+      source('app/composables/useQualifier.ts', 'export function useQualifier() {}'),
+      source(
+        'layers/core/app/components/ui/AppButton.vue',
+        '<script setup lang="ts">import { useQualifier } from "#layers/other/state/useQualifier"\nuseQualifier()</script>',
+      ),
+    ]
+    expect(checkArchitecture(files, dependencies)).toEqual([])
+  })
+
+  it('does not report an auto-imported name used as an object key or a property access', () => {
+    const files = [
+      source('app/utils/slugify.ts', 'export function slugify() {}'),
+      source(
+        'layers/core/app/components/ui/AppButton.vue',
+        '<script setup lang="ts">const options = { slugify: true }\nconst value = x.slugify</script>',
+      ),
+    ]
+    expect(checkArchitecture(files, dependencies)).toEqual([])
+  })
+
+  it('reports an auto-imported name used in a ternary', () => {
+    const files = [
+      source('app/utils/budgetLabel.ts', 'export function budgetLabel() {}'),
+      source(
+        'layers/core/app/components/ui/AppButton.vue',
+        '<script setup lang="ts">const label = cond ? budgetLabel : x</script>',
+      ),
+    ]
+    expect(checkArchitecture(files, dependencies)).toEqual([
+      {
+        rule: 'foreign-auto-import',
+        file: 'layers/core/app/components/ui/AppButton.vue',
+        detail: 'budgetLabel is auto-imported from root',
+      },
+    ])
+  })
+
+  it('reports a foreign component after a protocol-relative URL on the same line', () => {
+    const files = [
+      source('layers/admin/app/components/AdminSidebar.vue'),
+      source(
+        'layers/consent/app/pages/one.vue',
+        '<template><img src="//cdn.example.com/x.png"><AdminSidebar /></template>',
+      ),
+    ]
+    expect(checkArchitecture(files, dependencies)).toEqual([
+      { rule: 'foreign-component', file: 'layers/consent/app/pages/one.vue', detail: 'AdminSidebar belongs to admin' },
+    ])
+  })
+
+  it('attributes a registered LazyLoader component to itself, not to Loader', () => {
+    const files = [
+      source('app/components/LazyLoader.vue'),
+      source('layers/consent/app/pages/one.vue', '<template><LazyLoader /></template>'),
+    ]
+    expect(checkArchitecture(files, dependencies)).toEqual([
+      { rule: 'foreign-component', file: 'layers/consent/app/pages/one.vue', detail: 'LazyLoader belongs to root' },
+    ])
+  })
 })
