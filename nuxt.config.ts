@@ -111,7 +111,6 @@ export default defineNuxtConfig({
 
   components: [
     { path: '~/components/site', pathPrefix: false },
-    { path: '~/components/ui', pathPrefix: false },
     { path: '~/components/admin', pathPrefix: false },
   ],
 
