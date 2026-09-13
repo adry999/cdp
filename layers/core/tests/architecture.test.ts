@@ -5,12 +5,8 @@ import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { checkArchitecture, type LayerDependencies, type SourceFile } from './architectureRules'
 
-const LAYER_DEPENDENCIES: LayerDependencies = {
-  core: [],
-  consent: ['core'],
-}
-
 const repoRoot = fileURLToPath(new URL('../../..', import.meta.url))
+const LAYER_DEPENDENCIES = JSON.parse(readFileSync(join(repoRoot, 'layers/dependencies.json'), 'utf8')) as LayerDependencies
 const SOURCE_ROOTS = ['app', 'server', 'shared', 'layers']
 
 function readSources(): SourceFile[] {
@@ -30,5 +26,13 @@ function readSources(): SourceFile[] {
 describe('architecture', () => {
   it('keeps every layer inside its declared dependencies', () => {
     expect(checkArchitecture(readSources(), LAYER_DEPENDENCIES)).toEqual([])
+  })
+
+  it('declares every dependency as a layer', () => {
+    const layers = new Set(Object.keys(LAYER_DEPENDENCIES))
+    const unknownDependencies = Object.values(LAYER_DEPENDENCIES)
+      .flat()
+      .filter((dependency) => !layers.has(dependency))
+    expect(unknownDependencies).toEqual([])
   })
 })

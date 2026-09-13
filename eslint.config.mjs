@@ -1,8 +1,23 @@
 // @ts-check
+import { readFileSync } from 'node:fs'
 import withNuxt from './.nuxt/eslint.config.mjs'
 
+const layerDependencies = JSON.parse(readFileSync(new URL('./layers/dependencies.json', import.meta.url), 'utf8'))
+
 function layerBoundary(layer, dependencies) {
-  const allowed = [layer, ...dependencies].join('|')
+  const fullAccess = dependencies.includes('core') ? [layer, 'core'] : [layer]
+  const publicOnly = dependencies.filter((dependency) => dependency !== 'core')
+  const regex =
+    `^#layers/(?!(${fullAccess.join('|')})(/|$))` +
+    (publicOnly.length ? `(?!(${publicOnly.join('|')})(/server)?$)` : '')
+  const message =
+    layer === 'core'
+      ? 'layers/core must not import another layer.'
+      : publicOnly.length
+        ? `layers/${layer} may import its own files, #layers/core/... and only ${publicOnly
+            .map((dependency) => `#layers/${dependency} or #layers/${dependency}/server`)
+            .join(', ')} of ${publicOnly.join(', ')}.`
+        : `layers/${layer} may import only its own files and #layers/core/....`
   return {
     files: [`layers/${layer}/**/*.{ts,vue}`],
     rules: {
@@ -10,16 +25,11 @@ function layerBoundary(layer, dependencies) {
         'error',
         {
           patterns: [
-            {
-              regex: `^#layers/(?!(${allowed})(/|$))`,
-              message: dependencies.length
-                ? `layers/${layer} may import only ${dependencies.join(', ')} besides itself.`
-                : `layers/${layer} must not import another layer.`,
-            },
+            { regex, message },
             { regex: '^(~|~~|@|@@|#shared)/', message: `layers/${layer} must not import root app/, server/ or shared/ code.` },
             {
-              regex: '^(\\.\\./){2,}',
-              message: `Inside layers/${layer} use #layers/${layer}/... paths; never climb out of the layer.`,
+              regex: '^\\.\\.(/|$)',
+              message: `Inside layers/${layer} use ./ or #layers/${layer}/... paths; never climb with ../.`,
             },
           ],
         },
@@ -38,9 +48,8 @@ export default withNuxt(
       '@typescript-eslint/no-unused-vars': 'error',
     },
   },
-  // A layer joins this boundary list in the same commit that migrates it.
-  layerBoundary('core', []),
-  layerBoundary('consent', ['core']),
+  // A layer joins layers/dependencies.json in the same commit that migrates it.
+  ...Object.entries(layerDependencies).map(([layer, dependencies]) => layerBoundary(layer, dependencies)),
   {
     files: ['app/**/*.{ts,vue}', 'server/**/*.ts', 'shared/**/*.ts'],
     rules: {
@@ -51,6 +60,10 @@ export default withNuxt(
             {
               regex: '^#layers/(?!core/)[^/]+/(?!server$)',
               message: 'Import a feature layer only through #layers/<layer> or #layers/<layer>/server.',
+            },
+            {
+              regex: '(^|/)layers/',
+              message: 'Import a layer through its #layers/<layer> alias, never by file path.',
             },
           ],
         },
