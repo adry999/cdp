@@ -19,8 +19,9 @@ export default withNuxt(
         'error',
         {
           patterns: [
-            { regex: '^#layers/(?!core/)', message: 'layers/core must not import a feature layer.' },
+            { regex: '^#layers/(?!core(/|$))', message: 'layers/core must not import a feature layer.' },
             { regex: '^(~|~~|@|@@|#shared)/', message: 'layers/core must not import root app/, server/ or shared/ code.' },
+            { regex: '^(\\.\\./){2,}', message: 'Inside layers/core use #layers/core/... paths; never climb out of the layer.' },
           ],
         },
       ],
