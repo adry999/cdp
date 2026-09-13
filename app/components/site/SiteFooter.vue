@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useCookieConsent } from '#layers/consent'
+
 withDefaults(defineProps<{ compact?: boolean }>(), { compact: false })
 
 const { t, locale } = useI18n()

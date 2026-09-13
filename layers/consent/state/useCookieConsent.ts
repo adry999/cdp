@@ -1,3 +1,5 @@
+import { CONSENT_COOKIE_NAME, type ConsentState } from '#layers/consent/domain/consent'
+
 export function useCookieConsent() {
   const consent = useCookie<ConsentState | null>(CONSENT_COOKIE_NAME, {
     maxAge: 60 * 60 * 24 * 30 * 6,
@@ -6,7 +8,7 @@ export function useCookieConsent() {
     default: () => null,
   })
 
-  const forceOpen = useState<boolean>('cookie-banner-open', () => false)
+  const forceOpen = useState<boolean>('consent:banner-open', () => false)
 
   const showBanner = computed(() => forceOpen.value || consent.value === null)
 

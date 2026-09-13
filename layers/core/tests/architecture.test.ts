@@ -7,6 +7,7 @@ import { checkArchitecture, type LayerDependencies, type SourceFile } from './ar
 
 const LAYER_DEPENDENCIES: LayerDependencies = {
   core: [],
+  consent: ['core'],
 }
 
 const repoRoot = fileURLToPath(new URL('../../..', import.meta.url))

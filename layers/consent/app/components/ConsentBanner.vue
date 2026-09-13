@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useCookieConsent } from '#layers/consent/state/useCookieConsent'
+
 const { t } = useI18n()
 const localePath = useLocalePath()
 const { consent, showBanner, acceptAll, rejectAll, savePreferences } = useCookieConsent()

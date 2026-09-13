@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { consentSignals } from '../../shared/utils/consentSignals'
+import { consentSignals } from './consentSignals'
 
 describe('consentSignals', () => {
   it('grants all four signals when both categories are consented', () => {
