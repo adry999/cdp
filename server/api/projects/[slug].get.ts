@@ -1,5 +1,5 @@
 import { serverSupabaseClient } from '#supabase/server'
-import { logAndThrow } from '~~/shared/utils/apiError'
+import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
 
 const PROJECT_SELECT = `
   slug_ro, slug_en, title_ro, title_en, card_title_ro, card_title_en,

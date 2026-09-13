@@ -8,7 +8,7 @@ import {
   isStageId,
   resolveRoute,
 } from '~~/shared/utils/qualifierRouting'
-import { logAndThrow } from '~~/shared/utils/apiError'
+import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
 import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
 
 /**

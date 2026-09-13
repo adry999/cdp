@@ -1,7 +1,7 @@
 import { serverSupabaseServiceRole } from '#supabase/server'
 import type { Database } from '~/types/database.types'
 import { budgetLabel } from '~~/shared/utils/leadLabels'
-import { logAndThrow } from '~~/shared/utils/apiError'
+import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
 import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
 
 const RATE_LIMIT_WINDOW_SECONDS = 10 * 60
