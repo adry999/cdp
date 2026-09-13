@@ -1,4 +1,6 @@
-import { consentSignals } from '~~/shared/utils/consentSignals'
+import { hasConsent } from '#layers/consent/domain/consent'
+import { consentSignals } from '#layers/consent/domain/consentSignals'
+import { useCookieConsent } from '#layers/consent/state/useCookieConsent'
 
 declare global {
   interface Window {
@@ -33,7 +35,7 @@ export default defineNuxtPlugin(() => {
     document.head.appendChild(script)
   }
 
-  // The privacy policy (app/data/legal.ts) says plainly: "Google Analytics —
+  // The privacy policy (domain/privacyPolicy.ts) says plainly: "Google Analytics —
   // used only if you explicitly consented." Consent Mode's "advanced" pattern
   // — load gtag.js immediately with storage denied by default, update it
   // later — still fetches the script and calls gtag('config', ...) before
@@ -60,7 +62,7 @@ export default defineNuxtPlugin(() => {
   // fresh load after this simply never re-injects the tag.
   function revokeGaIfWithdrawn() {
     if (!gaInjected || hasConsent(consent.value, 'analytics')) return
-    for (const name of document.cookie.split(';').map((c) => c.split('=')[0].trim())) {
+    for (const name of document.cookie.split(';').map((c) => (c.split('=')[0] ?? '').trim())) {
       if (name === '_ga' || name === '_gid' || name === '_gat' || name.startsWith('_ga_')) clearCookie(name)
     }
     gaInjected = false

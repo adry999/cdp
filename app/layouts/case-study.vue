@@ -10,6 +10,6 @@ const { t } = useI18n()
       <slot />
     </main>
     <SiteFooter compact />
-    <CookieBanner />
+    <ConsentBanner />
   </div>
 </template>

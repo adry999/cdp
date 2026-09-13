@@ -1,5 +1,5 @@
 import { serverSupabaseClient } from '#supabase/server'
-import { logAndThrow } from '~~/shared/utils/apiError'
+import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
 
 /** Minimal XML escaping — slugs and the site URL are the only inputs here, but
  * a slug is admin-entered text and should never be trusted verbatim in markup. */

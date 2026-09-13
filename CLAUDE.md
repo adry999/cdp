@@ -88,8 +88,9 @@ implementare) în `docs/superpowers/specs/` și `docs/superpowers/plans/`:
   lipsește. Alegerea manuală din switcher (cookie `codepedia_locale`) are
   mereu prioritate. Acționează doar pe `/` și `/en` — nu pe pagini adânci.
 - **Consimțământ cookie-uri + politică de confidențialitate** —
-  `app/composables/useCookieConsent.ts`, `app/components/site/CookieBanner.vue`,
-  `app/plugins/analytics.client.ts`, pagina `/confidentialitate` (`/en/privacy`).
+  modulul `layers/consent/` (`state/useCookieConsent.ts`,
+  `app/components/ConsentBanner.vue`, `app/plugins/analytics.client.ts`),
+  pagina `/confidentialitate` (`/en/privacy`).
   Google Analytics (Consent Mode v2) și Meta Pixel sunt gata de activare prin
   `NUXT_PUBLIC_GA_ID` / `NUXT_PUBLIC_META_PIXEL_ID` — fără ID-uri setate,
   sistemul e complet inert.

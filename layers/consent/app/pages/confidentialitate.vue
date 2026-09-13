@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { privacyPolicy } from '~/data/legal'
+import { privacyPolicy } from '#layers/consent/domain/privacyPolicy'
 
 const { locale } = useI18n()
 const content = computed(() => privacyPolicy[locale.value as 'ro' | 'en'])

@@ -16,16 +16,7 @@
  * re-derives the tag and route rather than trusting the client payload.
  */
 
-export const STAGE_IDS = ['A', 'B', 'C', 'D', 'E'] as const
-export type StageId = (typeof STAGE_IDS)[number]
-
-/**
- * Display order for step 1: lightest / cheapest engagement first, most involved
- * last (simple page → scoping → build from designs → work inside a live
- * codebase → custom AI engineering). The tag IDs above stay canonical; only
- * the order the cards render in changes.
- */
-export const STAGE_ORDER = ['E', 'B', 'A', 'C', 'D'] as const satisfies readonly StageId[]
+import type { StageId } from '#layers/core/shared/types/service-stage'
 
 /** Stable, English, never translated — this is what lands in our inbox / CRM. */
 export const STAGE_TAGS: Record<StageId, string> = {
@@ -82,10 +73,6 @@ export function offerKey(stage: StageId, route: QualifierRoute): string {
     D: 'automation',
   }
   return byStage[stage as Exclude<StageId, 'E'>]
-}
-
-export function isStageId(value: unknown): value is StageId {
-  return typeof value === 'string' && (STAGE_IDS as readonly string[]).includes(value)
 }
 
 export function isQualifierBudgetKey(value: unknown): value is QualifierBudgetKey {

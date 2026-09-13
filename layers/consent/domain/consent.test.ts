@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { hasConsent } from '../../app/utils/consent'
+import { hasConsent } from './consent'
 
 describe('hasConsent', () => {
   it('returns false when no decision has been made yet', () => {

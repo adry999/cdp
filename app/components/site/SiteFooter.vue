@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useCookieConsent } from '#layers/consent'
+
 withDefaults(defineProps<{ compact?: boolean }>(), { compact: false })
 
 const { t, locale } = useI18n()
@@ -33,7 +35,7 @@ const copyrightLine = computed(() =>
           width="19"
           height="12"
           class="block h-3 w-auto opacity-50"
-        />
+        >
         {{ legalLine }}
       </span>
       <span v-if="!compact">{{ t('footer.tagline') }}</span>

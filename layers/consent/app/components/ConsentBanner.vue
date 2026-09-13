@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useCookieConsent } from '#layers/consent/state/useCookieConsent'
+
 const { t } = useI18n()
 const localePath = useLocalePath()
 const { consent, showBanner, acceptAll, rejectAll, savePreferences } = useCookieConsent()
@@ -46,9 +48,9 @@ watch(bannerRef, (el) => {
 
 function trapFocus(event: KeyboardEvent) {
   const focusable = focusableElements()
-  if (!focusable.length) return
   const first = focusable[0]
-  const last = focusable[focusable.length - 1]
+  const last = focusable.at(-1)
+  if (!first || !last) return
   if (event.shiftKey && document.activeElement === first) {
     event.preventDefault()
     last.focus()
@@ -88,11 +90,11 @@ function trapFocus(event: KeyboardEvent) {
 
         <div v-else class="flex flex-wrap items-center gap-4">
           <label class="flex items-center gap-2 text-sm">
-            <input v-model="draft.analytics" type="checkbox" />
+            <input v-model="draft.analytics" type="checkbox" >
             {{ t('cookieBanner.analyticsLabel') }}
           </label>
           <label class="flex items-center gap-2 text-sm">
-            <input v-model="draft.marketing" type="checkbox" />
+            <input v-model="draft.marketing" type="checkbox" >
             {{ t('cookieBanner.marketingLabel') }}
           </label>
           <AppButton variant="ink" type="button" @click="save">{{ t('cookieBanner.save') }}</AppButton>

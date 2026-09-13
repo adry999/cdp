@@ -14,7 +14,7 @@ const { t } = useI18n()
 const tracks = useProcessTracks()
 
 const activeId = ref<ProcessTrackId>('fast')
-const activeTrack = computed(() => tracks.value.find((tr) => tr.id === activeId.value) ?? tracks.value[0])
+const activeTrack = computed(() => tracks.value.find((tr) => tr.id === activeId.value) ?? tracks.value[0]!)
 
 // Roving-tabindex arrow-key nav across the two toggle buttons, matching
 // HomeServices. Home/End are redundant with only two tabs, so left/right only.

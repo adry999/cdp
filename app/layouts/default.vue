@@ -11,7 +11,7 @@ const { enabled: qualifierEnabled } = useQualifier()
       <slot />
     </main>
     <SiteFooter />
-    <CookieBanner />
+    <ConsentBanner />
     <QualifierModal v-if="qualifierEnabled" />
   </div>
 </template>

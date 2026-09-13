@@ -1,15 +1,15 @@
 import { serverSupabaseServiceRole } from '#supabase/server'
 import type { Database } from '~/types/database.types'
 import { budgetLabel } from '~~/shared/utils/leadLabels'
-import { logAndThrow } from '~~/shared/utils/apiError'
+import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
+import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const RATE_LIMIT_WINDOW_SECONDS = 10 * 60
 const RATE_LIMIT_MAX = 3
 
 // Generous enough for a real submission, tight enough that a scripted flood
 // can't push megabyte-sized rows into the table.
-const MAX_LENGTH: Record<string, number> = {
+const MAX_LENGTH = {
   name: 200,
   email: 254,
   company: 200,
@@ -17,7 +17,7 @@ const MAX_LENGTH: Record<string, number> = {
   budget: 50,
   source: 200,
   page: 500,
-}
+} as const
 
 interface LeadBody {
   name?: string
@@ -32,10 +32,6 @@ interface LeadBody {
   website?: string // honeypot
 }
 
-function clip(value: string | undefined, field: keyof typeof MAX_LENGTH): string {
-  return (value ?? '').trim().slice(0, MAX_LENGTH[field])
-}
-
 export default defineEventHandler(async (event) => {
   const body = await readBody<LeadBody>(event)
 
@@ -44,11 +40,11 @@ export default defineEventHandler(async (event) => {
     return { success: true }
   }
 
-  const name = clip(body.name, 'name')
-  const email = clip(body.email, 'email')
-  const message = clip(body.message, 'message')
+  const name = clipText(body.name, MAX_LENGTH.name)
+  const email = clipText(body.email, MAX_LENGTH.email)
+  const message = clipText(body.message, MAX_LENGTH.message)
 
-  if (!name || !email || !message || !EMAIL_RE.test(email)) {
+  if (!name || !email || !message || !EMAIL_PATTERN.test(email)) {
     throw createError({ statusCode: 400, statusMessage: 'Invalid submission' })
   }
 
@@ -73,8 +69,8 @@ export default defineEventHandler(async (event) => {
       ? Object.fromEntries(Object.entries(body.utm).map(([k, v]) => [k, String(v).slice(0, 200)]))
       : null
 
-  const company = clip(body.company, 'company')
-  const budget = clip(body.budget, 'budget')
+  const company = clipText(body.company, MAX_LENGTH.company)
+  const budget = clipText(body.budget, MAX_LENGTH.budget)
 
   const { error } = await client.from('leads').insert({
     name,
@@ -82,9 +78,9 @@ export default defineEventHandler(async (event) => {
     company: company || null,
     message,
     budget: budget || null,
-    source: clip(body.source, 'source') || null,
+    source: clipText(body.source, MAX_LENGTH.source) || null,
     lang: body.lang === 'en' ? 'en' : 'ro',
-    page: clip(body.page, 'page') || null,
+    page: clipText(body.page, MAX_LENGTH.page) || null,
     referrer: getHeader(event, 'referer')?.slice(0, 500) ?? null,
     utm,
   })

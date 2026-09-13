@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { pick } from '../../app/utils/pick'
+import { pick } from './pick'
 
 describe('pick', () => {
   it('returns the Romanian value for the ro locale', () => {

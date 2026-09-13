@@ -1,3 +1,5 @@
+import { pick } from '#layers/core/shared/utils/pick'
+
 export interface ProjectFactRow {
   label_ro: string
   label_en: string | null
@@ -67,10 +69,6 @@ export interface ProjectRow {
 }
 
 type Locale = 'ro' | 'en'
-
-function pick(ro: string, en: string | null | undefined, locale: Locale): string {
-  return locale === 'en' && en ? en : ro
-}
 
 /** Frames the case-study design reserves for gallery screenshots. */
 const GALLERY_PLACEHOLDER_COUNT = 2

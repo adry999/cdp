@@ -16,8 +16,8 @@ const supabaseHost = new URL(
 
 // No CSP/frame/sniffing headers were configured anywhere — Nitro/Vercel ship
 // none by default. 'unsafe-inline' on script-src is a real gap, not an
-// oversight: the GA bootstrap and the Meta Pixel loader (app/plugins/
-// analytics.client.ts) both inject inline <script> tags with no nonce/hash
+// oversight: the GA bootstrap and the Meta Pixel loader (layers/consent/app/
+// plugins/analytics.client.ts) both inject inline <script> tags with no nonce/hash
 // wiring in place, and both are currently inert (no ID configured) so this
 // is the safe moment to add the header without breaking anything live.
 // Tightening script-src to a nonce is real follow-up work, not done here.
@@ -111,7 +111,6 @@ export default defineNuxtConfig({
 
   components: [
     { path: '~/components/site', pathPrefix: false },
-    { path: '~/components/ui', pathPrefix: false },
     { path: '~/components/admin', pathPrefix: false },
   ],
 

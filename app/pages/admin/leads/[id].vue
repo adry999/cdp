@@ -5,9 +5,10 @@ definePageMeta({ layout: 'admin' })
 
 const route = useRoute()
 const supabase = useSupabaseClient()
+const leadId = String(route.params.id)
 
-const { data: lead, refresh } = await useAsyncData(`admin-lead-${route.params.id}`, async () => {
-  const { data, error } = await supabase.from('leads').select('*').eq('id', route.params.id).single()
+const { data: lead, refresh } = await useAsyncData(`admin-lead-${leadId}`, async () => {
+  const { data, error } = await supabase.from('leads').select('*').eq('id', leadId).single()
   if (error) throw error
   return data
 })

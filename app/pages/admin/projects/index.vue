@@ -37,6 +37,7 @@ async function onDrop(i: number) {
   if (!canReorder.value || dragIndex.value === null || dragIndex.value === i || !rows.value) return
   const list = rows.value
   const [moved] = list.splice(dragIndex.value, 1)
+  if (!moved) return
   list.splice(i, 0, moved)
   dragIndex.value = null
 
@@ -197,7 +198,8 @@ async function duplicate(slug: string) {
         return { ...c, project_id: created.id }
       }),
     )
-    const { error: insertError } = await supabase.from(table).insert(rows)
+    // Each row is a copy of a row just read from this same table.
+    const { error: insertError } = await supabase.from(table).insert(rows as never)
     if (insertError) childError = true
   }
 
@@ -260,7 +262,7 @@ async function duplicate(slug: string) {
             :src="project.cover_path"
             alt=""
             class="h-[30px] w-12 flex-none rounded border border-hairline object-cover"
-          />
+          >
           <div v-else class="h-[30px] w-12 flex-none rounded border border-hairline" :style="thumbnailStyle" />
           <div class="min-w-0 flex-[2_1_200px] text-[15px]">{{ project.card_title_ro }}</div>
           <div class="flex flex-[1_1_160px] flex-wrap gap-1.5">

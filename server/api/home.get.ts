@@ -1,5 +1,5 @@
 import { serverSupabaseClient } from '#supabase/server'
-import { logAndThrow } from '~~/shared/utils/apiError'
+import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
 
 export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event)

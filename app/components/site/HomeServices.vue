@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ComponentPublicInstance } from 'vue'
-import type { StageId } from '~/types/services'
+import type { StageId } from '#layers/core/shared/types/service-stage'
 
 // Section 01 — the "growth timeline". Five milestone nodes on an animated
 // connector line (horizontal ≥768px, vertical below), one per qualifier stage.
@@ -16,6 +16,7 @@ const { open: openQualifier, enabled: qualifierEnabled } = useQualifier()
 const stages = useServiceStages()
 
 const active = ref(0)
+const activeStage = computed(() => stages.value[active.value]!)
 const mounted = ref(false)
 const drawn = ref(false)
 
@@ -129,7 +130,7 @@ onMounted(() => {
           class="dot relative z-[1] flex h-11 w-11 shrink-0 items-center justify-center rounded-full border bg-paper transition duration-200"
           :class="idx === active ? 'scale-[1.15] border-signal text-signal' : 'border-hairline text-muted'"
         >
-          <QualifierStageIcon :name="stage.icon" />
+          <CoreStageIcon :stage="stage.id" />
         </span>
         <span class="flex min-w-0 flex-col gap-0.5 md:items-center">
           <span
@@ -150,36 +151,36 @@ onMounted(() => {
 
     <Transition name="svc-panel" mode="out-in">
       <div
-        :id="`svc-panel-${stages[active].id}`"
-        :key="stages[active].id"
+        :id="`svc-panel-${activeStage.id}`"
+        :key="activeStage.id"
         role="tabpanel"
-        :aria-labelledby="`svc-tab-${stages[active].id}`"
+        :aria-labelledby="`svc-tab-${activeStage.id}`"
         tabindex="0"
         class="mt-[clamp(24px,3vw,36px)] rounded border border-hairline p-[clamp(20px,2.5vw,28px)]"
       >
         <div class="flex flex-wrap items-baseline justify-between gap-3">
           <h3 class="m-0 font-mono text-[clamp(18px,2.2vw,22px)] font-medium uppercase leading-tight tracking-[0.04em] text-signal">
-            {{ stages[active].name }}
+            {{ activeStage.name }}
           </h3>
-          <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ stages[active].priceTime }}</span>
+          <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ activeStage.priceTime }}</span>
         </div>
 
         <div class="mt-6 flex flex-col">
           <TableRow :label="t('home.services.whereYouAreLabel')" label-width="150px">
-            <p class="m-0 max-w-[58ch] text-base text-muted">{{ stages[active].whereYouAre }}</p>
+            <p class="m-0 max-w-[58ch] text-base text-muted">{{ activeStage.whereYouAre }}</p>
           </TableRow>
           <TableRow :label="t('home.services.whatYouGetLabel')" label-width="150px" :last="true">
-            <p class="m-0 max-w-[58ch] text-base">{{ stages[active].whatYouGet }}</p>
+            <p class="m-0 max-w-[58ch] text-base">{{ activeStage.whatYouGet }}</p>
           </TableRow>
         </div>
 
         <div class="mt-5 flex flex-wrap gap-2">
-          <TechChip v-for="badge in stages[active].badges" :key="badge" :label="badge" />
+          <TechChip v-for="badge in activeStage.badges" :key="badge" :label="badge" />
         </div>
 
         <div class="mt-6">
-          <AppButton variant="signal" @click="startAt(stages[active].id)">
-            {{ stages[active].cta }}
+          <AppButton variant="signal" @click="startAt(activeStage.id)">
+            {{ activeStage.cta }}
           </AppButton>
         </div>
       </div>

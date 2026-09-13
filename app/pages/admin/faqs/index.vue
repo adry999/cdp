@@ -90,6 +90,7 @@ function onDragStart(i: number) {
 async function onDrop(i: number) {
   if (dragIndex.value === null || dragIndex.value === i) return
   const [moved] = items.splice(dragIndex.value, 1)
+  if (!moved) return
   items.splice(i, 0, moved)
   dragIndex.value = null
 
@@ -158,7 +159,7 @@ async function onDrop(i: number) {
             </span>
             <div class="flex items-center gap-4">
               <label class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.08em]">
-                <input v-model="item.published" type="checkbox" class="accent-signal" />
+                <input v-model="item.published" type="checkbox" class="accent-signal" >
                 <span :class="item.published ? 'text-signal' : 'text-muted'">
                   {{ item.published ? 'Publicat' : 'Draft' }}
                 </span>
@@ -172,8 +173,8 @@ async function onDrop(i: number) {
               </button>
             </div>
           </div>
-          <AdminFieldPair label="Întrebare" v-model:ro="item.question.ro" v-model:en="item.question.en" required />
-          <AdminFieldPair label="Răspuns" textarea v-model:ro="item.answer.ro" v-model:en="item.answer.en" required />
+          <AdminFieldPair v-model:ro="item.question.ro" v-model:en="item.question.en" label="Întrebare" required />
+          <AdminFieldPair v-model:ro="item.answer.ro" v-model:en="item.answer.en" label="Răspuns" textarea required />
         </div>
       </div>
     </div>

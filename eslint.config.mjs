@@ -1,5 +1,42 @@
 // @ts-check
+import { readFileSync } from 'node:fs'
 import withNuxt from './.nuxt/eslint.config.mjs'
+
+const layerDependencies = JSON.parse(readFileSync(new URL('./layers/dependencies.json', import.meta.url), 'utf8'))
+
+function layerBoundary(layer, dependencies) {
+  const fullAccess = dependencies.includes('core') ? [layer, 'core'] : [layer]
+  const publicOnly = dependencies.filter((dependency) => dependency !== 'core')
+  const regex =
+    `^#layers/(?!(${fullAccess.join('|')})(/|$))` +
+    (publicOnly.length ? `(?!(${publicOnly.join('|')})(/server)?$)` : '')
+  const message =
+    layer === 'core'
+      ? 'layers/core must not import another layer.'
+      : publicOnly.length
+        ? `layers/${layer} may import its own files, #layers/core/... and only ${publicOnly
+            .map((dependency) => `#layers/${dependency} or #layers/${dependency}/server`)
+            .join(', ')} of ${publicOnly.join(', ')}.`
+        : `layers/${layer} may import only its own files and #layers/core/....`
+  return {
+    files: [`layers/${layer}/**/*.{ts,vue}`],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            { regex, message },
+            { regex: '^(~|~~|@|@@|#shared)/', message: `layers/${layer} must not import root app/, server/ or shared/ code.` },
+            {
+              regex: '^\\.\\.(/|$)',
+              message: `Inside layers/${layer} use ./ or #layers/${layer}/... paths; never climb with ../.`,
+            },
+          ],
+        },
+      ],
+    },
+  }
+}
 
 export default withNuxt(
   {
@@ -9,6 +46,28 @@ export default withNuxt(
       // deliberate stub.
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-unused-vars': 'error',
+    },
+  },
+  // A layer joins layers/dependencies.json in the same commit that migrates it.
+  ...Object.entries(layerDependencies).map(([layer, dependencies]) => layerBoundary(layer, dependencies)),
+  {
+    files: ['app/**/*.{ts,vue}', 'server/**/*.ts', 'shared/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              regex: '^#layers/(?!core/)[^/]+/(?!server$)',
+              message: 'Import a feature layer only through #layers/<layer> or #layers/<layer>/server.',
+            },
+            {
+              regex: '(^|/)layers/',
+              message: 'Import a layer through its #layers/<layer> alias, never by file path.',
+            },
+          ],
+        },
+      ],
     },
   },
   {
