@@ -15,7 +15,7 @@ const error = ref('')
 const MAX_BYTES = 8 * 1024 * 1024
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
 
-function pick() {
+function openFilePicker() {
   fileInput.value?.click()
 }
 
@@ -74,7 +74,7 @@ async function onFileChange(e: Event) {
       type="button"
       class="absolute bottom-3 right-3 cursor-pointer rounded border border-hairline bg-paper px-3 py-1.5 font-mono text-xs uppercase tracking-[0.08em] text-ink hover:border-ink"
       :disabled="uploading"
-      @click="pick"
+      @click="openFilePicker"
     >
       {{ uploading ? 'Se încarcă…' : modelValue ? 'Înlocuiește' : 'Încarcă' }}
     </button>
