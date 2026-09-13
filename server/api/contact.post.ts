@@ -9,6 +9,7 @@ import {
   resolveRoute,
 } from '~~/shared/utils/qualifierRouting'
 import { logAndThrow } from '~~/shared/utils/apiError'
+import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
 
 /**
  * Qualification-modal submissions (app/components/site/QualifierModal.vue).
@@ -20,7 +21,6 @@ import { logAndThrow } from '~~/shared/utils/apiError'
  * RPC so a flood on either endpoint is throttled.
  */
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const RATE_LIMIT_WINDOW_SECONDS = 10 * 60
 const RATE_LIMIT_MAX = 3
 
@@ -42,10 +42,6 @@ interface ContactBody {
   website?: string // honeypot
 }
 
-function clip(value: string | undefined, field: keyof typeof MAX_LENGTH): string {
-  return (value ?? '').trim().slice(0, MAX_LENGTH[field])
-}
-
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
   if (config.public.qualifierEnabled !== true) {
@@ -59,15 +55,15 @@ export default defineEventHandler(async (event) => {
     return { success: true }
   }
 
-  const name = clip(body.name, 'name')
-  const email = clip(body.email, 'email')
-  const handle = clip(body.handle, 'handle')
-  const notes = clip(body.notes, 'notes')
+  const name = clipText(body.name, MAX_LENGTH.name)
+  const email = clipText(body.email, MAX_LENGTH.email)
+  const handle = clipText(body.handle, MAX_LENGTH.handle)
+  const notes = clipText(body.notes, MAX_LENGTH.notes)
 
   if (
     !name ||
     !email ||
-    !EMAIL_RE.test(email) ||
+    !EMAIL_PATTERN.test(email) ||
     !isStageId(body.stage) ||
     !isQualifierBudgetKey(body.budget)
   ) {

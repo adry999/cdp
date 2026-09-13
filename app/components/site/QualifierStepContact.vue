@@ -37,13 +37,12 @@ const form = reactive<QualifierContactPayload>({
 })
 
 const fieldErrors = reactive<{ name?: string; email?: string }>({})
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 function validate() {
   fieldErrors.name = form.name.trim() ? undefined : t('home.contact.form.errorRequired')
   fieldErrors.email = !form.email.trim()
     ? t('home.contact.form.errorRequired')
-    : EMAIL_RE.test(form.email)
+    : EMAIL_PATTERN.test(form.email)
       ? undefined
       : t('home.contact.form.errorEmail')
   return !fieldErrors.name && !fieldErrors.email
