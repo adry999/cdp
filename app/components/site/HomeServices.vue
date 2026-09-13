@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ComponentPublicInstance } from 'vue'
-import type { StageId } from '~/types/services'
+import type { StageId } from '#layers/core/shared/types/service-stage'
 
 // Section 01 — the "growth timeline". Five milestone nodes on an animated
 // connector line (horizontal ≥768px, vertical below), one per qualifier stage.
@@ -129,7 +129,7 @@ onMounted(() => {
           class="dot relative z-[1] flex h-11 w-11 shrink-0 items-center justify-center rounded-full border bg-paper transition duration-200"
           :class="idx === active ? 'scale-[1.15] border-signal text-signal' : 'border-hairline text-muted'"
         >
-          <QualifierStageIcon :name="stage.icon" />
+          <CoreStageIcon :stage="stage.id" />
         </span>
         <span class="flex min-w-0 flex-col gap-0.5 md:items-center">
           <span

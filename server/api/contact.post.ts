@@ -5,9 +5,9 @@ import {
   ROUTE_LABELS,
   STAGE_TAGS,
   isQualifierBudgetKey,
-  isStageId,
   resolveRoute,
 } from '~~/shared/utils/qualifierRouting'
+import { isStageId } from '#layers/core/shared/types/service-stage'
 import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
 import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
 

@@ -1,11 +1,9 @@
 <script setup lang="ts">
-// Lucide icon glyphs (MIT) inlined rather than pulled from a package — the
-// project ships no icon library. Paths are the stock 24×24 Lucide artwork;
-// keep them in sync with lucide.dev if you swap one.
+import { STAGE_ICONS, type StageId } from '#layers/core/shared/types/service-stage'
 
-export type StageIconName = 'file-text' | 'lightbulb' | 'shapes' | 'gauge' | 'bot'
-
-defineProps<{ name: StageIconName }>()
+// Lucide glyphs (MIT) are inlined because the project ships no icon library.
+const props = defineProps<{ stage: StageId }>()
+const name = computed(() => STAGE_ICONS[props.stage])
 </script>
 
 <template>

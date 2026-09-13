@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { StageId, QualifierBudgetKey } from '~~/shared/utils/qualifierRouting'
+import type { QualifierBudgetKey } from '~~/shared/utils/qualifierRouting'
+import type { StageId } from '#layers/core/shared/types/service-stage'
 import { STAGE_TAGS, resolveRoute, ROUTE_LABELS } from '~~/shared/utils/qualifierRouting'
 import type { QualifierContactPayload } from './QualifierStepContact.vue'
 

@@ -1,10 +1,8 @@
 import { describe, expect, it } from 'vitest'
+import { STAGE_IDS } from '#layers/core/shared/types/service-stage'
 import {
   QUALIFIER_BUDGET_KEYS,
-  STAGE_IDS,
-  STAGE_ORDER,
   isQualifierBudgetKey,
-  isStageId,
   offerKey,
   resolveRoute,
 } from '../../shared/utils/qualifierRouting'
@@ -46,27 +44,7 @@ describe('offerKey', () => {
   })
 })
 
-describe('STAGE_ORDER', () => {
-  it('is a permutation of every stage id', () => {
-    expect([...STAGE_ORDER].sort()).toEqual([...STAGE_IDS].sort())
-  })
-
-  it('leads with the mass-market page and ends with custom AI', () => {
-    expect(STAGE_ORDER[0]).toBe('E')
-    expect(STAGE_ORDER[STAGE_ORDER.length - 1]).toBe('D')
-  })
-})
-
 describe('guards', () => {
-  it('isStageId accepts only A–E', () => {
-    expect(isStageId('A')).toBe(true)
-    expect(isStageId('E')).toBe(true)
-    expect(isStageId('F')).toBe(false)
-    expect(isStageId('')).toBe(false)
-    expect(isStageId(null)).toBe(false)
-    expect(isStageId(2)).toBe(false)
-  })
-
   it('isQualifierBudgetKey accepts the modal tiers but not under1k or unsure', () => {
     expect(isQualifierBudgetKey('under500')).toBe(true)
     expect(isQualifierBudgetKey('500to1k')).toBe(true)

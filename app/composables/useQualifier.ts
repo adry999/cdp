@@ -1,4 +1,4 @@
-import { isStageId, type StageId } from '~~/shared/utils/qualifierRouting'
+import { isStageId, type StageId } from '#layers/core/shared/types/service-stage'
 
 /**
  * Shared open/close state for the single QualifierModal instance mounted in

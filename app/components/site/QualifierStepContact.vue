@@ -3,8 +3,8 @@ import {
   offerKey,
   resolveRoute,
   type QualifierBudgetKey,
-  type StageId,
 } from '~~/shared/utils/qualifierRouting'
+import type { StageId } from '#layers/core/shared/types/service-stage'
 
 export interface QualifierContactPayload {
   name: string
