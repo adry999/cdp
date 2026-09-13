@@ -9,7 +9,7 @@ description: Folosește în repo-ul Codepedia (Nuxt 4 + Supabase) când decizi u
 
 Deciziile de arhitectură luate pentru acest repo. Se aplică înaintea regulilor generale din `senior-architecture`; unde diferă, câștigă acest fișier. Designul complet, cu motivația fiecărei decizii: `docs/superpowers/specs/2026-09-13-feature-driven-architecture-design.md`.
 
-**Stare:** structură țintă propusă pe 2026-09-13, în așteptarea aprobării spec-ului. Migrarea nu a început — codul e încă în layout-ul vechi (`app/components/{site,admin,ui}`, `app/composables`, `shared/utils`).
+**Stare:** pașii 1–2 ai migrării sunt implementați (2026-09-13): `layers/core` există și conține componentele design system, `text`, `pick`, `logAndThrow` și vocabularul etapelor. Verificarea vizuală și e2e a acestor pași e în așteptare, pentru că proiectul Supabase nu e accesibil. Modulele de feature nu sunt încă migrate — restul codului e în layout-ul vechi.
 
 ## Triggers
 
@@ -24,9 +24,9 @@ Deciziile de arhitectură luate pentru acest repo. Se aplică înaintea regulilo
 
 Nuxt 4.5 · Vue 3.5 · TypeScript strict · `@nuxtjs/supabase` · `@nuxtjs/i18n` (`prefix_except_default`, `ro` implicit) · Tailwind 4 · Vitest · Playwright · Vercel. Fără dependențe noi fără acord (CLAUDE.md): fără Pinia, Zod sau bibliotecă de event bus — le acoperă layers, `useState`, runtime hooks și guard-uri scrise de mână.
 
-### Până la pasul 1 al migrării
+### Până la migrarea fiecărui modul
 
-- Codul nou intră în layout-ul actual, dar respectă deja contractele noi: status `'idle' | 'pending' | 'success' | 'error'`, fără `catch {}` gol, fără copii noi pentru `EMAIL_RE`, `clip` sau `pick`.
+- Codul nou pentru un modul nemigrat intră în layout-ul actual, dar folosește deja ce e în `core` (`EMAIL_PATTERN`, `clipText`, `pick`, `logAndThrow`, `StageId`) și nu adaugă copii noi.
 - Fișierele se mută doar ca parte a unui pas din planul de migrare.
 - Fișierele cu modificări necomise nu se mută până nu sunt comise.
 
@@ -174,3 +174,4 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-09-13: `i18n/locales` rămâne central — combinarea locale-urilor per layer nu e verificată.
 - 2026-09-13: Migrațiile SQL rămân în `supabase/migrations/`.
 - 2026-09-13: Conventional Commits fără atribuire AI — preferința explicită a utilizatorului.
+- 2026-09-13: Granița de import e verificată de ESLint (`no-restricted-imports`); fiecare layer intră în regulă în commit-ul care îl migrează — spec, pașii 1–2.

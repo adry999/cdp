@@ -443,8 +443,8 @@ e2e smoke, browser check RO + EN. Conventional Commits, one commit per logical m
 | Step | Scope | Risk | Why this order |
 |---|---|---|---|
 | 0 | Commit or stash the 18 uncommitted files | — | Several are move targets; moving them dirty loses work |
-| 1 | Spike: empty `layers/core` with `nuxt.config.ts`; confirm `#layers/core` alias and auto-import in `.nuxt/imports.d.ts`; add Vitest aliases; add architecture test (fails red on current imports only where expected) | Low | Proves D1–D3 on this exact Nuxt version before anything moves |
-| 2 | Move design-system `ui/` components, `pick`, `apiError`, email pattern, `AsyncStatus`, `AppError` into core; delete duplicates (V4) | Low | Component names unchanged → templates untouched |
+| 1 | Code done 2026-09-13; visual and e2e verification pending (Supabase unreachable). Spike: empty `layers/core` with `nuxt.config.ts`; confirm `#layers/core` alias and auto-import in `.nuxt/imports.d.ts`; add Vitest aliases; add architecture test (fails red on current imports only where expected) | Low | Proves D1–D3 on this exact Nuxt version before anything moves |
+| 2 | Code done 2026-09-13; visual and e2e verification pending (Supabase unreachable). Move design-system `ui/` components, `pick`, `apiError`, email pattern, `AsyncStatus`, `AppError` into core; delete duplicates (V4) | Low | Component names unchanged → templates untouched |
 | 3 | `consent` layer: `CookieBanner`, `useCookieConsent`, `consent.ts`, `consentSignals.ts`, analytics plugin, privacy page, `legal.ts` | Low | Client-only, already covered by `e2e/cookie-consent.spec.ts` |
 | 4 | `leads` layer (independent) + `sendMail` / `checkRateLimit` into core server libs; admin leads pages | Medium | Removes V4 duplication before qualifier depends on it |
 | 5 | `qualifier` layer (dependent on `leads` server API + core hook contract) | Medium | Needs step 4's public API |
@@ -452,6 +452,8 @@ e2e smoke, browser check RO + EN. Conventional Commits, one commit per logical m
 | 7 | `projects` layer: split the 570-line editor into `data/projectRepository.ts`, `domain/projectForm.ts`, section components; one `PROJECT_SELECT` (V2, V3) | High | Largest file, most business logic; done once the pattern is proven on 4 layers |
 | 8 | `home` layer: `pages/index.vue` + `Home*` sections, emits `qualifier:open`; root `app/` reduced to shell; `locale` redirect middleware into core | Low | Pure composition by now |
 | 9 | Update CLAUDE.md conventions (component grouping, test location), architecture test + ESLint rule in CI, history-comment cleanup (V9), env validation (V10) | Low | Conventions change only after the code matches them |
+
+Step 1–2 adjustments: the import boundary is enforced by ESLint from step 1 and each layer joins the rule in the commit that migrates it; `AsyncStatus`, `AppError` and `toAppError` land with their first consumer (step 4); the template-prefix architecture test lands with the first feature layer that has components (step 3).
 
 ## Module: layers/leads (independent)
 
