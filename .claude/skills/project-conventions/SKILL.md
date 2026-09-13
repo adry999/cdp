@@ -9,7 +9,7 @@ description: Folosește în repo-ul Codepedia (Nuxt 4 + Supabase) când decizi u
 
 Deciziile de arhitectură luate pentru acest repo. Se aplică înaintea regulilor generale din `senior-architecture`; unde diferă, câștigă acest fișier. Designul complet, cu motivația fiecărei decizii: `docs/superpowers/specs/2026-09-13-feature-driven-architecture-design.md`.
 
-**Stare:** pașii 1–2 ai migrării sunt implementați (2026-09-13): `layers/core` există și conține componentele design system, `text`, `pick`, `logAndThrow` și vocabularul etapelor. Verificarea vizuală și e2e a acestor pași e în așteptare, pentru că proiectul Supabase nu e accesibil. Modulele de feature nu sunt încă migrate — restul codului e în layout-ul vechi.
+**Stare:** pașii 1–3 ai migrării sunt implementați (2026-09-13). `layers/core` conține componentele design system, `text`, `pick`, `logAndThrow`, vocabularul etapelor și testul de arhitectură. `layers/consent` conține consimțământul cookie, bannerul, plugin-ul analytics și pagina de confidențialitate. Verificarea vizuală și e2e e în așteptare, pentru că proiectul Supabase nu e accesibil. Celelalte module sunt încă în layout-ul vechi.
 
 ## Triggers
 
@@ -69,7 +69,7 @@ layers/<modul>/
 ├─ data/               # repository client: $fetch / Supabase, mapare rând ↔ domeniu
 ├─ state/              # composables ale modulului, exportate prin index.ts
 ├─ test-support/       # factory-uri de fixture: build<Entitate>(overrides)
-├─ app/components/     # prezentare, prefix de modul
+├─ app/components/     # prezentare, direct în folder (fără subfoldere), prefix de modul
 ├─ app/pages/          # rute: compun componente + state, fără interogări
 ├─ app/plugins/        # doar ascultători de evenimente ai modulului
 └─ server/
@@ -110,7 +110,8 @@ layers/<modul>/
 - Fixture-uri în `layers/<modul>/test-support/`, ca factory cu overrides.
 - Serviciile primesc dependențele ca parametru; testele dau fake-uri in-memory. Fără `vi.mock` pe module.
 - E2E în `e2e/` la rădăcină: un spec per rută publică și per flux critic, rulat pe build de producție.
-- `layers/core/tests/architecture.test.ts` pică la orice import peste graniță.
+- `layers/core/tests/architecture.test.ts` pică la orice componentă sau auto-import folosit peste graniță. Proprietarul unei componente e layer-ul în care stă fișierul. Un layer nou se adaugă în `LAYER_DEPENDENCIES`, în același commit.
+- `npm run typecheck` = `vue-tsc -b --noEmit`. Fără `-b` nu se verifică niciun fișier.
 
 ### Medii
 
@@ -175,3 +176,6 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-09-13: Migrațiile SQL rămân în `supabase/migrations/`.
 - 2026-09-13: Conventional Commits fără atribuire AI — preferința explicită a utilizatorului.
 - 2026-09-13: Granița de import e verificată de ESLint (`no-restricted-imports`); fiecare layer intră în regulă în commit-ul care îl migrează — spec, pașii 1–2.
+- 2026-09-13: Typecheck prin `vue-tsc -b`; folderele nescanate ale layer-elor intră în tsconfig din `layers/core/nuxt.config.ts` — spec, ajustările pasului 3.
+- 2026-09-13: Testul de arhitectură atribuie componentele după calea fișierului, nu după prefix; componentele de feature stau direct în `app/components/` — spec, ajustările pasului 3.
+- 2026-09-13: Codul din rădăcină importă un feature doar ca `#layers/<modul>` sau `#layers/<modul>/server`, verificat de ESLint — spec D2.

@@ -1,6 +1,6 @@
 # Feature-driven architecture — refactor design
 
-Status: approved 2026-09-13. Migration steps 1–2 implemented on branch refactor/feature-driven-architecture; visual and e2e verification pending.
+Status: approved 2026-09-13. Migration steps 1–3 implemented on branch refactor/feature-driven-architecture; visual and e2e verification pending.
 
 ## Goal
 
@@ -445,7 +445,7 @@ e2e smoke, browser check RO + EN. Conventional Commits, one commit per logical m
 | 0 | Commit or stash the 18 uncommitted files | — | Several are move targets; moving them dirty loses work |
 | 1 | Code done 2026-09-13; visual and e2e verification pending (Supabase unreachable). Spike: empty `layers/core` with `nuxt.config.ts`; confirm `#layers/core` alias and auto-import in `.nuxt/imports.d.ts`; add Vitest aliases; add architecture test (fails red on current imports only where expected) | Low | Proves D1–D3 on this exact Nuxt version before anything moves |
 | 2 | Code done 2026-09-13; visual and e2e verification pending (Supabase unreachable). Move design-system `ui/` components, `pick`, `apiError`, email pattern, `AsyncStatus`, `AppError` into core; delete duplicates (V4) | Low | Component names unchanged → templates untouched |
-| 3 | `consent` layer: `CookieBanner`, `useCookieConsent`, `consent.ts`, `consentSignals.ts`, analytics plugin, privacy page, `legal.ts` | Low | Client-only, already covered by `e2e/cookie-consent.spec.ts` |
+| 3 | Code done 2026-09-13; visual and e2e verification pending (Supabase unreachable). `consent` layer: `CookieBanner`, `useCookieConsent`, `consent.ts`, `consentSignals.ts`, analytics plugin, privacy page, `legal.ts` | Low | Client-only, already covered by `e2e/cookie-consent.spec.ts` |
 | 4 | `leads` layer (independent) + `sendMail` / `checkRateLimit` into core server libs; admin leads pages | Medium | Removes V4 duplication before qualifier depends on it |
 | 5 | `qualifier` layer (dependent on `leads` server API + core hook contract) | Medium | Needs step 4's public API |
 | 6 | `content` layer: services, stack, process, about, FAQ, settings — `/api/home`, admin FAQ/services/settings, row types from `database.types.ts` (V5) | Medium | Shared by home and footer; isolate before home |
@@ -454,6 +454,20 @@ e2e smoke, browser check RO + EN. Conventional Commits, one commit per logical m
 | 9 | Update CLAUDE.md conventions (component grouping, test location), architecture test + ESLint rule in CI, history-comment cleanup (V9), env validation (V10) | Low | Conventions change only after the code matches them |
 
 Step 1–2 adjustments: the import boundary is enforced by ESLint from step 1 and each layer joins the rule in the commit that migrates it; `AsyncStatus`, `AppError` and `toAppError` land with their first consumer (step 4); the template-prefix architecture test lands with the first feature layer that has components (step 3).
+
+Step 3 adjustments:
+- **Typecheck.** `npm run typecheck` ran `vue-tsc --noEmit` against the solution-style `tsconfig.json` and checked no files. It now runs `vue-tsc -b --noEmit`. The 31 errors that surfaced are fixed.
+- **Layer folders in tsconfig.** `layers/core/nuxt.config.ts` adds the unscanned layer folders to the generated tsconfigs:
+  - app: `index.ts`, `state/`, `data/`
+  - shared: `domain/`, `test-support/`
+  - node: `tests/`
+- **Architecture test.** The test is `layers/core/tests/architecture.test.ts`, a scan of the real tree, over a pure `architectureRules.ts`.
+  - It attributes components by file path, so `AdminField` belongs to `core` despite its prefix.
+  - Feature components sit directly in `app/components/` and start with the layer name.
+  - Names auto-imported from another owner's scanned folders are reported.
+  - Every layer is declared in `LAYER_DEPENDENCIES`.
+- **ESLint.** `layerBoundary(layer, dependencies)` generates each layer's block. Root `app/`, `server/` and `shared/` may import a feature only as `#layers/<layer>` or `#layers/<layer>/server`.
+- **Consent layer.** The banner is renamed `ConsentBanner`. The composable keeps the name `useCookieConsent`. The policy copy lives in `domain/privacyPolicy.ts`, and i18n keys are unchanged.
 
 ## Module: layers/leads (independent)
 
