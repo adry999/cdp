@@ -1,6 +1,6 @@
 # Feature-driven architecture — refactor design
 
-Status: draft 2026-09-13, pending review. Nothing moved yet.
+Status: approved 2026-09-13. Migration steps 1–2 implemented on branch refactor/feature-driven-architecture; visual and e2e verification pending.
 
 ## Goal
 
@@ -239,7 +239,7 @@ layers/<feature>/
 Dependency direction inside a feature:
 `pages → components/state → data → domain` and
 `server/api → services → repository → domain`. `domain/` imports nothing
-but `#layers/core/shared/types`.
+but `#layers/core/shared/*`.
 
 ### D5 — Core layer (shared kernel)
 
@@ -980,7 +980,7 @@ layers/qualifier/
 - `shared/utils/text.ts` → `EMAIL_PATTERN`, `clipText`
 - `server/utils` (Nitro auto-imported) → `checkRateLimit`
 - `app/composables` (auto-imported) → `useFocusTrap` (used by `QualifierModal.vue`, replacing the modal's hand-rolled `focusables()`/`onKeydown` tab-trap)
-- `app/components/CoreStageIcon.vue` (auto-registered) → the five stage glyphs, used by `QualifierStepStage.vue`; replaces this layer's own `QualifierStageIcon.vue`
+- `app/components/ui/CoreStageIcon.vue` (auto-registered) → the five stage glyphs, used by `QualifierStepStage.vue`; replaces this layer's own `QualifierStageIcon.vue`
 - `shared/types/app-events.ts` → the `qualifier:open` hook contract: `'qualifier:open': (request: { stage?: StageId }) => HookResult` (consumed, never declared here — core owns the type augmentation)
 
 **From `#layers/leads` (server only):**
