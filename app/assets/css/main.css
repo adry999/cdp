@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../../../layers";
 
 /*
  * Design tokens — single source of truth (see README.md "Design Tokens").
