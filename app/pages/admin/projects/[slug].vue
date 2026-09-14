@@ -278,11 +278,15 @@ async function cleanupReplacedMedia() {
     const key = storageKeyFromPublicUrl(url, MEDIA_BUCKET)
     if (!key) continue
 
-    const [{ count: projectCount }, { count: imageCount }] = await Promise.all([
+    const [projectRefs, imageRefs] = await Promise.all([
       supabase.from('projects').select('id', { count: 'exact', head: true }).or(`cover_path.eq.${url},hero_path.eq.${url}`),
       supabase.from('project_images').select('id', { count: 'exact', head: true }).eq('path', url),
     ])
-    if ((projectCount ?? 0) > 0 || (imageCount ?? 0) > 0) continue
+    if (projectRefs.error || imageRefs.error) {
+      console.warn('[admin] project save: reference check failed, file kept', url, projectRefs.error ?? imageRefs.error)
+      continue
+    }
+    if ((projectRefs.count ?? 0) > 0 || (imageRefs.count ?? 0) > 0) continue
 
     const removal = await supabase.storage
       .from(MEDIA_BUCKET)

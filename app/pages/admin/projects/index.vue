@@ -105,11 +105,15 @@ async function confirmDelete(slug: string) {
     )
     const keys: string[] = []
     for (const url of urls) {
-      const [{ count: projectCount }, { count: imageCount }] = await Promise.all([
+      const [projectRefs, imageRefs] = await Promise.all([
         supabase.from('projects').select('id', { count: 'exact', head: true }).or(`cover_path.eq.${url},hero_path.eq.${url}`),
         supabase.from('project_images').select('id', { count: 'exact', head: true }).eq('path', url),
       ])
-      if ((projectCount ?? 0) === 0 && (imageCount ?? 0) === 0) {
+      if (projectRefs.error || imageRefs.error) {
+        console.warn('[admin] project delete: reference check failed, file kept', url, projectRefs.error ?? imageRefs.error)
+        continue
+      }
+      if ((projectRefs.count ?? 0) === 0 && (imageRefs.count ?? 0) === 0) {
         const key = storageKeyFromPublicUrl(url, 'project-media')
         if (key) keys.push(key)
       }
