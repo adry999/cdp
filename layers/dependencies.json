@@ -1,4 +1,5 @@
 {
   "core": [],
-  "consent": ["core"]
+  "consent": ["core"],
+  "leads": ["core"]
 }
