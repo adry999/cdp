@@ -140,7 +140,6 @@
       "title": "A clear process, scaled to the size of the project.",
       "subtitle": "No needless bureaucracy for fast projects. Rigorous architecture for complex systems.",
       "trackLabel": "Pick a track",
-      "stepLabel": "Step {step}",
       "disclaimer": "*The guarantee covers technical errors and conformance with the agreed specification; design changes or new functionality are scope extensions.",
       "tracks": {
         "fast": {
@@ -251,9 +250,7 @@
       },
       "facts": {
         "responseTime": "Response time",
-        "responseTimeValue": "1 working day",
-        "hours": "Hours",
-        "hoursValue": "09:00 – 18:00 EET"
+        "hours": "Hours"
       }
     }
   },
@@ -267,12 +264,6 @@
       "solution": "Solution",
       "result": "Result",
       "next": "Next"
-    },
-    "facts": {
-      "client": "Client",
-      "duration": "Duration",
-      "team": "Team",
-      "users": "Users"
     }
   },
   "qualifier": {
