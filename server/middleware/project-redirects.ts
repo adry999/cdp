@@ -1,5 +1,5 @@
 import { serverSupabaseClient } from '#supabase/server'
-import type { Database } from '~/types/database.types'
+import type { Database } from '#layers/core/shared/types/database.types'
 
 // save_project() (see supabase/migrations/20260826120200_save_project_rpc.sql)
 // has been writing rows into `redirects` whenever a published project's slug

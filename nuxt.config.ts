@@ -101,6 +101,7 @@ export default defineNuxtConfig({
   },
 
   supabase: {
+    types: '~~/layers/core/shared/types/database.types.ts',
     redirectOptions: {
       login: '/admin/login',
       callback: '/admin/login',

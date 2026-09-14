@@ -1,5 +1,5 @@
 import { serverSupabaseServiceRole } from '#supabase/server'
-import type { Database } from '~/types/database.types'
+import type { Database } from '#layers/core/shared/types/database.types'
 import { budgetLabel } from '~~/shared/utils/leadLabels'
 import {
   ROUTE_LABELS,

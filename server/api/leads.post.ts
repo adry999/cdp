@@ -1,5 +1,5 @@
 import { serverSupabaseServiceRole } from '#supabase/server'
-import type { Database } from '~/types/database.types'
+import type { Database } from '#layers/core/shared/types/database.types'
 import { budgetLabel } from '~~/shared/utils/leadLabels'
 import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
 import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'

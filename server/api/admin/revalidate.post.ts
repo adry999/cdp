@@ -1,5 +1,5 @@
 import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
-import type { Database } from '~/types/database.types'
+import type { Database } from '#layers/core/shared/types/database.types'
 
 // Admin writes go straight from the browser to Supabase (never through a
 // Nuxt server route), so nothing ever told Nitro's swr cache
