@@ -1,14 +1,12 @@
 import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
 import type { Database } from '#layers/core/shared/types/database.types'
 
-// Admin writes go straight from the browser to Supabase (never through a
-// Nuxt server route), so nothing ever told Nitro's swr cache
-// (nuxt.config.ts routeRules) that /api/home, /api/projects, or a case study
-// page had gone stale. An unpublish could stay publicly visible for up to
-// five minutes. Clearing the whole cache rather than computing individual
-// route-rule cache keys — this site's traffic and TTLs (60–300s) are small
-// enough that "everyone regenerates a fresh copy on the next request" costs
-// nothing worth optimizing away.
+// Admin writes go straight from the browser to Supabase, never through a Nuxt
+// server route, so Nitro's swr cache (nuxt.config.ts routeRules) cannot see
+// that /api/home, /api/projects or a case study page is stale. This route
+// clears the whole cache instead of computing individual route-rule keys:
+// with this site's traffic and TTLs (60–300s), regenerating everything on the
+// next request costs nothing worth optimizing away.
 export default defineEventHandler(async (event) => {
   const user = await serverSupabaseUser(event)
   if (!user) {
