@@ -1,5 +1,3 @@
-import { serverSupabaseServiceRole } from '#supabase/server'
-import type { Database } from '#layers/core/shared/types/database.types'
 import { budgetLabel } from '#shared/utils/leadLabels'
 import {
   ROUTE_LABELS,
@@ -7,8 +5,9 @@ import {
   isQualifierBudgetKey,
   resolveRoute,
 } from '#shared/utils/qualifierRouting'
+import { checkRateLimit } from '#layers/core/server/utils/checkRateLimit'
+import { sendMail } from '#layers/core/server/utils/sendMail'
 import { isStageId } from '#layers/core/shared/types/service-stage'
-import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
 import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
 
 /**
@@ -76,16 +75,8 @@ export default defineEventHandler(async (event) => {
   const route = resolveRoute(stage, budget)
   const routeLabel = ROUTE_LABELS[route]
 
-  const ip = getRequestIP(event, { xForwardedFor: true }) ?? 'unknown'
-  const client = serverSupabaseServiceRole<Database>(event)
-
-  const { data: withinBudget, error: rateLimitError } = await client.rpc('check_lead_rate_limit', {
-    p_ip: ip,
-    p_max: RATE_LIMIT_MAX,
-    p_window_seconds: RATE_LIMIT_WINDOW_SECONDS,
-  })
-  if (rateLimitError) logAndThrow('POST /api/contact (rate limit)', rateLimitError)
-  if (!withinBudget) {
+  const withinLimit = await checkRateLimit(event, { max: RATE_LIMIT_MAX, windowSeconds: RATE_LIMIT_WINDOW_SECONDS })
+  if (!withinLimit) {
     throw createError({ statusCode: 429, statusMessage: 'Too many requests' })
   }
 
@@ -104,32 +95,21 @@ export default defineEventHandler(async (event) => {
     notes || '—',
   ].join('\n')
 
-  if (!config.resendApiKey) {
+  let delivery: 'sent' | 'skipped'
+  try {
+    delivery = await sendMail({ subject: `Qualificare — ${routeLabel} — ${name}`, text: summary })
+  } catch (error) {
+    // Nothing persisted this submission, so a failed email is a failed request.
+    console.error('[api] POST /api/contact (resend):', error instanceof Error ? error.message : error)
+    throw createError({ statusCode: 502, statusMessage: 'Could not deliver your request' })
+  }
+
+  if (delivery === 'skipped') {
     // No sender configured (local / preview): the submission is not delivered.
     // The log names only the routing outcome, never the visitor's contact data.
     console.warn(
       `[api] POST /api/contact: RESEND_API_KEY unset, submission not emailed (stage ${stage}, route ${route}, lang ${lang})`,
     )
-    return { success: true }
-  }
-
-  try {
-    await $fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${config.resendApiKey}` },
-      body: {
-        // Sandbox sender until codepedia.md is verified in Resend — same note
-        // as server/api/leads.post.ts.
-        from: 'Codepedia <onboarding@resend.dev>',
-        to: 'contact@codepedia.md',
-        subject: `Qualificare — ${routeLabel} — ${name}`,
-        text: summary,
-      },
-    })
-  } catch (error) {
-    console.error('[api] POST /api/contact (resend):', error)
-    // Nothing persisted this submission, so a failed email is a failed request.
-    throw createError({ statusCode: 502, statusMessage: 'Could not deliver your request' })
   }
 
   return { success: true }
