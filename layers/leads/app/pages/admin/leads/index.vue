@@ -1,27 +1,12 @@
 <script setup lang="ts">
-import { budgetLabel } from '#shared/utils/leadLabels'
+import { leadBudgetLabel, leadStatusLabel } from '#layers/leads/domain/lead'
+import { useLeadsAdminList } from '#layers/leads/state/useLeadsAdminList'
 
 definePageMeta({ layout: 'admin' })
 
-const supabase = useSupabaseClient()
+const { leads } = await useLeadsAdminList()
 
-const { data: leads } = await useAsyncData('admin-leads', async () => {
-  const { data, error } = await supabase
-    .from('leads')
-    .select('id, created_at, name, email, company, budget, message, status, archived_at')
-    .is('archived_at', null)
-    .order('created_at', { ascending: false })
-  if (error) throw error
-  return data ?? []
-})
-
-const statusLabel: Record<string, string> = {
-  nou: 'Nou',
-  in_discutie: 'În discuție',
-  castigat: 'Câștigat',
-  refuzat: 'Refuzat',
-}
-const statusClass: Record<string, string> = {
+const STATUS_CLASS: Record<string, string> = {
   nou: 'text-signal',
   in_discutie: 'text-ink',
   castigat: 'text-ink',
@@ -51,10 +36,10 @@ const statusClass: Record<string, string> = {
           <div class="min-w-0 flex-[1_1_160px] text-[15px] text-ink">{{ lead.name }}</div>
           <div class="min-w-0 flex-[1_1_180px] text-[15px] text-muted">{{ lead.email }}</div>
           <div class="min-w-0 flex-[1_1_140px] text-[15px] text-muted">{{ lead.company || '—' }}</div>
-          <div class="flex-[0_0_140px] text-[15px] text-muted">{{ budgetLabel(lead.budget) }}</div>
+          <div class="flex-[0_0_140px] text-[15px] text-muted">{{ leadBudgetLabel(lead.budget) }}</div>
           <div class="min-w-0 flex-[2_1_200px] truncate text-[15px] text-muted">{{ lead.message }}</div>
-          <div class="flex-[0_0_100px] font-mono text-xs uppercase tracking-[0.08em]" :class="statusClass[lead.status]">
-            {{ statusLabel[lead.status] ?? lead.status }}
+          <div class="flex-[0_0_100px] font-mono text-xs uppercase tracking-[0.08em]" :class="STATUS_CLASS[lead.status]">
+            {{ leadStatusLabel(lead.status) }}
           </div>
         </NuxtLink>
       </div>
