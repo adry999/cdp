@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useFocusTrap } from '#layers/core/app/composables/useFocusTrap'
 import { useCookieConsent } from '#layers/consent/state/useCookieConsent'
 
 const { t } = useI18n()
@@ -9,6 +10,7 @@ const customizing = ref(false)
 const draft = reactive({ analytics: false, marketing: false })
 
 const bannerRef = ref<HTMLElement>()
+const { focusFirst, trapTab } = useFocusTrap(bannerRef)
 
 function openCustomize() {
   draft.analytics = consent.value?.analytics ?? false
@@ -21,38 +23,17 @@ function save() {
   customizing.value = false
 }
 
-function focusableElements(): HTMLElement[] {
-  return Array.from(bannerRef.value?.querySelectorAll<HTMLElement>('button, a[href], input') ?? [])
-}
-
 // A banner appearing over content is a dialog, and a dialog moves focus to
 // itself and keeps it there — otherwise a keyboard user tabbing through the
 // page lands on it by accident with no idea why, or tabs straight past it.
-// The initial-focus target and the trap's first/last come from the same
-// query (the policy link comes first), so Shift+Tab from the focused element
-// wraps instead of escaping the dialog.
 //
 // Watching the ref itself, not showBanner + nextTick: the banner is wrapped
 // in <ClientOnly>, whose real content mounts on a tick *after* hydration —
 // later than a single nextTick() reaches.
 watch(bannerRef, (el) => {
   if (!el || !showBanner.value) return
-  focusableElements()[0]?.focus()
+  focusFirst()
 })
-
-function trapFocus(event: KeyboardEvent) {
-  const focusable = focusableElements()
-  const first = focusable[0]
-  const last = focusable.at(-1)
-  if (!first || !last) return
-  if (event.shiftKey && document.activeElement === first) {
-    event.preventDefault()
-    last.focus()
-  } else if (!event.shiftKey && document.activeElement === last) {
-    event.preventDefault()
-    first.focus()
-  }
-}
 </script>
 
 <template>
@@ -64,7 +45,7 @@ function trapFocus(event: KeyboardEvent) {
       aria-modal="true"
       aria-labelledby="cookie-banner-message"
       class="fixed inset-x-0 bottom-0 z-30 border-t border-hairline bg-paper px-gutter py-5"
-      @keydown.tab="trapFocus"
+      @keydown.tab="trapTab"
     >
       <div class="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-4">
         <p id="cookie-banner-message" class="max-w-[60ch] text-sm text-muted">
