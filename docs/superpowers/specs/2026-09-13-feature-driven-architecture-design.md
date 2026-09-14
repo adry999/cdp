@@ -1,6 +1,6 @@
 # Feature-driven architecture — refactor design
 
-Status: approved 2026-09-13. Migration steps 1–3 implemented on branch refactor/feature-driven-architecture; visual and e2e verification pending.
+Status: approved 2026-09-13. Migration steps 1–3 are in `main`; step 4 implemented on branch feat/leads-layer. Visual and e2e checks run locally against a Supabase stub; verification against the real Supabase project is pending.
 
 ## Goal
 
@@ -380,7 +380,7 @@ codepedia/
 │  │  ├─ nuxt.config.ts                   # assertEnv, $development/$production/$env.staging, component dirs
 │  │  ├─ env.ts                           # REQUIRED_ENV per environment, assertEnv()
 │  │  ├─ app/components/ui/               # AppButton, SiteSection, SectionLabel, FactCard, TableRow, TechChip, MediaFrame, CoreAsyncState
-│  │  ├─ app/components/admin/            # AdminField, AdminFieldPair, AdminImageUpload (form primitives)
+│  │  ├─ app/components/admin/            # AdminField, AdminFieldPair, AdminImageUpload (form primitives), AdminTopbar
 │  │  ├─ app/composables/                 # useFocusTrap, useUnsavedChangesGuard, useRevalidatePublicCache
 │  │  ├─ shared/types/                    # async.ts, app-error.ts, app-events.ts, bilingual.ts, database.types.ts
 │  │  ├─ shared/utils/                    # pick.ts, text.ts, toAppError.ts, resolveLocale.ts
@@ -389,7 +389,7 @@ codepedia/
 │  │  ├─ server/middleware/locale-redirect.ts
 │  │  ├─ server/plugins/strip-powered-by.ts
 │  │  └─ tests/architecture.test.ts       # import-boundary fitness test
-│  ├─ admin/                              # admin shell: admin + admin-auth layouts, AdminSidebar, AdminTopbar, login page
+│  ├─ admin/                              # admin shell: admin + admin-auth layouts, AdminSidebar, login page
 │  ├─ consent/                            # cookie consent state, ConsentBanner, analytics plugin, privacy page, legal copy
 │  ├─ leads/                              # contact form, POST /api/leads, admin leads pages — independent
 │  ├─ qualifier/                          # qualification modal, POST /api/contact — depends on leads (server API)
@@ -440,10 +440,10 @@ e2e smoke, browser check RO + EN. Conventional Commits, one commit per logical m
 | Step | Scope | Risk | Why this order |
 |---|---|---|---|
 | 0 | Commit or stash the 18 uncommitted files | — | Several are move targets; moving them dirty loses work |
-| 1 | Code done 2026-09-13; visual and e2e verification pending (Supabase unreachable). Spike: empty `layers/core` with `nuxt.config.ts`; confirm `#layers/core` alias and auto-import in `.nuxt/imports.d.ts`; add Vitest aliases; add architecture test (fails red on current imports only where expected) | Low | Proves D1–D3 on this exact Nuxt version before anything moves |
-| 2 | Code done 2026-09-13; visual and e2e verification pending (Supabase unreachable). Move design-system `ui/` components, `pick`, `apiError`, email pattern, `AsyncStatus`, `AppError` into core; delete duplicates (V4) | Low | Component names unchanged → templates untouched |
-| 3 | Code done 2026-09-13; visual and e2e verification pending (Supabase unreachable). `consent` layer: `CookieBanner`, `useCookieConsent`, `consent.ts`, `consentSignals.ts`, analytics plugin, privacy page, `legal.ts` | Low | Client-only, already covered by `e2e/cookie-consent.spec.ts` |
-| 4 | `leads` layer (independent) + `sendMail` / `checkRateLimit` into core server libs; admin leads pages | Medium | Removes V4 duplication before qualifier depends on it |
+| 1 | Code done 2026-09-13; visual and e2e checks run locally against a Supabase stub, verification against the real Supabase project is pending. Spike: empty `layers/core` with `nuxt.config.ts`; confirm `#layers/core` alias and auto-import in `.nuxt/imports.d.ts`; add Vitest aliases; add architecture test (fails red on current imports only where expected) | Low | Proves D1–D3 on this exact Nuxt version before anything moves |
+| 2 | Code done 2026-09-13; visual and e2e checks run locally against a Supabase stub, verification against the real Supabase project is pending. Move design-system `ui/` components, `pick`, `apiError`, email pattern into core; delete duplicates (V4) | Low | Component names unchanged → templates untouched |
+| 3 | Code done 2026-09-13; visual and e2e checks run locally against a Supabase stub, verification against the real Supabase project is pending. `consent` layer: `CookieBanner`, `useCookieConsent`, `consent.ts`, `consentSignals.ts`, analytics plugin, privacy page, `legal.ts` | Low | Client-only, already covered by `e2e/cookie-consent.spec.ts` |
+| 4 | Code done 2026-09-14; local stub verification only. `leads` layer (independent) + `sendMail` / `checkRateLimit` into core server libs; admin leads pages | Medium | Removes V4 duplication before qualifier depends on it |
 | 5 | `qualifier` layer (dependent on `leads` server API + core hook contract) | Medium | Needs step 4's public API |
 | 6 | `content` layer: services, stack, process, about, FAQ, settings — `/api/home`, admin FAQ/services/settings, row types from `database.types.ts` (V5) | Medium | Shared by home and footer; isolate before home |
 | 7 | `projects` layer: split the 570-line editor into `data/projectRepository.ts`, `domain/projectForm.ts`, section components; one `PROJECT_SELECT` (V2, V3) | High | Largest file, most business logic; done once the pattern is proven on 4 layers |
@@ -465,6 +465,46 @@ Step 3 adjustments:
   - Every layer and its dependencies are declared once in `layers/dependencies.json`, read by ESLint and the test.
 - **ESLint.** `layerBoundary(layer, dependencies)` generates each layer's block. Root `app/`, `server/` and `shared/` may import a feature only as `#layers/<layer>` or `#layers/<layer>/server`.
 - **Consent layer.** The banner is renamed `ConsentBanner`. The composable keeps the name `useCookieConsent`. The policy copy lives in `domain/privacyPolicy.ts`, and i18n keys are unchanged.
+
+Step 4 adjustments:
+- **AdminTopbar.** It moves to `layers/core/app/components/admin/` next to the other admin primitives. Feature layers may only use core components, and every admin page uses the top bar. `AdminSidebar` stays with the root admin layout.
+- **Lead status vocabulary.** It lives in `layers/leads/domain/lead.ts` (`LEAD_STATUSES`, `leadStatusLabel`) and replaces the two copies in the admin pages.
+- **Imports inside the layer.** They use `#layers/leads/...` instead of the design snippets' `../../` paths, because ESLint forbids climbing out of a folder inside a layer.
+- **Budget labels.** `shared/utils/leadLabels.ts` stays until step 5. It still labels the qualifier's budget keys for `POST /api/contact`, which already uses core `sendMail` and `checkRateLimit`.
+- **Team notification failures.** They log only the error message.
+- **Core contracts land here.** `AsyncStatus`, `AppError` and `toAppError` are created in this step, with `layers/leads` as their first consumer (per the step 1–2 adjustment above) — they are not part of step 2's move. `useLeadsAdminList` does not wrap its result in `AsyncStatus`; it returns only `{ leads }`, the `useAsyncData` ref.
+
+Audit 2026-09-14 items scheduled into later steps:
+- **Step 5.**
+  - `useFocusTrap` in core, used by `QualifierModal` and `ConsentBanner`.
+  - `QualifierContactPayload` moves into qualifier `domain/`.
+  - Every `useQualifier()` call site switches to `qualifier:open`.
+  - The honeypot input is shared with `LeadsContactForm`.
+  - Qualifier budget labels move out of `shared/utils/leadLabels.ts`, which is then deleted.
+- **Step 6.**
+  - Content row types derive from `Database`.
+  - `app/types/stack.ts` stops importing a type from `StackGroupIcon.vue`.
+  - `bilingual()` moves into core.
+  - A core `useDragReorder` replaces the FAQ and services reorder copies.
+  - The FAQ delete uses the inline confirm.
+- **Step 7.**
+  - One `PROJECT_SELECT`, shared by admin and public API, that includes `aspect` and preserves it on save.
+  - One media reference-check-and-cleanup helper.
+  - A `reorder_projects` RPC.
+  - `projects/index.vue` and `projects/[slug].vue` adopt the core `useDragReorder` introduced in step 6.
+  - The editor split.
+  - `insert(rows as never)` and `SaveState` replaced by typed repository calls and `AsyncStatus`.
+  - The duplicate flow's `window.alert` becomes an inline message.
+- **Step 8.**
+  - `useRovingTablist` for `HomeServices` and `HomeProcess`.
+  - One locale-override cookie composable for both headers.
+  - `NuxtErrorBoundary` per homepage section, moved here from step 9.
+  - Hero grids reuse `SiteSection` only with a screenshot check.
+- **Step 9.**
+  - `assertEnv` replaces the hardcoded Supabase host fallback, and one `siteUrl` fallback is used everywhere.
+  - `app/error.vue`.
+  - An ESLint guard for dynamic `import()`.
+  - Tsconfig coverage for `test/unit`, `e2e` and config files.
 
 ## Module: layers/leads (independent)
 
@@ -493,7 +533,7 @@ layers/leads/
 │           └─ [id].vue                 # route: composes admin detail sections + useLeadsAdminDetail, no direct Supabase calls
 ├─ state/
 │  ├─ useLeadSubmission.ts              # public form-submission composable: AsyncStatus, field errors, AppError, submit()
-│  ├─ useLeadsAdminList.ts              # admin list orchestration: AsyncStatus wrapping leadsAdminRepository.fetchLeads
+│  ├─ useLeadsAdminList.ts              # admin list orchestration: useAsyncData over leadsAdminRepository.listActive(), returns { leads }
 │  └─ useLeadsAdminDetail.ts            # admin detail orchestration: AsyncStatus wrapping status/notes/archive mutations
 ├─ server/
 │  ├─ index.ts                          # server public API for other layers — re-exports notifyTeam

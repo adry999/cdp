@@ -1,6 +1,6 @@
 /**
  * The contact form now stores a stable budget key rather than the translated
- * label (see app/components/site/ContactForm.vue), so the same interval reads
+ * label (see layers/leads/app/components/LeadsContactForm.vue), so the same interval reads
  * the same way in the admin regardless of which locale the visitor submitted
  * in. The admin UI itself is RO-only, so these labels are not run through i18n.
  */

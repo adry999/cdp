@@ -9,7 +9,7 @@ description: Folosește în repo-ul Codepedia (Nuxt 4 + Supabase) când decizi u
 
 Deciziile de arhitectură luate pentru acest repo. Se aplică înaintea regulilor generale din `senior-architecture`; unde diferă, câștigă acest fișier. Designul complet, cu motivația fiecărei decizii: `docs/superpowers/specs/2026-09-13-feature-driven-architecture-design.md`.
 
-**Stare:** pașii 1–3 ai migrării sunt în `main` (2026-09-14). `layers/core` conține componentele design system, `text`, `pick`, `logAndThrow`, vocabularul etapelor, tipurile DB generate și testul de arhitectură. `layers/consent` conține consimțământul cookie, bannerul, plugin-ul analytics și pagina de confidențialitate. Build-ul de producție e verificat local cu un stub Supabase (e2e și capturi de ecran); verificarea pe proiectul Supabase real e în așteptare. Celelalte module sunt încă în layout-ul vechi.
+**Stare:** pașii 1–3 ai migrării sunt în `main`; pasul 4 (`layers/leads`) e implementat pe branch-ul `feat/leads-layer` (2026-09-14). `layers/core` conține design system-ul, primitivele admin (inclusiv `AdminTopbar`), contractele `AsyncStatus` / `AppError` / `toAppError`, utilitarele server `logAndThrow`, `checkRateLimit`, `sendMail`, tipurile DB și testul de arhitectură. `layers/consent` conține consimțământul cookie. `layers/leads` conține formularul de contact, `POST /api/leads` și paginile admin de solicitări. Verificarea e locală, cu stub Supabase; pe proiectul real e în așteptare. Celelalte module sunt încă în layout-ul vechi.
 
 ## Triggers
 
@@ -38,8 +38,8 @@ Un modul = un Nuxt layer în `layers/<nume>/`. Nuxt îl înregistrează automat,
 |---|---|---|
 | `app/` (rădăcină) | composition root: `app.vue`, `error.vue`, `SiteHeader`, `SiteFooter`, layout `default` | API-ul public al oricărui modul |
 | `server/` (rădăcină) | `routes/sitemap.xml.ts` | API-ul server public al oricărui modul |
-| `core` | design system, contracte de erori/async/evenimente, env, utilitare server (`logAndThrow`, `checkRateLimit`, `sendMail`), tipuri DB, redirect de limbă | nimic din `layers/*` |
-| `admin` | layout-urile admin, `AdminSidebar`, `AdminTopbar`, login | `core` |
+| `core` | design system, contracte de erori/async/evenimente, env, utilitare server (`logAndThrow`, `checkRateLimit`, `sendMail`), tipuri DB, redirect de limbă, primitive admin (`AdminTopbar`) | nimic din `layers/*` |
+| `admin` | layout-urile admin, `AdminSidebar`, login | `core` |
 | `consent` | consimțământ cookie, banner, plugin analytics, pagina de confidențialitate | `core` |
 | `leads` | formularul de contact, `POST /api/leads`, paginile admin de solicitări | `core` |
 | `qualifier` | modalul de calificare, `POST /api/contact` | `core`, `#layers/leads/server` |
@@ -182,3 +182,6 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-09-14: Codul din rădăcină importă `shared/` explicit prin `#shared/...`; ESLint interzice `~~/` în `app/` și `~/` / `~~/` în `server/` și `shared/` — raportul de audit 2026-09-14, P1.
 - 2026-09-14: Tipurile DB generate stau în `layers/core/shared/types/database.types.ts`; `supabase.types` din `nuxt.config.ts` indică acolo — spec, target tree.
 - 2026-09-14: Operațiile best-effort (curățare Storage, notificare email, revalidare cache) raportează eșecul cu `console.warn('[zonă] context', …)` și nu întrerup fluxul; log-urile nu conțin datele vizitatorului — spec D7, audit P0.
+- 2026-09-14: `AdminTopbar` stă în `core` (primitivă admin folosită de toate paginile admin); `AdminSidebar` rămâne lângă layout-ul admin din rădăcină — spec, ajustările pasului 4.
+- 2026-09-14: Statusurile lead-ului și etichetele lor stau în `layers/leads/domain/lead.ts` — spec, ajustările pasului 4.
+- 2026-09-14: Observațiile P2 din auditul 2026-09-14 sunt repartizate pe pașii 5–9 în tabelul de migrare din spec.

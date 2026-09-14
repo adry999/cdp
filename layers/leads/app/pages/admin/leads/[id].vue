@@ -1,57 +1,22 @@
 <script setup lang="ts">
-import { budgetLabel } from '#shared/utils/leadLabels'
+import { LEAD_STATUSES, leadBudgetLabel, leadStatusLabel } from '#layers/leads/domain/lead'
+import { useLeadsAdminDetail } from '#layers/leads/state/useLeadsAdminDetail'
 
 definePageMeta({ layout: 'admin' })
 
 const route = useRoute()
-const supabase = useSupabaseClient()
-const leadId = String(route.params.id)
-
-const { data: lead, refresh } = await useAsyncData(`admin-lead-${leadId}`, async () => {
-  const { data, error } = await supabase.from('leads').select('*').eq('id', leadId).single()
-  if (error) throw error
-  return data
-})
-
-const statusOptions = [
-  { value: 'nou', label: 'Nou' },
-  { value: 'in_discutie', label: 'În discuție' },
-  { value: 'castigat', label: 'Câștigat' },
-  { value: 'refuzat', label: 'Refuzat' },
-]
+const { lead, notesState, actionError, updateStatus, saveNotes, archive } = await useLeadsAdminDetail(
+  String(route.params.id),
+)
 
 const notes = ref(lead.value?.notes ?? '')
-const notesState = ref<'idle' | 'saving' | 'error'>('idle')
-const actionError = ref('')
 
-async function updateStatus(status: string) {
-  if (!lead.value) return
-  actionError.value = ''
-  const { error } = await supabase.from('leads').update({ status }).eq('id', lead.value.id)
-  if (error) {
-    actionError.value = `Starea nu a putut fi schimbată: ${error.message}`
-    return
-  }
-  await refresh()
-}
-
-async function saveNotes() {
-  if (!lead.value) return
-  notesState.value = 'saving'
-  const { error } = await supabase.from('leads').update({ notes: notes.value }).eq('id', lead.value.id)
-  notesState.value = error ? 'error' : 'idle'
-}
-
-async function archive() {
-  if (!lead.value) return
-  actionError.value = ''
-  const { error } = await supabase.from('leads').update({ archived_at: new Date().toISOString() }).eq('id', lead.value.id)
-  if (error) {
-    actionError.value = `Solicitarea nu a putut fi arhivată: ${error.message}`
-    return
-  }
-  await navigateTo('/admin/leads')
-}
+const NOTES_STATE_LABELS = {
+  idle: 'Salvat automat la ieșirea din câmp',
+  pending: 'Se salvează…',
+  success: 'Salvat automat la ieșirea din câmp',
+  error: 'Notele nu au fost salvate — încearcă din nou',
+} as const
 </script>
 
 <template>
@@ -82,7 +47,7 @@ async function archive() {
             </div>
             <div>
               <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Buget</div>
-              <div class="mt-1 text-[15px]">{{ budgetLabel(lead.budget) }}</div>
+              <div class="mt-1 text-[15px]">{{ leadBudgetLabel(lead.budget) }}</div>
             </div>
           </div>
           <div class="mt-4 border-t border-hairline pt-4">
@@ -127,18 +92,18 @@ async function archive() {
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Stare</div>
           <div class="mt-3 flex flex-wrap gap-2">
             <button
-              v-for="opt in statusOptions"
-              :key="opt.value"
+              v-for="status in LEAD_STATUSES"
+              :key="status"
               type="button"
               class="cursor-pointer rounded border px-3 py-1.5 font-mono text-xs uppercase tracking-[0.08em]"
               :class="
-                lead.status === opt.value
+                lead.status === status
                   ? 'border-ink bg-ink text-paper'
                   : 'border-hairline text-muted hover:border-ink hover:text-ink'
               "
-              @click="updateStatus(opt.value)"
+              @click="updateStatus(status)"
             >
-              {{ opt.label }}
+              {{ leadStatusLabel(status) }}
             </button>
           </div>
         </section>
@@ -149,25 +114,19 @@ async function archive() {
             v-model="notes"
             rows="4"
             class="mt-3 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-ink"
-            @blur="saveNotes"
+            @blur="saveNotes(notes)"
           />
           <p
             aria-live="polite"
             class="mt-1 font-mono text-[11px] uppercase tracking-[0.08em]"
             :class="notesState === 'error' ? 'text-signal' : 'text-muted-ink'"
           >
-            {{
-              {
-                idle: 'Salvat automat la ieșirea din câmp',
-                saving: 'Se salvează…',
-                error: 'Notele nu au fost salvate — încearcă din nou',
-              }[notesState]
-            }}
+            {{ NOTES_STATE_LABELS[notesState] }}
           </p>
         </section>
 
         <p v-if="actionError" role="alert" class="font-mono text-xs uppercase tracking-[0.08em] text-signal">
-          {{ actionError }}
+          {{ actionError.message }}
         </p>
 
         <AppButton variant="outline" class="w-fit" @click="archive">Arhivează</AppButton>

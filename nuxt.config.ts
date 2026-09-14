@@ -48,7 +48,7 @@ export default defineNuxtConfig({
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://codepedia.md',
       // Gates the qualification modal (app/components/site/QualifierModal.vue)
       // and its /api/contact endpoint. Unset, the hero/contact CTAs fall back
-      // to the anchor link and the inline ContactForm.
+      // to the anchor link and the inline LeadsContactForm.
       qualifierEnabled: process.env.NUXT_PUBLIC_QUALIFIER_ENABLED === 'true',
     },
   },
