@@ -490,6 +490,7 @@ Audit 2026-09-14 items scheduled into later steps:
   - One `PROJECT_SELECT`, shared by admin and public API, that includes `aspect` and preserves it on save.
   - One media reference-check-and-cleanup helper.
   - A `reorder_projects` RPC.
+  - `projects/index.vue` and `projects/[slug].vue` adopt the core `useDragReorder` introduced in step 6.
   - The editor split.
   - `insert(rows as never)` and `SaveState` replaced by typed repository calls and `AsyncStatus`.
   - The duplicate flow's `window.alert` becomes an inline message.

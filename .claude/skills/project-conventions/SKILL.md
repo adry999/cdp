@@ -181,7 +181,7 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-09-13: Codul din rădăcină importă un feature doar ca `#layers/<modul>` sau `#layers/<modul>/server`, verificat de ESLint — spec D2.
 - 2026-09-14: Codul din rădăcină importă `shared/` explicit prin `#shared/...`; ESLint interzice `~~/` în `app/` și `~/` / `~~/` în `server/` și `shared/` — raportul de audit 2026-09-14, P1.
 - 2026-09-14: Tipurile DB generate stau în `layers/core/shared/types/database.types.ts`; `supabase.types` din `nuxt.config.ts` indică acolo — spec, target tree.
+- 2026-09-14: Operațiile best-effort (curățare Storage, notificare email, revalidare cache) raportează eșecul cu `console.warn('[zonă] context', …)` și nu întrerup fluxul; log-urile nu conțin datele vizitatorului — spec D7, audit P0.
 - 2026-09-14: `AdminTopbar` stă în `core` (primitivă admin folosită de toate paginile admin); `AdminSidebar` rămâne lângă layout-ul admin din rădăcină — spec, ajustările pasului 4.
 - 2026-09-14: Statusurile lead-ului și etichetele lor stau în `layers/leads/domain/lead.ts` — spec, ajustările pasului 4.
 - 2026-09-14: Observațiile P2 din auditul 2026-09-14 sunt repartizate pe pașii 5–9 în tabelul de migrare din spec.
-- 2026-09-14: Operațiile best-effort (curățare Storage, notificare email, revalidare cache) raportează eșecul cu `console.warn('[zonă] context', …)` și nu întrerup fluxul; log-urile nu conțin datele vizitatorului — spec D7, audit P0.
