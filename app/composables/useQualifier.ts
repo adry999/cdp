@@ -8,7 +8,7 @@ import { isStageId, type StageId } from '#layers/core/shared/types/service-stage
  * The modal is only mounted when `NUXT_PUBLIC_QUALIFIER_ENABLED` is `true`
  * (see nuxt.config.ts / app/layouts/default.vue). `enabled` is exposed here so
  * the trigger components can decide between opening the modal and their
- * pre-existing fallback (an anchor link / the inline ContactForm).
+ * pre-existing fallback (an anchor link / the inline LeadsContactForm).
  *
  * `initialStage` lets a caller pre-select a step-1 stage — the growth timeline
  * in HomeServices.vue passes the stage whose "Start at this stage" button was

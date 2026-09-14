@@ -40,9 +40,9 @@ const showForm = ref(false)
           {{ t('home.contact.preferMessage') }}
         </button>
       </div>
-      <ContactForm v-if="showForm" />
+      <LeadsContactForm v-if="showForm" />
     </template>
 
-    <ContactForm v-else />
+    <LeadsContactForm v-else />
   </SiteSection>
 </template>

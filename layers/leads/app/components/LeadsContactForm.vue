@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import type { ContactFieldErrors } from '#layers/leads/domain/lead'
+import { useLeadSubmission } from '#layers/leads/state/useLeadSubmission'
+
 const { t, locale } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
+const { status, fieldErrors, submit } = useLeadSubmission()
 
 const budgetKeys = ['under1k', '1to2k', '2to5k', 'over5k', 'unsure'] as const
 
@@ -15,18 +19,14 @@ const form = reactive({
   website: '', // honeypot
 })
 
-const status = ref<'idle' | 'submitting' | 'success' | 'error'>('idle')
-const fieldErrors = reactive<{ name?: string; email?: string; message?: string }>({})
+const ERROR_MESSAGE_KEYS = {
+  required: 'home.contact.form.errorRequired',
+  invalid_email: 'home.contact.form.errorEmail',
+} as const
 
-function validate() {
-  fieldErrors.name = form.name.trim() ? undefined : t('home.contact.form.errorRequired')
-  fieldErrors.email = !form.email.trim()
-    ? t('home.contact.form.errorRequired')
-    : EMAIL_PATTERN.test(form.email)
-      ? undefined
-      : t('home.contact.form.errorEmail')
-  fieldErrors.message = form.message.trim() ? undefined : t('home.contact.form.errorRequired')
-  return !fieldErrors.name && !fieldErrors.email && !fieldErrors.message
+function fieldError(field: keyof ContactFieldErrors): string | undefined {
+  const code = fieldErrors.value[field]
+  return code ? t(ERROR_MESSAGE_KEYS[code]) : undefined
 }
 
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const
@@ -39,18 +39,8 @@ function captureUtm(): Record<string, string> | undefined {
   return entries.length ? Object.fromEntries(entries) : undefined
 }
 
-async function handleSubmit() {
-  if (!validate() || status.value === 'submitting') return
-  status.value = 'submitting'
-  try {
-    await $fetch('/api/leads', {
-      method: 'POST',
-      body: { ...form, lang: locale.value, page: route.fullPath, utm: captureUtm() },
-    })
-    status.value = 'success'
-  } catch {
-    status.value = 'error'
-  }
+function handleSubmit() {
+  return submit({ ...form, lang: locale.value, page: route.fullPath, utm: captureUtm() })
 }
 </script>
 
@@ -79,11 +69,11 @@ async function handleSubmit() {
         v-model="form.name"
         type="text"
         required
-        :aria-invalid="!!fieldErrors.name"
-        :aria-describedby="fieldErrors.name ? 'lead-name-error' : undefined"
+        :aria-invalid="!!fieldError('name')"
+        :aria-describedby="fieldError('name') ? 'lead-name-error' : undefined"
         class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
       >
-      <p v-if="fieldErrors.name" id="lead-name-error" class="mt-1 font-mono text-xs text-signal">{{ fieldErrors.name }}</p>
+      <p v-if="fieldError('name')" id="lead-name-error" class="mt-1 font-mono text-xs text-signal">{{ fieldError('name') }}</p>
     </div>
 
     <div>
@@ -96,11 +86,11 @@ async function handleSubmit() {
         type="email"
         required
         autocomplete="email"
-        :aria-invalid="!!fieldErrors.email"
-        :aria-describedby="fieldErrors.email ? 'lead-email-error' : undefined"
+        :aria-invalid="!!fieldError('email')"
+        :aria-describedby="fieldError('email') ? 'lead-email-error' : undefined"
         class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
       >
-      <p v-if="fieldErrors.email" id="lead-email-error" class="mt-1 font-mono text-xs text-signal">{{ fieldErrors.email }}</p>
+      <p v-if="fieldError('email')" id="lead-email-error" class="mt-1 font-mono text-xs text-signal">{{ fieldError('email') }}</p>
     </div>
 
     <div>
@@ -125,12 +115,12 @@ async function handleSubmit() {
         v-model="form.message"
         rows="4"
         required
-        :aria-invalid="!!fieldErrors.message"
-        :aria-describedby="fieldErrors.message ? 'lead-message-error' : undefined"
+        :aria-invalid="!!fieldError('message')"
+        :aria-describedby="fieldError('message') ? 'lead-message-error' : undefined"
         class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
       />
-      <p v-if="fieldErrors.message" id="lead-message-error" class="mt-1 font-mono text-xs text-signal">
-        {{ fieldErrors.message }}
+      <p v-if="fieldError('message')" id="lead-message-error" class="mt-1 font-mono text-xs text-signal">
+        {{ fieldError('message') }}
       </p>
     </div>
 
@@ -173,8 +163,8 @@ async function handleSubmit() {
       }}</NuxtLink>
     </p>
 
-    <AppButton type="submit" variant="ink" class="w-fit text-center" :disabled="status === 'submitting'">
-      {{ status === 'submitting' ? t('home.contact.form.submitting') : t('home.contact.form.submit') }}
+    <AppButton type="submit" variant="ink" class="w-fit text-center" :disabled="status === 'pending'">
+      {{ status === 'pending' ? t('home.contact.form.submitting') : t('home.contact.form.submit') }}
     </AppButton>
   </form>
   <p v-else class="mt-[clamp(28px,3vw,40px)] max-w-[560px] text-base">{{ t('home.contact.form.success') }}</p>
