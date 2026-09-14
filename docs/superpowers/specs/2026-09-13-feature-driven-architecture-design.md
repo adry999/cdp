@@ -380,7 +380,7 @@ codepedia/
 │  │  ├─ nuxt.config.ts                   # assertEnv, $development/$production/$env.staging, component dirs
 │  │  ├─ env.ts                           # REQUIRED_ENV per environment, assertEnv()
 │  │  ├─ app/components/ui/               # AppButton, SiteSection, SectionLabel, FactCard, TableRow, TechChip, MediaFrame, CoreAsyncState
-│  │  ├─ app/components/admin/            # AdminField, AdminFieldPair, AdminImageUpload (form primitives)
+│  │  ├─ app/components/admin/            # AdminField, AdminFieldPair, AdminImageUpload (form primitives), AdminTopbar
 │  │  ├─ app/composables/                 # useFocusTrap, useUnsavedChangesGuard, useRevalidatePublicCache
 │  │  ├─ shared/types/                    # async.ts, app-error.ts, app-events.ts, bilingual.ts, database.types.ts
 │  │  ├─ shared/utils/                    # pick.ts, text.ts, toAppError.ts, resolveLocale.ts
@@ -389,7 +389,7 @@ codepedia/
 │  │  ├─ server/middleware/locale-redirect.ts
 │  │  ├─ server/plugins/strip-powered-by.ts
 │  │  └─ tests/architecture.test.ts       # import-boundary fitness test
-│  ├─ admin/                              # admin shell: admin + admin-auth layouts, AdminSidebar, AdminTopbar, login page
+│  ├─ admin/                              # admin shell: admin + admin-auth layouts, AdminSidebar, login page
 │  ├─ consent/                            # cookie consent state, ConsentBanner, analytics plugin, privacy page, legal copy
 │  ├─ leads/                              # contact form, POST /api/leads, admin leads pages — independent
 │  ├─ qualifier/                          # qualification modal, POST /api/contact — depends on leads (server API)
@@ -440,9 +440,9 @@ e2e smoke, browser check RO + EN. Conventional Commits, one commit per logical m
 | Step | Scope | Risk | Why this order |
 |---|---|---|---|
 | 0 | Commit or stash the 18 uncommitted files | — | Several are move targets; moving them dirty loses work |
-| 1 | Code done 2026-09-13; visual and e2e verification pending (Supabase unreachable). Spike: empty `layers/core` with `nuxt.config.ts`; confirm `#layers/core` alias and auto-import in `.nuxt/imports.d.ts`; add Vitest aliases; add architecture test (fails red on current imports only where expected) | Low | Proves D1–D3 on this exact Nuxt version before anything moves |
-| 2 | Code done 2026-09-13; visual and e2e verification pending (Supabase unreachable). Move design-system `ui/` components, `pick`, `apiError`, email pattern, `AsyncStatus`, `AppError` into core; delete duplicates (V4) | Low | Component names unchanged → templates untouched |
-| 3 | Code done 2026-09-13; visual and e2e verification pending (Supabase unreachable). `consent` layer: `CookieBanner`, `useCookieConsent`, `consent.ts`, `consentSignals.ts`, analytics plugin, privacy page, `legal.ts` | Low | Client-only, already covered by `e2e/cookie-consent.spec.ts` |
+| 1 | Code done 2026-09-13; visual and e2e checks run locally against a Supabase stub, verification against the real Supabase project is pending. Spike: empty `layers/core` with `nuxt.config.ts`; confirm `#layers/core` alias and auto-import in `.nuxt/imports.d.ts`; add Vitest aliases; add architecture test (fails red on current imports only where expected) | Low | Proves D1–D3 on this exact Nuxt version before anything moves |
+| 2 | Code done 2026-09-13; visual and e2e checks run locally against a Supabase stub, verification against the real Supabase project is pending. Move design-system `ui/` components, `pick`, `apiError`, email pattern into core; delete duplicates (V4) | Low | Component names unchanged → templates untouched |
+| 3 | Code done 2026-09-13; visual and e2e checks run locally against a Supabase stub, verification against the real Supabase project is pending. `consent` layer: `CookieBanner`, `useCookieConsent`, `consent.ts`, `consentSignals.ts`, analytics plugin, privacy page, `legal.ts` | Low | Client-only, already covered by `e2e/cookie-consent.spec.ts` |
 | 4 | Code done 2026-09-14; local stub verification only. `leads` layer (independent) + `sendMail` / `checkRateLimit` into core server libs; admin leads pages | Medium | Removes V4 duplication before qualifier depends on it |
 | 5 | `qualifier` layer (dependent on `leads` server API + core hook contract) | Medium | Needs step 4's public API |
 | 6 | `content` layer: services, stack, process, about, FAQ, settings — `/api/home`, admin FAQ/services/settings, row types from `database.types.ts` (V5) | Medium | Shared by home and footer; isolate before home |
@@ -472,6 +472,7 @@ Step 4 adjustments:
 - **Imports inside the layer.** They use `#layers/leads/...` instead of the design snippets' `../../` paths, because ESLint forbids climbing out of a folder inside a layer.
 - **Budget labels.** `shared/utils/leadLabels.ts` stays until step 5. It still labels the qualifier's budget keys for `POST /api/contact`, which already uses core `sendMail` and `checkRateLimit`.
 - **Team notification failures.** They log only the error message.
+- **Core contracts land here.** `AsyncStatus`, `AppError` and `toAppError` are created in this step, with `layers/leads` as their first consumer (per the step 1–2 adjustment above) — they are not part of step 2's move. `useLeadsAdminList` does not wrap its result in `AsyncStatus`; it returns only `{ leads }`, the `useAsyncData` ref.
 
 Audit 2026-09-14 items scheduled into later steps:
 - **Step 5.**
@@ -532,7 +533,7 @@ layers/leads/
 │           └─ [id].vue                 # route: composes admin detail sections + useLeadsAdminDetail, no direct Supabase calls
 ├─ state/
 │  ├─ useLeadSubmission.ts              # public form-submission composable: AsyncStatus, field errors, AppError, submit()
-│  ├─ useLeadsAdminList.ts              # admin list orchestration: AsyncStatus wrapping leadsAdminRepository.fetchLeads
+│  ├─ useLeadsAdminList.ts              # admin list orchestration: useAsyncData over leadsAdminRepository.listActive(), returns { leads }
 │  └─ useLeadsAdminDetail.ts            # admin detail orchestration: AsyncStatus wrapping status/notes/archive mutations
 ├─ server/
 │  ├─ index.ts                          # server public API for other layers — re-exports notifyTeam

@@ -38,8 +38,8 @@ Un modul = un Nuxt layer în `layers/<nume>/`. Nuxt îl înregistrează automat,
 |---|---|---|
 | `app/` (rădăcină) | composition root: `app.vue`, `error.vue`, `SiteHeader`, `SiteFooter`, layout `default` | API-ul public al oricărui modul |
 | `server/` (rădăcină) | `routes/sitemap.xml.ts` | API-ul server public al oricărui modul |
-| `core` | design system, contracte de erori/async/evenimente, env, utilitare server (`logAndThrow`, `checkRateLimit`, `sendMail`), tipuri DB, redirect de limbă | nimic din `layers/*` |
-| `admin` | layout-urile admin, `AdminSidebar`, `AdminTopbar`, login | `core` |
+| `core` | design system, contracte de erori/async/evenimente, env, utilitare server (`logAndThrow`, `checkRateLimit`, `sendMail`), tipuri DB, redirect de limbă, primitive admin (`AdminTopbar`) | nimic din `layers/*` |
+| `admin` | layout-urile admin, `AdminSidebar`, login | `core` |
 | `consent` | consimțământ cookie, banner, plugin analytics, pagina de confidențialitate | `core` |
 | `leads` | formularul de contact, `POST /api/leads`, paginile admin de solicitări | `core` |
 | `qualifier` | modalul de calificare, `POST /api/contact` | `core`, `#layers/leads/server` |
