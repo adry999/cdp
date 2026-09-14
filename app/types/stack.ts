@@ -13,8 +13,8 @@ import type { StackIconName } from '~/components/site/StackGroupIcon.vue'
  * Edit or add entries there. This file only owns group order + icon wiring; it
  * holds no text. See useStackGroups() for how the two are joined.
  *
- * The DB `stack_groups` table and /admin still exist but no longer feed the
- * homepage (same split as the services timeline).
+ * The DB `stack_groups` table does not feed the homepage (same split as the
+ * services timeline).
  */
 export type StackGroupId = 'frontend' | 'backend' | 'infra' | 'ai'
 

@@ -98,24 +98,33 @@ async function confirmDelete(slug: string) {
   }
 
   if (project) {
-    // Skip a URL still referenced by another project — protects any project
-    // duplicated before duplicate() was fixed to copy media independently
-    // instead of reusing the source's Storage keys.
+    // Skip a URL still referenced by another project: older duplicates can
+    // share Storage keys with the project being deleted.
     const urls = [project.cover_path, project.hero_path, ...project.project_images.map((i) => i.path)].filter(
       (url): url is string => !!url,
     )
     const keys: string[] = []
     for (const url of urls) {
-      const [{ count: projectCount }, { count: imageCount }] = await Promise.all([
+      const [projectRefs, imageRefs] = await Promise.all([
         supabase.from('projects').select('id', { count: 'exact', head: true }).or(`cover_path.eq.${url},hero_path.eq.${url}`),
         supabase.from('project_images').select('id', { count: 'exact', head: true }).eq('path', url),
       ])
-      if ((projectCount ?? 0) === 0 && (imageCount ?? 0) === 0) {
+      if (projectRefs.error || imageRefs.error) {
+        console.warn('[admin] project delete: reference check failed, file kept', url, projectRefs.error ?? imageRefs.error)
+        continue
+      }
+      if ((projectRefs.count ?? 0) === 0 && (imageRefs.count ?? 0) === 0) {
         const key = storageKeyFromPublicUrl(url, 'project-media')
         if (key) keys.push(key)
       }
     }
-    if (keys.length) await supabase.storage.from('project-media').remove(keys).catch(() => {})
+    if (keys.length) {
+      const removal = await supabase.storage
+        .from('project-media')
+        .remove(keys)
+        .catch((thrown: unknown) => ({ data: null, error: thrown }))
+      if (removal.error) console.warn('[admin] project delete: media cleanup failed', keys, removal.error)
+    }
   }
 
   pendingDelete.value = null
@@ -127,13 +136,9 @@ async function confirmDelete(slug: string) {
 const CHILD_TABLES = ['project_facts', 'project_steps', 'project_stats', 'project_images'] as const
 const MEDIA_BUCKET = 'project-media'
 
-// Copies the underlying Storage object rather than reusing its URL. The
-// previous version pointed the duplicate's cover/hero/gallery fields at the
-// exact same Storage keys as the source project — deleting either project,
-// or replacing an image in either one, then deleted a file the other project
-// still displayed. Independent files restore the "one URL belongs to one
-// project" assumption the rest of the admin (delete cleanup, replace
-// cleanup) already relies on.
+// Copies the underlying Storage object rather than reusing its URL, so each
+// URL belongs to exactly one project — the invariant that delete cleanup and
+// replace cleanup rely on.
 async function copyMedia(url: string | null, newPrefix: string): Promise<string | null> {
   if (!url) return null
   const oldKey = storageKeyFromPublicUrl(url, MEDIA_BUCKET)

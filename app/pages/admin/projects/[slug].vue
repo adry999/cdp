@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ProjectRow } from '~/utils/mapProject'
-import { usableGallery, validateProjectPayload } from '~~/shared/utils/projectPayload'
+import { usableGallery, validateProjectPayload } from '#shared/utils/projectPayload'
 
 definePageMeta({ layout: 'admin' })
 
@@ -37,36 +37,36 @@ function bilingual(ro = '', en = '') {
   return { ro, en: en ?? '' }
 }
 
-const e = existing.value
-const projectId = ref<string | null>(e?.id ?? null)
+const existingProject = existing.value
+const projectId = ref<string | null>(existingProject?.id ?? null)
 
 const form = reactive({
-  slugRo: e?.slug_ro ?? '',
-  slugEn: e?.slug_en ?? e?.slug_ro ?? '',
-  title: bilingual(e?.title_ro, e?.title_en ?? ''),
-  cardTitle: bilingual(e?.card_title_ro, e?.card_title_en ?? ''),
-  summary: bilingual(e?.summary_ro, e?.summary_en ?? ''),
-  lead: bilingual(e?.lead_ro, e?.lead_en ?? ''),
-  year: e?.year != null ? String(e.year) : '2026',
-  tech: [...(e?.tech ?? [])] as string[],
+  slugRo: existingProject?.slug_ro ?? '',
+  slugEn: existingProject?.slug_en ?? existingProject?.slug_ro ?? '',
+  title: bilingual(existingProject?.title_ro, existingProject?.title_en ?? ''),
+  cardTitle: bilingual(existingProject?.card_title_ro, existingProject?.card_title_en ?? ''),
+  summary: bilingual(existingProject?.summary_ro, existingProject?.summary_en ?? ''),
+  lead: bilingual(existingProject?.lead_ro, existingProject?.lead_en ?? ''),
+  year: existingProject?.year != null ? String(existingProject.year) : '2026',
+  tech: [...(existingProject?.tech ?? [])] as string[],
   techInput: '',
 
-  coverPath: e?.cover_path ?? null,
-  coverAlt: bilingual(e?.cover_alt_ro ?? '', e?.cover_alt_en ?? ''),
-  heroPath: e?.hero_path ?? null,
-  heroAlt: bilingual(e?.hero_alt_ro ?? '', e?.hero_alt_en ?? ''),
+  coverPath: existingProject?.cover_path ?? null,
+  coverAlt: bilingual(existingProject?.cover_alt_ro ?? '', existingProject?.cover_alt_en ?? ''),
+  heroPath: existingProject?.hero_path ?? null,
+  heroAlt: bilingual(existingProject?.hero_alt_ro ?? '', existingProject?.hero_alt_en ?? ''),
   // Blank slots are UI-only scaffolding for the "add image" flow — never
   // written as project_images rows (a NOT NULL path of '' renders a broken
   // <img> on the public site). usableGallery() strips them again on save.
   gallery: (
-    e?.project_images?.filter((img) => img.path)?.length
-      ? e.project_images.filter((img) => img.path)
+    existingProject?.project_images?.filter((img) => img.path)?.length
+      ? existingProject.project_images.filter((img) => img.path)
       : []
   ).map((img) => ({ path: img.path ?? null, altRo: img.alt_ro ?? '', altEn: img.alt_en ?? '' })),
 
   facts: (
-    e?.project_facts?.length
-      ? e.project_facts
+    existingProject?.project_facts?.length
+      ? existingProject.project_facts
       : [
           { label_ro: 'Client', label_en: 'Client', value_ro: '', value_en: '' },
           { label_ro: 'Durată', label_en: 'Duration', value_ro: '', value_en: '' },
@@ -75,23 +75,23 @@ const form = reactive({
         ]
   ).map((f) => ({ label: bilingual(f.label_ro, f.label_en ?? ''), value: bilingual(f.value_ro, f.value_en ?? '') })),
 
-  contextHeading: bilingual(e?.context_heading_ro ?? '', e?.context_heading_en ?? ''),
-  contextBody: bilingual(e?.context_body_ro ?? '', e?.context_body_en ?? ''),
+  contextHeading: bilingual(existingProject?.context_heading_ro ?? '', existingProject?.context_heading_en ?? ''),
+  contextBody: bilingual(existingProject?.context_body_ro ?? '', existingProject?.context_body_en ?? ''),
 
-  solutionHeading: bilingual(e?.solution_heading_ro ?? '', e?.solution_heading_en ?? ''),
-  steps: (e?.project_steps?.length ? e.project_steps : [{ title_ro: '', title_en: '', body_ro: '', body_en: '' }]).map(
+  solutionHeading: bilingual(existingProject?.solution_heading_ro ?? '', existingProject?.solution_heading_en ?? ''),
+  steps: (existingProject?.project_steps?.length ? existingProject.project_steps : [{ title_ro: '', title_en: '', body_ro: '', body_en: '' }]).map(
     (s) => ({ title: bilingual(s.title_ro, s.title_en ?? ''), body: bilingual(s.body_ro, s.body_en ?? '') }),
   ),
 
-  stats: (e?.project_stats ?? []).map((s) => ({ value: s.value, label: bilingual(s.label_ro, s.label_en ?? '') })),
-  quote: bilingual(e?.quote_ro ?? '', e?.quote_en ?? ''),
-  quoteAuthor: e?.quote_author ?? '',
-  quoteRole: bilingual(e?.quote_role_ro ?? '', e?.quote_role_en ?? ''),
-  quoteCompany: e?.quote_company ?? '',
+  stats: (existingProject?.project_stats ?? []).map((s) => ({ value: s.value, label: bilingual(s.label_ro, s.label_en ?? '') })),
+  quote: bilingual(existingProject?.quote_ro ?? '', existingProject?.quote_en ?? ''),
+  quoteAuthor: existingProject?.quote_author ?? '',
+  quoteRole: bilingual(existingProject?.quote_role_ro ?? '', existingProject?.quote_role_en ?? ''),
+  quoteCompany: existingProject?.quote_company ?? '',
 
-  nextTitle: bilingual(e?.next_title_ro ?? '', e?.next_title_en ?? ''),
+  nextTitle: bilingual(existingProject?.next_title_ro ?? '', existingProject?.next_title_en ?? ''),
 
-  published: !!e?.published_at,
+  published: !!existingProject?.published_at,
 })
 
 const titleWarn = computed(() => form.title.ro.length > 60)
@@ -260,17 +260,12 @@ async function save() {
 
 const MEDIA_BUCKET = 'project-media'
 
-// Deletes an old cover/hero/gallery file only once the replacement has
-// actually been saved — AdminImageUpload no longer deletes anything itself
-// (see its own comment: deleting at upload time broke the *published* page
-// if the admin never finished saving). This is also the point where "no
-// longer needed" can be checked safely: by now the RPC has already replaced
-// this project's own rows, so if any project row still references the old
-// URL, it can only be a different project — e.g. one created before
-// duplicate() was fixed to copy media independently — and the file is left
-// alone rather than breaking it.
+// Removes cover/hero/gallery files replaced in this save. It runs only after
+// the save succeeds, because until then the published page may still serve
+// them. The RPC has already replaced this project's rows, so a URL that any
+// row still references belongs to another project, and its file is kept.
 async function cleanupReplacedMedia() {
-  const oldPaths = [e?.cover_path, e?.hero_path, ...(e?.project_images?.map((img) => img.path) ?? [])].filter(
+  const oldPaths = [existingProject?.cover_path, existingProject?.hero_path, ...(existingProject?.project_images?.map((img) => img.path) ?? [])].filter(
     (p): p is string => !!p,
   )
   const newPaths = new Set(
@@ -283,13 +278,21 @@ async function cleanupReplacedMedia() {
     const key = storageKeyFromPublicUrl(url, MEDIA_BUCKET)
     if (!key) continue
 
-    const [{ count: projectCount }, { count: imageCount }] = await Promise.all([
+    const [projectRefs, imageRefs] = await Promise.all([
       supabase.from('projects').select('id', { count: 'exact', head: true }).or(`cover_path.eq.${url},hero_path.eq.${url}`),
       supabase.from('project_images').select('id', { count: 'exact', head: true }).eq('path', url),
     ])
-    if ((projectCount ?? 0) > 0 || (imageCount ?? 0) > 0) continue
+    if (projectRefs.error || imageRefs.error) {
+      console.warn('[admin] project save: reference check failed, file kept', url, projectRefs.error ?? imageRefs.error)
+      continue
+    }
+    if ((projectRefs.count ?? 0) > 0 || (imageRefs.count ?? 0) > 0) continue
 
-    await supabase.storage.from(MEDIA_BUCKET).remove([key]).catch(() => {})
+    const removal = await supabase.storage
+      .from(MEDIA_BUCKET)
+      .remove([key])
+      .catch((thrown: unknown) => ({ data: null, error: thrown }))
+    if (removal.error) console.warn('[admin] project save: replaced media cleanup failed', key, removal.error)
   }
 }
 </script>

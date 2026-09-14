@@ -11,10 +11,8 @@ const { openSettings } = useCookieConsent()
 const { data: home } = await useHomeData()
 const settings = computed(() => home.value?.settings)
 
-// CMS values were being saved (Setări → Footer) and silently ignored — the
-// admin had no way to actually change this text without a code deploy.
-// Fixed here rather than left for later: falls back to the same i18n string
-// as before when the field hasn't been filled in.
+// The CMS footer line (Setări → Footer) overrides the i18n string once an
+// admin fills it in; an empty field keeps the i18n default.
 const legalLine = computed(
   () => pick(settings.value?.footer_line_ro ?? '', settings.value?.footer_line_en, locale.value) || t('footer.legal'),
 )

@@ -94,8 +94,7 @@ async function onDrop(i: number) {
   items.splice(i, 0, moved)
   dragIndex.value = null
 
-  // A single batched upsert instead of N sequential awaited updates — a
-  // failure partway through no longer leaves the order half-applied.
+  // One batched upsert, so a failure cannot leave the order half-applied.
   const reordered = items.filter((item): item is typeof item & { id: string } => !!item.id)
   if (!reordered.length) return
   const { error } = await supabase.from('faqs').upsert(

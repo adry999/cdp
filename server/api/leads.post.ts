@@ -1,6 +1,6 @@
 import { serverSupabaseServiceRole } from '#supabase/server'
-import type { Database } from '~/types/database.types'
-import { budgetLabel } from '~~/shared/utils/leadLabels'
+import type { Database } from '#layers/core/shared/types/database.types'
+import { budgetLabel } from '#shared/utils/leadLabels'
 import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
 import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
 
@@ -101,8 +101,9 @@ export default defineEventHandler(async (event) => {
           text: `Nume: ${name}\nEmail: ${email}\nCompanie: ${company || '—'}\nBuget: ${budgetLabel(budget || null)}\n\n${message}`,
         },
       })
-    } catch {
+    } catch (error) {
       // Lead is already saved; a failed notification email shouldn't fail the request.
+      console.warn('[api] POST /api/leads (resend): notification not sent', error)
     }
   }
 

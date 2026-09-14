@@ -1,11 +1,10 @@
 import { serverSupabaseClient } from '#supabase/server'
-import type { Database } from '~/types/database.types'
+import type { Database } from '#layers/core/shared/types/database.types'
 
 // save_project() (see supabase/migrations/20260826120200_save_project_rpc.sql)
-// has been writing rows into `redirects` whenever a published project's slug
-// changes — but nothing ever read that table. A renamed published case study
-// 404'd forever instead of redirecting. Scoped to the only two path shapes
-// the RPC ever writes, so this doesn't add a DB round trip to every request.
+// writes a row into `redirects` whenever a published project's slug changes;
+// this middleware serves those redirects. It only matches the two path shapes
+// the RPC writes, so other requests skip the DB round trip.
 const REDIRECTABLE = /^\/(proiecte\/[a-z0-9-]+|en\/work\/[a-z0-9-]+)$/
 
 export default defineEventHandler(async (event) => {

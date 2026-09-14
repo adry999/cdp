@@ -140,7 +140,6 @@
       "title": "Proces clar, adaptat la amploarea proiectului.",
       "subtitle": "Fără birocrație inutilă pentru proiecte rapide. Arhitectură riguroasă pentru sisteme complexe.",
       "trackLabel": "Alege traseul",
-      "stepLabel": "Pasul {step}",
       "disclaimer": "*Garanția acoperă erorile tehnice și conformitatea cu specificația agreată; modificările de design sau funcționalitățile noi reprezintă extinderi de scop.",
       "tracks": {
         "fast": {
@@ -251,9 +250,7 @@
       },
       "facts": {
         "responseTime": "Timp de răspuns",
-        "responseTimeValue": "1 zi lucrătoare",
-        "hours": "Program",
-        "hoursValue": "09:00 – 18:00 EET"
+        "hours": "Program"
       }
     }
   },
@@ -267,12 +264,6 @@
       "solution": "Soluție",
       "result": "Rezultat",
       "next": "Următorul pas"
-    },
-    "facts": {
-      "client": "Client",
-      "duration": "Durată",
-      "team": "Echipă",
-      "users": "Utilizatori"
     }
   },
   "qualifier": {

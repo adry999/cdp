@@ -4,6 +4,16 @@ import withNuxt from './.nuxt/eslint.config.mjs'
 
 const layerDependencies = JSON.parse(readFileSync(new URL('./layers/dependencies.json', import.meta.url), 'utf8'))
 
+const LAYER_PUBLIC_ENTRY = {
+  regex: '^#layers/(?!core/)[^/]+/(?!server$)',
+  message: 'Import a feature layer only through #layers/<layer> or #layers/<layer>/server.',
+}
+
+const LAYER_FILE_PATH = {
+  regex: '(^|/)layers/',
+  message: 'Import a layer through its #layers/<layer> alias, never by file path.',
+}
+
 function layerBoundary(layer, dependencies) {
   const fullAccess = dependencies.includes('core') ? [layer, 'core'] : [layer]
   const publicOnly = dependencies.filter((dependency) => dependency !== 'core')
@@ -51,19 +61,32 @@ export default withNuxt(
   // A layer joins layers/dependencies.json in the same commit that migrates it.
   ...Object.entries(layerDependencies).map(([layer, dependencies]) => layerBoundary(layer, dependencies)),
   {
-    files: ['app/**/*.{ts,vue}', 'server/**/*.ts', 'shared/**/*.ts'],
+    files: ['app/**/*.{ts,vue}'],
     rules: {
       'no-restricted-imports': [
         'error',
         {
           patterns: [
+            LAYER_PUBLIC_ENTRY,
+            LAYER_FILE_PATH,
+            { regex: '^~~/', message: 'Import root shared code through #shared/..., not ~~/.' },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['server/**/*.ts', 'shared/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            LAYER_PUBLIC_ENTRY,
+            LAYER_FILE_PATH,
             {
-              regex: '^#layers/(?!core/)[^/]+/(?!server$)',
-              message: 'Import a feature layer only through #layers/<layer> or #layers/<layer>/server.',
-            },
-            {
-              regex: '(^|/)layers/',
-              message: 'Import a layer through its #layers/<layer> alias, never by file path.',
+              regex: '^~~?/',
+              message: 'server/ and shared/ import through #shared/... or #layers/..., never ~/ or ~~/.',
             },
           ],
         },

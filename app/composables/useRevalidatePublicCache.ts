@@ -5,5 +5,8 @@
  * immediately — never worth blocking or failing the save over.
  */
 export function useRevalidatePublicCache() {
-  return () => $fetch('/api/admin/revalidate', { method: 'POST' }).catch(() => {})
+  return () =>
+    $fetch('/api/admin/revalidate', { method: 'POST' }).catch((error: unknown) =>
+      console.warn('[admin] public cache revalidation failed', error),
+    )
 }

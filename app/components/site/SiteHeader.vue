@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { LOCALE_COOKIE_NAME } from '#shared/utils/resolveLocale'
+
 const { locale, t } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 const localePath = useLocalePath()

@@ -1,12 +1,12 @@
 import { serverSupabaseServiceRole } from '#supabase/server'
-import type { Database } from '~/types/database.types'
-import { budgetLabel } from '~~/shared/utils/leadLabels'
+import type { Database } from '#layers/core/shared/types/database.types'
+import { budgetLabel } from '#shared/utils/leadLabels'
 import {
   ROUTE_LABELS,
   STAGE_TAGS,
   isQualifierBudgetKey,
   resolveRoute,
-} from '~~/shared/utils/qualifierRouting'
+} from '#shared/utils/qualifierRouting'
 import { isStageId } from '#layers/core/shared/types/service-stage'
 import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
 import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
@@ -105,9 +105,11 @@ export default defineEventHandler(async (event) => {
   ].join('\n')
 
   if (!config.resendApiKey) {
-    // No sender configured (local / preview). The submission would otherwise be
-    // lost, so make that visible in the logs rather than silently 200-ing.
-    console.warn('[api] POST /api/contact: RESEND_API_KEY unset, submission not emailed\n' + summary)
+    // No sender configured (local / preview): the submission is not delivered.
+    // The log names only the routing outcome, never the visitor's contact data.
+    console.warn(
+      `[api] POST /api/contact: RESEND_API_KEY unset, submission not emailed (stage ${stage}, route ${route}, lang ${lang})`,
+    )
     return { success: true }
   }
 
