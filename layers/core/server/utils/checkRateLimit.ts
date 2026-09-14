@@ -18,6 +18,6 @@ export async function checkRateLimit(event: H3Event, limit: RateLimit): Promise<
     p_max: limit.max,
     p_window_seconds: limit.windowSeconds,
   })
-  if (error) logAndThrow('checkRateLimit', error)
+  if (error) logAndThrow(`${event.method} ${getRequestURL(event).pathname} (rate limit)`, error)
   return withinLimit === true
 }
