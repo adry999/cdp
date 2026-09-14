@@ -115,7 +115,13 @@ async function confirmDelete(slug: string) {
         if (key) keys.push(key)
       }
     }
-    if (keys.length) await supabase.storage.from('project-media').remove(keys).catch(() => {})
+    if (keys.length) {
+      const removal = await supabase.storage
+        .from('project-media')
+        .remove(keys)
+        .catch((thrown: unknown) => ({ data: null, error: thrown }))
+      if (removal.error) console.warn('[admin] project delete: media cleanup failed', keys, removal.error)
+    }
   }
 
   pendingDelete.value = null

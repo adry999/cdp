@@ -289,7 +289,11 @@ async function cleanupReplacedMedia() {
     ])
     if ((projectCount ?? 0) > 0 || (imageCount ?? 0) > 0) continue
 
-    await supabase.storage.from(MEDIA_BUCKET).remove([key]).catch(() => {})
+    const removal = await supabase.storage
+      .from(MEDIA_BUCKET)
+      .remove([key])
+      .catch((thrown: unknown) => ({ data: null, error: thrown }))
+    if (removal.error) console.warn('[admin] project save: replaced media cleanup failed', key, removal.error)
   }
 }
 </script>

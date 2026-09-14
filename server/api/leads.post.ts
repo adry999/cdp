@@ -101,8 +101,9 @@ export default defineEventHandler(async (event) => {
           text: `Nume: ${name}\nEmail: ${email}\nCompanie: ${company || '—'}\nBuget: ${budgetLabel(budget || null)}\n\n${message}`,
         },
       })
-    } catch {
+    } catch (error) {
       // Lead is already saved; a failed notification email shouldn't fail the request.
+      console.warn('[api] POST /api/leads (resend): notification not sent', error)
     }
   }
 
