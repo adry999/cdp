@@ -7,8 +7,8 @@ import type { ProcessTrackId } from '~/types/process'
 // four-step pipelines (same tablist interaction as the services timeline). All
 // copy comes from useProcessTracks(), which reads the `home.process` i18n block
 // — nothing is hardcoded here or in app/types/process.ts. The DB `process_steps`
-// table and /admin still exist but no longer feed this section (same split as
-// the services timeline and the stack grid).
+// table does not feed this section (same split as the services timeline and
+// the stack grid).
 
 const { t } = useI18n()
 const tracks = useProcessTracks()

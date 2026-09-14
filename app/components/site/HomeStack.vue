@@ -3,8 +3,7 @@
 // grid, each card pairing a one-line business benefit with its tech pills. All
 // copy comes from useStackGroups(), which reads the `home.stack` i18n block —
 // nothing is hardcoded here or in app/types/stack.ts. The DB `stack_groups`
-// table still exists but no longer feeds this section (same split as the
-// services timeline).
+// table does not feed this section (same split as the services timeline).
 
 const { t } = useI18n()
 const groups = useStackGroups()

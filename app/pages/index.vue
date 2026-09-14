@@ -7,10 +7,8 @@ const config = useRuntimeConfig()
 const { data: home } = await useHomeData()
 const settings = computed(() => home.value?.settings)
 
-// CMS meta_title/meta_description/og_image were being saved from Setări and
-// silently ignored, same as the footer fields — an admin editing them had no
-// way to know the change did nothing. Falls back to the existing i18n copy
-// when a field hasn't been filled in, so nothing changes visibly until it is.
+// CMS meta_title/meta_description/og_image (Setări) override the i18n copy
+// once an admin fills them in; an empty field keeps the i18n default.
 const metaTitle = computed(
   () => pick(settings.value?.meta_title_ro ?? '', settings.value?.meta_title_en, locale.value) || t('seo.home.title'),
 )

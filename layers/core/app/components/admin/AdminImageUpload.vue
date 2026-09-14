@@ -52,14 +52,9 @@ async function onFileChange(e: Event) {
     return
   }
 
-  // The previous file is deliberately NOT deleted here. Deleting it the
-  // moment a replacement is uploaded — before the project's Save button
-  // commits — broke the currently *published* page if the admin closed the
-  // tab, hit Back, lost connectivity, or the save failed afterward:
-  // production still pointed at a file that had just been deleted. Cleanup
-  // now happens only after a successful save (see the project editor's
-  // save()), which is the first point where "this URL is really no longer
-  // needed" is actually true.
+  // Uploading never deletes the file it replaces: the published page keeps
+  // serving that file until the project is saved. The project editor removes
+  // replaced files after a successful save.
   const { data } = supabase.storage.from('project-media').getPublicUrl(path)
   emit('update:modelValue', data.publicUrl)
   uploading.value = false

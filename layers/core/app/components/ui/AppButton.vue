@@ -26,11 +26,8 @@ const variantClass = computed(() => {
 })
 
 // <script setup> components are closed by default — a parent's template ref
-// only gets what's explicitly exposed here, not $el. (ConsentBanner.vue relied
-// on $el being implicitly available; it silently wasn't, and focus() never
-// fired — caught by an e2e test asserting real focus, not just that the code
-// ran without throwing.) Only meaningful for the button branch; a NuxtLink
-// root isn't used as a focus target anywhere in this codebase today.
+// only gets what's explicitly exposed here, not $el. Only meaningful for the
+// button branch; a NuxtLink root is not used as a focus target.
 const buttonEl = ref<HTMLButtonElement>()
 defineExpose({ focus: () => buttonEl.value?.focus() })
 </script>

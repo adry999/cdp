@@ -15,8 +15,8 @@
  * (mapped to existing theme tokens — no new colours). See useProcessTracks()
  * for how the two are joined.
  *
- * The DB `process_steps` table and /admin still exist but no longer feed this
- * section (same split as the services timeline and the stack grid).
+ * The DB `process_steps` table does not feed this section (same split as the
+ * services timeline and the stack grid).
  */
 export type ProcessTrackId = 'fast' | 'deep'
 

@@ -28,19 +28,13 @@ function focusableElements(): HTMLElement[] {
 // A banner appearing over content is a dialog, and a dialog moves focus to
 // itself and keeps it there — otherwise a keyboard user tabbing through the
 // page lands on it by accident with no idea why, or tabs straight past it.
-// The initial-focus target and the trap's first/last must come from the same
-// query: an earlier version focused a specific button directly while the
-// trap computed "first" from the whole dialog (which starts with the policy
-// link in the message paragraph) — the two disagreed, so Shift+Tab from the
-// focused button didn't match the trap's "first" and silently escaped instead
-// of wrapping.
+// The initial-focus target and the trap's first/last come from the same
+// query (the policy link comes first), so Shift+Tab from the focused element
+// wraps instead of escaping the dialog.
 //
 // Watching the ref itself, not showBanner + nextTick: the banner is wrapped
 // in <ClientOnly>, whose real content mounts on a tick *after* hydration —
-// later than a single nextTick() reaches. Tying this to the ref's own mount
-// is correct regardless of when ClientOnly gets around to it. Caught by an
-// e2e test asserting real focus, not just that the code runs without
-// throwing.
+// later than a single nextTick() reaches.
 watch(bannerRef, (el) => {
   if (!el || !showBanner.value) return
   focusableElements()[0]?.focus()

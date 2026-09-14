@@ -260,15 +260,10 @@ async function save() {
 
 const MEDIA_BUCKET = 'project-media'
 
-// Deletes an old cover/hero/gallery file only once the replacement has
-// actually been saved — AdminImageUpload no longer deletes anything itself
-// (see its own comment: deleting at upload time broke the *published* page
-// if the admin never finished saving). This is also the point where "no
-// longer needed" can be checked safely: by now the RPC has already replaced
-// this project's own rows, so if any project row still references the old
-// URL, it can only be a different project — e.g. one created before
-// duplicate() was fixed to copy media independently — and the file is left
-// alone rather than breaking it.
+// Removes cover/hero/gallery files replaced in this save. It runs only after
+// the save succeeds, because until then the published page may still serve
+// them. The RPC has already replaced this project's rows, so a URL that any
+// row still references belongs to another project, and its file is kept.
 async function cleanupReplacedMedia() {
   const oldPaths = [e?.cover_path, e?.hero_path, ...(e?.project_images?.map((img) => img.path) ?? [])].filter(
     (p): p is string => !!p,
