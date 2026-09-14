@@ -152,6 +152,7 @@ async function archive() {
             @blur="saveNotes"
           />
           <p
+            aria-live="polite"
             class="mt-1 font-mono text-[11px] uppercase tracking-[0.08em]"
             :class="notesState === 'error' ? 'text-signal' : 'text-muted-ink'"
           >
