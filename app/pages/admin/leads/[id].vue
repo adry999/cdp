@@ -21,24 +21,35 @@ const statusOptions = [
 ]
 
 const notes = ref(lead.value?.notes ?? '')
-const saving = ref(false)
+const notesState = ref<'idle' | 'saving' | 'error'>('idle')
+const actionError = ref('')
 
 async function updateStatus(status: string) {
   if (!lead.value) return
-  await supabase.from('leads').update({ status }).eq('id', lead.value.id)
+  actionError.value = ''
+  const { error } = await supabase.from('leads').update({ status }).eq('id', lead.value.id)
+  if (error) {
+    actionError.value = `Starea nu a putut fi schimbată: ${error.message}`
+    return
+  }
   await refresh()
 }
 
 async function saveNotes() {
   if (!lead.value) return
-  saving.value = true
-  await supabase.from('leads').update({ notes: notes.value }).eq('id', lead.value.id)
-  saving.value = false
+  notesState.value = 'saving'
+  const { error } = await supabase.from('leads').update({ notes: notes.value }).eq('id', lead.value.id)
+  notesState.value = error ? 'error' : 'idle'
 }
 
 async function archive() {
   if (!lead.value) return
-  await supabase.from('leads').update({ archived_at: new Date().toISOString() }).eq('id', lead.value.id)
+  actionError.value = ''
+  const { error } = await supabase.from('leads').update({ archived_at: new Date().toISOString() }).eq('id', lead.value.id)
+  if (error) {
+    actionError.value = `Solicitarea nu a putut fi arhivată: ${error.message}`
+    return
+  }
   await navigateTo('/admin/leads')
 }
 </script>
@@ -140,10 +151,23 @@ async function archive() {
             class="mt-3 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-ink"
             @blur="saveNotes"
           />
-          <p class="mt-1 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">
-            {{ saving ? 'Se salvează…' : 'Salvat automat la ieșirea din câmp' }}
+          <p
+            class="mt-1 font-mono text-[11px] uppercase tracking-[0.08em]"
+            :class="notesState === 'error' ? 'text-signal' : 'text-muted-ink'"
+          >
+            {{
+              {
+                idle: 'Salvat automat la ieșirea din câmp',
+                saving: 'Se salvează…',
+                error: 'Notele nu au fost salvate — încearcă din nou',
+              }[notesState]
+            }}
           </p>
         </section>
+
+        <p v-if="actionError" role="alert" class="font-mono text-xs uppercase tracking-[0.08em] text-signal">
+          {{ actionError }}
+        </p>
 
         <AppButton variant="outline" class="w-fit" @click="archive">Arhivează</AppButton>
       </div>
