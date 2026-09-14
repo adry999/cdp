@@ -105,9 +105,11 @@ export default defineEventHandler(async (event) => {
   ].join('\n')
 
   if (!config.resendApiKey) {
-    // No sender configured (local / preview). The submission would otherwise be
-    // lost, so make that visible in the logs rather than silently 200-ing.
-    console.warn('[api] POST /api/contact: RESEND_API_KEY unset, submission not emailed\n' + summary)
+    // No sender configured (local / preview): the submission is not delivered.
+    // The log names only the routing outcome, never the visitor's contact data.
+    console.warn(
+      `[api] POST /api/contact: RESEND_API_KEY unset, submission not emailed (stage ${stage}, route ${route}, lang ${lang})`,
+    )
     return { success: true }
   }
 
