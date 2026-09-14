@@ -6,12 +6,13 @@ import {
   type ContactSubmission,
   type LeadRecord,
 } from '#layers/leads/domain/lead'
+import type { TeamNotification } from '#layers/leads/server/services/leadNotification'
 
 export interface LeadRepository {
   insertLead(record: LeadRecord): Promise<void>
 }
 
-export type TeamNotifier = (notification: { subject: string; lines: string[] }) => Promise<'sent' | 'skipped'>
+export type TeamNotifier = (notification: TeamNotification) => Promise<'sent' | 'skipped'>
 
 export interface SubmitLeadDependencies {
   repository: LeadRepository

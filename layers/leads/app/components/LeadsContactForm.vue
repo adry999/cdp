@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import type { ContactFieldErrors } from '#layers/leads/domain/lead'
+import { LEAD_BUDGET_KEYS, type ContactFieldErrors } from '#layers/leads/domain/lead'
 import { useLeadSubmission } from '#layers/leads/state/useLeadSubmission'
 
 const { t, locale } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
 const { status, fieldErrors, submit } = useLeadSubmission()
-
-const budgetKeys = ['under1k', '1to2k', '2to5k', 'over5k', 'unsure'] as const
 
 const form = reactive({
   name: '',
@@ -134,7 +132,7 @@ function handleSubmit() {
         class="mt-2 w-full rounded border border-hairline bg-paper px-3.5 py-3 text-base outline-none focus:border-signal"
       >
         <option value="">{{ t('home.contact.form.budgetPlaceholder') }}</option>
-        <option v-for="key in budgetKeys" :key="key" :value="key">
+        <option v-for="key in LEAD_BUDGET_KEYS" :key="key" :value="key">
           {{ t(`home.contact.form.budgetOptions.${key}`) }}
         </option>
       </select>

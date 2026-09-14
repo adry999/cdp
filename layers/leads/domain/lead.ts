@@ -1,6 +1,9 @@
 import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
 
-export type LeadBudgetKey = 'under1k' | '1to2k' | '2to5k' | 'over5k' | 'unsure'
+// The single source of the five budget keys: the component's <select> options
+// and the domain's label map both derive from this list.
+export const LEAD_BUDGET_KEYS = ['under1k', '1to2k', '2to5k', 'over5k', 'unsure'] as const
+export type LeadBudgetKey = (typeof LEAD_BUDGET_KEYS)[number]
 
 // The admin is Romanian-only, so stored budget keys map to Romanian labels here.
 export const LEAD_BUDGET_LABELS: Record<LeadBudgetKey, string> = {

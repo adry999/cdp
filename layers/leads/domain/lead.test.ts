@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { buildContactSubmission } from '#layers/leads/test-support/buildContactSubmission'
 import {
+  LEAD_BUDGET_KEYS,
+  LEAD_BUDGET_LABELS,
   LEAD_FIELD_LIMITS,
   isLeadStatus,
   leadBudgetLabel,
@@ -63,6 +65,12 @@ describe('toLeadRecord', () => {
     )
     expect(record.utm?.utm_source).toHaveLength(200)
     expect(record.referrer).toHaveLength(500)
+  })
+})
+
+describe('LEAD_BUDGET_KEYS', () => {
+  it('has a label for every key', () => {
+    expect(LEAD_BUDGET_KEYS.every((key) => key in LEAD_BUDGET_LABELS)).toBe(true)
   })
 })
 
