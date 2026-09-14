@@ -77,11 +77,11 @@ Scor pe zone: UI public 3/10, admin 6/10, server/config 3/10.
 
 ### 1.4 Comentarii care narează istoric
 
-18 apariții în 13 fișiere (spec V9, programat la pasul 9).
+13 blocuri în 12 fișiere (spec V9), rescrise în această remediere. Două potriviri inițiale erau false pozitive: `QualifierModal.vue` (`previouslyFocused`) și comentariul CSS „previous node” din `HomeServices.vue`. Review-ul final a mai găsit două comentarii în `server/api/admin/revalidate.post.ts` și `server/middleware/project-redirects.ts`.
 
 | fișier:linie | sev | problemă | recomandare | mod |
 |---|---|---|---|---|
-| app/components/site/QualifierModal.vue (4 apariții), SiteFooter.vue:14-17 (2), HomeServices.vue, HomeProcess.vue, HomeStack.vue, app/pages/index.vue:10-13, app/types/process.ts, app/types/stack.ts | m | „was being…”, „no longer…”, „Fixed here rather than left for later” | rescrie la prezent: de ce e codul așa | auto (cu citire umană a formulării) |
+| app/components/site/SiteFooter.vue:14-17, HomeProcess.vue, HomeStack.vue, app/pages/index.vue:10-13, app/types/process.ts, app/types/stack.ts | m | „was being…”, „no longer…”, „Fixed here rather than left for later” | rescrie la prezent: de ce e codul așa | auto (cu citire umană a formulării) |
 | app/pages/admin/projects/index.vue:101-103, 130-136; app/pages/admin/projects/[slug].vue:263-271; app/pages/admin/faqs/index.vue:97-99 | m | povestesc bug-uri vechi | enunță invariantul curent | auto (idem) |
 | layers/consent/app/components/ConsentBanner.vue:33-36; layers/core/app/components/ui/AppButton.vue:28-31; layers/core/app/components/admin/AdminImageUpload.vue:55-62 | m | „an earlier version…”, „relied on $el… silently wasn’t”, „previous file… broke” | păstrează doar regula: aceeași interogare pentru focus inițial și trap; `defineExpose` necesar; upload-ul nu șterge nimic | auto (idem) |
 
@@ -103,7 +103,7 @@ Verificat și găsit curat:
 - Componente înregistrate și nefolosite: 0 din 37.
 - Dependențe nefolosite: 0 din 17 (fiecare justificată: modul Nuxt, import, script sau peer).
 - Fișiere de cod orfane: 0.
-- Chei i18n lipsă între ro și en: 0 (217 = 217).
+- Chei i18n lipsă între ro și en: 0 (266 = 266 înainte de remediere, 259 = 259 după ștergerea celor 7 chei nefolosite).
 
 | fișier:linie | sev | problemă | recomandare | mod |
 |---|---|---|---|---|

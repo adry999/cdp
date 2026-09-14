@@ -9,7 +9,7 @@ description: Folosește în repo-ul Codepedia (Nuxt 4 + Supabase) când decizi u
 
 Deciziile de arhitectură luate pentru acest repo. Se aplică înaintea regulilor generale din `senior-architecture`; unde diferă, câștigă acest fișier. Designul complet, cu motivația fiecărei decizii: `docs/superpowers/specs/2026-09-13-feature-driven-architecture-design.md`.
 
-**Stare:** pașii 1–3 ai migrării sunt implementați (2026-09-13). `layers/core` conține componentele design system, `text`, `pick`, `logAndThrow`, vocabularul etapelor și testul de arhitectură. `layers/consent` conține consimțământul cookie, bannerul, plugin-ul analytics și pagina de confidențialitate. Verificarea vizuală și e2e e în așteptare, pentru că proiectul Supabase nu e accesibil. Celelalte module sunt încă în layout-ul vechi.
+**Stare:** pașii 1–3 ai migrării sunt în `main` (2026-09-14). `layers/core` conține componentele design system, `text`, `pick`, `logAndThrow`, vocabularul etapelor, tipurile DB generate și testul de arhitectură. `layers/consent` conține consimțământul cookie, bannerul, plugin-ul analytics și pagina de confidențialitate. Build-ul de producție e verificat local cu un stub Supabase (e2e și capturi de ecran); verificarea pe proiectul Supabase real e în așteptare. Celelalte module sunt încă în layout-ul vechi.
 
 ## Triggers
 
@@ -106,7 +106,7 @@ layers/<modul>/
 
 ### Teste
 
-- `*.test.ts` lângă fișierul testat. `vitest.config.ts`: `include: ['layers/**/*.test.ts']`, aliasuri `#layers` și `#shared`.
+- `*.test.ts` lângă fișierul testat. `vitest.config.ts`: `include: ['test/unit/**/*.test.ts', 'layers/**/*.test.ts']` (`test/unit` se golește pe măsură ce sursele se mută în layere), aliasuri `#layers` și `#shared`.
 - Fixture-uri în `layers/<modul>/test-support/`, ca factory cu overrides.
 - Serviciile primesc dependențele ca parametru; testele dau fake-uri in-memory. Fără `vi.mock` pe module.
 - E2E în `e2e/` la rădăcină: un spec per rută publică și per flux critic, rulat pe build de producție.
@@ -179,3 +179,6 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-09-13: Typecheck prin `vue-tsc -b`; folderele nescanate ale layer-elor intră în tsconfig din `layers/core/nuxt.config.ts` — spec, ajustările pasului 3.
 - 2026-09-13: Testul de arhitectură atribuie componentele după calea fișierului, nu după prefix; componentele de feature stau direct în `app/components/` — spec, ajustările pasului 3.
 - 2026-09-13: Codul din rădăcină importă un feature doar ca `#layers/<modul>` sau `#layers/<modul>/server`, verificat de ESLint — spec D2.
+- 2026-09-14: Codul din rădăcină importă `shared/` explicit prin `#shared/...`; ESLint interzice `~~/` în `app/` și `~/` / `~~/` în `server/` și `shared/` — raportul de audit 2026-09-14, P1.
+- 2026-09-14: Tipurile DB generate stau în `layers/core/shared/types/database.types.ts`; `supabase.types` din `nuxt.config.ts` indică acolo — spec, target tree.
+- 2026-09-14: Operațiile best-effort (curățare Storage, notificare email, revalidare cache) raportează eșecul cu `console.warn('[zonă] context', …)` și nu întrerup fluxul; log-urile nu conțin datele vizitatorului — spec D7, audit P0.
