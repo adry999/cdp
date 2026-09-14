@@ -1,3 +1,5 @@
+import { LOCALE_COOKIE_NAME, isCrawler, resolveLocale } from '#shared/utils/resolveLocale'
+
 export default defineEventHandler((event) => {
   const { pathname } = getRequestURL(event)
   if (pathname !== '/' && pathname !== '/en') return

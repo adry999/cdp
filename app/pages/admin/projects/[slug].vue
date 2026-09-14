@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ProjectRow } from '~/utils/mapProject'
-import { usableGallery, validateProjectPayload } from '~~/shared/utils/projectPayload'
+import { usableGallery, validateProjectPayload } from '#shared/utils/projectPayload'
 
 definePageMeta({ layout: 'admin' })
 

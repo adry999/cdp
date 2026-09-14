@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { resolveCaseStudySlug } from '#shared/utils/caseStudyLink'
+import { LOCALE_COOKIE_NAME } from '#shared/utils/resolveLocale'
+
 const { t, locale } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 const localePath = useLocalePath()

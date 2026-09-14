@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { budgetLabel } from '~~/shared/utils/leadLabels'
+import { budgetLabel } from '#shared/utils/leadLabels'
 
 definePageMeta({ layout: 'admin' })
 
