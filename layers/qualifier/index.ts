@@ -1,1 +1,1 @@
-export { useQualifier } from './state/useQualifier'
+export { useQualifierAvailability } from './state/useQualifierAvailability'

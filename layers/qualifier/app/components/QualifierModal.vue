@@ -3,9 +3,9 @@ import type { QualifierBudgetKey } from '#layers/qualifier/domain/routing'
 import type { StageId } from '#layers/core/shared/types/service-stage'
 import { STAGE_TAGS, resolveRoute, ROUTE_LABELS } from '#layers/qualifier/domain/routing'
 import type { QualifierContactPayload } from './QualifierStepContact.vue'
-import { useQualifier } from '#layers/qualifier/state/useQualifier'
+import { useQualifierDialog } from '#layers/qualifier/state/useQualifierDialog'
 
-const { isOpen, initialStage, close } = useQualifier()
+const { isOpen, initialStage, close } = useQualifierDialog()
 const { t, locale } = useI18n()
 
 const TOTAL_STEPS = 3

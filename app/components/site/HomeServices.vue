@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import type { ComponentPublicInstance } from 'vue'
 import type { StageId } from '#layers/core/shared/types/service-stage'
-import { useQualifier } from '#layers/qualifier'
+import { useQualifierAvailability } from '#layers/qualifier'
 
 // Section 01 — the "growth timeline". Five milestone nodes on an animated
 // connector line (horizontal ≥768px, vertical below), one per qualifier stage.
-// Clicking a node expands a detail card; its CTA opens the qualifier pre-set to
-// that stage. All copy comes from useServiceStages(), which reads the
+// Clicking a node expands a detail card; its CTA emits qualifier:open with that
+// stage. All copy comes from useServiceStages(), which reads the
 // `home.services` i18n block — nothing is hardcoded here or in app/types/services.ts.
 //
 // The connector is drawn with CSS transforms, not an SVG-path library — the
 // project ships no animation dependency and Framer Motion is React-only.
 
 const { t } = useI18n()
-const { open: openQualifier, enabled: qualifierEnabled } = useQualifier()
+const nuxtApp = useNuxtApp()
+const { isQualifierEnabled } = useQualifierAvailability()
 const stages = useServiceStages()
 
 const active = ref(0)
@@ -59,8 +60,8 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 function startAt(id: StageId) {
-  if (qualifierEnabled.value) {
-    openQualifier(id)
+  if (isQualifierEnabled.value) {
+    nuxtApp.callHook('qualifier:open', { stage: id })
     return
   }
   // Flag off → the modal isn't mounted anywhere; fall back to the contact
