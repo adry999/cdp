@@ -87,7 +87,7 @@ Două subsisteme au fost adăugate ulterior, la cererea clientului, dincolo de
 scopul inițial al acestui fișier. Documentate integral (design + plan de
 implementare) în `docs/superpowers/specs/` și `docs/superpowers/plans/`:
 
-- **Detectare automată a limbii** — `server/middleware/locale-redirect.ts`.
+- **Detectare automată a limbii** — `layers/core/server/middleware/locale-redirect.ts`.
   Geo-IP (header Vercel `x-vercel-ip-country`) e semnalul principal: RO/MD →
   română, altfel engleză. Fallback pe domeniu (`.md`/`.ro`) doar când geo
   lipsește. Alegerea manuală din switcher (cookie `codepedia_locale`) are
