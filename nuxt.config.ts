@@ -1,18 +1,32 @@
 import tailwindcss from '@tailwindcss/vite'
 
 // A production build with no site URL set would silently ship canonical and
-// hreflang tags pointing at localhost — the i18n.baseUrl default below.
-// nuxt dev runs with NODE_ENV=development, so local dev is unaffected; every
-// real build (Vercel included) sets NODE_ENV=production and must supply it.
-if (process.env.NODE_ENV === 'production' && !process.env.NUXT_PUBLIC_SITE_URL) {
-  throw new Error(
-    'NUXT_PUBLIC_SITE_URL is not set. Required for a production build — see .env.example.',
-  )
+// hreflang tags pointing at localhost — the i18n.baseUrl default below. A
+// production build with no Supabase URL/key would deploy an app that can
+// never reach its database. nuxt dev runs with NODE_ENV=development, so
+// local dev is unaffected; every real build (Vercel included) sets
+// NODE_ENV=production and must supply all of these.
+function assertEnv(names: string[]) {
+  if (process.env.NODE_ENV !== 'production') return
+  const missing = names.filter((name) => !process.env[name])
+  if (missing.length) {
+    throw new Error(
+      `Missing required environment variable(s) for a production build: ${missing.join(', ')}. See .env.example.`,
+    )
+  }
 }
 
-const supabaseHost = new URL(
-  process.env.NUXT_PUBLIC_SUPABASE_URL || 'https://xlrkuaxnkidslrhdelpm.supabase.co',
-).hostname
+assertEnv(['NUXT_PUBLIC_SITE_URL', 'NUXT_PUBLIC_SUPABASE_URL', 'NUXT_PUBLIC_SUPABASE_ANON_KEY'])
+
+const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+
+// No hardcoded fallback here on purpose: in production assertEnv above
+// already guarantees this is set. In dev, if it's missing, @nuxtjs/supabase
+// logs its own warning at runtime — we just skip the host-scoped CSP/image
+// entries below rather than inventing a URL to derive a host from.
+const supabaseHost = process.env.NUXT_PUBLIC_SUPABASE_URL
+  ? new URL(process.env.NUXT_PUBLIC_SUPABASE_URL).hostname
+  : undefined
 
 // No CSP/frame/sniffing headers were configured anywhere — Nitro/Vercel ship
 // none by default. 'unsafe-inline' on script-src is a real gap, not an
@@ -21,13 +35,15 @@ const supabaseHost = new URL(
 // wiring in place, and both are currently inert (no ID configured) so this
 // is the safe moment to add the header without breaking anything live.
 // Tightening script-src to a nonce is real follow-up work, not done here.
+const supabaseHostSrc = supabaseHost ? ` https://${supabaseHost}` : ''
+
 const CSP = [
   `default-src 'self'`,
   `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net`,
   `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
   `font-src 'self' https://fonts.gstatic.com`,
-  `img-src 'self' data: https://${supabaseHost} https://www.facebook.com`,
-  `connect-src 'self' https://www.google-analytics.com https://${supabaseHost}`,
+  `img-src 'self' data:${supabaseHostSrc} https://www.facebook.com`,
+  `connect-src 'self' https://www.google-analytics.com${supabaseHostSrc}`,
   `frame-ancestors 'none'`,
   `base-uri 'self'`,
   `form-action 'self'`,
@@ -45,7 +61,7 @@ export default defineNuxtConfig({
     public: {
       gaId: process.env.NUXT_PUBLIC_GA_ID || '',
       metaPixelId: process.env.NUXT_PUBLIC_META_PIXEL_ID || '',
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://codepedia.md',
+      siteUrl,
     },
   },
 
@@ -92,7 +108,7 @@ export default defineNuxtConfig({
     // functions cannot load. The ipx fallback keeps `npm run dev` working
     // everywhere else.
     provider: process.env.VERCEL ? 'vercel' : 'ipx',
-    domains: [supabaseHost],
+    domains: supabaseHost ? [supabaseHost] : [],
   },
 
   supabase: {
@@ -102,6 +118,15 @@ export default defineNuxtConfig({
       callback: '/admin/login',
       include: ['/admin(/*)?'],
       exclude: ['/admin/login'],
+    },
+  },
+
+  // `npm run typecheck` (vue-tsc -b over the .nuxt/tsconfig.*.json project
+  // references) otherwise misses these root-level TS files — they aren't
+  // under app/, server/ or a layer, so nothing pulls them in by default.
+  typescript: {
+    nodeTsConfig: {
+      include: ['../e2e/**/*.ts', '../playwright.config.ts', '../vitest.config.ts'],
     },
   },
 
@@ -117,7 +142,7 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+    baseUrl: siteUrl,
     defaultLocale: 'ro',
     strategy: 'prefix_except_default',
     detectBrowserLanguage: false,

@@ -9,7 +9,9 @@ async function firstPublishedProject(request: APIRequestContext) {
   const res = await request.get('/api/projects')
   const projects = (await res.json()) as { slug_ro: string; slug_en: string | null }[]
   test.skip(!projects.length, 'No published projects to test against')
-  return projects[0]
+  const [project] = projects
+  if (!project) throw new Error('No published projects to test against')
+  return project
 }
 
 // The redirect middleware only fires on `/` and `/en`; pinning the locale

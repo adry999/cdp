@@ -14,6 +14,23 @@ const LAYER_FILE_PATH = {
   message: 'Import a layer through its #layers/<layer> alias, never by file path.',
 }
 
+// no-restricted-imports doesn't see dynamic import('...') expressions — it
+// only matches static import/export declarations. Mirror the same
+// regex/message pairs as a no-restricted-syntax selector so a forbidden path
+// can't sneak in through import(). Only literal and fully-static (no
+// interpolation) template-literal sources can be checked statically.
+function dynamicImportGuards(patterns) {
+  return patterns.map(({ regex, message }) => {
+    const source = regex.replace(/\//g, '\\/')
+    return {
+      selector:
+        `ImportExpression[source.type='Literal'][source.value=/${source}/], ` +
+        `ImportExpression[source.type='TemplateLiteral'][source.expressions.length=0][source.quasis.0.value.cooked=/${source}/]`,
+      message,
+    }
+  })
+}
+
 function layerBoundary(layer, dependencies) {
   const fullAccess = dependencies.includes('core') ? [layer, 'core'] : [layer]
   const publicOnly = dependencies.filter((dependency) => dependency !== 'core')
@@ -28,22 +45,19 @@ function layerBoundary(layer, dependencies) {
             .map((dependency) => `#layers/${dependency} or #layers/${dependency}/server`)
             .join(', ')} of ${publicOnly.join(', ')}.`
         : `layers/${layer} may import only its own files and #layers/core/....`
+  const patterns = [
+    { regex, message },
+    { regex: '^(~|~~|@|@@)/', message: `layers/${layer} must not import root app/ or server/ code.` },
+    {
+      regex: '^\\.\\.(/|$)',
+      message: `Inside layers/${layer} use ./ or #layers/${layer}/... paths; never climb with ../.`,
+    },
+  ]
   return {
     files: [`layers/${layer}/**/*.{ts,vue}`],
     rules: {
-      'no-restricted-imports': [
-        'error',
-        {
-          patterns: [
-            { regex, message },
-            { regex: '^(~|~~|@|@@|#shared)/', message: `layers/${layer} must not import root app/, server/ or shared/ code.` },
-            {
-              regex: '^\\.\\.(/|$)',
-              message: `Inside layers/${layer} use ./ or #layers/${layer}/... paths; never climb with ../.`,
-            },
-          ],
-        },
-      ],
+      'no-restricted-imports': ['error', { patterns }],
+      'no-restricted-syntax': ['error', ...dynamicImportGuards(patterns)],
     },
   }
 }
@@ -63,20 +77,12 @@ export default withNuxt(
   {
     files: ['app/**/*.{ts,vue}'],
     rules: {
-      'no-restricted-imports': [
-        'error',
-        {
-          patterns: [
-            LAYER_PUBLIC_ENTRY,
-            LAYER_FILE_PATH,
-            { regex: '^~~/', message: 'Import root shared code through #shared/..., not ~~/.' },
-          ],
-        },
-      ],
+      'no-restricted-imports': ['error', { patterns: [LAYER_PUBLIC_ENTRY, LAYER_FILE_PATH] }],
+      'no-restricted-syntax': ['error', ...dynamicImportGuards([LAYER_PUBLIC_ENTRY, LAYER_FILE_PATH])],
     },
   },
   {
-    files: ['server/**/*.ts', 'shared/**/*.ts'],
+    files: ['server/**/*.ts'],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -86,10 +92,18 @@ export default withNuxt(
             LAYER_FILE_PATH,
             {
               regex: '^~~?/',
-              message: 'server/ and shared/ import through #shared/... or #layers/..., never ~/ or ~~/.',
+              message: 'server/ imports through #layers/..., never ~/ or ~~/.',
             },
           ],
         },
+      ],
+      'no-restricted-syntax': [
+        'error',
+        ...dynamicImportGuards([
+          LAYER_PUBLIC_ENTRY,
+          LAYER_FILE_PATH,
+          { regex: '^~~?/', message: 'server/ imports through #layers/..., never ~/ or ~~/.' },
+        ]),
       ],
     },
   },
