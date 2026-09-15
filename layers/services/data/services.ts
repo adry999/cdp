@@ -23,8 +23,8 @@ export const SERVICES = [
         en: 'Static-first architecture for maximum performance and minimal hosting costs.',
       },
       {
-        ro: 'Dashboard editorial simplu pentru a modifica text și imagini fără a ști cod.',
-        en: 'Simple editorial dashboard to update copy and images without coding knowledge.',
+        ro: 'Opțional: un dashboard editorial simplu ca să modifici singur text și imagini fără cod — implică o dezvoltare separată și un redeploy al proiectului.',
+        en: 'Optional: a simple editorial dashboard to update copy and images yourself without code — a separate build, with a project redeploy.',
       },
     ],
     process: [
