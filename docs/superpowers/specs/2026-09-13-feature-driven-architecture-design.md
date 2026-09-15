@@ -446,7 +446,7 @@ e2e smoke, browser check RO + EN. Conventional Commits, one commit per logical m
 | 4 | Code done 2026-09-14; local stub verification only. `leads` layer (independent) + `sendMail` / `checkRateLimit` into core server libs; admin leads pages | Medium | Removes V4 duplication before qualifier depends on it |
 | 5 | Code done 2026-09-14; local stub verification only. `qualifier` layer (dependent on `leads` server API + core hook contract) | Medium | Needs step 4's public API |
 | 6 | Code done 2026-09-15. `content` layer: services, stack, process, about, FAQ, settings — `/api/home`, admin FAQ/services/settings, row types from `database.types.ts` (V5). Superseded in part: see Step 6 adjustments | Medium | Shared by home and footer; isolate before home |
-| 7 | `projects` layer: split the 570-line editor into `data/projectRepository.ts`, `domain/projectForm.ts`, section components; one `PROJECT_SELECT` (V2, V3) | High | Largest file, most business logic; done once the pattern is proven on 4 layers |
+| 7 | Code done 2026-09-15, minimal-admin scope (see Step 7 adjustments). `projects` layer: split the 570-line editor into `data/projectRepository.ts`, `domain/projectForm.ts`, section components; one `PROJECT_SELECT` (V2, V3) | High | Largest file, most business logic; done once the pattern is proven on 4 layers |
 | 8 | `home` layer: `pages/index.vue` + `Home*` sections, emits `qualifier:open`; root `app/` reduced to shell; `locale` redirect middleware into core | Low | Pure composition by now |
 | 9 | Update CLAUDE.md conventions (component grouping, test location), architecture test + ESLint rule in CI, history-comment cleanup (V9), env validation (V10) | Low | Conventions change only after the code matches them |
 
@@ -490,6 +490,14 @@ Step 6 adjustments (product decision 2026-09-15):
 - **Removed.** `GET /api/home` and its swr rule, `useHomeData`, `app/types/home.ts`, the admin pages `/admin/services`, `/admin/faqs`, `/admin/settings` and their sidebar links, the unused `footer.legal` / `footer.copyright` i18n keys. The six tables stay in the database, unused (no drop migration).
 - **Moved.** `app/types/{services,stack,process,about}.ts` → `layers/content/domain/`; `useServiceStages`, `useStackGroups`, `useProcessTracks`, `useAboutPillars` → `layers/content/state/`, imported through `#layers/content`. `StackIconName` is owned by `domain/stack.ts`; `StackGroupIcon.vue` imports it.
 - **Dropped audit items.** V5 row types, `useDragReorder` for FAQ/services and the FAQ inline delete confirm no longer apply: the rows and editors are gone. `bilingual()` stays in the projects editor until step 7, its only user. Step 7 introduces `useDragReorder` for projects if still wanted.
+
+Step 7 adjustments (product decision 2026-09-15: minimal admin work):
+- **Scope.** Everything project-related moves into `layers/projects`: `GET /api/projects`, `GET /api/projects/[slug]`, `POST /api/admin/revalidate`, the slug-redirect middleware, `/proiecte/[slug]` (route name `proiecte-slug` kept, so the i18n `pages` mapping is unchanged), the case-study components (renamed `ProjectsCaseStudy*`), `mapProject`, `projectPayload`, `caseStudyLink`, `storagePath` and their tests, `useCaseStudySlugs`, `useRevalidatePublicCache`. The admin project pages move unchanged.
+- **Not done (deferred without a date).** Editor split into repository / form / section components, `reorder_projects` RPC, `useDragReorder`, one media reference-check helper, typed repository calls replacing `SaveState` and the `as never` cast, the inline duplicate message, `bilingual()` into core, `ProjectRow` derived from `Database`.
+- **One select.** `layers/projects/domain/projectSelect.ts` defines `PROJECT_SELECT` (public) and `ADMIN_PROJECT_SELECT` (`id, published_at` + the same list). The editor now loads `project_images.aspect` and saves it back; before, every save wrote `'4/3'`.
+- **Dependencies.** `projects` → `core`, `qualifier` (`ProjectsCaseStudyNext` reads `useQualifierAvailability`). The `case-study` layout stays in root `app/layouts/`.
+- **Core additions.** `useUnsavedChangesGuard` (generic admin helper) and `resolveLocale` / `LOCALE_COOKIE_NAME` / `isCrawler` (`layers/core/shared/utils/resolveLocale.ts`, with its test) move into core; the root locale middleware, `SiteHeader` and `ProjectsCaseStudyHeader` import them from there.
+- **Sitemap.** Root `server/routes/sitemap.xml.ts` reads slugs through `listPublishedProjectSlugs` from `#layers/projects/server`.
 
 Audit 2026-09-14 items scheduled into later steps:
 - **Step 5.**
