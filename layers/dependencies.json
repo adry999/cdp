@@ -2,5 +2,5 @@
   "core": [],
   "consent": ["core"],
   "leads": ["core"],
-  "qualifier": ["core"]
+  "qualifier": ["core", "leads"]
 }
