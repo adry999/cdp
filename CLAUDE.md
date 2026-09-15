@@ -48,7 +48,12 @@ bibliotecă de iconuri (designul nu folosește iconuri).
   `MediaFrame.vue` (cu placeholder hașurat ca fallback), `AppButton.vue`
   (variante `ink` / `signal` / `outline`).
 - Textul din interfață (nu conținutul din DB) în `i18n/locales/ro.json` și `en.json`.
-  Conținutul editabil vine exclusiv din Supabase.
+  Proiectele și solicitările vin din Supabase și se editează din admin.
+  Întrebările frecvente și setările site-ului (email, program, timp de răspuns,
+  notă NDA, linia din footer, anul) sunt fișiere tipate în
+  `layers/content/data/` și se editează manual în cod, RO și EN obligatoriu.
+  Tabelele `faqs`, `site_settings`, `services`, `service_items`,
+  `stack_groups`, `process_steps` rămân în bază, dar nu mai alimentează site-ul.
 - Fetch de date doar pe server: `useAsyncData` + server routes în `server/api/`.
   Cheia `service_role` nu ajunge niciodată în client.
 - Fără `any`. Tipurile de DB generate cu `supabase gen types typescript`.
