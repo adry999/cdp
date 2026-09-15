@@ -4,6 +4,7 @@ import { usableGallery, validateProjectPayload } from '#layers/projects/domain/p
 import { ADMIN_PROJECT_SELECT } from '#layers/projects/domain/projectSelect'
 import { storageKeyFromPublicUrl } from '#layers/projects/domain/storagePath'
 import { useRevalidatePublicCache } from '#layers/projects/state/useRevalidatePublicCache'
+import { SERVICE_TAG_IDS } from '#layers/core/shared/types/service-tag'
 
 definePageMeta({ layout: 'admin' })
 
@@ -39,6 +40,7 @@ const form = reactive({
   year: existingProject?.year != null ? String(existingProject.year) : '2026',
   tech: [...(existingProject?.tech ?? [])] as string[],
   techInput: '',
+  serviceTag: existingProject?.service_tag ?? null,
 
   coverPath: existingProject?.cover_path ?? null,
   coverAlt: bilingual(existingProject?.cover_alt_ro ?? '', existingProject?.cover_alt_en ?? ''),
@@ -151,6 +153,7 @@ async function save() {
     summary: form.summary,
     lead: form.lead,
     contextHeading: form.contextHeading,
+    serviceTag: form.serviceTag,
     gallery: form.gallery,
   })
 
@@ -181,6 +184,7 @@ async function save() {
       lead_en: form.lead.en || null,
       year: form.year ? Number(form.year) : null,
       tech: form.tech,
+      service_tag: form.serviceTag || null,
       cover_path: form.coverPath,
       cover_alt_ro: form.coverAlt.ro || null,
       cover_alt_en: form.coverAlt.en || null,
@@ -343,6 +347,15 @@ async function cleanupReplacedMedia() {
                   >
                 </div>
               </div>
+            </div>
+            <div>
+              <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Serviciu</div>
+              <select v-model="form.serviceTag" class="mt-2 w-full border border-hairline bg-paper px-3 py-2 outline-none focus:border-ink">
+                <option :value="null">—</option>
+                <option v-for="tag in SERVICE_TAG_IDS" :key="tag" :value="tag">
+                  {{ tag }}
+                </option>
+              </select>
             </div>
           </div>
         </section>

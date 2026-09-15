@@ -14,6 +14,7 @@ const baseRow: ProjectRow = {
   lead_en: 'Intro EN',
   year: 2026,
   tech: ['Nuxt', 'Supabase'],
+  service_tag: null,
   cover_path: null,
   cover_alt_ro: null,
   cover_alt_en: null,

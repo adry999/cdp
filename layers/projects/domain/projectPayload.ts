@@ -4,6 +4,8 @@
  * editor accepts outside that pattern would publish a guaranteed 404.
  */
 
+import { isServiceTagId } from '#layers/core/shared/types/service-tag'
+
 export const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
 /** Slugs that collide with admin routes rather than naming a project. */
@@ -40,6 +42,7 @@ export interface ProjectPayloadInput {
   summary: { ro: string; en: string }
   lead: { ro: string; en: string }
   contextHeading: { ro: string; en: string }
+  serviceTag: string | null
   gallery: ProjectImageInput[]
 }
 
@@ -85,6 +88,10 @@ export function validateProjectPayload(input: ProjectPayloadInput): ValidationIs
     } else if (RESERVED_SLUGS.includes(slug)) {
       issues.push({ field, message: `„${slug}" este rezervat și nu poate fi slug de proiect.` })
     }
+  }
+
+  if (input.serviceTag && !isServiceTagId(input.serviceTag)) {
+    issues.push({ field: 'serviceTag', message: 'Serviciu invalid.' })
   }
 
   return issues

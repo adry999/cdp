@@ -6,7 +6,7 @@
  */
 export const PROJECT_SELECT = `
   slug_ro, slug_en, title_ro, title_en, card_title_ro, card_title_en,
-  summary_ro, summary_en, lead_ro, lead_en, year, tech,
+  summary_ro, summary_en, lead_ro, lead_en, year, tech, service_tag,
   cover_path, cover_alt_ro, cover_alt_en, hero_path, hero_alt_ro, hero_alt_en,
   context_heading_ro, context_heading_en, context_body_ro, context_body_en,
   solution_heading_ro, solution_heading_en,

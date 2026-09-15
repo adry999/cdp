@@ -17,6 +17,7 @@ function base(overrides: Partial<ProjectPayloadInput> = {}): ProjectPayloadInput
     summary: { ro: 'Sumar', en: '' },
     lead: { ro: 'Lead', en: '' },
     contextHeading: { ro: 'Context', en: '' },
+    serviceTag: null,
     gallery: [],
     ...overrides,
   }
@@ -72,6 +73,18 @@ describe('validateProjectPayload', () => {
     // reason to require this at save time.
     const noGallery = base({ published: true, gallery: [] })
     expect(validateProjectPayload(noGallery)).toEqual([])
+  })
+
+  it('validates service tag: valid tag passes, invalid tag fails, null passes', () => {
+    const validTag = base({ serviceTag: 'website' })
+    expect(validateProjectPayload(validTag)).toEqual([])
+
+    const invalidTag = base({ serviceTag: 'invalid-service' })
+    const issues = validateProjectPayload(invalidTag)
+    expect(issues.map((i) => i.field)).toContain('serviceTag')
+
+    const nullTag = base({ serviceTag: null })
+    expect(validateProjectPayload(nullTag)).toEqual([])
   })
 })
 
