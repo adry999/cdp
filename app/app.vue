@@ -9,6 +9,7 @@ const isAdmin = computed(() => route.path.startsWith('/admin'))
 
 // Organization JSON-LD is public-SEO-only.
 const settings = useSiteSettings()
+const siteUrl = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
 
 useHead(() => ({
   script: isAdmin.value
@@ -20,8 +21,8 @@ useHead(() => ({
             '@context': 'https://schema.org',
             '@type': 'Organization',
             name: 'Codepedia',
-            url: 'https://codepedia.md',
-            logo: 'https://codepedia.md/brand/codepedia-mark.svg',
+            url: siteUrl,
+            logo: `${siteUrl}/brand/codepedia-mark.svg`,
             email: settings.value.contactEmail,
             address: {
               '@type': 'PostalAddress',
