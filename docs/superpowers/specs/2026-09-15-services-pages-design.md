@@ -45,7 +45,8 @@ The 5 service tags must be known to both `layers/services` (its content) and `la
 
 ```ts
 interface Service {
-  slug: ServiceTagId
+  slug: ServiceTagId // canonical id — matches projects.service_tag and the admin select, not the URL
+  routeSlug: LocalizedText // per-locale URL segment; differs from slug for web-app ("aplicatie-web") and ai-automation ("automatizare-ai")
   name: LocalizedText
   intro: LocalizedText
   features: LocalizedText[]
@@ -54,6 +55,8 @@ interface Service {
   qualifierStage: StageId
 }
 ```
+
+Implementation note: the route match is against `routeSlug`, not `slug` — the first implementation pass used `slug` for both locales' URLs, which loses the RO keyword benefit the SEO goal depends on; caught and fixed before commit.
 
 `data/services.ts` — 5 entries, edited manually, same convention as `layers/content/data/`.
 

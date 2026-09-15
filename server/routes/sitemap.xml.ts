@@ -1,4 +1,5 @@
 import { listPublishedProjectSlugs } from '#layers/projects/server'
+import { SERVICES } from '#layers/services/server'
 
 /** Minimal XML escaping — slugs and the site URL are the only inputs here, but
  * a slug is admin-entered text and should never be trusted verbatim in markup. */
@@ -60,6 +61,22 @@ export default defineEventHandler(async (event) => {
         alt: [
           { hreflang: 'ro', href: `${baseUrl}/proiecte/${ro}` },
           { hreflang: 'en', href: `${baseUrl}/en/work/${en}` },
+        ],
+      },
+    ]),
+    ...SERVICES.flatMap(({ routeSlug }) => [
+      {
+        loc: `${baseUrl}/servicii/${routeSlug.ro}`,
+        alt: [
+          { hreflang: 'ro', href: `${baseUrl}/servicii/${routeSlug.ro}` },
+          { hreflang: 'en', href: `${baseUrl}/en/services/${routeSlug.en}` },
+        ],
+      },
+      {
+        loc: `${baseUrl}/en/services/${routeSlug.en}`,
+        alt: [
+          { hreflang: 'ro', href: `${baseUrl}/servicii/${routeSlug.ro}` },
+          { hreflang: 'en', href: `${baseUrl}/en/services/${routeSlug.en}` },
         ],
       },
     ]),

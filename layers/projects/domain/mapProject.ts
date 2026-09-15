@@ -41,6 +41,7 @@ export interface ProjectRow {
   lead_en: string | null
   year: number | null
   tech: string[]
+  service_tag: string | null
   cover_path: string | null
   cover_alt_ro: string | null
   cover_alt_en: string | null

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { EMAIL_PATTERN } from '#layers/core/shared/utils/text'
-import type { LocalizedText } from '#layers/content/domain/localizedText'
+import type { LocalizedText } from '#layers/core/shared/types/localizedText'
 import { FAQS } from './faqs'
 import { SITE_SETTINGS } from './siteSettings'
 

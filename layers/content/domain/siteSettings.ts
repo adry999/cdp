@@ -1,4 +1,4 @@
-import type { LocalizedText } from '#layers/content/domain/localizedText'
+import type { LocalizedText } from '#layers/core/shared/types/localizedText'
 
 /**
  * The subset of site-wide settings the public site actually reads. Contact

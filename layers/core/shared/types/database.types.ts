@@ -341,6 +341,8 @@ export type Database = {
           quote_ro: string | null
           quote_role_en: string | null
           quote_role_ro: string | null
+          // hand-added ahead of supabase gen types — re-check after the migration is applied and types are regenerated
+          service_tag: string | null
           slug_en: string | null
           slug_ro: string
           solution_heading_en: string | null
@@ -382,6 +384,7 @@ export type Database = {
           quote_ro?: string | null
           quote_role_en?: string | null
           quote_role_ro?: string | null
+          service_tag?: string | null
           slug_en?: string | null
           slug_ro: string
           solution_heading_en?: string | null
@@ -423,6 +426,7 @@ export type Database = {
           quote_ro?: string | null
           quote_role_en?: string | null
           quote_role_ro?: string | null
+          service_tag?: string | null
           slug_en?: string | null
           slug_ro?: string
           solution_heading_en?: string | null

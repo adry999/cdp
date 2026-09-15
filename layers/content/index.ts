@@ -5,7 +5,7 @@ export { useStackGroups } from './state/useStackGroups'
 export { useProcessTracks } from './state/useProcessTracks'
 export { useAboutPillars } from './state/useAboutPillars'
 
-export type { LocalizedText } from './domain/localizedText'
+export type { LocalizedText } from '#layers/core/shared/types/localizedText'
 export type { Faq } from './domain/faq'
 export type { SiteSettings } from './domain/siteSettings'
 export type { ServiceStageDef, ServiceStage } from './domain/services'
