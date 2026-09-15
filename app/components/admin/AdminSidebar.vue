@@ -3,10 +3,7 @@ const route = useRoute()
 
 const navItems = [
   { label: 'Proiecte', to: '/admin/projects' },
-  { label: 'Servicii', to: '/admin/services' },
-  { label: 'Întrebări', to: '/admin/faqs' },
   { label: 'Solicitări', to: '/admin/leads' },
-  { label: 'Setări', to: '/admin/settings' },
 ] as const
 
 function isActive(to: string) {
