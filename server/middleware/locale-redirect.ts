@@ -1,4 +1,4 @@
-import { LOCALE_COOKIE_NAME, isCrawler, resolveLocale } from '#shared/utils/resolveLocale'
+import { LOCALE_COOKIE_NAME, isCrawler, resolveLocale } from '#layers/core/shared/utils/resolveLocale'
 
 export default defineEventHandler((event) => {
   const { pathname } = getRequestURL(event)
