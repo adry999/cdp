@@ -1,4 +1,4 @@
-import { PROCESS_TRACK_DEFS, type ProcessStep, type ProcessTrack } from '~/types/process'
+import { PROCESS_TRACK_DEFS, type ProcessStep, type ProcessTrack } from '#layers/content/domain/process'
 
 /** Shape of one `home.process.tracks.<id>.steps[]` entry before resolution. */
 interface RawProcessStep {
@@ -7,8 +7,8 @@ interface RawProcessStep {
 }
 
 /**
- * Joins the structural track defs (app/types/process.ts — order + badge tone)
- * with their localised copy from the `home.process.tracks.<id>` i18n block,
+ * Joins the structural track defs (layers/content/domain/process.ts — order + badge
+ * tone) with their localised copy from the `home.process.tracks.<id>` i18n block,
  * producing the `ProcessTrack` view-models HomeProcess.vue renders. All editable
  * text lives in i18n/locales/{ro,en}.json under `home.process`; nothing here.
  */

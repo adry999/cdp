@@ -1,9 +1,9 @@
-import { STACK_GROUP_DEFS, type StackGroup } from '~/types/stack'
+import { STACK_GROUP_DEFS, type StackGroup } from '#layers/content/domain/stack'
 
 /**
- * Joins the structural group defs (app/types/stack.ts — order + icon) with their
- * localised copy from the `home.stack.groups.<id>` i18n block, producing the
- * `StackGroup` view-models HomeStack.vue renders. All editable text lives in
+ * Joins the structural group defs (layers/content/domain/stack.ts — order + icon)
+ * with their localised copy from the `home.stack.groups.<id>` i18n block, producing
+ * the `StackGroup` view-models HomeStack.vue renders. All editable text lives in
  * i18n/locales/{ro,en}.json under `home.stack`; nothing here.
  */
 export function useStackGroups() {

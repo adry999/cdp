@@ -9,7 +9,7 @@ description: Folosește în repo-ul Codepedia (Nuxt 4 + Supabase) când decizi u
 
 Deciziile de arhitectură luate pentru acest repo. Se aplică înaintea regulilor generale din `senior-architecture`; unde diferă, câștigă acest fișier. Designul complet, cu motivația fiecărei decizii: `docs/superpowers/specs/2026-09-13-feature-driven-architecture-design.md`.
 
-**Stare:** pașii 1–3 ai migrării sunt în `main`; pasul 4 (`layers/leads`) e pe branch-ul `feat/leads-layer`, iar pasul 5 (`layers/qualifier`) pe `feat/qualifier-layer`, pornit din el (2026-09-14). `layers/core` conține design system-ul (inclusiv `CoreHoneypotField`), primitivele admin (inclusiv `AdminTopbar`), contractele `AsyncStatus` / `AppError` / `toAppError`, hook-ul `qualifier:open`, `useFocusTrap`, utilitarele server `logAndThrow`, `checkRateLimit`, `sendMail`, tipurile DB și testul de arhitectură. `layers/consent` conține consimțământul cookie. `layers/leads` conține formularul de contact, `POST /api/leads` și paginile admin de solicitări. `layers/qualifier` conține modalul de calificare și `POST /api/contact`. Verificarea e locală, cu stub Supabase; pe proiectul real e în așteptare. Celelalte module sunt încă în layout-ul vechi.
+**Stare:** pașii 1–5 ai migrării sunt în `main`; pasul 6 (`layers/content`) e pe branch-ul `feat/content-layer` (2026-09-15). `layers/core` conține design system-ul (inclusiv `CoreHoneypotField`), primitivele admin (inclusiv `AdminTopbar`), contractele `AsyncStatus` / `AppError` / `toAppError`, hook-ul `qualifier:open`, `useFocusTrap`, utilitarele server `logAndThrow`, `checkRateLimit`, `sendMail`, tipurile DB și testul de arhitectură. `layers/consent` conține consimțământul cookie. `layers/leads` conține formularul de contact, `POST /api/leads` și paginile admin de solicitări. `layers/qualifier` conține modalul de calificare și `POST /api/contact`. `layers/content` conține FAQ-ul și setările site-ului ca fișiere tipate (`data/`) și definițiile secțiunilor servicii, stack, proces, despre. Celelalte module sunt încă în layout-ul vechi.
 
 ## Triggers
 
@@ -43,7 +43,7 @@ Un modul = un Nuxt layer în `layers/<nume>/`. Nuxt îl înregistrează automat,
 | `consent` | consimțământ cookie, banner, plugin analytics, pagina de confidențialitate | `core` |
 | `leads` | formularul de contact, `POST /api/leads`, paginile admin de solicitări | `core` |
 | `qualifier` | modalul de calificare, `POST /api/contact` | `core`, `#layers/leads/server` |
-| `content` | servicii, stack, proces, despre, FAQ, setări: `GET /api/home` + editoarele admin | `core` |
+| `content` | servicii, stack, proces, despre (definiții + i18n), FAQ și setări (fișiere tipate în `data/`, editate manual) | `core` |
 | `projects` | studii de caz publice + layout, `GET /api/projects*`, editorul admin, redirect-uri de slug | `core` |
 | `home` | ruta `/` și secțiunile `Home*` | `core`, `#layers/content`, `#layers/projects`, `#layers/qualifier` (doar `useQualifierAvailability`) |
 
@@ -51,12 +51,12 @@ Un modul = un Nuxt layer în `layers/<nume>/`. Nuxt îl înregistrează automat,
 
 | Feature-ul | Merge în |
 |---|---|
-| Conținut editabil din admin și afișat pe site, fără flux propriu dincolo de listă + editor + publicare (ex. FAQ, servicii, testimoniale, echipă) | `content` — entitate nouă în modulul existent |
+| Conținut afișat pe site, fără flux propriu (ex. FAQ, testimoniale, echipă) | `content` — fișier tipat în `data/` (RO + EN obligatoriu, verificat în `data/content.test.ts`) + composable în `state/`; fără tabel și fără editor admin |
 | Are ciclu de viață sau flux propriu: pagini publice dedicate, trimiteri de formular, stări, notificări (ex. proiecte, lead-uri, calificare) | modul nou → `senior-architecture` în modul incremental |
 | Secțiune pe homepage | componenta în `home` (`HomeTestimonials.vue`); datele vin din API-ul public al modulului care deține entitatea (`#layers/content`) |
-| Ecran în admin pentru o entitate | pagina în modulul care deține entitatea (`layers/content/app/pages/admin/testimonials/`) |
+| Ecran în admin pentru o entitate din baza de date | pagina în modulul care deține entitatea (`layers/projects/app/pages/admin/projects/`) |
 
-Prefixul componentei este **numele modulului** care o conține, fără alte variante: în `content` → `ContentTestimonialEditor.vue`, în `home` → `HomeTestimonials.vue`. `App*` e rezervat primitivelor din `core`. `Admin*` îl folosesc atât primitivele de formular din `core` (`AdminField`), cât și layer-ul `admin`; proprietarul se stabilește după calea fișierului.
+Prefixul componentei este **numele modulului** care o conține, fără alte variante: în `projects` → `ProjectsGalleryEditor.vue`, în `home` → `HomeTestimonials.vue`. `App*` e rezervat primitivelor din `core`. `Admin*` îl folosesc atât primitivele de formular din `core` (`AdminField`), cât și layer-ul `admin`; proprietarul se stabilește după calea fișierului.
 
 ### Structura internă a unui modul
 
@@ -189,3 +189,4 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-09-14: `useFocusTrap` și `CoreHoneypotField` stau în `core`; regula de wrap e funcția pură `focusTrapTarget`, testată unitar — spec, ajustările pasului 5.
 - 2026-09-14: Plugin-urile care ascultă hook-uri rezolvă composables la setup; callback-ul hook-ului rulează în afara contextului Nuxt — spec, ajustările pasului 5.
 - 2026-09-14: E2E pentru fluxuri cu flag rulează pe un al doilea server din același build (`e2e/support/serve.mjs`, :3013) — spec, ajustările pasului 5.
+- 2026-09-15: FAQ-ul și setările site-ului sunt fișiere tipate în `layers/content/data/`, editate manual; paginile admin Servicii, Întrebări, Setări și `GET /api/home` sunt șterse, tabelele rămân nefolosite în bază — decizia utilizatorului, spec, ajustările pasului 6.

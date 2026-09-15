@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import type { ProjectRow } from '~/utils/mapProject'
+import { useSiteSettings } from '#layers/content'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
 const { data: rows } = await useAsyncData<ProjectRow[]>('projects', () => $fetch('/api/projects'))
-const { data: home } = await useHomeData()
+const settings = useSiteSettings()
 
 const list = computed(() => (rows.value ?? []).map((row) => mapProject(row, locale.value as 'ro' | 'en')))
-const ndaNote = computed(() => {
-  const s = home.value?.settings
-  if (!s) return ''
-  return pick(s.nda_note_ro ?? '', s.nda_note_en, locale.value)
-})
+const ndaNote = computed(() => settings.value.ndaNote)
 </script>
 
 <template>

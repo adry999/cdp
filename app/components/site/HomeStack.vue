@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { useStackGroups } from '#layers/content'
+
 // Section 02 — "Stack". Four capability groups laid out as a responsive 2×2 card
 // grid, each card pairing a one-line business benefit with its tech pills. All
 // copy comes from useStackGroups(), which reads the `home.stack` i18n block —
-// nothing is hardcoded here or in app/types/stack.ts. The DB `stack_groups`
-// table does not feed this section (same split as the services timeline).
+// nothing is hardcoded here or in layers/content/domain/stack.ts. The DB
+// `stack_groups` table does not feed this section (same split as the services
+// timeline).
 
 const { t } = useI18n()
 const groups = useStackGroups()

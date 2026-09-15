@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type { ProcessTrackId } from '~/types/process'
+import { useProcessTracks, type ProcessTrackId } from '#layers/content'
 
 // Section 03 — "Process". A dual-track delivery model: a Fast-Track pipeline for
 // Express builds and design-to-code, and a Deep Build pipeline for custom apps,
 // refactoring and AI automations. A segmented toggle swaps between the two
 // four-step pipelines (same tablist interaction as the services timeline). All
 // copy comes from useProcessTracks(), which reads the `home.process` i18n block
-// — nothing is hardcoded here or in app/types/process.ts. The DB `process_steps`
-// table does not feed this section (same split as the services timeline and
-// the stack grid).
+// — nothing is hardcoded here or in layers/content/domain/process.ts. The DB
+// `process_steps` table does not feed this section (same split as the services
+// timeline and the stack grid).
 
 const { t } = useI18n()
 const tracks = useProcessTracks()

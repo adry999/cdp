@@ -445,7 +445,7 @@ e2e smoke, browser check RO + EN. Conventional Commits, one commit per logical m
 | 3 | Code done 2026-09-13; visual and e2e checks run locally against a Supabase stub, verification against the real Supabase project is pending. `consent` layer: `CookieBanner`, `useCookieConsent`, `consent.ts`, `consentSignals.ts`, analytics plugin, privacy page, `legal.ts` | Low | Client-only, already covered by `e2e/cookie-consent.spec.ts` |
 | 4 | Code done 2026-09-14; local stub verification only. `leads` layer (independent) + `sendMail` / `checkRateLimit` into core server libs; admin leads pages | Medium | Removes V4 duplication before qualifier depends on it |
 | 5 | Code done 2026-09-14; local stub verification only. `qualifier` layer (dependent on `leads` server API + core hook contract) | Medium | Needs step 4's public API |
-| 6 | `content` layer: services, stack, process, about, FAQ, settings — `/api/home`, admin FAQ/services/settings, row types from `database.types.ts` (V5) | Medium | Shared by home and footer; isolate before home |
+| 6 | Code done 2026-09-15. `content` layer: services, stack, process, about, FAQ, settings — `/api/home`, admin FAQ/services/settings, row types from `database.types.ts` (V5). Superseded in part: see Step 6 adjustments | Medium | Shared by home and footer; isolate before home |
 | 7 | `projects` layer: split the 570-line editor into `data/projectRepository.ts`, `domain/projectForm.ts`, section components; one `PROJECT_SELECT` (V2, V3) | High | Largest file, most business logic; done once the pattern is proven on 4 layers |
 | 8 | `home` layer: `pages/index.vue` + `Home*` sections, emits `qualifier:open`; root `app/` reduced to shell; `locale` redirect middleware into core | Low | Pure composition by now |
 | 9 | Update CLAUDE.md conventions (component grouping, test location), architecture test + ESLint rule in CI, history-comment cleanup (V9), env validation (V10) | Low | Conventions change only after the code matches them |
@@ -483,6 +483,13 @@ Step 5 adjustments:
 - **Budget labels.** `shared/utils/leadLabels.ts` is deleted; the qualifier tiers live in `layers/qualifier/domain/qualification.ts`.
 - **E2E.** `e2e/support/serve.mjs` serves one production build on :3012 (defaults) and :3013 (qualifier flag on). Playwright project `qualifier` runs `e2e/qualifier.spec.ts` against :3013.
 - **Lead submission state.** `useLeadSubmission({ post })` takes its client as a parameter (default `postLead`) and has unit tests — deferred from step 4.
+
+Step 6 adjustments (product decision 2026-09-15):
+- **Content lives in code, not Supabase.** FAQ and site settings are typed files in `layers/content/data/` (`faqs.ts`, `siteSettings.ts`), edited manually; `data/content.test.ts` requires RO and EN for every localized field. Values were copied verbatim from the database, so the rendered site is unchanged.
+- **Only what the site reads is modelled.** Services, stack, process and about already rendered from i18n plus structural defs; `/api/home` also fetched `services`, `service_items`, `stack_groups` and `process_steps`, but nothing rendered them. `SiteSettings` keeps `contactEmail`, `hours`, `responseTime`, `ndaNote`, `footerLine`, `copyrightYear`; the phone, meta override and next-opening fields were null or unread.
+- **Removed.** `GET /api/home` and its swr rule, `useHomeData`, `app/types/home.ts`, the admin pages `/admin/services`, `/admin/faqs`, `/admin/settings` and their sidebar links, the unused `footer.legal` / `footer.copyright` i18n keys. The six tables stay in the database, unused (no drop migration).
+- **Moved.** `app/types/{services,stack,process,about}.ts` → `layers/content/domain/`; `useServiceStages`, `useStackGroups`, `useProcessTracks`, `useAboutPillars` → `layers/content/state/`, imported through `#layers/content`. `StackIconName` is owned by `domain/stack.ts`; `StackGroupIcon.vue` imports it.
+- **Dropped audit items.** V5 row types, `useDragReorder` for FAQ/services and the FAQ inline delete confirm no longer apply: the rows and editors are gone. `bilingual()` stays in the projects editor until step 7, its only user. Step 7 introduces `useDragReorder` for projects if still wanted.
 
 Audit 2026-09-14 items scheduled into later steps:
 - **Step 5.**

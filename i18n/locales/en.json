@@ -15,10 +15,8 @@
     "skipToContent": "Skip to content"
   },
   "footer": {
-    "legal": "Codepedia SRL · Chișinău, Moldova",
     "tagline": "Full-stack web development · Websites, web apps, WordPress, Shopify",
-    "cookieSettings": "Cookie settings",
-    "copyright": "© 2026"
+    "cookieSettings": "Cookie settings"
   },
   "cookieBanner": {
     "message": "We use cookies necessary for the site to work. With your consent, we also use analytics and marketing cookies.",

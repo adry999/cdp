@@ -33,12 +33,11 @@ Sidebar `240px`, bg `#FAF8F4`, `border-right: 1px solid #E2DED6`. În cap, simbo
 12px uppercase `0.08em`; elementul activ ink, restul muted, cu o bară de 2px
 `#FF4D14` în stânga pe cel activ.
 
+Întrebările frecvente și setările site-ului nu se mai editează din admin: se modifică direct în `layers/content/data/`. Textele serviciilor, stack-ului și procesului sunt în `i18n/locales/{ro,en}.json`.
+
 ```
 Proiecte          /admin/projects
-Servicii          /admin/services
-Întrebări         /admin/faqs
 Solicitări        /admin/leads
-Setări            /admin/settings
 ```
 
 Sus, în bara de conținut: titlul secțiunii, iar în dreapta butonul de acțiune
@@ -105,22 +104,6 @@ nu se randează pe site.
 - avertisment (nu blocare) dacă `title_ro` depășește 60 de caractere sau
   `summary_ro` depășește 200 — designul se strică peste aceste lungimi
 
-## Servicii `/admin/services`
-
-Două niveluri fixe (Site-uri, Aplicații web) — se editează, nu se adaugă/șterg.
-Per nivel: `heading`, `body`, `duration_label` și `price_from` (număr + valută), toate
-bilingve unde e text. Sub fiecare nivel, o listă de itemi reordonabili cu
-`label` + `description` bilingve — acestea sunt rândurile „Site de prezentare /
-Landing page / Magazin online" și cardurile 01–04.
-
-Prețul se afișează pe site formatat de aplicație (`de la 1.200 EUR` / `from 1,200 EUR`),
-deci în admin se introduce doar numărul.
-
-## Întrebări `/admin/faqs`
-
-Listă simplă, reordonabilă: `question_ro/_en`, `answer_ro/_en`, comutator publicat.
-Dacă nu există nicio întrebare publicată, secțiunea 06 dispare din homepage.
-
 ## Solicitări `/admin/leads`
 
 Doar citire, alimentat de formularul de contact.
@@ -131,17 +114,6 @@ Doar citire, alimentat de formularul de contact.
   (`mailto:` precompletat), câmp de note interne
 - Notificare pe email către `contact@codepedia.md` la fiecare solicitare nouă
 - Fără ștergere din UI; doar arhivare
-
-## Setări `/admin/settings`
-
-Valori globale, un singur formular:
-
-- email de contact, telefon
-- program (text bilingv, ex. `09:00 – 18:00 EET`)
-- timp de răspuns (bilingv)
-- linia de footer (bilingvă), an de copyright
-- nota de sub grila de proiecte („Unele proiecte sunt sub NDA…")
-- meta title / description per limbă, imagine OG
 
 ## Comportamente comune
 

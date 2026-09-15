@@ -16,7 +16,7 @@
  * for how the two are joined.
  *
  * The DB `process_steps` table does not feed this section (same split as the
- * services timeline and the stack grid).
+ * services timeline and the stack grid — see layers/content/README.md).
  */
 export type ProcessTrackId = 'fast' | 'deep'
 

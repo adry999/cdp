@@ -1,24 +1,15 @@
 <script setup lang="ts">
 import { useCookieConsent } from '#layers/consent'
+import { useSiteSettings } from '#layers/content'
 
 withDefaults(defineProps<{ compact?: boolean }>(), { compact: false })
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 const { openSettings } = useCookieConsent()
+const settings = useSiteSettings()
 
-// Shares the 'home' cache key with HomeContact/HomeWork/app.vue/etc., so this
-// doesn't add a second round trip on pages that already fetch it.
-const { data: home } = await useHomeData()
-const settings = computed(() => home.value?.settings)
-
-// The CMS footer line (Setări → Footer) overrides the i18n string once an
-// admin fills it in; an empty field keeps the i18n default.
-const legalLine = computed(
-  () => pick(settings.value?.footer_line_ro ?? '', settings.value?.footer_line_en, locale.value) || t('footer.legal'),
-)
-const copyrightLine = computed(() =>
-  settings.value?.copyright_year ? `© ${settings.value.copyright_year}` : t('footer.copyright'),
-)
+const legalLine = computed(() => settings.value.footerLine)
+const copyrightLine = computed(() => `© ${settings.value.copyrightYear}`)
 </script>
 
 <template>
