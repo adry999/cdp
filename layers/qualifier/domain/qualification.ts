@@ -29,6 +29,14 @@ export interface QualificationInput {
   lang: 'ro' | 'en'
 }
 
+export interface QualifierContactPayload {
+  name: string
+  email: string
+  handle: string
+  notes: string
+  website: string
+}
+
 export const QUALIFIER_FIELD_LIMITS = {
   name: 200,
   email: 254,

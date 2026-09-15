@@ -5,14 +5,7 @@ import {
   type QualifierBudgetKey,
 } from '#layers/qualifier/domain/routing'
 import type { StageId } from '#layers/core/shared/types/service-stage'
-
-export interface QualifierContactPayload {
-  name: string
-  email: string
-  handle: string
-  notes: string
-  website: string // honeypot
-}
+import type { QualifierContactPayload } from '#layers/qualifier/domain/qualification'
 
 const props = defineProps<{
   stage: StageId
