@@ -444,7 +444,7 @@ e2e smoke, browser check RO + EN. Conventional Commits, one commit per logical m
 | 2 | Code done 2026-09-13; visual and e2e checks run locally against a Supabase stub, verification against the real Supabase project is pending. Move design-system `ui/` components, `pick`, `apiError`, email pattern into core; delete duplicates (V4) | Low | Component names unchanged → templates untouched |
 | 3 | Code done 2026-09-13; visual and e2e checks run locally against a Supabase stub, verification against the real Supabase project is pending. `consent` layer: `CookieBanner`, `useCookieConsent`, `consent.ts`, `consentSignals.ts`, analytics plugin, privacy page, `legal.ts` | Low | Client-only, already covered by `e2e/cookie-consent.spec.ts` |
 | 4 | Code done 2026-09-14; local stub verification only. `leads` layer (independent) + `sendMail` / `checkRateLimit` into core server libs; admin leads pages | Medium | Removes V4 duplication before qualifier depends on it |
-| 5 | `qualifier` layer (dependent on `leads` server API + core hook contract) | Medium | Needs step 4's public API |
+| 5 | Code done 2026-09-14; local stub verification only. `qualifier` layer (dependent on `leads` server API + core hook contract) | Medium | Needs step 4's public API |
 | 6 | `content` layer: services, stack, process, about, FAQ, settings — `/api/home`, admin FAQ/services/settings, row types from `database.types.ts` (V5) | Medium | Shared by home and footer; isolate before home |
 | 7 | `projects` layer: split the 570-line editor into `data/projectRepository.ts`, `domain/projectForm.ts`, section components; one `PROJECT_SELECT` (V2, V3) | High | Largest file, most business logic; done once the pattern is proven on 4 layers |
 | 8 | `home` layer: `pages/index.vue` + `Home*` sections, emits `qualifier:open`; root `app/` reduced to shell; `locale` redirect middleware into core | Low | Pure composition by now |
@@ -473,6 +473,16 @@ Step 4 adjustments:
 - **Budget labels.** `shared/utils/leadLabels.ts` stays until step 5. It still labels the qualifier's budget keys for `POST /api/contact`, which already uses core `sendMail` and `checkRateLimit`.
 - **Team notification failures.** They log only the error message.
 - **Core contracts land here.** `AsyncStatus`, `AppError` and `toAppError` are created in this step, with `layers/leads` as their first consumer (per the step 1–2 adjustment above) — they are not part of step 2's move. `useLeadsAdminList` does not wrap its result in `AsyncStatus`; it returns only `{ leads }`, the `useAsyncData` ref.
+
+Step 5 adjustments:
+- **Hook contract location.** `layers/core/app/types/app-events.d.ts`, not `shared/types/app-events.ts`. The generated app tsconfig includes a layer's `shared/` only as `*.d.ts`, and runtime hooks exist only in the Vue app.
+- **Focus trap.** `useFocusTrap(container)` in core composables returns `focusFirst` and `trapTab`. The wrap rule is the pure, unit-tested `focusTrapTarget` in `shared/utils/focusTrap.ts`. `ConsentBanner` and `QualifierModal` use it; Escape handling stays in the modal.
+- **Honeypot.** `CoreHoneypotField` in core `ui/`, used by `LeadsContactForm` and `QualifierStepContact`.
+- **No visitor data in qualifier logs.** A skipped notification logs stage, route and language; a failed delivery logs the error message. This supersedes the `submitQualification` snippet above, which logged the summary lines, and the handler snippet, which logged the raw cause.
+- **Plugin context.** `qualifier-events.client.ts` resolves `useQualifierDialog` and `useQualifierAvailability` at plugin setup, and availability reads runtime config once: hook callbacks run outside the Nuxt context. `useQualifierDialog().open()` does not re-validate the stage; the plugin validates at the boundary.
+- **Budget labels.** `shared/utils/leadLabels.ts` is deleted; the qualifier tiers live in `layers/qualifier/domain/qualification.ts`.
+- **E2E.** `e2e/support/serve.mjs` serves one production build on :3012 (defaults) and :3013 (qualifier flag on). Playwright project `qualifier` runs `e2e/qualifier.spec.ts` against :3013.
+- **Lead submission state.** `useLeadSubmission({ post })` takes its client as a parameter (default `postLead`) and has unit tests — deferred from step 4.
 
 Audit 2026-09-14 items scheduled into later steps:
 - **Step 5.**

@@ -9,7 +9,7 @@ description: Folosește în repo-ul Codepedia (Nuxt 4 + Supabase) când decizi u
 
 Deciziile de arhitectură luate pentru acest repo. Se aplică înaintea regulilor generale din `senior-architecture`; unde diferă, câștigă acest fișier. Designul complet, cu motivația fiecărei decizii: `docs/superpowers/specs/2026-09-13-feature-driven-architecture-design.md`.
 
-**Stare:** pașii 1–3 ai migrării sunt în `main`; pasul 4 (`layers/leads`) e implementat pe branch-ul `feat/leads-layer` (2026-09-14). `layers/core` conține design system-ul, primitivele admin (inclusiv `AdminTopbar`), contractele `AsyncStatus` / `AppError` / `toAppError`, utilitarele server `logAndThrow`, `checkRateLimit`, `sendMail`, tipurile DB și testul de arhitectură. `layers/consent` conține consimțământul cookie. `layers/leads` conține formularul de contact, `POST /api/leads` și paginile admin de solicitări. Verificarea e locală, cu stub Supabase; pe proiectul real e în așteptare. Celelalte module sunt încă în layout-ul vechi.
+**Stare:** pașii 1–3 ai migrării sunt în `main`; pasul 4 (`layers/leads`) e pe branch-ul `feat/leads-layer`, iar pasul 5 (`layers/qualifier`) pe `feat/qualifier-layer`, pornit din el (2026-09-14). `layers/core` conține design system-ul (inclusiv `CoreHoneypotField`), primitivele admin (inclusiv `AdminTopbar`), contractele `AsyncStatus` / `AppError` / `toAppError`, hook-ul `qualifier:open`, `useFocusTrap`, utilitarele server `logAndThrow`, `checkRateLimit`, `sendMail`, tipurile DB și testul de arhitectură. `layers/consent` conține consimțământul cookie. `layers/leads` conține formularul de contact, `POST /api/leads` și paginile admin de solicitări. `layers/qualifier` conține modalul de calificare și `POST /api/contact`. Verificarea e locală, cu stub Supabase; pe proiectul real e în așteptare. Celelalte module sunt încă în layout-ul vechi.
 
 ## Triggers
 
@@ -84,7 +84,7 @@ layers/<modul>/
 - Din alt modul se importă doar `#layers/<modul>` (client) și `#layers/<modul>/server` (server).
 - Logica unui feature **nu** stă în `app/composables`, `app/utils`, `shared/utils` sau `shared/types` ale layer-ului: Nuxt le scanează și le face globale fără import. Doar `layers/core` folosește aceste foldere.
 - Componentele au prefixul modulului: `LeadsContactForm`, `QualifierModal`. Primitivele din `core` își păstrează numele (`AppButton`, `SiteSection`, `MediaFrame`, `AdminField`) — CLAUDE.md le numește explicit.
-- Comunicare fără import: hook tipat în `layers/core/shared/types/app-events.ts`. Payload-ul folosește doar tipuri din `core` (`{ stage?: StageId }`) — `core` nu importă niciodată tipuri de feature. Se emite cu `useNuxtApp().callHook(...)`; se ascultă în `app/plugins/` al modulului receptor, care validează payload-ul la runtime.
+- Comunicare fără import: hook tipat în `layers/core/app/types/app-events.d.ts`. Payload-ul folosește doar tipuri din `core` (`{ stage?: StageId }`) — `core` nu importă niciodată tipuri de feature. Se emite cu `useNuxtApp().callHook(...)`; se ascultă în `app/plugins/` al modulului receptor, care validează payload-ul la runtime.
 - Vocabularul de business folosit de mai multe module stă în `core`: etapele de serviciu (`STAGE_IDS`, `STAGE_ORDER`, `StageId`, `isStageId`, `CoreStageIcon`) sunt comune pentru `home` și `qualifier`. Regulile proprii unui modul (tag-uri, bugete, rute) rămân în modul.
 - Cheile `useState` au prefixul modulului: `'qualifier:open'`, `'consent:banner-open'`.
 - Niciun modul nu importă din `app/` sau `server/` din rădăcină.
@@ -185,3 +185,7 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-09-14: `AdminTopbar` stă în `core` (primitivă admin folosită de toate paginile admin); `AdminSidebar` rămâne lângă layout-ul admin din rădăcină — spec, ajustările pasului 4.
 - 2026-09-14: Statusurile lead-ului și etichetele lor stau în `layers/leads/domain/lead.ts` — spec, ajustările pasului 4.
 - 2026-09-14: Observațiile P2 din auditul 2026-09-14 sunt repartizate pe pașii 5–9 în tabelul de migrare din spec.
+- 2026-09-14: Contractul hook-urilor stă în `layers/core/app/types/app-events.d.ts` — tsconfig-ul app include `shared/` al unui layer doar ca `*.d.ts` — spec, ajustările pasului 5.
+- 2026-09-14: `useFocusTrap` și `CoreHoneypotField` stau în `core`; regula de wrap e funcția pură `focusTrapTarget`, testată unitar — spec, ajustările pasului 5.
+- 2026-09-14: Plugin-urile care ascultă hook-uri rezolvă composables la setup; callback-ul hook-ului rulează în afara contextului Nuxt — spec, ajustările pasului 5.
+- 2026-09-14: E2E pentru fluxuri cu flag rulează pe un al doilea server din același build (`e2e/support/serve.mjs`, :3013) — spec, ajustările pasului 5.

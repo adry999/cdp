@@ -1,76 +1,21 @@
 <script setup lang="ts">
-import type { QualifierBudgetKey } from '#shared/utils/qualifierRouting'
-import type { StageId } from '#layers/core/shared/types/service-stage'
-import { STAGE_TAGS, resolveRoute, ROUTE_LABELS } from '#shared/utils/qualifierRouting'
-import type { QualifierContactPayload } from './QualifierStepContact.vue'
+import { useQualifierDialog } from '#layers/qualifier/state/useQualifierDialog'
+import { QUALIFIER_TOTAL_STEPS, useQualifierFlow } from '#layers/qualifier/state/useQualifierFlow'
 
-const { isOpen, initialStage, close } = useQualifier()
-const { t, locale } = useI18n()
-
-const TOTAL_STEPS = 3
-
-const step = ref(1)
-const direction = ref<1 | -1>(1)
-const stage = ref<StageId | ''>('')
-const budget = ref<QualifierBudgetKey | ''>('')
-const status = ref<'idle' | 'submitting' | 'error' | 'success'>('idle')
+const { isOpen } = useQualifierDialog()
+// Registered before the watcher below, so the flow has reset by the time the
+// dialog moves focus into its first step.
+const { step, direction, stage, budget, status, routeLabel, stageTag, goNext, goBack, submit, close } =
+  useQualifierFlow()
+const { t } = useI18n()
 
 const panel = ref<HTMLElement | null>(null)
+const { focusFirst, trapTab } = useFocusTrap(panel)
 let previouslyFocused: HTMLElement | null = null
 let restoreOverflow = ''
 
 const transitionName = computed(() => (direction.value === 1 ? 'q-fwd' : 'q-back'))
 const viewKey = computed(() => (status.value === 'success' ? 'success' : `step-${step.value}`))
-
-function reset() {
-  step.value = 1
-  direction.value = 1
-  stage.value = ''
-  budget.value = ''
-  status.value = 'idle'
-}
-
-function goNext() {
-  direction.value = 1
-  step.value = Math.min(step.value + 1, TOTAL_STEPS)
-}
-
-function goBack() {
-  direction.value = -1
-  step.value = Math.max(step.value - 1, 1)
-}
-
-async function onSubmit(payload: QualifierContactPayload) {
-  if (!stage.value || !budget.value) return
-  status.value = 'submitting'
-  try {
-    await $fetch('/api/contact', {
-      method: 'POST',
-      body: {
-        stage: stage.value,
-        budget: budget.value,
-        name: payload.name,
-        email: payload.email,
-        handle: payload.handle,
-        notes: payload.notes,
-        website: payload.website,
-        lang: locale.value,
-      },
-    })
-    status.value = 'success'
-  } catch {
-    status.value = 'error'
-  }
-}
-
-function focusables(): HTMLElement[] {
-  if (!panel.value) return []
-  return Array.from(
-    panel.value.querySelectorAll<HTMLElement>(
-      'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    ),
-  ).filter((el) => el.tabIndex !== -1 && (el.offsetParent !== null || el === document.activeElement))
-}
 
 function onKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape') {
@@ -78,19 +23,7 @@ function onKeydown(event: KeyboardEvent) {
     close()
     return
   }
-  if (event.key !== 'Tab') return
-  const items = focusables()
-  if (items.length === 0) return
-  const first = items[0]!
-  const last = items[items.length - 1]!
-  const active = document.activeElement as HTMLElement | null
-  if (event.shiftKey && (active === first || !panel.value?.contains(active))) {
-    event.preventDefault()
-    last.focus()
-  } else if (!event.shiftKey && active === last) {
-    event.preventDefault()
-    first.focus()
-  }
+  trapTab(event)
 }
 
 watch(isOpen, (open) => {
@@ -99,12 +32,7 @@ watch(isOpen, (open) => {
     previouslyFocused = document.activeElement as HTMLElement | null
     restoreOverflow = document.documentElement.style.overflow
     document.documentElement.style.overflow = 'hidden'
-    reset()
-    // A caller (the homepage growth timeline) may have named a stage to land on.
-    if (initialStage.value) stage.value = initialStage.value
-    nextTick(() => {
-      focusables()[0]?.focus()
-    })
+    nextTick(focusFirst)
   } else {
     document.documentElement.style.overflow = restoreOverflow
     previouslyFocused?.focus()
@@ -117,12 +45,6 @@ onBeforeUnmount(() => {
     document.documentElement.style.overflow = restoreOverflow
   }
 })
-
-// Summary line shown on the success screen so the visitor sees where they landed.
-const routeLabel = computed(() =>
-  stage.value && budget.value ? ROUTE_LABELS[resolveRoute(stage.value, budget.value)] : '',
-)
-const stageTag = computed(() => (stage.value ? STAGE_TAGS[stage.value] : ''))
 </script>
 
 <template>
@@ -166,14 +88,14 @@ const stageTag = computed(() => (stage.value ? STAGE_TAGS[stage.value] : ''))
           <div v-if="status !== 'success'" class="mt-5" aria-hidden="true">
             <div class="flex gap-1.5">
               <span
-                v-for="n in TOTAL_STEPS"
+                v-for="n in QUALIFIER_TOTAL_STEPS"
                 :key="n"
                 class="h-1 flex-1 rounded-full transition-colors duration-200"
                 :class="n <= step ? 'bg-signal' : 'bg-hairline'"
               />
             </div>
             <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
-              {{ t('qualifier.progress', { current: step, total: TOTAL_STEPS }) }}
+              {{ t('qualifier.progress', { current: step, total: QUALIFIER_TOTAL_STEPS }) }}
             </p>
           </div>
 
@@ -197,9 +119,9 @@ const stageTag = computed(() => (stage.value ? STAGE_TAGS[stage.value] : ''))
                 key="step-3"
                 :stage="stage"
                 :budget="budget"
-                :submitting="status === 'submitting'"
+                :submitting="status === 'pending'"
                 :error="status === 'error'"
-                @submit="onSubmit"
+                @submit="submit"
                 @back="goBack"
               />
               <div v-else key="success" class="py-2 text-center">

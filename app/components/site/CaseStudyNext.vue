@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { MappedProject } from '~/utils/mapProject'
+import { useQualifierAvailability } from '#layers/qualifier'
 
 defineProps<{ project: MappedProject }>()
 const { t } = useI18n()
@@ -8,7 +9,12 @@ const localePath = useLocalePath()
 // No `mailto:` here on purpose — the work email is never put into markup.
 // The primary action is the qualification modal, with the homepage contact
 // section as the fallback when the modal is disabled.
-const { enabled: qualifierEnabled, open: openQualifier } = useQualifier()
+const nuxtApp = useNuxtApp()
+const { isQualifierEnabled } = useQualifierAvailability()
+
+function openQualifier() {
+  nuxtApp.callHook('qualifier:open', {})
+}
 </script>
 
 <template>
@@ -17,7 +23,7 @@ const { enabled: qualifierEnabled, open: openQualifier } = useQualifier()
       {{ project.caseStudy.nextTitle }}
     </h2>
     <div class="mt-[clamp(20px,2.5vw,32px)] flex flex-wrap gap-3">
-      <AppButton v-if="qualifierEnabled" variant="signal" @click="openQualifier">
+      <AppButton v-if="isQualifierEnabled" variant="signal" @click="openQualifier">
         {{ t('qualifier.trigger') }}
       </AppButton>
       <AppButton v-else :href="`${localePath('index')}#contact`" variant="signal">

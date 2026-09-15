@@ -1,8 +1,14 @@
 <script setup lang="ts">
+import { useQualifierAvailability } from '#layers/qualifier'
 import { onBeforeUnmount, ref } from 'vue'
 
 const { t, tm, rt } = useI18n()
-const { enabled: qualifierEnabled, open: openQualifier } = useQualifier()
+const nuxtApp = useNuxtApp()
+const { isQualifierEnabled } = useQualifierAvailability()
+
+function openQualifier() {
+  nuxtApp.callHook('qualifier:open', {})
+}
 
 // The rotating part of the h1. First entry is rendered verbatim on the server and
 // is the animation's starting point on the client, so the h1 always carries real
@@ -83,7 +89,7 @@ if (import.meta.client && phrases.length > 1) {
           {{ t('home.hero.lead') }}
         </p>
         <div class="mt-[clamp(28px,3vw,40px)] flex flex-wrap gap-3">
-          <AppButton v-if="qualifierEnabled" variant="ink" @click="openQualifier">
+          <AppButton v-if="isQualifierEnabled" variant="ink" @click="openQualifier">
             {{ t('home.hero.ctaPrimary') }}
           </AppButton>
           <AppButton v-else href="#contact" variant="ink">{{ t('home.hero.ctaPrimary') }}</AppButton>

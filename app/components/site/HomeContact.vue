@@ -1,8 +1,15 @@
 <script setup lang="ts">
+import { useQualifierAvailability } from '#layers/qualifier'
+
 const { t, locale } = useI18n()
 const { data } = await useHomeData()
 const settings = computed(() => data.value?.settings)
-const { enabled: qualifierEnabled, open: openQualifier } = useQualifier()
+const nuxtApp = useNuxtApp()
+const { isQualifierEnabled } = useQualifierAvailability()
+
+function openQualifier() {
+  nuxtApp.callHook('qualifier:open', {})
+}
 
 // The work email and phone number are deliberately never rendered into the
 // markup — not as text, not as `mailto:` / `tel:` hrefs — so crawlers and
@@ -28,7 +35,7 @@ const showForm = ref(false)
       <FactCard :label="t('home.contact.facts.hours')" :value="settings.hours ?? ''" />
     </div>
 
-    <template v-if="qualifierEnabled">
+    <template v-if="isQualifierEnabled">
       <div class="mt-[clamp(28px,3vw,40px)] flex flex-wrap items-center gap-x-6 gap-y-3">
         <AppButton variant="ink" @click="openQualifier">{{ t('qualifier.trigger') }}</AppButton>
         <button

@@ -3,16 +3,9 @@ import {
   offerKey,
   resolveRoute,
   type QualifierBudgetKey,
-} from '#shared/utils/qualifierRouting'
+} from '#layers/qualifier/domain/routing'
 import type { StageId } from '#layers/core/shared/types/service-stage'
-
-export interface QualifierContactPayload {
-  name: string
-  email: string
-  handle: string
-  notes: string
-  website: string // honeypot
-}
+import type { QualifierContactPayload } from '#layers/qualifier/domain/qualification'
 
 const props = defineProps<{
   stage: StageId
@@ -68,14 +61,7 @@ function handleSubmit() {
       </p>
     </div>
 
-    <input
-      v-model="form.website"
-      type="text"
-      tabindex="-1"
-      autocomplete="off"
-      aria-hidden="true"
-      class="absolute -left-[9999px] h-0 w-0"
-    >
+    <CoreHoneypotField v-model="form.website" />
 
     <div>
       <label class="block font-mono text-xs uppercase tracking-[0.08em] text-muted" for="qual-name">
