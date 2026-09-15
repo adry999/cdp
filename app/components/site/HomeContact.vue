@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useQualifier } from '#layers/qualifier'
+
 const { t, locale } = useI18n()
 const { data } = await useHomeData()
 const settings = computed(() => data.value?.settings)

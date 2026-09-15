@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useQualifier } from '#layers/qualifier'
 import { onBeforeUnmount, ref } from 'vue'
 
 const { t, tm, rt } = useI18n()

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { QUALIFIER_BUDGET_KEYS, type QualifierBudgetKey } from '#shared/utils/qualifierRouting'
+import { QUALIFIER_BUDGET_KEYS, type QualifierBudgetKey } from '#layers/qualifier/domain/routing'
 
 const props = defineProps<{ modelValue: QualifierBudgetKey | '' }>()
 const emit = defineEmits<{

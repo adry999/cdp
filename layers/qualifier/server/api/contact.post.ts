@@ -1,17 +1,17 @@
-import { budgetLabel } from '#shared/utils/leadLabels'
+import { budgetLabel } from '#layers/qualifier/domain/budgetLabels'
 import {
   ROUTE_LABELS,
   STAGE_TAGS,
   isQualifierBudgetKey,
   resolveRoute,
-} from '#shared/utils/qualifierRouting'
+} from '#layers/qualifier/domain/routing'
 import { checkRateLimit } from '#layers/core/server/utils/checkRateLimit'
 import { sendMail } from '#layers/core/server/utils/sendMail'
 import { isStageId } from '#layers/core/shared/types/service-stage'
 import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
 
 /**
- * Qualification-modal submissions (app/components/site/QualifierModal.vue).
+ * Qualification-modal submissions (layers/qualifier/app/components/QualifierModal.vue).
  *
  * Deliberately separate from /api/leads for now: this path is behind the
  * NUXT_PUBLIC_QUALIFIER_ENABLED flag and only emails a formatted summary — it

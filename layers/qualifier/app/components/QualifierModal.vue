@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { QualifierBudgetKey } from '#shared/utils/qualifierRouting'
+import type { QualifierBudgetKey } from '#layers/qualifier/domain/routing'
 import type { StageId } from '#layers/core/shared/types/service-stage'
-import { STAGE_TAGS, resolveRoute, ROUTE_LABELS } from '#shared/utils/qualifierRouting'
+import { STAGE_TAGS, resolveRoute, ROUTE_LABELS } from '#layers/qualifier/domain/routing'
 import type { QualifierContactPayload } from './QualifierStepContact.vue'
+import { useQualifier } from '#layers/qualifier/state/useQualifier'
 
 const { isOpen, initialStage, close } = useQualifier()
 const { t, locale } = useI18n()

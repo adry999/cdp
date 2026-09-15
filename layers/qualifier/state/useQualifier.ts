@@ -6,7 +6,7 @@ import { isStageId, type StageId } from '#layers/core/shared/types/service-stage
  * same modal, so the state has to live outside either component.
  *
  * The modal is only mounted when `NUXT_PUBLIC_QUALIFIER_ENABLED` is `true`
- * (see nuxt.config.ts / app/layouts/default.vue). `enabled` is exposed here so
+ * (see layers/qualifier/nuxt.config.ts / app/layouts/default.vue). `enabled` is exposed here so
  * the trigger components can decide between opening the modal and their
  * pre-existing fallback (an anchor link / the inline LeadsContactForm).
  *

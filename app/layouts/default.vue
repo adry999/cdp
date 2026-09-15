@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useQualifier } from '#layers/qualifier'
+
 const { t } = useI18n()
 const { enabled: qualifierEnabled } = useQualifier()
 </script>

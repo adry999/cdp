@@ -1,19 +1,17 @@
 /**
- * Pure logic for the qualification modal (app/components/site/QualifierModal.vue).
+ * Pure routing rules for the qualification modal.
  *
  * Two independent classifications drive the flow:
  *  - the visitor's project *stage* (step 1), each tied to a fixed internal tag
  *  - their *budget* range (step 2). The sub-1k band is split finer than the
- *    plain contact form's (`under500` / `500to1k` vs a single `under1k`);
- *    leadLabels.ts carries labels for all of them so the admin still reads one
- *    vocabulary.
+ *    plain contact form's (`under500` / `500to1k` vs a single `under1k`).
  *
  * From those two we resolve a single delivery *route*, which decides the offer
  * card shown in step 3 and the "Allocated Route" line in the notification email.
  *
- * Kept framework-free and in shared/ so both the client component and
- * server/api/contact.post.ts import the exact same rules — the server
- * re-derives the tag and route rather than trusting the client payload.
+ * Framework-free, so the modal and POST /api/contact share the exact same
+ * rules — the server re-derives the tag and route rather than trusting the
+ * client payload.
  */
 
 import type { StageId } from '#layers/core/shared/types/service-stage'

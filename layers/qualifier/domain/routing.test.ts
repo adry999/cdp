@@ -5,7 +5,7 @@ import {
   isQualifierBudgetKey,
   offerKey,
   resolveRoute,
-} from '../../shared/utils/qualifierRouting'
+} from './routing'
 
 describe('resolveRoute', () => {
   it('routes stage E to mass-market regardless of budget', () => {

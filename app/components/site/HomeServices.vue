@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ComponentPublicInstance } from 'vue'
 import type { StageId } from '#layers/core/shared/types/service-stage'
+import { useQualifier } from '#layers/qualifier'
 
 // Section 01 — the "growth timeline". Five milestone nodes on an animated
 // connector line (horizontal ≥768px, vertical below), one per qualifier stage.

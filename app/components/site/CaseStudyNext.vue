@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { MappedProject } from '~/utils/mapProject'
+import { useQualifier } from '#layers/qualifier'
 
 defineProps<{ project: MappedProject }>()
 const { t } = useI18n()
