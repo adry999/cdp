@@ -2,12 +2,14 @@
 import type { ComponentPublicInstance } from 'vue'
 import type { StageId } from '#layers/core/shared/types/service-stage'
 import { useQualifierAvailability } from '#layers/qualifier'
+import { useServiceStages } from '#layers/content'
 
 // Section 01 — the "growth timeline". Five milestone nodes on an animated
 // connector line (horizontal ≥768px, vertical below), one per qualifier stage.
 // Clicking a node expands a detail card; its CTA emits qualifier:open with that
 // stage. All copy comes from useServiceStages(), which reads the
-// `home.services` i18n block — nothing is hardcoded here or in app/types/services.ts.
+// `home.services` i18n block — nothing is hardcoded here or in
+// layers/content/domain/services.ts.
 //
 // The connector is drawn with CSS transforms, not an SVG-path library — the
 // project ships no animation dependency and Framer Motion is React-only.

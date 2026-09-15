@@ -1,9 +1,9 @@
-import { ABOUT_PILLAR_DEFS, type AboutPillar } from '~/types/about'
+import { ABOUT_PILLAR_DEFS, type AboutPillar } from '#layers/content/domain/about'
 
 /**
- * Joins the structural pillar defs (app/types/about.ts — order only) with their
- * localised copy from the `home.about.pillars.<id>` i18n block, producing the
- * `AboutPillar` view-models HomeAbout.vue renders. All editable text lives in
+ * Joins the structural pillar defs (layers/content/domain/about.ts — order only)
+ * with their localised copy from the `home.about.pillars.<id>` i18n block, producing
+ * the `AboutPillar` view-models HomeAbout.vue renders. All editable text lives in
  * i18n/locales/{ro,en}.json under `home.about`; nothing here.
  */
 export function useAboutPillars() {

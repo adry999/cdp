@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import type { StackIconName } from '#layers/content'
+
 // Lucide icon glyphs (MIT) inlined rather than pulled from a package — the
 // project ships no icon library. Paths are the stock 24×24 Lucide artwork;
-// keep them in sync with lucide.dev if you swap one.
-
-export type StackIconName = 'layout-grid' | 'database' | 'cloud' | 'sparkles'
+// keep them in sync with lucide.dev if you swap one. A new name in
+// StackIconName (layers/content/domain/stack.ts) needs its glyph added below.
 
 defineProps<{ name: StackIconName }>()
 </script>

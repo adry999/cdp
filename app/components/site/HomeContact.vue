@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useQualifierAvailability } from '#layers/qualifier'
+import { useSiteSettings } from '#layers/content'
 
-const { t, locale } = useI18n()
-const { data } = await useHomeData()
-const settings = computed(() => data.value?.settings)
+const { t } = useI18n()
+const settings = useSiteSettings()
 const nuxtApp = useNuxtApp()
 const { isQualifierEnabled } = useQualifierAvailability()
 
@@ -27,12 +27,9 @@ const showForm = ref(false)
       {{ t('home.contact.lead') }}
     </p>
 
-    <div v-if="settings" class="mt-[clamp(28px,3vw,44px)] grid max-w-[560px] grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
-      <FactCard
-        :label="t('home.contact.facts.responseTime')"
-        :value="pick(settings.response_time_ro ?? '', settings.response_time_en, locale)"
-      />
-      <FactCard :label="t('home.contact.facts.hours')" :value="settings.hours ?? ''" />
+    <div class="mt-[clamp(28px,3vw,44px)] grid max-w-[560px] grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
+      <FactCard :label="t('home.contact.facts.responseTime')" :value="settings.responseTime" />
+      <FactCard :label="t('home.contact.facts.hours')" :value="settings.hours" />
     </div>
 
     <template v-if="isQualifierEnabled">

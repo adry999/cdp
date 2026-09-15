@@ -1,5 +1,3 @@
-import type { StackIconName } from '~/components/site/StackGroupIcon.vue'
-
 /**
  * Structural definition of the homepage "Stack" section (section 02,
  * HomeStack.vue): four capability groups, in display order, each mapping a
@@ -17,6 +15,9 @@ import type { StackIconName } from '~/components/site/StackGroupIcon.vue'
  * services timeline).
  */
 export type StackGroupId = 'frontend' | 'backend' | 'infra' | 'ai'
+
+/** Inlined Lucide glyph name rendered by the root `StackGroupIcon.vue`. */
+export type StackIconName = 'layout-grid' | 'database' | 'cloud' | 'sparkles'
 
 export interface StackGroupDef {
   /** Keys the i18n copy and the card. */

@@ -16,8 +16,8 @@
  * colour (the card uses existing inverted theme tokens). See useAboutPillars()
  * for how the two are joined.
  *
- * Same public/DB split as the services timeline, the stack grid and the process
- * tracks: this section is i18n-only.
+ * Same as the services timeline, the stack grid and the process tracks: this
+ * section is i18n-only, no DB table feeds it (see layers/content/README.md).
  */
 export type AboutPillarId = 'ownership' | 'pricing' | 'communication'
 

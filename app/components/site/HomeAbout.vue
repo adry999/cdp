@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { useAboutPillars } from '#layers/content'
+
 // Section 05 — "About". A boutique-studio positioning statement on the dark
 // band: title + lead at the top, then the three agency guarantees as a
 // responsive 3-up grid of value cards. All copy comes from useAboutPillars(),
 // which reads the `home.about` i18n block — nothing is hardcoded here or in
-// app/types/about.ts. Same public/DB split as the services timeline, the stack
-// grid and the process tracks.
+// layers/content/domain/about.ts. Same as the services timeline, the stack
+// grid and the process tracks: this section is i18n-only, no DB table feeds it.
 
 const { t } = useI18n()
 const pillars = useAboutPillars()
