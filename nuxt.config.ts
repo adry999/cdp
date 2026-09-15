@@ -60,7 +60,7 @@ export default defineNuxtConfig({
   sourcemap: { client: false, server: true },
 
   routeRules: {
-    // The locale-redirect middleware (server/middleware/locale-redirect.ts)
+    // The locale-redirect middleware (layers/core/server/middleware/locale-redirect.ts)
     // always runs first regardless of this cache — it's global h3 middleware,
     // upstream of route-rule caching, not part of the cached handler. Once a
     // request lands on / or /en without being redirected away, the rendered

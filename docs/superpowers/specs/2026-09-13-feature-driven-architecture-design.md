@@ -447,7 +447,7 @@ e2e smoke, browser check RO + EN. Conventional Commits, one commit per logical m
 | 5 | Code done 2026-09-14; local stub verification only. `qualifier` layer (dependent on `leads` server API + core hook contract) | Medium | Needs step 4's public API |
 | 6 | Code done 2026-09-15. `content` layer: services, stack, process, about, FAQ, settings — `/api/home`, admin FAQ/services/settings, row types from `database.types.ts` (V5). Superseded in part: see Step 6 adjustments | Medium | Shared by home and footer; isolate before home |
 | 7 | Code done 2026-09-15, minimal-admin scope (see Step 7 adjustments). `projects` layer: split the 570-line editor into `data/projectRepository.ts`, `domain/projectForm.ts`, section components; one `PROJECT_SELECT` (V2, V3) | High | Largest file, most business logic; done once the pattern is proven on 4 layers |
-| 8 | `home` layer: `pages/index.vue` + `Home*` sections, emits `qualifier:open`; root `app/` reduced to shell; `locale` redirect middleware into core | Low | Pure composition by now |
+| 8 | Code done 2026-09-15 (see Step 8 adjustments). `home` layer: `pages/index.vue` + `Home*` sections, emits `qualifier:open`; root `app/` reduced to shell; `locale` redirect middleware into core | Low | Pure composition by now |
 | 9 | Update CLAUDE.md conventions (component grouping, test location), architecture test + ESLint rule in CI, history-comment cleanup (V9), env validation (V10) | Low | Conventions change only after the code matches them |
 
 Step 1–2 adjustments: the import boundary is enforced by ESLint from step 1 and each layer joins the rule in the commit that migrates it; `AsyncStatus`, `AppError` and `toAppError` land with their first consumer (step 4); the template-prefix architecture test lands with the first feature layer that has components (step 3).
@@ -498,6 +498,13 @@ Step 7 adjustments (product decision 2026-09-15: minimal admin work):
 - **Dependencies.** `projects` → `core`, `qualifier` (`ProjectsCaseStudyNext` reads `useQualifierAvailability`). The `case-study` layout stays in root `app/layouts/`.
 - **Core additions.** `useUnsavedChangesGuard` (generic admin helper) and `resolveLocale` / `LOCALE_COOKIE_NAME` / `isCrawler` (`layers/core/shared/utils/resolveLocale.ts`, with its test) move into core; the root locale middleware, `SiteHeader` and `ProjectsCaseStudyHeader` import them from there.
 - **Sitemap.** Root `server/routes/sitemap.xml.ts` reads slugs through `listPublishedProjectSlugs` from `#layers/projects/server`.
+
+Step 8 adjustments:
+- **Layer.** `layers/home` holds `app/pages/index.vue` and the sections `HomeHero`, `HomeServices`, `HomeStack` (with `HomeStackGroupIcon`, renamed from `StackGroupIcon`), `HomeProcess`, `HomeWork`, `HomeAbout`, `HomeFaq`, `HomeContact`. No `index.ts`: nothing imports from `home`.
+- **Dependencies.** `home` → `core`, `content`, `projects`, `qualifier`, `leads` (`HomeContact` renders `LeadsContactForm`).
+- **Root shell.** `app/` keeps `app.vue`, `SiteHeader`, `SiteFooter`, the layouts, `AdminSidebar`, `admin/login.vue` and the CSS entry; `server/` keeps the sitemap route and the `strip-powered-by` plugin.
+- **Locale.** `locale-redirect` middleware moves to `layers/core/server/middleware/`. `useLocaleOverride()` in core owns the `codepedia_locale` cookie for both `SiteHeader` and `ProjectsCaseStudyHeader`. The middleware acts only on `/` and `/en`, the project-redirect middleware only on case-study paths, so their order does not matter.
+- **Deferred (audit items).** `useRovingTablist` for `HomeServices` and `HomeProcess`, `NuxtErrorBoundary` per section, and reusing `SiteSection` in the hero grids change behaviour or markup; not done in this step.
 
 Audit 2026-09-14 items scheduled into later steps:
 - **Step 5.**

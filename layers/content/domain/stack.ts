@@ -16,13 +16,13 @@
  */
 export type StackGroupId = 'frontend' | 'backend' | 'infra' | 'ai'
 
-/** Inlined Lucide glyph name rendered by the root `StackGroupIcon.vue`. */
+/** Inlined Lucide glyph name rendered by `layers/home`'s `HomeStackGroupIcon.vue`. */
 export type StackIconName = 'layout-grid' | 'database' | 'cloud' | 'sparkles'
 
 export interface StackGroupDef {
   /** Keys the i18n copy and the card. */
   id: StackGroupId
-  /** Inlined Lucide glyph — must stay in sync with StackGroupIcon.vue. */
+  /** Inlined Lucide glyph — must stay in sync with HomeStackGroupIcon.vue. */
   icon: StackIconName
 }
 

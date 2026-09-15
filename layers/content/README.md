@@ -50,9 +50,10 @@ the public site.
 ## Consumed by
 
 - `app/app.vue` — `useSiteSettings()` for the Organization JSON-LD email.
-- `app/components/site/HomeFaq.vue` — `useFaqs()`.
-- `app/components/site/HomeContact.vue`, `HomeWork.vue`, `SiteFooter.vue` —
-  `useSiteSettings()`.
-- `app/components/site/HomeServices.vue`, `HomeStack.vue`, `HomeProcess.vue`,
-  `HomeAbout.vue` — the structural composables.
-- `app/components/site/StackGroupIcon.vue` — the `StackIconName` type.
+- `layers/home/app/components/HomeFaq.vue` — `useFaqs()`.
+- `layers/home/app/components/HomeContact.vue`, `HomeWork.vue`,
+  `app/components/site/SiteFooter.vue` — `useSiteSettings()`.
+- `layers/home/app/components/HomeServices.vue`, `HomeStack.vue`,
+  `HomeProcess.vue`, `HomeAbout.vue` — the structural composables.
+- `layers/home/app/components/HomeStackGroupIcon.vue` — the `StackIconName`
+  type.
