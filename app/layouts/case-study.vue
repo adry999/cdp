@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useQualifierAvailability } from '#layers/qualifier'
+
 const { t } = useI18n()
+const { isQualifierEnabled } = useQualifierAvailability()
 </script>
 
 <template>
@@ -11,5 +14,6 @@ const { t } = useI18n()
     </main>
     <SiteFooter compact />
     <ConsentBanner />
+    <QualifierModal v-if="isQualifierEnabled" />
   </div>
 </template>
