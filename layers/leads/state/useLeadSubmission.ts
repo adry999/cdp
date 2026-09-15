@@ -1,3 +1,4 @@
+import { ref } from 'vue'
 import type { AppError } from '#layers/core/shared/types/app-error'
 import type { AsyncStatus } from '#layers/core/shared/types/async'
 import { toAppError } from '#layers/core/shared/utils/toAppError'
@@ -8,7 +9,11 @@ import {
   type ContactSubmission,
 } from '#layers/leads/domain/lead'
 
-export function useLeadSubmission() {
+export interface LeadSubmissionDependencies {
+  post: (submission: ContactSubmission) => Promise<unknown>
+}
+
+export function useLeadSubmission(deps: LeadSubmissionDependencies = { post: postLead }) {
   const status = ref<AsyncStatus>('idle')
   const fieldErrors = ref<ContactFieldErrors>({})
   const error = ref<AppError | null>(null)
@@ -20,7 +25,7 @@ export function useLeadSubmission() {
     status.value = 'pending'
     error.value = null
     try {
-      await postLead(submission)
+      await deps.post(submission)
       status.value = 'success'
       return true
     } catch (caught) {
