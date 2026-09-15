@@ -68,14 +68,7 @@ function handleSubmit() {
       </p>
     </div>
 
-    <input
-      v-model="form.website"
-      type="text"
-      tabindex="-1"
-      autocomplete="off"
-      aria-hidden="true"
-      class="absolute -left-[9999px] h-0 w-0"
-    >
+    <CoreHoneypotField v-model="form.website" />
 
     <div>
       <label class="block font-mono text-xs uppercase tracking-[0.08em] text-muted" for="qual-name">
