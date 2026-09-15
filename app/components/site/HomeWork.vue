@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ProjectRow } from '~/utils/mapProject'
+import { mapProject, type ProjectRow } from '#layers/projects'
 import { useSiteSettings } from '#layers/content'
 
 const { t, locale } = useI18n()

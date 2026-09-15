@@ -1,5 +1,4 @@
-import { serverSupabaseClient } from '#supabase/server'
-import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
+import { listPublishedProjectSlugs } from '#layers/projects/server'
 
 /** Minimal XML escaping — slugs and the site URL are the only inputs here, but
  * a slug is admin-entered text and should never be trusted verbatim in markup. */
@@ -16,15 +15,8 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
   const baseUrl = config.public.siteUrl.replace(/\/$/, '')
 
-  const client = await serverSupabaseClient(event)
-  const { data, error } = await client
-    .from('projects')
-    .select('slug_ro, slug_en')
-    .not('published_at', 'is', null)
-    .order('sort_order')
-
-  if (error) logAndThrow('GET /sitemap.xml', error)
-  const slugs = (data ?? []).map((p) => ({ ro: p.slug_ro, en: p.slug_en ?? p.slug_ro }))
+  const rows = await listPublishedProjectSlugs(event)
+  const slugs = rows.map((p) => ({ ro: p.ro, en: p.en ?? p.ro }))
 
   const urls: { loc: string; alt?: { hreflang: string; href: string }[] }[] = [
     {

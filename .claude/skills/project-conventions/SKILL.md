@@ -9,7 +9,7 @@ description: Folosește în repo-ul Codepedia (Nuxt 4 + Supabase) când decizi u
 
 Deciziile de arhitectură luate pentru acest repo. Se aplică înaintea regulilor generale din `senior-architecture`; unde diferă, câștigă acest fișier. Designul complet, cu motivația fiecărei decizii: `docs/superpowers/specs/2026-09-13-feature-driven-architecture-design.md`.
 
-**Stare:** pașii 1–5 ai migrării sunt în `main`; pasul 6 (`layers/content`) e pe branch-ul `feat/content-layer` (2026-09-15). `layers/core` conține design system-ul (inclusiv `CoreHoneypotField`), primitivele admin (inclusiv `AdminTopbar`), contractele `AsyncStatus` / `AppError` / `toAppError`, hook-ul `qualifier:open`, `useFocusTrap`, utilitarele server `logAndThrow`, `checkRateLimit`, `sendMail`, tipurile DB și testul de arhitectură. `layers/consent` conține consimțământul cookie. `layers/leads` conține formularul de contact, `POST /api/leads` și paginile admin de solicitări. `layers/qualifier` conține modalul de calificare și `POST /api/contact`. `layers/content` conține FAQ-ul și setările site-ului ca fișiere tipate (`data/`) și definițiile secțiunilor servicii, stack, proces, despre. Celelalte module sunt încă în layout-ul vechi.
+**Stare:** pașii 1–5 ai migrării sunt în `main`; pasul 6 (`layers/content`) e pe branch-ul `feat/content-layer`, iar pasul 7 (`layers/projects`) pe `feat/projects-layer`, pornit din el (2026-09-15). `layers/core` conține design system-ul (inclusiv `CoreHoneypotField`), primitivele admin (inclusiv `AdminTopbar`), contractele `AsyncStatus` / `AppError` / `toAppError`, hook-ul `qualifier:open`, `useFocusTrap`, utilitarele server `logAndThrow`, `checkRateLimit`, `sendMail`, tipurile DB și testul de arhitectură. `layers/consent` conține consimțământul cookie. `layers/leads` conține formularul de contact, `POST /api/leads` și paginile admin de solicitări. `layers/qualifier` conține modalul de calificare și `POST /api/contact`. `layers/content` conține FAQ-ul și setările site-ului ca fișiere tipate (`data/`) și definițiile secțiunilor servicii, stack, proces, despre. Celelalte module sunt încă în layout-ul vechi.
 
 ## Triggers
 
@@ -44,7 +44,7 @@ Un modul = un Nuxt layer în `layers/<nume>/`. Nuxt îl înregistrează automat,
 | `leads` | formularul de contact, `POST /api/leads`, paginile admin de solicitări | `core` |
 | `qualifier` | modalul de calificare, `POST /api/contact` | `core`, `#layers/leads/server` |
 | `content` | servicii, stack, proces, despre (definiții + i18n), FAQ și setări (fișiere tipate în `data/`, editate manual) | `core` |
-| `projects` | studii de caz publice + layout, `GET /api/projects*`, editorul admin, redirect-uri de slug | `core` |
+| `projects` | studii de caz publice, `GET /api/projects*`, paginile admin de proiecte, redirect-uri de slug, revalidarea cache-ului | `core`, `#layers/qualifier` (doar `useQualifierAvailability`) |
 | `home` | ruta `/` și secțiunile `Home*` | `core`, `#layers/content`, `#layers/projects`, `#layers/qualifier` (doar `useQualifierAvailability`) |
 
 ### Unde intră un feature nou
