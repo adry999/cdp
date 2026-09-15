@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { LOCALE_COOKIE_NAME } from '#layers/core/shared/utils/resolveLocale'
 import { resolveCaseStudySlug } from '#layers/projects/domain/caseStudyLink'
 import { useCaseStudySlugs } from '#layers/projects/state/useCaseStudySlugs'
 
@@ -7,16 +6,7 @@ const { t, locale } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 const localePath = useLocalePath()
 const caseStudySlugs = useCaseStudySlugs()
-
-const localeOverride = useCookie<string | null>(LOCALE_COOKIE_NAME, {
-  maxAge: 60 * 60 * 24 * 365,
-  sameSite: 'lax',
-  path: '/',
-})
-
-function setLocaleOverride(loc: 'ro' | 'en') {
-  localeOverride.value = loc
-}
+const { setLocaleOverride } = useLocaleOverride()
 
 // Falls back to switchLocalePath() before the page has set the slug pair
 // (e.g. mid-navigation, before hydration completes). See resolveCaseStudySlug

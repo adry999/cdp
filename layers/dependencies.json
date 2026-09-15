@@ -4,5 +4,6 @@
   "leads": ["core"],
   "qualifier": ["core", "leads"],
   "content": ["core"],
-  "projects": ["core", "qualifier"]
+  "projects": ["core", "qualifier"],
+  "home": ["core", "content", "projects", "qualifier", "leads"]
 }

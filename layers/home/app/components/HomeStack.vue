@@ -40,7 +40,7 @@ const cards = computed(() =>
       >
         <header class="flex items-center gap-3">
           <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded border border-hairline text-signal">
-            <StackGroupIcon :name="card.icon" />
+            <HomeStackGroupIcon :name="card.icon" />
           </span>
           <h3 class="m-0 font-mono text-xs font-medium uppercase tracking-[0.08em] text-muted">
             {{ card.name }}

@@ -26,5 +26,5 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 
 ## Consumed by
 
-- `app/components/site/HomeContact.vue` — `<LeadsContactForm />`.
+- `layers/home/app/components/HomeContact.vue` — `<LeadsContactForm />`.
 - `layers/qualifier` — `notifyTeam` via `#layers/leads/server`, in `server/api/contact.post.ts`.

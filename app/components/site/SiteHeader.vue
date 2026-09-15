@@ -1,19 +1,8 @@
 <script setup lang="ts">
-import { LOCALE_COOKIE_NAME } from '#layers/core/shared/utils/resolveLocale'
-
 const { locale, t } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 const localePath = useLocalePath()
-
-const localeOverride = useCookie<string | null>(LOCALE_COOKIE_NAME, {
-  maxAge: 60 * 60 * 24 * 365,
-  sameSite: 'lax',
-  path: '/',
-})
-
-function setLocaleOverride(loc: 'ro' | 'en') {
-  localeOverride.value = loc
-}
+const { setLocaleOverride } = useLocaleOverride()
 
 const menuOpen = ref(false)
 

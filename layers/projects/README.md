@@ -67,14 +67,14 @@ old-slug redirect middleware, and the admin project list and editor. Depends on
 
 - `layers/core` — `pick`, `AdminTopbar`, `AdminField`, `AdminFieldPair`,
   `AdminImageUpload`, `AppButton`, `TechChip`, `SiteSection`, `MediaFrame`,
-  `FactCard`, `SectionLabel`, `useUnsavedChangesGuard`, `LOCALE_COOKIE_NAME`, server utils
+  `FactCard`, `SectionLabel`, `useUnsavedChangesGuard`, `useLocaleOverride`, server utils
   `logAndThrow`, the generated `Database` types.
 - `layers/qualifier` — `useQualifierAvailability`, in `ProjectsCaseStudyNext`.
 
 ## Consumed by
 
 - `app/layouts/case-study.vue` — `<ProjectsCaseStudyHeader />`.
-- `app/components/site/HomeWork.vue` — `mapProject`, `ProjectRow` via
+- `layers/home/app/components/HomeWork.vue` — `mapProject`, `ProjectRow` via
   `#layers/projects`.
 - `server/routes/sitemap.xml.ts` — `listPublishedProjectSlugs` via
   `#layers/projects/server`.
