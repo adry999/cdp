@@ -14,7 +14,7 @@ New migration `supabase/migrations/<timestamp>_add_project_featured.sql`, applie
 
 - `alter table public.projects add column if not exists featured boolean not null default false;`
 - `update public.projects set featured = true where published_at is not null;` — the three existing projects stay on the homepage; the site looks identical right after the migration.
-- `create or replace function save_project` — a copy of the current definition with `service_tag` and `featured` added to the insert column list, the insert select list, the update set list, and both `jsonb_to_record` type lists (`service_tag text, featured boolean`). `featured` is written as `coalesce(p.featured, false)`.
+- `create or replace function save_project` — a copy of the current definition with `service_tag` and `featured` added to the insert column list, the insert select list, the update set list, and both `jsonb_to_record` type lists (`service_tag text, featured boolean`). On insert `featured` is `coalesce(p.featured, false)`; on update it is `coalesce(p.featured, projects.featured)`, so a stale editor tab that predates the checkbox cannot silently un-feature a project. `service_tag` is written as `nullif(btrim(p.service_tag), '')`.
 
 No cap on how many projects can be featured; the admin list shows a counter instead.
 
