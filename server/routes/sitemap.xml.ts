@@ -20,14 +20,9 @@ export default defineEventHandler(async (event) => {
   const rows = await listPublishedProjectSlugs(event)
   const slugs = rows.map((p) => ({ ro: p.ro, en: p.en ?? p.ro }))
 
-  // enPosts isn't iterated below — content.test.ts guarantees the RO and EN
-  // slug sets match, so roPosts alone enumerates every post. Fetched anyway
-  // so a mismatch (if that guarantee is ever weakened) is visible here too.
-  const [roPosts, enPosts] = await Promise.all([
-    listPublishedBlogPosts(event, 'ro'),
-    listPublishedBlogPosts(event, 'en'),
-  ])
-  void enPosts
+  // content.test.ts guarantees the RO and EN slug sets match, so the RO list
+  // alone enumerates every post in both locales.
+  const roPosts = await listPublishedBlogPosts(event, 'ro')
 
   const urls: { loc: string; alt?: { hreflang: string; href: string }[] }[] = [
     {
