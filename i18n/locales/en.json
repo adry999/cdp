@@ -10,6 +10,7 @@
     "stack": "Stack",
     "process": "Process",
     "work": "Work",
+    "blog": "Blog",
     "contact": "Contact",
     "menu": "Menu",
     "skipToContent": "Skip to content"
@@ -375,5 +376,17 @@
       "ai-automation": "AI automation"
     },
     "empty": "No published case studies yet."
+  },
+  "blog": {
+    "seo": {
+      "title": "Blog",
+      "description": "Technical notes and short case studies from Codepedia's work — web development, automation, architecture."
+    },
+    "hero": {
+      "title": "Blog.",
+      "intro": "Technical notes from Codepedia's work — what we built, what we learned, what we changed."
+    },
+    "empty": "No published posts yet.",
+    "related": "Related articles"
   }
 }
