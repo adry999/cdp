@@ -54,7 +54,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-08-05',
   devtools: { enabled: true },
 
-  modules: ['@nuxtjs/i18n', '@nuxt/image', '@nuxt/fonts', '@nuxtjs/supabase', '@nuxt/eslint'],
+  modules: ['@nuxtjs/i18n', '@nuxt/image', '@nuxt/fonts', '@nuxtjs/supabase', '@nuxt/content', '@nuxt/eslint'],
 
   runtimeConfig: {
     resendApiKey: process.env.RESEND_API_KEY,
