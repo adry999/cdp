@@ -30,11 +30,13 @@ case studies) and `layers/qualifier` (the qualification CTA).
 
 ## Components
 
-- `ServicesHero` — service name + intro.
+- `ServicesHero` — service name + intro; a thin wrapper around `core`'s
+  `PageHero` (shared with the `/proiecte` index).
 - `ServicesFeatures` — the `features` list.
 - `ServicesProcess` — the `process` steps, numbered.
 - `ServicesRelatedProjects` — fetches `GET /api/projects` and filters
   client-side by `service_tag`; renders nothing when there are no matches.
+  Renders `projects`' `ProjectsCard` with `show-tech="false"`.
 - `ServicesCta` — opens the qualifier modal preselected at the service's
   `qualifierStage`, or falls back to the homepage contact section when the
   qualifier flag is off. Shows `priceFrom` when it isn't `null`.
@@ -42,9 +44,9 @@ case studies) and `layers/qualifier` (the qualification CTA).
 ## Depends on
 
 - `layers/core` — `pick`, `SiteSection`, `SectionLabel`, `AppButton`,
-  `MediaFrame`.
-- `layers/projects` — `mapProject`, `ProjectRow` for the related-case-studies
-  section.
+  `MediaFrame`, `PageHero`.
+- `layers/projects` — `mapProjectCard`, `ProjectCardRow`, `ProjectsCard` for
+  the related-case-studies section.
 - `layers/qualifier` — `useQualifierAvailability`, the `qualifier:open` hook.
 
 ## Consumed by

@@ -35,6 +35,20 @@ export default defineEventHandler(async (event) => {
       ],
     },
     {
+      loc: `${baseUrl}/proiecte`,
+      alt: [
+        { hreflang: 'ro', href: `${baseUrl}/proiecte` },
+        { hreflang: 'en', href: `${baseUrl}/en/work` },
+      ],
+    },
+    {
+      loc: `${baseUrl}/en/work`,
+      alt: [
+        { hreflang: 'ro', href: `${baseUrl}/proiecte` },
+        { hreflang: 'en', href: `${baseUrl}/en/work` },
+      ],
+    },
+    {
       loc: `${baseUrl}/confidentialitate`,
       alt: [
         { hreflang: 'ro', href: `${baseUrl}/confidentialitate` },

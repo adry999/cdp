@@ -37,7 +37,9 @@ niciun vizual — este mai bună decât stock photography.
 
 ## Conținut de decis
 
-- [ ] Câte proiecte se afișează în grila de pe homepage înainte de a apărea paginare
-      sau o pagină `/proiecte` separată (designul e testat la 3)
+- [x] Câte proiecte se afișează în grila de pe homepage înainte de a apărea paginare
+      sau o pagină `/proiecte` separată (designul e testat la 3) — rezolvat: flag-ul
+      `featured` alege ce apare pe homepage (fallback la primele 3 dacă nimic nu e
+      marcat), lista completă e la `/proiecte`, filtrabilă pe tip de serviciu.
 - [ ] Traducerile EN pentru studiile de caz există în prototipuri; de verificat de
       un vorbitor nativ înainte de lansare

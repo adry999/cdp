@@ -19,8 +19,9 @@ there is no `index.ts`.
    `HomeStackGroupIcon`.
 4. `HomeProcess` — Fast-Track / Deep-Build pipeline toggle
    (`useProcessTracks()`).
-5. `HomeWork` — published case studies (`GET /api/projects` via
-   `#layers/projects`), links to `/proiecte/[slug]`.
+5. `HomeWork` — the featured case studies (`selectHomeProjects`, or the first
+   three if none are featured), links to `/proiecte/[slug]`; an "All
+   projects" link to `/proiecte` appears when more are published than shown.
 6. `HomeAbout` — positioning statement and the three agency pillars
    (`useAboutPillars()`).
 7. `HomeFaq` — FAQ list (`useFaqs()`); renders nothing if empty.
@@ -41,7 +42,8 @@ there is no `index.ts`.
 - `layers/content` — `useFaqs`, `useSiteSettings`, `useServiceStages`,
   `useStackGroups`, `useProcessTracks`, `useAboutPillars`, `StackIconName`,
   `ProcessTrackId`.
-- `layers/projects` — `mapProject`, `ProjectRow`, in `HomeWork`.
+- `layers/projects` — `mapProjectCard`, `selectHomeProjects`, `ProjectCardRow`,
+  `ProjectsCard`, in `HomeWork`.
 - `layers/qualifier` — `useQualifierAvailability`, in every section with a
   qualifier CTA.
 - `layers/leads` — `LeadsContactForm`, in `HomeContact`.
