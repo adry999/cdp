@@ -388,5 +388,13 @@
     },
     "empty": "Momentan nu avem articole publicate.",
     "related": "Articole similare"
+  },
+  "error": {
+    "sectionLabel": "Eroare",
+    "notFoundTitle": "Pagina nu a fost găsită.",
+    "notFoundBody": "Linkul e greșit sau pagina a fost mutată. Verifică adresa sau revino la pagina principală.",
+    "genericTitle": "A apărut o eroare.",
+    "genericBody": "Ceva nu a mers cum trebuia. Încearcă din nou sau revino la pagina principală.",
+    "backHome": "Înapoi la pagina principală"
   }
 }

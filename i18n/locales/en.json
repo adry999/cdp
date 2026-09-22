@@ -388,5 +388,13 @@
     },
     "empty": "No published posts yet.",
     "related": "Related articles"
+  },
+  "error": {
+    "sectionLabel": "Error",
+    "notFoundTitle": "Page not found.",
+    "notFoundBody": "The link is wrong or the page has moved. Check the address or go back to the homepage.",
+    "genericTitle": "Something went wrong.",
+    "genericBody": "That didn't work as expected. Try again or go back to the homepage.",
+    "backHome": "Back to homepage"
   }
 }
