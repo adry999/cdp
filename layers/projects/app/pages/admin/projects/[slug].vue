@@ -83,6 +83,7 @@ const form = reactive({
   nextTitle: bilingual(existingProject?.next_title_ro ?? '', existingProject?.next_title_en ?? ''),
 
   published: !!existingProject?.published_at,
+  featured: existingProject?.featured ?? false,
 })
 
 const titleWarn = computed(() => form.title.ro.length > 60)
@@ -185,6 +186,7 @@ async function save() {
       year: form.year ? Number(form.year) : null,
       tech: form.tech,
       service_tag: form.serviceTag || null,
+      featured: form.featured,
       cover_path: form.coverPath,
       cover_alt_ro: form.coverAlt.ro || null,
       cover_alt_en: form.coverAlt.en || null,
@@ -558,12 +560,18 @@ async function cleanupReplacedMedia() {
         <section class="rounded border border-hairline p-6">
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Publicare</div>
           <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
-            <label class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.08em]">
-              <input v-model="form.published" type="checkbox" class="accent-signal" >
-              <span :class="form.published ? 'text-signal' : 'text-muted'">
-                {{ form.published ? 'Publicat' : 'Draft' }}
-              </span>
-            </label>
+            <div class="flex flex-wrap gap-6">
+              <label class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.08em]">
+                <input v-model="form.published" type="checkbox" class="accent-signal" >
+                <span :class="form.published ? 'text-signal' : 'text-muted'">
+                  {{ form.published ? 'Publicat' : 'Draft' }}
+                </span>
+              </label>
+              <label class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.08em]">
+                <input v-model="form.featured" type="checkbox" class="accent-signal" >
+                <span :class="form.featured ? 'text-signal' : 'text-muted'">Afișat pe homepage</span>
+              </label>
+            </div>
             <div class="flex gap-3 font-mono text-xs uppercase tracking-[0.08em]">
               <NuxtLink :to="`/proiecte/${form.slugRo}`" class="text-muted hover:text-ink">Vezi pe site</NuxtLink>
             </div>

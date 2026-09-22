@@ -1,4 +1,5 @@
 import { pick } from '#layers/core/shared/utils/pick'
+import { isServiceTagId } from '#layers/core/shared/types/service-tag'
 
 export interface ProjectFactRow {
   label_ro: string
@@ -28,23 +29,29 @@ export interface ProjectImageRow {
   sort_order: number
 }
 
-export interface ProjectRow {
+/** The columns every list consumer needs to render a card — `PROJECT_CARD_SELECT`. */
+export interface ProjectCardRow {
   slug_ro: string
   slug_en: string | null
-  title_ro: string
-  title_en: string | null
   card_title_ro: string
   card_title_en: string | null
   summary_ro: string
   summary_en: string | null
-  lead_ro: string
-  lead_en: string | null
-  year: number | null
   tech: string[]
   service_tag: string | null
+  featured: boolean
   cover_path: string | null
   cover_alt_ro: string | null
   cover_alt_en: string | null
+  sort_order: number
+}
+
+export interface ProjectRow extends ProjectCardRow {
+  title_ro: string
+  title_en: string | null
+  lead_ro: string
+  lead_en: string | null
+  year: number | null
   hero_path: string | null
   hero_alt_ro: string | null
   hero_alt_en: string | null
@@ -62,7 +69,6 @@ export interface ProjectRow {
   quote_company: string | null
   next_title_ro: string | null
   next_title_en: string | null
-  sort_order: number
   project_facts: ProjectFactRow[]
   project_steps: ProjectStepRow[]
   project_stats: ProjectStatRow[]
@@ -74,9 +80,26 @@ type Locale = 'ro' | 'en'
 /** Frames the case-study design reserves for gallery screenshots. */
 const GALLERY_PLACEHOLDER_COUNT = 2
 
-export function mapProject(row: ProjectRow, locale: Locale) {
-  const slug = (locale === 'en' && row.slug_en) || row.slug_ro
+export function mapProjectCard(row: ProjectCardRow, locale: Locale) {
+  return {
+    slug: (locale === 'en' && row.slug_en) || row.slug_ro,
+    tech: row.tech,
+    title: pick(row.card_title_ro, row.card_title_en, locale),
+    text: pick(row.summary_ro, row.summary_en, locale),
+    // Bracketed *Label strings caption the hatched placeholder frame when no
+    // image exists yet. *Alt carries the real text — bound to <img alt> once
+    // an image is uploaded — never the bracketed placeholder wording.
+    thumbnailLabel: `[ ${pick(row.cover_alt_ro ?? row.card_title_ro, row.cover_alt_en, locale)} ]`,
+    coverAlt: pick(row.cover_alt_ro ?? row.card_title_ro, row.cover_alt_en, locale),
+    coverPath: row.cover_path,
+    serviceTag: isServiceTagId(row.service_tag) ? row.service_tag : null,
+    featured: row.featured,
+  }
+}
 
+export type MappedProjectCard = ReturnType<typeof mapProjectCard>
+
+export function mapProject(row: ProjectRow, locale: Locale) {
   const galleryImages = [...row.project_images]
     .filter((img) => !!img.path?.trim())
     .sort((a, b) => a.sort_order - b.sort_order)
@@ -91,16 +114,7 @@ export function mapProject(row: ProjectRow, locale: Locale) {
         : '[ Nume ], [ funcție ], [ companie ]'
 
   return {
-    slug,
-    tech: row.tech,
-    title: pick(row.card_title_ro, row.card_title_en, locale),
-    text: pick(row.summary_ro, row.summary_en, locale),
-    // Bracketed *Label strings caption the hatched placeholder frame when no
-    // image exists yet. *Alt carries the real text — bound to <img alt> once
-    // an image is uploaded — never the bracketed placeholder wording.
-    thumbnailLabel: `[ ${pick(row.cover_alt_ro ?? row.card_title_ro, row.cover_alt_en, locale)} ]`,
-    coverAlt: pick(row.cover_alt_ro ?? row.card_title_ro, row.cover_alt_en, locale),
-    coverPath: row.cover_path,
+    ...mapProjectCard(row, locale),
     caseStudy: {
       tech: row.tech,
       year: row.year != null ? String(row.year) : '',

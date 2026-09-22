@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { mapProject, type ProjectRow } from '#layers/projects'
+import { mapProjectCard, selectHomeProjects, type ProjectCardRow } from '#layers/projects'
 import { useSiteSettings } from '#layers/content'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
-const { data: rows } = await useAsyncData<ProjectRow[]>('projects', () => $fetch('/api/projects'))
+const { data: rows } = await useAsyncData<ProjectCardRow[]>('projects', () => $fetch('/api/projects'))
 const settings = useSiteSettings()
 
-const list = computed(() => (rows.value ?? []).map((row) => mapProject(row, locale.value as 'ro' | 'en')))
+const allRows = computed(() => rows.value ?? [])
+const list = computed(() => selectHomeProjects(allRows.value).map((row) => mapProjectCard(row, locale.value as 'ro' | 'en')))
 const ndaNote = computed(() => settings.value.ndaNote)
+const hasMore = computed(() => allRows.value.length > list.value.length)
 </script>
 
 <template>
@@ -18,34 +20,17 @@ const ndaNote = computed(() => settings.value.ndaNote)
       {{ t('home.work.title') }}
     </h2>
     <div class="mt-[clamp(28px,3vw,40px)] grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
-      <div
-        v-for="project in list"
-        :key="project.slug"
-        class="rounded border border-hairline bg-paper p-[clamp(18px,2vw,22px)]"
-      >
-        <MediaFrame
-          ratio="16/10"
-          :src="project.coverPath ?? undefined"
-          :alt="project.coverAlt"
-          :label="project.thumbnailLabel"
-          sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 100vw"
-        />
-        <div class="mt-4 flex gap-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
-          <template v-for="(tech, i) in project.tech" :key="tech">
-            <span>{{ tech }}</span>
-            <span v-if="i < project.tech.length - 1">·</span>
-          </template>
-        </div>
-        <h3 class="mb-2 mt-2.5 text-[19px] font-medium tracking-[-0.02em]">{{ project.title }}</h3>
-        <p class="m-0 text-base text-muted">{{ project.text }}</p>
-        <NuxtLink
-          :to="localePath({ name: 'proiecte-slug', params: { slug: project.slug } })"
-          class="mt-4 inline-block font-mono text-xs uppercase tracking-[0.08em] text-signal"
-        >
-          {{ t('home.work.caseStudyLink') }}
-        </NuxtLink>
-      </div>
+      <ProjectsCard v-for="project in list" :key="project.slug" :project="project" />
     </div>
-    <p v-if="ndaNote" class="mb-0 mt-5 font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ ndaNote }}</p>
+    <div v-if="ndaNote || hasMore" class="mt-5 flex flex-wrap items-center justify-between gap-3">
+      <p v-if="ndaNote" class="m-0 font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ ndaNote }}</p>
+      <NuxtLink
+        v-if="hasMore"
+        :to="localePath({ name: 'proiecte' })"
+        class="font-mono text-xs uppercase tracking-[0.08em] text-signal"
+      >
+        {{ t('home.work.allProjects') }}
+      </NuxtLink>
+    </div>
   </SiteSection>
 </template>

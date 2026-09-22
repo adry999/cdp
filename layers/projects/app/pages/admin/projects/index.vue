@@ -9,7 +9,7 @@ const supabase = useSupabaseClient()
 const { data: rows, refresh } = await useAsyncData('admin-projects', async () => {
   const { data, error } = await supabase
     .from('projects')
-    .select('slug_ro, card_title_ro, tech, cover_path, published_at, sort_order')
+    .select('slug_ro, card_title_ro, tech, cover_path, published_at, featured, sort_order')
     .order('sort_order')
   if (error) throw error
   return data ?? []
@@ -25,6 +25,7 @@ const filtered = computed(() => {
 // the other rows' positions ambiguous, so drag reorder only applies to the
 // unfiltered list.
 const canReorder = computed(() => filter.value === 'toate')
+const featuredCount = computed(() => (rows.value ?? []).filter((r) => r.featured).length)
 
 const dragIndex = ref<number | null>(null)
 const reordering = ref(false)
@@ -241,6 +242,9 @@ async function duplicate(slug: string) {
             {{ opt }}
           </button>
         </div>
+        <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">
+          Pe homepage: {{ featuredCount }}
+        </span>
         <span
           v-if="canReorder"
           class="font-mono text-[11px] uppercase tracking-[0.08em]"
@@ -272,7 +276,11 @@ async function duplicate(slug: string) {
             class="h-[30px] w-12 flex-none rounded border border-hairline object-cover"
           >
           <div v-else class="h-[30px] w-12 flex-none rounded border border-hairline" :style="thumbnailStyle" />
-          <div class="min-w-0 flex-[2_1_200px] text-[15px]">{{ project.card_title_ro }}</div>
+          <div class="min-w-0 flex-[2_1_200px] text-[15px]">
+            {{ project.card_title_ro }}
+            <span v-if="project.featured" title="Afișat pe homepage" class="ml-1 text-signal" aria-hidden="true">●</span>
+            <span v-if="project.featured" class="sr-only">Afișat pe homepage</span>
+          </div>
           <div class="flex flex-[1_1_160px] flex-wrap gap-1.5">
             <TechChip v-for="tech in project.tech" :key="tech" :label="tech" />
           </div>

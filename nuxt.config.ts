@@ -85,6 +85,8 @@ export default defineNuxtConfig({
     // Cache-Control: private, no-store header the middleware sets on 302s).
     '/': { swr: 60 },
     '/en': { swr: 60 },
+    '/proiecte': { swr: 300 },
+    '/en/work': { swr: 300 },
     '/proiecte/**': { swr: 300 },
     '/en/work/**': { swr: 300 },
     '/api/projects': { swr: 60 },
@@ -152,6 +154,10 @@ export default defineNuxtConfig({
     ],
     customRoutes: 'config',
     pages: {
+      proiecte: {
+        ro: '/proiecte',
+        en: '/work',
+      },
       'proiecte-slug': {
         ro: '/proiecte/[slug]',
         en: '/work/[slug]',

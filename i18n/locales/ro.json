@@ -193,7 +193,8 @@
     "work": {
       "sectionLabel": "Proiecte",
       "title": "Proiecte selectate.",
-      "caseStudyLink": "Vezi studiul de caz →"
+      "caseStudyLink": "Vezi studiul de caz →",
+      "allProjects": "Toate proiectele →"
     },
     "about": {
       "sectionLabel": "Despre",
@@ -355,5 +356,24 @@
       "body": "Analizăm ce ai trimis și revenim într-o zi lucrătoare cu pașii următori.",
       "done": "Închide"
     }
+  },
+  "projects": {
+    "seo": {
+      "title": "Proiecte",
+      "description": "Studii de caz Codepedia: aplicații web, site-uri, WordPress, Shopify și automatizări AI livrate pentru clienți din România, Moldova și UE."
+    },
+    "hero": {
+      "title": "Proiecte.",
+      "intro": "Studii de caz din portofoliul Codepedia, filtrabile după tipul de serviciu."
+    },
+    "filters": {
+      "all": "Toate",
+      "website": "Site-uri",
+      "web-app": "Aplicații web",
+      "wordpress": "WordPress",
+      "shopify": "Shopify",
+      "ai-automation": "Automatizare AI"
+    },
+    "empty": "Momentan nu avem studii de caz publicate."
   }
 }
