@@ -1,17 +1,7 @@
 import { listPublishedBlogPosts } from '#layers/blog/server'
+import { escapeXml } from '#layers/core/shared/utils/escapeXml'
 import { listPublishedProjectSlugs } from '#layers/projects/server'
 import { SERVICES } from '#layers/services/server'
-
-/** Minimal XML escaping — slugs and the site URL are the only inputs here, but
- * a slug is admin-entered text and should never be trusted verbatim in markup. */
-function escapeXml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;')
-}
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)

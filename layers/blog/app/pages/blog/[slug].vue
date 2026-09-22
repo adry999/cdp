@@ -9,7 +9,7 @@ const slug = route.params.slug as string
 // into `error.value` and leaves `post.value` null, which the check below
 // converts back into a rendered 404 page.
 const { data: post } = await useAsyncData<BlogPostDoc | null>(`blog-post-${locale.value}-${slug}`, () =>
-  $fetch(`/api/blog/${slug}`, { query: { locale: locale.value } }),
+  $fetch(`/api/blog/${encodeURIComponent(slug)}`, { query: { locale: locale.value } }),
 )
 
 if (!post.value) {
