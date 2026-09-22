@@ -193,7 +193,8 @@
     "work": {
       "sectionLabel": "Work",
       "title": "Selected work.",
-      "caseStudyLink": "Read the case study →"
+      "caseStudyLink": "Read the case study →",
+      "allProjects": "All projects →"
     },
     "about": {
       "sectionLabel": "About",
@@ -355,5 +356,24 @@
       "body": "We'll review what you sent and get back to you within one working day with next steps.",
       "done": "Close"
     }
+  },
+  "projects": {
+    "seo": {
+      "title": "Projects",
+      "description": "Codepedia case studies: web apps, websites, WordPress, Shopify and AI automation delivered for clients in Romania, Moldova and the EU."
+    },
+    "hero": {
+      "title": "Projects.",
+      "intro": "Case studies from the Codepedia portfolio, filterable by service type."
+    },
+    "filters": {
+      "all": "All",
+      "website": "Websites",
+      "web-app": "Web apps",
+      "wordpress": "WordPress",
+      "shopify": "Shopify",
+      "ai-automation": "AI automation"
+    },
+    "empty": "No published case studies yet."
   }
 }

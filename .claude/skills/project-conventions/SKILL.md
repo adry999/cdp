@@ -44,7 +44,7 @@ Un modul = un Nuxt layer în `layers/<nume>/`. Nuxt îl înregistrează automat,
 | `leads` | formularul de contact, `POST /api/leads`, paginile admin de solicitări | `core` |
 | `qualifier` | modalul de calificare, `POST /api/contact` | `core`, `#layers/leads/server` |
 | `content` | servicii, stack, proces, despre (definiții + i18n), FAQ și setări (fișiere tipate în `data/`, editate manual) | `core` |
-| `projects` | studii de caz publice, `GET /api/projects*`, paginile admin de proiecte, redirect-uri de slug, revalidarea cache-ului | `core`, `#layers/qualifier` (doar `useQualifierAvailability`) |
+| `projects` | studii de caz publice, `GET /api/projects*`, paginile admin de proiecte, redirect-uri de slug, revalidarea cache-ului | `core`, `#layers/qualifier` (doar `useQualifierAvailability`), `#layers/content` (doar `useSiteSettings`) |
 | `home` | ruta `/` și secțiunile `Home*` | `core`, `#layers/content`, `#layers/projects`, `#layers/qualifier` (doar `useQualifierAvailability`), `#layers/leads` (doar `LeadsContactForm`) |
 | `services` | cele 5 pagini `/servicii/[slug]`, fără admin, fără tabel — conținut manual în `data/services.ts` | `core`, `#layers/projects` (studii de caz legate), `#layers/qualifier` (doar `useQualifierAvailability`) |
 
@@ -191,3 +191,4 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-09-14: Plugin-urile care ascultă hook-uri rezolvă composables la setup; callback-ul hook-ului rulează în afara contextului Nuxt — spec, ajustările pasului 5.
 - 2026-09-14: E2E pentru fluxuri cu flag rulează pe un al doilea server din același build (`e2e/support/serve.mjs`, :3013) — spec, ajustările pasului 5.
 - 2026-09-15: FAQ-ul și setările site-ului sunt fișiere tipate în `layers/content/data/`, editate manual; paginile admin Servicii, Întrebări, Setări și `GET /api/home` sunt șterse, tabelele rămân nefolosite în bază — decizia utilizatorului, spec, ajustările pasului 6.
+- 2026-09-21: `projects` poate importa `content` (`useSiteSettings`, pentru nota NDA sub grila `/proiecte`, la fel ca pe homepage) — spec „Portfolio index", secțiunea `/proiecte`.
