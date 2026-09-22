@@ -1,13 +1,5 @@
 import { listPublishedBlogPosts } from '#layers/blog/server'
-
-function escapeXml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;')
-}
+import { escapeXml } from '#layers/core/shared/utils/escapeXml'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
@@ -30,7 +22,7 @@ export default defineEventHandler(async (event) => {
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>Codepedia — Blog</title>
+    <title>Codepedia — Blog (EN)</title>
     <link>${baseUrl}/en/blog</link>
     <description>Technical notes and short case studies from Codepedia's work.</description>
     <language>en</language>

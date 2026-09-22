@@ -16,7 +16,15 @@ const displayDate = computed(() => formatPostDate(props.post.date, locale.value 
       >
         {{ post.title }}
       </h1>
-      <MediaFrame v-if="post.cover" ratio="16/9" :src="post.cover" :alt="post.title" class="mt-8" />
+      <MediaFrame
+        v-if="post.cover"
+        ratio="16/9"
+        :src="post.cover"
+        :alt="post.title"
+        loading="eager"
+        sizes="(min-width: 1024px) 1024px, 100vw"
+        class="mt-8"
+      />
     </SiteSection>
     <SiteSection number="01" :label="displayDate">
       <div class="blog-prose max-w-[68ch]">
@@ -102,6 +110,52 @@ const displayDate = computed(() => formatPostDate(props.post.date, locale.value 
   margin: 0 0 1.25rem;
   padding-left: 1rem;
   border-left: 2px solid var(--color-hairline);
+  color: var(--color-muted);
+}
+
+.blog-prose :deep(hr) {
+  margin: 2rem 0;
+  border: none;
+  border-top: 1px solid var(--color-hairline);
+}
+
+.blog-prose :deep(table) {
+  width: 100%;
+  margin: 0 0 1.5rem;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+
+.blog-prose :deep(th),
+.blog-prose :deep(td) {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--color-hairline);
+  text-align: left;
+  vertical-align: top;
+}
+
+.blog-prose :deep(th) {
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  background: var(--color-hatch);
+}
+
+.blog-prose :deep(figure) {
+  margin: 0 0 1.5rem;
+}
+
+.blog-prose :deep(figure img) {
+  margin-bottom: 0.5rem;
+}
+
+.blog-prose :deep(figcaption) {
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--color-muted);
 }
 </style>

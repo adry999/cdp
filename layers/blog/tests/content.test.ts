@@ -2,8 +2,8 @@ import { readdirSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 
-const roDir = fileURLToPath(new URL('./content/ro', import.meta.url))
-const enDir = fileURLToPath(new URL('./content/en', import.meta.url))
+const roDir = fileURLToPath(new URL('../content/ro', import.meta.url))
+const enDir = fileURLToPath(new URL('../content/en', import.meta.url))
 
 function mdFiles(dir: string): string[] {
   return readdirSync(dir)
