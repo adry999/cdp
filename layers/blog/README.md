@@ -45,6 +45,11 @@ only.
   `app/pages/blog/[slug].vue`, default layout. 404s when the slug isn't in
   the current locale's collection — including a `draft: true` post is
   **not** what makes a post 404; only a missing file does.
+- `server/api/blog.get.ts` (`GET /api/blog?locale=ro|en`) and
+  `server/api/blog/[slug].get.ts` (`GET /api/blog/<slug>?locale=ro|en`) — the
+  pages' only data source. The queries must stay here: `@nuxt/content`'s
+  app-side `queryCollection` falls back to a WASM SQLite engine on client
+  navigation, which the site's CSP blocks.
 - `server/routes/blog/rss.xml.ts`, `server/routes/en/blog/rss.xml.ts` —
   root-level (not layer-scoped, matching how `sitemap.xml.ts` lives at the
   project root too) — one RSS 2.0 feed per locale.
