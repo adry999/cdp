@@ -1,3 +1,4 @@
+import { listPublishedBlogPosts } from '#layers/blog/server'
 import { listPublishedProjectSlugs } from '#layers/projects/server'
 import { SERVICES } from '#layers/services/server'
 
@@ -18,6 +19,15 @@ export default defineEventHandler(async (event) => {
 
   const rows = await listPublishedProjectSlugs(event)
   const slugs = rows.map((p) => ({ ro: p.ro, en: p.en ?? p.ro }))
+
+  // enPosts isn't iterated below — content.test.ts guarantees the RO and EN
+  // slug sets match, so roPosts alone enumerates every post. Fetched anyway
+  // so a mismatch (if that guarantee is ever weakened) is visible here too.
+  const [roPosts, enPosts] = await Promise.all([
+    listPublishedBlogPosts(event, 'ro'),
+    listPublishedBlogPosts(event, 'en'),
+  ])
+  void enPosts
 
   const urls: { loc: string; alt?: { hreflang: string; href: string }[] }[] = [
     {
@@ -75,6 +85,36 @@ export default defineEventHandler(async (event) => {
         alt: [
           { hreflang: 'ro', href: `${baseUrl}/proiecte/${ro}` },
           { hreflang: 'en', href: `${baseUrl}/en/work/${en}` },
+        ],
+      },
+    ]),
+    {
+      loc: `${baseUrl}/blog`,
+      alt: [
+        { hreflang: 'ro', href: `${baseUrl}/blog` },
+        { hreflang: 'en', href: `${baseUrl}/en/blog` },
+      ],
+    },
+    {
+      loc: `${baseUrl}/en/blog`,
+      alt: [
+        { hreflang: 'ro', href: `${baseUrl}/blog` },
+        { hreflang: 'en', href: `${baseUrl}/en/blog` },
+      ],
+    },
+    ...roPosts.flatMap(({ slug }) => [
+      {
+        loc: `${baseUrl}/blog/${slug}`,
+        alt: [
+          { hreflang: 'ro', href: `${baseUrl}/blog/${slug}` },
+          { hreflang: 'en', href: `${baseUrl}/en/blog/${slug}` },
+        ],
+      },
+      {
+        loc: `${baseUrl}/en/blog/${slug}`,
+        alt: [
+          { hreflang: 'ro', href: `${baseUrl}/blog/${slug}` },
+          { hreflang: 'en', href: `${baseUrl}/en/blog/${slug}` },
         ],
       },
     ]),
