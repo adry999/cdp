@@ -3,21 +3,9 @@ import type { BlogPostSummary } from '#layers/blog'
 
 const { t, locale } = useI18n()
 
-const { data: posts } = await useAsyncData<BlogPostSummary[]>(`blog-posts-${locale.value}`, async () => {
-  const collection = locale.value === 'en' ? 'blog_en' : 'blog_ro'
-  const rows = await queryCollection(collection)
-    .where('draft', '=', false)
-    .order('date', 'DESC')
-    .select('path', 'title', 'summary', 'date', 'cover')
-    .all()
-  return rows.map((row) => ({
-    path: row.path,
-    title: row.title,
-    summary: row.summary,
-    date: row.date as unknown as string,
-    cover: row.cover,
-  }))
-})
+const { data: posts } = await useAsyncData<BlogPostSummary[]>(`blog-posts-${locale.value}`, () =>
+  $fetch('/api/blog', { query: { locale: locale.value } }),
+)
 
 const siteUrl = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
 

@@ -5,21 +5,12 @@ const route = useRoute()
 const { locale } = useI18n()
 const slug = route.params.slug as string
 
-const { data: post } = await useAsyncData<BlogPostDoc | null>(`blog-post-${locale.value}-${slug}`, async () => {
-  const collection = locale.value === 'en' ? 'blog_en' : 'blog_ro'
-  const row = await queryCollection(collection).path(`/${slug}`).first()
-  if (row) return row as BlogPostDoc
-
-  // content.test.ts guarantees a RO/EN pair for every real post, but this
-  // stays cheap insurance per the spec's "Data flow" section: if the EN
-  // file is ever missing for a slug that exists in RO, fall back rather
-  // than 404 a page a RO reader can see fine.
-  if (collection === 'blog_en') {
-    const fallback = await queryCollection('blog_ro').path(`/${slug}`).first()
-    return (fallback as BlogPostDoc | null) ?? null
-  }
-  return null
-})
+// The route 404s on a missing slug: `useAsyncData` turns the handler's 404
+// into `error.value` and leaves `post.value` null, which the check below
+// converts back into a rendered 404 page.
+const { data: post } = await useAsyncData<BlogPostDoc | null>(`blog-post-${locale.value}-${slug}`, () =>
+  $fetch(`/api/blog/${slug}`, { query: { locale: locale.value } }),
+)
 
 if (!post.value) {
   throw createError({ statusCode: 404, statusMessage: 'Post not found' })

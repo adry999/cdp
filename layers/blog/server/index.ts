@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3'
 import { queryCollection } from '@nuxt/content/server'
+import { blogSlug } from '#layers/blog'
 
 export interface PublishedBlogPost {
   slug: string
@@ -19,7 +20,7 @@ export async function listPublishedBlogPosts(event: H3Event, locale: 'ro' | 'en'
     .all()
 
   return rows.map((row) => ({
-    slug: row.path.replace(/^\//, ''),
+    slug: blogSlug(row.path),
     title: row.title,
     description: row.description,
     date: row.date as unknown as string,
