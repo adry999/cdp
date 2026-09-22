@@ -10,6 +10,7 @@
     "stack": "Stack",
     "process": "Proces",
     "work": "Proiecte",
+    "blog": "Blog",
     "contact": "Contact",
     "menu": "Meniu",
     "skipToContent": "Sari la conținut"
@@ -375,5 +376,17 @@
       "ai-automation": "Automatizare AI"
     },
     "empty": "Momentan nu avem studii de caz publicate."
+  },
+  "blog": {
+    "seo": {
+      "title": "Blog",
+      "description": "Notițe tehnice și studii de caz scurte din munca Codepedia — dezvoltare web, automatizare, arhitectură."
+    },
+    "hero": {
+      "title": "Blog.",
+      "intro": "Notițe tehnice din munca Codepedia — ce am construit, ce am învățat, ce am schimbat."
+    },
+    "empty": "Momentan nu avem articole publicate.",
+    "related": "Articole similare"
   }
 }
