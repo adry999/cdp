@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { mapProject, type ProjectRow } from './mapProject'
+import { mapProject, mapProjectCard, type ProjectRow } from './mapProject'
 
 const baseRow: ProjectRow = {
   slug_ro: 'saas-logistica',
@@ -15,6 +15,7 @@ const baseRow: ProjectRow = {
   year: 2026,
   tech: ['Nuxt', 'Supabase'],
   service_tag: null,
+  featured: false,
   cover_path: null,
   cover_alt_ro: null,
   cover_alt_en: null,
@@ -97,5 +98,28 @@ describe('mapProject', () => {
   it('prefers the explicit alt text over the title fallback for the thumbnail label', () => {
     const row = { ...baseRow, cover_alt_ro: 'Captură de ecran' }
     expect(mapProject(row, 'ro').thumbnailLabel).toBe('[ Captură de ecran ]')
+  })
+})
+
+describe('mapProjectCard', () => {
+  it('picks the locale text and carries featured through', () => {
+    const card = mapProjectCard({ ...baseRow, featured: true }, 'en')
+    expect(card.title).toBe('Card EN')
+    expect(card.text).toBe('Summary EN')
+    expect(card.featured).toBe(true)
+  })
+
+  it('maps a known service_tag to serviceTag', () => {
+    expect(mapProjectCard({ ...baseRow, service_tag: 'web-app' }, 'ro').serviceTag).toBe('web-app')
+  })
+
+  it('maps a missing or unknown service_tag to null', () => {
+    expect(mapProjectCard(baseRow, 'ro').serviceTag).toBeNull()
+    expect(mapProjectCard({ ...baseRow, service_tag: 'seo' }, 'ro').serviceTag).toBeNull()
+  })
+
+  it('is the card half of mapProject', () => {
+    const { caseStudy: _caseStudy, ...card } = mapProject(baseRow, 'ro')
+    expect(card).toEqual(mapProjectCard(baseRow, 'ro'))
   })
 })

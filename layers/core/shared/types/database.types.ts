@@ -324,6 +324,7 @@ export type Database = {
           cover_alt_en: string | null
           cover_alt_ro: string | null
           cover_path: string | null
+          featured: boolean
           created_at: string
           hero_alt_en: string | null
           hero_alt_ro: string | null
@@ -367,6 +368,7 @@ export type Database = {
           cover_alt_en?: string | null
           cover_alt_ro?: string | null
           cover_path?: string | null
+          featured?: boolean
           created_at?: string
           hero_alt_en?: string | null
           hero_alt_ro?: string | null
@@ -409,6 +411,7 @@ export type Database = {
           cover_alt_en?: string | null
           cover_alt_ro?: string | null
           cover_path?: string | null
+          featured?: boolean
           created_at?: string
           hero_alt_en?: string | null
           hero_alt_ro?: string | null
