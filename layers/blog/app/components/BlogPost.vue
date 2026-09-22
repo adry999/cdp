@@ -89,6 +89,15 @@ const displayDate = computed(() => formatPostDate(props.post.date, locale.value 
   padding: 0;
 }
 
+.blog-prose :deep(img) {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 0 1.25rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-hairline);
+}
+
 .blog-prose :deep(blockquote) {
   margin: 0 0 1.25rem;
   padding-left: 1rem;
