@@ -6,13 +6,22 @@ const { setLocaleOverride } = useLocaleOverride()
 
 const menuOpen = ref(false)
 
-const navLinks = [
-  { hash: '#servicii', label: 'nav.services' },
-  { hash: '#stack', label: 'nav.stack' },
-  { hash: '#proces', label: 'nav.process' },
-  { hash: '#proiecte', label: 'nav.work' },
-  { hash: '#contact', label: 'nav.contact' },
-] as const
+type NavLink =
+  | { kind: 'hash'; hash: string; label: string }
+  | { kind: 'route'; routeName: string; label: string }
+
+const navLinks: NavLink[] = [
+  { kind: 'hash', hash: '#servicii', label: 'nav.services' },
+  { kind: 'hash', hash: '#stack', label: 'nav.stack' },
+  { kind: 'hash', hash: '#proces', label: 'nav.process' },
+  { kind: 'hash', hash: '#proiecte', label: 'nav.work' },
+  { kind: 'route', routeName: 'blog', label: 'nav.blog' },
+  { kind: 'hash', hash: '#contact', label: 'nav.contact' },
+]
+
+function navLinkKey(link: NavLink): string {
+  return link.kind === 'hash' ? link.hash : link.routeName
+}
 
 onMounted(() => {
   const mq = window.matchMedia('(min-width: 821px)')
@@ -39,14 +48,14 @@ onMounted(() => {
 
       <nav class="flex items-center gap-[clamp(14px,2vw,28px)] font-mono text-xs uppercase tracking-[0.08em]">
         <div class="hidden items-center gap-[clamp(14px,2vw,28px)] border-r border-hairline pr-[clamp(14px,2vw,28px)] nav:flex">
-          <a
-            v-for="link in navLinks"
-            :key="link.hash"
-            :href="link.hash"
-            class="text-muted hover:text-signal"
-          >
-            {{ t(link.label) }}
-          </a>
+          <template v-for="link in navLinks" :key="navLinkKey(link)">
+            <a v-if="link.kind === 'hash'" :href="link.hash" class="text-muted hover:text-signal">
+              {{ t(link.label) }}
+            </a>
+            <NuxtLink v-else :to="localePath({ name: link.routeName })" class="text-muted hover:text-signal">
+              {{ t(link.label) }}
+            </NuxtLink>
+          </template>
         </div>
 
         <span class="flex items-center gap-1.5">
@@ -87,19 +96,32 @@ onMounted(() => {
       v-if="menuOpen"
       class="flex flex-col border-t border-hairline px-gutter pb-5 pt-2 font-mono text-xs uppercase tracking-[0.08em] nav:hidden"
     >
-      <a
-        v-for="(link, i) in navLinks"
-        :key="link.hash"
-        :href="link.hash"
-        class="py-4"
-        :class="[
-          i === navLinks.length - 1 ? 'text-signal' : 'text-ink',
-          { 'border-b border-hairline': i !== navLinks.length - 1 },
-        ]"
-        @click="menuOpen = false"
-      >
-        {{ t(link.label) }}
-      </a>
+      <template v-for="(link, i) in navLinks" :key="navLinkKey(link)">
+        <a
+          v-if="link.kind === 'hash'"
+          :href="link.hash"
+          class="py-4"
+          :class="[
+            i === navLinks.length - 1 ? 'text-signal' : 'text-ink',
+            { 'border-b border-hairline': i !== navLinks.length - 1 },
+          ]"
+          @click="menuOpen = false"
+        >
+          {{ t(link.label) }}
+        </a>
+        <NuxtLink
+          v-else
+          :to="localePath({ name: link.routeName })"
+          class="py-4"
+          :class="[
+            i === navLinks.length - 1 ? 'text-signal' : 'text-ink',
+            { 'border-b border-hairline': i !== navLinks.length - 1 },
+          ]"
+          @click="menuOpen = false"
+        >
+          {{ t(link.label) }}
+        </NuxtLink>
+      </template>
     </div>
 
     <div class="h-[2px] bg-signal" />
