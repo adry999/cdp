@@ -56,6 +56,18 @@ export default defineNuxtConfig({
 
   modules: ['@nuxtjs/i18n', '@nuxt/image', '@nuxt/fonts', '@nuxtjs/supabase', '@nuxt/content', '@nuxt/eslint'],
 
+  // Node's built-in SQLite (stable since Node 22.5, this project's floor is
+  // 22.19) instead of the better-sqlite3 native addon — no compiled binary
+  // to build or ship, so no Python/node-gyp needed anywhere (a dev machine,
+  // CI, or Vercel's build image), and no glibc-version constraint at deploy
+  // time either. `experimental` is @nuxt/content's own option name; the
+  // underlying `node:sqlite` module is itself Node-experimental too. Both
+  // are fine here: this only builds the content database at dev/build time,
+  // it's never a runtime dependency of the deployed app.
+  content: {
+    experimental: { sqliteConnector: 'native' },
+  },
+
   runtimeConfig: {
     resendApiKey: process.env.RESEND_API_KEY,
     public: {
