@@ -120,7 +120,7 @@ onMounted(() => {
         :aria-selected="idx === active"
         :aria-controls="`svc-panel-${stage.id}`"
         :tabindex="idx === active ? 0 : -1"
-        :aria-label="t('home.services.nodeLabel', { step: idx + 1, name: stage.name })"
+        :aria-labelledby="`svc-tab-${stage.id}-prefix svc-tab-${stage.id}-step svc-tab-${stage.id}-name`"
         class="node relative flex min-h-[76px] cursor-pointer items-center gap-4 rounded text-left md:min-h-0 md:flex-1 md:flex-col md:gap-3 md:pb-2 md:text-center"
         @click="select(idx)"
       >
@@ -137,13 +137,16 @@ onMounted(() => {
           <CoreStageIcon :stage="stage.id" />
         </span>
         <span class="flex min-w-0 flex-col gap-0.5 md:items-center">
+          <span :id="`svc-tab-${stage.id}-prefix`" class="sr-only">{{ t('home.services.stageWord') }}</span>
           <span
+            :id="`svc-tab-${stage.id}-step`"
             class="font-mono text-[11px] tabular-nums tracking-[0.08em]"
             :class="idx === active ? 'text-signal' : 'text-muted-ink'"
           >
             {{ String(idx + 1).padStart(2, '0') }}
           </span>
           <span
+            :id="`svc-tab-${stage.id}-name`"
             class="text-[15px] font-medium leading-tight md:text-[13px]"
             :class="idx === active ? 'text-ink' : 'text-muted'"
           >

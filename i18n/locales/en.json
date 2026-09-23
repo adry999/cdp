@@ -60,7 +60,7 @@
       "title": "Where do you want to start? See each stage.",
       "intro": "Five stages, from a fast one-page launch to custom AI engineering. Pick where you are now — that's where we begin.",
       "note": "Some projects are under NDA. Detailed references available on the diagnostic call.",
-      "nodeLabel": "Stage {step}: {name}",
+      "stageWord": "Stage",
       "whereYouAreLabel": "Where you are",
       "whatYouGetLabel": "What you get",
       "stages": {

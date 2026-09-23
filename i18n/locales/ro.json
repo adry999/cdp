@@ -60,7 +60,7 @@
       "title": "De unde ai vrea să începem munca? Vezi fiecare etapă.",
       "intro": "Cinci etape, de la o pagină rapidă până la inginerie AI la comandă. Alege unde ești acum — de acolo pornim.",
       "note": "Unele proiecte sunt sub NDA. Referințe detaliate la discuția de diagnostic.",
-      "nodeLabel": "Etapa {step}: {name}",
+      "stageWord": "Etapa",
       "whereYouAreLabel": "Unde ești",
       "whatYouGetLabel": "Ce primești",
       "stages": {
