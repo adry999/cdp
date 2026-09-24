@@ -7,6 +7,7 @@ const { t, locale } = useI18n()
 
 <template>
   <SiteSection number="02" :label="t('home.process.sectionLabel')">
+    <h2 class="sr-only">{{ t('home.process.sectionLabel') }}</h2>
     <div class="flex flex-col">
       <div
         v-for="(step, i) in service.process"

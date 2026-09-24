@@ -55,6 +55,7 @@ useSeoMeta({
       :intro="t('projects.hero.intro')"
     />
     <SiteSection number="01" :label="t('home.work.sectionLabel')">
+      <h2 class="sr-only">{{ t('home.work.sectionLabel') }}</h2>
       <template v-if="list.length">
         <ProjectsFilterChips v-if="tags.length >= 2" :tags="tags" :active="activeTag" @select="selectTag" />
         <div

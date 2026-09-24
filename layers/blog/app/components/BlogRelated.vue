@@ -13,6 +13,7 @@ const posts = computed(() => (rows.value ?? []).filter((row) => row.path !== pro
 
 <template>
   <SiteSection v-if="posts.length >= 2" number="02" :label="t('blog.related')">
+    <h2 class="sr-only">{{ t('blog.related') }}</h2>
     <div class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
       <BlogCard v-for="post in posts" :key="post.path" :post="post" />
     </div>

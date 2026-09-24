@@ -16,6 +16,7 @@ const list = computed(() =>
 
 <template>
   <SiteSection v-if="list.length" number="03" :label="t('home.work.sectionLabel')">
+    <h2 class="sr-only">{{ t('home.work.sectionLabel') }}</h2>
     <div class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
       <ProjectsCard v-for="project in list" :key="project.slug" :project="project" :show-tech="false" />
     </div>
