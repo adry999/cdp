@@ -137,15 +137,15 @@ onMounted(() => {
           <CoreStageIcon :stage="stage.id" />
         </span>
         <span class="flex min-w-0 flex-col gap-0.5 md:items-center">
-          <span :id="`svc-tab-${stage.id}-prefix`" class="sr-only">{{ t('home.services.stageWord') }}</span>
-          <span
+          <span :id="`svc-tab-${stage.id}-prefix`" class="sr-only">{{ t('home.services.stageWord') }}</span
+          >{{ ' ' }}<span
             :id="`svc-tab-${stage.id}-step`"
             class="font-mono text-[11px] tabular-nums tracking-[0.08em]"
             :class="idx === active ? 'text-signal' : 'text-muted-ink'"
           >
             {{ String(idx + 1).padStart(2, '0') }}
-          </span>
-          <span
+          </span
+          >{{ ' ' }}<span
             :id="`svc-tab-${stage.id}-name`"
             class="text-[15px] font-medium leading-tight md:text-[13px]"
             :class="idx === active ? 'text-ink' : 'text-muted'"
