@@ -47,6 +47,8 @@ there is no `index.ts`.
 - `layers/qualifier` — `useQualifierAvailability`, in every section with a
   qualifier CTA.
 - `layers/leads` — `LeadsContactForm`, in `HomeContact`.
+- `layers/services` — `SERVICES` data, in `HomeServices` (links each timeline
+  stage to the matching `/servicii/[slug]` page(s), by `qualifierStage`).
 
 ## Consumed by
 

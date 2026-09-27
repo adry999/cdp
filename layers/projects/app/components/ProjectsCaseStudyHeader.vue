@@ -32,7 +32,7 @@ function caseStudyLocalePath(target: 'ro' | 'en') {
       </NuxtLink>
       <nav class="flex items-center gap-[clamp(14px,2vw,28px)] font-mono text-xs uppercase tracking-[0.08em]">
         <NuxtLink
-          :to="`${localePath('index')}#proiecte`"
+          :to="localePath('proiecte')"
           class="border-r border-hairline pr-[clamp(14px,2vw,28px)] text-muted"
         >
           {{ t('caseStudy.back') }}
@@ -40,8 +40,11 @@ function caseStudyLocalePath(target: 'ro' | 'en') {
         <span class="flex items-center gap-1.5">
           <NuxtLink
             :to="caseStudyLocalePath('ro')"
+            hreflang="ro"
+            lang="ro"
             class="no-underline hover:no-underline"
             :class="locale === 'ro' ? 'text-ink hover:text-ink' : 'text-muted hover:text-muted'"
+            :aria-current="locale === 'ro' ? 'true' : undefined"
             @click="setLocaleOverride('ro')"
           >
             RO
@@ -49,8 +52,11 @@ function caseStudyLocalePath(target: 'ro' | 'en') {
           <span class="text-hairline">|</span>
           <NuxtLink
             :to="caseStudyLocalePath('en')"
+            hreflang="en"
+            lang="en"
             class="no-underline hover:no-underline"
             :class="locale === 'en' ? 'text-ink hover:text-ink' : 'text-muted hover:text-muted'"
+            :aria-current="locale === 'en' ? 'true' : undefined"
             @click="setLocaleOverride('en')"
           >
             EN

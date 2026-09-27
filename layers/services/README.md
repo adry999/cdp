@@ -19,6 +19,13 @@ case studies) and `layers/qualifier` (the qualification CTA).
   — the two differ for `web-app` (`aplicatie-web` in RO) and `ai-automation`
   (`automatizare-ai` in RO).
 
+## Public API (server) — `server/index.ts`
+
+- `SERVICES` — re-exported so a dependent layer can read the data (e.g. to
+  link into `/servicii/[slug]`) without reaching past this layer's boundary
+  via `#layers/services/data/services`. There is no root `index.ts`; this
+  layer has no client-only export to offer yet.
+
 ## Routes
 
 - `/servicii/[slug]`, `/en/services/[slug]` (route name `servicii-slug`) —
@@ -51,4 +58,7 @@ case studies) and `layers/qualifier` (the qualification CTA).
 
 ## Consumed by
 
-Nothing — these are terminal pages, not imported by another layer.
+`layers/home` — `HomeServices` reads `SERVICES` to link each growth-timeline
+stage to the service page(s) sharing its `qualifierStage`. `app/components/site/SiteFooter.vue`
+(root) does the same to list all five service pages in the footer nav. The
+pages themselves stay terminal — nothing imports the page components.

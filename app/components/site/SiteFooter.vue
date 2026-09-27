@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useCookieConsent } from '#layers/consent'
 import { useSiteSettings } from '#layers/content'
+import { SERVICE_LINKS } from '#layers/services'
 
 withDefaults(defineProps<{ compact?: boolean }>(), { compact: false })
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
+const localePath = useLocalePath()
 const { openSettings } = useCookieConsent()
 const settings = useSiteSettings()
 
@@ -14,6 +16,24 @@ const copyrightLine = computed(() => `© ${settings.value.copyrightYear}`)
 
 <template>
   <footer class="border-t border-hairline">
+    <nav
+      v-if="!compact"
+      :aria-label="t('footer.navLabel')"
+      class="mx-auto flex max-w-[1280px] flex-wrap gap-x-6 gap-y-3 border-b border-hairline px-gutter py-5 font-mono text-[11px] uppercase tracking-[0.08em] text-muted"
+    >
+      <NuxtLink
+        v-for="service in SERVICE_LINKS"
+        :key="service.slug"
+        :to="localePath({ name: 'servicii-slug', params: { slug: service.routeSlug[locale] } })"
+        class="hover:text-ink"
+      >
+        {{ pick(service.name.ro, service.name.en, locale) }}
+      </NuxtLink>
+      <NuxtLink :to="localePath('proiecte')" class="hover:text-ink">{{ t('nav.work') }}</NuxtLink>
+      <NuxtLink :to="localePath('blog')" class="hover:text-ink">{{ t('nav.blog') }}</NuxtLink>
+      <NuxtLink :to="localePath('confidentialitate')" class="hover:text-ink">{{ t('footer.privacy') }}</NuxtLink>
+    </nav>
+
     <div
       class="mx-auto flex max-w-[1280px] flex-wrap items-baseline justify-between gap-4 px-gutter py-6 font-mono text-[11px] uppercase tracking-[0.08em] text-muted"
     >
