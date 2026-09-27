@@ -23,13 +23,8 @@ function save() {
   customizing.value = false
 }
 
-// A banner appearing over content is a dialog, and a dialog moves focus to
-// itself and keeps it there — otherwise a keyboard user tabbing through the
-// page lands on it by accident with no idea why, or tabs straight past it.
-//
-// Watching the ref itself, not showBanner + nextTick: the banner is wrapped
-// in <ClientOnly>, whose real content mounts on a tick *after* hydration —
-// later than a single nextTick() reaches.
+// A banner is a dialog — focus must move to it. Watches bannerRef rather than
+// showBanner + nextTick because <ClientOnly> mounts its content a tick after hydration.
 watch(bannerRef, (el) => {
   if (!el || !showBanner.value) return
   focusFirst()
@@ -60,7 +55,7 @@ watch(bannerRef, (el) => {
             t('cookieBanner.customize')
           }}</AppButton>
           <AppButton variant="outline" type="button" @click="rejectAll">{{ t('cookieBanner.rejectAll') }}</AppButton>
-          <AppButton variant="ink" type="button" @click="acceptAll">{{ t('cookieBanner.acceptAll') }}</AppButton>
+          <AppButton variant="outline" type="button" @click="acceptAll">{{ t('cookieBanner.acceptAll') }}</AppButton>
         </div>
 
         <div v-else class="flex flex-wrap items-center gap-4">
@@ -72,6 +67,8 @@ watch(bannerRef, (el) => {
             <input v-model="draft.marketing" type="checkbox" >
             {{ t('cookieBanner.marketingLabel') }}
           </label>
+          <AppButton variant="outline" type="button" @click="customizing = false">{{ t('cookieBanner.back') }}</AppButton>
+          <AppButton variant="outline" type="button" @click="rejectAll">{{ t('cookieBanner.rejectAll') }}</AppButton>
           <AppButton variant="ink" type="button" @click="save">{{ t('cookieBanner.save') }}</AppButton>
         </div>
       </div>

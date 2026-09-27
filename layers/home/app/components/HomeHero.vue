@@ -72,12 +72,15 @@ if (import.meta.client && phrases.length > 1) {
           class="m-0 max-w-[20ch] text-[clamp(34px,6vw,64px)] font-semibold leading-[1.04] tracking-[-0.025em]"
           style="text-wrap: pretty"
         >
-          <span class="grid min-h-[2.1em] items-end">
-            <span class="font-mono font-medium tracking-normal"
-              >{{ typed }}<span class="hero-caret bg-signal" aria-hidden="true"
-            /></span>
+          <span class="sr-only">{{ phrases[0] }} {{ t('home.hero.titleSuffix') }}</span>
+          <span aria-hidden="true">
+            <span class="grid min-h-[2.1em] items-end">
+              <span class="font-mono font-medium tracking-normal"
+                >{{ typed }}<span class="hero-caret bg-signal" aria-hidden="true"
+              /></span>
+            </span>
+            <span class="block">{{ t('home.hero.titleSuffix') }}</span>
           </span>
-          <span class="block">{{ t('home.hero.titleSuffix') }}</span>
         </h1>
         <p
           class="mt-[clamp(20px,2.6vw,28px)] max-w-[42ch] text-[clamp(20px,2.2vw,26px)] font-medium leading-[1.2] tracking-[-0.02em] text-ink"

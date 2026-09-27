@@ -30,7 +30,7 @@ const localePath = useLocalePath()
     <p class="m-0 text-base text-muted">{{ project.text }}</p>
     <NuxtLink
       :to="localePath({ name: 'proiecte-slug', params: { slug: project.slug } })"
-      class="mt-4 inline-block font-mono text-xs uppercase tracking-[0.08em] text-signal"
+      class="mt-4 inline-block font-mono text-xs uppercase tracking-[0.08em] text-ink underline decoration-signal underline-offset-[3px] hover:decoration-ink"
     >
       {{ t('home.work.caseStudyLink') }}
     </NuxtLink>

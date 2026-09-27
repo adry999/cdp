@@ -27,7 +27,7 @@ const hasMore = computed(() => allRows.value.length > list.value.length)
       <NuxtLink
         v-if="hasMore"
         :to="localePath({ name: 'proiecte' })"
-        class="font-mono text-xs uppercase tracking-[0.08em] text-signal"
+        class="font-mono text-xs uppercase tracking-[0.08em] text-ink underline decoration-signal underline-offset-[3px] hover:decoration-ink"
       >
         {{ t('home.work.allProjects') }}
       </NuxtLink>

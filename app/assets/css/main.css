@@ -74,14 +74,20 @@
   }
 
   a {
-    color: var(--color-signal);
+    color: var(--color-ink);
     text-decoration: none;
   }
 
-  a:hover {
-    color: var(--color-ink);
+  /* Unstyled (prose) links only: signal is an accent, too low-contrast for link text. */
+  a:not([class]) {
     text-decoration: underline;
+    text-decoration-color: var(--color-signal);
+    text-decoration-thickness: 1px;
     text-underline-offset: 3px;
+  }
+
+  a:not([class]):hover {
+    text-decoration-color: currentColor;
   }
 
   :focus-visible {

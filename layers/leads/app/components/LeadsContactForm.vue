@@ -40,6 +40,14 @@ function captureUtm(): Record<string, string> | undefined {
 function handleSubmit() {
   return submit({ ...form, lang: locale.value, page: route.fullPath, utm: captureUtm() })
 }
+
+const successHeading = ref<HTMLElement | null>(null)
+
+watch(status, (value) => {
+  if (value === 'success') {
+    nextTick(() => successHeading.value?.focus())
+  }
+})
 </script>
 
 <template>
@@ -60,11 +68,13 @@ function handleSubmit() {
         v-model="form.name"
         type="text"
         required
-        :aria-invalid="!!fieldError('name')"
+        :aria-invalid="fieldError('name') ? 'true' : undefined"
         :aria-describedby="fieldError('name') ? 'lead-name-error' : undefined"
-        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
-      <p v-if="fieldError('name')" id="lead-name-error" class="mt-1 font-mono text-xs text-signal">{{ fieldError('name') }}</p>
+      <p v-if="fieldError('name')" id="lead-name-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
+        <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('name') }}
+      </p>
     </div>
 
     <div>
@@ -77,11 +87,13 @@ function handleSubmit() {
         type="email"
         required
         autocomplete="email"
-        :aria-invalid="!!fieldError('email')"
+        :aria-invalid="fieldError('email') ? 'true' : undefined"
         :aria-describedby="fieldError('email') ? 'lead-email-error' : undefined"
-        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
-      <p v-if="fieldError('email')" id="lead-email-error" class="mt-1 font-mono text-xs text-signal">{{ fieldError('email') }}</p>
+      <p v-if="fieldError('email')" id="lead-email-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
+        <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('email') }}
+      </p>
     </div>
 
     <div>
@@ -93,7 +105,7 @@ function handleSubmit() {
         v-model="form.company"
         type="text"
         autocomplete="organization"
-        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
     </div>
 
@@ -106,12 +118,12 @@ function handleSubmit() {
         v-model="form.message"
         rows="4"
         required
-        :aria-invalid="!!fieldError('message')"
+        :aria-invalid="fieldError('message') ? 'true' : undefined"
         :aria-describedby="fieldError('message') ? 'lead-message-error' : undefined"
-        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       />
-      <p v-if="fieldError('message')" id="lead-message-error" class="mt-1 font-mono text-xs text-signal">
-        {{ fieldError('message') }}
+      <p v-if="fieldError('message')" id="lead-message-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
+        <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('message') }}
       </p>
     </div>
 
@@ -122,7 +134,7 @@ function handleSubmit() {
       <select
         id="lead-budget"
         v-model="form.budget"
-        class="mt-2 w-full rounded border border-hairline bg-paper px-3.5 py-3 text-base outline-none focus:border-signal"
+        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
         <option value="">{{ t('home.contact.form.budgetPlaceholder') }}</option>
         <option v-for="key in LEAD_BUDGET_KEYS" :key="key" :value="key">
@@ -139,12 +151,12 @@ function handleSubmit() {
         id="lead-source"
         v-model="form.source"
         type="text"
-        class="mt-2 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-signal"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
     </div>
 
-    <p v-if="status === 'error'" role="alert" aria-live="polite" class="font-mono text-xs text-signal">
-      {{ t('home.contact.form.error') }}
+    <p v-if="status === 'error'" role="alert" aria-live="polite" class="flex items-center gap-1.5 font-mono text-xs text-ink">
+      <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ t('home.contact.form.error') }}
     </p>
 
     <p class="text-xs text-muted">
@@ -158,5 +170,7 @@ function handleSubmit() {
       {{ status === 'pending' ? t('home.contact.form.submitting') : t('home.contact.form.submit') }}
     </AppButton>
   </form>
-  <p v-else class="mt-[clamp(28px,3vw,40px)] max-w-[560px] text-base">{{ t('home.contact.form.success') }}</p>
+  <div v-else role="status" class="mt-[clamp(28px,3vw,40px)] max-w-[560px]">
+    <p ref="successHeading" tabindex="-1" class="text-base outline-none">{{ t('home.contact.form.success') }}</p>
+  </div>
 </template>

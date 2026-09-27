@@ -1,11 +1,6 @@
 <script setup lang="ts">
-// A single selectable card used by the stage and budget steps. Wraps a real
-// radio input (kept in the accessibility tree, visually hidden) so keyboard
-// and screen-reader behaviour is native; the visible card is just the label.
-//
-// The stage step passes an `#icon` slot, a `number` badge and a `meta` line
-// (indicative budget · timeline); the budget step passes none of those and the
-// card collapses to the plain title + hint it started as.
+// A single selectable card used by the stage and budget steps. Wraps a real (visually hidden)
+// radio input so keyboard/screen-reader behaviour is native; the visible card is just the label.
 
 defineProps<{
   name: string
@@ -36,17 +31,7 @@ const emit = defineEmits<{ select: [value: string] }>()
       @change="emit('select', value)"
     >
 
-    <span v-if="$slots.icon || number" class="flex shrink-0 flex-col items-center gap-1.5 pt-0.5">
-      <span
-        :class="[
-          'flex h-8 w-8 items-center justify-center rounded border transition-colors duration-[120ms]',
-          selected ? 'border-signal text-signal' : 'border-hairline text-muted',
-        ]"
-      >
-        <slot name="icon" />
-      </span>
-      <span v-if="number" class="font-mono text-[11px] tabular-nums text-muted-ink">{{ number }}</span>
-    </span>
+    <span v-if="number" class="shrink-0 pt-0.5 font-mono text-[11px] tabular-nums text-muted">{{ number }}</span>
 
     <span class="flex min-w-0 flex-col gap-1">
       <span
@@ -57,7 +42,7 @@ const emit = defineEmits<{ select: [value: string] }>()
       <span v-if="hint" class="text-[13px] leading-snug text-muted">{{ hint }}</span>
       <span
         v-if="meta"
-        class="mt-0.5 font-mono text-[11px] uppercase tracking-[0.06em] text-muted-ink"
+        class="mt-0.5 font-mono text-[11px] uppercase tracking-[0.06em] text-muted"
       >
         {{ meta }}
       </span>

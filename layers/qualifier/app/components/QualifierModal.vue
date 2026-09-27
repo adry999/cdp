@@ -5,8 +5,7 @@ import { QUALIFIER_TOTAL_STEPS, useQualifierFlow } from '#layers/qualifier/state
 const { isOpen } = useQualifierDialog()
 // Registered before the watcher below, so the flow has reset by the time the
 // dialog moves focus into its first step.
-const { step, direction, stage, budget, status, routeLabel, stageTag, goNext, goBack, submit, close } =
-  useQualifierFlow()
+const { step, direction, stage, budget, status, goNext, goBack, submit, close } = useQualifierFlow()
 const { t } = useI18n()
 
 const panel = ref<HTMLElement | null>(null)
@@ -16,6 +15,14 @@ let restoreOverflow = ''
 
 const transitionName = computed(() => (direction.value === 1 ? 'q-fwd' : 'q-back'))
 const viewKey = computed(() => (status.value === 'success' ? 'success' : `step-${step.value}`))
+
+const successHeading = ref<HTMLElement | null>(null)
+
+watch(status, (value) => {
+  if (value === 'success') {
+    nextTick(() => successHeading.value?.focus())
+  }
+})
 
 function onKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape') {
@@ -65,7 +72,8 @@ onBeforeUnmount(() => {
         >
           <div class="flex items-start justify-between gap-4">
             <div>
-              <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-signal">
+              <p class="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-ink">
+                <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />
                 {{ t('qualifier.eyebrow') }}
               </p>
               <h2
@@ -124,18 +132,12 @@ onBeforeUnmount(() => {
                 @submit="submit"
                 @back="goBack"
               />
-              <div v-else key="success" class="py-2 text-center">
-                <p class="font-mono text-[11px] uppercase tracking-[0.12em] text-signal">
-                  {{ routeLabel }}
-                </p>
-                <h3 class="mt-2 text-[clamp(18px,2.6vw,22px)] font-semibold tracking-[-0.02em]">
+              <div v-else key="success" role="status" class="py-2 text-center">
+                <h3 ref="successHeading" tabindex="-1" class="mt-2 text-[clamp(18px,2.6vw,22px)] font-semibold tracking-[-0.02em] outline-none">
                   {{ t('qualifier.success.title') }}
                 </h3>
                 <p class="mx-auto mt-3 max-w-[38ch] text-[15px] leading-relaxed text-muted">
                   {{ t('qualifier.success.body') }}
-                </p>
-                <p class="mt-4 font-mono text-[12px] text-muted-ink">
-                  {{ stageTag }}
                 </p>
                 <div class="mt-6 flex justify-center">
                   <AppButton variant="ink" @click="close">{{ t('qualifier.success.done') }}</AppButton>
