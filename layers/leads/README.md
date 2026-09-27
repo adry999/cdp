@@ -10,6 +10,7 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 ## Public API (server) — `server/index.ts`
 
 - `notifyTeam({ subject, lines })` — sends a team notification through core `sendMail`; returns `'sent' | 'skipped'` and propagates delivery errors so each caller decides whether a failed notification fails its request.
+- `createLeadRepository(event)`, `LeadRepository`, `LeadRecord` — the Supabase-backed persistence used by `submitLead`. Also used by `layers/qualifier` (`submitQualification`), which has no table of its own and persists into `leads` (tagging `source` with `qualifier:<route>`) so a missing/failing notification never loses a submission.
 
 ## Routes
 
@@ -27,4 +28,4 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 ## Consumed by
 
 - `layers/home/app/components/HomeContact.vue` — `<LeadsContactForm />`.
-- `layers/qualifier` — `notifyTeam` via `#layers/leads/server`, in `server/api/contact.post.ts`.
+- `layers/qualifier` — `notifyTeam`, `createLeadRepository`, `LeadRepository`, `LeadRecord` via `#layers/leads/server`, in `server/services/submitQualification.ts` and `server/api/contact.post.ts`.

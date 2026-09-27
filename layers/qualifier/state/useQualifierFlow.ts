@@ -4,7 +4,7 @@ import type { StageId } from '#layers/core/shared/types/service-stage'
 import { toAppError } from '#layers/core/shared/utils/toAppError'
 import { postQualification } from '#layers/qualifier/data/qualificationRepository'
 import type { QualifierContactPayload } from '#layers/qualifier/domain/qualification'
-import { ROUTE_LABELS, STAGE_TAGS, resolveRoute, type QualifierBudgetKey } from '#layers/qualifier/domain/routing'
+import type { QualifierBudgetKey } from '#layers/qualifier/domain/routing'
 import { useQualifierDialog } from '#layers/qualifier/state/useQualifierDialog'
 
 export const QUALIFIER_TOTAL_STEPS = 3
@@ -53,15 +53,9 @@ export function useQualifierFlow() {
     }
   }
 
-  // Shown on the success screen so the visitor sees where they landed.
-  const routeLabel = computed(() =>
-    stage.value && budget.value ? ROUTE_LABELS[resolveRoute(stage.value, budget.value)] : '',
-  )
-  const stageTag = computed(() => (stage.value ? STAGE_TAGS[stage.value] : ''))
-
   watch(isOpen, (open) => {
     if (open) reset()
   })
 
-  return { step, direction, stage, budget, status, error, routeLabel, stageTag, goNext, goBack, submit, close }
+  return { step, direction, stage, budget, status, error, goNext, goBack, submit, close }
 }

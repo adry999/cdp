@@ -1,6 +1,6 @@
 # layers/qualifier
 
-Multi-step qualification modal (stage → budget → contact) that routes a visitor to one of two delivery tracks and emails the team a structured summary. Replaces the plain contact form wherever `NUXT_PUBLIC_QUALIFIER_ENABLED` is `true`. Persists nothing.
+Multi-step qualification modal (stage → budget → contact) that routes a visitor to one of two delivery tracks and emails the team a structured summary. Replaces the plain contact form wherever `NUXT_PUBLIC_QUALIFIER_ENABLED` is `true`. Has no table of its own — a submission is persisted into `layers/leads`' `leads` table (see Depends on) before the team notification is attempted, so a missing/failing email never loses it.
 
 ## Public API — `index.ts`
 
@@ -14,7 +14,7 @@ There is no `server/index.ts`: nothing outside this layer uses its server code.
 
 ## Routes
 
-- `POST /api/contact` — `server/api/contact.post.ts` → `submitQualification` outcome: 404 flag off, 400 invalid, 429 over the rate limit, 502 delivery failed, `{ success: true }` for delivered, skipped and honeypot.
+- `POST /api/contact` — `server/api/contact.post.ts` → `submitQualification` outcome: 404 flag off, 400 invalid, 429 over the rate limit, `{ success: true }` for accepted and honeypot. The submission is saved before the notification is attempted; a failed or skipped notification is logged and does not change the response.
 
 ## Components
 
@@ -24,4 +24,4 @@ There is no `server/index.ts`: nothing outside this layer uses its server code.
 ## Depends on
 
 - `layers/core` — `StageId` / `isStageId`, `CoreStageIcon`, `CoreHoneypotField`, `useFocusTrap`, `AsyncStatus`, `AppError` / `toAppError`, `EMAIL_PATTERN`, `clipText`, `checkRateLimit`, the `qualifier:open` hook contract.
-- `layers/leads` (server only) — `notifyTeam` via `#layers/leads/server`, wired in `server/api/contact.post.ts`.
+- `layers/leads` (server only) — `notifyTeam`, `createLeadRepository`, `LeadRepository`, `LeadRecord` via `#layers/leads/server`, wired in `server/api/contact.post.ts` and `server/services/submitQualification.ts`.
