@@ -53,6 +53,11 @@ export const LEAD_FIELD_LIMITS = {
   page: 500,
 } as const
 
+// The only UTM keys ever read back out of a lead; anything else in the
+// query string (or a hand-crafted POST body) is dropped rather than stored.
+export const LEAD_UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const
+export const LEAD_UTM_VALUE_MAX = 200
+
 export interface ContactSubmission {
   name?: string
   email?: string
@@ -95,8 +100,15 @@ export function validateContactSubmission(input: ContactSubmission): ContactFiel
   return errors
 }
 
+function toLeadUtm(utm: Record<string, string> | undefined): Record<string, string> | null {
+  const entries = LEAD_UTM_KEYS.flatMap((key) => {
+    const value = utm?.[key]
+    return value ? ([[key, String(value).slice(0, LEAD_UTM_VALUE_MAX)]] as const) : []
+  })
+  return entries.length ? Object.fromEntries(entries) : null
+}
+
 export function toLeadRecord(input: ContactSubmission, referrer: string | null): LeadRecord {
-  const utmEntries = Object.entries(input.utm ?? {}).map(([key, value]) => [key, String(value).slice(0, 200)])
   return {
     name: clipText(input.name, LEAD_FIELD_LIMITS.name),
     email: clipText(input.email, LEAD_FIELD_LIMITS.email),
@@ -107,6 +119,6 @@ export function toLeadRecord(input: ContactSubmission, referrer: string | null):
     lang: input.lang === 'en' ? 'en' : 'ro',
     page: clipText(input.page, LEAD_FIELD_LIMITS.page) || null,
     referrer: referrer ? referrer.slice(0, 500) : null,
-    utm: utmEntries.length ? Object.fromEntries(utmEntries) : null,
+    utm: toLeadUtm(input.utm),
   }
 }

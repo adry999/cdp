@@ -9,6 +9,7 @@ Cookie consent: the visitor's choice, the banner that records it, the analytics 
 ## Depends on
 
 - `core` — `AppButton`.
+- `content` — `useSiteSettings` (`contactEmail`), used by `app/pages/confidentialitate.vue` to resolve `domain/privacyPolicy.ts`'s `resolvePrivacyPolicy()`.
 
 ## Consumed by
 

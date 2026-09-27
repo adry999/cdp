@@ -10,10 +10,14 @@ export interface PolicyContent {
   sections: PolicySection[]
 }
 
+// Kept as a token, resolved with the real address by resolvePrivacyPolicy() below — this file
+// stays a plain data module that doesn't import content's data directly across the layer boundary.
+const CONTACT_EMAIL_TOKEN = '{{contactEmail}}'
+
 export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
   ro: {
     title: 'Politica de confidențialitate',
-    updated: 'Actualizat: 21 august 2026',
+    updated: 'Actualizat: 27 septembrie 2026',
     intro:
       'Această pagină descrie ce date colectăm prin acest site, de ce, și cum le poți controla. Codepedia SRL, Chișinău, Moldova, este operatorul datelor descrise aici.',
     sections: [
@@ -21,7 +25,8 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
         heading: 'Ce colectăm prin formularul de contact',
         body: [
           'Când trimiți formularul de contact, colectăm: numele, adresa de email, compania (opțional), mesajul, intervalul de buget (opțional) și cum ai aflat de noi (opțional). Reținem și pagina de pe care ai trimis formularul și pagina de la care ai venit (referrer).',
-          'Adresa IP este folosită temporar (10 minute) exclusiv pentru a preveni trimiterile automate/abuzive și nu este salvată alături de solicitarea ta.',
+          'Dacă folosești chestionarul de calificare de pe site, colectăm suplimentar: etapa proiectului, bugetul estimat, un link/handle de contact și notele tale. Aceste date sunt salvate în aceeași bază de solicitări ca formularul de contact.',
+          'Adresa IP este folosită exclusiv pentru a limita trimiterile automate/abuzive și nu este salvată alături de solicitarea ta. Înregistrările de limitare mai vechi de 10 minute sunt șterse automat la următoarea trimitere de formular din partea oricărui vizitator (nu pe un program fix).',
         ],
       },
       {
@@ -35,7 +40,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'De ce procesăm aceste date',
         body: [
-          'Datele din formularul de contact: pentru a răspunde solicitării tale.',
+          'Datele din formularul de contact și din chestionarul de calificare: pentru a răspunde solicitării tale.',
           'Adresa IP (temporar): interes legitim de a preveni abuzul.',
           'Analiză și marketing: doar cu acordul tău explicit.',
         ],
@@ -43,26 +48,28 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'Cât timp păstrăm datele',
         body: [
-          'Solicitările de contact sunt păstrate cât timp este necesar pentru a răspunde și evalua colaborarea. Poți cere oricând ștergerea lor.',
+          'Solicitările de contact sunt păstrate cât timp este necesar pentru a răspunde și evalua colaborarea. Perioada exactă de retenție: [ de completat ]. Poți cere oricând ștergerea lor.',
         ],
       },
       {
         heading: 'Cu cine împărtășim datele',
         body: [
-          'Datele sunt găzduite prin Supabase (bază de date) și Vercel (găzduire site). Google Analytics și Meta Pixel primesc date doar dacă ai consimțit explicit.',
+          'Datele sunt găzduite prin Supabase (bază de date) și Vercel (găzduire site). Notificarea internă trimisă echipei la o solicitare nouă este livrată prin Resend (SUA), furnizorul nostru de servicii de email.',
+          'Google Analytics și Meta Pixel primesc date doar dacă ai consimțit explicit.',
         ],
       },
       {
         heading: 'Drepturile tale',
         body: [
-          'Poți cere oricând acces, corectarea sau ștergerea datelor tale, scriindu-ne la adresa de contact afișată pe site.',
+          `Poți cere oricând acces, corectarea sau ștergerea datelor tale, scriindu-ne la ${CONTACT_EMAIL_TOKEN}.`,
+          'Ai dreptul să depui o plângere la o autoritate de supraveghere: în Moldova, Centrul Național pentru Protecția Datelor cu Caracter Personal; dacă ești rezident al Uniunii Europene, autoritatea de protecție a datelor din țara ta de reședință.',
         ],
       },
     ],
   },
   en: {
     title: 'Privacy Policy',
-    updated: 'Updated: August 21, 2026',
+    updated: 'Updated: September 27, 2026',
     intro:
       'This page describes what data we collect through this site, why, and how you can control it. Codepedia SRL, Chișinău, Moldova, is the controller of the data described here.',
     sections: [
@@ -70,7 +77,8 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
         heading: 'What we collect through the contact form',
         body: [
           'When you submit the contact form, we collect: your name, email address, company (optional), message, budget range (optional), and how you heard about us (optional). We also keep the page you submitted from and the page you arrived from (referrer).',
-          'Your IP address is used temporarily (10 minutes) solely to prevent automated/abusive submissions and is not stored alongside your request.',
+          "If you use the site's qualification questionnaire, we additionally collect: your project stage, estimated budget, a contact link/handle, and your notes. This data is saved in the same request store as the contact form.",
+          'Your IP address is used solely to limit automated/abusive submissions and is not stored alongside your request. Rate-limit entries older than 10 minutes are automatically deleted the next time any visitor submits a form (not on a fixed schedule).',
         ],
       },
       {
@@ -84,7 +92,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'Why we process this data',
         body: [
-          'Contact form data: to respond to your request.',
+          'Contact form and qualification questionnaire data: to respond to your request.',
           'IP address (temporary): legitimate interest in preventing abuse.',
           'Analytics and marketing: only with your explicit consent.',
         ],
@@ -92,21 +100,36 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'How long we keep data',
         body: [
-          'Contact requests are kept as long as necessary to respond and evaluate working together. You can ask for deletion at any time.',
+          'Contact requests are kept as long as necessary to respond and evaluate working together. Exact retention period: [ to be completed ]. You can ask for deletion at any time.',
         ],
       },
       {
         heading: 'Who we share data with',
         body: [
-          'Data is hosted via Supabase (database) and Vercel (site hosting). Google Analytics and Meta Pixel only receive data if you explicitly consented.',
+          'Data is hosted via Supabase (database) and Vercel (site hosting). The internal notification sent to our team about a new request is delivered through Resend (US), our email delivery provider.',
+          'Google Analytics and Meta Pixel only receive data if you explicitly consented.',
         ],
       },
       {
         heading: 'Your rights',
         body: [
-          'You can request access to, correction of, or deletion of your data at any time by writing to the contact address shown on the site.',
+          `You can request access to, correction of, or deletion of your data at any time by writing to ${CONTACT_EMAIL_TOKEN}.`,
+          'You have the right to lodge a complaint with a supervisory authority: in Moldova, the National Center for Personal Data Protection (Centrul Național pentru Protecția Datelor cu Caracter Personal); if you are an EU resident, your local data protection authority.',
         ],
       },
     ],
   },
+}
+
+/** Fills in the real contact address (content's SITE_SETTINGS.contactEmail) — call from the
+ * page component, which is the one place in this layer allowed to reach into content. */
+export function resolvePrivacyPolicy(locale: 'ro' | 'en', contactEmail: string): PolicyContent {
+  const content = privacyPolicy[locale]
+  return {
+    ...content,
+    sections: content.sections.map((section) => ({
+      ...section,
+      body: section.body.map((paragraph) => paragraph.replaceAll(CONTACT_EMAIL_TOKEN, contactEmail)),
+    })),
+  }
 }

@@ -1,5 +1,6 @@
 import { hasConsent } from '#layers/consent/domain/consent'
 import { consentSignals } from '#layers/consent/domain/consentSignals'
+import { buildGaInitSequence } from '#layers/consent/domain/gaInit'
 import { useCookieConsent } from '#layers/consent/state/useCookieConsent'
 
 declare global {
@@ -26,8 +27,14 @@ export default defineNuxtPlugin(() => {
   function initGa() {
     window.dataLayer = window.dataLayer || []
     window.gtag = (...args: unknown[]) => window.dataLayer.push(args)
-    window.gtag('js', new Date())
-    window.gtag('config', gaId)
+    for (const call of buildGaInitSequence(
+      gaId,
+      hasConsent(consent.value, 'analytics'),
+      hasConsent(consent.value, 'marketing'),
+      new Date(),
+    )) {
+      window.gtag(...call)
+    }
 
     const script = document.createElement('script')
     script.async = true
@@ -35,16 +42,8 @@ export default defineNuxtPlugin(() => {
     document.head.appendChild(script)
   }
 
-  // The privacy policy (domain/privacyPolicy.ts) says plainly: "Google Analytics —
-  // used only if you explicitly consented." Consent Mode's "advanced" pattern
-  // — load gtag.js immediately with storage denied by default, update it
-  // later — still fetches the script and calls gtag('config', ...) before
-  // any consent exists, which doesn't match that plain-language promise (and
-  // per Google's own docs, storage-denied still permits some cookieless
-  // pings). This waits for actual analytics consent before the script is
-  // fetched at all — closer to "Basic" Consent Mode — so there's no gap
-  // between what's promised and what runs. Once loaded, a later marketing
-  // consent change still needs gtag('consent','update',...) for ad_storage.
+  // Waits for actual analytics consent before fetching gtag.js at all, rather than Consent
+  // Mode's "advanced" load-then-deny pattern, to match the privacy policy's plain promise.
   function injectGaIfConsented() {
     if (!gaId || gaInjected || !hasConsent(consent.value, 'analytics')) return
     gaInjected = true
@@ -56,10 +55,8 @@ export default defineNuxtPlugin(() => {
     window.gtag('consent', 'update', consentSignals(hasConsent(consent.value, 'analytics'), hasConsent(consent.value, 'marketing')))
   }
 
-  // Symmetrical with Meta Pixel below: gtag has no supported "uninstall" any
-  // more than fbq does, so a reload is what actually removes it — and since
-  // injectGaIfConsented() only runs when analytics consent is granted, the
-  // fresh load after this simply never re-injects the tag.
+  // gtag has no supported "uninstall", so a reload is what actually removes it (symmetrical
+  // with the Meta Pixel revoke below).
   function revokeGaIfWithdrawn() {
     if (!gaInjected || hasConsent(consent.value, 'analytics')) return
     for (const name of document.cookie.split(';').map((c) => (c.split('=')[0] ?? '').trim())) {
@@ -85,11 +82,7 @@ export default defineNuxtPlugin(() => {
     document.head.appendChild(script)
   }
 
-  // The Pixel SDK has no official "uninstall" call — once fbq is loaded it
-  // keeps running. A reload is the only way to guarantee it's actually gone
-  // when marketing consent is withdrawn, so withdrawal is as effective as
-  // consent (GDPR requires that symmetry). Guarded to fire only on an actual
-  // true -> false transition, never on the initial denied-by-default state.
+  // The Pixel SDK has no uninstall call either; reload is the only way to guarantee it's gone.
   function revokeMetaPixelIfWithdrawn() {
     if (!metaInjected || hasConsent(consent.value, 'marketing')) return
     clearCookie('_fbp')

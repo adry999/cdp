@@ -66,6 +66,19 @@ describe('toLeadRecord', () => {
     expect(record.utm?.utm_source).toHaveLength(200)
     expect(record.referrer).toHaveLength(500)
   })
+
+  it('drops any UTM key outside the whitelist', () => {
+    const record = toLeadRecord(
+      buildContactSubmission({ utm: { utm_source: 'newsletter', utm_id: 'abc', arbitrary: 'x' } }),
+      null,
+    )
+    expect(record.utm).toEqual({ utm_source: 'newsletter' })
+  })
+
+  it('stores utm as null when only non-whitelisted keys are given', () => {
+    const record = toLeadRecord(buildContactSubmission({ utm: { utm_id: 'abc' } }), null)
+    expect(record.utm).toBeNull()
+  })
 })
 
 describe('LEAD_BUDGET_KEYS', () => {

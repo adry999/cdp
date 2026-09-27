@@ -38,22 +38,38 @@ jobs:
   # e2e/smoke.spec.ts and e2e/cookie-consent.spec.ts hit the real, deployed
   # Supabase project (there's no seeded test fixture or mocked API yet — see
   # the smoke tests' comment on why they resolve a project dynamically rather
-  # than hardcoding one). Running this job needs the real project's URL/anon
-  # key as repository secrets (Settings -> Secrets and variables -> Actions):
-  #   NUXT_PUBLIC_SUPABASE_URL, NUXT_PUBLIC_SUPABASE_ANON_KEY
-  # Uncomment once those are set.
-  # e2e:
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     NUXT_PUBLIC_SUPABASE_URL: ${{ secrets.NUXT_PUBLIC_SUPABASE_URL }}
-  #     NUXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NUXT_PUBLIC_SUPABASE_ANON_KEY }}
-  #     NUXT_PUBLIC_SITE_URL: https://codepedia.md
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: actions/setup-node@v4
-  #       with:
-  #         node-version: 22
-  #         cache: npm
-  #     - run: npm ci
-  #     - run: npx playwright install --with-deps chromium
-  #     - run: npm run test:e2e
+  # than hardcoding one). Needs the real project's credentials as repository
+  # secrets (Settings -> Secrets and variables -> Actions):
+  #   NUXT_PUBLIC_SUPABASE_URL, NUXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
+  # (the service-role key is required too: nuxt.config.ts's assertEnv fails the
+  # production build this job runs — via `npm run build` in the webServer command —
+  # without it.) Secrets are copied into env vars below rather than referenced
+  # directly in a step's `if:` — `if: ${{ secrets.X != '' }}` isn't supported the
+  # way `if: ${{ env.X != '' }}` is. On a fork, or before these secrets are
+  # configured, the env vars are empty and every step here is skipped rather
+  # than failing the job.
+  e2e:
+    runs-on: ubuntu-latest
+    env:
+      NUXT_PUBLIC_SUPABASE_URL: ${{ secrets.NUXT_PUBLIC_SUPABASE_URL }}
+      NUXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NUXT_PUBLIC_SUPABASE_ANON_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      NUXT_PUBLIC_SITE_URL: https://codepedia.md
+    steps:
+      - uses: actions/checkout@v4
+        if: ${{ env.NUXT_PUBLIC_SUPABASE_URL != '' }}
+
+      - uses: actions/setup-node@v4
+        if: ${{ env.NUXT_PUBLIC_SUPABASE_URL != '' }}
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+        if: ${{ env.NUXT_PUBLIC_SUPABASE_URL != '' }}
+
+      - run: npx playwright install --with-deps chromium
+        if: ${{ env.NUXT_PUBLIC_SUPABASE_URL != '' }}
+
+      - run: npm run test:e2e
+        if: ${{ env.NUXT_PUBLIC_SUPABASE_URL != '' }}

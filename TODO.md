@@ -13,6 +13,12 @@ rămâne vizibil ca placeholder.
 
 - [ ] Confirmare că `contact@codepedia.md` este adresa corectă
 
+## Confidențialitate
+
+- [ ] Perioada de retenție pentru `leads` (formular de contact + chestionar de
+      calificare) — `layers/consent/domain/privacyPolicy.ts`, secțiunea „Cât timp
+      păstrăm datele" / "How long we keep data"
+
 ## Studii de caz — per proiect
 
 Pentru fiecare dintre cele trei proiecte:
