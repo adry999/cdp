@@ -2,9 +2,9 @@
 import type { Service } from '#layers/services/domain/service'
 
 defineProps<{ service: Service }>()
-const { locale } = useI18n()
+const { t, locale } = useI18n()
 
-const label = computed(() => pick('Ce include', 'What’s included', locale.value))
+const label = computed(() => t('services.features.heading'))
 </script>
 
 <template>

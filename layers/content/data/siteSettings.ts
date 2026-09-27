@@ -3,7 +3,7 @@ import type { SiteSettings } from '#layers/content/domain/siteSettings'
 // Edit site settings here. Both ro and en are required for every localized field.
 export const SITE_SETTINGS: SiteSettings = {
   contactEmail: 'contact@codepedia.md',
-  hours: '09:00 – 18:00 EET',
+  hours: { ro: '09:00 – 18:00 (ora Chișinăului)', en: '09:00 – 18:00 (Chișinău time)' },
   responseTime: { ro: '1 zi lucrătoare', en: '1 working day' },
   ndaNote: {
     ro: 'Unele proiecte sunt sub NDA. Referințe detaliate la discuția de diagnostic.',

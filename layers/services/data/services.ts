@@ -11,16 +11,16 @@ export const SERVICES = [
     },
     features: [
       {
-        ro: 'Design responsive optimizat pentru mobil și desktop, cu încărcare ultra-rapidă și SEO nativ.',
-        en: 'Responsive design optimized for mobile and desktop, with ultra-fast loading and native SEO.',
+        ro: 'Design responsive optimizat pentru mobil și desktop, cu încărcare rapidă și SEO nativ.',
+        en: 'Responsive design optimized for mobile and desktop, with fast loading and native SEO.',
       },
       {
         ro: 'Integrare directă cu formular sau Telegram ca să primești solicitări din prima zi.',
         en: 'Direct integration with forms or Telegram so you receive inquiries from day one.',
       },
       {
-        ro: 'Arhitectură static-first pentru performanță maximă și costuri de hosting minime.',
-        en: 'Static-first architecture for maximum performance and minimal hosting costs.',
+        ro: 'Arhitectură static-first pentru încărcare rapidă și costuri de hosting minime.',
+        en: 'Static-first architecture for fast loading and minimal hosting costs.',
       },
       {
         ro: 'Opțional: un dashboard editorial simplu ca să modifici singur text și imagini fără cod — implică o dezvoltare separată și un redeploy al proiectului.',
@@ -29,7 +29,7 @@ export const SERVICES = [
     ],
     process: [
       {
-        title: { ro: 'Brief și alignment', en: 'Brief & alignment' },
+        title: { ro: 'Brief și aliniere', en: 'Brief & alignment' },
         body: {
           ro: 'Confirmăm scopul exact, structura paginilor și integrările de care ai nevoie, direct în call.',
           en: 'We confirm the exact scope, page structure and integrations you need, directly on the call.',
@@ -45,8 +45,8 @@ export const SERVICES = [
       {
         title: { ro: 'Lansare și suport', en: 'Launch & support' },
         body: {
-          ro: 'Mutăm pe domeniu final, setăm email și SSL, și stăm lângă tine 7 zile pentru orice ajustare.',
-          en: 'We move to your final domain, set up email and SSL, and stay with you for 7 days to fix anything.',
+          ro: 'Mutăm pe domeniu final, setăm email și SSL, și stăm lângă tine 30 de zile pentru orice ajustare.',
+          en: 'We move to your final domain, set up email and SSL, and stay with you for 30 days to fix anything.',
         },
       },
     ],
@@ -58,16 +58,16 @@ export const SERVICES = [
     routeSlug: { ro: 'aplicatie-web', en: 'web-app' },
     name: { ro: 'Aplicație web', en: 'Web app' },
     intro: {
-      ro: 'Aplicație full-stack din designul tău în cod productiv, cu arhitectură scalabilă și zero compromisuri de calitate.',
-      en: 'Full-stack application from your design into production code, with a scalable architecture and no quality shortcuts.',
+      ro: 'Aplicația ta, din design în cod de producție, pe Postgres și Nuxt sau Next.',
+      en: 'Your app, from design to production code, on Postgres and Nuxt or Next.',
     },
     features: [
       {
-        ro: 'Cod pixel-perfect transpus din Figma, cu componentă și stări interactive încă din prima iterație.',
+        ro: 'Cod pixel-perfect transpus din Figma, cu componente și stări interactive încă din prima iterație.',
         en: 'Pixel-perfect code translated from Figma, with components and interactive states from the first iteration.',
       },
       {
-        ro: 'Bază de date relațională scalabilă (PostgreSQL), cu migrații versionare și backup automat.',
+        ro: 'Bază de date relațională scalabilă (PostgreSQL), cu migrații versionate și backup automat.',
         en: 'Scalable relational database (PostgreSQL) with versioned migrations and automatic backups.',
       },
       {
@@ -75,13 +75,13 @@ export const SERVICES = [
         en: 'Secure REST or GraphQL API with authentication, rate-limiting and pagination.',
       },
       {
-        ro: 'Tests automate și deploy continuu pe Vercel sau cloud-ul tău, cu rollback instant.',
+        ro: 'Teste automate și deploy continuu pe Vercel sau cloud-ul tău, cu rollback instant.',
         en: 'Automated tests and continuous deployment to Vercel or your cloud, with instant rollback.',
       },
     ],
     process: [
       {
-        title: { ro: 'Arhitectură și design sistem', en: 'Architecture & design system' },
+        title: { ro: 'Arhitectură și sistem de design', en: 'Architecture & design system' },
         body: {
           ro: 'Planificăm schema DB, contractele API și componentele reutilizabile înainte de a tasta cod.',
           en: 'We plan the DB schema, API contracts and reusable components before writing code.',
@@ -214,7 +214,7 @@ export const SERVICES = [
     routeSlug: { ro: 'automatizare-ai', en: 'ai-automation' },
     name: { ro: 'Automatizare cu AI', en: 'AI automation' },
     intro: {
-      ro: 'Sisteme AI custom integrate în fluxul tău de lucru, care reduc zeci de ore manuale pe lună și scor costurile operaționale.',
+      ro: 'Sisteme AI custom integrate în fluxul tău de lucru, care reduc zeci de ore manuale pe lună și reduc costurile operaționale.',
       en: 'Custom AI systems built into your workflow that cut dozens of manual hours per month and slash operational costs.',
     },
     features: [

@@ -2,7 +2,7 @@
   "seo": {
     "home": {
       "title": "Dezvoltare web full-stack, Chișinău",
-      "description": "Aplicații web construite corect, de la schema bazei de date până la deployment. Studio full-stack din Chișinău pentru clienți din România, Moldova și UE."
+      "description": "Aplicații web construite corect, de la schema bazei de date până la deployment. Studio full-stack cu sediul în Chișinău, pentru clienți din toată lumea."
     }
   },
   "nav": {
@@ -17,7 +17,9 @@
   },
   "footer": {
     "tagline": "Dezvoltare web full-stack · Site-uri, aplicații web, WordPress, Shopify",
-    "cookieSettings": "Setări cookie-uri"
+    "cookieSettings": "Setări cookie-uri",
+    "navLabel": "Navigare footer",
+    "privacy": "Confidențialitate"
   },
   "cookieBanner": {
     "message": "Folosim cookie-uri necesare pentru funcționarea site-ului. Cu acordul tău, folosim și cookie-uri de analiză și marketing.",
@@ -25,9 +27,15 @@
     "acceptAll": "Acceptă tot",
     "rejectAll": "Doar necesare",
     "customize": "Personalizează",
+    "back": "Înapoi",
     "save": "Salvează preferințele",
     "analyticsLabel": "Analiză (Google Analytics)",
     "marketingLabel": "Marketing (Meta Pixel)"
+  },
+  "privacy": {
+    "seo": {
+      "description": "Politica de confidențialitate Codepedia: ce date colectăm, cum le folosim și cum poți controla cookie-urile."
+    }
   },
   "home": {
     "hero": {
@@ -42,8 +50,8 @@
         "Integrări cu terți"
       ],
       "titleSuffix": "construite ca să-ți aducă rezultate de durată.",
-      "problem": "În timp ce majoritatea agențiilor îți lasă un proiect pe jumătate făcut, pe care nu-l poți întreține, noi livrăm soluții care te ajută pe deplin.",
-      "lead": "Codepedia lucrează cu antreprenori la început de drum, fondatori de startup-uri și companii din toată lumea, din Europa până în America de Nord. Fără limite.",
+      "problem": "Multe proiecte rămân neterminate și greu de întreținut. Noi predăm cod pe care echipa ta îl poate duce mai departe, cu documentație și 30 de zile de remedieri incluse.",
+      "lead": "Lucrăm cu fondatori la început de drum și cu companii consacrate, din Chișinău pentru clienți din Europa și America de Nord.",
       "ctaPrimary": "Vezi dacă te putem ajuta",
       "ctaSecondary": "Cum lucrăm",
       "facts": {
@@ -52,7 +60,7 @@
         "markets": "Piețe",
         "marketsValue": "Moldova/România · UE · America de Nord · Lumea întreagă",
         "stack": "Stack tehnologic",
-        "stackValue": "React (Next.js), Vue (Nuxt.js), .NET, Node.js, PostgreSQL, Supabase, n8n, Make, LLM pipelines"
+        "stackValue": "React (Next.js), Vue (Nuxt.js), Node.js, PostgreSQL, Supabase, n8n, Make, LLM pipelines"
       }
     },
     "services": {
@@ -68,8 +76,8 @@
           "name": "PAGINĂ EXPRESS",
           "priceTime": "Sub 1.000 EUR · 2–3 zile",
           "whereYouAre": "Ai nevoie de o pagină modernă și rapidă care să-ți valideze ideea, să atragă primii clienți sau să înlocuiască un site învechit.",
-          "whatYouGet": "Un landing page (1–3 pagini) ultra-rapid, optimizat pentru mobil, cu integrare directă Telegram/formular ca să primești cereri de ofertă din prima zi.",
-          "badges": ["Lansare Rapidă", "Design Modern", "Optimizat Mobil", "Pregătit de Conversie"],
+          "whatYouGet": "Un landing page (1–3 pagini) cu încărcare rapidă, optimizat pentru mobil, cu integrare directă Telegram/formular ca să primești cereri de ofertă din prima zi.",
+          "badges": ["Lansare în 2–3 zile", "Design modern", "Optimizat pentru mobil", "Formular conectat"],
           "cta": "Lansează pagina"
         },
         "B": {
@@ -77,15 +85,15 @@
           "priceTime": "De la 1.000 EUR · ~1 săptămână",
           "whereYouAre": "Ai o idee de produs sau afacere, dar este încă la nivel teoretic și ai nevoie de claritate maximă înainte de a investi în dezvoltare.",
           "whatYouGet": "Planul complet de execuție: de la scenariul utilizatorului și prototip vizual, până la specificația tehnică clară, gata de transmis echipei de dev.",
-          "badges": ["AI Prototyping", "Wireframing", "Product Scope"],
+          "badges": ["Prototipare AI", "Wireframing", "Definirea produsului"],
           "cta": "Clarifică-mi conceptul"
         },
         "A": {
           "name": "DIN DESIGN ÎN COD",
           "priceTime": "De la 2.000 EUR · 3–6 săptămâni",
-          "whereYouAre": "Ai designul gata în Figma sau resursele vizuale pregătite și cauți o echipă tehnică care să le transforme în cod real, fără compromisuri de calitate.",
-          "whatYouGet": "Arhitectură full-stack completă: frontend pixel-perfect, bază de date scalabilă, integrări API securizate și performanță maximă pe orice dispozitiv.",
-          "badges": ["Pixel-Perfect", "Arhitectură Full-Stack", "Performanță Optimă", "Cod Scalabil"],
+          "whereYouAre": "Ai designul gata în Figma sau resursele vizuale pregătite și cauți o echipă tehnică care să le transforme în cod real, bine construit.",
+          "whatYouGet": "Ecranele din Figma devin o aplicație funcțională: frontend, bază de date Postgres și integrările API de care are nevoie.",
+          "badges": ["Pixel-perfect", "Arhitectură full-stack", "Deploy pe Vercel", "Schemă Postgres"],
           "cta": "Transformă designul în cod"
         },
         "C": {
@@ -93,43 +101,43 @@
           "priceTime": "De la 2.000 EUR · 4–8 săptămâni",
           "whereYouAre": "Ai un produs deja lansat, dar ai nevoie de resurse tehnice pentru a adăuga module noi, a rezolva blocajele de performanță sau a crește viteza de livrare.",
           "whatYouGet": "Dezvoltare de feature-uri noi, refactorizare de cod, optimizare de bază de date și arhitectură pregătită pentru scalare — fără timp de nefuncționare.",
-          "badges": ["Features Noi", "Optimizare Viteză", "Arhitectură Scalabilă", "Zero Downtime"],
+          "badges": ["Funcționalități noi", "Optimizare viteză", "Arhitectură scalabilă", "Refactorizare incrementală"],
           "cta": "Extinde-mi produsul"
         },
         "D": {
           "name": "AUTOMATIZAREA PROCESELOR CU AI",
           "priceTime": "De la 5.000 EUR · 6–12 săptămâni",
           "whereYouAre": "Echipa ta pierde zeci de ore pe sarcini repetitive, procesare manuală de date sau fluxuri fragmentate care îți încetinesc creșterea.",
-          "whatYouGet": "Sisteme AI custom integrate în fluxul tău de lucru: agenți inteligenți, automatizare end-to-end și dashboard-uri dedicate pentru control total.",
-          "badges": ["Reducere Costuri Ops", "Integrări AI Custom", "Procesare Automată", "Control & Audit"],
+          "whatYouGet": "Pași LLM conectați la instrumentele pe care le folosești deja (n8n, Make sau cod propriu), plus un dashboard în care echipa verifică fiecare acțiune automată.",
+          "badges": ["Costuri operaționale mai mici", "Integrări AI la comandă", "Procesare automată", "Control & audit"],
           "cta": "Automatizează-mi fluxul"
         }
       }
     },
     "stack": {
       "sectionLabel": "Stack",
-      "title": "Tehnologii moderne. Zero datorie tehnică.",
-      "subtitle": "Construim pe un ecosistem de elită, TypeScript-first, optimizat pentru viteză, securitate și scalabilitate. Fără framework-uri învechite, fără cod imposibil de întreținut.",
+      "title": "Tehnologiile cu care livrăm.",
+      "subtitle": "TypeScript pe frontend și backend, Postgres pentru date, deploy pe Vercel. Unelte folosite deja în producție, nu o listă de dorințe.",
       "integrationNote": "Ai deja un magazin pe Shopify sau un CMS existent? Ne integrăm nativ prin API-uri headless.",
       "groups": {
         "frontend": {
           "name": "Frontend & UI",
-          "benefit": "Performanță & SEO: Paginile se încarcă instant, sunt optimizate nativ pentru Google și arată impecabil pe orice ecran.",
+          "benefit": "Performanță și SEO: Pagini randate pe server, cu metadate, sitemap și hreflang configurate din prima zi.",
           "tags": ["React", "Next.js", "Vue 3", "Nuxt", "TypeScript", "Tailwind CSS"]
         },
         "backend": {
           "name": "Backend & Data",
-          "benefit": "Infrastructură Solidă: Date securizate, interogări ultra-rapide și arhitectură pregătită să reziste la mii de utilizatori simultani.",
+          "benefit": "Infrastructură solidă: Postgres cu row-level security și migrații păstrate în Git.",
           "tags": ["PostgreSQL", "Supabase", "Drizzle ORM", "Node.js", "Edge Functions"]
         },
         "infra": {
           "name": "Cloud & Infra",
-          "benefit": "Uptime & Deployment Automat: Protecție globală la atacuri, CDN ultra-rapid și actualizări continue fără întreruperi.",
+          "benefit": "Deploy automat: Fiecare commit ajunge în producție prin CI, cu CDN și preview pentru fiecare modificare.",
           "tags": ["Vercel", "Cloudflare", "Docker", "GitHub Actions"]
         },
         "ai": {
           "name": "AI & Vector Data",
-          "benefit": "Automatizare Inteligentă: Integrare nativă de LLM-uri și procesare de date în timp real pentru fluxuri de lucru automatizate.",
+          "benefit": "Automatizare cu LLM: Modele integrate în fluxurile tale de lucru, cu căutare semantică peste datele proprii.",
           "tags": ["OpenAI API", "Anthropic", "pgvector", "Streaming"]
         }
       }
@@ -145,7 +153,7 @@
           "badge": "Fast-Track",
           "name": "Express & Design-to-Code",
           "scope": "2–3 zile – 3 săptămâni",
-          "summary": "Pentru pagini de prezentare, build-uri Express și translatare din Figma. Livrare rapidă, fără pași redundanți.",
+          "summary": "Pentru pagini de prezentare, build-uri Express și implementare din Figma. Livrare rapidă, fără pași redundanți.",
           "steps": [
             {
               "title": "Onboarding rapid",
@@ -153,15 +161,15 @@
             },
             {
               "title": "Execuție directă",
-              "body": "Începem build-ul imediat sau translatăm pixel-perfect din Figma. Fără faze intermediare de wireframing."
+              "body": "Începem build-ul imediat sau implementăm fidel designul din Figma. Fără faze intermediare de wireframing."
             },
             {
               "title": "Staging rapid",
               "body": "Link de preview live în 24–48 de ore. Feedback pe versiunea reală, nu pe un mockup."
             },
             {
-              "title": "Lansare + 7 zile suport",
-              "body": "Handover complet și 7 zile de remedieri pentru erori tehnice după lansare."
+              "title": "Lansare + 30 de zile suport",
+              "body": "Handover complet și 30 de zile de remedieri pentru erori tehnice după lansare."
             }
           ]
         },
@@ -200,11 +208,11 @@
     "about": {
       "sectionLabel": "Despre",
       "title": "Studio boutique. Ingineri seniori. Acces direct.",
-      "lead": "Codepedia preia un număr limitat de proiecte simultan pentru a garanta atenție maximă. Fără intermediari care traduc greșit cerințele și fără juniori care învață pe bugetul tău. Discuți direct cu inginerul care îți construiește produsul.",
+      "lead": "Lucrăm la puține proiecte în paralel, ca fiecare să primească orele de care are nevoie. Fără intermediari care traduc greșit cerințele și fără juniori care învață pe bugetul tău. Discuți direct cu inginerul care îți construiește produsul.",
       "pillars": {
         "ownership": {
           "title": "Proprietate 100% din prima zi",
-          "body": "Codul sursă, baza de date și infrastructura sunt configurate direct în conturile tale. Ai control total și zero lock-in."
+          "body": "Codul sursă, baza de date și infrastructura sunt configurate direct în conturile tale. Ai control total și poți schimba echipa oricând."
         },
         "pricing": {
           "title": "Estimări fixe și cost asumat",
@@ -269,7 +277,7 @@
   "qualifier": {
     "trigger": "Începe un proiect",
     "eyebrow": "Începe un proiect",
-    "title": "Hai să-ți plasăm proiectul.",
+    "title": "Hai să găsim punctul de pornire potrivit.",
     "close": "Închide",
     "next": "Continuă",
     "back": "Înapoi",
@@ -303,7 +311,7 @@
         },
         "E": {
           "title": "Am nevoie de o pagină modernă și rapidă care să-mi valideze ideea, să atragă primii clienți sau să înlocuiască un site învechit.",
-          "hint": "Un landing page (1-3 pagini) ultra-rapid, optimizat pentru mobil, cu integrare directă de Telegram/Formular pentru a primi cereri de ofertă din prima zi.",
+          "hint": "Un landing page (1-3 pagini) cu încărcare rapidă, optimizat pentru mobil, cu integrare directă de Telegram/Formular pentru a primi cereri de ofertă din prima zi.",
           "budget": "Sub 1.000 EUR",
           "timeline": "2–3 zile"
         }
@@ -312,7 +320,7 @@
     "budget": {
       "legend": "Care e bugetul de pornire?",
       "options": {
-        "under500": { "label": "Sub 500 EUR", "hint": "Landing rapid, 1–2 pagini" },
+        "under500": { "label": "Sub 500 EUR", "hint": "Landing rapid, 1–3 pagini" },
         "500to1k": { "label": "500 – 1.000 EUR", "hint": "Site mic sau un sprint scurt, bine delimitat" },
         "1to2k": { "label": "1.000 – 2.000 EUR", "hint": "Blueprint, sau o construcție focusată" },
         "2to5k": { "label": "2.000 – 5.000 EUR", "hint": "Construcție completă, din design sau cod existent" },
@@ -323,7 +331,7 @@
       "massMarket": {
         "kicker": "Pagină Express",
         "title": "Un site de 1–3 pagini, live în 2–3 zile.",
-        "body": "Construim o pagină de destinație de 1–2 pagini, cu formular de contact integrat și linkuri sociale, livrată în 2–3 zile. Nivelul nostru de intrare."
+        "body": "Construim o pagină de destinație de 1–3 pagini, cu formular de contact integrat și linkuri sociale, livrată în 2–3 zile. Nivelul nostru de intrare."
       },
       "fullStack": {
         "kicker": "Design-to-Code",
@@ -336,12 +344,12 @@
         "body": "Wireframe-uri rapide, un sitemap generat și o specificație funcțională blocată — ca build-ul să pornească dintr-un plan clar."
       },
       "refactor": {
-        "kicker": "Existing-Site-Refactor",
+        "kicker": "Refactorizare site existent",
         "title": "Modernizare și refactorizare.",
         "body": "Curățare .NET / Node / Nest, optimizare Postgres, un salt real de performanță și integrări cu terți."
       },
       "automation": {
-        "kicker": "Custom-AI-Automation",
+        "kicker": "Automatizare AI la comandă",
         "title": "Inginerie AI.",
         "body": "Pipeline-uri LLM la comandă, fluxuri n8n / Make și dashboard-uri interne conectate la sistemele tale."
       }
@@ -361,7 +369,7 @@
   "projects": {
     "seo": {
       "title": "Proiecte",
-      "description": "Studii de caz Codepedia: aplicații web, site-uri, WordPress, Shopify și automatizări AI livrate pentru clienți din România, Moldova și UE."
+      "description": "Studii de caz Codepedia: aplicații web, site-uri, WordPress, Shopify și automatizări AI livrate pentru clienți din toată lumea."
     },
     "hero": {
       "title": "Proiecte.",
@@ -376,6 +384,11 @@
       "ai-automation": "Automatizare AI"
     },
     "empty": "Momentan nu avem studii de caz publicate."
+  },
+  "services": {
+    "features": {
+      "heading": "Ce include"
+    }
   },
   "blog": {
     "seo": {

@@ -31,9 +31,11 @@ useHead(() => ({
         '@type': 'Service',
         name: pick(service.name.ro, service.name.en, locale.value),
         description: pick(service.intro.ro, service.intro.en, locale.value),
+        url: `${siteUrl}${route.path}`,
         provider: {
           '@type': 'Organization',
           name: 'Codepedia',
+          url: siteUrl,
         },
       }),
     },
