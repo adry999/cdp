@@ -1,11 +1,6 @@
 import tailwindcss from '@tailwindcss/vite'
 
-// A production build with no site URL set would silently ship canonical and
-// hreflang tags pointing at localhost — the i18n.baseUrl default below. A
-// production build with no Supabase URL/key would deploy an app that can
-// never reach its database. nuxt dev runs with NODE_ENV=development, so
-// local dev is unaffected; every real build (Vercel included) sets
-// NODE_ENV=production and must supply all of these.
+// Skipped outside production (nuxt dev) — every real build, including Vercel, must supply these.
 function assertEnv(names: string[]) {
   if (process.env.NODE_ENV !== 'production') return
   const missing = names.filter((name) => !process.env[name])
@@ -16,34 +11,32 @@ function assertEnv(names: string[]) {
   }
 }
 
-assertEnv(['NUXT_PUBLIC_SITE_URL', 'NUXT_PUBLIC_SUPABASE_URL', 'NUXT_PUBLIC_SUPABASE_ANON_KEY'])
+assertEnv([
+  'NUXT_PUBLIC_SITE_URL',
+  'NUXT_PUBLIC_SUPABASE_URL',
+  'NUXT_PUBLIC_SUPABASE_ANON_KEY',
+  'SUPABASE_SERVICE_ROLE_KEY',
+])
 
 const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
-// No hardcoded fallback here on purpose: in production assertEnv above
-// already guarantees this is set. In dev, if it's missing, @nuxtjs/supabase
-// logs its own warning at runtime — we just skip the host-scoped CSP/image
-// entries below rather than inventing a URL to derive a host from.
+// Production guarantees this via assertEnv above; in dev a missing value just skips the host-scoped CSP/image entries below.
 const supabaseHost = process.env.NUXT_PUBLIC_SUPABASE_URL
   ? new URL(process.env.NUXT_PUBLIC_SUPABASE_URL).hostname
   : undefined
 
-// No CSP/frame/sniffing headers were configured anywhere — Nitro/Vercel ship
-// none by default. 'unsafe-inline' on script-src is a real gap, not an
-// oversight: the GA bootstrap and the Meta Pixel loader (layers/consent/app/
-// plugins/analytics.client.ts) both inject inline <script> tags with no nonce/hash
-// wiring in place, and both are currently inert (no ID configured) so this
-// is the safe moment to add the header without breaking anything live.
-// Tightening script-src to a nonce is real follow-up work, not done here.
+// 'unsafe-inline' on script-src is required by the inline GA/Meta Pixel loaders in layers/consent/app/plugins/analytics.client.ts.
 const supabaseHostSrc = supabaseHost ? ` https://${supabaseHost}` : ''
 
+// Fonts are self-hosted by @nuxt/fonts, so fonts.googleapis.com/gstatic.com aren't needed in style-src/font-src.
+// GA4/Meta Pixel hosts below are inert until NUXT_PUBLIC_GA_ID/NUXT_PUBLIC_META_PIXEL_ID are set.
 const CSP = [
   `default-src 'self'`,
-  `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net`,
-  `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
-  `font-src 'self' https://fonts.gstatic.com`,
-  `img-src 'self' data:${supabaseHostSrc} https://www.facebook.com`,
-  `connect-src 'self' https://www.google-analytics.com${supabaseHostSrc}`,
+  `script-src 'self' 'unsafe-inline' https://*.googletagmanager.com https://connect.facebook.net`,
+  `style-src 'self' 'unsafe-inline'`,
+  `font-src 'self'`,
+  `img-src 'self' data:${supabaseHostSrc} https://*.google-analytics.com https://*.googletagmanager.com https://www.facebook.com`,
+  `connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.facebook.com${supabaseHostSrc}`,
   `frame-ancestors 'none'`,
   `base-uri 'self'`,
   `form-action 'self'`,
@@ -56,20 +49,16 @@ export default defineNuxtConfig({
 
   modules: ['@nuxtjs/i18n', '@nuxt/image', '@nuxt/fonts', '@nuxtjs/supabase', '@nuxt/content', '@nuxt/eslint'],
 
-  // Node's built-in SQLite (stable since Node 22.5, this project's floor is
-  // 22.19) instead of the better-sqlite3 native addon — no compiled binary
-  // to build or ship, so no Python/node-gyp needed anywhere (a dev machine,
-  // CI, or Vercel's build image), and no glibc-version constraint at deploy
-  // time either. `experimental` is @nuxt/content's own option name; the
-  // underlying `node:sqlite` module is itself Node-experimental too. Both
-  // are fine here: this only builds the content database at dev/build time,
-  // it's never a runtime dependency of the deployed app.
+  // Node's built-in SQLite instead of the better-sqlite3 native addon — no compiled binary to build or ship.
   content: {
     experimental: { sqliteConnector: 'native' },
   },
 
   runtimeConfig: {
     resendApiKey: process.env.RESEND_API_KEY,
+    // Mirrors nitro.vercel.config.bypassToken below; server/api/admin/revalidate.post.ts sends it back as
+    // `x-prerender-revalidate` to force an ISR refresh. Empty off Vercel falls back to a storage cache clear.
+    isrBypassToken: process.env.VERCEL_ISR_BYPASS_TOKEN || '',
     public: {
       gaId: process.env.NUXT_PUBLIC_GA_ID || '',
       metaPixelId: process.env.NUXT_PUBLIC_META_PIXEL_ID || '',
@@ -79,24 +68,20 @@ export default defineNuxtConfig({
 
   nitro: {
     compressPublicAssets: { gzip: true, brotli: true },
+    // On the `vercel` preset, routeRules with `swr`/`isr` become separate Vercel Prerender Functions served
+    // straight from the edge — this token lets revalidate.post.ts force one to bypass and refresh.
+    vercel: {
+      config: {
+        bypassToken: process.env.VERCEL_ISR_BYPASS_TOKEN || undefined,
+      },
+    },
   },
 
-  // Client maps were being served from the public output directory — the
-  // largest one was ~3 MB of original application source. Server maps stay on
-  // for the trace we can actually read; nothing plugs the client half into an
-  // error monitor yet, so there's nothing to gain from shipping it publicly.
+  // Client source maps aren't shipped (nothing consumes them yet, and the largest was ~3 MB); server maps stay on.
   sourcemap: { client: false, server: true },
 
   routeRules: {
-    // The locale-redirect middleware (layers/core/server/middleware/locale-redirect.ts)
-    // always runs first regardless of this cache — it's global h3 middleware,
-    // upstream of route-rule caching, not part of the cached handler. Once a
-    // request lands on / or /en without being redirected away, the rendered
-    // page is locale-fixed and identical for everyone, so caching it here is
-    // safe; only the redirect *decision* must stay uncached (see the
-    // Cache-Control: private, no-store header the middleware sets on 302s).
-    '/': { swr: 60 },
-    '/en': { swr: 60 },
+    // No ISR on / and /en: Vercel cache hits would skip the locale-redirect middleware.
     '/proiecte': { swr: 300 },
     '/en/work': { swr: 300 },
     '/proiecte/**': { swr: 300 },
@@ -111,6 +96,7 @@ export default defineNuxtConfig({
     '/**': {
       headers: {
         'Content-Security-Policy': CSP,
+        'Strict-Transport-Security': 'max-age=63072000; includeSubDomains',
         'X-Content-Type-Options': 'nosniff',
         'Referrer-Policy': 'strict-origin-when-cross-origin',
         'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
@@ -120,11 +106,7 @@ export default defineNuxtConfig({
   },
 
   image: {
-    // On Vercel, delegate resizing to Vercel's own Image Optimization API
-    // instead of bundling IPX/sharp — sharp is a native binary and building
-    // locally on Windows produces a win32-x64 binary that Vercel's Linux
-    // functions cannot load. The ipx fallback keeps `npm run dev` working
-    // everywhere else.
+    // vercel provider avoids bundling sharp, whose native binary built on Windows can't load in Vercel's Linux functions.
     provider: process.env.VERCEL ? 'vercel' : 'ipx',
     domains: supabaseHost ? [supabaseHost] : [],
   },
@@ -139,9 +121,7 @@ export default defineNuxtConfig({
     },
   },
 
-  // `npm run typecheck` (vue-tsc -b over the .nuxt/tsconfig.*.json project
-  // references) otherwise misses these root-level TS files — they aren't
-  // under app/, server/ or a layer, so nothing pulls them in by default.
+  // vue-tsc otherwise misses these root-level TS files since they're outside app/, server/, and layers/.
   typescript: {
     nodeTsConfig: {
       include: ['../e2e/**/*.ts', '../playwright.config.ts', '../vitest.config.ts'],

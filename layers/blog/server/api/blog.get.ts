@@ -18,7 +18,7 @@ export default defineEventHandler(async (event): Promise<BlogPostSummary[]> => {
     path: row.path,
     title: row.title,
     summary: row.summary,
-    date: row.date as unknown as string,
+    date: row.date,
     cover: row.cover,
   }))
 })

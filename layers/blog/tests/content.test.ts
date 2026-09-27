@@ -22,10 +22,8 @@ function frontMatter(dir: string, file: string): string {
   return /^---\r?\n([\s\S]*?)\r?\n---/.exec(text)?.[1] ?? ''
 }
 
-// `summary`, `date` and `description` are schema-required in content.config.ts,
-// but a post missing one only fails silently: `npm run build` still exits 0
-// and prints nothing, and the card/meta just render blank. These assertions
-// are the only thing that makes an incomplete post loud.
+// Schema-required in content.config.ts, but a missing one fails silently (build exits 0,
+// card/meta render blank) — these assertions are the only thing that makes it loud.
 const REQUIRED_KEYS = ['title', 'description', 'summary', 'date'] as const
 
 describe('blog content', () => {

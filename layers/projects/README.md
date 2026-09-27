@@ -34,8 +34,12 @@ public API of `layers/qualifier`.
   `domain/projectSelect.ts`'s `PROJECT_CARD_SELECT` (card columns only — kept
   light for every list consumer). `GET /api/projects/[slug]` uses the full
   `PROJECT_SELECT`.
-- `POST /api/admin/revalidate` — `server/api/admin/`, clears the route-rule
-  cache after an admin write; admin-only (checked against `app_users`).
+- `POST /api/admin/revalidate` — `server/api/admin/`, admin-only (checked
+  against `app_users`). If `VERCEL_ISR_BYPASS_TOKEN` is set, re-requests every
+  published project URL with `x-prerender-revalidate` to force Vercel's edge
+  ISR cache for those routes to refresh (Nitro's own `useStorage('cache')` is
+  not what serves them on the `vercel` preset — see the file's comment).
+  Otherwise falls back to clearing Nitro's storage cache directly.
 - `server/middleware/project-redirects.ts` — serves the 301/302 rows
   `save_project()` writes to `redirects` when a published slug changes.
 - `/proiecte/[slug]`, `/en/work/[slug]` (route name `proiecte-slug`) —

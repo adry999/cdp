@@ -2,7 +2,7 @@
 import { leadBudgetLabel, leadStatusLabel } from '#layers/leads/domain/lead'
 import { useLeadsAdminList } from '#layers/leads/state/useLeadsAdminList'
 
-definePageMeta({ layout: 'admin' })
+definePageMeta({ layout: 'admin', i18n: false })
 
 const { leads } = await useLeadsAdminList()
 

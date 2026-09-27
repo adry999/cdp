@@ -43,8 +43,8 @@ only.
   there are zero non-draft posts.
 - `/blog/[slug]`, `/en/blog/[slug]` (route name `blog-slug`) —
   `app/pages/blog/[slug].vue`, default layout. 404s when the slug isn't in
-  the current locale's collection — including a `draft: true` post is
-  **not** what makes a post 404; only a missing file does.
+  the current locale's collection, or when the matching post has
+  `draft: true` — a draft is not publicly reachable even by direct URL.
 - `server/api/blog.get.ts` (`GET /api/blog?locale=ro|en`) and
   `server/api/blog/[slug].get.ts` (`GET /api/blog/<slug>?locale=ro|en`) — the
   pages' only data source. The queries must stay here: `@nuxt/content`'s

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-definePageMeta({ layout: 'admin-auth' })
+definePageMeta({ layout: 'admin-auth', i18n: false })
 
 const supabase = useSupabaseClient()
 const email = ref('')

@@ -22,7 +22,10 @@ useHead(() => ({
             '@type': 'Organization',
             name: 'Codepedia',
             url: siteUrl,
-            logo: `${siteUrl}/brand/codepedia-mark.svg`,
+            logo: {
+              '@type': 'ImageObject',
+              url: `${siteUrl}/brand/codepedia-mark.svg`,
+            },
             email: settings.value.contactEmail,
             address: {
               '@type': 'PostalAddress',

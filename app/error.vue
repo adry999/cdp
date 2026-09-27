@@ -10,6 +10,10 @@ const isNotFound = computed(() => props.error?.status === 404)
 const title = computed(() => (isNotFound.value ? t('error.notFoundTitle') : t('error.genericTitle')))
 const body = computed(() => (isNotFound.value ? t('error.notFoundBody') : t('error.genericBody')))
 
+useSeoMeta({
+  title: () => title.value,
+})
+
 function goHome() {
   clearError({ redirect: localePath('/') })
 }

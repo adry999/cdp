@@ -23,6 +23,6 @@ export async function listPublishedBlogPosts(event: H3Event, locale: 'ro' | 'en'
     slug: blogSlug(row.path),
     title: row.title,
     description: row.description,
-    date: row.date as unknown as string,
+    date: row.date,
   }))
 }

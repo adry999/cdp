@@ -71,8 +71,9 @@ const displayDate = computed(() => formatPostDate(props.post.date, locale.value 
 }
 
 .blog-prose :deep(a) {
-  color: var(--color-signal);
+  color: var(--color-ink);
   text-decoration: underline;
+  text-decoration-color: var(--color-signal);
 }
 
 .blog-prose :deep(code) {

@@ -2,7 +2,7 @@
 import { LEAD_STATUSES, leadBudgetLabel, leadStatusLabel } from '#layers/leads/domain/lead'
 import { useLeadsAdminDetail } from '#layers/leads/state/useLeadsAdminDetail'
 
-definePageMeta({ layout: 'admin' })
+definePageMeta({ layout: 'admin', i18n: false })
 
 const route = useRoute()
 const { lead, notesState, actionError, updateStatus, saveNotes, archive } = await useLeadsAdminDetail(
@@ -60,29 +60,29 @@ const NOTES_STATE_LABELS = {
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Sursă</div>
           <div class="mt-3 grid grid-cols-2 gap-4">
             <div>
-              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">Cum a aflat</div>
+              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">Cum a aflat</div>
               <div class="mt-1 text-[15px] text-muted">{{ lead.source || '—' }}</div>
             </div>
             <div>
-              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">Pagină</div>
+              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">Pagină</div>
               <div class="mt-1 text-[15px] text-muted">{{ lead.page || '—' }}</div>
             </div>
             <div>
-              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">Referrer</div>
+              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">Referrer</div>
               <div class="mt-1 truncate text-[15px] text-muted">{{ lead.referrer || '—' }}</div>
             </div>
             <div>
-              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">UTM</div>
+              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">UTM</div>
               <div class="mt-1 truncate text-[15px] text-muted">
                 {{ lead.utm ? Object.entries(lead.utm).map(([k, v]) => `${k}=${v}`).join(' · ') : '—' }}
               </div>
             </div>
             <div>
-              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">Limbă</div>
+              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">Limbă</div>
               <div class="mt-1 text-[15px] text-muted">{{ lead.lang }}</div>
             </div>
             <div>
-              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">Dată</div>
+              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">Dată</div>
               <div class="mt-1 text-[15px] text-muted">{{ new Date(lead.created_at).toLocaleString('ro-RO') }}</div>
             </div>
           </div>
@@ -119,7 +119,7 @@ const NOTES_STATE_LABELS = {
           <p
             aria-live="polite"
             class="mt-1 font-mono text-[11px] uppercase tracking-[0.08em]"
-            :class="notesState === 'error' ? 'text-signal' : 'text-muted-ink'"
+            :class="notesState === 'error' ? 'text-signal' : 'text-muted'"
           >
             {{ NOTES_STATE_LABELS[notesState] }}
           </p>

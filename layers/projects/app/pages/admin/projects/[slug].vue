@@ -6,7 +6,7 @@ import { storageKeyFromPublicUrl } from '#layers/projects/domain/storagePath'
 import { useRevalidatePublicCache } from '#layers/projects/state/useRevalidatePublicCache'
 import { SERVICE_TAG_IDS } from '#layers/core/shared/types/service-tag'
 
-definePageMeta({ layout: 'admin' })
+definePageMeta({ layout: 'admin', i18n: false })
 
 const route = useRoute()
 const slug = route.params.slug as string
@@ -255,10 +255,8 @@ async function save() {
 
 const MEDIA_BUCKET = 'project-media'
 
-// Removes cover/hero/gallery files replaced in this save. It runs only after
-// the save succeeds, because until then the published page may still serve
-// them. The RPC has already replaced this project's rows, so a URL that any
-// row still references belongs to another project, and its file is kept.
+// Runs only after the save succeeds, since the published page may still serve the old files
+// until then. A path any other row still references belongs to another project and is kept.
 async function cleanupReplacedMedia() {
   const oldPaths = [existingProject?.cover_path, existingProject?.hero_path, ...(existingProject?.project_images?.map((img) => img.path) ?? [])].filter(
     (p): p is string => !!p,
@@ -324,7 +322,7 @@ async function cleanupReplacedMedia() {
             <AdminFieldPair v-model:ro="form.cardTitle.ro" v-model:en="form.cardTitle.en" label="Titlu card (homepage)" required />
             <div>
               <AdminFieldPair v-model:ro="form.summary.ro" v-model:en="form.summary.en" label="Descriere card" textarea required />
-              <div class="mt-1 text-right font-mono text-[11px] uppercase tracking-[0.08em]" :class="summaryWarn ? 'text-signal' : 'text-muted-ink'">
+              <div class="mt-1 text-right font-mono text-[11px] uppercase tracking-[0.08em]" :class="summaryWarn ? 'text-signal' : 'text-muted'">
                 {{ form.summary.ro.length }} / 200
               </div>
             </div>

@@ -7,6 +7,7 @@ const items = useFaqs()
 
 <template>
   <SiteSection v-if="items.length" number="06" :label="t('home.faq.sectionLabel')" section-id="faq">
+    <h2 class="sr-only">{{ t('home.faq.sectionLabel') }}</h2>
     <div class="flex flex-col">
       <div
         v-for="(item, i) in items"

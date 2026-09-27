@@ -2,7 +2,7 @@
 import { storageKeyFromPublicUrl } from '#layers/projects/domain/storagePath'
 import { useRevalidatePublicCache } from '#layers/projects/state/useRevalidatePublicCache'
 
-definePageMeta({ layout: 'admin' })
+definePageMeta({ layout: 'admin', i18n: false })
 
 const supabase = useSupabaseClient()
 
@@ -90,10 +90,8 @@ async function confirmDelete(slug: string) {
     return
   }
 
-  // Deleting the project doesn't delete redirects that point *at* it — a
-  // project renamed once, then deleted, otherwise leaves a 301 chaining into
-  // a 404. save_project() does this same cleanup when a save unpublishes;
-  // deletion needs its own, since it never goes through that RPC.
+  // Deletion needs its own redirect cleanup — save_project() does it on unpublish, but
+  // delete never goes through that RPC, and would otherwise leave a 301 chaining into a 404.
   if (project) {
     await supabase
       .from('redirects')
@@ -242,13 +240,13 @@ async function duplicate(slug: string) {
             {{ opt }}
           </button>
         </div>
-        <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-ink">
+        <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
           Pe homepage: {{ featuredCount }}
         </span>
         <span
           v-if="canReorder"
           class="font-mono text-[11px] uppercase tracking-[0.08em]"
-          :class="reorderError ? 'text-signal' : 'text-muted-ink'"
+          :class="reorderError ? 'text-signal' : 'text-muted'"
         >
           {{ reorderError ? 'Ordinea nu s-a salvat — reîncearcă' : reordering ? 'Se salvează ordinea…' : 'Trage ⠿ pentru a reordona' }}
         </span>
