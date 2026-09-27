@@ -24,10 +24,8 @@ const aspectClass = computed(() => {
   return 'aspect-[16/10]'
 })
 
-// The CSS aspect-ratio box (aspectClass) already reserves layout space before
-// the image loads, so these aren't preventing CLS — they're the intrinsic
-// dimensions NuxtImg needs to size its generated srcset correctly. Match the
-// upload dimensions documented in the admin editor's own labels.
+// aspectClass already reserves layout space, so these aren't preventing CLS — they're the
+// intrinsic dimensions NuxtImg needs for its srcset, matching the admin editor's upload labels.
 const intrinsicSize = computed(() => {
   if (props.ratio === '16/9') return { width: 1600, height: 900 }
   if (props.ratio === '4/3') return { width: 1200, height: 900 }

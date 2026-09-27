@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import { useStackGroups } from '#layers/content'
 
-// Section 02 — "Stack". Four capability groups laid out as a responsive 2×2 card
-// grid, each card pairing a one-line business benefit with its tech pills. All
-// copy comes from useStackGroups(), which reads the `home.stack` i18n block —
-// nothing is hardcoded here or in layers/content/domain/stack.ts. The DB
-// `stack_groups` table does not feed this section (same split as the services
-// timeline).
-
 const { t } = useI18n()
 const groups = useStackGroups()
 
@@ -38,10 +31,7 @@ const cards = computed(() =>
         :key="card.id"
         class="flex flex-col rounded border border-hairline bg-paper p-[clamp(20px,2.5vw,28px)] transition-colors duration-200 hover:border-muted-ink"
       >
-        <header class="flex items-center gap-3">
-          <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded border border-hairline text-signal">
-            <HomeStackGroupIcon :name="card.icon" />
-          </span>
+        <header class="flex items-center">
           <h3 class="m-0 font-mono text-xs font-medium uppercase tracking-[0.08em] text-muted">
             {{ card.name }}
           </h3>

@@ -1,9 +1,5 @@
-/**
- * The element a Tab press should move to inside a focus trap, or null to let
- * the browser move focus. Shift+Tab from outside the container also wraps to
- * the last element: focus can still sit on the page behind a dialog that has
- * just opened.
- */
+// The element a Tab press should move to inside a focus trap, or null to let the browser
+// handle it; Shift+Tab from outside the container also wraps to the last element.
 export function focusTrapTarget<T>(
   items: readonly T[],
   active: T | null,

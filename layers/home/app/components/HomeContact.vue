@@ -11,10 +11,8 @@ function openQualifier() {
   nuxtApp.callHook('qualifier:open', {})
 }
 
-// The work email and phone number are deliberately never rendered into the
-// markup — not as text, not as `mailto:` / `tel:` hrefs — so crawlers and
-// cold-spam harvesters have nothing to scrape. Every visitor is routed through
-// the qualification modal, or the inline message form as a fallback.
+// Email/phone are never rendered into the markup, not even as mailto:/tel: hrefs, so
+// scrapers get nothing; visitors go through the qualification modal or the fallback form.
 const showForm = ref(false)
 </script>
 
@@ -34,7 +32,7 @@ const showForm = ref(false)
 
     <template v-if="isQualifierEnabled">
       <div class="mt-[clamp(28px,3vw,40px)] flex flex-wrap items-center gap-x-6 gap-y-3">
-        <AppButton variant="ink" @click="openQualifier">{{ t('qualifier.trigger') }}</AppButton>
+        <AppButton variant="signal" @click="openQualifier">{{ t('qualifier.trigger') }}</AppButton>
         <button
           v-if="!showForm"
           type="button"

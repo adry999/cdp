@@ -1,11 +1,7 @@
 import { SERVICE_STAGE_DEFS, type ServiceStage } from '#layers/content/domain/services'
 
-/**
- * Joins the structural stage defs (layers/content/domain/services.ts — order) with
- * their localised copy from the `home.services.stages.<id>` i18n block, producing
- * the `ServiceStage` view-models HomeServices.vue renders. All editable text
- * lives in i18n/locales/{ro,en}.json under `home.services`; nothing here.
- */
+// Joins services.ts's stage order with `home.services.stages.<id>` i18n copy into the
+// ServiceStage view-models HomeServices.vue renders.
 export function useServiceStages() {
   const { t, tm, rt } = useI18n()
 

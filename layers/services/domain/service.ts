@@ -7,11 +7,8 @@ export interface ServiceProcessStep {
   body: LocalizedText
 }
 
-/**
- * A service offering with pricing and funnel stage.
- * `priceFrom` starts null for all entries — no invented numbers per spec.
- * The page hides the price line when it's null.
- */
+// `priceFrom` starts null for all entries (no invented numbers per spec); the page hides
+// the price line when it's null.
 export interface Service {
   /** Canonical id — matches `projects.service_tag` and the admin select. Not the URL slug. */
   slug: ServiceTagId

@@ -1,23 +1,6 @@
-/**
- * Structural definition of the homepage "Process" section (section 03,
- * HomeProcess.vue): a dual-track delivery model with two pipelines shown
- * behind a toggle —
- *
- *   fast  — Fast-Track: Express builds and design-to-code.
- *   deep  — Deep Build: custom apps, refactoring and AI automations.
- *
- * ALL copy — the track badge, name, scope line, summary and every step's
- * title + body — lives in ONE place:
- *
- *     i18n/locales/{ro,en}.json  →  home.process.tracks.<id>
- *
- * Edit or add entries there. This file only owns track order + the badge tone
- * (mapped to existing theme tokens — no new colours). See useProcessTracks()
- * for how the two are joined.
- *
- * The DB `process_steps` table does not feed this section (same split as the
- * services timeline and the stack grid — see layers/content/README.md).
- */
+// Structural definition of the homepage "Process" section (HomeProcess.vue): a dual-track
+// delivery model. All copy lives in i18n/locales/{ro,en}.json under `home.process.tracks.<id>`;
+// this file only owns track order and badge tone. The DB `process_steps` table doesn't feed it.
 export type ProcessTrackId = 'fast' | 'deep'
 
 /** Badge / accent tone — resolves to an existing theme token, never a new one. */

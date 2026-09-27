@@ -6,12 +6,8 @@ interface RawProcessStep {
   body: string
 }
 
-/**
- * Joins the structural track defs (layers/content/domain/process.ts — order + badge
- * tone) with their localised copy from the `home.process.tracks.<id>` i18n block,
- * producing the `ProcessTrack` view-models HomeProcess.vue renders. All editable
- * text lives in i18n/locales/{ro,en}.json under `home.process`; nothing here.
- */
+// Joins process.ts's track order with `home.process.tracks.<id>` i18n copy into the
+// ProcessTrack view-models HomeProcess.vue renders.
 export function useProcessTracks() {
   const { t, tm, rt } = useI18n()
 

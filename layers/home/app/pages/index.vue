@@ -4,10 +4,8 @@ const config = useRuntimeConfig()
 
 const ogImage = `${config.public.siteUrl}/og-image.png`
 
-// Getters, not resolved strings: / and /en share this component, and Vue
-// Router reuses the instance across routes that render the same component,
-// so setup() doesn't re-run on a client-side locale switch. Resolved strings
-// captured the RO text once and never updated; getters stay reactive to `t`.
+// Getters, not resolved strings: / and /en share this component instance, and Vue Router
+// doesn't re-run setup() on a client-side locale switch, so a resolved string would go stale.
 useSeoMeta({
   title: () => t('seo.home.title'),
   description: () => t('seo.home.description'),

@@ -64,13 +64,8 @@ describe('validateProjectPayload', () => {
   })
 
   it('allows publishing with no gallery images', () => {
-    // There was a rule requiring 2 real gallery images before publishing —
-    // removed because all 3 currently-published projects have zero (see
-    // TODO.md: no case-study screenshots exist yet), which meant this rule
-    // blocked the admin from re-saving *any* of their real, live projects.
-    // mapProject.ts already renders a placeholder frame for an empty
-    // gallery rather than a broken <img>, so there was never a rendering
-    // reason to require this at save time.
+    // No case-study screenshots exist yet (TODO.md); mapProject.ts already renders a
+    // placeholder for an empty gallery, so publishing with none is allowed.
     const noGallery = base({ published: true, gallery: [] })
     expect(validateProjectPayload(noGallery)).toEqual([])
   })

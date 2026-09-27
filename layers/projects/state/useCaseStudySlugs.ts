@@ -3,13 +3,9 @@ export interface CaseStudySlugs {
   en: string
 }
 
-/**
- * Bridges the current project's per-locale slug pair from the page
- * (app/pages/proiecte/[slug].vue) to ProjectsCaseStudyHeader, which lives in
- * the case-study layout and has no direct access to the page's fetched data.
- * useState is SSR-safe and reactive, so the header's locale-switch links
- * update as soon as the page sets it — no prop drilling through the layout.
- */
+// Bridges the page's per-locale slug pair to ProjectsCaseStudyHeader (in the case-study
+// layout, with no direct access to the page's data) via SSR-safe useState, avoiding prop
+// drilling through the layout.
 export function useCaseStudySlugs() {
   return useState<CaseStudySlugs | null>('case-study-slugs', () => null)
 }

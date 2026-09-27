@@ -1,10 +1,8 @@
 import { serverSupabaseClient } from '#supabase/server'
 import type { Database } from '#layers/core/shared/types/database.types'
 
-// save_project() (see supabase/migrations/20260826120200_save_project_rpc.sql)
-// writes a row into `redirects` whenever a published project's slug changes;
-// this middleware serves those redirects. It only matches the two path shapes
-// the RPC writes, so other requests skip the DB round trip.
+// save_project() writes a `redirects` row when a published slug changes; this only matches
+// the two path shapes it writes, so other requests skip the DB round trip.
 const REDIRECTABLE = /^\/(proiecte\/[a-z0-9-]+|en\/work\/[a-z0-9-]+)$/
 
 export default defineEventHandler(async (event) => {

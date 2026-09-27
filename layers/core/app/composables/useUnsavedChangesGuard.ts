@@ -1,12 +1,5 @@
-/**
- * Warns before leaving a form with unsaved edits (back button, tab close,
- * route change). `form` is any reactive object; comparison is a JSON snapshot
- * diff rather than a manual per-field dirty flag, so it stays correct as
- * fields are added.
- *
- * Call `markSaved()` after a successful save so the guard doesn't immediately
- * re-trigger on the state a save just produced.
- */
+// Compares a JSON snapshot rather than a manual per-field dirty flag, so new fields stay
+// covered automatically. Call `markSaved()` after a successful save.
 export function useUnsavedChangesGuard(form: object) {
   let savedSnapshot = JSON.stringify(form)
   const isDirty = computed(() => JSON.stringify(form) !== savedSnapshot)

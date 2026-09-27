@@ -3,24 +3,23 @@ import type { ComponentPublicInstance } from 'vue'
 import type { StageId } from '#layers/core/shared/types/service-stage'
 import { useQualifierAvailability } from '#layers/qualifier'
 import { useServiceStages } from '#layers/content'
+import { SERVICE_LINKS } from '#layers/services'
 
-// Section 01 — the "growth timeline". Five milestone nodes on an animated
-// connector line (horizontal ≥768px, vertical below), one per qualifier stage.
-// Clicking a node expands a detail card; its CTA emits qualifier:open with that
-// stage. All copy comes from useServiceStages(), which reads the
-// `home.services` i18n block — nothing is hardcoded here or in
-// layers/content/domain/services.ts.
-//
-// The connector is drawn with CSS transforms, not an SVG-path library — the
-// project ships no animation dependency and Framer Motion is React-only.
+// The connector line is drawn with CSS transforms rather than an SVG-path library —
+// the project ships no animation dependency.
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
+const localePath = useLocalePath()
 const nuxtApp = useNuxtApp()
 const { isQualifierEnabled } = useQualifierAvailability()
 const stages = useServiceStages()
 
 const active = ref(0)
 const activeStage = computed(() => stages.value[active.value]!)
+// Stages B and C currently have no matching service page, so they render none.
+function relatedServicesFor(stageId: StageId) {
+  return SERVICE_LINKS.filter((service) => service.qualifierStage === stageId)
+}
 const mounted = ref(false)
 const drawn = ref(false)
 
@@ -133,15 +132,13 @@ onMounted(() => {
         <span
           class="dot relative z-[1] flex h-11 w-11 shrink-0 items-center justify-center rounded-full border bg-paper transition duration-200"
           :class="idx === active ? 'scale-[1.15] border-signal text-signal' : 'border-hairline text-muted'"
-        >
-          <CoreStageIcon :stage="stage.id" />
-        </span>
+        />
         <span class="flex min-w-0 flex-col gap-0.5 md:items-center">
           <span :id="`svc-tab-${stage.id}-prefix`" class="sr-only">{{ t('home.services.stageWord') }}</span
           >{{ ' ' }}<span
             :id="`svc-tab-${stage.id}-step`"
             class="font-mono text-[11px] tabular-nums tracking-[0.08em]"
-            :class="idx === active ? 'text-signal' : 'text-muted-ink'"
+            :class="idx === active ? 'text-ink' : 'text-muted'"
           >
             {{ String(idx + 1).padStart(2, '0') }}
           </span
@@ -156,57 +153,61 @@ onMounted(() => {
       </button>
     </div>
 
-    <Transition name="svc-panel" mode="out-in">
-      <div
-        :id="`svc-panel-${activeStage.id}`"
-        :key="activeStage.id"
-        role="tabpanel"
-        :aria-labelledby="`svc-tab-${activeStage.id}`"
-        tabindex="0"
-        class="mt-[clamp(24px,3vw,36px)] rounded border border-hairline p-[clamp(20px,2.5vw,28px)]"
-      >
-        <div class="flex flex-wrap items-baseline justify-between gap-3">
-          <h3 class="m-0 font-mono text-[clamp(18px,2.2vw,22px)] font-medium uppercase leading-tight tracking-[0.04em] text-signal">
-            {{ activeStage.name }}
-          </h3>
-          <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ activeStage.priceTime }}</span>
-        </div>
+    <div class="relative mt-[clamp(24px,3vw,36px)]">
+      <Transition v-for="stage in stages" :key="stage.id" name="svc-panel">
+        <div
+          v-show="stage.id === activeStage.id"
+          :id="`svc-panel-${stage.id}`"
+          role="tabpanel"
+          :aria-labelledby="`svc-tab-${stage.id}`"
+          :tabindex="stage.id === activeStage.id ? 0 : -1"
+          class="rounded border border-hairline p-[clamp(20px,2.5vw,28px)]"
+        >
+          <div class="flex flex-wrap items-baseline justify-between gap-3">
+            <h3 class="m-0 flex items-center gap-2 font-mono text-[clamp(18px,2.2vw,22px)] font-medium uppercase leading-tight tracking-[0.04em] text-ink">
+              <span aria-hidden="true" class="inline-block h-2 w-2 shrink-0 rounded-full bg-signal" />
+              {{ stage.name }}
+            </h3>
+            <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ stage.priceTime }}</span>
+          </div>
 
-        <div class="mt-6 flex flex-col">
-          <TableRow :label="t('home.services.whereYouAreLabel')" label-width="150px">
-            <p class="m-0 max-w-[58ch] text-base text-muted">{{ activeStage.whereYouAre }}</p>
-          </TableRow>
-          <TableRow :label="t('home.services.whatYouGetLabel')" label-width="150px" :last="true">
-            <p class="m-0 max-w-[58ch] text-base">{{ activeStage.whatYouGet }}</p>
-          </TableRow>
-        </div>
+          <div class="mt-6 flex flex-col">
+            <TableRow :label="t('home.services.whereYouAreLabel')" label-width="150px">
+              <p class="m-0 max-w-[58ch] text-base text-muted">{{ stage.whereYouAre }}</p>
+            </TableRow>
+            <TableRow :label="t('home.services.whatYouGetLabel')" label-width="150px" :last="true">
+              <p class="m-0 max-w-[58ch] text-base">{{ stage.whatYouGet }}</p>
+            </TableRow>
+          </div>
 
-        <div class="mt-5 flex flex-wrap gap-2">
-          <TechChip v-for="badge in activeStage.badges" :key="badge" :label="badge" />
-        </div>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <TechChip v-for="badge in stage.badges" :key="badge" :label="badge" />
+          </div>
 
-        <div class="mt-6">
-          <AppButton variant="signal" @click="startAt(activeStage.id)">
-            {{ activeStage.cta }}
-          </AppButton>
+          <div class="mt-6 flex flex-wrap items-center gap-5">
+            <AppButton variant="signal" @click="startAt(stage.id)">
+              {{ stage.cta }}
+            </AppButton>
+            <NuxtLink
+              v-for="service in relatedServicesFor(stage.id)"
+              :key="service.slug"
+              :to="localePath({ name: 'servicii-slug', params: { slug: service.routeSlug[locale] } })"
+              class="font-mono text-xs uppercase tracking-[0.08em] text-muted hover:text-signal"
+            >
+              {{ pick(service.name.ro, service.name.en, locale) }} →
+            </NuxtLink>
+          </div>
         </div>
-      </div>
-    </Transition>
+      </Transition>
+    </div>
 
     <p class="mb-0 mt-5 font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ t('home.services.note') }}</p>
   </SiteSection>
 </template>
 
 <style scoped>
-/* Connector segment: links the previous node's dot centre to this node's. It is
-   a static hairline (the stages aren't a sequence, so it never fills) — this
-   only owns geometry + the one-time draw-in. Vertical by default, horizontal
-   from the md breakpoint up.
-
-   21px = half the 44px dot (h-11/w-11) minus half the 2px line, so the segment
-   sits dead-centre on the dots in both orientations. The dots carry no offset
-   padding on either axis, so this stays true; selecting a dot scales it about
-   its own centre and does not move that centre. */
+/* Connector segment linking dot centres. 21px = half the 44px dot minus half the 2px line, so
+   it stays centred on the dots (which scale in place and never offset). */
 .seg {
   position: absolute;
   left: 21px;
@@ -237,8 +238,7 @@ onMounted(() => {
   transition: transform 0.45s ease;
 }
 
-.svc-panel-enter-active,
-.svc-panel-leave-active {
+.svc-panel-enter-active {
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
@@ -249,11 +249,6 @@ onMounted(() => {
   transform: translateY(8px);
 }
 
-.svc-panel-leave-to {
-  opacity: 0;
-  transform: translateY(-8px);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .timeline.js .seg,
   .timeline.js.is-drawn .seg {
@@ -261,13 +256,11 @@ onMounted(() => {
     transition: none;
   }
 
-  .svc-panel-enter-active,
-  .svc-panel-leave-active {
+  .svc-panel-enter-active {
     transition: opacity 0.12s ease;
   }
 
-  .svc-panel-enter-from,
-  .svc-panel-leave-to {
+  .svc-panel-enter-from {
     transform: none;
   }
 }

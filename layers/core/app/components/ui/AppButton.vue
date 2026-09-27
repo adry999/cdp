@@ -21,7 +21,9 @@ const variantClass = computed(() => {
       ? `${base} border border-paper px-[21px] py-[13px] text-paper hover:border-body-ink hover:text-paper`
       : `${base} border border-ink px-[21px] py-[13px] text-ink hover:border-muted hover:text-ink`
   }
-  // Solid buttons (`ink` and `signal`) share one look: orange fill, ink on hover.
+  if (props.variant === 'ink') {
+    return `${base} bg-ink px-[22px] py-[14px] text-paper hover:bg-signal hover:text-paper`
+  }
   return `${base} bg-signal px-[22px] py-[14px] text-paper hover:bg-ink hover:text-paper`
 })
 

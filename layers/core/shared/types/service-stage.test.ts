@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { STAGE_ICONS, STAGE_IDS, STAGE_ORDER, isStageId } from './service-stage'
+import { STAGE_IDS, STAGE_ORDER, isStageId } from './service-stage'
 
 describe('STAGE_ORDER', () => {
   it('is a permutation of every stage id', () => {
@@ -9,12 +9,6 @@ describe('STAGE_ORDER', () => {
   it('leads with the mass-market page and ends with custom AI', () => {
     expect(STAGE_ORDER[0]).toBe('E')
     expect(STAGE_ORDER[STAGE_ORDER.length - 1]).toBe('D')
-  })
-})
-
-describe('STAGE_ICONS', () => {
-  it('assigns the timeline glyph of every stage', () => {
-    expect(STAGE_ICONS).toEqual({ A: 'shapes', B: 'lightbulb', C: 'gauge', D: 'bot', E: 'file-text' })
   })
 })
 

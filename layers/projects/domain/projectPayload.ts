@@ -1,9 +1,5 @@
-/**
- * Validation shared by the admin editor and the server route that persists it.
- * The public project API only resolves slugs matching SLUG_RE, so anything the
- * editor accepts outside that pattern would publish a guaranteed 404.
- */
-
+// Validation shared by the admin editor and the server route that persists it — the public
+// API only resolves slugs matching SLUG_RE, so anything else the editor accepts 404s live.
 import { isServiceTagId } from '#layers/core/shared/types/service-tag'
 
 export const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
@@ -59,10 +55,7 @@ const REQUIRED_RO: [keyof ProjectPayloadInput, string][] = [
   ['contextHeading', 'Titlu context'],
 ]
 
-/**
- * Returns every problem at once rather than the first, so the editor can mark
- * all offending fields in a single pass.
- */
+// Returns every problem at once rather than the first, so the editor can mark all offending fields in one pass.
 export function validateProjectPayload(input: ProjectPayloadInput): ValidationIssue[] {
   const issues: ValidationIssue[] = []
 
