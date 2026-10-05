@@ -1,15 +1,5 @@
 <script setup lang="ts">
-import { useQualifierAvailability } from '#layers/qualifier'
-
 const { t } = useI18n()
-const localePath = useLocalePath()
-const nuxtApp = useNuxtApp()
-const { isQualifierEnabled } = useQualifierAvailability()
-
-// No stage preselected: this CTA is for visitors who don't know which one fits.
-function openQualifier() {
-  nuxtApp.callHook('qualifier:open', {})
-}
 </script>
 
 <template>
@@ -21,12 +11,8 @@ function openQualifier() {
       {{ t('services.index.cta.body') }}
     </p>
     <div class="mt-7">
-      <AppButton v-if="isQualifierEnabled" variant="signal" @click="openQualifier">
-        {{ t('services.index.cta.button') }}
-      </AppButton>
-      <AppButton v-else variant="signal" :href="`${localePath('index')}#contact`">
-        {{ t('services.index.cta.button') }}
-      </AppButton>
+      <!-- No stage preselected: this CTA is for visitors who don't know which one fits. -->
+      <QualifierCta variant="signal">{{ t('services.index.cta.button') }}</QualifierCta>
     </div>
   </SiteSection>
 </template>

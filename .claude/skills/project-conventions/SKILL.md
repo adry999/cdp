@@ -44,9 +44,9 @@ Un modul = un Nuxt layer în `layers/<nume>/`. Nuxt îl înregistrează automat,
 | `leads` | formularul de contact, `POST /api/leads`, paginile admin de solicitări | `core` |
 | `qualifier` | modalul de calificare, `POST /api/contact` | `core`, `#layers/leads/server` |
 | `content` | servicii, stack, proces, despre (definiții + i18n), FAQ și setări (fișiere tipate în `data/`, editate manual) | `core` |
-| `projects` | studii de caz publice, `GET /api/projects*`, paginile admin de proiecte, redirect-uri de slug, revalidarea cache-ului | `core`, `#layers/qualifier` (doar `useQualifierAvailability`), `#layers/content` (doar `useSiteSettings`) |
-| `home` | ruta `/` și secțiunile `Home*` | `core`, `#layers/content`, `#layers/projects`, `#layers/qualifier` (doar `useQualifierAvailability`), `#layers/leads` (doar `LeadsContactForm`) |
-| `services` | indexul `/servicii` și cele 6 pagini `/servicii/[slug]`, fără admin, fără tabel — conținut manual în `data/services.ts` | `core`, `#layers/projects` (studii de caz legate), `#layers/qualifier` (doar `useQualifierAvailability`), `#layers/content` (doar `useServiceStages`) |
+| `projects` | studii de caz publice, `GET /api/projects*`, paginile admin de proiecte, redirect-uri de slug, revalidarea cache-ului | `core`, `#layers/qualifier` (doar `useQualifierAvailability` și `QualifierCta`), `#layers/content` (doar `useSiteSettings`) |
+| `home` | ruta `/` și secțiunile `Home*` | `core`, `#layers/content`, `#layers/projects`, `#layers/qualifier` (doar `useQualifierAvailability` și `QualifierCta`), `#layers/leads` (doar `LeadsContactForm`) |
+| `services` | indexul `/servicii` și cele 6 pagini `/servicii/[slug]`, fără admin, fără tabel — conținut manual în `data/services.ts` | `core`, `#layers/projects` (studii de caz legate), `#layers/qualifier` (doar `useQualifierAvailability` și `QualifierCta`), `#layers/content` (doar `useServiceStages`) |
 
 ### Unde intră un feature nou
 
@@ -145,21 +145,12 @@ Butonul unei etape din secțiunea de servicii deschide calificarea fără să im
 <!-- layers/home/app/components/HomeServiceStageCta.vue -->
 <script setup lang="ts">
 import type { StageId } from '#layers/core/shared/types/service-stage'
-import { useQualifierAvailability } from '#layers/qualifier'
 
-const props = defineProps<{ stageId: StageId; label: string }>()
-const nuxtApp = useNuxtApp()
-const localePath = useLocalePath()
-const { isQualifierEnabled } = useQualifierAvailability()
-
-function openQualifierAtStage() {
-  nuxtApp.callHook('qualifier:open', { stage: props.stageId })
-}
+defineProps<{ stageId: StageId; label: string }>()
 </script>
 
 <template>
-  <AppButton v-if="isQualifierEnabled" variant="signal" @click="openQualifierAtStage">{{ label }}</AppButton>
-  <AppButton v-else variant="signal" :href="`${localePath('/')}#contact`">{{ label }}</AppButton>
+  <QualifierCta variant="signal" :stage="stageId">{{ label }}</QualifierCta>
 </template>
 ```
 
@@ -193,3 +184,4 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-09-15: FAQ-ul și setările site-ului sunt fișiere tipate în `layers/content/data/`, editate manual; paginile admin Servicii, Întrebări, Setări și `GET /api/home` sunt șterse, tabelele rămân nefolosite în bază — decizia utilizatorului, spec, ajustările pasului 6.
 - 2026-09-21: `projects` poate importa `content` (`useSiteSettings`, pentru nota NDA sub grila `/proiecte`, la fel ca pe homepage) — spec „Portfolio index", secțiunea `/proiecte`.
 - 2026-10-05: `services` poate importa `content` (`useServiceStages`), ca indexul `/servicii` să folosească același text al etapelor ca homepage-ul — DE_IMPLEMENTAT.md, punctul 2.
+- 2026-10-06: Butonul de calificare e componenta QualifierCta din qualifier; home, projects și services o folosesc în loc să repete logica — audit 2026-10-06.

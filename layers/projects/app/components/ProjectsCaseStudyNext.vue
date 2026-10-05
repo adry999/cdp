@@ -1,20 +1,9 @@
 <script setup lang="ts">
 import { mapProjectCard, type MappedProject, type ProjectCardRow } from '#layers/projects/domain/mapProject'
-import { useQualifierAvailability } from '#layers/qualifier'
 
 const props = defineProps<{ project: MappedProject }>()
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
-
-// No `mailto:` here on purpose — the work email is never put into markup.
-// The primary action is the qualification modal, with the homepage contact
-// section as the fallback when the modal is disabled.
-const nuxtApp = useNuxtApp()
-const { isQualifierEnabled } = useQualifierAvailability()
-
-function openQualifier() {
-  nuxtApp.callHook('qualifier:open', {})
-}
 
 const { data: rows } = await useAsyncData<ProjectCardRow[]>('projects', () => $fetch('/api/projects'))
 
@@ -34,12 +23,8 @@ const otherProjects = computed(() =>
       {{ t('caseStudy.nextTitle') }}
     </h2>
     <div class="mt-[clamp(20px,2.5vw,32px)]">
-      <AppButton v-if="isQualifierEnabled" variant="signal" @click="openQualifier">
-        {{ t('caseStudy.cta') }}
-      </AppButton>
-      <AppButton v-else :href="`${localePath('index')}#contact`" variant="signal">
-        {{ t('caseStudy.cta') }}
-      </AppButton>
+      <!-- No mailto: on purpose — the work email is never put into markup. -->
+      <QualifierCta variant="signal">{{ t('caseStudy.cta') }}</QualifierCta>
     </div>
     <template v-if="otherProjects.length">
       <div class="mt-[clamp(40px,5vw,64px)] font-mono text-xs uppercase tracking-[0.08em] text-muted-ink">

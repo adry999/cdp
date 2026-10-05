@@ -4,12 +4,7 @@ import { useSiteSettings } from '#layers/content'
 
 const { t } = useI18n()
 const settings = useSiteSettings()
-const nuxtApp = useNuxtApp()
 const { isQualifierEnabled } = useQualifierAvailability()
-
-function openQualifier() {
-  nuxtApp.callHook('qualifier:open', {})
-}
 
 // Email/phone are never rendered into the markup, not even as mailto:/tel: hrefs, so
 // scrapers get nothing; visitors go through the qualification modal or the fallback form.
@@ -32,7 +27,7 @@ const showForm = ref(false)
 
     <template v-if="isQualifierEnabled">
       <div class="mt-[clamp(28px,3vw,40px)] flex flex-wrap items-center gap-x-6 gap-y-3">
-        <AppButton variant="signal" @click="openQualifier">{{ t('qualifier.trigger') }}</AppButton>
+        <QualifierCta variant="signal">{{ t('qualifier.trigger') }}</QualifierCta>
         <button
           v-if="!showForm"
           type="button"

@@ -4,7 +4,7 @@ Multi-step qualification modal (stage → budget → contact) that routes a visi
 
 ## Public API — `index.ts`
 
-- `useQualifierAvailability()` → `{ isQualifierEnabled: ComputedRef<boolean> }`. Callers use it to choose between opening the qualifier and their own fallback (an anchor link, the inline contact form). It is the only symbol another module may import from this layer.
+- `useQualifierAvailability()` → `{ isQualifierEnabled: ComputedRef<boolean> }`. Callers use it to choose between opening the qualifier and their own fallback (an anchor link, the inline contact form). Besides `QualifierCta`, it is the only symbol another module may import from this layer.
 
 There is no `server/index.ts`: nothing outside this layer uses its server code.
 
@@ -18,6 +18,7 @@ There is no `server/index.ts`: nothing outside this layer uses its server code.
 
 ## Components
 
+- `QualifierCta` — the call-to-action other modules place instead of hand-rolling the flag check. Props: `variant` (`ink` | `signal` | `outline`, default `ink`), `stage?: StageId` (preselects the stage), `fallbackHref?` (target when the qualifier is off; defaults to the homepage `#contact` anchor via `localePath('index')`). The default slot is the label; other attrs (class) fall through to the `AppButton`. Auto-imported, like every layer component.
 - `QualifierModal` — dialog shell: focus trap, Escape, scroll lock; mounted once in `app/layouts/default.vue`.
 - `QualifierStepStage`, `QualifierStepBudget`, `QualifierStepContact`, `QualifierOptionCard` — the three steps and their radio card.
 

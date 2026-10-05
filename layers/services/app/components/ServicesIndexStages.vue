@@ -1,23 +1,16 @@
 <script setup lang="ts">
 import type { StageId } from '#layers/core/shared/types/service-stage'
 import { useServiceStages } from '#layers/content'
-import { useQualifierAvailability } from '#layers/qualifier'
 import { SERVICE_LINKS } from '#layers/services/data/serviceLinks'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
-const nuxtApp = useNuxtApp()
-const { isQualifierEnabled } = useQualifierAvailability()
 const stages = useServiceStages()
 
 // Same grouping as the homepage timeline: a service page is listed under the stage
 // its `qualifierStage` names, so stages without a matching page list none.
 function servicesFor(stageId: StageId) {
   return SERVICE_LINKS.filter((service) => service.qualifierStage === stageId)
-}
-
-function startAt(stage: StageId) {
-  nuxtApp.callHook('qualifier:open', { stage })
 }
 </script>
 
@@ -55,12 +48,7 @@ function startAt(stage: StageId) {
         </li>
       </ul>
       <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-4">
-        <AppButton v-if="isQualifierEnabled" variant="ink" @click="startAt(stage.id)">
-          {{ stage.cta }}
-        </AppButton>
-        <AppButton v-else variant="ink" :href="`${localePath('index')}#contact`">
-          {{ stage.cta }}
-        </AppButton>
+        <QualifierCta variant="ink" :stage="stage.id">{{ stage.cta }}</QualifierCta>
         <NuxtLink
           v-for="service in servicesFor(stage.id)"
           :key="service.slug"
