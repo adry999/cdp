@@ -26,9 +26,9 @@ const otherProjects = computed(() =>
 </script>
 
 <template>
-  <SiteSection number="" :label="t('caseStudy.sections.next')" inverted padding-y="clamp(48px,7vw,104px)">
+  <SiteSection inverted padding="lg">
     <template #label>
-      <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted-ink">{{ t('caseStudy.sections.next') }}</div>
+      <SectionLabel :label="t('caseStudy.sections.next')" inverted class="block" />
     </template>
     <h2 class="m-0 max-w-[22ch] text-[clamp(26px,3.4vw,40px)] font-semibold leading-[1.1] tracking-[-0.025em]">
       {{ t('caseStudy.nextTitle') }}

@@ -28,10 +28,7 @@ const PLAN_IDS = ['maintenance', 'continuous'] as const
 
 <template>
   <div>
-    <SiteSection number="" label="" padding-y="clamp(48px,6vw,96px)">
-      <template #label>
-        <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ t('pricing.included.label') }}</span>
-      </template>
+    <SiteSection :label="t('pricing.included.label')">
       <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-x-6 gap-y-8">
         <div v-for="item in included" :key="item.title">
           <h3 class="m-0 text-lg font-medium tracking-[-0.02em]">{{ item.title }}</h3>
@@ -40,10 +37,7 @@ const PLAN_IDS = ['maintenance', 'continuous'] as const
       </div>
     </SiteSection>
 
-    <SiteSection number="" label="" padding-y="clamp(48px,6vw,96px)">
-      <template #label>
-        <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ t('pricing.afterLaunch.label') }}</span>
-      </template>
+    <SiteSection :label="t('pricing.afterLaunch.label')">
       <h2 class="m-0 max-w-[28ch] text-[clamp(24px,3vw,34px)] font-medium leading-[1.15] tracking-[-0.02em]">
         {{ t('pricing.afterLaunch.title') }}
       </h2>
@@ -61,10 +55,7 @@ const PLAN_IDS = ['maintenance', 'continuous'] as const
       <p class="m-0 mt-6 max-w-[68ch] text-sm text-muted">{{ t('pricing.afterLaunch.warrantyNote') }}</p>
     </SiteSection>
 
-    <SiteSection number="" label="" padding-y="clamp(48px,6vw,96px)">
-      <template #label>
-        <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ t('pricing.faq.label') }}</span>
-      </template>
+    <SiteSection :label="t('pricing.faq.label')">
       <div class="flex flex-col border-b border-hairline">
         <div
           v-for="item in faq"

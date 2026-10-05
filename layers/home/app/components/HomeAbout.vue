@@ -6,7 +6,7 @@ const pillars = useAboutPillars()
 </script>
 
 <template>
-  <SiteSection number="05" :label="t('home.about.sectionLabel')" inverted padding="ink">
+  <SiteSection number="05" :label="t('home.about.sectionLabel')" inverted padding="xl">
     <h2 class="m-0 max-w-[24ch] text-[clamp(26px,3.4vw,40px)] font-medium leading-[1.12] tracking-[-0.025em]">
       {{ t('home.about.title') }}
     </h2>

@@ -60,45 +60,36 @@ if (import.meta.client && phrases.length > 1) {
 </script>
 
 <template>
-  <section id="top" class="scroll-mt-16">
-    <div
-      class="mx-auto flex max-w-[1280px] flex-wrap gap-[clamp(24px,4vw,48px)] px-gutter pb-[clamp(40px,5vw,72px)] pt-[clamp(48px,8vw,120px)]"
-    >
-      <div class="flex-[0_0_160px]">
-        <SectionLabel number="00" :label="t('home.hero.sectionLabel')" />
+  <div>
+    <SiteSection section-id="top" number="00" :label="t('home.hero.sectionLabel')" padding="hero" :top-border="false">
+      <h1 class="sr-only">{{ phrases[0] }} {{ t('home.hero.titleSuffix') }}</h1>
+      <div
+        class="m-0 max-w-[20ch] text-[clamp(34px,6vw,64px)] font-semibold leading-[1.04] tracking-[-0.025em] text-pretty"
+        aria-hidden="true"
+      >
+        <span class="grid min-h-[2.1em] items-end">
+          <span class="font-mono font-medium tracking-normal"
+            >{{ typed }}<span class="hero-caret bg-signal" aria-hidden="true"
+          /></span>
+        </span>
+        <span class="block">{{ t('home.hero.titleSuffix') }}</span>
       </div>
-      <div class="min-w-0 flex-[1_1_560px]">
-        <h1 class="sr-only">{{ phrases[0] }} {{ t('home.hero.titleSuffix') }}</h1>
-        <div
-          class="m-0 max-w-[20ch] text-[clamp(34px,6vw,64px)] font-semibold leading-[1.04] tracking-[-0.025em]"
-          style="text-wrap: pretty"
-          aria-hidden="true"
-        >
-          <span class="grid min-h-[2.1em] items-end">
-            <span class="font-mono font-medium tracking-normal"
-              >{{ typed }}<span class="hero-caret bg-signal" aria-hidden="true"
-            /></span>
-          </span>
-          <span class="block">{{ t('home.hero.titleSuffix') }}</span>
-        </div>
-        <p
-          class="mt-[clamp(20px,2.6vw,28px)] max-w-[42ch] text-[clamp(20px,2.2vw,26px)] font-medium leading-[1.2] tracking-[-0.02em] text-ink"
-          style="text-wrap: pretty"
-        >
-          {{ t('home.hero.problem') }}
-        </p>
-        <p class="mt-[clamp(20px,2.6vw,28px)] max-w-[62ch] text-[clamp(16px,1.4vw,18px)] text-muted">
-          {{ t('home.hero.lead') }}
-        </p>
-        <div class="mt-[clamp(28px,3vw,40px)] flex flex-wrap gap-3">
-          <AppButton v-if="isQualifierEnabled" variant="ink" @click="openQualifier">
-            {{ t('home.hero.ctaPrimary') }}
-          </AppButton>
-          <AppButton v-else href="#contact" variant="ink">{{ t('home.hero.ctaPrimary') }}</AppButton>
-          <AppButton href="#proces" variant="outline">{{ t('home.hero.ctaSecondary') }}</AppButton>
-        </div>
+      <p
+        class="mt-[clamp(20px,2.6vw,28px)] max-w-[42ch] text-[clamp(20px,2.2vw,26px)] font-medium leading-[1.2] tracking-[-0.02em] text-ink text-pretty"
+      >
+        {{ t('home.hero.problem') }}
+      </p>
+      <p class="mt-[clamp(20px,2.6vw,28px)] max-w-[62ch] text-[clamp(16px,1.4vw,18px)] text-muted">
+        {{ t('home.hero.lead') }}
+      </p>
+      <div class="mt-[clamp(28px,3vw,40px)] flex flex-wrap gap-3">
+        <AppButton v-if="isQualifierEnabled" variant="ink" @click="openQualifier">
+          {{ t('home.hero.ctaPrimary') }}
+        </AppButton>
+        <AppButton v-else href="#contact" variant="ink">{{ t('home.hero.ctaPrimary') }}</AppButton>
+        <AppButton href="#proces" variant="outline">{{ t('home.hero.ctaSecondary') }}</AppButton>
       </div>
-    </div>
+    </SiteSection>
     <div class="mx-auto max-w-[1280px] px-gutter pb-[clamp(40px,5vw,64px)]">
       <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
         <FactCard :label="t('home.hero.facts.location')" :value="t('home.hero.facts.locationValue')" />
@@ -106,7 +97,7 @@ if (import.meta.client && phrases.length > 1) {
         <FactCard :label="t('home.hero.facts.stack')" :value="t('home.hero.facts.stackValue')" />
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <style scoped>

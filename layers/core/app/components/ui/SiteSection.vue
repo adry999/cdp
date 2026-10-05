@@ -1,29 +1,28 @@
 <script setup lang="ts">
-type Padding = 'hero' | 'default' | 'ink'
+const PADDING_CLASSES = {
+  xs: 'py-[clamp(36px,5vw,64px)]',
+  sm: 'py-[clamp(40px,5vw,72px)]',
+  md: 'py-[clamp(40px,6vw,88px)]',
+  default: 'py-[clamp(48px,6vw,96px)]',
+  lg: 'py-[clamp(48px,7vw,104px)]',
+  xl: 'py-[clamp(56px,7vw,112px)]',
+  '2xl': 'py-[clamp(64px,10vw,140px)]',
+  hero: 'pt-[clamp(48px,8vw,120px)] pb-[clamp(40px,5vw,72px)]',
+  heroCompact: 'pt-[clamp(40px,7vw,96px)] pb-[clamp(32px,4vw,56px)]',
+} as const
+
+type Padding = keyof typeof PADDING_CLASSES
 
 const props = withDefaults(
   defineProps<{
-    number: string
-    label: string
+    number?: string
+    label?: string
     sectionId?: string
     inverted?: boolean
     padding?: Padding
-    /** Raw clamp() value, overrides `padding` when set (for one-off section paddings). */
-    paddingY?: string
     topBorder?: boolean
   }>(),
-  { sectionId: undefined, inverted: false, padding: 'default', paddingY: undefined, topBorder: true },
-)
-
-const paddingClass = computed(() => {
-  if (props.paddingY) return undefined
-  if (props.padding === 'hero') return 'pt-[clamp(48px,8vw,120px)] pb-[clamp(40px,5vw,72px)]'
-  if (props.padding === 'ink') return 'py-[clamp(56px,7vw,112px)]'
-  return 'py-[clamp(48px,6vw,96px)]'
-})
-
-const paddingStyle = computed(() =>
-  props.paddingY ? { paddingTop: props.paddingY, paddingBottom: props.paddingY } : undefined,
+  { number: undefined, label: undefined, sectionId: undefined, inverted: false, padding: 'default', topBorder: true },
 )
 
 const showTopBorder = computed(() => props.topBorder && !props.inverted)
@@ -40,12 +39,11 @@ const showTopBorder = computed(() => props.topBorder && !props.inverted)
   >
     <div
       class="mx-auto flex max-w-[1280px] flex-wrap gap-[clamp(24px,4vw,48px)] px-gutter"
-      :class="paddingClass"
-      :style="paddingStyle"
+      :class="PADDING_CLASSES[padding]"
     >
       <div class="flex-[0_0_160px]">
         <slot name="label">
-          <SectionLabel :number="number" :label="label" :inverted="inverted" />
+          <SectionLabel v-if="label" :number="number" :label="label" :inverted="inverted" />
         </slot>
       </div>
       <div class="min-w-0 flex-[1_1_560px]">

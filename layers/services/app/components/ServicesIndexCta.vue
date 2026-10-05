@@ -13,8 +13,7 @@ function openQualifier() {
 </script>
 
 <template>
-  <SiteSection number="" label="" inverted padding-y="clamp(48px,6vw,96px)">
-    <template #label><span /></template>
+  <SiteSection inverted>
     <h2 class="m-0 max-w-[24ch] text-[clamp(26px,3.4vw,40px)] font-medium leading-[1.12] tracking-[-0.025em]">
       {{ t('services.index.cta.title') }}
     </h2>

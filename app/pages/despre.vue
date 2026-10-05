@@ -14,8 +14,8 @@ usePageSeo({
 
 <template>
   <div>
-    <SiteSection number="—" :label="t('home.about.sectionLabel')" inverted padding="ink">
-      <h1 class="m-0 max-w-[18ch] text-[clamp(34px,5.4vw,60px)] font-semibold leading-[1.04] tracking-[-0.025em]" style="text-wrap: pretty">
+    <SiteSection number="—" :label="t('home.about.sectionLabel')" inverted padding="xl">
+      <h1 class="m-0 max-w-[18ch] text-[clamp(34px,5.4vw,60px)] font-semibold leading-[1.04] tracking-[-0.025em] text-pretty">
         {{ t('home.about.title') }}
       </h1>
       <p class="mt-[clamp(20px,2.6vw,28px)] max-w-[62ch] text-[clamp(16px,1.4vw,18px)] leading-relaxed text-body-ink">
@@ -23,10 +23,7 @@ usePageSeo({
       </p>
     </SiteSection>
 
-    <SiteSection number="" label="" padding-y="clamp(48px,6vw,96px)">
-      <template #label>
-        <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ t('about.principlesLabel') }}</span>
-      </template>
+    <SiteSection :label="t('about.principlesLabel')">
       <div class="flex flex-col border-b border-hairline">
         <div
           v-for="pillar in pillars"

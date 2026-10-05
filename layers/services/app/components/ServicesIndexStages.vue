@@ -25,9 +25,7 @@ function startAt(stage: StageId) {
   <SiteSection
     v-for="(stage, i) in stages"
     :key="stage.id"
-    :number="String(i + 1).padStart(2, '0')"
-    :label="t('home.services.stageWord')"
-    padding-y="clamp(36px,5vw,64px)"
+    padding="xs"
   >
     <template #label>
       <span class="font-mono text-[clamp(32px,4vw,48px)] font-medium leading-none text-signal">
@@ -44,11 +42,11 @@ function startAt(stage: StageId) {
       <div class="mt-6 grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-6">
         <div>
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ t('home.services.whereYouAreLabel') }}</div>
-          <p class="m-0 mt-2.5 text-base text-muted" style="text-wrap: pretty">{{ stage.whereYouAre }}</p>
+          <p class="m-0 mt-2.5 text-base text-muted text-pretty">{{ stage.whereYouAre }}</p>
         </div>
         <div>
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ t('home.services.whatYouGetLabel') }}</div>
-          <p class="m-0 mt-2.5 text-base" style="text-wrap: pretty">{{ stage.whatYouGet }}</p>
+          <p class="m-0 mt-2.5 text-base text-pretty">{{ stage.whatYouGet }}</p>
         </div>
       </div>
       <ul class="m-0 mt-6 flex list-none flex-wrap gap-2 p-0">

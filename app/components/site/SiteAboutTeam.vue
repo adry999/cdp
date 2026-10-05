@@ -6,10 +6,7 @@ const PLACEHOLDER_COUNT = 3
 </script>
 
 <template>
-  <SiteSection number="" label="" padding-y="clamp(48px,6vw,96px)">
-    <template #label>
-      <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ t('about.team.label') }}</span>
-    </template>
+  <SiteSection :label="t('about.team.label')">
     <h2 class="m-0 max-w-[28ch] text-[clamp(24px,3vw,34px)] font-medium leading-[1.15] tracking-[-0.02em]">
       {{ t('about.team.title') }}
     </h2>

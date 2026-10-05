@@ -12,7 +12,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <SiteSection :number="number" :label="label" padding-y="clamp(40px,6vw,88px)">
+  <SiteSection :number="number" :label="label" padding="md">
     <h2 class="m-0 max-w-[28ch] text-[clamp(24px,3vw,34px)] font-medium leading-[1.15] tracking-[-0.02em]">
       {{ heading }}
     </h2>
