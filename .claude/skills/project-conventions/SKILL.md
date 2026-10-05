@@ -41,9 +41,9 @@ Un modul = un Nuxt layer în `layers/<nume>/`. Nuxt îl înregistrează automat,
 | `core` | design system, contracte de erori/async/evenimente, env, utilitare server (`logAndThrow`, `checkRateLimit`, `sendMail`), tipuri DB, redirect de limbă, primitive admin (`AdminTopbar`) | nimic din `layers/*` |
 | `admin` | layout-urile admin, `AdminSidebar`, login | `core` |
 | `consent` | consimțământ cookie, banner, plugin analytics, pagina de confidențialitate | `core` |
-| `leads` | formularul de contact, `POST /api/leads`, paginile admin de solicitări | `core` |
+| `leads` | pagina `/contact`, formularul de contact, `POST /api/leads`, paginile admin de solicitări | `core`, `#layers/content` (doar `useSiteSettings`) |
 | `qualifier` | modalul de calificare, `POST /api/contact` | `core`, `#layers/leads/server` |
-| `content` | servicii, stack, proces, despre (definiții + i18n), FAQ și setări (fișiere tipate în `data/`, editate manual) | `core` |
+| `content` | paginile `/preturi` și `/despre`, servicii, stack, proces, despre (definiții + i18n), FAQ și setări (fișiere tipate în `data/`, editate manual) | `core` |
 | `projects` | studii de caz publice, `GET /api/projects*`, paginile admin de proiecte, redirect-uri de slug, revalidarea cache-ului | `core`, `#layers/qualifier` (doar `useQualifierAvailability` și `QualifierCta`), `#layers/content` (doar `useSiteSettings`) |
 | `home` | ruta `/` și secțiunile `Home*` | `core`, `#layers/content`, `#layers/projects`, `#layers/qualifier` (doar `useQualifierAvailability` și `QualifierCta`), `#layers/leads` (doar `LeadsContactForm`) |
 | `services` | indexul `/servicii` și cele 6 pagini `/servicii/[slug]`, fără admin, fără tabel — conținut manual în `data/services.ts` | `core`, `#layers/projects` (studii de caz legate), `#layers/qualifier` (doar `useQualifierAvailability` și `QualifierCta`), `#layers/content` (doar `useServiceStages`) |
@@ -185,3 +185,4 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-09-21: `projects` poate importa `content` (`useSiteSettings`, pentru nota NDA sub grila `/proiecte`, la fel ca pe homepage) — spec „Portfolio index", secțiunea `/proiecte`.
 - 2026-10-05: `services` poate importa `content` (`useServiceStages`), ca indexul `/servicii` să folosească același text al etapelor ca homepage-ul — DE_IMPLEMENTAT.md, punctul 2.
 - 2026-10-06: Butonul de calificare e componenta QualifierCta din qualifier; home, projects și services o folosesc în loc să repete logica — audit 2026-10-06.
+- 2026-10-06: /preturi și /despre stau în content, /contact în leads; app/ rămâne doar composition root — audit 2026-10-06.

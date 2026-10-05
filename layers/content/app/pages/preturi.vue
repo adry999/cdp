@@ -9,7 +9,7 @@ usePageSeo({
 <template>
   <div>
     <PageHero number="—" :label="t('pricing.sectionLabel')" :title="t('pricing.title')" :intro="t('pricing.intro')" />
-    <SitePricingStages />
-    <SitePricingDetails />
+    <ContentPricingStages />
+    <ContentPricingDetails />
   </div>
 </template>

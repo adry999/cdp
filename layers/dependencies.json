@@ -1,7 +1,7 @@
 {
   "core": [],
   "consent": ["core", "content"],
-  "leads": ["core"],
+  "leads": ["core", "content"],
   "qualifier": ["core", "leads"],
   "content": ["core"],
   "blog": ["core"],

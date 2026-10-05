@@ -31,7 +31,7 @@ usePageSeo({
       </RowList>
     </SiteSection>
 
-    <SiteAboutTeam />
+    <ContentAboutTeam />
 
     <section class="border-t border-hairline">
       <div class="container-site py-[clamp(40px,5vw,64px)]">

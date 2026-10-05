@@ -134,7 +134,7 @@ Designul nu are versiune EN; valorile EN sunt textul RO până la traducere (exc
 Hero-ul și principiile refolosesc `home.about.*` (EN existent). Restul nu are EN în design.
 
 - [ ] EN de tradus: `i18n/locales/en.json` — `about.principlesLabel`, `about.team.label`, `.title`, `.photo`, `.name`, `.role`, `.placeholderNote`, `about.facts.*`
-- [ ] Echipa reală: nume, funcții, fotografii (acum 3 carduri placeholder în `app/components/site/SiteAboutTeam.vue`)
+- [ ] Echipa reală: nume, funcții, fotografii (acum 3 carduri placeholder în `layers/content/app/components/ContentAboutTeam.vue`)
 
 ## Pagina /contact — EN de tradus
 

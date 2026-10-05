@@ -1,6 +1,6 @@
 # layers/leads
 
-Contact intake end to end: the public contact form, lead persistence, the team notification on a new lead, and the admin lead list and detail screens. Independent — depends only on `layers/core`.
+Contact intake end to end: the public contact form, lead persistence, the team notification on a new lead, and the admin lead list and detail screens. Depends on `layers/core` and `layers/content`.
 
 ## Public API (client) — `index.ts`
 
@@ -16,6 +16,7 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 ## Routes
 
 - `POST /api/leads` — `server/api/leads.post.ts` → `submitLead` outcome: 400 invalid, 429 over the rate limit, `{ success: true }` for accepted and honeypot.
+- `/contact` (`/en/contact`) — `app/pages/contact.vue`: contact page with process steps, response-time and hours cards (`useSiteSettings()`) and `LeadsContactForm`. Route name `contact` is mapped to localized paths in `nuxt.config.ts` (`i18n.pages`); keep the file name.
 - `/admin/leads`, `/admin/leads/[id]` — `app/pages/admin/leads/`, admin layout.
 
 ## Components
@@ -24,7 +25,8 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 
 ## Depends on
 
-- `layers/core` — `AsyncStatus`, `AppError`, `toAppError`, `EMAIL_PATTERN`, `clipText`, `AppButton`, `AdminTopbar`, server utils `logAndThrow`, `checkRateLimit`, `sendMail`.
+- `layers/core` — `AsyncStatus`, `AppError`, `toAppError`, `EMAIL_PATTERN`, `clipText`, `AppButton`, `AdminTopbar`, server utils `logAndThrow`, `checkRateLimit`, `sendMail`, plus `SiteSection`, `FactCard`.
+- `layers/content` — `useSiteSettings` (only), for the contact page facts.
 
 ## Consumed by
 

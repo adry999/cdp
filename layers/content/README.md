@@ -42,6 +42,17 @@ the public site.
   `ProcessTrack`, `AboutPillarId`, `AboutPillarDef`, `AboutPillar` — domain
   types.
 
+## Routes
+
+- `/preturi` (`/en/pricing`) — `app/pages/preturi.vue`, composes `ContentPricingStages` (service-stage cards) and `ContentPricingDetails` (what's included, after-launch plans, pricing FAQ).
+- `/despre` (`/en/about`) — `app/pages/despre.vue`, composes `useAboutPillars()` and `ContentAboutTeam` (placeholder team cards).
+
+Route names `preturi` and `despre` are mapped to localized paths in `nuxt.config.ts` (`i18n.pages`); keep the file names.
+
+## Components
+
+- `ContentPricingStages`, `ContentPricingDetails`, `ContentAboutTeam` — `app/components/`, used only by the pages above.
+
 ## Depends on
 
 - `layers/core` — `pick`, `EMAIL_PATTERN`, the service-stage vocabulary
