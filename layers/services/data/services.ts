@@ -5,6 +5,7 @@ export const SERVICES = [
     slug: 'website',
     routeSlug: { ro: 'website', en: 'website' },
     name: { ro: 'Website', en: 'Website' },
+    seoTitle: { ro: 'Creare site de prezentare în Chișinău', en: 'Website and landing page development' },
     intro: {
       ro: 'O pagină de prezentare modernă care-ți validează ideea și atrage primii clienți. De la concept la lansare în zile, nu săptămâni.',
       en: 'A modern landing page that validates your idea and attracts early customers. From concept to launch in days, not weeks.',
@@ -57,6 +58,11 @@ export const SERVICES = [
     slug: 'web-app',
     routeSlug: { ro: 'aplicatie-web', en: 'web-app' },
     name: { ro: 'Aplicație web', en: 'Web app' },
+    seoTitle: { ro: 'Dezvoltare aplicații web la comandă', en: 'Custom web application development' },
+    seoDescription: {
+      ro: 'Aplicația ta, din design în cod de producție, pe Postgres și Nuxt sau Next. Arhitectură curată, testată și ușor de extins.',
+      en: "Your app, from design to production code, on Postgres and Nuxt or Next. Clean, tested architecture that's easy to extend.",
+    },
     intro: {
       ro: 'Aplicația ta, din design în cod de producție, pe Postgres și Nuxt sau Next.',
       en: 'Your app, from design to production code, on Postgres and Nuxt or Next.',
@@ -109,6 +115,7 @@ export const SERVICES = [
     slug: 'wordpress',
     routeSlug: { ro: 'wordpress', en: 'wordpress' },
     name: { ro: 'WordPress', en: 'WordPress' },
+    seoTitle: { ro: 'Site WordPress rapid și sigur', en: 'Fast, secure WordPress websites' },
     intro: {
       ro: 'Site WordPress rapid, securizat și ușor de menținut, pe infrastructura modernă cu cache și CDN global.',
       en: 'Fast, secure and easy-to-maintain WordPress site on modern infrastructure with caching and global CDN.',
@@ -161,6 +168,7 @@ export const SERVICES = [
     slug: 'shopify',
     routeSlug: { ro: 'shopify', en: 'shopify' },
     name: { ro: 'Shopify', en: 'Shopify' },
+    seoTitle: { ro: 'Magazin online pe Shopify, la comandă', en: 'Custom Shopify store development' },
     intro: {
       ro: 'Magazin Shopify optimizat pentru conversie, cu design custom și integrări cu logistica și analitică reală.',
       en: 'Conversion-optimized Shopify store with custom design and real integrations for shipping and analytics.',
@@ -213,6 +221,7 @@ export const SERVICES = [
     slug: 'ai-automation',
     routeSlug: { ro: 'automatizare-ai', en: 'ai-automation' },
     name: { ro: 'Automatizare cu AI', en: 'AI automation' },
+    seoTitle: { ro: 'Automatizare cu AI pentru afaceri', en: 'AI automation for businesses' },
     intro: {
       ro: 'Sisteme AI custom integrate în fluxul tău de lucru, care reduc zeci de ore manuale pe lună și reduc costurile operaționale.',
       en: 'Custom AI systems built into your workflow that cut dozens of manual hours per month and slash operational costs.',
@@ -268,6 +277,7 @@ export const SERVICES = [
       ro: 'Proiecte finanțate prin granturi',
       en: 'Proiecte finanțate prin granturi',
     },
+    seoTitle: { ro: 'Aplicații web pentru proiecte cu grant', en: 'Aplicații web pentru proiecte cu grant' },
     intro: {
       ro: 'Ai câștigat un grant european sau ODA și trebuie să livrezi o aplicație la termen? Construim partea tehnică a proiectului și pregătim documentele de care ai nevoie la raportare.',
       en: 'Ai câștigat un grant european sau ODA și trebuie să livrezi o aplicație la termen? Construim partea tehnică a proiectului și pregătim documentele de care ai nevoie la raportare.',

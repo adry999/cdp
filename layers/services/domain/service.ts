@@ -15,7 +15,11 @@ export interface Service {
   /** Localized route slugs for `/servicii/[slug]` (ro) and `/en/services/[slug]` (en). */
   routeSlug: LocalizedText
   name: LocalizedText
+  /** `<title>` and og:title — search keywords, unlike the short display `name`. */
+  seoTitle: LocalizedText
   intro: LocalizedText
+  /** Meta description when `intro` is too short for a search snippet; falls back to `intro`. */
+  seoDescription?: LocalizedText
   /** Who the service is for; rendered as "Pentru" chips in the hero. Optional — most services omit it. */
   audience?: LocalizedText[]
   features: LocalizedText[]

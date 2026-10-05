@@ -453,6 +453,9 @@
       "audienceLabel": "Pentru"
     },
     "index": {
+      "seo": {
+        "title": "Servicii de dezvoltare web în Chișinău"
+      },
       "title": "Cinci etape. Pornim de unde ești acum.",
       "intro": "De la o pagină rapidă până la inginerie AI la comandă. Fiecare etapă are preț fix, termen asumat și 30 de zile de remedieri după lansare.",
       "cta": {

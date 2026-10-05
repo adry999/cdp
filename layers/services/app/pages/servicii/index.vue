@@ -3,9 +3,9 @@ const { t } = useI18n()
 const siteUrl = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
 
 useSeoMeta({
-  title: () => t('services.index.title'),
+  title: () => t('services.index.seo.title'),
   description: () => t('services.index.intro'),
-  ogTitle: () => t('services.index.title'),
+  ogTitle: () => t('services.index.seo.title'),
   ogDescription: () => t('services.index.intro'),
   ogImage: `${siteUrl}/og-image.png`,
   ogType: 'website',

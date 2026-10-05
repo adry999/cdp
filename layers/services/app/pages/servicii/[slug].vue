@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { breadcrumbList } from '#layers/core/shared/utils/jsonLd'
 import { SERVICES } from '#layers/services/data/services'
+import type { Service } from '#layers/services/domain/service'
 
 const route = useRoute()
 const { locale, t } = useI18n()
 const localePath = useLocalePath()
 
-const service = SERVICES.find((entry) => entry.routeSlug[locale.value] === route.params.slug)
+const service: Service | undefined = SERVICES.find((entry) => entry.routeSlug[locale.value] === route.params.slug)
 
 if (!service) {
   throw createError({ statusCode: 404, statusMessage: 'Service not found' })
@@ -18,12 +19,13 @@ const setI18nParams = useSetI18nParams()
 setI18nParams({ ro: { slug: service.routeSlug.ro }, en: { slug: service.routeSlug.en } })
 
 const siteUrl = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
+const seoDescription = service.seoDescription ?? service.intro
 
 useSeoMeta({
-  title: () => pick(service.name.ro, service.name.en, locale.value),
-  description: () => pick(service.intro.ro, service.intro.en, locale.value),
-  ogTitle: () => pick(service.name.ro, service.name.en, locale.value),
-  ogDescription: () => pick(service.intro.ro, service.intro.en, locale.value),
+  title: () => pick(service.seoTitle.ro, service.seoTitle.en, locale.value),
+  description: () => pick(seoDescription.ro, seoDescription.en, locale.value),
+  ogTitle: () => pick(service.seoTitle.ro, service.seoTitle.en, locale.value),
+  ogDescription: () => pick(seoDescription.ro, seoDescription.en, locale.value),
   ogImage: `${siteUrl}/og-image.png`,
   ogType: 'website',
   twitterCard: 'summary_large_image',

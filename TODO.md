@@ -83,7 +83,7 @@ După traducerea unei pagini, scoate-i calea de acolo.
 
 Designul nu are versiune EN pentru granturi; valorile EN sunt textul RO până la traducere.
 
-- [ ] EN de tradus: `layers/services/data/services.ts` și `serviceLinks.ts` — serviciul `granturi`: `name`, `intro`, `audience` (4), `features` (6), `process` (4 × titlu + corp)
+- [ ] EN de tradus: `layers/services/data/services.ts` și `serviceLinks.ts` — serviciul `granturi`: `name`, `intro`, `audience` (4), `features` (6), `process` (4 × titlu + corp), `seoTitle`
 - [ ] EN de tradus: `i18n/locales/en.json` — `home.services.grants.*` (kicker, title, body, steps ×4, cta, contact)
 - [ ] EN de tradus: `i18n/locales/en.json` — `services.hero.audienceLabel` („Pentru”) și `projects.filters.granturi` („Granturi”)
 - [ ] Programe de finanțare numite și proiecte finanțate prin grant: lipsesc, nu se inventează.
@@ -92,7 +92,7 @@ Designul nu are versiune EN pentru granturi; valorile EN sunt textul RO până l
 
 Designul nu are versiune EN pentru indexul /servicii; valorile EN sunt textul RO până la traducere.
 
-- [ ] EN de tradus: `i18n/locales/en.json` — `services.index.title`, `services.index.intro`
+- [ ] EN de tradus: `i18n/locales/en.json` — `services.index.title`, `services.index.intro`, `services.index.seo.title`
 - [ ] EN de tradus: `i18n/locales/en.json` — `services.index.cta.title`, `.body`, `.button`
 
 ## Imagini
