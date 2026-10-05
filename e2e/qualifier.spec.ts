@@ -1,7 +1,7 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test'
 
-const DIALOG_NAME = 'Hai să-ți plasăm proiectul.'
-const DIALOG_NAME_EN = "Let's place your project."
+const DIALOG_NAME = 'Hai să găsim punctul de pornire potrivit.'
+const DIALOG_NAME_EN = "Let's find the right starting point."
 
 // Reads the current published projects instead of hardcoding a slug, so this
 // suite doesn't break the day a real case study is renamed or unpublished.
@@ -75,7 +75,7 @@ test('case-study CTA opens the dialog', async ({ page, request }) => {
   const project = await firstPublishedProject(request)
   await page.goto(`/proiecte/${project.slug_ro}`)
   await page.getByRole('button', { name: 'Doar necesare' }).click()
-  const trigger = page.getByRole('button', { name: 'Începe un proiect' })
+  const trigger = page.getByRole('button', { name: 'Hai să discutăm' })
   await trigger.click()
   const dialog = page.getByRole('dialog', { name: DIALOG_NAME })
   await expect(dialog).toBeVisible()
@@ -112,8 +112,9 @@ test('valid submission posts the qualification and shows the allocated route', a
   await dialog.getByRole('button', { name: 'Trimite solicitarea' }).click()
 
   await expect(dialog.getByText('Mulțumim — am primit detaliile.')).toBeVisible()
-  await expect(dialog.getByText('Custom Engineering / AI')).toBeVisible()
-  await expect(dialog.getByText('Design-to-Code')).toBeVisible()
+  // Internal CRM routing labels stay out of the visitor-facing success screen.
+  await expect(dialog.getByText('Custom Engineering / AI')).toHaveCount(0)
+  await expect(dialog.getByText('Design-to-Code')).toHaveCount(0)
   expect(body).toEqual({
     stage: 'A',
     budget: '2to5k',
