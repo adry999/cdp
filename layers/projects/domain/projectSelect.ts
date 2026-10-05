@@ -1,3 +1,5 @@
+import type { Database } from '#layers/core/shared/types/database.types'
+
 // PROJECT_CARD_SELECT keeps list views (12–30 rows) light; PROJECT_SELECT backs the case
 // study route and the admin editor, which saves back what it loads, so every writable column
 // must be selected here too.
@@ -21,4 +23,33 @@ export const PROJECT_SELECT = `
   project_images(path,alt_ro,alt_en,aspect,sort_order)
 `
 
-export const ADMIN_PROJECT_SELECT = `id, published_at, ${PROJECT_SELECT}`
+export const ADMIN_PROJECT_SELECT = `id, published_at, ${PROJECT_SELECT}` as const
+
+type Tables = Database['public']['Tables']
+
+/** What `ADMIN_PROJECT_SELECT` returns: every project column the editor reads, plus its child rows. */
+export type AdminProjectRow = Omit<
+  Tables['projects']['Row'],
+  | 'created_at'
+  | 'updated_at'
+  | 'updated_by'
+  | 'preview_token'
+  | 'context_heading_ro'
+  | 'context_heading_en'
+  | 'solution_heading_ro'
+  | 'solution_heading_en'
+  | 'next_title_ro'
+  | 'next_title_en'
+> & {
+  project_facts: Pick<Tables['project_facts']['Row'], 'label_ro' | 'label_en' | 'value_ro' | 'value_en' | 'sort_order'>[]
+  project_stack: Pick<Tables['project_stack']['Row'], 'name' | 'role_ro' | 'role_en' | 'sort_order'>[]
+  project_stats: Pick<Tables['project_stats']['Row'], 'value' | 'label_ro' | 'label_en' | 'sort_order'>[]
+  project_images: Pick<Tables['project_images']['Row'], 'path' | 'alt_ro' | 'alt_en' | 'aspect' | 'sort_order'>[]
+}
+
+export const ADMIN_PROJECT_LIST_SELECT = 'slug_ro, card_title_ro, tech, cover_path, published_at, featured, sort_order' as const
+
+export type AdminProjectListRow = Pick<
+  Tables['projects']['Row'],
+  'slug_ro' | 'card_title_ro' | 'tech' | 'cover_path' | 'published_at' | 'featured' | 'sort_order'
+>

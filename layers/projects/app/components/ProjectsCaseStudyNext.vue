@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { mapProjectCard, type MappedProject, type ProjectCardRow } from '#layers/projects/domain/mapProject'
+import { mapProjectCard, type MappedProject } from '#layers/projects/domain/mapProject'
+import { usePublishedProjects } from '#layers/projects/state/usePublishedProjects'
 
 const props = defineProps<{ project: MappedProject }>()
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
-const { data: rows } = await useAsyncData<ProjectCardRow[]>('projects', () => $fetch('/api/projects'))
+const { projects: rows } = await usePublishedProjects()
 
 const otherProjects = computed(() =>
   (rows.value ?? [])

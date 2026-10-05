@@ -18,6 +18,8 @@ public API of `layers/qualifier`.
   in `sort_order`, or the first three if none are featured.
 - `availableTags(rows)` — the `ServiceTagId`s present in a row list, in
   canonical order; drives the `/proiecte` filter chips.
+- `usePublishedProjects()` — `{ projects }`, the published card rows behind the shared
+  `'projects'` async-data key (`GET /api/projects` via `data/projectsRepository.ts`).
 - `MappedProject`, `MappedProjectCard`, `ProjectRow`, `ProjectCardRow`,
   `ProjectFactRow`, `ProjectStackRow`, `ProjectStatRow`, `ProjectImageRow` —
   domain types. `ProjectRow` extends `ProjectCardRow`.
@@ -26,7 +28,17 @@ public API of `layers/qualifier`.
 
 - `listPublishedProjectSlugs(event)` — published projects' `slug_ro`/`slug_en`
   pairs, in `sort_order`. Used by the root sitemap
-  (`server/routes/sitemap.xml.ts`).
+  (`server/routes/sitemap.xml.ts`). Delegates to the repository.
+
+## Server structure
+
+- `server/repository/projectRepository.ts` — `createProjectRepository(event)`:
+  every `projects` / `redirects` query (published cards, case study by slug,
+  slug list, redirect lookup), through the session client; failures go through
+  `logAndThrow`. Handlers and middleware call it, never Supabase directly.
+- `server/services/revalidatePublicCache.ts` — cache revalidation use case.
+- `domain/caseStudyPaths.ts` — `caseStudyPaths(slugRo, slugEn)`, the public
+  `/proiecte/..` and `/en/work/..` paths.
 
 ## Routes
 
@@ -34,12 +46,14 @@ public API of `layers/qualifier`.
   `domain/projectSelect.ts`'s `PROJECT_CARD_SELECT` (card columns only — kept
   light for every list consumer). `GET /api/projects/[slug]` uses the full
   `PROJECT_SELECT`.
-- `POST /api/admin/revalidate` — `server/api/admin/`, admin-only (checked
-  against `app_users`). If `VERCEL_ISR_BYPASS_TOKEN` is set, re-requests every
-  published project URL with `x-prerender-revalidate` to force Vercel's edge
-  ISR cache for those routes to refresh (Nitro's own `useStorage('cache')` is
-  not what serves them on the `vercel` preset — see the file's comment).
-  Otherwise falls back to clearing Nitro's storage cache directly.
+- `POST /api/admin/revalidate` — `server/api/admin/`, admin-only
+  (`requireAdmin` from `core`: Supabase session + `app_users` row, 401/403
+  otherwise). The strategy lives in `server/services/revalidatePublicCache.ts`
+  (dependencies injected, tested with fakes): if `VERCEL_ISR_BYPASS_TOKEN` is
+  set, re-requests every published project URL with `x-prerender-revalidate`
+  to force Vercel's edge ISR cache for those routes to refresh (Nitro's own
+  `useStorage('cache')` is not what serves them on the `vercel` preset);
+  otherwise it clears Nitro's storage cache directly.
 - `server/middleware/project-redirects.ts` — serves the 301/302 rows
   `save_project()` writes to `redirects` when a published slug changes.
 - `/proiecte/[slug]`, `/en/work/[slug]` (route name `proiecte-slug`) —
@@ -50,7 +64,9 @@ public API of `layers/qualifier`.
 - `/admin/projects`, `/admin/projects/[slug]` — `app/pages/admin/projects/`,
   `admin` layout. Writes go straight from the browser to Supabase via
   `save_project()` (see `supabase/migrations/20260826120200_save_project_rpc.sql`),
-  not through a Nuxt server route.
+  not through a Nuxt server route. The pages only compose: list state lives in
+  `useProjectsAdminList`, the editor in `useProjectsEditor`, all queries in
+  `data/projectsAdminRepository.ts`.
 
 ## Components
 
@@ -66,6 +82,11 @@ public API of `layers/qualifier`.
 - `ProjectsCard` — the project card (`HomeWork`'s original markup), `project`
   + `showTech` (default `true`) props. `showTech: false` drops the tech line
   and tightens the heading's top margin — what `ServicesRelatedProjects` uses.
+- `ProjectsAdminRow` — one row of the admin list (drag handle, thumbnail, inline
+  delete confirmation); stateless, emits the actions.
+- `ProjectsEditorSection` plus `ProjectsEditorIdentity`, `Images`, `Facts`,
+  `Narrative` (one text section, used four times), `Stack`, `Results`, `Publish` —
+  the sections of the admin editor; each takes the `ProjectForm` through `v-model`.
 - `ProjectsFilterChips` — the `/proiecte` tag chips, `tags` + `active` props,
   emits `select`. Built on `TechChip` styling; the active state (`bg-ink
   text-paper border-ink`) is this feature's one improvisation over the
@@ -90,6 +111,17 @@ public API of `layers/qualifier`.
 - `domain/storagePath.ts` — `storageKeyFromPublicUrl`, recovers a Storage
   object's bucket-relative key from the public URL `cover_path`/`hero_path`/
   `project_images.path` store.
+- `domain/projectForm.ts` — `ProjectForm`, `toProjectForm(row)`, `toSavePayload(form, id)`
+  (the `save_project` argument), `replacedMediaUrls`, `DEFAULT_FACTS`.
+- `domain/projectSelect.ts` also exports `AdminProjectRow` / `AdminProjectListRow`,
+  derived from the generated DB types.
+- `domain/storagePath.ts` also exports `MEDIA_BUCKET`, passed to `AdminImageUpload`.
+- `data/projectsRepository.ts` — `fetchProjectCards`, `fetchProject` (public API).
+- `data/projectsAdminRepository.ts` — `createProjectsAdminRepository(client)`: `list`,
+  `getBySlug`, `save`, `reorder`, `remove`, `duplicate`, `removeUnreferencedMedia`.
+- `state/usePublishedProjects.ts`, `state/useProjectsAdminList.ts`,
+  `state/useProjectsEditor.ts` — see above.
+- `test-support/buildAdminProjectRow.ts` — fixture factory for `AdminProjectRow`.
 - `state/useCaseStudySlugs.ts` — bridges the current project's per-locale
   slug pair from the page to `ProjectsCaseStudyHeader`.
 - `state/useRevalidatePublicCache.ts` — best-effort `POST /api/admin/revalidate`
@@ -99,7 +131,7 @@ public API of `layers/qualifier`.
 
 - `layers/core` — `pick`, `AdminTopbar`, `AdminField`, `AdminFieldPair`,
   `AdminImageUpload`, `AppButton`, `TechChip`, `SiteSection`, `MediaFrame`,
-  `PageHero`, `FactCard`, `SectionLabel`, `useUnsavedChangesGuard`,
+  `PageHero`, `FactCard`, `SectionLabel`, `useUnsavedChangesGuard`, `useDragReorder`, `moveItem`,
   `useLocaleOverride`, `ServiceTagId`/`isServiceTagId`/`SERVICE_TAG_IDS`,
   server utils `logAndThrow`, the generated `Database` types.
 - `layers/content` — `useSiteSettings`, for the NDA note on `/proiecte`.

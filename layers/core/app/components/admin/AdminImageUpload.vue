@@ -4,6 +4,7 @@ const props = defineProps<{
   ratio: '16/9' | '16/10' | '4/3'
   label: string
   pathPrefix: string
+  bucket: string
 }>()
 const emit = defineEmits<{ 'update:modelValue': [string] }>()
 
@@ -43,7 +44,7 @@ async function onFileChange(e: Event) {
   const path = `${props.pathPrefix}/${Date.now()}.${ext}`
 
   const { error: uploadError } = await supabase.storage
-    .from('project-media')
+    .from(props.bucket)
     .upload(path, file, { contentType: file.type, upsert: true })
 
   if (uploadError) {
@@ -55,7 +56,7 @@ async function onFileChange(e: Event) {
   // Uploading never deletes the file it replaces: the published page keeps
   // serving that file until the project is saved. The project editor removes
   // replaced files after a successful save.
-  const { data } = supabase.storage.from('project-media').getPublicUrl(path)
+  const { data } = supabase.storage.from(props.bucket).getPublicUrl(path)
   emit('update:modelValue', data.publicUrl)
   uploading.value = false
   if (fileInput.value) fileInput.value.value = ''

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { availableTags, mapProjectCard, type ProjectCardRow } from '#layers/projects'
+import { availableTags, mapProjectCard, usePublishedProjects } from '#layers/projects'
 import { isServiceTagId, type ServiceTagId } from '#layers/core/shared/types/service-tag'
 import { useSiteSettings } from '#layers/content'
 
@@ -7,7 +7,7 @@ const route = useRoute()
 const router = useRouter()
 const { t, locale } = useI18n()
 
-const { data: rows } = await useAsyncData<ProjectCardRow[]>('projects', () => $fetch('/api/projects'))
+const { projects: rows } = await usePublishedProjects()
 const settings = useSiteSettings()
 
 const list = computed(() => rows.value ?? [])

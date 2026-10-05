@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonLd'
-import { mapProject, type ProjectRow } from '#layers/projects/domain/mapProject'
+import { fetchProject } from '#layers/projects/data/projectsRepository'
+import { mapProject } from '#layers/projects/domain/mapProject'
 import { useCaseStudySlugs } from '#layers/projects/state/useCaseStudySlugs'
 
 definePageMeta({ layout: 'case-study' })
@@ -9,9 +10,7 @@ const route = useRoute()
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
-const { data: row } = await useAsyncData<ProjectRow>(`project-${route.params.slug}`, () =>
-  $fetch(`/api/projects/${route.params.slug}`),
-)
+const { data: row } = await useAsyncData(`project-${route.params.slug}`, () => fetchProject(String(route.params.slug)))
 
 const projectRow = row.value
 if (!projectRow) {

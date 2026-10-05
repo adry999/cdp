@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { mapProjectCard, selectHomeProjects, type ProjectCardRow } from '#layers/projects'
+import { mapProjectCard, selectHomeProjects, usePublishedProjects } from '#layers/projects'
 import { useSiteSettings } from '#layers/content'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
-const { data: rows } = await useAsyncData<ProjectCardRow[]>('projects', () => $fetch('/api/projects'))
+const { projects: rows } = await usePublishedProjects()
 const settings = useSiteSettings()
 
 const allRows = computed(() => rows.value ?? [])
