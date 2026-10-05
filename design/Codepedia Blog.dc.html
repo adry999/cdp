@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #FAF8F4; color: #0B0B0B; font-family: 'Inter Tight', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.6; letter-spacing: -0.004em; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  ::selection { background: #FF4D14; color: #FAF8F4; }
+  a { color: #0B0B0B; text-decoration: none; }
+  a:hover { color: #FF4D14; }
+</style>
+</helmet>
+
+<div style="display:flex;flex-direction:column;min-height:100vh">
+
+<header data-screen-label="Header" style="position:sticky;top:0;z-index:20;background:#FAF8F4">
+  <div style="max-width:1280px;margin:0 auto;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 clamp(20px,5vw,64px)">
+    <a href="Codepedia.dc.html" style="display:flex;align-items:center"><img src="assets/codepedia-wordmark.svg" alt="Codepedia" style="display:block;height:18px;width:auto" /></a>
+    <nav style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(14px,2vw,28px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+      <a href="Codepedia.dc.html#servicii" style="color:#6B6862" style-hover="color:#FF4D14">Servicii</a>
+      <a href="Codepedia.dc.html#proiecte" style="color:#6B6862" style-hover="color:#FF4D14">Proiecte</a>
+      <button onClick="{{ goList }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#0B0B0B">Blog</button>
+      <a href="Codepedia.dc.html#contact" style="color:#6B6862" style-hover="color:#FF4D14">Contact</a>
+    </nav>
+  </div>
+  <div style="height:2px;background:#FF4D14"></div>
+</header>
+
+<main style="flex:1">
+
+<sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+  <section data-screen-label="Blog · 00">
+    <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,8vw,120px) clamp(20px,5vw,64px) clamp(40px,5vw,72px)">
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">00</span> / Blog</div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h1 style="margin:0;font-size:clamp(34px,6vw,64px);font-weight:600;line-height:1.04;letter-spacing:-0.025em">Blog.</h1>
+        <p style="margin:clamp(20px,2.6vw,28px) 0 0;max-width:62ch;font-size:clamp(16px,1.4vw,18px);color:#6B6862">Notițe tehnice din munca Codepedia — ce am construit, ce am învățat, ce am schimbat.</p>
+      </div>
+    </div>
+  </section>
+  <section data-screen-label="Blog · 01" style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">01</span> / Blog</div>
+      <div style="flex:1 1 560px;min-width:0">
+        <sc-if value="{{ hasPosts }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px">
+            <sc-for list="{{ posts }}" as="p" hint-placeholder-count="3">
+              <button onClick="{{ p.open }}" style="display:block;text-align:left;cursor:pointer;font:inherit;color:inherit;border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:clamp(18px,2vw,22px);transition:border-color 0.15s" style-hover="border-color:#8D8880">
+                <div style="aspect-ratio:16/10;border:1px solid #E2DED6;border-radius:4px;background:repeating-linear-gradient(45deg,#E2DED6 0 1px,transparent 1px 7px);display:grid;place-items:center;padding:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880;text-align:center">[ {{ p.title }} ]</div>
+                <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ p.date }}</div>
+                <h3 style="margin:10px 0 8px;font-size:19px;font-weight:500;letter-spacing:-0.02em;line-height:1.3">{{ p.title }}</h3>
+                <p style="margin:0;font-size:16px;color:#6B6862">{{ p.summary }}</p>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noPosts }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:0;font-size:16px;color:#6B6862">Momentan nu avem articole publicate.</p>
+        </sc-if>
+        <sc-if value="{{ showDemo }}" hint-placeholder-val="{{ true }}"><p style="margin:20px 0 0;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">Demo · articole de exemplu, repo-ul are doar exemplu-articol.md (draft)</p></sc-if>
+      </div>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{ isPost }}" hint-placeholder-val="{{ false }}">
+  <article>
+    <section data-screen-label="Articol · 00">
+      <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,8vw,120px) clamp(20px,5vw,64px) clamp(40px,5vw,72px)">
+        <div style="flex:0 0 160px;display:flex;flex-direction:column;gap:16px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+          <span><span style="color:#FF4D14">00</span> / {{ post.date }}</span>
+          <button onClick="{{ goList }}" style="width:fit-content;border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862" style-hover="color:#FF4D14">← Blog</button>
+        </div>
+        <div style="flex:1 1 560px;min-width:0">
+          <h1 style="margin:0;max-width:26ch;font-size:clamp(28px,4.5vw,48px);font-weight:600;line-height:1.08;letter-spacing:-0.02em;text-wrap:pretty">{{ post.title }}</h1>
+          <div style="margin-top:32px;aspect-ratio:16/9;border:1px solid #E2DED6;border-radius:4px;background:repeating-linear-gradient(45deg,#E2DED6 0 1px,transparent 1px 7px);display:grid;place-items:center;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">Copertă · cover în front-matter</div>
+        </div>
+      </div>
+    </section>
+    <section data-screen-label="Articol · 01" style="border-top:1px solid #E2DED6">
+      <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+        <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">01</span> / {{ post.date }}</div>
+        <div style="flex:1 1 560px;min-width:0;max-width:68ch;line-height:1.7">
+          <p style="margin:0 0 1.25rem">Un audit de cod răspunde la trei întrebări: ce funcționează, ce trebuie rescris și cât costă până în producție. Mai jos sunt pașii pe care îi parcurgem de fiecare dată.</p>
+          <h2 style="margin:2.5rem 0 1rem;font-size:1.5rem;font-weight:600;letter-spacing:-0.02em;line-height:1.3">1. Pornim de la baza de date</h2>
+          <p style="margin:0 0 1.25rem">Schema spune mai mult decât interfața. Verificăm cheile, indecșii, migrațiile și dacă există <code style="font-family:'JetBrains Mono',monospace;font-size:0.9em;background:#F1EEE7;padding:0.1em 0.35em;border-radius:3px">row-level security</code> acolo unde datele sunt ale clienților.</p>
+          <ul style="margin:0 0 1.25rem;padding-left:1.25rem">
+            <li style="margin-bottom:0.4rem">Migrațiile sunt în Git și rulează curat pe o bază goală?</li>
+            <li style="margin-bottom:0.4rem">Există backup și a fost testată vreodată restaurarea?</li>
+            <li style="margin-bottom:0.4rem">Câte interogări face pagina cea mai folosită?</li>
+          </ul>
+          <h2 style="margin:2.5rem 0 1rem;font-size:1.5rem;font-weight:600;letter-spacing:-0.02em;line-height:1.3">2. Deploy și accese</h2>
+          <p style="margin:0 0 1.25rem">Cine are acces la producție, cum ajunge un commit acolo și dacă se poate reveni rapid la versiunea anterioară.</p>
+          <pre style="margin:0 0 1.5rem;padding:1rem;border:1px solid #E2DED6;border-radius:4px;overflow-x:auto;background:#F1EEE7;font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.6">$ git log --oneline -- supabase/migrations | wc -l
+42</pre>
+          <blockquote style="margin:0 0 1.25rem;padding-left:1rem;border-left:2px solid #E2DED6;color:#6B6862">Auditul este un document scris: ce funcționează, ce trebuie rescris și cât costă până în producție.</blockquote>
+          <h2 style="margin:2.5rem 0 1rem;font-size:1.5rem;font-weight:600;letter-spacing:-0.02em;line-height:1.3">3. Ce primești la final</h2>
+          <table style="width:100%;margin:0 0 1.5rem;border-collapse:collapse;font-size:0.95em">
+            <thead><tr><th style="padding:0.6rem 0.75rem;border:1px solid #E2DED6;text-align:left;font-family:'JetBrains Mono',monospace;font-size:0.75em;font-weight:400;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862;background:#F1EEE7">Secțiune</th><th style="padding:0.6rem 0.75rem;border:1px solid #E2DED6;text-align:left;font-family:'JetBrains Mono',monospace;font-size:0.75em;font-weight:400;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862;background:#F1EEE7">Conținut</th></tr></thead>
+            <tbody>
+              <tr><td style="padding:0.6rem 0.75rem;border:1px solid #E2DED6;vertical-align:top">Stare</td><td style="padding:0.6rem 0.75rem;border:1px solid #E2DED6;vertical-align:top">Ce funcționează și ce nu, pe module</td></tr>
+              <tr><td style="padding:0.6rem 0.75rem;border:1px solid #E2DED6;vertical-align:top">Riscuri</td><td style="padding:0.6rem 0.75rem;border:1px solid #E2DED6;vertical-align:top">Securitate, date, dependențe învechite</td></tr>
+              <tr><td style="padding:0.6rem 0.75rem;border:1px solid #E2DED6;vertical-align:top">Cost</td><td style="padding:0.6rem 0.75rem;border:1px solid #E2DED6;vertical-align:top">Estimare fixă până în producție</td></tr>
+            </tbody>
+          </table>
+          <hr style="margin:2rem 0;border:none;border-top:1px solid #E2DED6" />
+          <p style="margin:0 0 1.25rem">Ai un proiect început de altcineva? <a href="Codepedia.dc.html#contact" style="text-decoration:underline;text-decoration-color:#FF4D14">Descrie-ne situația</a> și îți spunem dacă un audit are sens.</p>
+          <sc-if value="{{ showDemo }}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">Demo · text de exemplu pentru stilurile blog-prose</p></sc-if>
+        </div>
+      </div>
+    </section>
+    <section data-screen-label="Articol · 02" style="border-top:1px solid #E2DED6">
+      <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+        <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">02</span> / Articole similare</div>
+        <div style="flex:1 1 560px;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px">
+          <sc-for list="{{ related }}" as="p" hint-placeholder-count="2">
+            <button onClick="{{ p.open }}" style="display:block;text-align:left;cursor:pointer;font:inherit;color:inherit;border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:clamp(18px,2vw,22px)" style-hover="border-color:#8D8880">
+              <div style="aspect-ratio:16/10;border:1px solid #E2DED6;border-radius:4px;background:repeating-linear-gradient(45deg,#E2DED6 0 1px,transparent 1px 7px);display:grid;place-items:center;padding:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880;text-align:center">[ {{ p.title }} ]</div>
+              <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ p.date }}</div>
+              <h3 style="margin:10px 0 8px;font-size:19px;font-weight:500;letter-spacing:-0.02em;line-height:1.3">{{ p.title }}</h3>
+              <p style="margin:0;font-size:16px;color:#6B6862">{{ p.summary }}</p>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </article>
+</sc-if>
+
+</main>
+
+<footer data-screen-label="Footer" style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;padding:24px clamp(20px,5vw,64px);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+    <span style="display:flex;align-items:center;gap:8px"><img src="assets/codepedia-mark.svg" alt="" style="display:block;height:12px;width:auto;opacity:0.5" />Codepedia SRL · Chișinău, Moldova</span>
+    <span>Dezvoltare web full-stack · Site-uri, aplicații web, WordPress, Shopify</span>
+    <span>© 2026</span>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showDemo&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;empty&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const POSTS = [
+  { title: 'Ce verificăm într-un audit de cod', date: '22 septembrie 2026', summary: 'Baza de date, deploy-ul și accesele: pașii prin care aflăm cât costă un proiect început de altcineva.' },
+  { title: 'De ce predăm codul în conturile clientului', date: '8 septembrie 2026', summary: 'Repository, Supabase și Vercel configurate la tine din prima zi. Ce înseamnă asta în practică.' },
+  { title: 'n8n sau cod propriu pentru o automatizare AI', date: '25 august 2026', summary: 'Când un flux vizual e suficient și când merită un serviciu scris de la zero.' },
+];
+class Component extends DCLogic {
+  state = { post: null };
+  renderVals() {
+    const showDemo = this.props.showDemo ?? true;
+    const empty = this.props.empty ?? false;
+    const open = i => () => { this.setState({ post: i }); window.scrollTo(0, 0); };
+    const list = empty ? [] : POSTS;
+    const cur = this.state.post;
+    return {
+      showDemo,
+      isList: cur === null, isPost: cur !== null,
+      goList: () => { this.setState({ post: null }); window.scrollTo(0, 0); },
+      hasPosts: list.length > 0, noPosts: list.length === 0,
+      posts: list.map((p, i) => ({ ...p, open: open(i) })),
+      post: cur !== null ? POSTS[cur] : POSTS[0],
+      related: POSTS.map((p, i) => ({ ...p, open: open(i), i })).filter(p => p.i !== cur),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #FAF8F4; color: #0B0B0B; font-family: 'Inter Tight', Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.6; letter-spacing: -0.004em; -webkit-font-smoothing: antialiased; }
+  a { color: #0B0B0B; text-decoration: underline; text-decoration-color: #FF4D14; text-underline-offset: 3px; }
+  a:hover { text-decoration-color: #0B0B0B; }
+  ::selection { background: #FF4D14; color: #FAF8F4; }
+  :focus-visible { outline: 2px solid #FF4D14; outline-offset: 2px; }
+</style>
+</helmet>
+
+<div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px)">
+
+  <header style="padding:clamp(48px,8vw,112px) 0 clamp(32px,4vw,56px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">DS</span> / Componente</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h1 style="margin:0;font-size:clamp(34px,6vw,64px);font-weight:600;line-height:1.04;letter-spacing:-0.025em;max-width:20ch;text-wrap:pretty">Codepedia Design System</h1>
+      <p style="margin:24px 0 0;max-width:62ch;font-size:18px;color:#6B6862;text-wrap:pretty">Tokens și componentele Vue din adry999/cdp, cu toate variantele și stările. Fiecare bloc are corespondent în Storybook (design_handoff_codepedia_nuxt/storybook).</p>
+      <nav style="margin-top:28px;display:flex;flex-wrap:wrap;gap:8px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+        <a href="#tokens">01 Tokens</a><a href="#type">02 Tipografie</a><a href="#layout">03 Layout</a><a href="#ui">04 Primitive UI</a><a href="#domain">05 Componente de domeniu</a><a href="#shell">06 Header și formulare</a><a href="#storybook">07 Storybook</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 01 TOKENS -->
+  <section id="tokens" style="border-top:1px solid #E2DED6;padding:clamp(48px,6vw,96px) 0;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">01</span> / Tokens</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h2 style="margin:0;font-size:clamp(26px,3.4vw,40px);font-weight:600;letter-spacing:-0.02em;line-height:1.1">Culori</h2>
+      <p style="margin:12px 0 0;max-width:62ch;color:#6B6862">Paleta implicită Tailwind e dezactivată (<code style="font-family:'JetBrains Mono',monospace;font-size:14px">--color-*: initial</code>). Există doar aceste nouă culori, definite în app/assets/css/main.css.</p>
+      <div style="margin-top:32px;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:16px">
+        <div style="border:1px solid #E2DED6;border-radius:4px;overflow:hidden"><div style="height:96px;background:#FAF8F4;border-bottom:1px solid #E2DED6"></div><div style="padding:12px 14px"><div style="font-weight:500">paper</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6862">#FAF8F4 · fundal</div></div></div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;overflow:hidden"><div style="height:96px;background:#0B0B0B"></div><div style="padding:12px 14px"><div style="font-weight:500">ink</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6862">#0B0B0B · text, secțiuni închise</div></div></div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;overflow:hidden"><div style="height:96px;background:#FF4D14"></div><div style="padding:12px 14px"><div style="font-weight:500">signal</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6862">#FF4D14 · accent, nu text</div></div></div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;overflow:hidden"><div style="height:96px;background:#6B6862"></div><div style="padding:12px 14px"><div style="font-weight:500">muted</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6862">#6B6862 · text secundar</div></div></div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;overflow:hidden"><div style="height:96px;background:#E2DED6"></div><div style="padding:12px 14px"><div style="font-weight:500">hairline</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6862">#E2DED6 · borduri, separatoare</div></div></div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;overflow:hidden"><div style="height:96px;background:#F1EEE7"></div><div style="padding:12px 14px"><div style="font-weight:500">hatch</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6862">#F1EEE7 · hașură, selecție</div></div></div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;overflow:hidden"><div style="height:96px;background:#0B0B0B;display:flex;align-items:center;justify-content:center"><span style="width:40px;height:40px;border-radius:4px;background:#8D8880"></span></div><div style="padding:12px 14px"><div style="font-weight:500">muted-ink</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6862">#8D8880 · secundar pe ink</div></div></div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;overflow:hidden"><div style="height:96px;background:#0B0B0B;display:flex;align-items:center;justify-content:center"><span style="width:40px;height:40px;border-radius:4px;background:#B4AFA6"></span></div><div style="padding:12px 14px"><div style="font-weight:500">body-ink</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6862">#B4AFA6 · corp text pe ink</div></div></div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;overflow:hidden"><div style="height:96px;background:#0B0B0B;display:flex;align-items:center;justify-content:center"><span style="width:60%;height:1px;background:rgba(250,248,244,0.18)"></span></div><div style="padding:12px 14px"><div style="font-weight:500">hairline-ink</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6862">rgba(250,248,244,.18) · borduri pe ink</div></div></div>
+      </div>
+      <div style="margin-top:32px;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:16px">
+        <div style="padding:16px 18px;border:1px solid #E2DED6;border-radius:4px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Regulă</div><div style="margin-top:6px;font-size:15px">Signal nu se folosește pentru text de corp: contrast prea mic. Doar numere de secțiune, sublinieri, fundal de buton.</div></div>
+        <div style="padding:16px 18px;border:1px solid #E2DED6;border-radius:4px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Focus</div><div style="margin-top:6px;font-size:15px">Global: <code style="font-family:'JetBrains Mono',monospace;font-size:13px">outline 2px signal, offset 2px</code>. Fără ring albastru implicit.</div></div>
+        <div style="padding:16px 18px;border:1px solid #E2DED6;border-radius:4px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Raze și umbre</div><div style="margin-top:6px;font-size:15px">O singură rază: 4px (<code style="font-family:'JetBrains Mono',monospace;font-size:13px">rounded</code>). Fără umbre: suprafețele au bordură hairline.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 TYPE -->
+  <section id="type" style="border-top:1px solid #E2DED6;padding:clamp(48px,6vw,96px) 0;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">02</span> / Tipografie</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <div style="display:flex;flex-wrap:wrap;gap:16px">
+        <div style="flex:1 1 260px;padding:20px;border:1px solid #E2DED6;border-radius:4px"><div style="font-size:56px;font-weight:500;line-height:1;letter-spacing:-0.03em">Aa</div><div style="margin-top:12px;font-weight:500">Inter Tight</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6862">--font-sans · 400 / 500 / 600</div></div>
+        <div style="flex:1 1 260px;padding:20px;border:1px solid #E2DED6;border-radius:4px"><div style="font-family:'JetBrains Mono',monospace;font-size:48px;line-height:1.1">Aa</div><div style="margin-top:12px;font-weight:500">JetBrains Mono</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6862">--font-mono · 400 / 500 · etichete, meta</div></div>
+      </div>
+      <div style="margin-top:32px">
+        <div style="display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;padding:20px 0;border-top:1px solid #E2DED6"><div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Display / h1<br />clamp(34,6vw,64) · 600 · −0.025em</div><div style="flex:1 1 300px;min-width:0;font-size:clamp(34px,6vw,64px);font-weight:600;line-height:1.04;letter-spacing:-0.025em">Software care merge</div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;padding:20px 0;border-top:1px solid #E2DED6"><div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">h2 secțiune<br />clamp(26,3.4vw,40) · 600</div><div style="flex:1 1 300px;min-width:0;font-size:clamp(26px,3.4vw,40px);font-weight:600;line-height:1.1;letter-spacing:-0.02em">Ce construim</div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;padding:20px 0;border-top:1px solid #E2DED6"><div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">h3 card<br />19 · 500 · −0.02em</div><div style="flex:1 1 300px;min-width:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Portal de clienți</div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;padding:20px 0;border-top:1px solid #E2DED6"><div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Intro<br />clamp(16,1.4vw,18) · muted</div><div style="flex:1 1 300px;min-width:0;font-size:18px;color:#6B6862;max-width:62ch">Aplicații web, site-uri și automatizări pentru firme care vor să lucreze mai repede.</div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;padding:20px 0;border-top:1px solid #E2DED6"><div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Body<br />17 · 1.6 · −0.004em</div><div style="flex:1 1 300px;min-width:0;max-width:62ch">Textul de bază al site-ului. Linkurile din proză au subliniere <a href="#type">signal de 1px</a>, care devine ink la hover.</div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;padding:20px 0;border-top:1px solid #E2DED6;border-bottom:1px solid #E2DED6"><div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Etichetă mono<br />11–12 · uppercase · 0.08em</div><div style="flex:1 1 300px;min-width:0;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Nuxt · Supabase · Tailwind</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 LAYOUT -->
+  <section id="layout" style="border-top:1px solid #E2DED6;padding:clamp(48px,6vw,96px) 0;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">03</span> / Layout</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <div style="border:1px dashed #B4AFA6;border-radius:4px;padding:16px;background:repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px)">
+        <div style="display:flex;flex-wrap:wrap;gap:16px">
+          <div style="flex:0 0 120px;min-height:120px;border:1px solid #0B0B0B;border-radius:4px;background:#FAF8F4;padding:10px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em">Label<br /><span style="color:#6B6862">160px fix</span></div>
+          <div style="flex:1 1 240px;min-height:120px;border:1px solid #0B0B0B;border-radius:4px;background:#FAF8F4;padding:10px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em">Conținut<br /><span style="color:#6B6862">flex 1 1 560px · min-w 0</span></div>
+        </div>
+      </div>
+      <div style="margin-top:24px">
+        <div style="display:flex;flex-wrap:wrap;gap:16px;padding:16px 0;border-top:1px solid #E2DED6"><div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Container</div><div style="flex:1 1 240px;font-size:15px">max-width 1280px, centrat</div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;padding:16px 0;border-top:1px solid #E2DED6"><div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">--spacing-gutter</div><div style="flex:1 1 240px;font-size:15px">clamp(20px, 5vw, 64px) · padding lateral</div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;padding:16px 0;border-top:1px solid #E2DED6"><div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">--spacing-section-gap</div><div style="flex:1 1 240px;font-size:15px">clamp(24px, 4vw, 48px) · între label și conținut</div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;padding:16px 0;border-top:1px solid #E2DED6"><div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Padding secțiune</div><div style="flex:1 1 240px;font-size:15px">default: clamp(48,6vw,96) · hero: 48–120 sus / 40–72 jos · ink: clamp(56,7vw,112)</div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;padding:16px 0;border-top:1px solid #E2DED6;border-bottom:1px solid #E2DED6"><div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">--breakpoint-nav</div><div style="flex:1 1 240px;font-size:15px">≤820px: meniul devine burger. Singurul breakpoint explicit.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 UI PRIMITIVES -->
+  <section id="ui" style="border-top:1px solid #E2DED6;padding:clamp(48px,6vw,96px) 0 0">
+    <div style="display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">04</span> / Primitive UI</div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h2 style="margin:0;font-size:clamp(26px,3.4vw,40px);font-weight:600;letter-spacing:-0.02em;line-height:1.1">layers/core/app/components/ui</h2>
+        <p style="margin:12px 0 0;max-width:62ch;color:#6B6862">Nouă componente folosite în toate layer-ele. Fără dependențe de i18n sau Supabase, deci merg direct în Storybook.</p>
+      </div>
+    </div>
+
+    <!-- AppButton -->
+    <div style="margin-top:48px;border-top:1px solid #E2DED6;padding:32px 0;display:flex;flex-wrap:wrap;gap:32px">
+      <div style="flex:0 1 260px;min-width:0">
+        <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em">AppButton</div>
+        <div style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B6862">ui/AppButton.vue</div>
+        <sc-if value="{{ showProps }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;color:#0B0B0B">variant: 'ink' | 'signal' | 'outline'<br />href?: string → NuxtLink<br />inverted?: boolean<br />type?: 'button' | 'submit'<br />disabled?: boolean<br /><span style="color:#6B6862">slot: default · expose: focus()</span></div>
+        </sc-if>
+      </div>
+      <div style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <div style="padding:28px;border:1px solid #E2DED6;border-radius:4px;display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+          <button style="border:0;cursor:pointer;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:14px 22px;font:500 15px 'Inter Tight',sans-serif;transition:background-color 120ms ease-out" style-hover="background:#FF4D14">Începe un proiect</button>
+          <button style="border:0;cursor:pointer;border-radius:4px;background:#FF4D14;color:#FAF8F4;padding:14px 22px;font:500 15px 'Inter Tight',sans-serif;transition:background-color 120ms ease-out" style-hover="background:#0B0B0B">Trimite</button>
+          <button style="cursor:pointer;border-radius:4px;background:transparent;border:1px solid #0B0B0B;color:#0B0B0B;padding:13px 21px;font:500 15px 'Inter Tight',sans-serif;transition:border-color 120ms ease-out" style-hover="border-color:#6B6862">Vezi proiectele</button>
+          <button disabled="" style="border:0;cursor:not-allowed;opacity:0.6;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:14px 22px;font:500 15px 'Inter Tight',sans-serif">Se trimite…</button>
+        </div>
+        <div style="padding:28px;border-radius:4px;background:#0B0B0B;display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+          <button style="cursor:pointer;border-radius:4px;background:transparent;border:1px solid #FAF8F4;color:#FAF8F4;padding:13px 21px;font:500 15px 'Inter Tight',sans-serif" style-hover="border-color:#B4AFA6">Outline · inverted</button>
+          <button style="border:0;cursor:pointer;border-radius:4px;background:#FF4D14;color:#FAF8F4;padding:14px 22px;font:500 15px 'Inter Tight',sans-serif" style-hover="background:#FAF8F4;color:#0B0B0B">Signal pe ink</button>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">ink → hover signal · signal → hover ink · outline → hover bordură muted · disabled opacity .6</div>
+      </div>
+    </div>
+
+    <!-- TechChip + SectionLabel -->
+    <div style="border-top:1px solid #E2DED6;padding:32px 0;display:flex;flex-wrap:wrap;gap:32px">
+      <div style="flex:0 1 260px;min-width:0">
+        <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em">TechChip · SectionLabel</div>
+        <div style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B6862">ui/TechChip.vue · ui/SectionLabel.vue</div>
+        <sc-if value="{{ showProps }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9">TechChip<br />label?: string · slot<br /><br />SectionLabel<br />number: string<br />label: string<br />inverted?: boolean</div>
+        </sc-if>
+      </div>
+      <div style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <div style="padding:28px;border:1px solid #E2DED6;border-radius:4px;display:flex;flex-wrap:wrap;gap:8px">
+          <span style="display:inline-block;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Nuxt</span>
+          <span style="display:inline-block;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Supabase</span>
+          <span style="display:inline-block;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Tailwind</span>
+          <span style="display:inline-block;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">OpenAI</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px">
+          <div style="flex:1 1 220px;padding:28px;border:1px solid #E2DED6;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">02</span> / Servicii</div>
+          <div style="flex:1 1 220px;padding:28px;border-radius:4px;background:#0B0B0B;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880"><span style="color:#FF4D14">06</span> / Contact</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FactCard + TableRow -->
+    <div style="border-top:1px solid #E2DED6;padding:32px 0;display:flex;flex-wrap:wrap;gap:32px">
+      <div style="flex:0 1 260px;min-width:0">
+        <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em">FactCard · TableRow</div>
+        <div style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B6862">ui/FactCard.vue · ui/TableRow.vue</div>
+        <sc-if value="{{ showProps }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9">FactCard<br />label: string · value?: string · slot<br /><br />TableRow<br />label: string<br />labelWidth?: string = '200px'<br />last?: boolean → border-y<br />inverted?: boolean</div>
+        </sc-if>
+      </div>
+      <div style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,160px),1fr));gap:12px">
+          <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Client</div><div style="margin-top:8px;font-weight:500">Firmă de transport</div></div>
+          <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Durată</div><div style="margin-top:8px;font-weight:500">10 săptămâni</div></div>
+          <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Țară</div><div style="margin-top:8px;font-weight:500">România</div></div>
+        </div>
+        <div style="padding:8px 28px;border:1px solid #E2DED6;border-radius:4px">
+          <div style="display:flex;flex-wrap:wrap;gap:16px;padding:20px 0;border-top:1px solid #E2DED6"><div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Frontend</div><div style="flex:1;min-width:0">Nuxt 4, Tailwind</div></div>
+          <div style="display:flex;flex-wrap:wrap;gap:16px;padding:20px 0;border-top:1px solid #E2DED6;border-bottom:1px solid #E2DED6"><div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Backend · last</div><div style="flex:1;min-width:0">Supabase, Postgres</div></div>
+        </div>
+        <div style="padding:8px 28px;border-radius:4px;background:#0B0B0B;color:#FAF8F4">
+          <div style="display:flex;flex-wrap:wrap;gap:16px;padding:20px 0;border-top:1px solid rgba(250,248,244,0.18);border-bottom:1px solid rgba(250,248,244,0.18)"><div style="flex:0 0 200px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">Email · inverted</div><div style="flex:1;min-width:0">hello@codepedia.ro</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MediaFrame -->
+    <div style="border-top:1px solid #E2DED6;padding:32px 0;display:flex;flex-wrap:wrap;gap:32px">
+      <div style="flex:0 1 260px;min-width:0">
+        <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em">MediaFrame</div>
+        <div style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B6862">ui/MediaFrame.vue</div>
+        <sc-if value="{{ showProps }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9">ratio?: '16/9' | '16/10' | '4/3'<br />src?: string → NuxtImg<br />alt?: string<br />label?: string (placeholder)<br />sizes?: string = '100vw'<br />loading?: 'lazy' | 'eager'</div>
+        </sc-if>
+      </div>
+      <div style="flex:1 1 520px;min-width:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:16px;align-items:start">
+        <div><div style="aspect-ratio:16/9;border:1px solid #E2DED6;border-radius:4px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;background-image:url('design_handoff_codepedia_nuxt/assets/codepedia-mark-watermark.svg'),repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">16/9</span></div></div>
+        <div><div style="aspect-ratio:16/10;border:1px solid #E2DED6;border-radius:4px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;background-image:url('design_handoff_codepedia_nuxt/assets/codepedia-mark-watermark.svg'),repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">16/10 · implicit</span></div></div>
+        <div><div style="aspect-ratio:4/3;border:1px solid #E2DED6;border-radius:4px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;background-image:url('design_handoff_codepedia_nuxt/assets/codepedia-mark-watermark.svg'),repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">4/3</span></div></div>
+      </div>
+    </div>
+
+    <!-- PageHero / SiteSection -->
+    <div style="border-top:1px solid #E2DED6;padding:32px 0;display:flex;flex-wrap:wrap;gap:32px">
+      <div style="flex:0 1 260px;min-width:0">
+        <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em">SiteSection · PageHero</div>
+        <div style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B6862">ui/SiteSection.vue · ui/PageHero.vue</div>
+        <sc-if value="{{ showProps }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9">SiteSection<br />number, label: string<br />sectionId?: string<br />inverted?: boolean<br />padding?: 'hero' | 'default' | 'ink'<br />paddingY?: string (clamp)<br />topBorder?: boolean = true<br /><span style="color:#6B6862">slots: label, default</span><br /><br />PageHero<br />number, label, title, intro</div>
+        </sc-if>
+      </div>
+      <div style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <div style="border:1px solid #E2DED6;border-radius:4px;padding:40px 28px 32px;display:flex;flex-wrap:wrap;gap:24px">
+          <div style="flex:0 0 120px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">01</span> / Servicii</div>
+          <div style="flex:1 1 280px;min-width:0"><div style="font-size:clamp(28px,3.4vw,44px);font-weight:600;line-height:1.04;letter-spacing:-0.025em;max-width:20ch;text-wrap:pretty">Aplicații web pentru firme care au depășit Excel-ul</div><p style="margin:16px 0 0;font-size:16px;color:#6B6862;max-width:62ch">PageHero: label în coloana de 160px, h1 mare, paragraf intro.</p></div>
+        </div>
+        <div style="border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:40px 28px;display:flex;flex-wrap:wrap;gap:24px">
+          <div style="flex:0 0 120px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880"><span style="color:#FF4D14">06</span> / Contact</div>
+          <div style="flex:1 1 280px;min-width:0"><div style="font-size:clamp(24px,2.8vw,34px);font-weight:600;letter-spacing:-0.02em;line-height:1.1">SiteSection inverted, padding="ink"</div><p style="margin:12px 0 0;font-size:16px;color:#B4AFA6">Fără bordură de sus pe ink. Corpul folosește body-ink.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Honeypot -->
+    <div style="border-top:1px solid #E2DED6;padding:32px 0;display:flex;flex-wrap:wrap;gap:32px">
+      <div style="flex:0 1 260px;min-width:0">
+        <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em">CoreHoneypotField</div>
+        <div style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B6862">ui/CoreHoneypotField.vue</div>
+      </div>
+      <div style="flex:1 1 520px;min-width:0;padding:20px 28px;border:1px dashed #B4AFA6;border-radius:4px;font-size:15px;color:#6B6862">Invizibil (v-model: string). Nu are aspect vizual. În Storybook apare doar ca story de test: valoarea goală = om, orice valoare = spam.</div>
+    </div>
+  </section>
+
+  <!-- 05 DOMAIN -->
+  <section id="domain" style="border-top:1px solid #E2DED6;padding:clamp(48px,6vw,96px) 0 0">
+    <div style="display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">05</span> / Domeniu</div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h2 style="margin:0;font-size:clamp(26px,3.4vw,40px);font-weight:600;letter-spacing:-0.02em;line-height:1.1">Componente compuse</h2>
+        <p style="margin:12px 0 0;max-width:62ch;color:#6B6862">Construite din primitive. Folosesc i18n (useI18n, useLocalePath), deci în Storybook rulează prin integrarea Nuxt.</p>
+      </div>
+    </div>
+
+    <!-- ProjectsCard -->
+    <div style="margin-top:48px;border-top:1px solid #E2DED6;padding:32px 0;display:flex;flex-wrap:wrap;gap:32px">
+      <div style="flex:0 1 260px;min-width:0">
+        <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em">ProjectsCard</div>
+        <div style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B6862">layers/projects/…/ProjectsCard.vue</div>
+        <sc-if value="{{ showProps }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9">project: MappedProjectCard<br />showTech?: boolean = true</div>
+        </sc-if>
+      </div>
+      <div style="flex:1 1 520px;min-width:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:16px;align-items:start">
+        <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:22px">
+          <div style="aspect-ratio:16/10;border:1px solid #E2DED6;border-radius:4px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;background-image:url('design_handoff_codepedia_nuxt/assets/codepedia-mark-watermark.svg'),repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Dashboard curse</span></div>
+          <div style="margin-top:16px;display:flex;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span>Nuxt</span><span>·</span><span>Supabase</span></div>
+          <h3 style="margin:10px 0 8px;font-size:19px;font-weight:500;letter-spacing:-0.02em">SaaS de logistică</h3>
+          <p style="margin:0;font-size:16px;color:#6B6862">Planificare curse și documente pentru o firmă de transport.</p>
+          <a href="#domain" style="margin-top:16px;display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">Studiu de caz →</a>
+        </div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:22px">
+          <div style="aspect-ratio:16/10;border:1px solid #E2DED6;border-radius:4px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;background-image:url('design_handoff_codepedia_nuxt/assets/codepedia-mark-watermark.svg'),repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Portal clienți</span></div>
+          <h3 style="margin:16px 0 8px;font-size:19px;font-weight:500;letter-spacing:-0.02em">Portal de clienți</h3>
+          <p style="margin:0;font-size:16px;color:#6B6862">showTech = false, cum apare pe paginile de servicii.</p>
+          <a href="#domain" style="margin-top:16px;display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">Studiu de caz →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- FilterChips -->
+    <div style="border-top:1px solid #E2DED6;padding:32px 0;display:flex;flex-wrap:wrap;gap:32px">
+      <div style="flex:0 1 260px;min-width:0">
+        <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em">ProjectsFilterChips</div>
+        <div style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B6862">layers/projects/…/ProjectsFilterChips.vue</div>
+        <sc-if value="{{ showProps }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9">tags: ServiceTagId[]<br />active: ServiceTagId | null<br /><span style="color:#6B6862">emit: select(tag | null)</span></div>
+        </sc-if>
+      </div>
+      <div style="flex:1 1 520px;min-width:0;padding:28px;border:1px solid #E2DED6;border-radius:4px">
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ chips }}" as="c" hint-placeholder-count="6">
+            <button onClick="{{ c.select }}" aria-pressed="{{ c.pressed }}" style="cursor:pointer;display:inline-block;border-radius:4px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.color }};padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em" style-hover="border-color:{{ c.hover }}">{{ c.label }}</button>
+          </sc-for>
+        </div>
+        <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Activ = stilul ink din AppButton · inactiv hover: bordură ink/40</div>
+      </div>
+    </div>
+
+    <!-- QualifierOptionCard -->
+    <div style="border-top:1px solid #E2DED6;padding:32px 0;display:flex;flex-wrap:wrap;gap:32px">
+      <div style="flex:0 1 260px;min-width:0">
+        <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em">QualifierOptionCard</div>
+        <div style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B6862">layers/qualifier/…/QualifierOptionCard.vue</div>
+        <sc-if value="{{ showProps }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9">name, value: string<br />selected: boolean<br />title: string<br />hint?, meta?, number?: string<br /><span style="color:#6B6862">emit: select(value) · radio nativ sr-only</span></div>
+        </sc-if>
+      </div>
+      <div style="flex:1 1 520px;min-width:0;padding:28px;border:1px solid #E2DED6;border-radius:4px;display:flex;flex-direction:column;gap:10px;max-width:560px">
+        <sc-for list="{{ options }}" as="o" hint-placeholder-count="3">
+          <label onClick="{{ o.select }}" style="display:flex;gap:14px;cursor:pointer;border-radius:4px;border:1px solid {{ o.border }};background:{{ o.bg }};padding:14px 16px;transition:border-color 120ms ease-out" style-hover="border-color:{{ o.hover }}">
+            <span style="flex-shrink:0;padding-top:2px;font-family:'JetBrains Mono',monospace;font-size:11px;font-variant-numeric:tabular-nums;color:#6B6862">{{ o.number }}</span>
+            <span style="display:flex;flex-direction:column;gap:4px;min-width:0">
+              <span style="font-size:15px;font-weight:500;line-height:1.35">{{ o.title }}</span>
+              <span style="font-size:13px;line-height:1.35;color:#6B6862">{{ o.hint }}</span>
+              <span style="margin-top:2px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#6B6862">{{ o.meta }}</span>
+            </span>
+          </label>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- ConsentBanner -->
+    <div style="border-top:1px solid #E2DED6;padding:32px 0;display:flex;flex-wrap:wrap;gap:32px">
+      <div style="flex:0 1 260px;min-width:0">
+        <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em">ConsentBanner</div>
+        <div style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B6862">layers/consent/…/ConsentBanner.vue</div>
+        <sc-if value="{{ showProps }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9">Fără props. Stare din useCookieConsent.<br /><span style="color:#6B6862">stări: implicit · personalizare</span></div>
+        </sc-if>
+      </div>
+      <div style="flex:1 1 520px;min-width:0;border:1px solid #E2DED6;border-radius:4px;overflow:hidden;background:repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px)">
+        <div style="height:80px"></div>
+        <div style="border-top:1px solid #E2DED6;background:#FAF8F4;padding:20px 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
+          <p style="margin:0;max-width:60ch;font-size:14px;color:#6B6862">Folosim cookie-uri pentru analiză și marketing doar cu acordul tău. <a href="#domain">Politica de confidențialitate</a></p>
+          <sc-if value="{{ notCustomizing }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-wrap:wrap;gap:12px">
+              <button onClick="{{ openCustomize }}" style="cursor:pointer;border-radius:4px;background:transparent;border:1px solid #0B0B0B;color:#0B0B0B;padding:13px 21px;font:500 15px 'Inter Tight',sans-serif" style-hover="border-color:#6B6862">Personalizează</button>
+              <button style="cursor:pointer;border-radius:4px;background:transparent;border:1px solid #0B0B0B;color:#0B0B0B;padding:13px 21px;font:500 15px 'Inter Tight',sans-serif" style-hover="border-color:#6B6862">Refuz tot</button>
+              <button style="cursor:pointer;border-radius:4px;background:transparent;border:1px solid #0B0B0B;color:#0B0B0B;padding:13px 21px;font:500 15px 'Inter Tight',sans-serif" style-hover="border-color:#6B6862">Accept tot</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ customizing }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px">
+              <label style="display:flex;align-items:center;gap:8px;font-size:14px"><input type="checkbox" style="accent-color:#0B0B0B" /> Analiză</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:14px"><input type="checkbox" style="accent-color:#0B0B0B" /> Marketing</label>
+              <button onClick="{{ closeCustomize }}" style="cursor:pointer;border-radius:4px;background:transparent;border:1px solid #0B0B0B;color:#0B0B0B;padding:13px 21px;font:500 15px 'Inter Tight',sans-serif" style-hover="border-color:#6B6862">Înapoi</button>
+              <button style="cursor:pointer;border-radius:4px;background:transparent;border:1px solid #0B0B0B;color:#0B0B0B;padding:13px 21px;font:500 15px 'Inter Tight',sans-serif" style-hover="border-color:#6B6862">Refuz tot</button>
+              <button style="border:0;cursor:pointer;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:14px 22px;font:500 15px 'Inter Tight',sans-serif" style-hover="background:#FF4D14">Salvează</button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="border-top:1px solid #E2DED6;padding:32px 0;display:flex;flex-wrap:wrap;gap:32px">
+      <div style="flex:0 1 260px;min-width:0">
+        <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em">SiteFooter</div>
+        <div style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B6862">app/components/site/SiteFooter.vue</div>
+        <sc-if value="{{ showProps }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9">compact?: boolean<br /><span style="color:#6B6862">compact ascunde nav-ul și tagline-ul</span></div>
+        </sc-if>
+      </div>
+      <div style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <div style="border:1px solid #E2DED6;border-radius:4px">
+          <div style="display:flex;flex-wrap:wrap;gap:12px 24px;border-bottom:1px solid #E2DED6;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span>Website</span><span>Aplicație web</span><span>WordPress</span><span>Shopify</span><span>Automatizare AI</span><span>Proiecte</span><span>Blog</span><span>Confidențialitate</span></div>
+          <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;padding:24px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="display:flex;align-items:center;gap:8px"><img src="design_handoff_codepedia_nuxt/assets/codepedia-mark.svg" alt="" style="display:block;height:12px;width:auto;opacity:0.5" />Codepedia SRL</span><span>Software făcut în România</span><span>Setări cookie</span><span>© 2026</span></div>
+        </div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;padding:24px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="display:flex;align-items:center;gap:8px"><img src="design_handoff_codepedia_nuxt/assets/codepedia-mark.svg" alt="" style="display:block;height:12px;width:auto;opacity:0.5" />Codepedia SRL · compact</span><span>Setări cookie</span><span>© 2026</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 SHELL & FORMS -->
+  <section id="shell" style="border-top:1px solid #E2DED6;padding:clamp(48px,6vw,96px) 0 0">
+    <div style="display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">06</span> / Header și formulare</div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h2 style="margin:0;font-size:clamp(26px,3.4vw,40px);font-weight:600;letter-spacing:-0.02em;line-height:1.1">Header, contact, Qualifier</h2>
+        <p style="margin:12px 0 0;max-width:62ch;color:#6B6862">Componentele cu stare: meniul mobil, formularul de lead și modalul în trei pași. Copy-ul vine din i18n/locales/ro.json.</p>
+      </div>
+    </div>
+
+    <!-- SiteHeader -->
+    <div style="margin-top:48px;border-top:1px solid #E2DED6;padding:32px 0;display:flex;flex-wrap:wrap;gap:32px">
+      <div style="flex:0 1 260px;min-width:0">
+        <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em">SiteHeader</div>
+        <div style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B6862">app/components/site/SiteHeader.vue</div>
+        <sc-if value="{{ showProps }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9">Fără props. sticky top-0 · min-h 64px<br />navLinks: 5 ancore + blog<br />RO | EN → switchLocalePath<br />burger ≤820px · 44×44<br /><span style="color:#6B6862">Esc închide și redă focusul · bară signal 2px jos</span></div>
+        </sc-if>
+      </div>
+      <div style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <div style="border:1px solid #E2DED6;border-radius:4px;overflow-x:auto;background:#FAF8F4">
+          <div style="min-width:900px">
+          <div style="display:flex;min-height:64px;align-items:center;justify-content:space-between;gap:24px;padding:0 24px;white-space:nowrap">
+            <img src="design_handoff_codepedia_nuxt/assets/codepedia-wordmark.svg" alt="Codepedia" style="display:block;height:18px;width:auto" />
+            <nav style="display:flex;align-items:center;gap:clamp(14px,2vw,28px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+              <div style="display:flex;align-items:center;gap:clamp(14px,2vw,28px);border-right:1px solid #E2DED6;padding-right:clamp(14px,2vw,28px)">
+                <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="6">
+                  <a href="#shell" style="color:#6B6862;text-decoration:none" style-hover="color:#FF4D14">{{ l.label }}</a>
+                </sc-for>
+              </div>
+              <span style="display:flex;align-items:center;gap:6px"><span style="color:#0B0B0B">RO</span><span style="color:#E2DED6">|</span><span style="color:#6B6862">EN</span></span>
+            </nav>
+          </div>
+          <div style="height:2px;background:#FF4D14"></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+          <div style="flex:0 1 360px;min-width:0;border:1px solid #E2DED6;border-radius:4px;overflow:hidden;background:#FAF8F4">
+            <div style="display:flex;min-height:64px;align-items:center;justify-content:space-between;gap:16px;padding:0 20px">
+              <img src="design_handoff_codepedia_nuxt/assets/codepedia-wordmark.svg" alt="Codepedia" style="display:block;height:16px;width:auto" />
+              <div style="display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+                <span style="display:flex;gap:6px"><span>RO</span><span style="color:#E2DED6">|</span><span style="color:#6B6862">EN</span></span>
+                <button onClick="{{ toggleMenu }}" aria-label="Meniu" aria-expanded="{{ menuExpanded }}" style="display:flex;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;padding:0 11px;border:1px solid #E2DED6;border-radius:4px;background:transparent;cursor:pointer">
+                  <span style="display:block;height:1px;background:#0B0B0B"></span>
+                  <span style="display:block;height:1px;background:{{ burgerMid }}"></span>
+                  <span style="display:block;height:1px;background:#0B0B0B"></span>
+                </button>
+              </div>
+            </div>
+            <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;border-top:1px solid #E2DED6;padding:8px 20px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+                <sc-for list="{{ mobileLinks }}" as="l" hint-placeholder-count="6">
+                  <a href="#shell" style="padding:16px 0;color:#0B0B0B;text-decoration:{{ l.deco }};text-decoration-color:#FF4D14;text-underline-offset:4px;border-bottom:{{ l.border }}">{{ l.label }}</a>
+                </sc-for>
+              </div>
+            </sc-if>
+            <div style="height:2px;background:#FF4D14"></div>
+          </div>
+          <div style="flex:1 1 200px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862;line-height:1.8">Mobil ≤820px. Click pe burger: linia din mijloc devine signal, Contact e subliniat ca ultim link.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LeadsContactForm -->
+    <div style="border-top:1px solid #E2DED6;padding:32px 0;display:flex;flex-wrap:wrap;gap:32px">
+      <div style="flex:0 1 260px;min-width:0">
+        <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em">LeadsContactForm</div>
+        <div style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B6862">layers/leads/…/LeadsContactForm.vue</div>
+        <sc-if value="{{ showProps }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9">Fără props. useLeadSubmission()<br />status: idle | pending | error | success<br />obligatorii: name, email, message<br />budget: LEAD_BUDGET_KEYS<br /><span style="color:#6B6862">honeypot website · UTM din query</span></div>
+        </sc-if>
+      </div>
+      <div style="flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ formStates }}" as="s" hint-placeholder-count="5">
+            <button onClick="{{ s.select }}" aria-pressed="{{ s.pressed }}" style="cursor:pointer;border-radius:4px;border:1px solid {{ s.border }};background:{{ s.bg }};color:{{ s.color }};padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">{{ s.label }}</button>
+          </sc-for>
+        </div>
+        <div style="padding:clamp(20px,3vw,32px);border:1px solid #E2DED6;border-radius:4px">
+          <sc-if value="{{ formNotSent }}" hint-placeholder-val="{{ true }}">
+            <form style="display:flex;flex-direction:column;gap:16px;max-width:560px">
+              <sc-for list="{{ leadFields }}" as="f" hint-placeholder-count="6">
+                <div>
+                  <label style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ f.label }}</label>
+                  <sc-if value="{{ f.isInput }}" hint-placeholder-val="{{ true }}">
+                    <input type="text" aria-invalid="{{ f.invalid }}" style="margin-top:8px;box-sizing:border-box;width:100%;border:1px solid #6B6862;border-radius:4px;background:#FAF8F4;padding:12px 14px;font:16px 'Inter Tight',sans-serif;color:#0B0B0B" style-focus="outline:2px solid #0B0B0B;outline-offset:2px" />
+                  </sc-if>
+                  <sc-if value="{{ f.isArea }}" hint-placeholder-val="{{ false }}">
+                    <textarea rows="4" aria-invalid="{{ f.invalid }}" style="margin-top:8px;box-sizing:border-box;width:100%;border:1px solid #6B6862;border-radius:4px;background:#FAF8F4;padding:12px 14px;font:16px 'Inter Tight',sans-serif;color:#0B0B0B;resize:vertical" style-focus="outline:2px solid #0B0B0B;outline-offset:2px"></textarea>
+                  </sc-if>
+                  <sc-if value="{{ f.isSelect }}" hint-placeholder-val="{{ false }}">
+                    <select style="margin-top:8px;box-sizing:border-box;width:100%;border:1px solid #6B6862;border-radius:4px;background:#FAF8F4;padding:12px 14px;font:16px 'Inter Tight',sans-serif;color:#0B0B0B">
+                      <option>Alege un interval</option><option>sub 1.000 EUR</option><option>1.000 – 2.000 EUR</option><option>2.000 – 5.000 EUR</option><option>peste 5.000 EUR</option><option>Nu știu încă</option>
+                    </select>
+                  </sc-if>
+                  <sc-if value="{{ f.showError }}" hint-placeholder-val="{{ false }}">
+                    <p style="margin:4px 0 0;display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#0B0B0B"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#FF4D14;flex-shrink:0"></span>{{ f.error }}</p>
+                  </sc-if>
+                </div>
+              </sc-for>
+              <sc-if value="{{ formIsError }}" hint-placeholder-val="{{ false }}">
+                <p role="alert" style="margin:0;display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#0B0B0B"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#FF4D14;flex-shrink:0"></span>Ceva n-a mers. Încearcă din nou sau scrie direct pe email.</p>
+              </sc-if>
+              <p style="margin:0;font-size:12px;color:#6B6862">Trimițând acest formular, ești de acord cu <a href="#shell">politica de confidențialitate</a></p>
+              <button type="button" disabled="{{ formPending }}" style="width:fit-content;border:0;cursor:pointer;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:14px 22px;font:500 15px 'Inter Tight',sans-serif;opacity:{{ formBtnOpacity }}" style-hover="background:#FF4D14">{{ formBtnLabel }}</button>
+            </form>
+          </sc-if>
+          <sc-if value="{{ formSent }}" hint-placeholder-val="{{ false }}">
+            <p role="status" style="margin:0;font-size:16px">Trimis. Primești un răspuns într-o zi lucrătoare.</p>
+          </sc-if>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Input: bordură muted, focus outline ink · eroare: punct signal + text ink mono 12</div>
+      </div>
+    </div>
+
+    <!-- QualifierModal -->
+    <div style="border-top:1px solid #E2DED6;padding:32px 0;display:flex;flex-wrap:wrap;gap:32px">
+      <div style="flex:0 1 260px;min-width:0">
+        <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em">QualifierModal</div>
+        <div style="margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6B6862">layers/qualifier/…/QualifierModal.vue<br />+ QualifierStepStage / Budget / Contact</div>
+        <sc-if value="{{ showProps }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9">Fără props. useQualifierDialog() · useQualifierFlow()<br />3 pași: stage → budget → contact<br />stage E sau buget sub 1k → ofertă Express<br />altfel ofertă per stage (A–D)<br /><span style="color:#6B6862">focus trap · Esc închide · overlay ink/60 · rounded-lg, singura umbră din sistem</span></div>
+        </sc-if>
+      </div>
+      <div style="flex:1 1 520px;min-width:0;border-radius:4px;overflow:hidden;background:rgba(11,11,11,0.6);padding:clamp(16px,4vw,40px) clamp(12px,3vw,32px);display:flex;justify-content:center">
+        <div role="dialog" aria-labelledby="ds-qualifier-title" style="box-sizing:border-box;width:100%;max-width:560px;border:1px solid #E2DED6;border-radius:8px;background:#FAF8F4;padding:clamp(20px,4vw,36px);box-shadow:0 24px 80px -20px rgba(11,11,11,0.35)">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
+            <div>
+              <p style="margin:0;display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#FF4D14"></span>Începe un proiect</p>
+              <h2 id="ds-qualifier-title" style="margin:4px 0 0;font-size:clamp(20px,3vw,26px);font-weight:600;line-height:1.25;letter-spacing:-0.02em">Hai să găsim punctul de pornire potrivit.</h2>
+            </div>
+            <button onClick="{{ qReset }}" aria-label="Închide" style="margin:-4px -4px 0 0;flex-shrink:0;border:0;background:transparent;cursor:pointer;padding:8px;font-family:'JetBrains Mono',monospace;font-size:18px;line-height:1;color:#6B6862" style-hover="color:#0B0B0B">×</button>
+          </div>
+
+          <sc-if value="{{ qNotDone }}" hint-placeholder-val="{{ true }}">
+            <div style="margin-top:20px">
+              <div style="display:flex;gap:6px">
+                <sc-for list="{{ qBars }}" as="b" hint-placeholder-count="3">
+                  <span style="height:4px;flex:1;border-radius:999px;background:{{ b.bg }};transition:background-color 200ms"></span>
+                </sc-for>
+              </div>
+              <p style="margin:8px 0 0;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ qProgress }}</p>
+            </div>
+          </sc-if>
+
+          <div style="margin-top:24px">
+            <sc-if value="{{ qIsStage }}" hint-placeholder-val="{{ true }}">
+              <fieldset style="margin:0;padding:0;border:0">
+                <legend style="padding:0;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Unde e proiectul tău acum?</legend>
+                <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+                  <sc-for list="{{ qStages }}" as="o" hint-placeholder-count="5">
+                    <label onClick="{{ o.select }}" style="display:flex;gap:14px;cursor:pointer;border-radius:4px;border:1px solid {{ o.border }};background:{{ o.bg }};padding:14px 16px;transition:border-color 120ms ease-out" style-hover="border-color:{{ o.hover }}">
+                      <span style="flex-shrink:0;padding-top:2px;font-family:'JetBrains Mono',monospace;font-size:11px;font-variant-numeric:tabular-nums;color:#6B6862">{{ o.number }}</span>
+                      <span style="display:flex;flex-direction:column;gap:4px;min-width:0">
+                        <span style="font-size:15px;font-weight:500;line-height:1.35">{{ o.title }}</span>
+                        <span style="font-size:13px;line-height:1.35;color:#6B6862">{{ o.hint }}</span>
+                        <span style="margin-top:2px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#6B6862">{{ o.meta }}</span>
+                      </span>
+                    </label>
+                  </sc-for>
+                </div>
+              </fieldset>
+              <div style="margin-top:24px;display:flex;justify-content:flex-end">
+                <button onClick="{{ qNext }}" disabled="{{ qNextDisabled }}" style="border:0;cursor:pointer;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:14px 22px;font:500 15px 'Inter Tight',sans-serif;opacity:{{ qNextOpacity }}" style-hover="background:#FF4D14">Continuă</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ qIsBudget }}" hint-placeholder-val="{{ false }}">
+              <fieldset style="margin:0;padding:0;border:0">
+                <legend style="padding:0;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Care e bugetul de pornire?</legend>
+                <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+                  <sc-for list="{{ qBudgets }}" as="o" hint-placeholder-count="5">
+                    <label onClick="{{ o.select }}" style="display:flex;flex-direction:column;gap:4px;cursor:pointer;border-radius:4px;border:1px solid {{ o.border }};background:{{ o.bg }};padding:14px 16px;transition:border-color 120ms ease-out" style-hover="border-color:{{ o.hover }}">
+                      <span style="font-size:15px;font-weight:500;line-height:1.35">{{ o.title }}</span>
+                      <span style="font-size:13px;line-height:1.35;color:#6B6862">{{ o.hint }}</span>
+                    </label>
+                  </sc-for>
+                </div>
+              </fieldset>
+              <div style="margin-top:24px;display:flex;align-items:center;justify-content:space-between">
+                <button onClick="{{ qBack }}" style="cursor:pointer;border-radius:4px;background:transparent;border:1px solid #0B0B0B;color:#0B0B0B;padding:13px 21px;font:500 15px 'Inter Tight',sans-serif" style-hover="border-color:#6B6862">Înapoi</button>
+                <button onClick="{{ qNext }}" disabled="{{ qNextDisabled }}" style="border:0;cursor:pointer;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:14px 22px;font:500 15px 'Inter Tight',sans-serif;opacity:{{ qNextOpacity }}" style-hover="background:#FF4D14">Continuă</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ qIsContact }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <div style="border:1px solid #E2DED6;border-radius:4px;background:#F1EEE7;padding:16px">
+                  <p style="margin:0;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ qOffer.kicker }}</p>
+                  <p style="margin:6px 0 0;font-size:15px;font-weight:500;line-height:1.35">{{ qOffer.title }}</p>
+                  <p style="margin:6px 0 0;font-size:13px;line-height:1.6;color:#6B6862">{{ qOffer.body }}</p>
+                </div>
+                <sc-for list="{{ qFields }}" as="f" hint-placeholder-count="4">
+                  <div>
+                    <label style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ f.label }}</label>
+                    <input type="text" style="margin-top:8px;box-sizing:border-box;width:100%;border:1px solid #6B6862;border-radius:4px;background:#FAF8F4;padding:12px 14px;font:16px 'Inter Tight',sans-serif;color:#0B0B0B" style-focus="outline:2px solid #0B0B0B;outline-offset:2px" />
+                  </div>
+                </sc-for>
+                <p style="margin:0;font-size:12px;color:#6B6862">Trimițând acest formular, ești de acord cu <a href="#shell">politica de confidențialitate</a></p>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+                  <button onClick="{{ qBack }}" style="cursor:pointer;border-radius:4px;background:transparent;border:1px solid #0B0B0B;color:#0B0B0B;padding:13px 21px;font:500 15px 'Inter Tight',sans-serif" style-hover="border-color:#6B6862">Înapoi</button>
+                  <button onClick="{{ qSubmit }}" style="border:0;cursor:pointer;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:14px 22px;font:500 15px 'Inter Tight',sans-serif" style-hover="background:#FF4D14">Trimite solicitarea</button>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ qDone }}" hint-placeholder-val="{{ false }}">
+              <div role="status" style="padding:8px 0;text-align:center">
+                <h3 style="margin:8px 0 0;font-size:clamp(18px,2.6vw,22px);font-weight:600;letter-spacing:-0.02em">Mulțumim — am primit detaliile.</h3>
+                <p style="margin:12px auto 0;max-width:38ch;font-size:15px;line-height:1.6;color:#6B6862">Analizăm ce ai trimis și revenim într-o zi lucrătoare cu pașii următori.</p>
+                <div style="margin-top:24px;display:flex;justify-content:center"><button onClick="{{ qReset }}" style="border:0;cursor:pointer;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:14px 22px;font:500 15px 'Inter Tight',sans-serif" style-hover="background:#FF4D14">Închide</button></div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 STORYBOOK -->
+  <section id="storybook" style="border-top:1px solid #E2DED6;padding:clamp(48px,6vw,96px) 0;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">07</span> / Storybook</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h2 style="margin:0;font-size:clamp(26px,3.4vw,40px);font-weight:600;letter-spacing:-0.02em;line-height:1.1">Fișiere pentru repo</h2>
+      <p style="margin:12px 0 0;max-width:62ch;color:#6B6862">În design_handoff_codepedia_nuxt/storybook. Se copiază în rădăcina repo-ului, păstrând căile.</p>
+      <div style="margin-top:24px">
+        <div style="display:flex;flex-wrap:wrap;gap:16px;padding:16px 0;border-top:1px solid #E2DED6"><div style="flex:0 0 260px;font-family:'JetBrains Mono',monospace;font-size:12px">.storybook/main.ts</div><div style="flex:1 1 240px;font-size:15px;color:#6B6862">Framework @storybook-vue/nuxt, caută stories în layers/</div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;padding:16px 0;border-top:1px solid #E2DED6"><div style="flex:0 0 260px;font-family:'JetBrains Mono',monospace;font-size:12px">.storybook/preview.ts</div><div style="flex:1 1 240px;font-size:15px;color:#6B6862">Importă main.css, fundaluri paper / ink</div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;padding:16px 0;border-top:1px solid #E2DED6"><div style="flex:0 0 260px;font-family:'JetBrains Mono',monospace;font-size:12px">layers/core/…/ui/*.stories.ts</div><div style="flex:1 1 240px;font-size:15px;color:#6B6862">9 fișiere, câte unul pe primitivă</div></div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;padding:16px 0;border-top:1px solid #E2DED6;border-bottom:1px solid #E2DED6"><div style="flex:0 0 260px;font-family:'JetBrains Mono',monospace;font-size:12px">layers/{projects,qualifier,consent}/…</div><div style="flex:1 1 240px;font-size:15px;color:#6B6862">ProjectsCard, ProjectsFilterChips, QualifierOptionCard, ConsentBanner, LeadsContactForm, QualifierModal</div></div>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showProps&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;}}">
+const TAGS = ['Toate', 'Website', 'Aplicație web', 'WordPress', 'Shopify', 'Automatizare AI'];
+const OPTS = [
+  { number: '01', title: 'Am doar o idee', hint: 'Vreau să văd dacă merită construită.', meta: 'Discovery' },
+  { number: '02', title: 'Am un plan clar', hint: 'Știu ce vreau, caut echipa care îl face.', meta: 'Build' },
+  { number: '03', title: 'Am deja un produs', hint: 'Trebuie îmbunătățit sau extins.', meta: 'Iterare' },
+];
+const NAV = ['Servicii', 'Stack', 'Proces', 'Proiecte', 'Blog', 'Contact'];
+const FORM_STATES = [['idle', 'Implicit'], ['invalid', 'Erori'], ['pending', 'Se trimite'], ['error', 'Eroare server'], ['success', 'Trimis']];
+const LEAD_FIELDS = [
+  { label: 'Nume', kind: 'input', error: 'Câmp obligatoriu.' },
+  { label: 'Email', kind: 'input', error: 'Adresă de email invalidă.' },
+  { label: 'Companie (opțional)', kind: 'input' },
+  { label: 'Descrierea problemei', kind: 'area', error: 'Câmp obligatoriu.' },
+  { label: 'Buget', kind: 'select' },
+  { label: 'Cum ai aflat de noi (opțional)', kind: 'input' },
+];
+const STAGES = [
+  { id: 'E', title: 'Am nevoie de o pagină modernă și rapidă care să-mi valideze ideea, să atragă primii clienți sau să înlocuiască un site învechit.', hint: 'Un landing page (1-3 pagini) cu încărcare rapidă, optimizat pentru mobil, cu integrare directă de Telegram/Formular pentru a primi cereri de ofertă din prima zi.', meta: 'Sub 1.000 EUR · 2–3 zile' },
+  { id: 'B', title: 'Am o idee de produs sau afacere, dar este încă la nivel teoretic și am nevoie de claritate maximă înainte de a investi în dezvoltare.', hint: 'Planul complet de execuție: de la scenariul utilizatorului și prototip vizual, până la specificația tehnică clară, gata de transmis echipei de dev.', meta: 'De la 1.000 EUR · ~1 săptămână' },
+  { id: 'A', title: 'Am fișiere Figma sau resurse de design gata.', hint: 'Construcție completă în Next.js sau Nuxt — componente, bază de date, integrare API.', meta: 'De la 2.000 EUR · 3–6 săptămâni' },
+  { id: 'C', title: 'Am un produs live care are nevoie de mai multă forță de dezvoltare sau viteză.', hint: 'Curățare de cod, optimizare de bază de date, performanță și integrări.', meta: 'De la 2.000 EUR · 4–8 săptămâni' },
+  { id: 'D', title: 'Am nevoie de instrumente AI sau automatizări de flux, făcute la comandă.', hint: 'Pipeline-uri LLM, fluxuri n8n / Make, dashboard-uri interne.', meta: 'De la 5.000 EUR · 6–12 săptămâni' },
+];
+const BUDGETS = [
+  { id: 'under500', title: 'Sub 500 EUR', hint: 'Landing rapid, 1–3 pagini' },
+  { id: '500to1k', title: '500 – 1.000 EUR', hint: 'Site mic sau un sprint scurt, bine delimitat' },
+  { id: '1to2k', title: '1.000 – 2.000 EUR', hint: 'Blueprint, sau o construcție focusată' },
+  { id: '2to5k', title: '2.000 – 5.000 EUR', hint: 'Construcție completă, din design sau cod existent' },
+  { id: 'over5k', title: 'Peste 5.000 EUR', hint: 'Inginerie mai amplă sau AI custom' },
+];
+const OFFERS = {
+  massMarket: { kicker: 'Pagină Express', title: 'Un site de 1–3 pagini, live în 2–3 zile.', body: 'Construim o pagină de destinație de 1–3 pagini, cu formular de contact integrat și linkuri sociale, livrată în 2–3 zile. Nivelul nostru de intrare.' },
+  fullStack: { kicker: 'Design-to-Code', title: 'Construcție full-stack din design-urile tale.', body: 'Figma-ul tău devine un produs funcțional: front-end în Next.js sau Nuxt, bază de date și integrare API.' },
+  blueprint: { kicker: 'Concept-to-Spec', title: 'Scop și blueprint AI.', body: 'Wireframe-uri rapide, un sitemap generat și o specificație funcțională blocată — ca build-ul să pornească dintr-un plan clar.' },
+  refactor: { kicker: 'Refactorizare site existent', title: 'Modernizare și refactorizare.', body: 'Curățare .NET / Node / Nest, optimizare Postgres, un salt real de performanță și integrări cu terți.' },
+  automation: { kicker: 'Automatizare AI la comandă', title: 'Inginerie AI.', body: 'Pipeline-uri LLM la comandă, fluxuri n8n / Make și dashboard-uri interne conectate la sistemele tale.' },
+};
+const optStyle = (on) => ({ border: on ? '#FF4D14' : '#E2DED6', bg: on ? '#F1EEE7' : 'transparent', hover: on ? '#FF4D14' : '#8D8880' });
+class Component extends DCLogic {
+  state = { chip: 0, opt: 1, customizing: false, menu: true, form: 'idle', qStep: 1, qStage: '', qBudget: '', qDone: false };
+  renderVals() {
+    const { chip, opt, customizing, menu, form, qStep, qStage, qBudget, qDone } = this.state;
+    const offerKey = (qStage === 'E' || qBudget === 'under500' || qBudget === '500to1k') ? 'massMarket' : ({ A: 'fullStack', B: 'blueprint', C: 'refactor', D: 'automation' })[qStage] || 'massMarket';
+    const nextDisabled = qStep === 1 ? !qStage : !qBudget;
+    return {
+      navLinks: NAV.map((label) => ({ label })),
+      mobileLinks: NAV.map((label, i) => {
+        const last = i === NAV.length - 1;
+        return { label, deco: last ? 'underline' : 'none', border: last ? '0' : '1px solid #E2DED6' };
+      }),
+      menuOpen: menu, menuExpanded: menu ? 'true' : 'false', burgerMid: menu ? '#FF4D14' : '#0B0B0B',
+      toggleMenu: () => this.setState((s) => ({ menu: !s.menu })),
+      formStates: FORM_STATES.map(([id, label]) => {
+        const on = id === form;
+        return { label, pressed: on ? 'true' : 'false', border: on ? '#0B0B0B' : '#E2DED6', bg: on ? '#0B0B0B' : 'transparent', color: on ? '#FAF8F4' : '#6B6862', select: () => this.setState({ form: id }) };
+      }),
+      leadFields: LEAD_FIELDS.map((f) => ({ ...f, isInput: f.kind === 'input', isArea: f.kind === 'area', isSelect: f.kind === 'select', showError: form === 'invalid' && !!f.error, invalid: form === 'invalid' && f.error ? 'true' : undefined })),
+      formSent: form === 'success', formNotSent: form !== 'success', formIsError: form === 'error',
+      formPending: form === 'pending', formBtnOpacity: form === 'pending' ? 0.6 : 1, formBtnLabel: form === 'pending' ? 'Se trimite…' : 'Trimite',
+      qBars: [1, 2, 3].map((n) => ({ bg: n <= qStep ? '#FF4D14' : '#E2DED6' })),
+      qProgress: `Pasul ${qStep} din 3`,
+      qNotDone: !qDone, qDone,
+      qIsStage: !qDone && qStep === 1, qIsBudget: !qDone && qStep === 2, qIsContact: !qDone && qStep === 3,
+      qStages: STAGES.map((s, i) => ({ ...s, number: String(i + 1).padStart(2, '0'), ...optStyle(s.id === qStage), select: () => this.setState({ qStage: s.id }) })),
+      qBudgets: BUDGETS.map((b) => ({ ...b, ...optStyle(b.id === qBudget), select: () => this.setState({ qBudget: b.id }) })),
+      qOffer: OFFERS[offerKey],
+      qFields: [{ label: 'Nume' }, { label: 'Email de lucru sau date de contact' }, { label: 'Instagram / LinkedIn / site (opțional)' }, { label: 'Note despre proiect sau o cerere anume (opțional)' }],
+      qNextDisabled: nextDisabled, qNextOpacity: nextDisabled ? 0.6 : 1,
+      qNext: () => { if (!nextDisabled) this.setState((s) => ({ qStep: s.qStep + 1 })); },
+      qBack: () => this.setState((s) => ({ qStep: Math.max(1, s.qStep - 1) })),
+      qSubmit: () => this.setState({ qDone: true }),
+      qReset: () => this.setState({ qStep: 1, qStage: '', qBudget: '', qDone: false }),
+      showProps: this.props.showProps ?? true,
+      chips: TAGS.map((label, i) => {
+        const on = i === chip;
+        return { label, pressed: on ? 'true' : 'false', border: on ? '#0B0B0B' : '#E2DED6', bg: on ? '#0B0B0B' : 'transparent', color: on ? '#FAF8F4' : '#6B6862', hover: on ? '#0B0B0B' : 'rgba(11,11,11,0.4)', select: () => this.setState({ chip: i }) };
+      }),
+      options: OPTS.map((o, i) => {
+        const on = i === opt;
+        return { ...o, border: on ? '#FF4D14' : '#E2DED6', bg: on ? '#F1EEE7' : 'transparent', hover: on ? '#FF4D14' : '#8D8880', select: () => this.setState({ opt: i }) };
+      }),
+      customizing, notCustomizing: !customizing,
+      openCustomize: () => this.setState({ customizing: true }),
+      closeCustomize: () => this.setState({ customizing: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>

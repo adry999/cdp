@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/svg+xml" href="assets/codepedia-favicon-square-filled.svg" />
+<style>
+  html, body { margin: 0; padding: 0; background: #FAF8F4; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #FF4D14; text-decoration: none; }
+  a:hover { color: #0B0B0B; text-decoration: underline; text-underline-offset: 3px; }
+  ::selection { background: #FF4D14; color: #FAF8F4; }
+</style>
+</helmet>
+<div style="background:#FAF8F4;color:#0B0B0B;font-family:'Inter Tight',Helvetica,Arial,sans-serif;font-size:17px;line-height:1.6;letter-spacing:-0.004em">
+
+  <header style="position:sticky;top:0;z-index:20;background:#FAF8F4;border-bottom:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px);display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px">
+      <a href="Codepedia.dc.html" aria-label="Codepedia" style="display:flex;align-items:center;color:#0B0B0B;text-decoration:none">
+        <img src="assets/codepedia-wordmark.svg" alt="Codepedia" width="183" height="18" style="display:block;height:18px;width:auto" />
+      </a>
+      <a href="Codepedia.dc.html#proiecte" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862" style-hover="color:#0B0B0B;text-decoration:none">← Toate proiectele</a>
+    </div>
+  </header>
+
+  <section data-screen-label="Proiect">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,7vw,96px) clamp(20px,5vw,64px) clamp(32px,4vw,56px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">00</span> / Studiu de caz</div>
+      <div style="flex:1 1 560px;min-width:0">
+        <div style="display:flex;flex-wrap:wrap;gap:8px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+          <sc-for list="{{ p.tags }}" as="t" hint-placeholder-count="3"><span>{{ t }}</span></sc-for>
+        </div>
+        <h1 style="margin:20px 0 0;font-size:clamp(30px,5vw,56px);line-height:1.05;letter-spacing:-0.025em;font-weight:600;max-width:22ch;text-wrap:pretty">{{ p.title }}</h1>
+        <p style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:60ch;color:#6B6862;font-size:clamp(16px,1.4vw,18px);text-wrap:pretty">{{ p.lead }}</p>
+        <sc-if value="{{ p.url }}" hint-placeholder-val="{{ true }}">
+          <a href="{{ p.url }}" target="_blank" rel="noopener" style="display:inline-block;margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#0B0B0B;text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px" style-hover="text-decoration-color:#0B0B0B;color:#0B0B0B">{{ p.urlLabel }} ↗</a>
+        </sc-if>
+      </div>
+    </div>
+    <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px) clamp(32px,4vw,56px)">
+      <div style="border:1px solid #E2DED6;border-radius:4px;aspect-ratio:16/9;overflow:hidden;background:#F1EEE7">
+        <sc-if value="{{ p.hero }}" hint-placeholder-val="{{ false }}"><img src="{{ p.hero }}" alt="{{ p.title }}" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center"></img></sc-if>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Date" style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,5vw,72px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Date</div>
+      <div style="flex:1 1 560px;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:16px">
+        <sc-for list="{{ p.facts }}" as="f" hint-placeholder-count="4">
+          <div style="border:1px solid #E2DED6;border-radius:4px;padding:20px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ f.k }}</div>
+            <div style="margin-top:8px;font-size:16px;font-weight:500">{{ f.v }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <sc-for list="{{ sections }}" as="s" hint-placeholder-count="7">
+    <section data-screen-label="{{ s.label }}" style="border-top:1px solid #E2DED6">
+      <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+        <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">{{ s.num }}</span> / {{ s.label }}</div>
+        <div style="flex:1 1 560px;min-width:0">
+          <sc-if value="{{ s.isDemo }}" hint-placeholder-val="{{ false }}"><div style="margin-bottom:12px;display:inline-block;border:1px dashed #FF4D14;border-radius:4px;padding:3px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">Date demo · de înlocuit</div></sc-if>
+          <sc-if value="{{ s.isDraft }}" hint-placeholder-val="{{ false }}"><div style="margin-bottom:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">Draft · de verificat</div></sc-if>
+          <h2 style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:28ch;text-wrap:pretty">{{ s.heading }}</h2>
+          <sc-for list="{{ s.paras }}" as="para" hint-placeholder-count="1">
+            <p style="margin:20px 0 0;max-width:64ch;color:#6B6862;font-size:17px;text-wrap:pretty">{{ para }}</p>
+          </sc-for>
+          <sc-if value="{{ s.hasStats }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:clamp(24px,3vw,36px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:16px">
+              <sc-for list="{{ s.stats }}" as="sv" hint-placeholder-count="3">
+                <div style="border-top:1px solid #0B0B0B;padding-top:16px"><div style="font-size:clamp(40px,5vw,64px);line-height:1;font-weight:600;letter-spacing:-0.03em">{{ sv.v }}</div><div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ sv.k }}</div></div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ s.hasStack }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:clamp(24px,3vw,36px);display:flex;flex-direction:column;border-bottom:1px solid #E2DED6">
+              <sc-for list="{{ s.stack }}" as="st" hint-placeholder-count="3">
+                <div style="border-top:1px solid #E2DED6;padding:18px 0;display:flex;flex-wrap:wrap;gap:8px clamp(16px,3vw,40px)">
+                  <div style="flex:0 0 220px;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500">{{ st.name }}</div>
+                  <div style="flex:1 1 280px;min-width:0;color:#6B6862;font-size:16px">{{ st.role }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ s.hasQuote }}" hint-placeholder-val="{{ false }}">
+            <blockquote style="margin:24px 0 0;padding:0;font-size:clamp(20px,2.4vw,28px);line-height:1.35;letter-spacing:-0.02em;font-weight:500;max-width:34ch">„{{ s.quote }}”</blockquote>
+            <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ s.author }}</div>
+          </sc-if>
+          <sc-if value="{{ s.isTodo }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">De completat</span>
+              <span style="font-size:16px;color:#6B6862">{{ s.todo }}</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ s.hasGallery }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:clamp(24px,3vw,36px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px">
+              <sc-for list="{{ s.gallery }}" as="g" hint-placeholder-count="2">
+                <div style="border:1px solid #E2DED6;border-radius:4px;aspect-ratio:16/10;overflow:hidden;background:#F1EEE7">
+                  <img src="{{ g }}" alt="" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center"></img>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ s.isMock }}" hint-placeholder-val="{{ false }}"><div style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Ecrane cu date demonstrative</div></sc-if>
+          </sc-if>
+        </div>
+      </div>
+    </section>
+  </sc-for>
+
+  <section data-screen-label="Următorul pas" style="background:#0B0B0B;color:#FAF8F4">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,104px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">Următorul pas</div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h2 style="margin:0;font-size:clamp(26px,3.4vw,40px);line-height:1.1;letter-spacing:-0.025em;font-weight:600;max-width:22ch">Ai un proiect asemănător?</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:clamp(20px,2.5vw,32px)">
+          <a href="Codepedia.dc.html#contact" style="display:inline-block;background:#FF4D14;color:#FAF8F4;border-radius:4px;padding:14px 22px;font-size:15px;font-weight:500;text-decoration:none" style-hover="background:#FAF8F4;color:#0B0B0B;text-decoration:none">Hai să discutăm</a>
+        </div>
+        <div style="margin-top:clamp(40px,5vw,64px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">Alte proiecte</div>
+        <div style="margin-top:12px;display:flex;flex-direction:column;border-bottom:1px solid rgba(250,248,244,0.18)">
+          <sc-for list="{{ others }}" as="o" hint-placeholder-count="4">
+            <a href="{{ o.href }}" style="border-top:1px solid rgba(250,248,244,0.18);padding:16px 0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;color:#FAF8F4;text-decoration:none" style-hover="color:#FF4D14;text-decoration:none">
+              <span style="font-size:18px;font-weight:500;letter-spacing:-0.01em">{{ o.name }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">{{ o.kind }} →</span>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;padding:24px clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+      <span style="display:flex;align-items:center;gap:8px"><img src="assets/codepedia-mark.svg" alt="" width="19" height="12" style="display:block;height:12px;width:auto;opacity:0.5" />Codepedia SRL · Chișinău, Moldova</span>
+      <span>© 2026</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showDemo&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;project&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;startica-app&quot;,&quot;startica-site&quot;,&quot;aurelia-badiur&quot;,&quot;englishminds&quot;,&quot;swisscars&quot;,&quot;bloom&quot;,&quot;truckerhq&quot;],&quot;default&quot;:&quot;startica-app&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const S = 'https://startica.md/media/filer_public_thumbnails/filer_public/';
+const CAR = 'https://krltqxdhxiguxwookqgg.supabase.co/storage/v1/object/public/car-images/cars/';
+const PROJECTS = {
+  'startica-app': {
+    name: 'Startica, aplicație de administrare', kind: 'Aplicație web',
+    tags: ['Aplicație web', 'Gestiune internă', '2026'],
+    title: 'Aplicația de administrare pentru grădinița Startica', mock: true,
+    lead: 'Evidența copiilor, a prezenței și a plăților pentru o grădiniță cu mai multe filiale, într-o singură aplicație.',
+    hero: 'assets/proiecte/startica-app-dashboard-1600-v2.png',
+    facts: [
+      { k: 'Client', v: 'Startica, grădiniță privată, Chișinău' },
+      { k: 'Tip', v: 'Aplicație internă de gestiune' },
+      { k: 'Module', v: 'Copii, grupe, prezență, achitări, cheltuieli, SMS, bazin, raport contabil' },
+      { k: 'Filiale', v: 'Mai multe, cu date sincronizate' },
+    ],
+    problem: { paras: ['Administrația lucra în mai multe locuri deodată: prezența se nota pe grupe, plățile se țineau separat, iar cheltuielile și raportul pentru contabilitate se adunau manual la sfârșit de lună. Fiecare filială avea propria evidență, așa că o imagine de ansamblu cerea timp și verificări repetate.', 'Grădinița avea nevoie de un singur loc în care să vadă, în fiecare zi, cine e prezent, cine a achitat și cât s-a cheltuit, la nivel de filială și pe total.'] },
+    approach: { paras: ['Am construit aplicația pornind de la ziua de lucru a administrației. Dimineața se marchează prezența pe grupe, dintr-o singură atingere pentru fiecare copil. Pe parcursul zilei se înregistrează achitările, cu bon tipărit pe loc, iar cheltuielile se adaugă din același ecran.', 'Dashboard-ul lunii arată încasările pe metode de plată, cheltuielile, restanțele și evoluția pe ultimele 12 luni. Părinții cu restanțe pot fi notificați prin SMS direct din aplicație. Fiecare filială lucrează pe datele ei, iar sincronizarea le reunește pentru raportul contabil.'], gallery: ['assets/proiecte/startica-app-prezenta-1600-v2.png', 'assets/proiecte/startica-app-dashboard-1600-v2.png'] },
+    stack: { items: [{ name: 'React · TypeScript', role: 'Interfața aplicației' }, { name: 'Server de sincronizare', role: 'Date comune între filiale, cu rezolvarea conflictelor' }, { name: 'Imprimare 58 mm', role: 'Bonuri pentru achitări și bazin' }], todo: 'Confirmați stack-ul complet (bază de date, hosting, serviciu SMS).' },
+    obstacles: { paras: ['Cea mai grea parte a fost lucrul simultan din mai multe filiale. Aceeași fișă de copil sau aceeași achitare putea fi modificată în două locuri, așa că sincronizarea trebuia să păstreze datele corecte fără să piardă nimic. Am introdus un mecanism de rezolvare a conflictelor și un indicator vizibil al stării de sincronizare.', 'Al doilea obstacol a fost tipărirea bonurilor pe imprimante termice de 58 mm, cu diacritice și format lizibil pe o bandă îngustă.'] },
+    changes: { paras: ['Pe parcurs au apărut module cerute de activitatea reală: evidența ședințelor la bazin, programarea vizitelor pentru părinții interesați și raportul lunar pentru contabil. Ecranul de prezență a fost simplificat după primele săptămâni de folosire, ca marcarea unei grupe întregi să dureze câteva secunde.'] },
+    result: { paras: ['Administrația lucrează acum într-o singură aplicație pentru toate filialele. Prezența, plățile și cheltuielile se văd în timp real, iar raportul contabil se generează fără calcule manuale.'], todo: 'Adăugați cifre concrete: timp economisit lunar, câți angajați o folosesc, câți copii sunt gestionați.' },
+    feedback: { todo: 'Un citat de la administrația grădiniței, cu nume și funcție.' },
+  },
+  'startica-site': {
+    name: 'Startica, grădiniță în Chișinău', kind: 'Site de business', url: 'https://startica.md/', urlLabel: 'startica.md',
+    tags: ['Site de business', 'RO / EN / RU', '2026'],
+    title: 'Site-ul grădiniței Startica, în trei limbi',
+    lead: 'Site pentru o grădiniță privată din Chișinău: grupe de vârstă, programe, spații și înscriere online, în română, engleză și rusă.',
+    hero: S + '20/a7/20a767a2-71dc-4a4f-af3b-2a1b5a632053/grupa-2.jpeg__880x605_crop_subsampling-2_upscale.webp',
+    facts: [
+      { k: 'Client', v: 'Startica, grădiniță privată, Chișinău' },
+      { k: 'Tip', v: 'Site de business' },
+      { k: 'Limbi', v: 'Română, engleză, rusă' },
+      { k: 'Pagini', v: 'Acasă, Alimentație, Evenimente, Curriculum, Contacte' },
+    ],
+    problem: { paras: ['Părinții care aleg o grădiniță vor să vadă spațiile, să înțeleagă programul zilei și să știe ce grupă i se potrivește copilului, înainte să sune. Startica are un public mixt, vorbitor de română, rusă și engleză, iar informațiile ajungeau la ei mai ales prin telefon și rețele sociale.', 'Grădinița avea nevoie de un site care să răspundă la întrebările frecvente și să transforme vizita pe site într-o cerere de înscriere.'] },
+    approach: { paras: ['Pagina principală prezintă cele 5 grupe de vârstă, cele 3 programe și cele 11 spații ale clădirii, fiecare cu galeria lui foto. Paginile separate pentru alimentație, curriculum și evenimente răspund la întrebările pe care părinții le pun cel mai des.', 'La final, formularul de înscriere cere grupa și programul dorit, iar managerul revine în 24 de ore. Toate textele sunt disponibile în cele trei limbi.'], gallery: [S + '65/68/65682f4b-5b06-4d75-a437-3062e5bbe888/bazine-1.jpeg__880x605_crop_subsampling-2_upscale.webp', S + 'c5/24/c524db24-c25c-4cfd-9338-951a7a8223b0/teren-de-joaca.jpeg__880x605_crop_subsampling-2_upscale.webp'] },
+    stack: { todo: 'Stack-ul folosit (CMS, hosting, formular, trimiterea cererilor).' },
+    obstacles: { paras: ['Site-ul are multe fotografii, iar părinții îl deschid mai ales de pe telefon. Am optimizat imaginile în formate moderne și dimensiuni potrivite fiecărui ecran, ca galeriile să se încarce repede și pe date mobile.', 'Conținutul în trei limbi a cerut o structură în care fiecare pagină și fiecare galerie se administrează o singură dată, cu textele traduse separat.'] },
+    changes: { paras: ['Structura inițială grupa informațiile pe pagini separate. Am mutat grupele, programele și spațiile pe pagina principală, ca părintele să vadă totul într-un singur parcurs, fără să caute prin meniu.'] },
+    result: { paras: ['Părinții găsesc pe site răspunsurile de bază și pot trimite o cerere de înscriere în orice limbă, la orice oră.'], todo: 'Adăugați cifre: cereri de înscriere primite prin site, vizite programate.' },
+    feedback: { todo: 'Un citat de la client, cu nume și funcție.' },
+  },
+  'aurelia-badiur': {
+    name: 'Aurelia Badiur, consultant oenolog', kind: 'Site de prezentare', url: 'https://aureliabadiur.com/', urlLabel: 'aureliabadiur.com',
+    tags: ['Site de prezentare', 'RO / EN', '2026'],
+    title: 'Site de prezentare pentru un consultant oenolog',
+    lead: 'Site bilingv pentru Aurelia Badiur, oenolog format în Bordeaux și Bourgogne, care consiliază crame în vinificație și calitatea vinului.',
+    hero: 'https://aureliabadiur.com/images/hero.jpg',
+    facts: [
+      { k: 'Client', v: 'Aurelia Badiur, consultant oenolog' },
+      { k: 'Tip', v: 'Site de prezentare' },
+      { k: 'Limbi', v: 'Română, engleză' },
+      { k: 'Contact', v: 'Formular, WhatsApp, email' },
+    ],
+    problem: { paras: ['Consultanța în oenologie se vinde prin încredere. O cramă care caută un consultant vrea să știe unde s-a format acesta, cu ce domenii a lucrat și cum arată colaborarea concretă. Fără un site propriu, aceste informații erau împrăștiate între recomandări, profiluri sociale și discuții directe.', 'Clienta avea nevoie de o prezentare clară, în română și engleză, care să explice serviciile și să ducă spre o discuție directă.'] },
+    approach: { paras: ['Site-ul urmează ordinea în care o cramă își formează o părere: formarea și domeniile în care a lucrat, cele cinci etape ale urmăririi vinificației, consultanța punctuală și, la final, programarea unei întâlniri 1:1.', 'Vizual, am folosit fotografii din vie și din cramă și o tipografie sobră, potrivită unui serviciu de expertiză. Contactul este disponibil prin formular, WhatsApp și email, ca fiecare client să aleagă canalul preferat.'], gallery: ['https://aureliabadiur.com/images/tasting.jpeg', 'https://aureliabadiur.com/images/step-3.jpg'] },
+    stack: { todo: 'Stack-ul folosit (framework, hosting, formular).' },
+    obstacles: { paras: ['Serviciile de consultanță sunt tehnice, iar publicul include atât proprietari de crame, cât și tehnologi. Textele trebuiau să fie precise pentru specialiști și ușor de înțeles pentru restul. Am împărțit urmărirea vinificației în cinci etape, fiecare cu o descriere scurtă a ce se face și de ce contează.'] },
+    changes: { paras: ['Inițial, serviciile erau prezentate ca o listă. Pe parcurs le-am separat în două direcții: urmărirea completă a vinificației și consultanța punctuală. Astfel, o cramă vede imediat ce tip de colaborare i se potrivește.'] },
+    result: { paras: ['Aurelia Badiur are acum o prezentare profesională în două limbi, pe care o poate trimite oricărei crame din Moldova sau din afara ei.'], todo: 'Adăugați rezultatul după lansare: cereri primite, colaborări noi.' },
+    feedback: { todo: 'Un citat de la Aurelia Badiur.' },
+  },
+  'englishminds': {
+    name: 'EnglishMinds, școală de engleză', kind: 'Brand · Site · Social', url: 'https://adry999.github.io/EnglishMinds_web/EnglishMinds%20Index.dc.html', urlLabel: 'Vezi proiectul',
+    tags: ['Brand', 'Site', 'Social media', '2026'],
+    title: 'Brand, site și materiale de promovare pentru o școală de engleză',
+    lead: 'Identitate vizuală, site și materiale pentru EnglishMinds: de la grupe și tabere până la postări pe Instagram.',
+    hero: 'assets/proiecte/englishminds-class.jpg',
+    facts: [
+      { k: 'Client', v: 'EnglishMinds, școală de engleză' },
+      { k: 'Tip', v: 'Brand, site, social media' },
+      { k: 'Pagini', v: 'Grupe, Metodă, Tabere, Test, Lecție demo, Blog, Ofertă' },
+      { k: 'Materiale', v: 'Flyer, postări și story-uri Instagram' },
+    ],
+    problem: { paras: ['Piața cursurilor de engleză este aglomerată, iar părinții și elevii compară multe școli înainte să aleagă. EnglishMinds avea nevoie de o identitate ușor de recunoscut și de un parcurs clar de la prima impresie până la prima lecție.', 'Materialele de promovare, site-ul și rețelele sociale trebuiau să arate ca aparținând aceleiași școli.'] },
+    approach: { paras: ['Am pornit de la identitatea vizuală: logo, culori, tipografie și reguli de compoziție. Apoi am aplicat-o pe site, pe flyer și pe șabloanele pentru postări și story-uri pe Instagram.', 'Site-ul duce vizitatorul spre două acțiuni: testul de nivel și programarea la o lecție demo. Paginile despre grupe, metodă și tabere răspund la întrebările de dinainte de înscriere, iar blogul susține prezența în căutări.'], gallery: ['assets/proiecte/englishminds-teacher.jpg', 'assets/proiecte/englishminds-instagram.png'] },
+    stack: { todo: 'Stack-ul folosit pentru site (framework, hosting, formulare).' },
+    obstacles: { paras: ['Școala se adresează mai multor categorii de vârstă, de la copii la adulți. Identitatea trebuia să fie prietenoasă pentru cei mici, dar credibilă pentru părinți și adulți. Am rezolvat asta printr-o bază vizuală sobră și accente de culoare folosite diferit pe fiecare tip de material.'] },
+    changes: { paras: ['Pe parcurs, testul de nivel a devenit punctul central al site-ului. Este cel mai simplu prim pas pentru un vizitator nehotărât și oferă școlii un motiv concret de a reveni cu o recomandare de grupă.'] },
+    result: { paras: ['EnglishMinds are acum un sistem vizual unitar, aplicat pe site și pe rețelele sociale, și un parcurs clar spre testul de nivel și lecția demo.'], todo: 'Adăugați cifre: înscrieri la lecția demo, teste completate, urmăritori.' },
+    feedback: { todo: 'Un citat de la client, cu nume și funcție.' },
+  },
+  'swisscars': {
+    name: 'SwissCars, auto din Elveția', kind: 'Site cu stoc', url: 'https://www.swisscars.md/', urlLabel: 'swisscars.md',
+    tags: ['Site cu stoc', 'RO / RU / EN', '2026'],
+    title: 'Site cu stoc auto pentru un importator din Elveția', mock: true,
+    lead: 'Stoc de mașini aduse din Elveția, cu pagini de detaliu, leasing prin parteneri și recenzii de la clienți.',
+    hero: 'assets/proiecte/swisscars-acasa-1600.png',
+    facts: [
+      { k: 'Client', v: 'SwissCars.md' },
+      { k: 'Tip', v: 'Site cu catalog auto' },
+      { k: 'Limbi', v: 'Română, rusă, engleză' },
+      { k: 'Secțiuni', v: 'Stoc, Servicii, Leasing, Favorite' },
+    ],
+    problem: { paras: ['Mașinile disponibile erau promovate mai ales pe platforme de anunțuri și pe rețele sociale, unde fiecare anunț concurează cu sute de altele și unde istoricul și proveniența mașinii se pierd ușor.', 'SwissCars avea nevoie de un catalog propriu, actualizat din panou, în care fiecare mașină să aibă o pagină completă, iar cumpărătorul să poată afla imediat și opțiunile de finanțare.'] },
+    approach: { paras: ['Stocul se administrează din panou: fiecare mașină are pagină proprie cu preț, an, kilometraj, motorizare și galerie foto. Vizitatorul poate filtra după marcă, salva favorite și compara mai multe mașini.', 'Secțiunea de leasing prezintă partenerii de finanțare, iar recenziile clienților apar lângă stoc, ca un cumpărător nou să vadă experiența celor dinaintea lui.'], gallery: ['assets/proiecte/swisscars-masina-1600-v2.png', CAR + 'ae25eba6-b9ae-4b21-9a3b-85b025e69e21.jpg'] },
+    stack: { items: [{ name: 'Next.js', role: 'Site-ul și paginile de mașini' }, { name: 'Supabase', role: 'Stocul de mașini și pozele' }], todo: 'Completați restul (hosting, panou de administrare).' },
+    obstacles: { paras: ['Fiecare mașină vine cu zeci de fotografii mari. Le-am stocat separat de pagini și le servim redimensionate pentru fiecare ecran, ca stocul să se încarce rapid și pe telefon.', 'Stocul se schimbă des, așa că paginile trebuiau să se actualizeze imediat ce o mașină este adăugată, rezervată sau vândută, fără intervenția unui programator.'] },
+    changes: { paras: ['Lista de favorite a fost adăugată pe parcurs, după ce am observat că vizitatorii revin de mai multe ori înainte să sune. Astfel pot păstra mașinile care îi interesează fără cont.'] },
+    result: { paras: ['SwissCars își administrează singur stocul, iar fiecare mașină are o pagină completă pe care o poate trimite direct unui client interesat.'], todo: 'Adăugați cifre: mașini vândute prin site, cereri primite. De verificat pe site-ul live: mesajele „Telefon lipsește” și „Adresa lipsește” apar încă în footer și în mai multe secțiuni.' },
+    feedback: { todo: 'Un citat de la client, cu nume și funcție.' },
+  },
+  'bloom': {
+    name: 'Bloom Florist, aplicație de gestiune', kind: 'Aplicație web',
+    tags: ['Aplicație web', 'Gestiune florărie', 'RO / EN', '2026'],
+    title: 'Aplicația de gestiune pentru florăria Bloom', mock: true,
+    lead: 'Comenzi, stoc, furnizori, pierderi și plăți online pentru o florărie, într-o singură aplicație folosită de admin și de vânzători.',
+    hero: 'assets/proiecte/bloom-panou-1600.png',
+    facts: [
+      { k: 'Client', v: 'Bloom Florist, Moldova' },
+      { k: 'Tip', v: 'Aplicație internă de gestiune' },
+      { k: 'Module', v: 'Panou, Inventar, Comenzi, Vânzări, Pierderi, Furnizori, Jurnal, Rapoarte' },
+      { k: 'Roluri', v: 'Admin și vânzător, cu drepturi separate' },
+    ],
+    problem: { paras: ['Într-o florărie, stocul se schimbă de la o oră la alta: florile vin în loturi, se vând în buchete și se pierd dacă stau prea mult. Comenzile cu livrare, vânzările directe și avansurile se țineau separat, iar pierderile nu se vedeau decât la inventar.', 'Florăria avea nevoie de o aplicație care să arate, în fiecare zi, ce comenzi sunt de pregătit, ce produse sunt pe terminate și cât s-a câștigat de fapt.'] },
+    approach: { paras: ['Panoul zilei arată veniturile față de ziua precedentă, comenzile active pe statusuri, livrările și alertele de stoc redus. Comenzile se mută pe o tablă cu trei coloane, Confirmată, În lucru și Pregătită, iar fiecare mutare scade automat stocul.', 'Primirea marfei se face pe loturi, cu preț de achiziție și furnizor, așa că aplicația calculează costul mediu și marja pe fiecare produs. Vânzătorii văd doar ce le trebuie pentru comenzi, iar datele financiare rămân la admin.'], gallery: ['assets/proiecte/bloom-comenzi-1600.png', 'assets/proiecte/bloom-panou-1600.png'] },
+    stack: { items: [{ name: 'Nuxt 4 · Pinia', role: 'Interfața aplicației și starea comenzilor' }, { name: 'Supabase · Postgres', role: 'Date, autentificare și Row Level Security pe fiecare tabel' }, { name: 'MAIB · PayNet', role: 'Plăți online pentru comenzi, cu webhook și reconciliere' }, { name: 'Vitest', role: 'Teste pentru store-uri, plăți și permisiuni' }] },
+    obstacles: { paras: ['Crearea unei comenzi atinge mai multe tabele deodată: comanda, articolele, stocul rezervat și jurnalul. Am mutat crearea într-o singură funcție atomică în baza de date, ca o comandă să nu rămână niciodată pe jumătate salvată.', 'Plățile online au cerut confirmare prin webhook, protecție la plăți duble pentru aceeași comandă și un ecran de reconciliere cu înregistrările furnizorului.'] },
+    changes: { paras: ['Pe parcurs au apărut vânzarea directă din magazin, raportul de pierderi pe motive și jurnalul de activitate pe utilizatori. Navigarea de jos pentru telefon a fost adăugată pentru vânzătorii care lucrează din magazin.'] },
+    result: { paras: ['Florăria lucrează cu o singură evidență pentru comenzi, stoc și plăți. Pierderile și marja pe produs se văd în rapoarte, fără calcule separate.'], todo: 'Adăugați cifre: comenzi pe lună, pierderi reduse, timp economisit la inventar.' },
+    feedback: { todo: 'Un citat de la proprietarul florăriei, cu nume și funcție.' },
+  },
+  'truckerhq': {
+    name: 'Trucker HQ, dispatch și unelte pentru transportatori', kind: 'Site cu unelte',
+    tags: ['Site + unelte', 'EN / RU', 'SUA', '2026'],
+    title: 'Site de dispatch, joburi CDL și unelte gratuite pentru transportatori din SUA', mock: true,
+    lead: 'Dispatch cu tarif fix pe săptămână, joburi pentru șoferi CDL, recrutare și verificarea transportatorilor din datele publice FMCSA, în engleză și rusă.',
+    hero: 'assets/proiecte/truckerhq-acasa-1600.png',
+    facts: [
+      { k: 'Client', v: 'Trucker HQ, dispecerat auto, SUA' },
+      { k: 'Tip', v: 'Site de servicii cu unelte gratuite' },
+      { k: 'Limbi', v: 'Engleză, rusă' },
+      { k: 'Secțiuni', v: 'Dispatch, Jobs, Hire Drivers, Tools, Guides' },
+    ],
+    problem: { paras: ['Proprietarii de camioane din SUA lucrează de obicei cu dispeceri plătiți la procent din cursă. Mulți vorbesc rusa ca primă limbă și caută un dispecer care să răspundă și noaptea, în limba lor.', 'Trucker HQ avea nevoie de un site care să explice tariful fix, să aducă cereri de dispatch și să atragă trafic constant prin unelte pe care transportatorii le folosesc zilnic.'] },
+    approach: { paras: ['Pagina principală pornește de la o căutare: orice broker sau transportator poate fi verificat după DOT, MC sau nume, cu un Health Score de la 0 la 100 calculat din datele FMCSA. Sub ea vin dispatch-ul, joburile CDL și recrutarea de șoferi.', 'Uneltele gratuite, Carrier Lookup, Profit per Mile, Compliance Alerts și New MC Checklist, nu cer cont. Pentru fiecare stat există o pagină cu transportatorii locali, generată din același șablon.'], gallery: ['assets/proiecte/truckerhq-carriers-1600.png', 'assets/proiecte/truckerhq-acasa-1600.png'] },
+    stack: { items: [{ name: 'Next.js 16 · React 19', role: 'Pagini server, componente interactive izolate' }, { name: 'Tailwind CSS 4', role: 'Tokens de culoare și tipografie din designul aprobat' }, { name: 'FMCSA API', role: 'Date publice despre autorizare, asigurare și inspecții' }, { name: 'Vitest', role: 'Teste pentru rutele API și validare' }] },
+    obstacles: { paras: ['Datele FMCSA vin incomplete sau cu întârzieri, iar cheia de acces nu e obligatorie la început. Site-ul funcționează pe date de exemplu până când cheia este setată, apoi trece pe date live fără alte modificări.', 'Versiunea în rusă cere fonturi cu chirilice și texte scrise pentru șoferi, nu traduse literal. Am separat textele pe limbi și le-am trecut printr-o verificare dedicată.'] },
+    changes: { paras: ['Header-ul a fost refăcut ca indicator rutier, cu telefonul de dispatch mereu vizibil. Pe telefon, butoanele principale au crescut la cel puțin 48 de pixeli, pentru șoferii care folosesc site-ul din cabină.'] },
+    result: { paras: ['Trucker HQ are un site care explică tariful fix, aduce cereri de dispatch și joburi și oferă unelte gratuite care readuc transportatorii pe site.'], todo: 'Adăugați cifre după lansare: cereri de dispatch, căutări în Carrier Lookup, aplicări la joburi.' },
+    feedback: { todo: 'Un citat de la client, cu nume și funcție.' },
+  },
+};
+const DEMO = {"startica-app":{"stack":{"items":[{"name":"PostgreSQL","role":"Baza de date comună a filialelor"},{"name":"Gateway SMS","role":"Notificări pentru restanțe"}]},"result":{"stats":[{"v":"−12 h","k":"lucru manual pe lună"},{"v":"6","k":"angajați o folosesc zilnic"},{"v":"180","k":"copii gestionați"}]},"feedback":{"quote":"Raportul pentru contabil îl scoatem acum dintr-un clic. Înainte ne lua două seri la sfârșit de lună.","author":"—, administrator, Startica"}},"startica-site":{"stack":{"items":[{"name":"Nuxt 3","role":"Paginile site-ului, în trei limbi"},{"name":"Supabase","role":"Cererile de înscriere"},{"name":"Vercel","role":"Hosting și imagini optimizate"}]},"result":{"stats":[{"v":"40+","k":"cereri de înscriere pe lună"},{"v":"70%","k":"vizite de pe telefon"},{"v":"3","k":"limbi"}]},"feedback":{"quote":"Părinții vin la vizită știind deja grupa și programul. Discuția începe de la un alt nivel.","author":"—, manager, Startica"}},"aurelia-badiur":{"stack":{"items":[{"name":"Nuxt 3","role":"Site static, în două limbi"},{"name":"Vercel","role":"Hosting"},{"name":"Formular + WhatsApp","role":"Cereri directe de la crame"}]},"result":{"stats":[{"v":"8","k":"cereri în prima lună"},{"v":"3","k":"colaborări noi"},{"v":"2","k":"limbi"}]},"feedback":{"quote":"Acum trimit un singur link și crama înțelege imediat cu ce o pot ajuta.","author":"Aurelia Badiur, consultant oenolog"}},"englishminds":{"stack":{"items":[{"name":"Nuxt 3","role":"Site și blog"},{"name":"Supabase","role":"Testul de nivel și programările"},{"name":"Figma","role":"Șabloane pentru Instagram"}]},"result":{"stats":[{"v":"120","k":"teste de nivel completate"},{"v":"35","k":"lecții demo programate"},{"v":"+60%","k":"urmăritori pe Instagram"}]},"feedback":{"quote":"Testul de nivel ne aduce elevi care știu deja ce vor. E cel mai bun prim pas pe care l-am avut.","author":"—, fondator, EnglishMinds"}},"swisscars":{"stack":{"items":[{"name":"Vercel","role":"Hosting"},{"name":"Panou de administrare","role":"Stoc, rezervări, vânzări"}]},"result":{"stats":[{"v":"25","k":"mașini vândute prin site"},{"v":"90+","k":"cereri pe lună"},{"v":"3","k":"limbi"}]},"feedback":{"quote":"Trimit clientului linkul mașinii și are tot: poze, istoric, leasing. Telefonul sună mai rar pentru detalii.","author":"—, proprietar, SwissCars.md"}},"bloom":{"result":{"stats":[{"v":"320","k":"comenzi pe lună"},{"v":"−30%","k":"flori pierdute"},{"v":"4","k":"vânzători în aplicație"}]},"feedback":{"quote":"Văd dimineața ce comenzi am de făcut și ce flori trebuie comandate. Nu mai număr stocul pe hârtie.","author":"—, proprietar, Bloom Florist"}},"truckerhq":{"result":{"stats":[{"v":"1.200","k":"căutări pe lună în Carrier Lookup"},{"v":"45","k":"cereri de dispatch"},{"v":"2","k":"limbi"}]},"feedback":{"quote":"Șoferii ajung la noi din Carrier Lookup și rămân pentru dispatch. Unealta gratuită aduce cei mai mulți clienți.","author":"—, fondator, Trucker HQ"}}};
+const ORDER = ['startica-app', 'bloom', 'truckerhq', 'startica-site', 'aurelia-badiur', 'englishminds', 'swisscars'];
+const META = [
+  ['problem', 'Problema', 'Punctul de plecare'],
+  ['approach', 'Soluția', 'Cum am găsit rezolvarea'],
+  ['stack', 'Stack', 'Tehnologiile folosite'],
+  ['obstacles', 'Obstacole', 'Ce probleme am întâmpinat'],
+  ['changes', 'Schimbări', 'Ce am schimbat pe parcurs'],
+  ['result', 'Rezultat', 'Rezultatul final'],
+  ['feedback', 'Feedback', 'Ce spune clientul'],
+];
+class Component extends DCLogic {
+  renderVals() {
+    let slug = '';
+    try { slug = new URLSearchParams(window.location.search).get('p') || ''; } catch (e) {}
+    if (!PROJECTS[slug]) slug = this.props.project && PROJECTS[this.props.project] ? this.props.project : ORDER[0];
+    const p = PROJECTS[slug];
+    const D = (this.props.showDemo ?? true) ? (DEMO[slug] || {}) : {};
+    const sections = META.map(([key, label, heading], i) => {
+      const d = p[key] || {};
+      const dm = D[key] || null;
+      const stack = [...(d.items || []), ...((dm && dm.items) || [])];
+      const stats = (dm && dm.stats) || [];
+      const gallery = d.gallery || [];
+      return {
+        num: String(i + 1).padStart(2, '0'), label, heading,
+        paras: d.paras || [], stack, hasStack: stack.length > 0,
+        gallery, hasGallery: gallery.length > 0,
+        stats, hasStats: stats.length > 0, isDemo: !!dm,
+        quote: d.quote || (dm && dm.quote) || '', author: d.author || (dm && dm.author) || '', hasQuote: !!(d.quote || (dm && dm.quote)),
+        todo: dm ? '' : (d.todo || ''), isTodo: !dm && !!d.todo, isDraft: (d.paras || []).length > 0, isMock: !!p.mock && gallery.length > 0,
+      };
+    });
+    const others = ORDER.filter(s => s !== slug).map(s => ({ name: PROJECTS[s].name, kind: PROJECTS[s].kind, href: 'Studiu de caz.dc.html?p=' + s }));
+    return { p: { ...p, url: p.url || '', urlLabel: p.urlLabel || '' }, sections, others };
+  }
+}
+</script>
+</body>
+</html>

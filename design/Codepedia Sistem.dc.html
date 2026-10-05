@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #FAF8F4; color: #0B0B0B; font-family: 'Inter Tight', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.6; letter-spacing: -0.004em; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  ::selection { background: #FF4D14; color: #FAF8F4; }
+  a { color: #0B0B0B; text-decoration: none; }
+  a:hover { color: #FF4D14; }
+</style>
+</helmet>
+
+<div style="display:flex;flex-direction:column;min-height:100vh;padding-bottom:{{ bannerPad }}">
+
+<div style="background:#0B0B0B;color:#FAF8F4">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px clamp(20px,5vw,64px);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em">
+    <span style="margin-right:8px;color:#8D8880">Ecran</span>
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+      <button onClick="{{ t.select }}" style="border:0;cursor:pointer;border-radius:4px;padding:6px 10px;font:inherit;text-transform:inherit;letter-spacing:inherit;background:{{ t.bg }};color:{{ t.color }}">{{ t.label }}</button>
+    </sc-for>
+    <span style="margin-left:auto"></span>
+    <button onClick="{{ toggleBanner }}" style="border:1px solid rgba(250,248,244,0.25);cursor:pointer;border-radius:4px;padding:6px 10px;font:inherit;text-transform:inherit;letter-spacing:inherit;background:transparent;color:#FAF8F4">{{ bannerToggleLabel }}</button>
+  </div>
+</div>
+
+<header data-screen-label="Header" style="background:#FAF8F4">
+  <div style="max-width:1280px;margin:0 auto;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 clamp(20px,5vw,64px)">
+    <a href="Codepedia.dc.html" style="display:flex;align-items:center"><img src="assets/codepedia-wordmark.svg" alt="Codepedia" style="display:block;height:18px;width:auto" /></a>
+    <nav style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(14px,2vw,28px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+      <a href="Codepedia.dc.html#servicii" style="color:#6B6862" style-hover="color:#FF4D14">Servicii</a>
+      <a href="Codepedia.dc.html#proiecte" style="color:#6B6862" style-hover="color:#FF4D14">Proiecte</a>
+      <a href="Codepedia Blog.dc.html" style="color:#6B6862" style-hover="color:#FF4D14">Blog</a>
+      <a href="Codepedia.dc.html#contact" style="color:#6B6862" style-hover="color:#FF4D14">Contact</a>
+    </nav>
+  </div>
+  <div style="height:2px;background:#FF4D14"></div>
+</header>
+
+<main style="flex:1">
+  <sc-if value="{{ isError }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="Eroare" style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(64px,10vw,140px) clamp(20px,5vw,64px)">
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">{{ err.code }}</span> / Eroare</div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h1 style="margin:0;max-width:20ch;font-size:clamp(34px,6vw,64px);font-weight:600;line-height:1.04;letter-spacing:-0.025em;text-wrap:pretty">{{ err.title }}</h1>
+        <p style="margin:clamp(20px,2.6vw,28px) 0 0;max-width:62ch;font-size:clamp(16px,1.4vw,18px);color:#6B6862">{{ err.body }}</p>
+        <a href="Codepedia.dc.html" style="display:inline-block;margin-top:32px;border-radius:4px;background:#FF4D14;color:#FAF8F4;padding:14px 22px;font-size:15px;font-weight:500" style-hover="background:#0B0B0B;color:#FAF8F4">Înapoi la pagina principală</a>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isPrivacy }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Confidențialitate" style="max-width:720px;margin:0 auto;padding:clamp(48px,8vw,96px) clamp(20px,5vw,64px)">
+      <h1 style="margin:0;max-width:28ch;font-size:clamp(28px,4vw,44px);font-weight:600;line-height:1.1;letter-spacing:-0.025em">Politica de confidențialitate</h1>
+      <p style="margin:12px 0 0;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Actualizat: 27 septembrie 2026</p>
+      <p style="margin:24px 0 0;font-size:16px;color:#6B6862">Această pagină descrie ce date colectăm prin acest site, de ce, și cum le poți controla. Codepedia SRL, Chișinău, Moldova, este operatorul datelor descrise aici.</p>
+      <div style="margin-top:40px;display:flex;flex-direction:column;gap:32px">
+        <sc-for list="{{ policy }}" as="sec" hint-placeholder-count="6">
+          <div>
+            <h2 style="margin:0;font-size:18px;font-weight:500">{{ sec.heading }}</h2>
+            <sc-for list="{{ sec.body }}" as="para" hint-placeholder-count="2">
+              <p style="margin:8px 0 0;font-size:16px;color:#6B6862">{{ para }}</p>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+</main>
+
+<footer data-screen-label="Footer" style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;padding:24px clamp(20px,5vw,64px);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+    <span style="display:flex;align-items:center;gap:8px"><img src="assets/codepedia-mark.svg" alt="" style="display:block;height:12px;width:auto;opacity:0.5" />Codepedia SRL · Chișinău, Moldova</span>
+    <button onClick="{{ openPrivacy }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862" style-hover="color:#0B0B0B">Confidențialitate</button>
+    <button onClick="{{ openBanner }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862" style-hover="color:#0B0B0B">Setări cookie-uri</button>
+    <span>© 2026</span>
+  </div>
+</footer>
+
+</div>
+
+<sc-if value="{{ bannerOpen }}" hint-placeholder-val="{{ true }}">
+  <div role="dialog" aria-modal="true" aria-labelledby="cookie-banner-message" data-screen-label="Banner cookie" style="position:fixed;left:0;right:0;bottom:0;z-index:30;border-top:1px solid #E2DED6;background:#FAF8F4;padding:20px clamp(20px,5vw,64px)">
+    <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
+      <p id="cookie-banner-message" style="margin:0;max-width:60ch;font-size:14px;color:#6B6862">Folosim cookie-uri necesare pentru funcționarea site-ului. Cu acordul tău, folosim și cookie-uri de analiză și marketing. <button onClick="{{ openPrivacy }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;color:#0B0B0B;text-decoration:underline">Detalii în politica de confidențialitate</button></p>
+      <sc-if value="{{ notCustom }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+          <button onClick="{{ customize }}" style="cursor:pointer;border-radius:4px;border:1px solid #0B0B0B;background:transparent;color:#0B0B0B;padding:11px 18px;font-family:inherit;font-size:15px;font-weight:500" style-hover="border-color:#6B6862">Personalizează</button>
+          <button onClick="{{ close }}" style="cursor:pointer;border-radius:4px;border:1px solid #0B0B0B;background:transparent;color:#0B0B0B;padding:11px 18px;font-family:inherit;font-size:15px;font-weight:500" style-hover="border-color:#6B6862">Doar necesare</button>
+          <button onClick="{{ close }}" style="cursor:pointer;border-radius:4px;border:1px solid #0B0B0B;background:transparent;color:#0B0B0B;padding:11px 18px;font-family:inherit;font-size:15px;font-weight:500" style-hover="border-color:#6B6862">Acceptă tot</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isCustom }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px">
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer"><input type="checkbox" checked="{{ analytics }}" onChange="{{ toggleAnalytics }}" style="accent-color:#0B0B0B;width:16px;height:16px" />Analiză (Google Analytics)</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer"><input type="checkbox" checked="{{ marketing }}" onChange="{{ toggleMarketing }}" style="accent-color:#0B0B0B;width:16px;height:16px" />Marketing (Meta Pixel)</label>
+          <button onClick="{{ back }}" style="cursor:pointer;border-radius:4px;border:1px solid #0B0B0B;background:transparent;color:#0B0B0B;padding:11px 18px;font-family:inherit;font-size:15px;font-weight:500">Înapoi</button>
+          <button onClick="{{ close }}" style="cursor:pointer;border-radius:4px;border:1px solid #0B0B0B;background:transparent;color:#0B0B0B;padding:11px 18px;font-family:inherit;font-size:15px;font-weight:500">Doar necesare</button>
+          <button onClick="{{ close }}" style="cursor:pointer;border-radius:4px;border:1px solid #0B0B0B;background:#0B0B0B;color:#FAF8F4;padding:11px 18px;font-family:inherit;font-size:15px;font-weight:500" style-hover="background:#FF4D14;border-color:#FF4D14">Salvează preferințele</button>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;screen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;404&quot;,&quot;500&quot;,&quot;privacy&quot;],&quot;default&quot;:&quot;404&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showBanner&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const EMAIL = 'salut@codepedia.md';
+const POLICY = [
+  { heading: 'Ce colectăm prin formularul de contact', body: [
+    'Când trimiți formularul de contact, colectăm: numele, adresa de email, compania (opțional), mesajul, intervalul de buget (opțional) și cum ai aflat de noi (opțional). Reținem și pagina de pe care ai trimis formularul și pagina de la care ai venit (referrer).',
+    'Dacă folosești chestionarul de calificare de pe site, colectăm suplimentar: etapa proiectului, bugetul estimat, un link/handle de contact și notele tale. Aceste date sunt salvate în aceeași bază de solicitări ca formularul de contact.',
+    'Adresa IP este folosită exclusiv pentru a limita trimiterile automate/abuzive și nu este salvată alături de solicitarea ta. Înregistrările de limitare mai vechi de 10 minute sunt șterse automat la următoarea trimitere de formular din partea oricărui vizitator (nu pe un program fix).' ] },
+  { heading: 'Cookie-uri', body: [
+    'codepedia_locale — reține limba aleasă (română/engleză). Necesar pentru funcționarea site-ului, valabil 1 an.',
+    'codepedia_consent — reține alegerile tale privind cookie-urile de mai jos. Necesar pentru funcționarea site-ului, valabil 6 luni.',
+    'Google Analytics și Meta Pixel — folosite doar dacă alegi explicit „Acceptă tot" sau activezi categoriile corespunzătoare din bannerul de cookie-uri. Poți schimba alegerea oricând din linkul „Setări cookie-uri" din footer.' ] },
+  { heading: 'De ce procesăm aceste date', body: [
+    'Datele din formularul de contact și din chestionarul de calificare: pentru a răspunde solicitării tale.',
+    'Adresa IP (temporar): interes legitim de a preveni abuzul.',
+    'Analiză și marketing: doar cu acordul tău explicit.' ] },
+  { heading: 'Cât timp păstrăm datele', body: [
+    'Solicitările de contact sunt păstrate cât timp este necesar pentru a răspunde și evalua colaborarea. Perioada exactă de retenție: [ de completat ]. Poți cere oricând ștergerea lor.' ] },
+  { heading: 'Cu cine împărtășim datele', body: [
+    'Datele sunt găzduite prin Supabase (bază de date) și Vercel (găzduire site). Notificarea internă trimisă echipei la o solicitare nouă este livrată prin Resend (SUA), furnizorul nostru de servicii de email.',
+    'Google Analytics și Meta Pixel primesc date doar dacă ai consimțit explicit.' ] },
+  { heading: 'Drepturile tale', body: [
+    `Poți cere oricând acces, corectarea sau ștergerea datelor tale, scriindu-ne la ${EMAIL}.`,
+    'Ai dreptul să depui o plângere la o autoritate de supraveghere: în Moldova, Centrul Național pentru Protecția Datelor cu Caracter Personal; dacă ești rezident al Uniunii Europene, autoritatea de protecție a datelor din țara ta de reședință.' ] },
+];
+const ERR = {
+  '404': { code: '404', title: 'Pagina nu a fost găsită.', body: 'Linkul e greșit sau pagina a fost mutată. Verifică adresa sau revino la pagina principală.' },
+  '500': { code: '500', title: 'A apărut o eroare.', body: 'Ceva nu a mers cum trebuia. Încearcă din nou sau revino la pagina principală.' },
+};
+const TABS = [['404', '404'], ['500', 'Eroare 500'], ['privacy', 'Confidențialitate']];
+class Component extends DCLogic {
+  state = { screen: null, banner: null, custom: false, analytics: false, marketing: false };
+  renderVals() {
+    const screen = this.state.screen ?? this.props.screen ?? '404';
+    const banner = this.state.banner ?? (this.props.showBanner ?? true);
+    const set = o => this.setState(o);
+    return {
+      tabs: TABS.map(([id, label]) => ({ label, select: () => set({ screen: id }), bg: id === screen ? '#FF4D14' : 'transparent', color: id === screen ? '#0B0B0B' : '#B4AFA6' })),
+      isError: screen !== 'privacy', isPrivacy: screen === 'privacy', err: ERR[screen] || ERR['404'], policy: POLICY,
+      bannerOpen: banner, bannerPad: banner ? '120px' : '0px', bannerToggleLabel: banner ? 'Ascunde bannerul' : 'Arată bannerul',
+      toggleBanner: () => set({ banner: !banner, custom: false }), openBanner: () => set({ banner: true }),
+      openPrivacy: () => { set({ screen: 'privacy' }); window.scrollTo(0, 0); },
+      isCustom: this.state.custom, notCustom: !this.state.custom,
+      customize: () => set({ custom: true }), back: () => set({ custom: false }), close: () => set({ banner: false, custom: false }),
+      analytics: this.state.analytics, marketing: this.state.marketing,
+      toggleAnalytics: () => set({ analytics: !this.state.analytics }), toggleMarketing: () => set({ marketing: !this.state.marketing }),
+    };
+  }
+}
+</script>
+</body>
+</html>

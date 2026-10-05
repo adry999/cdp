@@ -1,0 +1,340 @@
+{
+  "updated": "2026-10-05",
+  "statuses": {
+    "sincronizat": "Designul și codul coincid",
+    "de_implementat": "Există în design, lipsește în cod",
+    "in_lucru": "Se implementează acum",
+    "de_actualizat": "Codul există, dar designul s-a schimbat",
+    "de_verificat": "Implementat, așteaptă review"
+  },
+  "groups": [
+    {
+      "id": "ds",
+      "label": "Design system",
+      "design": "Codepedia Design System.dc.html",
+      "pages": [
+        {
+          "id": "ds-tokens",
+          "title": "Tokens (culori, spațiere, raze)",
+          "repo": [
+            "app/assets/css/main.css"
+          ],
+          "status": "sincronizat"
+        },
+        {
+          "id": "ds-type",
+          "title": "Tipografie",
+          "repo": [
+            "app/assets/css/main.css"
+          ],
+          "status": "sincronizat"
+        },
+        {
+          "id": "ds-layout",
+          "title": "Layout (SiteSection, PageHero)",
+          "repo": [
+            "layers/core/app/components/ui/"
+          ],
+          "status": "sincronizat"
+        },
+        {
+          "id": "ds-components",
+          "title": "Componente UI",
+          "repo": [
+            "layers/core/app/components/ui/*.vue",
+            "ProjectsCard.vue",
+            "ProjectsFilterChips.vue",
+            "QualifierOptionCard.vue"
+          ],
+          "status": "sincronizat"
+        },
+        {
+          "id": "ds-header",
+          "title": "SiteHeader",
+          "repo": [
+            "app/components/site/SiteHeader.vue"
+          ],
+          "status": "de_actualizat",
+          "note": "Header refăcut după modelul truckerhq; de verificat în cod."
+        },
+        {
+          "id": "ds-forms",
+          "title": "LeadsContactForm, QualifierModal",
+          "repo": [
+            "layers/leads/app/components/LeadsContactForm.vue",
+            "layers/qualifier/app/components/QualifierModal.vue"
+          ],
+          "status": "sincronizat"
+        }
+      ]
+    },
+    {
+      "id": "home",
+      "label": "Homepage",
+      "design": "Codepedia.dc.html",
+      "pages": [
+        {
+          "id": "home-ro",
+          "title": "Homepage RO (00–07)",
+          "repo": [
+            "layers/home/app/components/Home*.vue"
+          ],
+          "status": "sincronizat",
+          "note": "Prețuri „de la [ X ] EUR” în 01."
+        },
+        {
+          "id": "home-en",
+          "title": "Homepage EN",
+          "design": "Codepedia EN.dc.html",
+          "repo": [
+            "i18n/locales/en.json"
+          ],
+          "status": "sincronizat"
+        },
+        {
+          "id": "home-granturi",
+          "title": "Bloc „Granturi” în 01 Servicii",
+          "repo": [
+            "layers/home/app/components/HomeServices.vue",
+            "i18n/locales/ro.json"
+          ],
+          "status": "de_implementat"
+        }
+      ]
+    },
+    {
+      "id": "services",
+      "label": "Servicii",
+      "design": "Codepedia Servicii.dc.html",
+      "pages": [
+        {
+          "id": "svc-website",
+          "title": "/servicii/website",
+          "repo": [
+            "layers/services/app/pages/servicii/[slug].vue",
+            "layers/services/data/services.ts"
+          ],
+          "status": "sincronizat",
+          "note": "priceFrom = null"
+        },
+        {
+          "id": "svc-webapp",
+          "title": "/servicii/aplicatie-web",
+          "repo": [
+            "layers/services/data/services.ts"
+          ],
+          "status": "sincronizat",
+          "note": "priceFrom = null"
+        },
+        {
+          "id": "svc-wordpress",
+          "title": "/servicii/wordpress",
+          "repo": [
+            "layers/services/data/services.ts"
+          ],
+          "status": "sincronizat",
+          "note": "priceFrom = null"
+        },
+        {
+          "id": "svc-shopify",
+          "title": "/servicii/shopify",
+          "repo": [
+            "layers/services/data/services.ts"
+          ],
+          "status": "sincronizat",
+          "note": "priceFrom = null"
+        },
+        {
+          "id": "svc-ai",
+          "title": "/servicii/automatizare-ai",
+          "repo": [
+            "layers/services/data/services.ts"
+          ],
+          "status": "sincronizat",
+          "note": "priceFrom = null"
+        },
+        {
+          "id": "svc-granturi",
+          "title": "/servicii/granturi",
+          "repo": [
+            "layers/services/data/services.ts",
+            "layers/services/data/serviceLinks.ts",
+            "ServiceTagId"
+          ],
+          "status": "de_implementat",
+          "note": "Serviciu nou: 4 pași, câmp nou „audience”."
+        }
+      ]
+    },
+    {
+      "id": "pages",
+      "label": "Pagini noi",
+      "design": "Codepedia Pagini.dc.html",
+      "pages": [
+        {
+          "id": "pg-servicii",
+          "title": "/servicii (index)",
+          "repo": [
+            "layers/services/app/pages/servicii/index.vue"
+          ],
+          "status": "de_implementat"
+        },
+        {
+          "id": "pg-preturi",
+          "title": "/preturi",
+          "repo": [
+            "app/pages/preturi.vue"
+          ],
+          "status": "de_implementat",
+          "note": "Necesită prețuri reale."
+        },
+        {
+          "id": "pg-despre",
+          "title": "/despre",
+          "repo": [
+            "app/pages/despre.vue"
+          ],
+          "status": "de_implementat",
+          "note": "Echipa e demo."
+        },
+        {
+          "id": "pg-contact",
+          "title": "/contact + câmp Etapa",
+          "repo": [
+            "app/pages/contact.vue",
+            "layers/leads/domain/lead.ts",
+            "migrare leads.stage"
+          ],
+          "status": "de_implementat"
+        }
+      ]
+    },
+    {
+      "id": "blog",
+      "label": "Blog",
+      "design": "Codepedia Blog.dc.html",
+      "pages": [
+        {
+          "id": "blog-list",
+          "title": "/blog",
+          "repo": [
+            "layers/blog/app/pages/blog/index.vue",
+            "BlogCard.vue"
+          ],
+          "status": "sincronizat"
+        },
+        {
+          "id": "blog-post",
+          "title": "/blog/[slug]",
+          "repo": [
+            "layers/blog/app/pages/blog/[slug].vue",
+            "BlogPost.vue"
+          ],
+          "status": "sincronizat",
+          "note": "Articole reale lipsesc."
+        }
+      ]
+    },
+    {
+      "id": "system",
+      "label": "Sistem",
+      "design": "Codepedia Sistem.dc.html",
+      "pages": [
+        {
+          "id": "sys-404",
+          "title": "404 / 500",
+          "repo": [
+            "app/error.vue"
+          ],
+          "status": "sincronizat"
+        },
+        {
+          "id": "sys-privacy",
+          "title": "/confidentialitate",
+          "repo": [
+            "layers/consent/app/pages/confidentialitate.vue",
+            "privacyPolicy.ts"
+          ],
+          "status": "sincronizat",
+          "note": "Retenția lipsește."
+        },
+        {
+          "id": "sys-cookie",
+          "title": "Banner cookie",
+          "repo": [
+            "layers/consent/app/components/ConsentBanner.vue"
+          ],
+          "status": "sincronizat"
+        }
+      ]
+    },
+    {
+      "id": "projects",
+      "label": "Proiecte",
+      "design": "Studiu de caz.dc.html",
+      "pages": [
+        {
+          "id": "prj-list",
+          "title": "/proiecte",
+          "repo": [
+            "layers/projects/app/pages/proiecte/index.vue"
+          ],
+          "status": "sincronizat",
+          "note": "Fără design separat; folosește ProjectsCard."
+        },
+        {
+          "id": "prj-case",
+          "title": "/proiecte/[slug] — studiu de caz",
+          "repo": [
+            "layers/projects/app/pages/proiecte/[slug].vue"
+          ],
+          "status": "de_verificat",
+          "note": "Structura nouă cu 7 secțiuni; cifre/citate rămân placeholder; imagini și migrări neaplicate."
+        }
+      ]
+    },
+    {
+      "id": "admin",
+      "label": "Admin",
+      "design": "Codepedia Admin.dc.html",
+      "pages": [
+        {
+          "id": "adm-login",
+          "title": "/admin/login",
+          "repo": [
+            "app/pages/admin/login.vue"
+          ],
+          "status": "sincronizat"
+        },
+        {
+          "id": "adm-projects",
+          "title": "/admin/projects",
+          "repo": [
+            "layers/projects/app/pages/admin/projects/index.vue"
+          ],
+          "status": "sincronizat"
+        },
+        {
+          "id": "adm-leads",
+          "title": "/admin/leads + badge „nou” în sidebar",
+          "repo": [
+            "layers/leads/app/pages/admin/leads/index.vue",
+            "app/components/admin/AdminSidebar.vue"
+          ],
+          "status": "de_implementat",
+          "note": "Lista există; badge-ul lipsește."
+        },
+        {
+          "id": "adm-lead",
+          "title": "/admin/leads/[id] + buton „← Solicitări”",
+          "repo": [
+            "layers/leads/app/pages/admin/leads/[id].vue",
+            "layers/core/app/components/admin/AdminTopbar.vue"
+          ],
+          "status": "de_implementat",
+          "note": "Pagina există; butonul lipsește."
+        }
+      ]
+    }
+  ]
+}

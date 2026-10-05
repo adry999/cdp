@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #FAF8F4; color: #0B0B0B; font-family: 'Inter Tight', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #0B0B0B; text-decoration: none; }
+  a:hover { color: #FF4D14; }
+</style>
+</helmet>
+
+<div style="max-width:1200px;margin:0 auto;padding:clamp(32px,5vw,64px) clamp(20px,5vw,56px) 80px">
+  <header style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;padding-bottom:28px;border-bottom:1px solid #E2DED6">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <img src="assets/codepedia-wordmark.svg" alt="Codepedia" style="display:block;height:20px;width:auto;align-self:flex-start" />
+      <h1 style="margin:0;font-size:clamp(28px,3.4vw,40px);font-weight:600;letter-spacing:-0.025em;line-height:1.1">Index proiect</h1>
+    </div>
+    <div style="display:flex;gap:24px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+      <span style="white-space:nowrap"><span style="color:#0B0B0B">{{ countReady }}</span> gata</span>
+      <span style="white-space:nowrap"><span style="color:#0B0B0B">{{ countTodo }}</span> de făcut</span>
+      <span style="white-space:nowrap"><span style="color:#0B0B0B">{{ countTotal }}</span> total</span>
+    </div>
+  </header>
+
+  <section style="margin-top:36px;display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px 24px">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <h2 style="margin:0;font-size:24px;font-weight:600;letter-spacing:-0.02em">Status implementare</h2>
+        <p style="margin:0;font-size:15px;color:#6B6862;max-width:64ch;text-wrap:pretty">Sursa e <a href="design-status.json" style="color:#0B0B0B;text-decoration:underline">design-status.json</a>, pe care îl poate edita și Claude Code. Click pe status îl schimbă local; „Copiază JSON” dă fișierul actualizat.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+        <span>Actualizat {{ stUpdated }}</span>
+        <span style="color:#FF4D14">{{ stDirtyLabel }}</span>
+        <button onClick="{{ copyJson }}" style="border:1px solid #0B0B0B;background:#0B0B0B;color:#FAF8F4;border-radius:4px;padding:8px 12px;cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit">{{ copyLabel }}</button>
+        <button onClick="{{ resetLocal }}" style="border:1px solid #E2DED6;background:transparent;color:#6B6862;border-radius:4px;padding:8px 12px;cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit">Resetează</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <sc-for list="{{ stLegend }}" as="l" hint-placeholder-count="5">
+        <button onClick="{{ l.select }}" style="display:flex;align-items:center;gap:8px;border:1px solid {{ l.border }};background:{{ l.bg }};border-radius:4px;padding:7px 12px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#0B0B0B"><span style="width:8px;height:8px;border-radius:50%;background:{{ l.dot }}"></span>{{ l.label }}<span style="color:#8D8880">{{ l.count }}</span></button>
+      </sc-for>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,520px),1fr));gap:16px">
+      <sc-for list="{{ stGroups }}" as="g" hint-placeholder-count="4">
+        <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid #E2DED6;background:#F1EEE7">
+            <span style="font-size:16px;font-weight:500;letter-spacing:-0.01em">{{ g.label }}</span>
+            <a href="{{ g.design }}" style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#6B6862;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ g.design }} ↗</a>
+          </div>
+          <sc-for list="{{ g.pages }}" as="p" hint-placeholder-count="3">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;padding:12px 18px;border-top:1px solid {{ p.sep }}">
+              <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+                <span style="font-size:15px;line-height:1.35">{{ p.title }}</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8D8880;overflow-wrap:anywhere">{{ p.repoText }}</span>
+                <sc-if value="{{ p.note }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#6B6862">{{ p.note }}</span></sc-if>
+              </div>
+              <button onClick="{{ p.cycle }}" title="Click pentru a schimba" style="align-self:start;display:flex;align-items:center;gap:7px;white-space:nowrap;border:1px solid {{ p.border }};background:#FAF8F4;border-radius:4px;padding:6px 10px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#0B0B0B"><span style="width:8px;height:8px;border-radius:50%;background:{{ p.dot }}"></span>{{ p.label }}</button>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <h2 style="margin:64px 0 0;font-size:24px;font-weight:600;letter-spacing:-0.02em">Toate fișierele</h2>
+  <nav style="margin-top:24px;display:flex;flex-wrap:wrap;gap:4px;padding:4px;border:1px solid #E2DED6;border-radius:4px;background:#F1EEE7;width:fit-content;max-width:100%">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="6">
+      <button onClick="{{ t.select }}" style="white-space:nowrap;display:flex;align-items:center;gap:8px;border:0;cursor:pointer;border-radius:4px;padding:9px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;background:{{ t.bg }};color:{{ t.color }}">{{ t.label }}<span style="font-size:11px;color:{{ t.countColor }}">{{ t.count }}</span></button>
+    </sc-for>
+  </nav>
+
+  <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+    <section style="margin-top:44px">
+      <div style="display:flex;align-items:baseline;gap:12px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">{{ g.num }}</span> / {{ g.label }}</div>
+      <div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px">
+        <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+          <a href="{{ it.href }}" style="display:flex;flex-direction:column;gap:10px;min-height:150px;padding:20px;border:1px solid {{ it.border }};border-style:{{ it.borderStyle }};border-radius:4px;background:#FAF8F4;color:#0B0B0B;transition:border-color 0.15s" style-hover="border-color:#0B0B0B;color:#0B0B0B">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ it.kind }}</span>
+              <span style="display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#0B0B0B"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:{{ it.dot }}"></span>{{ it.status }}</span>
+            </div>
+            <h2 style="margin:4px 0 0;font-size:19px;font-weight:500;letter-spacing:-0.02em;line-height:1.25">{{ it.title }}</h2>
+            <p style="margin:0;font-size:15px;line-height:1.5;color:#6B6862;text-wrap:pretty">{{ it.note }}</p>
+            <span style="margin-top:auto;padding-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#8D8880;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.path }}</span>
+          </a>
+        </sc-for>
+      </div>
+    </section>
+  </sc-for>
+
+  <footer style="margin-top:56px;padding-top:20px;border-top:1px solid #E2DED6;display:flex;flex-wrap:wrap;gap:12px 24px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+    <span style="display:flex;align-items:center;gap:6px"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#0B0B0B"></span>Gata</span>
+    <span style="display:flex;align-items:center;gap:6px"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#FF4D14"></span>De făcut</span>
+    <span style="display:flex;align-items:center;gap:6px"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#B4AFA6"></span>Arhivă / doar în cod</span>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const CATS = [
+  { id: 'site', label: 'Site' },
+  { id: 'cases', label: 'Studii de caz' },
+  { id: 'brand', label: 'Brand' },
+  { id: 'social', label: 'Social media' },
+  { id: 'sales', label: 'Vânzări' },
+  { id: 'code', label: 'Doar în aplicație' },
+  { id: 'handoff', label: 'Handoff' },
+];
+const ITEMS = [
+  { cat: 'site', kind: 'Pagină', status: 'ready', title: 'Homepage', note: 'Sincronizat cu adry999/cdp (main). Secțiunile 00–07, RO.', path: 'Codepedia.dc.html' },
+  { cat: 'site', kind: 'Pagină', status: 'ready', title: 'Homepage EN', note: 'Versiunea în engleză, din en.json. Descrierile de proiecte traduse local.', path: 'Codepedia EN.dc.html' },
+  { cat: 'site', kind: 'Pagini', status: 'ready', title: 'Servicii, Prețuri, Despre, Contact', note: '4 pagini cu comutator în header. Echipă, contacte și abonamente marcate demo (tweak showDemo).', path: 'Codepedia Pagini.dc.html' },
+  { cat: 'sales', kind: 'Deck', status: 'ready', title: 'Prezentare pentru clienți', note: '9 slide-uri 1920×1080: problemă, despre, servicii, proces, proiecte, stack, pași următori.', path: 'Codepedia Prezentare.dc.html' },
+  { cat: 'sales', kind: 'PDF · A4', status: 'ready', title: 'Ofertă / propunere', note: '3 pagini: copertă, scop + calendar, preț + acceptare. Câmpurile [între paranteze] se completează per client.', path: 'Codepedia Oferta.dc.html' },
+  { cat: 'sales', kind: 'Email', status: 'ready', title: 'Email ofertă', note: 'HTML gata de trimis, 600 px, tabele. Câmpuri [între paranteze].', path: 'emails/Email Oferta.html' },
+  { cat: 'sales', kind: 'Email', status: 'ready', title: 'Newsletter', note: 'Proiect lansat, articol, locuri libere. Imaginea trebuie găzduită pe https.', path: 'emails/Email Newsletter.html' },
+  { cat: 'site', kind: 'Pagină', status: 'archive', title: 'Homepage v1', note: 'Versiunea dinainte de sincronizarea cu aplicația.', path: 'Codepedia v1 (pre-sync).dc.html' },
+  { cat: 'cases', kind: 'Studiu de caz', status: 'ready', title: 'Studii de caz reale (RO)', note: '7 proiecte: Startica app + site, Bloom, Trucker HQ, Aurelia Badiur, EnglishMinds, SwissCars. Citate și metrici demo marcate (tweak showDemo).', path: 'Studiu de caz.dc.html' },
+  { cat: 'cases', kind: 'Case study', status: 'ready', title: 'Studii de caz reale (EN)', note: 'Aceleași 7 proiecte, traduse. De recitit înainte de publicare.', path: 'Case Study.dc.html' },
+  { cat: 'cases', kind: 'Machete', status: 'ready', title: 'Startica App, machete', note: 'Desktop + Prezența pe mobil (390 px). Date demo.', path: 'Startica App Machete.dc.html' },
+  { cat: 'cases', kind: 'Machete', status: 'ready', title: 'SwissCars, machete', note: 'Acasă, mașină, Contacte + footer, Acasă pe mobil. Contacte demo.', path: 'SwissCars Machete.dc.html' },
+  { cat: 'cases', kind: 'Machete', status: 'ready', title: 'Bloom Florist, machete', note: 'Panou, Comenzi + Comenzi pe mobil, din adry999/bloom. Date demo.', path: 'Bloom Florist Machete.dc.html' },
+  { cat: 'cases', kind: 'Machete', status: 'ready', title: 'TruckerHQ, machete', note: 'Acasă, Carrier Lookup + Acasă pe mobil, din adry999/truckerhq. Date demo.', path: 'TruckerHQ Machete.dc.html' },
+  { cat: 'cases', kind: 'Studiu de caz', status: 'archive', title: 'SaaS de logistică, România', note: 'Date de exemplu. De înlocuit cu proiect real.', path: 'Proiect SaaS Logistica.dc.html' },
+  { cat: 'cases', kind: 'Studiu de caz', status: 'archive', title: 'Portal de clienți, Germania', note: 'Date de exemplu. De înlocuit cu proiect real.', path: 'Proiect Portal Clienti.dc.html' },
+  { cat: 'cases', kind: 'Studiu de caz', status: 'archive', title: 'Asistent pe documente, Moldova', note: 'Date de exemplu. De înlocuit cu proiect real.', path: 'Proiect Asistent Documente.dc.html' },
+  { cat: 'brand', kind: 'Manual', status: 'ready', title: 'Identitate vizuală', note: 'Logo, culori, tipografie, reguli de folosire.', path: 'uploads/Codepedia visual identity system/Codepedia Identity.dc.html' },
+  { cat: 'brand', kind: 'Manual · print', status: 'ready', title: 'Identitate vizuală (print)', note: 'Versiunea paginată pentru PDF.', path: 'uploads/Codepedia visual identity system/Codepedia Identity - Print.dc.html' },
+  { cat: 'brand', kind: 'Design system', status: 'ready', title: 'Design system', note: 'Tokens, tipografie, layout și 16 componente Vue din repo, cu stări.', path: 'Codepedia Design System.dc.html' },
+  { cat: 'brand', kind: 'Design system', status: 'ready', title: 'Design system (EN)', note: 'Aceeași documentație, în engleză.', path: 'Codepedia Design System EN.dc.html' },
+  { cat: 'brand', kind: 'Colaterale', status: 'ready', title: 'Colaterale', note: 'Materiale de brand derivate din identitate.', path: 'Codepedia Collateral.dc.html' },
+  { cat: 'social', kind: 'Cover', status: 'ready', title: 'Cover Facebook și LinkedIn', note: '4a, 3a, 3b sunt variantele EN recomandate. Restul sunt explorări.', path: 'Codepedia Cover Photos.dc.html' },
+  { cat: 'social', kind: 'Instagram', status: 'ready', title: 'Postări Instagram', note: '4 postări 1080×1350: Studio, Servicii, Proiect, Proces.', path: 'Codepedia Social.dc.html' },
+  { cat: 'social', kind: 'Instagram', status: 'ready', title: 'Story-uri și highlight covers', note: '3 story-uri + 5 highlight covers, 1080×1920, cu zone sigure.', path: 'Codepedia Social.dc.html' },
+  { cat: 'social', kind: 'Carusele', status: 'ready', title: 'Carusele Instagram', note: 'C1 La predare (5) și C2 Deep Build (6), 1080×1350.', path: 'Codepedia Social Carusele.dc.html' },
+  { cat: 'social', kind: 'Reels', status: 'ready', title: 'Coperți reels', note: '3 coperți 1080×1920 cu ghid de decupaj pentru grid.', path: 'Codepedia Social Carusele.dc.html' },
+  { cat: 'social', kind: 'Profil', status: 'ready', title: 'Avatar de profil', note: '1080×1080, simbolul pe ink, cu previzualizare în cerc.', path: 'Codepedia Social.dc.html' },
+  { cat: 'site', kind: 'Pagini', status: 'ready', title: 'Pagini de servicii ×5', note: 'Website, Aplicație web, WordPress, Shopify, Automatizare cu AI. Text verbatim din services.ts.', path: 'Codepedia Servicii.dc.html' },
+  { cat: 'site', kind: 'Pagini', status: 'ready', title: 'Blog (listă + articol)', note: 'Stilurile blog-prose din BlogPost.vue. Articole demo; tweak empty pentru starea goală.', path: 'Codepedia Blog.dc.html' },
+  { cat: 'site', kind: 'Pagini', status: 'ready', title: '404, eroare, confidențialitate, banner cookie', note: 'Texte din ro.json și privacyPolicy.ts. Bannerul are și starea Personalizează.', path: 'Codepedia Sistem.dc.html' },
+  { cat: 'site', kind: 'Admin', status: 'ready', title: 'Dashboard admin', note: 'Login, Proiecte (filtre, duplică, șterge), Solicitări + detaliu cu stare și note. Date demo.', path: 'Codepedia Admin.dc.html' },
+  { cat: 'handoff', kind: 'Doc', status: 'ready', title: 'INDEX.md — meniu pentru Claude Code', note: 'Fiecare design, fișierele Vue corespunzătoare și starea.', path: 'INDEX.md' },
+  { cat: 'handoff', kind: 'Doc', status: 'todo', title: 'DE_IMPLEMENTAT.md', note: 'Ce lipsește în cod față de design (sync 5 octombrie).', path: 'design_handoff_codepedia_nuxt/DE_IMPLEMENTAT.md' },
+  { cat: 'handoff', kind: 'Doc', status: 'ready', title: 'PAGINI_NOI.md', note: 'Ce s-a schimbat față de repo pentru fiecare pagină nouă.', path: 'design_handoff_codepedia_nuxt/PAGINI_NOI.md' },
+  { cat: 'code', kind: 'Pagină', status: 'archive', title: 'Proiecte (listă + filtre)', note: 'Există în aplicație, fără design aici.', path: 'layers/projects/app/pages/proiecte/index.vue' },
+  { cat: 'handoff', kind: 'Doc', status: 'ready', title: 'README — spec design', note: 'Specificația completă a site-ului.', path: 'design_handoff_codepedia_nuxt/README.md' },
+  { cat: 'handoff', kind: 'Doc', status: 'ready', title: 'CLAUDE.md', note: 'Instrucțiuni pentru Claude Code.', path: 'design_handoff_codepedia_nuxt/CLAUDE.md' },
+  { cat: 'handoff', kind: 'Doc', status: 'ready', title: 'ADMIN.md + DATA_MODEL.sql', note: 'Schema dashboard-ului și a bazei de date.', path: 'design_handoff_codepedia_nuxt/ADMIN.md' },
+  { cat: 'handoff', kind: 'Doc', status: 'todo', title: 'TODO.md', note: 'Valori reale care lipsesc (telefon, email, proiecte).', path: 'design_handoff_codepedia_nuxt/TODO.md' },
+  { cat: 'handoff', kind: 'Storybook', status: 'ready', title: 'Storybook', note: 'Config + 16 fișiere .stories.ts, verificate pe repo. De rulat local.', path: 'design_handoff_codepedia_nuxt/storybook/README.md' },
+  { cat: 'handoff', kind: 'Sync', status: 'ready', title: 'github.md', note: 'Legătura cu repo-ul și istoricul sincronizărilor.', path: 'github.md' },
+];
+const STATUS = {
+  ready: { label: 'Gata', dot: '#0B0B0B', border: '#E2DED6', style: 'solid' },
+  todo: { label: 'De făcut', dot: '#FF4D14', border: '#E2DED6', style: 'dashed' },
+  archive: { label: 'Doar în cod', dot: '#B4AFA6', border: '#E2DED6', style: 'solid' },
+};
+
+const ST_ORDER = ['de_implementat', 'in_lucru', 'de_verificat', 'de_actualizat', 'sincronizat'];
+const ST_STYLE = {
+  de_implementat: { label: 'De implementat', dot: '#FF4D14' },
+  in_lucru: { label: 'În lucru', dot: '#E0A100' },
+  de_verificat: { label: 'De verificat', dot: '#3A6EA5' },
+  de_actualizat: { label: 'De actualizat', dot: '#B4AFA6' },
+  sincronizat: { label: 'Sincronizat', dot: '#0B0B0B' },
+};
+const LS_KEY = 'codepedia-index-status-overrides';
+
+class Component extends DCLogic {
+  state = { cat: 'all', data: null, over: {}, stFilter: null, copied: false };
+  componentDidMount() {
+    try { this.setState({ over: JSON.parse(localStorage.getItem(LS_KEY) || '{}') }); } catch (e) {}
+    fetch('design-status.json', { cache: 'no-store' }).then(r => r.json()).then(data => this.setState({ data })).catch(() => {});
+  }
+  saveOver(over) { localStorage.setItem(LS_KEY, JSON.stringify(over)); this.setState({ over }); }
+  merged() {
+    const { data, over } = this.state;
+    if (!data) return null;
+    return { ...data, groups: data.groups.map(g => ({ ...g, pages: g.pages.map(p => over[p.id] ? { ...p, status: over[p.id] } : p) })) };
+  }
+  statusVals() {
+    const m = this.merged();
+    const { stFilter, over, copied } = this.state;
+    const all = m ? m.groups.flatMap(g => g.pages) : [];
+    const stLegend = ST_ORDER.map(s => {
+      const on = stFilter === s;
+      return { label: ST_STYLE[s].label, dot: ST_STYLE[s].dot, count: all.filter(p => p.status === s).length,
+        bg: on ? '#F1EEE7' : 'transparent', border: on ? '#0B0B0B' : '#E2DED6',
+        select: () => this.setState({ stFilter: on ? null : s }) };
+    });
+    const stGroups = (m ? m.groups : []).map(g => ({
+      label: g.label, design: g.design,
+      pages: g.pages.filter(p => !stFilter || p.status === stFilter).map((p, i) => {
+        const s = ST_STYLE[p.status] || ST_STYLE.de_implementat;
+        return { title: p.title, note: p.note || '', repoText: (p.repo || []).join(' · '),
+          dot: s.dot, label: s.label, border: over[p.id] ? '#FF4D14' : '#E2DED6', sep: i === 0 ? 'transparent' : '#E2DED6',
+          cycle: () => {
+            const next = ST_ORDER[(ST_ORDER.indexOf(p.status) + 1) % ST_ORDER.length];
+            const orig = this.state.data.groups.flatMap(x => x.pages).find(x => x.id === p.id).status;
+            const o = { ...this.state.over };
+            if (next === orig) delete o[p.id]; else o[p.id] = next;
+            this.saveOver(o);
+          } };
+      }),
+    })).filter(g => g.pages.length);
+    const n = Object.keys(over).length;
+    return {
+      stLegend, stGroups,
+      stUpdated: m ? m.updated : '…',
+      stDirtyLabel: n ? `${n} modificări locale` : '',
+      copyLabel: copied ? 'Copiat' : 'Copiază JSON',
+      copyJson: () => {
+        const out = this.merged(); if (!out) return;
+        out.updated = new Date().toISOString().slice(0, 10);
+        navigator.clipboard.writeText(JSON.stringify(out, null, 2)).then(() => { this.setState({ copied: true }); setTimeout(() => this.setState({ copied: false }), 1500); });
+      },
+      resetLocal: () => this.saveOver({}),
+    };
+  }
+  renderVals() {
+    const { cat } = this.state;
+    const tabs = [{ id: 'all', label: 'Toate' }, ...CATS].map(c => {
+      const on = c.id === cat;
+      return {
+        label: c.label,
+        count: c.id === 'all' ? ITEMS.length : ITEMS.filter(i => i.cat === c.id).length,
+        bg: on ? '#0B0B0B' : 'transparent', color: on ? '#FAF8F4' : '#6B6862', countColor: on ? '#FF4D14' : '#8D8880',
+        select: () => this.setState({ cat: c.id }),
+      };
+    });
+    const groups = CATS.filter(c => cat === 'all' || c.id === cat).map((c, gi) => ({
+      num: String(CATS.indexOf(c) + 1).padStart(2, '0'),
+      label: c.label,
+      items: ITEMS.filter(i => i.cat === c.id).map(i => {
+        const s = STATUS[i.status];
+        const linkable = i.path !== '—' && i.cat !== 'code';
+        return {
+          ...i, href: linkable ? i.path : '#',
+          status: i.status === 'archive' && i.cat !== 'code' ? 'Arhivă' : s.label,
+          dot: s.dot, border: s.border, borderStyle: s.style,
+        };
+      }),
+    }));
+    return {
+      ...this.statusVals(),
+      tabs, groups,
+      countReady: ITEMS.filter(i => i.status === 'ready').length,
+      countTodo: ITEMS.filter(i => i.status === 'todo').length,
+      countTotal: ITEMS.length,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

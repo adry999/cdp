@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #FAF8F4; color: #0B0B0B; font-family: 'Inter Tight', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.6; letter-spacing: -0.004em; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  ::selection { background: #FF4D14; color: #FAF8F4; }
+  a { color: #0B0B0B; text-decoration: none; }
+  a:hover { color: #FF4D14; }
+  @keyframes caret { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+</style>
+</helmet>
+
+<div style="display:flex;flex-direction:column;min-height:100vh">
+
+<header data-screen-label="Header" style="position:sticky;top:0;z-index:20;background:#FAF8F4">
+  <div style="max-width:1280px;margin:0 auto;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 clamp(20px,5vw,64px)">
+    <a href="#top" style="display:flex;align-items:center"><img src="assets/codepedia-wordmark.svg" alt="Codepedia" style="display:block;height:18px;width:auto" /></a>
+    <nav style="display:flex;align-items:center;gap:clamp(14px,2vw,28px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(14px,2vw,28px);border-right:1px solid #E2DED6;padding-right:clamp(14px,2vw,28px)">
+        <a href="#servicii" style="color:#6B6862" style-hover="color:#FF4D14">Services</a>
+        <a href="#stack" style="color:#6B6862" style-hover="color:#FF4D14">Stack</a>
+        <a href="#proces" style="color:#6B6862" style-hover="color:#FF4D14">Process</a>
+        <a href="#proiecte" style="color:#6B6862" style-hover="color:#FF4D14">Work</a>
+        <a href="#" style="color:#6B6862" style-hover="color:#FF4D14">Blog</a>
+        <a href="#contact" style="color:#6B6862" style-hover="color:#FF4D14">Contact</a>
+      </div>
+      <span style="display:flex;align-items:center;gap:6px"><a href="Codepedia.dc.html" hreflang="ro" lang="ro" style="color:#6B6862" style-hover="color:#6B6862">RO</a><span style="color:#E2DED6">|</span><span style="color:#0B0B0B">EN</span></span>
+    </nav>
+  </div>
+  <div style="height:2px;background:#FF4D14"></div>
+</header>
+
+<main style="flex:1">
+
+<section id="top" data-screen-label="00 Studio">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,8vw,120px) clamp(20px,5vw,64px) clamp(40px,5vw,72px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">00</span> / Studio</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h1 style="margin:0;max-width:20ch;font-size:clamp(34px,6vw,64px);font-weight:600;line-height:1.04;letter-spacing:-0.025em;text-wrap:pretty">
+        <span style="display:grid;min-height:2.1em;align-items:end"><span style="font-family:'JetBrains Mono',monospace;font-weight:500;letter-spacing:0">{{ typed }}{{ caret }}</span></span>
+        <span style="display:block">built to bring you lasting results.</span>
+      </h1>
+      <p style="margin:clamp(20px,2.6vw,28px) 0 0;max-width:42ch;font-size:clamp(20px,2.2vw,26px);font-weight:500;line-height:1.2;letter-spacing:-0.02em;text-wrap:pretty">Plenty of projects end half-finished and impossible to maintain. We hand over code your team can run, with documentation and 30 days of fixes included.</p>
+      <p style="margin:clamp(20px,2.6vw,28px) 0 0;max-width:62ch;font-size:clamp(16px,1.4vw,18px);color:#6B6862">We work with early-stage founders and established companies, from Chișinău to clients across Europe and North America.</p>
+      <div style="margin-top:clamp(28px,3vw,40px);display:flex;flex-wrap:wrap;gap:12px">
+        <a href="#contact" style="display:inline-block;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:14px 22px;font-size:15px;font-weight:500" style-hover="background:#FF4D14;color:#FAF8F4">Find out if we can help</a>
+        <a href="#proces" style="display:inline-block;border-radius:4px;border:1px solid #0B0B0B;color:#0B0B0B;padding:13px 21px;font-size:15px;font-weight:500" style-hover="border-color:#6B6862;color:#0B0B0B">How we work</a>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px) clamp(40px,5vw,64px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
+      <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Base Location</div><div style="margin-top:8px;font-size:16px;font-weight:500">Chișinău, Moldova</div></div>
+      <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Markets</div><div style="margin-top:8px;font-size:16px;font-weight:500">Moldova/Romania · EU · North America · Worldwide</div></div>
+      <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Tech Stack</div><div style="margin-top:8px;font-size:16px;font-weight:500">React (Next.js), Vue (Nuxt.js), Node.js, PostgreSQL, Supabase, n8n, Make, LLM pipelines</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="servicii" data-screen-label="01 Services" style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">01</span> / Services</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h2 style="margin:0;max-width:26ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em">Where do you want to start? See each stage.</h2>
+      <p style="margin:16px 0 0;max-width:60ch;font-size:16px;color:#6B6862">Five stages, from a fast one-page launch to custom AI engineering. Pick where you are now — that's where we begin.</p>
+      <div style="margin-top:clamp(28px,3.5vw,44px);display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;position:relative">
+        <div style="position:absolute;left:10%;right:10%;top:21px;height:2px;background:#E2DED6"></div>
+        <sc-for list="{{ stages }}" as="s" hint-placeholder-count="5">
+          <button onClick="{{ s.select }}" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;padding:0 0 8px;background:transparent;border:0;cursor:pointer;text-align:center;font-family:inherit">
+            <span style="position:relative;z-index:1;width:44px;height:44px;border-radius:50%;background:#FAF8F4;border:1px solid {{ s.dotBorder }};transform:scale({{ s.scale }});transition:all 0.2s"></span>
+            <span style="display:flex;flex-direction:column;gap:2px;align-items:center">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;color:{{ s.color }}">{{ s.num }}</span>
+              <span style="font-size:13px;font-weight:500;line-height:1.25;color:{{ s.color }}">{{ s.name }}</span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="margin-top:clamp(24px,3vw,36px);border:1px solid #E2DED6;border-radius:4px;padding:clamp(20px,2.5vw,28px)">
+        <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px">
+          <h3 style="margin:0;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:clamp(18px,2.2vw,22px);font-weight:500;text-transform:uppercase;line-height:1.25;letter-spacing:0.04em"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#FF4D14;flex-shrink:0"></span>{{ stage.name }}</h3>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ stage.priceTime }}</span>
+        </div>
+        <div style="margin-top:24px;display:flex;flex-direction:column">
+          <div style="display:flex;flex-wrap:wrap;gap:16px;padding:20px 0;border-top:1px solid #E2DED6">
+            <div style="flex:0 0 150px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Where you are</div>
+            <p style="flex:1;min-width:0;margin:0;max-width:58ch;font-size:16px;color:#6B6862">{{ stage.whereYouAre }}</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:16px;padding:20px 0;border-top:1px solid #E2DED6;border-bottom:1px solid #E2DED6">
+            <div style="flex:0 0 150px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">What you get</div>
+            <p style="flex:1;min-width:0;margin:0;max-width:58ch;font-size:16px">{{ stage.whatYouGet }}</p>
+          </div>
+        </div>
+        <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ stage.badges }}" as="b" hint-placeholder-count="4">
+            <span style="display:inline-block;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ b }}</span>
+          </sc-for>
+        </div>
+        <div style="margin-top:24px;display:flex;flex-wrap:wrap;align-items:center;gap:20px">
+          <a href="#contact" style="display:inline-block;border-radius:4px;background:#FF4D14;color:#FAF8F4;padding:14px 22px;font-size:15px;font-weight:500" style-hover="background:#0B0B0B;color:#FAF8F4">{{ stage.cta }}</a>
+          <sc-for list="{{ stage.links }}" as="l" hint-placeholder-count="0">
+            <a href="#" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862" style-hover="color:#FF4D14">{{ l }} →</a>
+          </sc-for>
+        </div>
+      </div>
+      <p style="margin:20px 0 0;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Some projects are under NDA. Detailed references available on the diagnostic call.</p>
+    </div>
+  </div>
+</section>
+
+<section id="stack" data-screen-label="02 Stack" style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">02</span> / Stack</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h2 style="margin:0;max-width:28ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em">The stack we ship with.</h2>
+      <p style="margin:16px 0 0;max-width:62ch;font-size:16px;color:#6B6862">TypeScript on both ends, Postgres for data, deployed on Vercel. Tools we've used in production, not a wish list.</p>
+      <div style="margin-top:clamp(28px,3vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px">
+        <sc-for list="{{ stack }}" as="g" hint-placeholder-count="4">
+          <article style="display:flex;flex-direction:column;border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:clamp(20px,2.5vw,28px);transition:border-color 0.2s" style-hover="border-color:#8D8880">
+            <h3 style="margin:0;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ g.name }}</h3>
+            <p style="flex:1;margin:16px 0 0;font-size:15px;line-height:1.625;color:#6B6862"><span style="font-weight:500;color:#0B0B0B">{{ g.lead }}. </span>{{ g.body }}</p>
+            <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ g.tags }}" as="t" hint-placeholder-count="4">
+                <span style="display:inline-block;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ t }}</span>
+              </sc-for>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+      <p style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:62ch;font-size:14px;color:#6B6862">Already running a Shopify store or an existing CMS? We integrate natively over headless APIs.</p>
+    </div>
+  </div>
+</section>
+
+<section id="proces" data-screen-label="03 Process" style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">03</span> / Process</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h2 style="margin:0;max-width:28ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em">A clear process, scaled to the size of the project.</h2>
+      <p style="margin:16px 0 0;max-width:62ch;font-size:16px;color:#6B6862">No needless bureaucracy for fast projects. Rigorous architecture for complex systems.</p>
+      <div style="margin-top:clamp(28px,3vw,40px);display:inline-flex;gap:4px;border:1px solid #E2DED6;border-radius:4px;background:#F1EEE7;padding:4px">
+        <sc-for list="{{ trackTabs }}" as="tt" hint-placeholder-count="2">
+          <button onClick="{{ tt.select }}" style="border:0;cursor:pointer;border-radius:4px;padding:8px clamp(12px,2.5vw,20px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;background:{{ tt.bg }};color:{{ tt.color }};transition:background-color 0.15s,color 0.15s">{{ tt.badge }}</button>
+        </sc-for>
+      </div>
+      <div style="margin-top:clamp(24px,3vw,36px)">
+        <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px">
+          <h3 style="margin:0;font-size:20px;font-weight:500;letter-spacing:-0.02em">{{ track.name }}</h3>
+          <span style="border:1px solid {{ track.scopeBorder }};border-radius:999px;padding:3px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:{{ track.scopeColor }}">{{ track.scope }}</span>
+        </div>
+        <p style="margin:12px 0 0;max-width:60ch;font-size:16px;color:#6B6862">{{ track.summary }}</p>
+        <ol style="margin:clamp(24px,3vw,32px) 0 0;padding:0;list-style:none;display:flex;flex-direction:column;border-bottom:1px solid #E2DED6">
+          <sc-for list="{{ track.steps }}" as="st" hint-placeholder-count="4">
+            <li style="display:flex;flex-wrap:wrap;gap:8px clamp(16px,3vw,40px);border-top:1px solid #E2DED6;padding:clamp(18px,2.5vw,26px) 0">
+              <span style="flex:0 0 64px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em">{{ st.index }}</span>
+              <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:4px clamp(16px,3vw,40px)">
+                <h4 style="flex:0 0 200px;margin:0;font-size:18px;font-weight:500;letter-spacing:-0.02em">{{ st.title }}</h4>
+                <p style="flex:1 1 280px;margin:0;max-width:60ch;font-size:16px;color:#6B6862">{{ st.body }}</p>
+              </div>
+            </li>
+          </sc-for>
+        </ol>
+      </div>
+      <p style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:68ch;font-size:14px;color:#6B6862">*The guarantee covers technical errors and conformance with the agreed specification; design changes or new functionality are scope extensions.</p>
+    </div>
+  </div>
+</section>
+
+<section id="proiecte" data-screen-label="04 Work" style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">04</span> / Work</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h2 style="margin:0;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em">Selected work.</h2>
+      <div style="margin-top:clamp(28px,3vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px">
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+          <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:clamp(18px,2vw,22px)">
+            <div style="aspect-ratio:16/10;border:1px solid #E2DED6;border-radius:4px;overflow:hidden;background:#F1EEE7">
+              <img src="{{ p.img }}" alt="{{ p.title }}" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center"></img>
+            </div>
+            <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ p.tech }}</div>
+            <h3 style="margin:10px 0 8px;font-size:19px;font-weight:500;letter-spacing:-0.02em">{{ p.title }}</h3>
+            <p style="margin:0;font-size:16px;color:#6B6862">{{ p.text }}</p>
+            <a href="{{ p.href }}" style="display:inline-block;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#0B0B0B;text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px" style-hover="text-decoration-color:#0B0B0B;color:#0B0B0B">{{ p.cta }}</a>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+        <p style="margin:0;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Some projects are under NDA. Detailed references available on the diagnostic call.</p>
+        <a href="#" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#0B0B0B;text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px" style-hover="text-decoration-color:#0B0B0B;color:#0B0B0B">All projects →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="05 About" style="background:#0B0B0B;color:#FAF8F4">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(56px,7vw,112px) clamp(20px,5vw,64px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880"><span style="color:#FF4D14">05</span> / About</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h2 style="margin:0;max-width:24ch;font-size:clamp(26px,3.4vw,40px);font-weight:500;line-height:1.12;letter-spacing:-0.025em">Boutique studio. Senior engineers. Direct access.</h2>
+      <p style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:62ch;font-size:clamp(16px,1.4vw,18px);line-height:1.625;color:#B4AFA6">We run a few projects at a time so each gets the hours it needs. No middlemen mistranslating the requirements, no juniors learning on your budget. You talk directly to the engineer building your product.</p>
+      <div style="margin-top:clamp(32px,4vw,52px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:24px">
+        <article style="display:flex;flex-direction:column;border:1px solid rgba(250,248,244,0.18);border-radius:4px;background:rgba(250,248,244,0.03);padding:clamp(20px,2.5vw,26px)" style-hover="border-color:#8D8880">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;color:#FF4D14">01</span>
+          <h3 style="margin:16px 0 0;font-size:18px;font-weight:500;line-height:1.375;letter-spacing:-0.02em">100% ownership from day one</h3>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.625;color:#B4AFA6">Source code, database and infrastructure are set up directly in your own accounts. You keep full control and can move to another team at any time.</p>
+        </article>
+        <article style="display:flex;flex-direction:column;border:1px solid rgba(250,248,244,0.18);border-radius:4px;background:rgba(250,248,244,0.03);padding:clamp(20px,2.5vw,26px)" style-hover="border-color:#8D8880">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;color:#FF4D14">02</span>
+          <h3 style="margin:16px 0 0;font-size:18px;font-weight:500;line-height:1.375;letter-spacing:-0.02em">Fixed estimates, owned cost</h3>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.625;color:#B4AFA6">A fixed price for every agreed stage. If we underestimate the complexity of a task, we absorb the cost of the extra hours.</p>
+        </article>
+        <article style="display:flex;flex-direction:column;border:1px solid rgba(250,248,244,0.18);border-radius:4px;background:rgba(250,248,244,0.03);padding:clamp(20px,2.5vw,26px)" style-hover="border-color:#8D8880">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;color:#FF4D14">03</span>
+          <h3 style="margin:16px 0 0;font-size:18px;font-weight:500;line-height:1.375;letter-spacing:-0.02em">Direct, multilingual communication</h3>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.625;color:#B4AFA6">Technical discussion and clear specs in Romanian, English or Russian. No needless jargon, just fast engineering decisions.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" data-screen-label="06 Questions">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">06</span> / Questions</div>
+    <div style="flex:1 1 560px;min-width:0;display:flex;flex-direction:column;border-bottom:1px solid #E2DED6">
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px);border-top:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0"><h3 style="flex:0 0 240px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">What does a project cost?</h3><p style="flex:1 1 320px;margin:0;max-width:60ch;font-size:16px;color:#6B6862">Most projects start at 6,000 EUR for a working first version and move in stages from there. The written assessment after the diagnostic call always contains a number.</p></div>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px);border-top:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0"><h3 style="flex:0 0 240px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Do you take over someone else's project?</h3><p style="flex:1 1 320px;margin:0;max-width:60ch;font-size:16px;color:#6B6862">Yes, after a paid audit. The audit is a written document: what works, what has to be rewritten, and what it costs to reach production.</p></div>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px);border-top:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0"><h3 style="flex:0 0 240px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">How long does delivery take?</h3><p style="flex:1 1 320px;margin:0;max-width:60ch;font-size:16px;color:#6B6862">A first production version is usually six to twelve weeks, depending on how much of the domain has to be modelled in the database.</p></div>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px);border-top:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0"><h3 style="flex:0 0 240px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">What happens after handover?</h3><p style="flex:1 1 320px;margin:0;max-width:60ch;font-size:16px;color:#6B6862">Thirty days of bug support are included. After that you can keep us on a monthly retainer or run the project with your own team. Both work.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" data-screen-label="07 Contact" style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">07</span> / Contact</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h2 style="margin:0;max-width:22ch;font-size:clamp(28px,4vw,48px);font-weight:600;line-height:1.08;letter-spacing:-0.025em">Tell us what needs to be built.</h2>
+      <p style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:60ch;font-size:clamp(16px,1.4vw,18px);color:#6B6862">A short description of the problem is enough. You get a written answer within one working day, with an honest opinion on whether we are the right studio for it.</p>
+      <div style="margin-top:clamp(28px,3vw,44px);max-width:560px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
+        <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Response time</div><div style="margin-top:8px;font-size:16px;font-weight:500">1 working day</div></div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Hours</div><div style="margin-top:8px;font-size:16px;font-weight:500">09:00 – 18:00 (Chișinău time)</div></div>
+      </div>
+      <div style="margin-top:clamp(28px,3vw,40px);display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px">
+        <button style="border:0;cursor:pointer;border-radius:4px;background:#FF4D14;color:#FAF8F4;padding:14px 22px;font-family:inherit;font-size:15px;font-weight:500" style-hover="background:#0B0B0B">Start a project</button>
+        <sc-if value="{{ formHidden }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ showForm }}" style="border:0;background:transparent;cursor:pointer;padding:0;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862;text-decoration:underline;text-underline-offset:4px" style-hover="color:#0B0B0B">Prefer to write a message?</button>
+        </sc-if>
+      </div>
+      <sc-if value="{{ formShown }}" hint-placeholder-val="{{ false }}">
+        <form style="margin-top:clamp(28px,3vw,40px);max-width:560px;display:flex;flex-direction:column;gap:16px">
+          <label style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Name<input type="text" style="display:block;margin-top:8px;width:100%;border:1px solid #6B6862;border-radius:4px;padding:12px 14px;font-family:'Inter Tight',sans-serif;font-size:16px;background:#FAF8F4;text-transform:none;letter-spacing:0" /></label>
+          <label style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Email<input type="email" style="display:block;margin-top:8px;width:100%;border:1px solid #6B6862;border-radius:4px;padding:12px 14px;font-family:'Inter Tight',sans-serif;font-size:16px;background:#FAF8F4;text-transform:none;letter-spacing:0" /></label>
+          <label style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Company (optional)<input type="text" style="display:block;margin-top:8px;width:100%;border:1px solid #6B6862;border-radius:4px;padding:12px 14px;font-family:'Inter Tight',sans-serif;font-size:16px;background:#FAF8F4;text-transform:none;letter-spacing:0" /></label>
+          <label style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Describe the problem<textarea rows="4" style="display:block;margin-top:8px;width:100%;border:1px solid #6B6862;border-radius:4px;padding:12px 14px;font-family:'Inter Tight',sans-serif;font-size:16px;background:#FAF8F4;text-transform:none;letter-spacing:0"></textarea></label>
+          <label style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Budget<select style="display:block;margin-top:8px;width:100%;border:1px solid #6B6862;border-radius:4px;padding:12px 14px;font-family:'Inter Tight',sans-serif;font-size:16px;background:#FAF8F4;text-transform:none;letter-spacing:0"><option>Choose a range</option><option>under 1,000 EUR</option><option>1,000 – 2,000 EUR</option><option>2,000 – 5,000 EUR</option><option>over 5,000 EUR</option><option>Not sure yet</option></select></label>
+          <label style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">How did you hear about us (optional)<input type="text" style="display:block;margin-top:8px;width:100%;border:1px solid #6B6862;border-radius:4px;padding:12px 14px;font-family:'Inter Tight',sans-serif;font-size:16px;background:#FAF8F4;text-transform:none;letter-spacing:0" /></label>
+          <p style="margin:0;font-size:12px;color:#6B6862">By submitting this form, you agree to our <a href="#" style="color:#0B0B0B;text-decoration:underline">privacy policy</a></p>
+          <button type="button" style="width:fit-content;border:0;cursor:pointer;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:14px 22px;font-family:inherit;font-size:15px;font-weight:500" style-hover="background:#FF4D14">Send</button>
+        </form>
+      </sc-if>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer data-screen-label="Footer" style="border-top:1px solid #E2DED6">
+  <nav style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px 24px;border-bottom:1px solid #E2DED6;padding:20px clamp(20px,5vw,64px);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em">
+    <a href="#" style="color:#6B6862" style-hover="color:#0B0B0B">Website</a>
+    <a href="#" style="color:#6B6862" style-hover="color:#0B0B0B">Web app</a>
+    <a href="#" style="color:#6B6862" style-hover="color:#0B0B0B">WordPress</a>
+    <a href="#" style="color:#6B6862" style-hover="color:#0B0B0B">Shopify</a>
+    <a href="#" style="color:#6B6862" style-hover="color:#0B0B0B">AI automation</a>
+    <a href="#proiecte" style="color:#6B6862" style-hover="color:#0B0B0B">Work</a>
+    <a href="#" style="color:#6B6862" style-hover="color:#0B0B0B">Blog</a>
+    <a href="#" style="color:#6B6862" style-hover="color:#0B0B0B">Privacy</a>
+  </nav>
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;padding:24px clamp(20px,5vw,64px);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+    <span style="display:flex;align-items:center;gap:8px"><img src="assets/codepedia-mark.svg" alt="" style="display:block;height:12px;width:auto;opacity:0.5" />Codepedia SRL · Chișinău, Moldova</span>
+    <span>Full-stack web development · Websites, web apps, WordPress, Shopify</span>
+    <span>Cookie settings</span>
+    <span>© 2026</span>
+  </div>
+</footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const STAGES = [
+  { id: 'E', name: 'EXPRESS PAGE', priceTime: 'Under 1,000 EUR · 2–3 days', whereYouAre: 'You need a modern, fast page to validate an idea, win your first customers or replace an outdated site.', whatYouGet: 'A fast-loading 1–3 page landing site, mobile-optimised, wired straight to Telegram or a form so enquiries reach you from day one.', badges: ['Launch in 2–3 Days', 'Modern Design', 'Mobile-Optimised', 'Form Connected'], cta: 'Launch my page', links: ['Website', 'WordPress', 'Shopify'] },
+  { id: 'B', name: 'CONCEPT TO SPEC', priceTime: 'From 1,000 EUR · ~1 week', whereYouAre: "You have a product or business idea, but it's still theoretical and you need full clarity before investing in development.", whatYouGet: 'A complete execution plan: from user flows and a visual prototype to a clear technical spec, ready to hand to a dev team.', badges: ['AI Prototyping', 'Wireframing', 'Product Scope'], cta: 'Map out my concept', links: [] },
+  { id: 'A', name: 'DESIGN TO CODE', priceTime: 'From 2,000 EUR · 3–6 weeks', whereYouAre: 'Your design is ready in Figma, or your visual assets are prepared, and you want a technical team to turn them into well-built production code.', whatYouGet: 'Your Figma screens built as a working app: front end, Postgres database and the API integrations it needs.', badges: ['Pixel-Perfect', 'Full-Stack Architecture', 'Deploy on Vercel', 'Postgres Schema'], cta: 'Turn my design into code', links: ['Web app'] },
+  { id: 'C', name: 'SCALE & EXTEND', priceTime: 'From 2,000 EUR · 4–8 weeks', whereYouAre: 'You have a live product but need engineering capacity to ship new modules, clear performance bottlenecks or increase delivery speed.', whatYouGet: 'New feature development, code refactoring, database tuning and an architecture ready to scale — with zero downtime.', badges: ['New Features', 'Speed Optimisation', 'Scalable Architecture', 'Incremental Refactor'], cta: 'Scale my product', links: [] },
+  { id: 'D', name: 'AI PROCESS AUTOMATION', priceTime: 'From 5,000 EUR · 6–12 weeks', whereYouAre: 'Your team loses dozens of hours on repetitive tasks, manual data processing or fragmented workflows that slow your growth.', whatYouGet: 'LLM steps wired into the tools you already use (n8n, Make or custom code), plus a dashboard where your team reviews every automated action.', badges: ['Lower Operating Costs', 'Custom AI Integrations', 'Automated Processing', 'Control & Audit'], cta: 'Automate my workflow', links: ['AI automation'] },
+];
+const STACK = [
+  { name: 'Frontend & UI', lead: 'Performance & SEO', body: 'Server-rendered pages with metadata, sitemap and hreflang set up from day one.', tags: ['React', 'Next.js', 'Vue 3', 'Nuxt', 'TypeScript', 'Tailwind CSS'] },
+  { name: 'Backend & Data', lead: 'Solid Infrastructure', body: 'Postgres with row-level security and migrations kept in Git.', tags: ['PostgreSQL', 'Supabase', 'Drizzle ORM', 'Node.js', 'Edge Functions'] },
+  { name: 'Cloud & Infra', lead: 'Automated deploys', body: 'Every commit reaches production through CI, with a CDN and a preview for every change.', tags: ['Vercel', 'Cloudflare', 'Docker', 'GitHub Actions'] },
+  { name: 'AI & Vector Data', lead: 'LLM automation', body: 'Models wired into your workflows, with semantic search over your own data.', tags: ['OpenAI API', 'Anthropic', 'pgvector', 'Streaming'] },
+];
+const TRACKS = [
+  { id: 'fast', tone: 'signal', badge: 'Fast-Track', name: 'Express & Design-to-Code', scope: '2–3 days – 3 weeks', summary: 'For landing pages, Express builds and Figma-to-code. Fast delivery with no redundant steps.', steps: [
+    ['Fast onboarding & setup', 'A 30-minute call or same-day brief alignment. We confirm scope, access and deliverables.'],
+    ['Direct execution', 'We start the build immediately, or translate pixel-perfect from Figma. No intermediate wireframing phase.'],
+    ['Rapid staging', 'A live preview link within 24–48 hours. Feedback on the real build, not a mockup.'],
+    ['Launch & 30-day support', 'Full handover plus 30 days of technical bug fixes after launch.'] ] },
+  { id: 'deep', tone: 'ink', badge: 'Deep Build', name: 'Concept-to-Spec, scale & AI automations', scope: '4–12 weeks', summary: 'For custom apps, refactoring and AI automations. Rigorous architecture and sprints with a demo at every milestone.', steps: [
+    ['Diagnostic & blueprint', 'A 60-minute discovery, risk analysis and a scope specification within 48 hours.'],
+    ['Wireframing & architecture', 'Data models, API contracts and interactive prototypes before the first line of code.'],
+    ['Two-week sprints', 'A staging environment updated bi-weekly, with milestone demos at every iteration.'],
+    ['Handover & 30-day guarantee', 'Repository transfer, documentation, a handover session and 30 days of support.'] ] },
+];
+const PROJECTS = [
+  { tech: 'Web app · Internal management', title: 'Startica, admin app', text: 'Children, groups, attendance, payments, expenses, SMS to parents and an accounting report. Runs across several branches, kept in sync.', img: 'assets/proiecte/startica-app-dashboard-crop.png', href: 'Case Study.dc.html?p=startica-app', cta: 'Read the case study →' },
+  { tech: 'Business website · RO / EN / RU', title: 'Startica, kindergarten in Chișinău', text: 'A three-language site with 5 age groups, 3 programmes, galleries for 11 spaces and an enrolment form.', img: 'https://startica.md/media/filer_public_thumbnails/filer_public/20/a7/20a767a2-71dc-4a4f-af3b-2a1b5a632053/grupa-2.jpeg__880x605_crop_subsampling-2_upscale.webp', href: 'Case Study.dc.html?p=startica-site', cta: 'Read the case study →' },
+  { tech: 'Presentation website · RO / EN', title: 'Aurelia Badiur, oenology consultant', text: 'A personal site for an oenologist trained in Bordeaux and Burgundy: background, the 5-step winemaking process and 1:1 bookings.', img: 'https://aureliabadiur.com/images/hero.jpg', href: 'Case Study.dc.html?p=aurelia-badiur', cta: 'Read the case study →' },
+  { tech: 'Brand · Website · Social media', title: 'EnglishMinds, English school', text: 'Visual identity, a site with groups, method, camps, a level test and demo-lesson booking, plus blog, flyer and Instagram posts.', img: 'assets/proiecte/englishminds-class.jpg', href: 'Case Study.dc.html?p=englishminds', cta: 'Read the case study →' },
+  { tech: 'Inventory website · RO / RU / EN', title: 'SwissCars, cars from Switzerland', text: 'Car inventory managed from an admin panel, detail pages, partner leasing and customer reviews.', img: 'https://krltqxdhxiguxwookqgg.supabase.co/storage/v1/object/public/car-images/cars/ae25eba6-b9ae-4b21-9a3b-85b025e69e21.jpg', href: 'Case Study.dc.html?p=swisscars', cta: 'Read the case study →' },
+  { tech: 'Web app · Nuxt · Supabase', title: 'Bloom Florist, florist operations', text: 'Orders by status, batch stock, suppliers, losses, MAIB and PayNet online payments and margin reports, with admin and seller roles.', img: 'assets/proiecte/bloom-panou-1600.png', href: 'Case Study.dc.html?p=bloom', cta: 'Read the case study →' },
+  { tech: 'Website + tools · EN / RU · USA', title: 'Trucker HQ, truck dispatch', text: 'Flat-rate dispatch, CDL jobs, driver hiring and free carrier checks from FMCSA data.', img: 'assets/proiecte/truckerhq-acasa-1600.png', href: 'Case Study.dc.html?p=truckerhq', cta: 'Read the case study →' },
+];
+const NAV = [
+  { label: 'Services', id: 'servicii' }, { label: 'Stack', id: 'stack' }, { label: 'Process', id: 'proces' },
+  { label: 'Work', id: 'proiecte' }, { label: 'Blog', id: '' }, { label: 'Contact', id: 'contact' },
+];
+const PHRASES = ['Landing Pages', 'Business Websites', 'Product Websites', 'Marketing Websites', 'Web Applications', 'Custom APIs', 'Third-Party Integrations'];
+
+class Component extends DCLogic {
+  state = { stage: 0, track: 'fast', formShown: false, typed: PHRASES[0], wide: true, menuOpen: false, langOpen: false, lang: 'RO', active: '' };
+  componentDidMount() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let i = 0, c = PHRASES[0].length, del = true;
+    const tick = () => {
+      const cur = PHRASES[i];
+      if (del) {
+        c--; this.setState({ typed: cur.slice(0, Math.max(c, 0)) });
+        if (c <= 0) { del = false; i = (i + 1) % PHRASES.length; this.t = setTimeout(tick, 350); return; }
+        this.t = setTimeout(tick, 28);
+      } else {
+        c++; this.setState({ typed: cur.slice(0, c) });
+        if (c >= cur.length) { del = true; this.t = setTimeout(tick, 1500); return; }
+        this.t = setTimeout(tick, 55);
+      }
+    };
+    this.t = setTimeout(tick, 1500);
+  }
+  componentWillUnmount() {
+    clearTimeout(this.t);
+  }
+  renderVals() {
+    const { stage, track, formShown, typed, wide, menuOpen, langOpen, lang, active } = this.state;
+    const tr = TRACKS.find(t => t.id === track);
+    return {
+      isWide: wide, isNarrow: !wide, mobileOpen: !wide && menuOpen, menuOpen, langOpen, langCode: lang,
+      burgerMid: menuOpen ? '#FF4D14' : '#0B0B0B',
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen, langOpen: false })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      toggleLang: () => this.setState(s => ({ langOpen: !s.langOpen })),
+      langs: [['Română', 'RO'], ['English', 'EN']].map(([name, code]) => ({
+        name, code, bg: code === lang ? '#F1EEE7' : 'transparent', weight: code === lang ? 600 : 400,
+        codeColor: code === lang ? '#FF4D14' : '#6B6862',
+        pick: () => this.setState({ lang: code, langOpen: false }),
+      })),
+      navItems: NAV.map((n, i) => ({
+        label: n.label, href: n.id ? '#' + n.id : '#', num: String(i + 1).padStart(2, '0'),
+        color: n.id && n.id === active ? '#0B0B0B' : '#6B6862',
+        bg: n.id && n.id === active ? '#F1EEE7' : 'transparent',
+        numColor: n.id && n.id === active ? '#FF4D14' : '#6B6862',
+        go: () => {}, goClose: () => this.setState({ menuOpen: false }),
+      })),
+      typed,
+      caret: React.createElement('span', { 'aria-hidden': true, style: { display: 'inline-block', width: '0.07em', height: '0.8em', marginLeft: '0.08em', verticalAlign: '-0.06em', background: '#FF4D14', animation: 'caret 1.05s step-end infinite' } }),
+      stages: STAGES.map((s, i) => ({
+        num: String(i + 1).padStart(2, '0'), name: s.name,
+        color: i === stage ? '#0B0B0B' : '#6B6862',
+        dotBorder: i === stage ? '#FF4D14' : '#E2DED6',
+        scale: i === stage ? 1.15 : 1,
+        select: () => this.setState({ stage: i }),
+      })),
+      stage: STAGES[stage],
+      stack: STACK,
+      trackTabs: TRACKS.map(t => ({
+        badge: t.badge,
+        bg: t.id === track ? (t.tone === 'signal' ? '#FF4D14' : '#0B0B0B') : 'transparent',
+        color: t.id === track ? '#FAF8F4' : '#6B6862',
+        select: () => this.setState({ track: t.id }),
+      })),
+      track: {
+        ...tr,
+        scopeBorder: tr.tone === 'signal' ? 'rgba(255,77,20,0.4)' : '#E2DED6',
+        scopeColor: tr.tone === 'signal' ? '#0B0B0B' : '#6B6862',
+        steps: tr.steps.map((s, i) => ({ index: String(i + 1).padStart(2, '0'), title: s[0], body: s[1] })),
+      },
+      projects: PROJECTS,
+      formShown, formHidden: !formShown,
+      showForm: () => this.setState({ formShown: true }),
+    };
+  }
+}
+
+</script>
+</body>
+</html>
