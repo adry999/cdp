@@ -10,6 +10,11 @@ if (!service) {
   throw createError({ statusCode: 404, statusMessage: 'Service not found' })
 }
 
+// Slugs differ per locale (aplicatie-web / web-app) — without this the
+// language switcher and hreflang alternates keep the current slug and 404.
+const setI18nParams = useSetI18nParams()
+setI18nParams({ ro: { slug: service.routeSlug.ro }, en: { slug: service.routeSlug.en } })
+
 const siteUrl = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
 
 useSeoMeta({

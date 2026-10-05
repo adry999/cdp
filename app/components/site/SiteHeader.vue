@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const { locale, t } = useI18n()
-const switchLocalePath = useSwitchLocalePath()
 const localePath = useLocalePath()
 const { setLocaleOverride } = useLocaleOverride()
 const route = useRoute()
@@ -85,8 +84,11 @@ onMounted(() => {
         </div>
 
         <span class="flex items-center gap-1.5">
-          <NuxtLink
-            :to="switchLocalePath('ro')"
+          <!-- SwitchLocalePathLink, not NuxtLink + switchLocalePath(): the header
+               renders before the page sets its localized slug, and only this
+               component's href is rewritten after the page renders on the server. -->
+          <SwitchLocalePathLink
+            locale="ro"
             hreflang="ro"
             lang="ro"
             class="no-underline hover:no-underline"
@@ -95,10 +97,10 @@ onMounted(() => {
             @click="setLocaleOverride('ro')"
           >
             RO
-          </NuxtLink>
+          </SwitchLocalePathLink>
           <span class="text-hairline">|</span>
-          <NuxtLink
-            :to="switchLocalePath('en')"
+          <SwitchLocalePathLink
+            locale="en"
             hreflang="en"
             lang="en"
             class="no-underline hover:no-underline"
@@ -107,7 +109,7 @@ onMounted(() => {
             @click="setLocaleOverride('en')"
           >
             EN
-          </NuxtLink>
+          </SwitchLocalePathLink>
         </span>
 
         <button
