@@ -68,20 +68,19 @@ if (import.meta.client && phrases.length > 1) {
         <SectionLabel number="00" :label="t('home.hero.sectionLabel')" />
       </div>
       <div class="min-w-0 flex-[1_1_560px]">
-        <h1
+        <h1 class="sr-only">{{ phrases[0] }} {{ t('home.hero.titleSuffix') }}</h1>
+        <div
           class="m-0 max-w-[20ch] text-[clamp(34px,6vw,64px)] font-semibold leading-[1.04] tracking-[-0.025em]"
           style="text-wrap: pretty"
+          aria-hidden="true"
         >
-          <span class="sr-only">{{ phrases[0] }} {{ t('home.hero.titleSuffix') }}</span>
-          <span aria-hidden="true">
-            <span class="grid min-h-[2.1em] items-end">
-              <span class="font-mono font-medium tracking-normal"
-                >{{ typed }}<span class="hero-caret bg-signal" aria-hidden="true"
-              /></span>
-            </span>
-            <span class="block">{{ t('home.hero.titleSuffix') }}</span>
+          <span class="grid min-h-[2.1em] items-end">
+            <span class="font-mono font-medium tracking-normal"
+              >{{ typed }}<span class="hero-caret bg-signal" aria-hidden="true"
+            /></span>
           </span>
-        </h1>
+          <span class="block">{{ t('home.hero.titleSuffix') }}</span>
+        </div>
         <p
           class="mt-[clamp(20px,2.6vw,28px)] max-w-[42ch] text-[clamp(20px,2.2vw,26px)] font-medium leading-[1.2] tracking-[-0.02em] text-ink"
           style="text-wrap: pretty"
