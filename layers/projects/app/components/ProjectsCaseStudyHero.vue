@@ -50,7 +50,7 @@ const chips = computed(() => {
         :src="project.caseStudy.heroPath ?? undefined"
         :alt="project.caseStudy.heroAlt"
         :label="project.caseStudy.mainScreenshotLabel"
-        sizes="(min-width: 1280px) 1216px, 100vw"
+        sizes="xs:100vw md:100vw lg:100vw xl:1216px"
         loading="eager"
       />
     </div>

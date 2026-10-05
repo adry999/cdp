@@ -22,7 +22,7 @@ const displayDate = computed(() => formatPostDate(props.post.date, locale.value 
         :src="post.cover"
         :alt="post.title"
         loading="eager"
-        sizes="(min-width: 1024px) 1024px, 100vw"
+        sizes="xs:100vw md:100vw lg:1024px"
         class="mt-8"
       />
     </SiteSection>

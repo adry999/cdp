@@ -79,7 +79,7 @@ useSeoMeta({
           :src="caseStudy.galleryPaths[i] ?? undefined"
           :alt="caseStudy.galleryAlt[i]"
           :label="label"
-          sizes="(min-width: 768px) 33vw, 100vw"
+          sizes="xs:100vw sm:100vw md:50vw xl:640px"
         />
       </div>
       <p

@@ -16,7 +16,7 @@ const localePath = useLocalePath()
       :src="project.coverPath ?? undefined"
       :alt="project.coverAlt"
       :label="project.thumbnailLabel"
-      sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 100vw"
+      sizes="xs:100vw sm:45vw lg:380px"
     />
     <div v-if="showTech" class="mt-4 flex gap-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
       <template v-for="(tech, i) in project.tech" :key="tech">

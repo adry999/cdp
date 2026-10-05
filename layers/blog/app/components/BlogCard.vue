@@ -18,7 +18,7 @@ const displayDate = computed(() => formatPostDate(props.post.date, locale.value 
       :src="post.cover"
       :alt="post.title"
       :label="`[ ${post.title} ]`"
-      sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 100vw"
+      sizes="xs:100vw sm:45vw lg:380px"
     />
     <div class="mt-4 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">{{ displayDate }}</div>
     <h3 class="mb-2 mt-2.5 text-[19px] font-medium tracking-[-0.02em] text-ink">{{ post.title }}</h3>
