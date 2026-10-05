@@ -73,9 +73,15 @@ All `@nuxt/content` queries live in `server/repository/blogRepository.ts`
 
 ## Depends on
 
-`layers/core` only — `PageHero`, `SiteSection`, `MediaFrame`.
+`layers/core` only — `PageHero`, `SiteSection`, `MediaFrame`, `usePageSeo`,
+`useJsonLd`, `useSiteLocale`, `useSiteUrl`, `getSiteUrl`, `escapeXml`,
+`SitemapPage`.
 
 ## Consumed by
 
-Nothing — `app/components/site/SiteHeader.vue` (root) links to the `blog`
-route by name, not by importing anything from this layer.
+- `server/routes/sitemap.xml.ts` — `listBlogSitemapPages` via
+  `#layers/blog/server`.
+- `server/routes/blog/rss.xml.ts`, `server/routes/en/blog/rss.xml.ts` —
+  `buildBlogRss` via `#layers/blog/server`.
+- The root header and footer link to the `blog` route by name, without
+  importing from this layer.

@@ -6,15 +6,20 @@ Cookie consent: the visitor's choice, the banner that records it, the analytics 
 
 - `useCookieConsent()` → `{ consent, showBanner, acceptAll, rejectAll, savePreferences, openSettings }`. `openSettings()` reopens the banner.
 
+## Public API (server) — `server/index.ts`
+
+- `CONSENT_SITEMAP_PAGES` — the privacy page as a `SitemapPage`, for the root sitemap.
+
 ## Depends on
 
-- `core` — `AppButton`.
+- `core` — `AppButton`, `useFocusTrap`, `usePageSeo`, `useSiteLocale`.
 - `content` — `useSiteSettings` (`contactEmail`), used by `app/pages/confidentialitate.vue` to resolve `domain/privacyPolicy.ts`'s `resolvePrivacyPolicy()`.
 
 ## Consumed by
 
 - `app/components/site/SiteFooter.vue` — `openSettings` behind the "Cookie settings" link.
 - `app/layouts/default.vue`, `app/layouts/case-study.vue` — `<ConsentBanner />`.
+- `server/routes/sitemap.xml.ts` — `CONSENT_SITEMAP_PAGES` via `#layers/consent/server`.
 
 ## Routes
 

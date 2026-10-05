@@ -26,9 +26,15 @@ public API of `layers/qualifier`.
 
 ## Public API (server) — `server/index.ts`
 
-- `listPublishedProjectSlugs(event)` — published projects' `slug_ro`/`slug_en`
-  pairs, in `sort_order`. Used by the root sitemap
-  (`server/routes/sitemap.xml.ts`). Delegates to the repository.
+- `listProjectSitemapPages(event)` — published case studies as `SitemapPage`s
+  (with `lastmod`); returns `[]` and warns if the database is unavailable, so
+  the sitemap still lists the static pages.
+- `PROJECTS_INDEX_PAGE` — `/proiecte` as a `SitemapPage`.
+- `listPublishedProjectSlugs(event)`, `PublishedProjectSlugs` — published
+  projects' per-locale slug pairs, in `sort_order`. Delegates to the
+  repository.
+
+The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
 
 ## Server structure
 
@@ -116,7 +122,7 @@ public API of `layers/qualifier`.
 - `domain/projectSelect.ts` also exports `AdminProjectRow` / `AdminProjectListRow`,
   derived from the generated DB types.
 - `domain/storagePath.ts` also exports `MEDIA_BUCKET`, passed to `AdminImageUpload`.
-- `data/projectsRepository.ts` — `fetchProjectCards`, `fetchProject` (public API).
+- `data/projectsRepository.ts` — `fetchProjectCards`, `fetchProject`, behind `usePublishedProjects` and the case-study page.
 - `data/projectsAdminRepository.ts` — `createProjectsAdminRepository(client)`: `list`,
   `getBySlug`, `save`, `reorder`, `remove`, `duplicate`, `removeUnreferencedMedia`.
 - `state/usePublishedProjects.ts`, `state/useProjectsAdminList.ts`,
@@ -132,17 +138,19 @@ public API of `layers/qualifier`.
 - `layers/core` — `pick`, `AdminTopbar`, `AdminField`, `AdminFieldPair`,
   `AdminImageUpload`, `AppButton`, `TechChip`, `SiteSection`, `MediaFrame`,
   `PageHero`, `FactCard`, `SectionLabel`, `useUnsavedChangesGuard`, `useDragReorder`, `moveItem`,
-  `useLocaleOverride`, `ServiceTagId`/`isServiceTagId`/`SERVICE_TAG_IDS`,
-  server utils `logAndThrow`, the generated `Database` types.
+  `useLocaleOverride`, `usePageSeo`, `useJsonLd`, `useSiteLocale`, `useSiteUrl`,
+  `TextLink`, `ToggleChip`, `ServiceTagId`/`isServiceTagId`/`SERVICE_TAG_IDS`,
+  `SitemapPage`, server utils `requireAdmin`, `logAndThrow`, `getSiteUrl`,
+  `toLastmod`, the generated `Database` types.
 - `layers/content` — `useSiteSettings`, for the NDA note on `/proiecte`.
-- `layers/qualifier` — `useQualifierAvailability`, in `ProjectsCaseStudyNext`.
+- `layers/qualifier` — `QualifierCta`, in `ProjectsCaseStudyNext`.
 
 ## Consumed by
 
 - `app/layouts/case-study.vue` — `<ProjectsCaseStudyHeader />`.
-- `layers/home/app/components/HomeWork.vue` — `mapProjectCard`,
-  `selectHomeProjects`, `ProjectCardRow` via `#layers/projects`.
+- `layers/home/app/components/HomeWork.vue` — `usePublishedProjects`,
+  `mapProjectCard`, `selectHomeProjects` via `#layers/projects`.
 - `layers/services/app/components/ServicesRelatedProjects.vue` —
-  `mapProjectCard`, `ProjectCardRow`, `ProjectsCard`.
-- `server/routes/sitemap.xml.ts` — `listPublishedProjectSlugs` via
-  `#layers/projects/server`.
+  `usePublishedProjects`, `mapProjectCard`, `ProjectsCard`.
+- `server/routes/sitemap.xml.ts` — `listProjectSitemapPages`,
+  `PROJECTS_INDEX_PAGE` via `#layers/projects/server`.

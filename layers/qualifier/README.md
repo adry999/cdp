@@ -19,10 +19,15 @@ There is no `server/index.ts`: nothing outside this layer uses its server code.
 ## Components
 
 - `QualifierCta` — the call-to-action other modules place instead of hand-rolling the flag check. Props: `variant` (`ink` | `signal` | `outline`, default `ink`), `stage?: StageId` (preselects the stage), `fallbackHref?` (target when the qualifier is off; defaults to the homepage `#contact` anchor via `localePath('index')`). The default slot is the label; other attrs (class) fall through to the `AppButton`. Auto-imported, like every layer component.
-- `QualifierModal` — dialog shell: focus trap, Escape, scroll lock; mounted once in `app/layouts/default.vue`.
+- `QualifierModal` — dialog shell: focus trap, Escape, scroll lock; mounted by the root layouts `default` and `case-study` while the flag is on.
 - `QualifierStepStage`, `QualifierStepBudget`, `QualifierStepContact`, `QualifierOptionCard` — the three steps and their radio card.
 
 ## Depends on
 
-- `layers/core` — `StageId` / `isStageId`, `CoreStageIcon`, `CoreHoneypotField`, `useFocusTrap`, `AsyncStatus`, `AppError` / `toAppError`, `EMAIL_PATTERN`, `clipText`, `checkRateLimit`, the `qualifier:open` hook contract.
+- `layers/core` — `StageId` / `isStageId`, `CoreHoneypotField`, `useFocusTrap`, `AsyncStatus`, `AppError` / `toAppError`, `EMAIL_PATTERN`, `clipText`, `checkRateLimit`, `notifyBestEffort`, `AppButton`, the `qualifier:open` hook contract.
 - `layers/leads` (server only) — `notifyTeam`, `createLeadRepository`, `LeadRepository`, `LeadRecord` via `#layers/leads/server`, wired in `server/api/contact.post.ts` and `server/services/submitQualification.ts`.
+
+## Consumed by
+
+- `app/layouts/default.vue`, `app/layouts/case-study.vue` — `useQualifierAvailability`, `QualifierModal`.
+- `layers/home` — `QualifierCta`, `useQualifierAvailability`; `layers/projects`, `layers/services` — `QualifierCta`.

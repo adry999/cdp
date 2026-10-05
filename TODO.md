@@ -3,12 +3,6 @@
 Nu inventa niciuna dintre valorile de mai jos. Până sunt furnizate, placeholder-ul
 rămâne vizibil ca placeholder.
 
-## Prețuri (homepage, secțiunea 01)
-
-- [ ] Nivel 01 — Site-uri: `de la [ X ] EUR`
-- [ ] Nivel 02 — Aplicații web: `de la [ X ] EUR`
-      (FAQ-ul spune deja „de la 6.000 EUR" — de confirmat că cele două cifre coincid)
-
 ## Contact
 
 - [ ] Confirmare că `contact@codepedia.md` este adresa corectă
@@ -35,7 +29,7 @@ Așa, `codepedia.md/en/...` funcționează, dar Google indexează doar
 - [ ] `@nuxtjs/i18n`: configurare pe domenii (mai multe domenii per locale, limbă
       implicită per domeniu) — de verificat în documentația versiunii instalate
 - [ ] Tabel unic limbă → domeniu oficial, folosit de canonical, `hreflang` și sitemap
-- [ ] `layers/core/server/middleware/locale-redirect.ts` și `resolveLocale.ts`:
+- [ ] `layers/core/server/middleware/locale-redirect.ts` și `layers/core/shared/utils/resolveLocale.ts`:
       limba implicită vine din domeniu; cookie-ul `codepedia_locale` are prioritate
 - [ ] Sitemap per domeniu, doar cu paginile al căror canonical e acel domeniu
 - [ ] Italiană: `i18n/locales/it.json`, coloane `_it` pentru proiecte (migrare +
@@ -76,14 +70,17 @@ date afișează caseta „De completat". Pentru fiecare proiect:
 ## EN de tradus — indexare
 
 Paginile EN încă netraduse sunt `noindex`, fără alternativă EN în `hreflang` și
-lipsesc din sitemap. Lista e în `layers/core/shared/utils/enPendingTranslation.ts`.
-După traducerea unei pagini, scoate-i calea de acolo.
+lipsesc din sitemap. Fiecare modul declară căile propriilor pagini:
+`layers/content/domain/sitemap.ts`, `layers/leads/domain/sitemap.ts`,
+`layers/services/domain/sitemap.ts`; rădăcina le compune în
+`app/utils/enPendingTranslation.ts`. După traducerea unei pagini, scoate-i calea
+din lista modulului (și `enPending` din `*_SITEMAP_PAGES`).
 
 ## Granturi — EN de tradus
 
 Designul nu are versiune EN pentru granturi; valorile EN sunt textul RO până la traducere.
 
-- [ ] EN de tradus: `layers/services/data/services.ts` și `serviceLinks.ts` — serviciul `granturi`: `name`, `intro`, `audience` (4), `features` (6), `process` (4 × titlu + corp), `seoTitle`
+- [ ] EN de tradus: `layers/services/data/services.ts` și `layers/services/data/serviceLinks.ts` (`name.en`) — serviciul `granturi`: `name`, `intro`, `audience` (4), `features` (6), `process` (4 × titlu + corp), `seoTitle`
 - [ ] EN de tradus: `i18n/locales/en.json` — `home.services.grants.*` (kicker, title, body, steps ×4, cta, contact)
 - [ ] EN de tradus: `i18n/locales/en.json` — `services.hero.audienceLabel` („Pentru”) și `projects.filters.granturi` („Granturi”)
 - [ ] Programe de finanțare numite și proiecte finanțate prin grant: lipsesc, nu se inventează.
@@ -127,7 +124,7 @@ Designul nu are versiune EN; valorile EN sunt textul RO până la traducere (exc
 
 - [ ] EN de tradus: `i18n/locales/en.json` — `pricing.seo.*`, `pricing.sectionLabel`, `pricing.title`, `pricing.intro`, `pricing.stages.*.pricePrefix` și `.time`
 - [ ] EN de tradus: `pricing.included.*`, `pricing.afterLaunch.*` (titlu, 2 abonamente, nota despre garanție)
-- [ ] Prețuri reale (placeholder `[ X ] EUR`): cele 5 carduri de etapă, „de la [ X ] EUR / lună” pentru Mentenanță și Dezvoltare continuă (designul are 300 / 2.000 EUR, marcate demo), cifra din întrebarea „Cât costă un proiect?” (`pricing.faq.items[0]`)
+- [ ] Prețuri reale (placeholder `[ X ] EUR`): cele 5 carduri de etapă, „de la [ X ] EUR / lună” pentru Mentenanță și Dezvoltare continuă (designul are 300 / 2.000 EUR, marcate demo), cifra din întrebarea „Cât costă un proiect?” (`pricing.faq.items[0]`); `layers/content/data/faqs.ts` spune deja „de la 6.000 EUR" — de confirmat că cifrele coincid
 
 ## Pagina /despre — EN de tradus
 
@@ -141,5 +138,5 @@ Hero-ul și principiile refolosesc `home.about.*` (EN existent). Restul nu are E
 Titlul, textul introductiv, formularul și datele de contact refolosesc `home.contact.*`.
 
 - [ ] EN de tradus: `i18n/locales/en.json` — `contactPage.steps` (3 pași)
-- [ ] Telefon / Telegram din design (demo `+373 60 000 000`): nu există în `siteSettings.ts` și nu e afișat; de decis dacă se adaugă
+- [ ] Telefon / Telegram din design (demo `+373 60 000 000`): nu există în `layers/content/data/siteSettings.ts` și nu e afișat; de decis dacă se adaugă
 - [ ] Adresa de email nu apare în markup (decizie existentă); designul folosește `salut@codepedia.md`, repo-ul `contact@codepedia.md` — de confirmat (vezi „Contact”)

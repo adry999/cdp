@@ -15,8 +15,7 @@ there is no `index.ts`.
    qualifier or `#contact`.
 2. `HomeServices` — services timeline (`useServiceStages()`), CTA into the
    qualifier at a given stage.
-3. `HomeStack` — capability grid (`useStackGroups()`), icons via
-   `HomeStackGroupIcon`.
+3. `HomeStack` — capability grid (`useStackGroups()`).
 4. `HomeProcess` — Fast-Track / Deep-Build pipeline toggle
    (`useProcessTracks()`).
 5. `HomeWork` — the featured case studies (`selectHomeProjects`, or the first
@@ -30,24 +29,24 @@ there is no `index.ts`.
 
 ## Components
 
-- `HomeHero`, `HomeServices`, `HomeStack`, `HomeStackGroupIcon`,
-  `HomeProcess`, `HomeWork`, `HomeAbout`, `HomeFaq`, `HomeContact` — the
-  sections above, each `SiteSection`-framed except the hero.
+- `HomeHero`, `HomeServices`, `HomeStack`, `HomeProcess`, `HomeWork`,
+  `HomeAbout`, `HomeFaq`, `HomeContact` — the sections above, each
+  `SiteSection`-framed (the hero too, without a top border).
 
 ## Depends on
 
-- `layers/core` — `SiteSection`, `SectionLabel`, `FactCard`, `TableRow`,
-  `TechChip`, `AppButton`, `MediaFrame`, `CoreStageIcon`, `StageId`, the
-  `qualifier:open` hook contract.
+- `layers/core` — `SiteSection`, `FactCard`, `TableRow`, `TechChip`,
+  `AppButton`, `TextLink`, `FaqList`, `usePageSeo`, `useI18nList`,
+  `useSiteLocale`, `pick`, `StageId`, the `qualifier:open` hook contract
+  (`HomeServices` calls it directly).
 - `layers/content` — `useFaqs`, `useSiteSettings`, `useServiceStages`,
-  `useStackGroups`, `useProcessTracks`, `useAboutPillars`, `StackIconName`,
-  `ProcessTrackId`.
-- `layers/projects` — `mapProjectCard`, `selectHomeProjects`, `ProjectCardRow`,
-  `ProjectsCard`, in `HomeWork`.
-- `layers/qualifier` — `useQualifierAvailability`, in every section with a
-  qualifier CTA.
+  `useStackGroups`, `useProcessTracks`, `useAboutPillars`, `ProcessTrackId`.
+- `layers/projects` — `usePublishedProjects`, `mapProjectCard`,
+  `selectHomeProjects`, `ProjectsCard`, in `HomeWork`.
+- `layers/qualifier` — `QualifierCta` (`HomeHero`, `HomeContact`),
+  `useQualifierAvailability` (`HomeServices`, `HomeContact`).
 - `layers/leads` — `LeadsContactForm`, in `HomeContact`.
-- `layers/services` — `SERVICES` data, in `HomeServices` (links each timeline
+- `layers/services` — `SERVICE_LINKS`, in `HomeServices` (links each timeline
   stage to the matching `/servicii/[slug]` page(s), by `qualifierStage`).
 
 ## Consumed by

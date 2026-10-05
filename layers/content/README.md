@@ -13,7 +13,7 @@ process tracks and about pillars — each joining structural defs here with
 - **Site settings** — `data/siteSettings.ts`. Edit the `SITE_SETTINGS` object;
   both `ro` and `en` are required for every localized field. Only the fields
   the public site actually reads are modelled — see `domain/siteSettings.ts`.
-- **Services / stack / process / about** — order, icons and tone live in
+- **Services / stack / process / about** — order and tone live in
   `domain/{services,stack,process,about}.ts`; all copy lives in
   `i18n/locales/{ro,en}.json` under `home.services`, `home.stack`,
   `home.process`, `home.about`.
@@ -37,10 +37,16 @@ the public site.
   `useAboutPillars()` — join the structural defs in `domain/` with their
   `home.*` i18n copy.
 - `Faq`, `LocalizedText`, `SiteSettings`, `ServiceStageDef`, `ServiceStage`,
-  `StackGroupId`, `StackIconName`, `StackGroupDef`, `StackGroup`,
-  `ProcessTrackId`, `ProcessTrackTone`, `ProcessTrackDef`, `ProcessStep`,
-  `ProcessTrack`, `AboutPillarId`, `AboutPillarDef`, `AboutPillar` — domain
-  types.
+  `StackGroupId`, `StackGroup`, `ProcessTrackId`, `ProcessTrackTone`,
+  `ProcessTrackDef`, `ProcessStep`, `ProcessTrack`, `AboutPillarId`,
+  `AboutPillar` — domain types.
+- `CONTENT_EN_PENDING_PATHS` — RO paths of this layer's pages whose EN copy is
+  still Romanian; composed by the root `app/utils/enPendingTranslation.ts`.
+
+## Public API (server) — `server/index.ts`
+
+- `CONTENT_SITEMAP_PAGES` — `/despre` and `/preturi` as `SitemapPage`s, for the
+  root sitemap.
 
 ## Routes
 
@@ -56,7 +62,9 @@ Route names `preturi` and `despre` are mapped to localized paths in `nuxt.config
 ## Depends on
 
 - `layers/core` — `pick`, `EMAIL_PATTERN`, the service-stage vocabulary
-  (`STAGE_ORDER`, `StageId`).
+  (`STAGE_ORDER`, `StageId`), `usePageSeo`, `useI18nList`, `SitemapPage`,
+  `SiteSection`, `PageHero`, `FactCard`, `FaqList`, `RowList`, `RowListItem`,
+  `MediaFrame`, `AppButton`.
 
 ## Consumed by
 
@@ -66,5 +74,10 @@ Route names `preturi` and `despre` are mapped to localized paths in `nuxt.config
   `app/components/site/SiteFooter.vue` — `useSiteSettings()`.
 - `layers/home/app/components/HomeServices.vue`, `HomeStack.vue`,
   `HomeProcess.vue`, `HomeAbout.vue` — the structural composables.
-- `layers/home/app/components/HomeStackGroupIcon.vue` — the `StackIconName`
-  type.
+- `layers/leads/app/pages/contact.vue`,
+  `layers/consent/app/pages/confidentialitate.vue`,
+  `layers/projects/app/pages/proiecte/index.vue` — `useSiteSettings()`.
+- `layers/services/app/components/ServicesIndexStages.vue` —
+  `useServiceStages()`.
+- `app/utils/enPendingTranslation.ts` — `CONTENT_EN_PENDING_PATHS`;
+  `server/routes/sitemap.xml.ts` — `CONTENT_SITEMAP_PAGES`.

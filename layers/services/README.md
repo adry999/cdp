@@ -19,12 +19,18 @@ case studies), `layers/content` (stage copy) and `layers/qualifier` (the qualifi
   — the two differ for `web-app` (`aplicatie-web` in RO) and `ai-automation`
   (`automatizare-ai` in RO).
 
+## Public API (client) — `index.ts`
+
+- `SERVICE_LINKS`, `ServiceLink` — slug, `routeSlug`, name and `qualifierStage` of
+  each service, without the page copy, so the footer and the homepage timeline
+  can link to `/servicii/[slug]` without loading `SERVICES`.
+- `SERVICES_EN_PENDING_PATHS` — RO paths whose EN copy is still Romanian;
+  composed by the root `app/utils/enPendingTranslation.ts`.
+
 ## Public API (server) — `server/index.ts`
 
-- `SERVICES` — re-exported so a dependent layer can read the data (e.g. to
-  link into `/servicii/[slug]`) without reaching past this layer's boundary
-  via `#layers/services/data/services`. There is no root `index.ts`; this
-  layer has no client-only export to offer yet.
+- `SERVICES_INDEX_PAGE`, `SERVICE_SITEMAP_PAGES` — the index and the six service
+  pages as `SitemapPage`s, for the root sitemap.
 
 ## Routes
 
@@ -38,8 +44,6 @@ case studies), `layers/content` (stage copy) and `layers/qualifier` (the qualifi
   `app/pages/servicii/[slug].vue`, matched against `routeSlug`, not the
   canonical `ServiceTagId`. Unknown slug → 404, same pattern as
   `layers/projects/app/pages/proiecte/[slug].vue`.
-- `server/routes/sitemap.xml.ts` lists the index (×2 locales) and the 6×2 static service URLs alongside
-  the project rows it already lists.
 
 ## Components
 
@@ -47,7 +51,7 @@ case studies), `layers/content` (stage copy) and `layers/qualifier` (the qualifi
   `PageHero` (shared with the `/proiecte` index).
 - `ServicesFeatures` — the `features` list.
 - `ServicesProcess` — the `process` steps, numbered.
-- `ServicesRelatedProjects` — fetches `GET /api/projects` and filters
+- `ServicesRelatedProjects` — reads `usePublishedProjects()` and filters
   client-side by `service_tag`; renders nothing when there are no matches.
   Renders `projects`' `ProjectsCard` with `show-tech="false"`.
 - `ServicesIndexStages` — one `SiteSection` per stage on the index; CTA opens the
@@ -60,16 +64,18 @@ case studies), `layers/content` (stage copy) and `layers/qualifier` (the qualifi
 
 ## Depends on
 
-- `layers/core` — `pick`, `SiteSection`, `SectionLabel`, `AppButton`,
-  `MediaFrame`, `PageHero`, `TechChip`.
+- `layers/core` — `pick`, `SiteSection`, `PageHero`, `RowList`, `RowListItem`,
+  `TechChip`, `usePageSeo`, `useJsonLd`, `useSiteLocale`, `useSiteUrl`,
+  `breadcrumbList`, `organizationRef`, `SitemapPage`, `isEnPendingPath`.
 - `layers/content` — `useServiceStages` (stage copy shared with the homepage timeline).
-- `layers/projects` — `mapProjectCard`, `ProjectCardRow`, `ProjectsCard` for
+- `layers/projects` — `usePublishedProjects`, `mapProjectCard`, `ProjectsCard` for
   the related-case-studies section.
-- `layers/qualifier` — `useQualifierAvailability`, the `qualifier:open` hook.
+- `layers/qualifier` — `QualifierCta` (`ServicesCta`, `ServicesIndexStages`, `ServicesIndexCta`).
 
 ## Consumed by
 
-`layers/home` — `HomeServices` reads `SERVICES` to link each growth-timeline
-stage to the service page(s) sharing its `qualifierStage`. `app/components/site/SiteFooter.vue`
-(root) does the same to list all six service pages in the footer nav. The
-pages themselves stay terminal — nothing imports the page components.
+- `layers/home` — `HomeServices` reads `SERVICE_LINKS` to link each growth-timeline
+  stage to the service page(s) sharing its `qualifierStage`.
+- `app/components/site/SiteFooter.vue` (root) — `SERVICE_LINKS`, for the footer nav.
+- `app/utils/enPendingTranslation.ts` — `SERVICES_EN_PENDING_PATHS`;
+  `server/routes/sitemap.xml.ts` — `SERVICES_INDEX_PAGE`, `SERVICE_SITEMAP_PAGES`.
