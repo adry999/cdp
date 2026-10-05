@@ -228,17 +228,16 @@ async function duplicate(slug: string) {
 
     <div class="flex-1 px-6 py-6">
       <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <div class="flex gap-2 font-mono text-xs uppercase tracking-[0.08em]">
-          <button
+        <div class="flex gap-2">
+          <ToggleChip
             v-for="opt in (['toate', 'draft', 'publicate'] as const)"
             :key="opt"
-            type="button"
-            class="cursor-pointer rounded border px-3 py-1.5"
-            :class="filter === opt ? 'border-ink bg-ink text-paper' : 'border-hairline text-muted hover:border-ink hover:text-ink'"
+            size="admin"
+            :pressed="filter === opt"
             @click="filter = opt"
           >
             {{ opt }}
-          </button>
+          </ToggleChip>
         </div>
         <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
           Pe homepage: {{ featuredCount }}

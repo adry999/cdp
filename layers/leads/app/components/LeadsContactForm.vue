@@ -122,26 +122,18 @@ watch(status, (value) => {
         {{ t('home.contact.form.stage') }}
       </div>
       <div class="mt-2 flex flex-wrap gap-1.5">
-        <button
+        <ToggleChip
           v-for="stage in STAGE_ORDER"
           :key="stage"
-          type="button"
-          :aria-pressed="form.stage === stage"
-          class="cursor-pointer rounded border px-2.5 py-[7px] font-mono text-[11px] uppercase tracking-[0.06em] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
-          :class="form.stage === stage ? 'border-ink bg-ink text-paper' : 'border-hairline text-muted'"
+          size="form"
+          :pressed="form.stage === stage"
           @click="toggleStage(stage)"
         >
           {{ t(`home.contact.form.stageOptions.${stage}`) }}
-        </button>
-        <button
-          type="button"
-          :aria-pressed="form.stage === undefined"
-          class="cursor-pointer rounded border px-2.5 py-[7px] font-mono text-[11px] uppercase tracking-[0.06em] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
-          :class="form.stage === undefined ? 'border-ink bg-ink text-paper' : 'border-hairline text-muted'"
-          @click="form.stage = undefined"
-        >
+        </ToggleChip>
+        <ToggleChip size="form" :pressed="form.stage === undefined" @click="form.stage = undefined">
           {{ t('home.contact.form.stageOptions.unsure') }}
-        </button>
+        </ToggleChip>
       </div>
     </div>
 

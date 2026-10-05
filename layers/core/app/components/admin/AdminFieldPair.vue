@@ -13,10 +13,16 @@ const fieldClass =
 // aria-labelledby combines the shared group heading with each column's RO/EN label into
 // one accessible name ("Titlu RO") without changing what's visually shown.
 const groupId = useId()
-const roLabelId = useId()
-const enLabelId = useId()
-const roFieldId = useId()
-const enFieldId = useId()
+const models = { ro, en }
+const columns = (['ro', 'en'] as const).map(lang => ({
+  lang,
+  labelId: useId(),
+  fieldId: useId(),
+}))
+
+function update(lang: 'ro' | 'en', event: Event) {
+  models[lang].value = (event.target as HTMLInputElement | HTMLTextAreaElement).value
+}
 </script>
 
 <template>
@@ -25,42 +31,25 @@ const enFieldId = useId()
       {{ label }}<span v-if="required" class="text-signal"> *</span>
     </div>
     <div class="mt-2 grid grid-cols-2 gap-3">
-      <div>
-        <label :id="roLabelId" :for="roFieldId" class="mb-1 block font-mono text-[11px] uppercase tracking-[0.08em] text-muted">RO</label>
+      <div v-for="col in columns" :key="col.lang">
+        <label :id="col.labelId" :for="col.fieldId" class="mb-1 block font-mono text-[11px] uppercase tracking-[0.08em] text-muted">{{ col.lang.toUpperCase() }}</label>
         <textarea
           v-if="textarea"
-          :id="roFieldId"
-          v-model="ro"
+          :id="col.fieldId"
+          :value="models[col.lang].value"
           rows="3"
-          :aria-labelledby="`${groupId} ${roLabelId}`"
+          :aria-labelledby="`${groupId} ${col.labelId}`"
           :class="fieldClass"
+          @input="update(col.lang, $event)"
         />
         <input
           v-else
-          :id="roFieldId"
-          v-model="ro"
+          :id="col.fieldId"
+          :value="models[col.lang].value"
           type="text"
-          :aria-labelledby="`${groupId} ${roLabelId}`"
+          :aria-labelledby="`${groupId} ${col.labelId}`"
           :class="fieldClass"
-        >
-      </div>
-      <div>
-        <label :id="enLabelId" :for="enFieldId" class="mb-1 block font-mono text-[11px] uppercase tracking-[0.08em] text-muted">EN</label>
-        <textarea
-          v-if="textarea"
-          :id="enFieldId"
-          v-model="en"
-          rows="3"
-          :aria-labelledby="`${groupId} ${enLabelId}`"
-          :class="fieldClass"
-        />
-        <input
-          v-else
-          :id="enFieldId"
-          v-model="en"
-          type="text"
-          :aria-labelledby="`${groupId} ${enLabelId}`"
-          :class="fieldClass"
+          @input="update(col.lang, $event)"
         >
       </div>
     </div>

@@ -95,31 +95,20 @@ const NOTES_STATE_LABELS = {
         <section class="rounded border border-hairline p-6">
           <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Stare</div>
           <div class="mt-3 flex flex-wrap gap-2">
-            <button
+            <ToggleChip
               v-for="status in LEAD_STATUSES"
               :key="status"
-              type="button"
-              class="cursor-pointer rounded border px-3 py-1.5 font-mono text-xs uppercase tracking-[0.08em]"
-              :class="
-                lead.status === status
-                  ? 'border-ink bg-ink text-paper'
-                  : 'border-hairline text-muted hover:border-ink hover:text-ink'
-              "
+              size="admin"
+              :pressed="lead.status === status"
               @click="updateStatus(status)"
             >
               {{ leadStatusLabel(status) }}
-            </button>
+            </ToggleChip>
           </div>
         </section>
 
         <section class="rounded border border-hairline p-6">
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Note interne</div>
-          <textarea
-            v-model="notes"
-            rows="4"
-            class="mt-3 w-full rounded border border-hairline px-3.5 py-3 text-base outline-none focus:border-ink"
-            @blur="saveNotes(notes)"
-          />
+          <AdminField v-model="notes" label="Note interne" as="textarea" rows="4" @blur="saveNotes(notes)" />
           <p
             aria-live="polite"
             class="mt-1 font-mono text-[11px] uppercase tracking-[0.08em]"
