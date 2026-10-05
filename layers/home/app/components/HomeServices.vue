@@ -8,7 +8,7 @@ import { SERVICE_LINKS } from '#layers/services'
 // The connector line is drawn with CSS transforms rather than an SVG-path library —
 // the project ships no animation dependency.
 
-const { t, locale } = useI18n()
+const { t, tm, rt, locale } = useI18n()
 const localePath = useLocalePath()
 const nuxtApp = useNuxtApp()
 const { isQualifierEnabled } = useQualifierAvailability()
@@ -20,6 +20,12 @@ const activeStage = computed(() => stages.value[active.value]!)
 function relatedServicesFor(stageId: StageId) {
   return SERVICE_LINKS.filter((service) => service.qualifierStage === stageId)
 }
+// The grants block links to the service page it summarises.
+const grantsService = SERVICE_LINKS.find((service) => service.slug === 'granturi')
+const grantsHref = computed(() =>
+  grantsService ? localePath({ name: 'servicii-slug', params: { slug: grantsService.routeSlug[locale.value] } }) : undefined,
+)
+const grantSteps = computed(() => (tm('home.services.grants.steps') as unknown[]).map((step) => rt(step as string)))
 const mounted = ref(false)
 const drawn = ref(false)
 
@@ -202,6 +208,30 @@ onMounted(() => {
     </div>
 
     <p class="mb-0 mt-5 font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ t('home.services.note') }}</p>
+
+    <div class="mt-[clamp(32px,4vw,48px)] flex flex-col gap-4 rounded border border-hairline bg-hatch p-[clamp(20px,2.5vw,28px)]">
+      <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">
+        <span aria-hidden="true" class="text-signal">●</span> {{ t('home.services.grants.kicker') }}
+      </span>
+      <h3 class="m-0 max-w-[30ch] text-[clamp(20px,2.4vw,26px)] font-medium leading-[1.2] tracking-[-0.02em]" style="text-wrap: pretty">
+        {{ t('home.services.grants.title') }}
+      </h3>
+      <p class="m-0 max-w-[62ch] text-base text-muted" style="text-wrap: pretty">{{ t('home.services.grants.body') }}</p>
+      <ul class="m-0 flex list-none flex-wrap gap-2 p-0">
+        <li v-for="(step, i) in grantSteps" :key="i">
+          <TechChip class="bg-paper">{{ String(i + 1).padStart(2, '0') }} {{ step }}</TechChip>
+        </li>
+      </ul>
+      <div class="mt-1 flex flex-wrap items-center gap-5">
+        <AppButton variant="ink" :href="grantsHref">{{ t('home.services.grants.cta') }}</AppButton>
+        <NuxtLink
+          :to="`${localePath('index')}#contact`"
+          class="font-mono text-xs uppercase tracking-[0.08em] text-muted hover:text-signal"
+        >
+          {{ t('home.services.grants.contact') }}
+        </NuxtLink>
+      </div>
+    </div>
   </SiteSection>
 </template>
 

@@ -1,13 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import type { LocalizedText } from '#layers/core/shared/types/localizedText'
+import { SERVICE_TAG_IDS } from '#layers/core/shared/types/service-tag'
+import type { Service } from '#layers/services/domain/service'
 import { STAGE_IDS } from '#layers/core/shared/types/service-stage'
 import { SERVICES } from './services'
 
 function allLocalizedTexts(): LocalizedText[] {
   const texts: LocalizedText[] = []
-  for (const service of SERVICES) {
+  for (const service of SERVICES as readonly Service[]) {
     texts.push(service.name)
     texts.push(service.intro)
+    texts.push(...(service.audience ?? []))
     texts.push(...service.features)
     for (const step of service.process) {
       texts.push(step.title)
@@ -18,8 +21,19 @@ function allLocalizedTexts(): LocalizedText[] {
 }
 
 describe('services data', () => {
-  it('has exactly 5 services', () => {
-    expect(SERVICES.length).toBe(5)
+  it('has exactly 6 services', () => {
+    expect(SERVICES.length).toBe(6)
+  })
+
+  it('has one service per service tag', () => {
+    expect(SERVICES.map((s) => s.slug).sort()).toEqual([...SERVICE_TAG_IDS].sort())
+  })
+
+  it('gives the grants service 4 process steps and an audience', () => {
+    const grants = (SERVICES as readonly Service[]).find((s) => s.slug === 'granturi')
+    expect(grants?.routeSlug).toEqual({ ro: 'granturi', en: 'grants' })
+    expect(grants?.process.length).toBe(4)
+    expect(grants?.audience?.length).toBeGreaterThan(0)
   })
 
   it('has unique slugs', () => {

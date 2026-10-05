@@ -1,6 +1,6 @@
 # layers/services
 
-Five SEO landing pages, one per service offering — code-only content, no admin
+Six SEO landing pages, one per service offering — code-only content, no admin
 editor, no database table. Depends on `layers/core`, `layers/projects` (related
 case studies) and `layers/qualifier` (the qualification CTA).
 
@@ -32,7 +32,7 @@ case studies) and `layers/qualifier` (the qualification CTA).
   `app/pages/servicii/[slug].vue`, matched against `routeSlug`, not the
   canonical `ServiceTagId`. Unknown slug → 404, same pattern as
   `layers/projects/app/pages/proiecte/[slug].vue`.
-- `server/routes/sitemap.xml.ts` lists the 5×2 static service URLs alongside
+- `server/routes/sitemap.xml.ts` lists the 6×2 static service URLs alongside
   the project rows it already lists.
 
 ## Components
@@ -60,5 +60,5 @@ case studies) and `layers/qualifier` (the qualification CTA).
 
 `layers/home` — `HomeServices` reads `SERVICES` to link each growth-timeline
 stage to the service page(s) sharing its `qualifierStage`. `app/components/site/SiteFooter.vue`
-(root) does the same to list all five service pages in the footer nav. The
+(root) does the same to list all six service pages in the footer nav. The
 pages themselves stay terminal — nothing imports the page components.

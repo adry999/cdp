@@ -261,4 +261,104 @@ export const SERVICES = [
     priceFrom: null,
     qualifierStage: 'D',
   },
+  {
+    slug: 'granturi',
+    routeSlug: { ro: 'granturi', en: 'grants' },
+    name: {
+      ro: 'Proiecte finanțate prin granturi',
+      en: 'Proiecte finanțate prin granturi',
+    },
+    intro: {
+      ro: 'Ai câștigat un grant european sau ODA și trebuie să livrezi o aplicație la termen? Construim partea tehnică a proiectului și pregătim documentele de care ai nevoie la raportare.',
+      en: 'Ai câștigat un grant european sau ODA și trebuie să livrezi o aplicație la termen? Construim partea tehnică a proiectului și pregătim documentele de care ai nevoie la raportare.',
+    },
+    audience: [
+      {
+        ro: 'Startup-uri și IMM-uri',
+        en: 'Startup-uri și IMM-uri',
+      },
+      {
+        ro: 'ONG-uri',
+        en: 'ONG-uri',
+      },
+      {
+        ro: 'Instituții publice și primării',
+        en: 'Instituții publice și primării',
+      },
+      {
+        ro: 'Asociații de afaceri',
+        en: 'Asociații de afaceri',
+      },
+    ],
+    features: [
+      {
+        ro: 'Calendar de livrare aliniat la termenele din contractul de finanțare, cu etape și act de predare-primire pentru fiecare.',
+        en: 'Calendar de livrare aliniat la termenele din contractul de finanțare, cu etape și act de predare-primire pentru fiecare.',
+      },
+      {
+        ro: 'Documente conforme cerințelor finanțatorului: facturi, specificație tehnică, acte de predare și documentație de utilizare.',
+        en: 'Documente conforme cerințelor finanțatorului: facturi, specificație tehnică, acte de predare și documentație de utilizare.',
+      },
+      {
+        ro: 'Ofertă detaliată pentru procedura de achiziție, structurată pe liniile din bugetul proiectului.',
+        en: 'Ofertă detaliată pentru procedura de achiziție, structurată pe liniile din bugetul proiectului.',
+      },
+      {
+        ro: 'Dovezi pentru raportare: capturi de ecran, statistici de utilizare și acces pentru evaluatori.',
+        en: 'Dovezi pentru raportare: capturi de ecran, statistici de utilizare și acces pentru evaluatori.',
+      },
+      {
+        ro: 'Plan de sustenabilitate: găzduire, mentenanță și costuri estimate după încheierea finanțării.',
+        en: 'Plan de sustenabilitate: găzduire, mentenanță și costuri estimate după încheierea finanțării.',
+      },
+      {
+        ro: 'Echipă tehnică completă pe durata proiectului, fără angajări interne.',
+        en: 'Echipă tehnică completă pe durata proiectului, fără angajări interne.',
+      },
+    ],
+    process: [
+      {
+        title: {
+          ro: 'Înainte de aplicare',
+          en: 'Înainte de aplicare',
+        },
+        body: {
+          ro: 'Scriem specificația tehnică și estimăm bugetul IT pentru cererea de finanțare.',
+          en: 'Scriem specificația tehnică și estimăm bugetul IT pentru cererea de finanțare.',
+        },
+      },
+      {
+        title: {
+          ro: 'Implementare',
+          en: 'Implementare',
+        },
+        body: {
+          ro: 'Livrăm pe etapele din contract, cu o versiune live și un act de predare la fiecare etapă.',
+          en: 'Livrăm pe etapele din contract, cu o versiune live și un act de predare la fiecare etapă.',
+        },
+      },
+      {
+        title: {
+          ro: 'Raportare și audit',
+          en: 'Raportare și audit',
+        },
+        body: {
+          ro: 'Pregătim documentele tehnice, capturile și statisticile cerute în rapoartele intermediare și finale.',
+          en: 'Pregătim documentele tehnice, capturile și statisticile cerute în rapoartele intermediare și finale.',
+        },
+      },
+      {
+        title: {
+          ro: 'După grant',
+          en: 'După grant',
+        },
+        body: {
+          ro: 'Preluăm găzduirea și mentenanța, ca aplicația să funcționeze pe toată perioada de sustenabilitate cerută de finanțator.',
+          en: 'Preluăm găzduirea și mentenanța, ca aplicația să funcționeze pe toată perioada de sustenabilitate cerută de finanțator.',
+        },
+      },
+    ],
+    priceFrom: null,
+    qualifierStage: 'A',
+  },
 ] as const satisfies readonly Service[]

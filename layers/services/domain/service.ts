@@ -16,6 +16,8 @@ export interface Service {
   routeSlug: LocalizedText
   name: LocalizedText
   intro: LocalizedText
+  /** Who the service is for; rendered as "Pentru" chips in the hero. Optional — most services omit it. */
+  audience?: LocalizedText[]
   features: LocalizedText[]
   process: ServiceProcessStep[]
   priceFrom: string | null

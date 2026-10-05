@@ -98,7 +98,7 @@
             "layers/home/app/components/HomeServices.vue",
             "i18n/locales/ro.json"
           ],
-          "status": "de_implementat"
+          "status": "de_verificat"
         }
       ]
     },
@@ -161,7 +161,7 @@
             "layers/services/data/serviceLinks.ts",
             "ServiceTagId"
           ],
-          "status": "de_implementat",
+          "status": "de_verificat",
           "note": "Serviciu nou: 4 pași, câmp nou „audience”."
         }
       ]

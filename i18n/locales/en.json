@@ -68,6 +68,19 @@
       "title": "Where do you want to start? See each stage.",
       "intro": "Five stages, from a fast one-page launch to custom AI engineering. Pick where you are now — that's where we begin.",
       "note": "Some projects are under NDA. Detailed references available on the diagnostic call.",
+      "grants": {
+        "kicker": "Proiecte finanțate prin granturi",
+        "title": "Ai câștigat un grant european sau ODA? Livrăm aplicația din proiect, la termenele din contract.",
+        "body": "Lucrăm cu startup-uri, IMM-uri, ONG-uri, instituții publice și asociații de afaceri. Intrăm în proiect în orice etapă, de la cererea de finanțare până după încheierea ei.",
+        "steps": [
+          "Înainte de aplicare",
+          "Implementare",
+          "Raportare și audit",
+          "După grant"
+        ],
+        "cta": "Cum lucrăm pe granturi",
+        "contact": "Discută proiectul →"
+      },
       "stageWord": "Stage",
       "whereYouAreLabel": "Where you are",
       "whatYouGetLabel": "What you get",
@@ -418,13 +431,17 @@
       "web-app": "Web apps",
       "wordpress": "WordPress",
       "shopify": "Shopify",
-      "ai-automation": "AI automation"
+      "ai-automation": "AI automation",
+      "granturi": "Granturi"
     },
     "empty": "No published case studies yet."
   },
   "services": {
     "features": {
       "heading": "What's included"
+    },
+    "hero": {
+      "audienceLabel": "Pentru"
     }
   },
   "blog": {

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 /** The hero of a top-level page below the homepage: a section label in the
  * 160px column, a large h1 and an intro paragraph — first used by the
- * service pages, now shared with the portfolio index. */
+ * service pages, now shared with the portfolio index. The default slot
+ * renders below the intro (used for the grants audience chips). */
 defineProps<{
   number: string
   label: string
@@ -28,6 +29,7 @@ defineProps<{
         <p class="mt-[clamp(20px,2.6vw,28px)] max-w-[62ch] text-[clamp(16px,1.4vw,18px)] text-muted">
           {{ intro }}
         </p>
+        <slot />
       </div>
     </div>
   </section>
