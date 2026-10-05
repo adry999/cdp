@@ -73,6 +73,12 @@ date afișează caseta „De completat". Pentru fiecare proiect:
 - [ ] SwissCars: pe site-ul live apar încă mesajele „Telefon lipsește” și
       „Adresa lipsește” — de verificat cu clientul
 
+## EN de tradus — indexare
+
+Paginile EN încă netraduse sunt `noindex`, fără alternativă EN în `hreflang` și
+lipsesc din sitemap. Lista e în `layers/core/shared/utils/enPendingTranslation.ts`.
+După traducerea unei pagini, scoate-i calea de acolo.
+
 ## Granturi — EN de tradus
 
 Designul nu are versiune EN pentru granturi; valorile EN sunt textul RO până la traducere.
