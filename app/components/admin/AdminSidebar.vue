@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useNewLeadsCount } from '#layers/leads'
+
 const route = useRoute()
+const { count: newLeadsCount } = useNewLeadsCount()
 
 const navItems = [
   { label: 'Proiecte', to: '/admin/projects' },
@@ -31,6 +34,7 @@ function isActive(to: string) {
         "
       >
         {{ item.label }}
+        <span v-if="item.to === '/admin/leads' && newLeadsCount" class="ml-2 text-signal">{{ newLeadsCount }}</span>
       </NuxtLink>
     </nav>
   </aside>

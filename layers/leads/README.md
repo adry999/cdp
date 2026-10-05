@@ -5,6 +5,7 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 ## Public API (client) — `index.ts`
 
 - `useLeadSubmission()` → `{ status: AsyncStatus, fieldErrors, error: AppError | null, submit(submission) }`.
+- `useNewLeadsCount()` → `{ count: Ref<number | null> }` — active leads with `status = 'nou'` (head-only count, refetched on route change; `null` on error). Used by the admin sidebar badge.
 - `ContactSubmission`, `ContactFieldErrors` — domain types for a compatible submission.
 
 ## Public API (server) — `server/index.ts`
@@ -28,4 +29,5 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 ## Consumed by
 
 - `layers/home/app/components/HomeContact.vue` — `<LeadsContactForm />`.
+- `app/components/admin/AdminSidebar.vue` — `useNewLeadsCount` for the "Solicitări" badge.
 - `layers/qualifier` — `notifyTeam`, `createLeadRepository`, `LeadRepository`, `LeadRecord` via `#layers/leads/server`, in `server/services/submitQualification.ts` and `server/api/contact.post.ts`.

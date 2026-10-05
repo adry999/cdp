@@ -321,8 +321,8 @@
             "layers/leads/app/pages/admin/leads/index.vue",
             "app/components/admin/AdminSidebar.vue"
           ],
-          "status": "de_implementat",
-          "note": "Lista există; badge-ul lipsește."
+          "status": "de_verificat",
+          "note": "Badge „nou” în sidebar implementat."
         },
         {
           "id": "adm-lead",
@@ -331,8 +331,8 @@
             "layers/leads/app/pages/admin/leads/[id].vue",
             "layers/core/app/components/admin/AdminTopbar.vue"
           ],
-          "status": "de_implementat",
-          "note": "Pagina există; butonul lipsește."
+          "status": "de_verificat",
+          "note": "Buton „← Solicitări” în topbar implementat."
         }
       ]
     }

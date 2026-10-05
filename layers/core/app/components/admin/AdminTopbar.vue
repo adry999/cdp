@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{ title: string }>()
+defineProps<{ title: string; back?: { to: string; label: string } }>()
 
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
@@ -12,7 +12,16 @@ async function logout() {
 
 <template>
   <div class="flex h-16 flex-none items-center justify-between border-b border-hairline px-6">
-    <h1 class="m-0 text-lg font-medium tracking-[-0.02em]">{{ title }}</h1>
+    <div class="flex items-center gap-4">
+      <NuxtLink
+        v-if="back"
+        :to="back.to"
+        class="font-mono text-xs uppercase tracking-[0.08em] text-muted no-underline hover:text-ink hover:no-underline"
+      >
+        ← {{ back.label }}
+      </NuxtLink>
+      <h1 class="m-0 text-lg font-medium tracking-[-0.02em]">{{ title }}</h1>
+    </div>
     <div class="flex items-center gap-4">
       <slot name="actions" />
       <div class="flex items-center gap-3 border-l border-hairline pl-4 font-mono text-xs uppercase tracking-[0.08em] text-muted">

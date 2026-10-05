@@ -22,6 +22,16 @@ export function createLeadsAdminRepository(client: SupabaseClient) {
       return data ?? []
     },
 
+    async countNew() {
+      const { count, error } = await client
+        .from('leads')
+        .select('id', { count: 'exact', head: true })
+        .eq('status', 'nou')
+        .is('archived_at', null)
+      if (error) throw failure('Numărul de solicitări noi nu a putut fi încărcat.', error)
+      return count ?? 0
+    },
+
     async get(id: string) {
       const { data, error } = await client.from('leads').select('*').eq('id', id).single()
       if (error) throw failure('Solicitarea nu a putut fi încărcată.', error)

@@ -21,7 +21,7 @@ const NOTES_STATE_LABELS = {
 
 <template>
   <div v-if="lead">
-    <AdminTopbar :title="lead.name">
+    <AdminTopbar :title="lead.name" :back="{ to: '/admin/leads', label: 'Solicitări' }">
       <template #actions>
         <AppButton :href="`mailto:${lead.email}?subject=${encodeURIComponent('Re: solicitarea ta pe Codepedia')}`" variant="ink">
           Răspunde
