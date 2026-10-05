@@ -30,7 +30,7 @@ const STATUS_CLASS: Record<string, string> = {
           class="flex flex-wrap items-center gap-4 border-t border-hairline py-3 no-underline hover:bg-hatch"
           :class="{ 'border-b': i === leads.length - 1 }"
         >
-          <div class="flex-[0_0_100px] font-mono text-xs uppercase tracking-[0.08em] text-muted">
+          <div class="flex-[0_0_100px] eyebrow text-muted">
             {{ new Date(lead.created_at).toLocaleDateString('ro-RO') }}
           </div>
           <div class="min-w-0 flex-[1_1_160px] text-[15px] text-ink">{{ lead.name }}</div>
@@ -39,7 +39,7 @@ const STATUS_CLASS: Record<string, string> = {
           <div class="flex-[0_0_140px] text-[15px] text-muted">{{ leadBudgetLabel(lead.budget) }}</div>
           <div class="flex-[0_0_110px] text-[15px] text-muted">{{ leadStageLabel(lead.stage) }}</div>
           <div class="min-w-0 flex-[2_1_200px] truncate text-[15px] text-muted">{{ lead.message }}</div>
-          <div class="flex-[0_0_100px] font-mono text-xs uppercase tracking-[0.08em]" :class="STATUS_CLASS[lead.status]">
+          <div class="flex-[0_0_100px] eyebrow" :class="STATUS_CLASS[lead.status]">
             {{ leadStatusLabel(lead.status) }}
           </div>
         </NuxtLink>

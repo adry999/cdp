@@ -314,12 +314,12 @@ async function cleanupReplacedMedia() {
   <div>
     <AdminTopbar :title="isNew ? 'Proiect nou' : form.cardTitle.ro || slug">
       <template #actions>
-        <span class="font-mono text-xs uppercase tracking-[0.08em]" :class="form.published ? 'text-signal' : 'text-muted'">
+        <span class="eyebrow" :class="form.published ? 'text-signal' : 'text-muted'">
           {{ form.published ? 'Publicat' : 'Draft' }}
         </span>
         <span
           v-if="saveState !== 'idle'"
-          class="font-mono text-xs uppercase tracking-[0.08em]"
+          class="eyebrow"
           :class="saveState === 'error' ? 'text-signal' : 'text-muted'"
         >
           {{ { saving: 'Se salvează…', saved: 'Salvat', error: saveError || 'Eroare' }[saveState] }}
@@ -332,7 +332,7 @@ async function cleanupReplacedMedia() {
       <div class="flex max-w-[880px] flex-col gap-8">
         <!-- Identitate -->
         <section class="rounded border border-hairline p-6">
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Identitate</div>
+          <div class="eyebrow text-muted">Identitate</div>
           <div class="mt-4 flex flex-col gap-4">
             <div class="grid grid-cols-2 gap-4">
               <AdminField v-model="form.slugRo" label="Slug RO" />
@@ -342,18 +342,18 @@ async function cleanupReplacedMedia() {
             <AdminFieldPair v-model:ro="form.cardTitle.ro" v-model:en="form.cardTitle.en" label="Titlu card (homepage)" required />
             <div>
               <AdminFieldPair v-model:ro="form.summary.ro" v-model:en="form.summary.en" label="Descriere card" textarea required />
-              <div class="mt-1 text-right font-mono text-[11px] uppercase tracking-[0.08em]" :class="summaryWarn ? 'text-signal' : 'text-muted'">
+              <div class="mt-1 text-right eyebrow-sm" :class="summaryWarn ? 'text-signal' : 'text-muted'">
                 {{ form.summary.ro.length }} / 200
               </div>
             </div>
-            <div v-if="titleWarn" class="font-mono text-[11px] uppercase tracking-[0.08em] text-signal">
+            <div v-if="titleWarn" class="eyebrow-sm text-signal">
               Titlul RO depășește 60 de caractere — designul se poate strica.
             </div>
             <AdminFieldPair v-model:ro="form.lead.ro" v-model:en="form.lead.en" label="Lead (sub H1)" textarea required />
             <div class="grid grid-cols-2 gap-4">
               <AdminField v-model="form.year" label="An" />
               <div>
-                <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Tech</div>
+                <div class="eyebrow text-muted">Tech</div>
                 <div class="mt-2 flex flex-wrap items-center gap-2">
                   <TechChip v-for="(tech, i) in form.tech" :key="tech">
                     {{ tech }}
@@ -373,7 +373,7 @@ async function cleanupReplacedMedia() {
             <AdminField v-model="form.liveUrl" label="Link live (opțional)" />
             <AdminFieldPair v-model:ro="form.liveUrlLabel.ro" v-model:en="form.liveUrlLabel.en" label="Text link live" />
             <div>
-              <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Serviciu</div>
+              <div class="eyebrow text-muted">Serviciu</div>
               <select v-model="form.serviceTag" class="mt-2 w-full border border-hairline bg-paper px-3 py-2 outline-none focus:border-ink">
                 <option :value="null">—</option>
                 <option v-for="tag in SERVICE_TAG_IDS" :key="tag" :value="tag">
@@ -386,7 +386,7 @@ async function cleanupReplacedMedia() {
 
         <!-- Imagini -->
         <section class="rounded border border-hairline p-6">
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Imagini</div>
+          <div class="eyebrow text-muted">Imagini</div>
           <div class="mt-4 flex flex-col gap-6">
             <div>
               <AdminImageUpload
@@ -412,8 +412,8 @@ async function cleanupReplacedMedia() {
             </div>
             <div>
               <div class="flex items-center justify-between">
-                <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Galerie</div>
-                <button type="button" class="cursor-pointer border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-[0.08em] text-signal" @click="addGalleryImage">
+                <div class="eyebrow text-muted">Galerie</div>
+                <button type="button" class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal" @click="addGalleryImage">
                   + Imagine
                 </button>
               </div>
@@ -432,7 +432,7 @@ async function cleanupReplacedMedia() {
                     <div class="flex-1">
                       <AdminFieldPair v-model:ro="img.altRo" v-model:en="img.altEn" label="Text alternativ" />
                     </div>
-                    <button type="button" class="mt-6 cursor-pointer border-0 bg-transparent p-0 font-mono text-[11px] uppercase tracking-[0.08em] text-muted hover:text-signal" @click="removeGalleryImage(i)">
+                    <button type="button" class="mt-6 cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal" @click="removeGalleryImage(i)">
                       Șterge
                     </button>
                   </div>
@@ -445,8 +445,8 @@ async function cleanupReplacedMedia() {
         <!-- Date -->
         <section class="rounded border border-hairline p-6">
           <div class="flex items-center justify-between">
-            <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Date</div>
-            <button type="button" class="cursor-pointer border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-[0.08em] text-signal" @click="addFact">
+            <div class="eyebrow text-muted">Date</div>
+            <button type="button" class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal" @click="addFact">
               + Fapt
             </button>
           </div>
@@ -468,7 +468,7 @@ async function cleanupReplacedMedia() {
               <button
                 v-if="form.facts.length > 1"
                 type="button"
-                class="mt-6 h-fit cursor-pointer border-0 bg-transparent p-0 font-mono text-[11px] uppercase tracking-[0.08em] text-muted hover:text-signal"
+                class="mt-6 h-fit cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal"
                 @click="removeFact(i)"
               >
                 Șterge
@@ -479,7 +479,7 @@ async function cleanupReplacedMedia() {
 
         <!-- Problema -->
         <section class="rounded border border-hairline p-6">
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Problema (secțiunea 01)</div>
+          <div class="eyebrow text-muted">Problema (secțiunea 01)</div>
           <div class="mt-4 flex flex-col gap-4">
             <AdminFieldPair v-model:ro="form.contextBody.ro" v-model:en="form.contextBody.en" label="Text (paragrafe separate de o linie goală)" textarea required />
           </div>
@@ -487,10 +487,10 @@ async function cleanupReplacedMedia() {
 
         <!-- Soluția -->
         <section class="rounded border border-hairline p-6">
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Soluția (secțiunea 02)</div>
+          <div class="eyebrow text-muted">Soluția (secțiunea 02)</div>
           <div class="mt-4 flex flex-col gap-4">
             <AdminFieldPair v-model:ro="form.solutionBody.ro" v-model:en="form.solutionBody.en" label="Text (paragrafe separate de o linie goală)" textarea />
-            <label class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.08em]">
+            <label class="flex items-center gap-2 eyebrow">
               <input v-model="form.screensDemo" type="checkbox" class="accent-signal" >
               <span :class="form.screensDemo ? 'text-signal' : 'text-muted'">Ecrane cu date demonstrative</span>
             </label>
@@ -500,8 +500,8 @@ async function cleanupReplacedMedia() {
         <!-- Stack -->
         <section class="rounded border border-hairline p-6">
           <div class="flex items-center justify-between">
-                    <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Stack (secțiunea 03)</div>
-            <button type="button" class="cursor-pointer border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-[0.08em] text-signal" @click="addStackItem">
+                    <div class="eyebrow text-muted">Stack (secțiunea 03)</div>
+            <button type="button" class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal" @click="addStackItem">
               + Tehnologie
             </button>
           </div>
@@ -522,7 +522,7 @@ async function cleanupReplacedMedia() {
               <div class="flex-1">
                 <AdminFieldPair v-model:ro="item.role.ro" v-model:en="item.role.en" label="Rol" />
               </div>
-              <button type="button" class="mb-2.5 cursor-pointer border-0 bg-transparent p-0 font-mono text-[11px] uppercase tracking-[0.08em] text-muted hover:text-signal" @click="removeStackItem(i)">
+              <button type="button" class="mb-2.5 cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal" @click="removeStackItem(i)">
                 Șterge
               </button>
             </div>
@@ -531,7 +531,7 @@ async function cleanupReplacedMedia() {
 
         <!-- Obstacole -->
         <section class="rounded border border-hairline p-6">
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Obstacole (secțiunea 04)</div>
+          <div class="eyebrow text-muted">Obstacole (secțiunea 04)</div>
           <div class="mt-4 flex flex-col gap-4">
             <AdminFieldPair v-model:ro="form.obstaclesBody.ro" v-model:en="form.obstaclesBody.en" label="Text (paragrafe separate de o linie goală)" textarea />
           </div>
@@ -539,7 +539,7 @@ async function cleanupReplacedMedia() {
 
         <!-- Schimbări -->
         <section class="rounded border border-hairline p-6">
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Schimbări (secțiunea 05)</div>
+          <div class="eyebrow text-muted">Schimbări (secțiunea 05)</div>
           <div class="mt-4 flex flex-col gap-4">
             <AdminFieldPair v-model:ro="form.changesBody.ro" v-model:en="form.changesBody.en" label="Text (paragrafe separate de o linie goală)" textarea />
           </div>
@@ -548,11 +548,11 @@ async function cleanupReplacedMedia() {
         <!-- Rezultat -->
         <section class="rounded border border-hairline p-6">
           <div class="flex items-center justify-between">
-            <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Rezultat și feedback (secțiuni 06–07)</div>
+            <div class="eyebrow text-muted">Rezultat și feedback (secțiuni 06–07)</div>
             <button
               v-if="form.stats.length < 4"
               type="button"
-              class="cursor-pointer border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-[0.08em] text-signal"
+              class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal"
               @click="addStat"
             >
               + Statistică
@@ -576,7 +576,7 @@ async function cleanupReplacedMedia() {
               <div class="flex-1">
                 <AdminFieldPair v-model:ro="stat.label.ro" v-model:en="stat.label.en" label="Etichetă" />
               </div>
-              <button type="button" class="mb-2.5 cursor-pointer border-0 bg-transparent p-0 font-mono text-[11px] uppercase tracking-[0.08em] text-muted hover:text-signal" @click="removeStat(i)">
+              <button type="button" class="mb-2.5 cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal" @click="removeStat(i)">
                 Șterge
               </button>
             </div>
@@ -595,21 +595,21 @@ async function cleanupReplacedMedia() {
 
         <!-- Publicare -->
         <section class="rounded border border-hairline p-6">
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Publicare</div>
+          <div class="eyebrow text-muted">Publicare</div>
           <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
             <div class="flex flex-wrap gap-6">
-              <label class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.08em]">
+              <label class="flex items-center gap-2 eyebrow">
                 <input v-model="form.published" type="checkbox" class="accent-signal" >
                 <span :class="form.published ? 'text-signal' : 'text-muted'">
                   {{ form.published ? 'Publicat' : 'Draft' }}
                 </span>
               </label>
-              <label class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.08em]">
+              <label class="flex items-center gap-2 eyebrow">
                 <input v-model="form.featured" type="checkbox" class="accent-signal" >
                 <span :class="form.featured ? 'text-signal' : 'text-muted'">Afișat pe homepage</span>
               </label>
             </div>
-            <div class="flex gap-3 font-mono text-xs uppercase tracking-[0.08em]">
+            <div class="flex gap-3 eyebrow">
               <NuxtLink :to="`/proiecte/${form.slugRo}`" class="text-muted hover:text-ink">Vezi pe site</NuxtLink>
             </div>
           </div>

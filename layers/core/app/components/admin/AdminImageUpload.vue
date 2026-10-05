@@ -67,7 +67,7 @@ async function onFileChange(e: Event) {
     <MediaFrame :ratio="ratio" :src="modelValue ?? undefined" :label="label" />
     <button
       type="button"
-      class="absolute bottom-3 right-3 cursor-pointer rounded border border-hairline bg-paper px-3 py-1.5 font-mono text-xs uppercase tracking-[0.08em] text-ink hover:border-ink"
+      class="absolute bottom-3 right-3 cursor-pointer rounded border border-hairline bg-paper px-3 py-1.5 eyebrow text-ink hover:border-ink"
       :disabled="uploading"
       @click="openFilePicker"
     >

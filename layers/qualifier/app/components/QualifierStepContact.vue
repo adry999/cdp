@@ -50,7 +50,7 @@ function handleSubmit() {
 <template>
   <form class="flex flex-col gap-4" novalidate @submit.prevent="handleSubmit">
     <div class="rounded border border-hairline bg-hatch p-4">
-      <p class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+      <p class="eyebrow-sm text-muted">
         {{ t(`qualifier.offer.${offer}.kicker`) }}
       </p>
       <p class="mt-1.5 text-[15px] font-medium leading-snug text-ink">
@@ -64,7 +64,7 @@ function handleSubmit() {
     <CoreHoneypotField v-model="form.website" />
 
     <div>
-      <label class="block font-mono text-xs uppercase tracking-[0.08em] text-muted" for="qual-name">
+      <label class="block eyebrow text-muted" for="qual-name">
         {{ t('home.contact.form.name') }}
       </label>
       <input
@@ -82,7 +82,7 @@ function handleSubmit() {
     </div>
 
     <div>
-      <label class="block font-mono text-xs uppercase tracking-[0.08em] text-muted" for="qual-email">
+      <label class="block eyebrow text-muted" for="qual-email">
         {{ t('qualifier.contact.email') }}
       </label>
       <input
@@ -101,7 +101,7 @@ function handleSubmit() {
     </div>
 
     <div>
-      <label class="block font-mono text-xs uppercase tracking-[0.08em] text-muted" for="qual-handle">
+      <label class="block eyebrow text-muted" for="qual-handle">
         {{ t('qualifier.contact.handle') }}
       </label>
       <input
@@ -113,7 +113,7 @@ function handleSubmit() {
     </div>
 
     <div>
-      <label class="block font-mono text-xs uppercase tracking-[0.08em] text-muted" for="qual-notes">
+      <label class="block eyebrow text-muted" for="qual-notes">
         {{ t('qualifier.contact.notes') }}
       </label>
       <textarea

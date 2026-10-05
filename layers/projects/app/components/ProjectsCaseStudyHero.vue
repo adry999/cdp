@@ -14,7 +14,7 @@ const chips = computed(() => {
 <template>
   <div>
     <SiteSection number="00" :label="t('caseStudy.sections.hero')" padding="heroCompact" :top-border="false">
-      <div class="flex flex-wrap gap-x-4 gap-y-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+      <div class="flex flex-wrap gap-x-4 gap-y-2 eyebrow-sm text-muted">
         <span v-for="chip in chips" :key="chip">{{ chip }}</span>
       </div>
       <h1
@@ -22,20 +22,14 @@ const chips = computed(() => {
       >
         {{ project.caseStudy.heroTitle }}
       </h1>
-      <p class="mt-[clamp(20px,2.5vw,28px)] max-w-[60ch] text-[clamp(16px,1.4vw,18px)] text-muted">
+      <p class="mt-[clamp(20px,2.5vw,28px)] max-w-[60ch] text-lead text-muted">
         {{ project.caseStudy.heroLead }}
       </p>
-      <a
-        v-if="project.caseStudy.liveUrl"
-        :href="project.caseStudy.liveUrl"
-        target="_blank"
-        rel="noopener"
-        class="mt-6 inline-block font-mono text-xs uppercase tracking-[0.08em] text-ink underline decoration-signal underline-offset-[3px] hover:decoration-ink"
-      >
+      <TextLink v-if="project.caseStudy.liveUrl" :to="project.caseStudy.liveUrl" target="_blank" rel="noopener" class="mt-6 inline-block">
         {{ project.caseStudy.liveUrlLabel }} ↗
-      </a>
+      </TextLink>
     </SiteSection>
-    <div class="mx-auto max-w-[1280px] px-gutter pb-[clamp(32px,4vw,56px)]">
+    <div class="container-site pb-[clamp(32px,4vw,56px)]">
       <MediaFrame
         ratio="16/9"
         :src="project.caseStudy.heroPath ?? undefined"

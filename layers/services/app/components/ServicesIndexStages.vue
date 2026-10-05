@@ -30,15 +30,15 @@ function servicesFor(stageId: StageId) {
         <h2 class="m-0 font-mono text-[clamp(18px,2.2vw,22px)] font-medium uppercase leading-tight tracking-[0.04em]">
           {{ stage.name }}
         </h2>
-        <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ stage.priceTime }}</span>
+        <span class="eyebrow text-muted">{{ stage.priceTime }}</span>
       </div>
-      <div class="mt-6 grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-6">
+      <div class="mt-6 grid grid-fit-safe-280 gap-6">
         <div>
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ t('home.services.whereYouAreLabel') }}</div>
+          <div class="eyebrow text-muted">{{ t('home.services.whereYouAreLabel') }}</div>
           <p class="m-0 mt-2.5 text-base text-muted text-pretty">{{ stage.whereYouAre }}</p>
         </div>
         <div>
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ t('home.services.whatYouGetLabel') }}</div>
+          <div class="eyebrow text-muted">{{ t('home.services.whatYouGetLabel') }}</div>
           <p class="m-0 mt-2.5 text-base text-pretty">{{ stage.whatYouGet }}</p>
         </div>
       </div>
@@ -53,7 +53,7 @@ function servicesFor(stageId: StageId) {
           v-for="service in servicesFor(stage.id)"
           :key="service.slug"
           :to="localePath({ name: 'servicii-slug', params: { slug: service.routeSlug[locale] } })"
-          class="font-mono text-xs uppercase tracking-[0.08em] text-muted hover:text-signal"
+          class="eyebrow text-muted hover:text-signal"
         >
           {{ pick(service.name.ro, service.name.en, locale) }} →
         </NuxtLink>

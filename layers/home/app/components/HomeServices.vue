@@ -102,7 +102,7 @@ onMounted(() => {
 
 <template>
   <SiteSection number="01" :label="t('home.services.sectionLabel')" section-id="servicii">
-    <h2 class="m-0 max-w-[26ch] text-[clamp(24px,3vw,34px)] font-medium leading-[1.15] tracking-[-0.02em]">
+    <h2 class="m-0 max-w-[26ch] heading-section">
       {{ t('home.services.title') }}
     </h2>
     <p class="mb-0 mt-4 max-w-[60ch] text-base text-muted">{{ t('home.services.intro') }}</p>
@@ -174,14 +174,14 @@ onMounted(() => {
               <span aria-hidden="true" class="inline-block h-2 w-2 shrink-0 rounded-full bg-signal" />
               {{ stage.name }}
             </h3>
-            <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ stage.priceTime }}</span>
+            <span class="eyebrow text-muted">{{ stage.priceTime }}</span>
           </div>
 
           <div class="mt-6 flex flex-col">
-            <TableRow :label="t('home.services.whereYouAreLabel')" label-width="150px">
+            <TableRow :label="t('home.services.whereYouAreLabel')">
               <p class="m-0 max-w-[58ch] text-base text-muted">{{ stage.whereYouAre }}</p>
             </TableRow>
-            <TableRow :label="t('home.services.whatYouGetLabel')" label-width="150px" :last="true">
+            <TableRow :label="t('home.services.whatYouGetLabel')" :last="true">
               <p class="m-0 max-w-[58ch] text-base">{{ stage.whatYouGet }}</p>
             </TableRow>
           </div>
@@ -198,7 +198,7 @@ onMounted(() => {
               v-for="service in relatedServicesFor(stage.id)"
               :key="service.slug"
               :to="localePath({ name: 'servicii-slug', params: { slug: service.routeSlug[locale] } })"
-              class="font-mono text-xs uppercase tracking-[0.08em] text-muted hover:text-signal"
+              class="eyebrow text-muted hover:text-signal"
             >
               {{ pick(service.name.ro, service.name.en, locale) }} →
             </NuxtLink>
@@ -207,16 +207,16 @@ onMounted(() => {
       </Transition>
     </div>
 
-    <p class="mb-0 mt-5 font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ t('home.services.note') }}</p>
+    <p class="mb-0 mt-5 eyebrow text-muted">{{ t('home.services.note') }}</p>
 
     <div class="mt-[clamp(32px,4vw,48px)] flex flex-col gap-4 rounded border border-hairline bg-hatch p-[clamp(20px,2.5vw,28px)]">
-      <span class="font-mono text-xs uppercase tracking-[0.08em] text-muted">
+      <span class="eyebrow text-muted">
         <span aria-hidden="true" class="text-signal">●</span> {{ t('home.services.grants.kicker') }}
       </span>
-      <h3 class="m-0 max-w-[30ch] text-[clamp(20px,2.4vw,26px)] font-medium leading-[1.2] tracking-[-0.02em]" style="text-wrap: pretty">
+      <h3 class="m-0 max-w-[30ch] text-[clamp(20px,2.4vw,26px)] font-medium leading-[1.2] tracking-[-0.02em] text-pretty">
         {{ t('home.services.grants.title') }}
       </h3>
-      <p class="m-0 max-w-[62ch] text-base text-muted" style="text-wrap: pretty">{{ t('home.services.grants.body') }}</p>
+      <p class="m-0 max-w-[62ch] text-base text-muted text-pretty">{{ t('home.services.grants.body') }}</p>
       <ul class="m-0 flex list-none flex-wrap gap-2 p-0">
         <li v-for="(step, i) in grantSteps" :key="i">
           <TechChip class="bg-paper">{{ String(i + 1).padStart(2, '0') }} {{ step }}</TechChip>
@@ -226,7 +226,7 @@ onMounted(() => {
         <AppButton variant="ink" :href="grantsHref">{{ t('home.services.grants.cta') }}</AppButton>
         <NuxtLink
           :to="`${localePath('index')}#contact`"
-          class="font-mono text-xs uppercase tracking-[0.08em] text-muted hover:text-signal"
+          class="eyebrow text-muted hover:text-signal"
         >
           {{ t('home.services.grants.contact') }}
         </NuxtLink>

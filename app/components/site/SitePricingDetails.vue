@@ -29,7 +29,7 @@ const PLAN_IDS = ['maintenance', 'continuous'] as const
 <template>
   <div>
     <SiteSection :label="t('pricing.included.label')">
-      <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-x-6 gap-y-8">
+      <div class="grid grid-fit-safe-240 gap-x-6 gap-y-8">
         <div v-for="item in included" :key="item.title">
           <h3 class="m-0 text-lg font-medium tracking-[-0.02em]">{{ item.title }}</h3>
           <p class="m-0 mt-2.5 text-[15px] text-muted">{{ item.body }}</p>
@@ -38,12 +38,12 @@ const PLAN_IDS = ['maintenance', 'continuous'] as const
     </SiteSection>
 
     <SiteSection :label="t('pricing.afterLaunch.label')">
-      <h2 class="m-0 max-w-[28ch] text-[clamp(24px,3vw,34px)] font-medium leading-[1.15] tracking-[-0.02em]">
+      <h2 class="m-0 max-w-[28ch] heading-section">
         {{ t('pricing.afterLaunch.title') }}
       </h2>
-      <div class="mt-7 grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-4">
+      <div class="mt-7 grid grid-fit-safe-280 gap-4">
         <div v-for="id in PLAN_IDS" :key="id" class="rounded border border-hairline p-6">
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">
+          <div class="eyebrow text-muted">
             {{ t(`pricing.afterLaunch.plans.${id}.label`) }}
           </div>
           <div class="mt-3 text-[26px] font-semibold tracking-[-0.02em]">

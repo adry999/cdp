@@ -71,7 +71,7 @@ if (import.meta.client && phrases.length > 1) {
       >
         {{ t('home.hero.problem') }}
       </p>
-      <p class="mt-[clamp(20px,2.6vw,28px)] max-w-[62ch] text-[clamp(16px,1.4vw,18px)] text-muted">
+      <p class="mt-[clamp(20px,2.6vw,28px)] max-w-[62ch] text-lead text-muted">
         {{ t('home.hero.lead') }}
       </p>
       <div class="mt-[clamp(28px,3vw,40px)] flex flex-wrap gap-3">
@@ -79,8 +79,8 @@ if (import.meta.client && phrases.length > 1) {
         <AppButton href="#proces" variant="outline">{{ t('home.hero.ctaSecondary') }}</AppButton>
       </div>
     </SiteSection>
-    <div class="mx-auto max-w-[1280px] px-gutter pb-[clamp(40px,5vw,64px)]">
-      <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
+    <div class="container-site pb-[clamp(40px,5vw,64px)]">
+      <div class="grid grid-fit-180 gap-4">
         <FactCard :label="t('home.hero.facts.location')" :value="t('home.hero.facts.locationValue')" />
         <FactCard :label="t('home.hero.facts.markets')" :value="t('home.hero.facts.marketsValue')" />
         <FactCard :label="t('home.hero.facts.stack')" :value="t('home.hero.facts.stackValue')" />

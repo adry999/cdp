@@ -16,21 +16,17 @@ const hasMore = computed(() => allRows.value.length > list.value.length)
 
 <template>
   <SiteSection v-if="list.length" number="04" :label="t('home.work.sectionLabel')" section-id="proiecte">
-    <h2 class="m-0 text-[clamp(24px,3vw,34px)] font-medium leading-[1.15] tracking-[-0.02em]">
+    <h2 class="m-0 heading-section">
       {{ t('home.work.title') }}
     </h2>
-    <div class="mt-[clamp(28px,3vw,40px)] grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
+    <div class="mt-[clamp(28px,3vw,40px)] grid grid-fit-280 gap-4">
       <ProjectsCard v-for="project in list" :key="project.slug" :project="project" />
     </div>
     <div v-if="ndaNote || hasMore" class="mt-5 flex flex-wrap items-center justify-between gap-3">
-      <p v-if="ndaNote" class="m-0 font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ ndaNote }}</p>
-      <NuxtLink
-        v-if="hasMore"
-        :to="localePath({ name: 'proiecte' })"
-        class="font-mono text-xs uppercase tracking-[0.08em] text-ink underline decoration-signal underline-offset-[3px] hover:decoration-ink"
-      >
+      <p v-if="ndaNote" class="m-0 eyebrow text-muted">{{ ndaNote }}</p>
+      <TextLink v-if="hasMore" :to="localePath({ name: 'proiecte' })">
         {{ t('home.work.allProjects') }}
-      </NuxtLink>
+      </TextLink>
     </div>
   </SiteSection>
 </template>

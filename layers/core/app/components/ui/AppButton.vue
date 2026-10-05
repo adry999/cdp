@@ -5,11 +5,10 @@ const props = withDefaults(
   defineProps<{
     variant?: Variant
     href?: string
-    inverted?: boolean
     type?: 'button' | 'submit'
     disabled?: boolean
   }>(),
-  { variant: 'ink', href: undefined, inverted: false, type: 'button', disabled: false },
+  { variant: 'ink', href: undefined, type: 'button', disabled: false },
 )
 
 const base =
@@ -17,9 +16,7 @@ const base =
 
 const variantClass = computed(() => {
   if (props.variant === 'outline') {
-    return props.inverted
-      ? `${base} border border-paper px-[21px] py-[13px] text-paper hover:border-body-ink hover:text-paper`
-      : `${base} border border-ink px-[21px] py-[13px] text-ink hover:border-muted hover:text-ink`
+    return `${base} border border-ink px-[21px] py-[13px] text-ink hover:border-muted hover:text-ink`
   }
   if (props.variant === 'ink') {
     return `${base} bg-ink px-[22px] py-[14px] text-paper hover:bg-signal hover:text-paper`

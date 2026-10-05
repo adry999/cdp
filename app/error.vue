@@ -27,7 +27,7 @@ function goHome() {
       >
         {{ title }}
       </h1>
-      <p class="mt-[clamp(20px,2.6vw,28px)] max-w-[62ch] text-[clamp(16px,1.4vw,18px)] text-muted">
+      <p class="mt-[clamp(20px,2.6vw,28px)] max-w-[62ch] text-lead text-muted">
         {{ body }}
       </p>
       <AppButton variant="signal" class="mt-8" @click="goHome">

@@ -14,7 +14,7 @@ const { t } = useI18n()
 <template>
   <div>
     <fieldset>
-      <legend class="font-mono text-xs uppercase tracking-[0.08em] text-muted">
+      <legend class="eyebrow text-muted">
         {{ t('qualifier.budget.legend') }}
       </legend>
       <div class="mt-4 flex flex-col gap-2.5">

@@ -17,7 +17,7 @@ usePageSeo({
     <h1 class="m-0 max-w-[28ch] text-[clamp(28px,4vw,44px)] font-semibold leading-[1.1] tracking-[-0.025em]">
       {{ content.title }}
     </h1>
-    <p class="mt-3 font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ content.updated }}</p>
+    <p class="mt-3 eyebrow text-muted">{{ content.updated }}</p>
     <p class="mt-6 text-base text-muted">{{ content.intro }}</p>
 
     <div class="mt-10 flex flex-col gap-8">

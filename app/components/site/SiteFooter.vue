@@ -19,7 +19,7 @@ const copyrightLine = computed(() => `© ${settings.value.copyrightYear}`)
     <nav
       v-if="!compact"
       :aria-label="t('footer.navLabel')"
-      class="mx-auto flex max-w-[1280px] flex-wrap gap-x-6 gap-y-3 border-b border-hairline px-gutter py-5 font-mono text-[11px] uppercase tracking-[0.08em] text-muted"
+      class="container-site flex flex-wrap gap-x-6 gap-y-3 border-b border-hairline py-5 eyebrow-sm text-muted"
     >
       <NuxtLink
         v-for="service in SERVICE_LINKS"
@@ -39,7 +39,7 @@ const copyrightLine = computed(() => `© ${settings.value.copyrightYear}`)
     </nav>
 
     <div
-      class="mx-auto flex max-w-[1280px] flex-wrap items-baseline justify-between gap-4 px-gutter py-6 font-mono text-[11px] uppercase tracking-[0.08em] text-muted"
+      class="container-site flex flex-wrap items-baseline justify-between gap-4 py-6 eyebrow-sm text-muted"
     >
       <span class="flex items-center gap-2">
         <img

@@ -11,8 +11,7 @@ const displayDate = computed(() => formatPostDate(props.post.date, locale.value 
   <article>
     <SiteSection number="00" :label="displayDate" padding="hero">
       <h1
-        class="m-0 max-w-[26ch] text-[clamp(28px,4.5vw,48px)] font-semibold leading-[1.08] tracking-[-0.02em]"
-        style="text-wrap: pretty"
+        class="m-0 max-w-[26ch] text-[clamp(28px,4.5vw,48px)] font-semibold leading-[1.08] tracking-[-0.02em] text-pretty"
       >
         {{ post.title }}
       </h1>

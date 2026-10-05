@@ -22,7 +22,7 @@ function onKeydown(event: KeyboardEvent) {
 
 <template>
   <SiteSection number="03" :label="t('home.process.sectionLabel')" section-id="proces">
-    <h2 class="m-0 max-w-[28ch] text-[clamp(24px,3vw,34px)] font-medium leading-[1.15] tracking-[-0.02em]">
+    <h2 class="m-0 max-w-[28ch] heading-section">
       {{ t('home.process.title') }}
     </h2>
     <p class="mb-0 mt-4 max-w-[62ch] text-base text-muted">{{ t('home.process.subtitle') }}</p>
@@ -43,7 +43,7 @@ function onKeydown(event: KeyboardEvent) {
         :aria-selected="track.id === activeId"
         :aria-controls="`process-panel-${track.id}`"
         :tabindex="track.id === activeId ? 0 : -1"
-        class="rounded px-[clamp(12px,2.5vw,20px)] py-2 font-mono text-xs uppercase tracking-[0.08em] transition-colors duration-150"
+        class="rounded px-[clamp(12px,2.5vw,20px)] py-2 eyebrow transition-colors duration-150"
         :class="[
           track.id === activeId
             ? track.tone === 'signal'
@@ -71,7 +71,7 @@ function onKeydown(event: KeyboardEvent) {
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h3 class="m-0 text-xl font-medium tracking-[-0.02em]">{{ track.name }}</h3>
             <span
-              class="rounded-full border px-2 py-[3px] font-mono text-[11px] uppercase tracking-[0.08em]"
+              class="rounded-full border px-2 py-[3px] eyebrow-sm"
               :class="track.tone === 'signal' ? 'border-signal/40 text-ink' : 'border-hairline text-muted'"
             >
               {{ track.scope }}

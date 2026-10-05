@@ -38,7 +38,7 @@ const showTopBorder = computed(() => props.topBorder && !props.inverted)
     ]"
   >
     <div
-      class="mx-auto flex max-w-[1280px] flex-wrap gap-[clamp(24px,4vw,48px)] px-gutter"
+      class="container-site flex flex-wrap gap-[clamp(24px,4vw,48px)]"
       :class="PADDING_CLASSES[padding]"
     >
       <div class="flex-[0_0_160px]">

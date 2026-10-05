@@ -7,10 +7,10 @@ const pillars = useAboutPillars()
 
 <template>
   <SiteSection number="05" :label="t('home.about.sectionLabel')" inverted padding="xl">
-    <h2 class="m-0 max-w-[24ch] text-[clamp(26px,3.4vw,40px)] font-medium leading-[1.12] tracking-[-0.025em]">
+    <h2 class="m-0 max-w-[24ch] heading-display">
       {{ t('home.about.title') }}
     </h2>
-    <p class="mt-[clamp(20px,2.5vw,28px)] max-w-[62ch] text-[clamp(16px,1.4vw,18px)] leading-relaxed text-body-ink">
+    <p class="mt-[clamp(20px,2.5vw,28px)] max-w-[62ch] text-lead leading-relaxed text-body-ink">
       {{ t('home.about.lead') }}
     </p>
 

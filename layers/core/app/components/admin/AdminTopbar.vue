@@ -16,7 +16,7 @@ async function logout() {
       <NuxtLink
         v-if="back"
         :to="back.to"
-        class="font-mono text-xs uppercase tracking-[0.08em] text-muted no-underline hover:text-ink hover:no-underline"
+        class="eyebrow text-muted no-underline hover:text-ink hover:no-underline"
       >
         ← {{ back.label }}
       </NuxtLink>
@@ -24,7 +24,7 @@ async function logout() {
     </div>
     <div class="flex items-center gap-4">
       <slot name="actions" />
-      <div class="flex items-center gap-3 border-l border-hairline pl-4 font-mono text-xs uppercase tracking-[0.08em] text-muted">
+      <div class="flex items-center gap-3 border-l border-hairline pl-4 eyebrow text-muted">
         <span>{{ user?.email }}</span>
         <button type="button" class="cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-signal" @click="logout">
           Ieși

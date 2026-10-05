@@ -67,7 +67,7 @@ onBeforeUnmount(() => {
           role="dialog"
           aria-modal="true"
           aria-labelledby="qualifier-title"
-          class="relative w-full max-w-[560px] rounded-lg border border-hairline bg-paper p-[clamp(20px,4vw,36px)] shadow-[0_24px_80px_-20px_rgba(11,11,11,0.35)]"
+          class="relative w-full max-w-[560px] rounded-lg border border-hairline bg-paper p-[clamp(20px,4vw,36px)] shadow-modal"
           @keydown="onKeydown"
         >
           <div class="flex items-start justify-between gap-4">
@@ -102,7 +102,7 @@ onBeforeUnmount(() => {
                 :class="n <= step ? 'bg-signal' : 'bg-hairline'"
               />
             </div>
-            <p class="mt-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+            <p class="mt-2 eyebrow-sm text-muted">
               {{ t('qualifier.progress', { current: step, total: QUALIFIER_TOTAL_STEPS }) }}
             </p>
           </div>

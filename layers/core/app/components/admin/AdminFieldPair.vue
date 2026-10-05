@@ -27,12 +27,12 @@ function update(lang: 'ro' | 'en', event: Event) {
 
 <template>
   <div>
-    <div :id="groupId" class="font-mono text-xs uppercase tracking-[0.08em] text-muted">
+    <div :id="groupId" class="eyebrow text-muted">
       {{ label }}<span v-if="required" class="text-signal"> *</span>
     </div>
     <div class="mt-2 grid grid-cols-2 gap-3">
       <div v-for="col in columns" :key="col.lang">
-        <label :id="col.labelId" :for="col.fieldId" class="mb-1 block font-mono text-[11px] uppercase tracking-[0.08em] text-muted">{{ col.lang.toUpperCase() }}</label>
+        <label :id="col.labelId" :for="col.fieldId" class="mb-1 block eyebrow-sm text-muted">{{ col.lang.toUpperCase() }}</label>
         <textarea
           v-if="textarea"
           :id="col.fieldId"

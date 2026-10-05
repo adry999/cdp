@@ -42,7 +42,7 @@ watch(bannerRef, (el) => {
       class="fixed inset-x-0 bottom-0 z-30 border-t border-hairline bg-paper px-gutter py-5"
       @keydown.tab="trapTab"
     >
-      <div class="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-4">
+      <div class="mx-auto flex max-w-site flex-wrap items-center justify-between gap-4">
         <p id="cookie-banner-message" class="max-w-[60ch] text-sm text-muted">
           {{ t('cookieBanner.message') }}
           <NuxtLink :to="localePath('confidentialitate')" class="text-ink underline">{{

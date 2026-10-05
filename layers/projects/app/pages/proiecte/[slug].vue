@@ -104,7 +104,7 @@ useJsonLd(
       :empty="!caseStudy.solutionParagraphs.length"
       :placeholder="t('caseStudy.sections.solution.placeholder')"
     >
-      <div class="mt-[clamp(24px,3vw,36px)] grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-4">
+      <div class="mt-[clamp(24px,3vw,36px)] grid grid-fit-safe-260 gap-4">
         <MediaFrame
           v-for="(label, i) in caseStudy.gallery"
           :key="label"
@@ -117,7 +117,7 @@ useJsonLd(
       </div>
       <p
         v-if="caseStudy.screensDemo && hasGalleryImages"
-        class="m-0 mt-3 font-mono text-[11px] uppercase tracking-[0.08em] text-muted"
+        class="m-0 mt-3 eyebrow-sm text-muted"
       >
         {{ t('caseStudy.screensDemo') }}
       </p>
@@ -170,11 +170,11 @@ useJsonLd(
     >
       <div
         v-if="caseStudy.resultStats.length"
-        class="mt-[clamp(24px,3vw,36px)] grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-4"
+        class="mt-[clamp(24px,3vw,36px)] grid grid-fit-safe-180 gap-4"
       >
         <div v-for="stat in caseStudy.resultStats" :key="stat.label" class="border-t border-ink pt-4">
           <div class="text-[clamp(40px,5vw,64px)] font-semibold leading-none tracking-[-0.03em]">{{ stat.value }}</div>
-          <div class="mt-[10px] font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ stat.label }}</div>
+          <div class="mt-[10px] eyebrow text-muted">{{ stat.label }}</div>
         </div>
       </div>
     </ProjectsCaseStudySection>
@@ -190,7 +190,7 @@ useJsonLd(
         <blockquote class="m-0 mt-6 max-w-[34ch] text-[clamp(20px,2.4vw,28px)] font-medium leading-[1.35] tracking-[-0.02em]">
           {{ t('caseStudy.quote', { text: caseStudy.quote }) }}
         </blockquote>
-        <div class="mt-4 font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ caseStudy.attribution }}</div>
+        <div class="mt-4 eyebrow text-muted">{{ caseStudy.attribution }}</div>
       </template>
     </ProjectsCaseStudySection>
 

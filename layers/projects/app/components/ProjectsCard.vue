@@ -18,21 +18,18 @@ const localePath = useLocalePath()
       :label="project.thumbnailLabel"
       sizes="xs:100vw sm:45vw lg:380px"
     />
-    <div v-if="showTech" class="mt-4 flex gap-2 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+    <div v-if="showTech" class="mt-4 flex gap-2 eyebrow-sm text-muted">
       <template v-for="(tech, i) in project.tech" :key="tech">
         <span>{{ tech }}</span>
         <span v-if="i < project.tech.length - 1">·</span>
       </template>
     </div>
-    <h3 class="mb-2 text-[19px] font-medium tracking-[-0.02em]" :class="showTech ? 'mt-2.5' : 'mt-4'">
+    <h3 class="mb-2 heading-card" :class="showTech ? 'mt-2.5' : 'mt-4'">
       {{ project.title }}
     </h3>
     <p class="m-0 text-base text-muted">{{ project.text }}</p>
-    <NuxtLink
-      :to="localePath({ name: 'proiecte-slug', params: { slug: project.slug } })"
-      class="mt-4 inline-block font-mono text-xs uppercase tracking-[0.08em] text-ink underline decoration-signal underline-offset-[3px] hover:decoration-ink"
-    >
+    <TextLink :to="localePath({ name: 'proiecte-slug', params: { slug: project.slug } })" class="mt-4 inline-block">
       {{ t('home.work.caseStudyLink') }}
-    </NuxtLink>
+    </TextLink>
   </div>
 </template>

@@ -12,8 +12,8 @@ const FEATURED_STAGE = 'A'
 <template>
   <!-- Full container width like the prototype: no 160px label column, so all five cards fit one row. -->
   <section id="stages" class="scroll-mt-16 border-t border-hairline">
-    <div class="mx-auto max-w-[1280px] px-gutter" style="padding-top: clamp(32px, 4vw, 56px); padding-bottom: clamp(32px, 4vw, 56px)">
-      <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-4">
+    <div class="container-site py-[clamp(32px,4vw,56px)]">
+      <div class="grid grid-fit-safe-220 gap-4">
         <article
           v-for="(stage, i) in stages"
           :key="stage.id"
@@ -23,7 +23,7 @@ const FEATURED_STAGE = 'A'
           <div class="flex items-center justify-between gap-2">
             <span class="font-mono text-xs tracking-[0.08em] text-signal">{{ String(i + 1).padStart(2, '0') }}</span>
             <span
-              class="font-mono text-[11px] uppercase tracking-[0.08em]"
+              class="eyebrow-sm"
               :class="stage.id === FEATURED_STAGE ? 'text-body-ink' : 'text-muted'"
             >
               {{ t(`pricing.stages.${stage.id}.time`) }}
@@ -33,7 +33,7 @@ const FEATURED_STAGE = 'A'
             {{ stage.name }}
           </h2>
           <div
-            class="mt-5 font-mono text-[11px] uppercase tracking-[0.08em]"
+            class="mt-5 eyebrow-sm"
             :class="stage.id === FEATURED_STAGE ? 'text-body-ink' : 'text-muted'"
           >
             {{ t(`pricing.stages.${stage.id}.pricePrefix`) }}

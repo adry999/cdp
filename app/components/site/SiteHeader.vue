@@ -54,7 +54,7 @@ onMounted(() => {
 
 <template>
   <header class="sticky top-0 z-20 bg-paper" @keydown="onMenuKeydown">
-    <div class="mx-auto flex min-h-16 max-w-[1280px] items-center justify-between gap-6 px-gutter">
+    <div class="container-site flex min-h-16 items-center justify-between gap-6">
       <NuxtLink :to="localePath('index')" class="flex items-center">
         <img
           src="/brand/codepedia-wordmark.svg"
@@ -65,7 +65,7 @@ onMounted(() => {
         >
       </NuxtLink>
 
-      <nav :aria-label="t('nav.main')" class="flex items-center gap-[clamp(14px,2vw,28px)] font-mono text-xs uppercase tracking-[0.08em]">
+      <nav :aria-label="t('nav.main')" class="flex items-center gap-[clamp(14px,2vw,28px)] eyebrow">
         <div class="hidden items-center gap-[clamp(14px,2vw,28px)] border-r border-hairline pr-[clamp(14px,2vw,28px)] nav:flex">
           <template v-for="link in navLinks" :key="navLinkKey(link)">
             <a v-if="link.kind === 'hash'" :href="`${localePath('index')}${link.hash}`" class="text-muted hover:text-signal">
@@ -125,7 +125,7 @@ onMounted(() => {
     <div
       v-if="menuOpen"
       :id="mobileMenuId"
-      class="flex flex-col border-t border-hairline px-gutter pb-5 pt-2 font-mono text-xs uppercase tracking-[0.08em] nav:hidden"
+      class="flex flex-col border-t border-hairline px-gutter pb-5 pt-2 eyebrow nav:hidden"
     >
       <template v-for="(link, i) in navLinks" :key="navLinkKey(link)">
         <a

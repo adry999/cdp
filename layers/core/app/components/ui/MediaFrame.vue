@@ -56,7 +56,7 @@ const placeholderStyle = {
     :class="aspectClass"
     :style="placeholderStyle"
   >
-    <span v-if="label" class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+    <span v-if="label" class="eyebrow-sm text-muted">
       {{ label }}
     </span>
   </div>

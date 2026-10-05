@@ -26,7 +26,7 @@ function isActive(to: string) {
         v-for="item in navItems"
         :key="item.to"
         :to="item.to"
-        class="border-l-2 px-5 py-2.5 font-mono text-xs uppercase tracking-[0.08em] no-underline hover:no-underline"
+        class="border-l-2 px-5 py-2.5 eyebrow no-underline hover:no-underline"
         :class="
           isActive(item.to)
             ? 'border-signal text-ink'

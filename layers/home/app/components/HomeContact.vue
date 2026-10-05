@@ -16,11 +16,11 @@ const showForm = ref(false)
     <h2 class="m-0 max-w-[22ch] text-[clamp(28px,4vw,48px)] font-semibold leading-[1.08] tracking-[-0.025em]">
       {{ t('home.contact.title') }}
     </h2>
-    <p class="mt-[clamp(20px,2.5vw,28px)] max-w-[60ch] text-[clamp(16px,1.4vw,18px)] text-muted">
+    <p class="mt-[clamp(20px,2.5vw,28px)] max-w-[60ch] text-lead text-muted">
       {{ t('home.contact.lead') }}
     </p>
 
-    <div class="mt-[clamp(28px,3vw,44px)] grid max-w-[560px] grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
+    <div class="mt-[clamp(28px,3vw,44px)] grid max-w-[560px] grid-fit-180 gap-4">
       <FactCard :label="t('home.contact.facts.responseTime')" :value="settings.responseTime" />
       <FactCard :label="t('home.contact.facts.hours')" :value="settings.hours" />
     </div>
@@ -31,7 +31,7 @@ const showForm = ref(false)
         <button
           v-if="!showForm"
           type="button"
-          class="font-mono text-xs uppercase tracking-[0.08em] text-muted underline underline-offset-4 transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
+          class="eyebrow text-muted underline underline-offset-4 transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
           @click="showForm = true"
         >
           {{ t('home.contact.preferMessage') }}

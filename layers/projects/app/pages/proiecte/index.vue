@@ -52,12 +52,12 @@ usePageSeo({
       <template v-if="list.length">
         <ProjectsFilterChips v-if="tags.length >= 2" :tags="tags" :active="activeTag" @select="selectTag" />
         <div
-          class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4"
+          class="grid grid-fit-280 gap-4"
           :class="tags.length >= 2 ? 'mt-[clamp(20px,2vw,28px)]' : ''"
         >
           <ProjectsCard v-for="project in filteredCards" :key="project.slug" :project="project" />
         </div>
-        <p v-if="ndaNote" class="mb-0 mt-5 font-mono text-xs uppercase tracking-[0.08em] text-muted">
+        <p v-if="ndaNote" class="mb-0 mt-5 eyebrow text-muted">
           {{ ndaNote }}
         </p>
       </template>

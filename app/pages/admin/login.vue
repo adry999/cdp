@@ -29,7 +29,7 @@ async function handleSubmit() {
     <form class="rounded border border-hairline p-7" @submit.prevent="handleSubmit">
       <AdminField id="email" v-model="email" label="Email" type="email" required />
       <AdminField id="password" v-model="password" class="mt-5" label="Parolă" type="password" required />
-      <p v-if="error" class="mt-3 font-mono text-xs uppercase tracking-[0.08em] text-signal">{{ error }}</p>
+      <p v-if="error" class="mt-3 eyebrow text-signal">{{ error }}</p>
       <AppButton type="submit" variant="ink" class="mt-6 w-full text-center">
         {{ loading ? 'Se autentifică…' : 'Autentificare' }}
       </AppButton>

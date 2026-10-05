@@ -18,7 +18,7 @@ defineProps<{
     >
       {{ title }}
     </h1>
-    <p class="mt-[clamp(20px,2.6vw,28px)] max-w-[62ch] text-[clamp(16px,1.4vw,18px)] text-muted">
+    <p class="mt-[clamp(20px,2.6vw,28px)] max-w-[62ch] text-lead text-muted">
       {{ intro }}
     </p>
     <slot />

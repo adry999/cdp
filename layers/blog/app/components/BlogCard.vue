@@ -20,8 +20,8 @@ const displayDate = computed(() => formatPostDate(props.post.date, locale.value 
       :label="`[ ${post.title} ]`"
       sizes="xs:100vw sm:45vw lg:380px"
     />
-    <div class="mt-4 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">{{ displayDate }}</div>
-    <h3 class="mb-2 mt-2.5 text-[19px] font-medium tracking-[-0.02em] text-ink">{{ post.title }}</h3>
+    <div class="mt-4 eyebrow-sm text-muted">{{ displayDate }}</div>
+    <h3 class="mb-2 mt-2.5 heading-card text-ink">{{ post.title }}</h3>
     <p class="m-0 text-base text-muted">{{ post.summary }}</p>
   </NuxtLink>
 </template>

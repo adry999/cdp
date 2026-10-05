@@ -239,12 +239,12 @@ async function duplicate(slug: string) {
             {{ opt }}
           </ToggleChip>
         </div>
-        <span class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+        <span class="eyebrow-sm text-muted">
           Pe homepage: {{ featuredCount }}
         </span>
         <span
           v-if="canReorder"
-          class="font-mono text-[11px] uppercase tracking-[0.08em]"
+          class="eyebrow-sm"
           :class="reorderError ? 'text-signal' : 'text-muted'"
         >
           {{ reorderError ? 'Ordinea nu s-a salvat — reîncearcă' : reordering ? 'Se salvează ordinea…' : 'Trage ⠿ pentru a reordona' }}
@@ -282,15 +282,15 @@ async function duplicate(slug: string) {
             <TechChip v-for="tech in project.tech" :key="tech" :label="tech" />
           </div>
           <div
-            class="flex-[0_0_90px] font-mono text-xs uppercase tracking-[0.08em]"
+            class="flex-[0_0_90px] eyebrow"
             :class="project.published_at ? 'text-signal' : 'text-muted'"
           >
             {{ project.published_at ? 'Publicat' : 'Draft' }}
           </div>
-          <div class="flex-[0_0_100px] font-mono text-xs uppercase tracking-[0.08em] text-muted">
+          <div class="flex-[0_0_100px] eyebrow text-muted">
             {{ project.published_at ? new Date(project.published_at).toLocaleDateString('ro-RO') : '—' }}
           </div>
-          <div class="flex flex-[0_0_180px] justify-end gap-3 font-mono text-xs uppercase tracking-[0.08em]">
+          <div class="flex flex-[0_0_180px] justify-end gap-3 eyebrow">
             <template v-if="pendingDelete === project.slug_ro">
               <button
                 type="button"

@@ -68,7 +68,7 @@ watch(status, (value) => {
     <CoreHoneypotField v-model="form.website" />
 
     <div>
-      <label class="block font-mono text-xs uppercase tracking-[0.08em] text-muted" for="lead-name">
+      <label class="block eyebrow text-muted" for="lead-name">
         {{ t('home.contact.form.name') }}
       </label>
       <input
@@ -86,7 +86,7 @@ watch(status, (value) => {
     </div>
 
     <div>
-      <label class="block font-mono text-xs uppercase tracking-[0.08em] text-muted" for="lead-email">
+      <label class="block eyebrow text-muted" for="lead-email">
         {{ t('home.contact.form.email') }}
       </label>
       <input
@@ -105,7 +105,7 @@ watch(status, (value) => {
     </div>
 
     <div>
-      <label class="block font-mono text-xs uppercase tracking-[0.08em] text-muted" for="lead-company">
+      <label class="block eyebrow text-muted" for="lead-company">
         {{ t('home.contact.form.company') }}
       </label>
       <input
@@ -118,7 +118,7 @@ watch(status, (value) => {
     </div>
 
     <div role="group" aria-labelledby="lead-stage-label">
-      <div id="lead-stage-label" class="font-mono text-xs uppercase tracking-[0.08em] text-muted">
+      <div id="lead-stage-label" class="eyebrow text-muted">
         {{ t('home.contact.form.stage') }}
       </div>
       <div class="mt-2 flex flex-wrap gap-1.5">
@@ -138,7 +138,7 @@ watch(status, (value) => {
     </div>
 
     <div>
-      <label class="block font-mono text-xs uppercase tracking-[0.08em] text-muted" for="lead-message">
+      <label class="block eyebrow text-muted" for="lead-message">
         {{ t('home.contact.form.message') }}
       </label>
       <textarea
@@ -156,7 +156,7 @@ watch(status, (value) => {
     </div>
 
     <div>
-      <label class="block font-mono text-xs uppercase tracking-[0.08em] text-muted" for="lead-budget">
+      <label class="block eyebrow text-muted" for="lead-budget">
         {{ t('home.contact.form.budget') }}
       </label>
       <select
@@ -172,7 +172,7 @@ watch(status, (value) => {
     </div>
 
     <div>
-      <label class="block font-mono text-xs uppercase tracking-[0.08em] text-muted" for="lead-source">
+      <label class="block eyebrow text-muted" for="lead-source">
         {{ t('home.contact.form.source') }}
       </label>
       <input

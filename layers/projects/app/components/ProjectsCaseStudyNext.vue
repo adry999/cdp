@@ -27,7 +27,7 @@ const otherProjects = computed(() =>
       <QualifierCta variant="signal">{{ t('caseStudy.cta') }}</QualifierCta>
     </div>
     <template v-if="otherProjects.length">
-      <div class="mt-[clamp(40px,5vw,64px)] font-mono text-xs uppercase tracking-[0.08em] text-muted-ink">
+      <div class="mt-[clamp(40px,5vw,64px)] eyebrow text-muted-ink">
         {{ t('caseStudy.otherProjects') }}
       </div>
       <ul class="m-0 mt-3 list-none border-b border-hairline-ink p-0">
@@ -37,7 +37,7 @@ const otherProjects = computed(() =>
             class="flex flex-wrap justify-between gap-x-6 gap-y-2 border-t border-hairline-ink py-4 text-paper no-underline hover:text-signal"
           >
             <span class="text-lg font-medium tracking-[-0.01em]">{{ other.title }}</span>
-            <span v-if="other.kind" class="font-mono text-xs uppercase tracking-[0.08em] text-muted-ink">{{ other.kind }} →</span>
+            <span v-if="other.kind" class="eyebrow text-muted-ink">{{ other.kind }} →</span>
           </NuxtLink>
         </li>
       </ul>

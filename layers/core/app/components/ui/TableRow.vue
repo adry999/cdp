@@ -4,25 +4,14 @@ withDefaults(
     label: string
     labelWidth?: string
     last?: boolean
-    inverted?: boolean
   }>(),
-  { labelWidth: '200px', last: false, inverted: false },
+  { labelWidth: '150px', last: false },
 )
 </script>
 
 <template>
-  <div
-    class="flex flex-wrap gap-4 py-5"
-    :class="[
-      inverted ? 'border-hairline-ink' : 'border-hairline',
-      last ? 'border-y' : 'border-t',
-    ]"
-  >
-    <div
-      class="flex-none font-mono text-xs uppercase tracking-[0.08em]"
-      :class="inverted ? 'text-muted-ink' : 'text-muted'"
-      :style="{ flexBasis: labelWidth }"
-    >
+  <div class="flex flex-wrap gap-4 border-hairline py-5" :class="last ? 'border-y' : 'border-t'">
+    <div class="flex-none eyebrow text-muted" :style="{ flexBasis: labelWidth }">
       {{ label }}
     </div>
     <div class="min-w-0 flex-1 text-base">

@@ -29,7 +29,7 @@ useJsonLd(() => ({
     <BlogHero />
     <SiteSection number="01" :label="t('nav.blog')">
       <h2 class="sr-only">{{ t('nav.blog') }}</h2>
-      <div v-if="posts?.length" class="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
+      <div v-if="posts?.length" class="grid grid-fit-280 gap-4">
         <BlogCard v-for="post in posts" :key="post.path" :post="post" />
       </div>
       <p v-else class="m-0 text-base text-muted">{{ t('blog.empty') }}</p>

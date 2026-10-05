@@ -20,7 +20,7 @@ const cards = computed(() =>
 
 <template>
   <SiteSection number="02" :label="t('home.stack.sectionLabel')" section-id="stack">
-    <h2 class="m-0 max-w-[28ch] text-[clamp(24px,3vw,34px)] font-medium leading-[1.15] tracking-[-0.02em]">
+    <h2 class="m-0 max-w-[28ch] heading-section">
       {{ t('home.stack.title') }}
     </h2>
     <p class="mb-0 mt-4 max-w-[62ch] text-base text-muted">{{ t('home.stack.subtitle') }}</p>

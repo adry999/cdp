@@ -18,7 +18,7 @@ usePageSeo({
       <h1 class="m-0 max-w-[18ch] text-[clamp(34px,5.4vw,60px)] font-semibold leading-[1.04] tracking-[-0.025em] text-pretty">
         {{ t('home.about.title') }}
       </h1>
-      <p class="mt-[clamp(20px,2.6vw,28px)] max-w-[62ch] text-[clamp(16px,1.4vw,18px)] leading-relaxed text-body-ink">
+      <p class="mt-[clamp(20px,2.6vw,28px)] max-w-[62ch] text-lead leading-relaxed text-body-ink">
         {{ t('home.about.lead') }}
       </p>
     </SiteSection>
@@ -34,8 +34,8 @@ usePageSeo({
     <SiteAboutTeam />
 
     <section class="border-t border-hairline">
-      <div class="mx-auto max-w-[1280px] px-gutter py-[clamp(40px,5vw,64px)]">
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
+      <div class="container-site py-[clamp(40px,5vw,64px)]">
+        <div class="grid grid-fit-180 gap-4">
           <FactCard v-for="id in FACT_IDS" :key="id" :label="t(`about.facts.${id}.label`)" :value="t(`about.facts.${id}.value`)" />
         </div>
       </div>

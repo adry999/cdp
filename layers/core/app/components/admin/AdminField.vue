@@ -11,7 +11,7 @@ const fieldId = props.id ?? useId()
 
 <template>
   <div :class="$attrs.class">
-    <label :for="fieldId" class="block font-mono text-xs uppercase tracking-[0.08em] text-muted">{{ label }}</label>
+    <label :for="fieldId" class="block eyebrow text-muted">{{ label }}</label>
     <textarea
       v-if="as === 'textarea'"
       :id="fieldId"

@@ -34,66 +34,66 @@ const NOTES_STATE_LABELS = {
         <section class="rounded border border-hairline p-6">
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Nume</div>
+              <div class="eyebrow text-muted">Nume</div>
               <div class="mt-1 text-[15px]">{{ lead.name }}</div>
             </div>
             <div>
-              <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Email</div>
+              <div class="eyebrow text-muted">Email</div>
               <div class="mt-1 text-[15px]">{{ lead.email }}</div>
             </div>
             <div>
-              <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Companie</div>
+              <div class="eyebrow text-muted">Companie</div>
               <div class="mt-1 text-[15px]">{{ lead.company || '—' }}</div>
             </div>
             <div>
-              <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Buget</div>
+              <div class="eyebrow text-muted">Buget</div>
               <div class="mt-1 text-[15px]">{{ leadBudgetLabel(lead.budget) }}</div>
             </div>
             <div>
-              <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Etapă</div>
+              <div class="eyebrow text-muted">Etapă</div>
               <div class="mt-1 text-[15px]">{{ leadStageLabel(lead.stage) }}</div>
             </div>
           </div>
           <div class="mt-4 border-t border-hairline pt-4">
-            <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Mesaj</div>
+            <div class="eyebrow text-muted">Mesaj</div>
             <p class="mt-2 whitespace-pre-wrap text-[15px]">{{ lead.message }}</p>
           </div>
         </section>
 
         <section class="rounded border border-hairline p-6">
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Sursă</div>
+          <div class="eyebrow text-muted">Sursă</div>
           <div class="mt-3 grid grid-cols-2 gap-4">
             <div>
-              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">Cum a aflat</div>
+              <div class="eyebrow-sm text-muted">Cum a aflat</div>
               <div class="mt-1 text-[15px] text-muted">{{ lead.source || '—' }}</div>
             </div>
             <div>
-              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">Pagină</div>
+              <div class="eyebrow-sm text-muted">Pagină</div>
               <div class="mt-1 text-[15px] text-muted">{{ lead.page || '—' }}</div>
             </div>
             <div>
-              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">Referrer</div>
+              <div class="eyebrow-sm text-muted">Referrer</div>
               <div class="mt-1 truncate text-[15px] text-muted">{{ lead.referrer || '—' }}</div>
             </div>
             <div>
-              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">UTM</div>
+              <div class="eyebrow-sm text-muted">UTM</div>
               <div class="mt-1 truncate text-[15px] text-muted">
                 {{ lead.utm ? Object.entries(lead.utm).map(([k, v]) => `${k}=${v}`).join(' · ') : '—' }}
               </div>
             </div>
             <div>
-              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">Limbă</div>
+              <div class="eyebrow-sm text-muted">Limbă</div>
               <div class="mt-1 text-[15px] text-muted">{{ lead.lang }}</div>
             </div>
             <div>
-              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">Dată</div>
+              <div class="eyebrow-sm text-muted">Dată</div>
               <div class="mt-1 text-[15px] text-muted">{{ new Date(lead.created_at).toLocaleString('ro-RO') }}</div>
             </div>
           </div>
         </section>
 
         <section class="rounded border border-hairline p-6">
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Stare</div>
+          <div class="eyebrow text-muted">Stare</div>
           <div class="mt-3 flex flex-wrap gap-2">
             <ToggleChip
               v-for="status in LEAD_STATUSES"
@@ -111,14 +111,14 @@ const NOTES_STATE_LABELS = {
           <AdminField v-model="notes" label="Note interne" as="textarea" rows="4" @blur="saveNotes(notes)" />
           <p
             aria-live="polite"
-            class="mt-1 font-mono text-[11px] uppercase tracking-[0.08em]"
+            class="mt-1 eyebrow-sm"
             :class="notesState === 'error' ? 'text-signal' : 'text-muted'"
           >
             {{ NOTES_STATE_LABELS[notesState] }}
           </p>
         </section>
 
-        <p v-if="actionError" role="alert" class="font-mono text-xs uppercase tracking-[0.08em] text-signal">
+        <p v-if="actionError" role="alert" class="eyebrow text-signal">
           {{ actionError.message }}
         </p>
 
