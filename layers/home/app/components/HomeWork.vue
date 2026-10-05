@@ -2,14 +2,15 @@
 import { mapProjectCard, selectHomeProjects, usePublishedProjects } from '#layers/projects'
 import { useSiteSettings } from '#layers/content'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
+const siteLocale = useSiteLocale()
 const localePath = useLocalePath()
 
 const { projects: rows } = await usePublishedProjects()
 const settings = useSiteSettings()
 
 const allRows = computed(() => rows.value ?? [])
-const list = computed(() => selectHomeProjects(allRows.value).map((row) => mapProjectCard(row, locale.value as 'ro' | 'en')))
+const list = computed(() => selectHomeProjects(allRows.value).map((row) => mapProjectCard(row, siteLocale.value)))
 const ndaNote = computed(() => settings.value.ndaNote)
 const hasMore = computed(() => allRows.value.length > list.value.length)
 </script>

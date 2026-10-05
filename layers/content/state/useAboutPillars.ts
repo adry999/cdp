@@ -1,6 +1,5 @@
 import { ABOUT_PILLAR_IDS, type AboutPillar } from '#layers/content/domain/about'
 
-/** Joins the pillar order with their localised copy from `home.about.pillars.<id>`. */
 export function useAboutPillars() {
   const { t } = useI18n()
 

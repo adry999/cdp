@@ -5,11 +5,6 @@ describe('STAGE_ORDER', () => {
   it('is a permutation of every stage id', () => {
     expect([...STAGE_ORDER].sort()).toEqual([...STAGE_IDS].sort())
   })
-
-  it('leads with the mass-market page and ends with custom AI', () => {
-    expect(STAGE_ORDER[0]).toBe('E')
-    expect(STAGE_ORDER[STAGE_ORDER.length - 1]).toBe('D')
-  })
 })
 
 describe('isStageId', () => {

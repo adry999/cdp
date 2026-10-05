@@ -4,7 +4,6 @@ defineProps<{
   label: string
   heading: string
   paragraphs?: string[]
-  /** Renders the "to complete" box when the section has no content of its own. */
   empty?: boolean
   placeholder: string
 }>()

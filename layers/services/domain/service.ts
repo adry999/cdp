@@ -7,8 +7,7 @@ export interface ServiceProcessStep {
   body: LocalizedText
 }
 
-// `priceFrom` starts null for all entries (no invented numbers per spec); the page hides
-// the price line when it's null.
+// `priceFrom` is null until real prices exist; the page hides the price line then.
 export interface Service {
   /** Canonical id — matches `projects.service_tag` and the admin select. Not the URL slug. */
   slug: ServiceTagId

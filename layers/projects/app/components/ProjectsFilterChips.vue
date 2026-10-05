@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { ServiceTagId } from '#layers/core/shared/types/service-tag'
 
-/** The improvisation this spec calls out: the prototype's TechChip has no
- * active state. Active mirrors AppButton's `ink` variant. */
+// Active state mirrors AppButton's `ink` variant.
 defineProps<{ tags: ServiceTagId[]; active: ServiceTagId | null }>()
 const emit = defineEmits<{ select: [tag: ServiceTagId | null] }>()
 

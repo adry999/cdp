@@ -8,6 +8,7 @@ definePageMeta({ layout: 'case-study' })
 
 const route = useRoute()
 const { t, locale } = useI18n()
+const siteLocale = useSiteLocale()
 const localePath = useLocalePath()
 
 const { data: row } = await useAsyncData(`project-${route.params.slug}`, () => fetchProject(String(route.params.slug)))
@@ -17,16 +18,14 @@ if (!projectRow) {
   throw createError({ statusCode: 404, statusMessage: 'Project not found' })
 }
 
-// The API matches a slug against both locales' columns, so a project keeps resolving under
-// its old slug across a rename — redirect to the canonical slug so each project has one
-// indexable URL per locale.
+// The API resolves slugs from both locales' columns; redirect to the canonical one so each locale has one indexable URL.
 const canonicalSlug = locale.value === 'en' ? (projectRow.slug_en ?? projectRow.slug_ro) : projectRow.slug_ro
 if (canonicalSlug !== route.params.slug) {
   // Awaited, not returned — a bare top-level `return` doesn't type-check in `<script setup>`.
   await navigateTo(localePath({ name: 'proiecte-slug', params: { slug: canonicalSlug } }), { redirectCode: 301 })
 }
 
-const project = computed(() => mapProject(projectRow, locale.value as 'ro' | 'en'))
+const project = computed(() => mapProject(projectRow, siteLocale.value))
 
 const caseStudy = computed(() => project.value.caseStudy)
 const hasGalleryImages = computed(() => caseStudy.value.galleryPaths.some(Boolean))
@@ -37,17 +36,14 @@ caseStudySlugs.value = {
   en: projectRow.slug_en ?? projectRow.slug_ro,
 }
 
-// hreflang alternates come from useLocaleHead, which only knows the current
-// route params — without this, a project whose EN slug differs advertises a
-// 404 as its alternate.
+// useLocaleHead only knows the current route params; without this, hreflang alternates 404 when slugs differ per locale.
 const setI18nParams = useSetI18nParams()
 setI18nParams({ ro: { slug: caseStudySlugs.value.ro }, en: { slug: caseStudySlugs.value.en } })
 
 const siteUrl = useSiteUrl()
 
 usePageSeo({
-  // The card title ("Trucker HQ, dispatch și unelte…") names the client and
-  // fits in a search result; the hero title is a full sentence that gets cut off.
+  // The card title fits a search result; the hero title is a full sentence that gets cut off.
   title: () => project.value.title,
   description: () => caseStudy.value.heroLead,
   ogTitle: () => caseStudy.value.heroTitle,

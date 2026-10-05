@@ -8,7 +8,8 @@ import { SERVICE_LINKS } from '#layers/services'
 // The connector line is drawn with CSS transforms rather than an SVG-path library —
 // the project ships no animation dependency.
 
-const { t, tm, rt, locale } = useI18n()
+const { t, locale } = useI18n()
+const i18nList = useI18nList()
 const localePath = useLocalePath()
 const nuxtApp = useNuxtApp()
 const { isQualifierEnabled } = useQualifierAvailability()
@@ -25,7 +26,7 @@ const grantsService = SERVICE_LINKS.find((service) => service.slug === 'granturi
 const grantsHref = computed(() =>
   grantsService ? localePath({ name: 'servicii-slug', params: { slug: grantsService.routeSlug[locale.value] } }) : undefined,
 )
-const grantSteps = computed(() => (tm('home.services.grants.steps') as unknown[]).map((step) => rt(step as string)))
+const grantSteps = computed(() => i18nList('home.services.grants.steps'))
 const mounted = ref(false)
 const drawn = ref(false)
 
@@ -41,26 +42,8 @@ function select(i: number) {
 }
 
 function onKeydown(event: KeyboardEvent) {
-  const n = stages.value.length
-  let next = active.value
-  switch (event.key) {
-    case 'ArrowRight':
-    case 'ArrowDown':
-      next = (active.value + 1) % n
-      break
-    case 'ArrowLeft':
-    case 'ArrowUp':
-      next = (active.value - 1 + n) % n
-      break
-    case 'Home':
-      next = 0
-      break
-    case 'End':
-      next = n - 1
-      break
-    default:
-      return
-  }
+  const next = nextTabIndex(event.key, active.value, stages.value.length)
+  if (next === null) return
   event.preventDefault()
   select(next)
   nextTick(() => nodeEls.value[next]?.focus())

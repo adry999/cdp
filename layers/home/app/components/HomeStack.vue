@@ -4,8 +4,7 @@ import { useStackGroups } from '#layers/content'
 const { t } = useI18n()
 const groups = useStackGroups()
 
-// Benefit copy is authored as "Lead: sentence." — show the lead in ink and the
-// rest muted. Split once here rather than three times in the template.
+// Benefit copy is "Lead: sentence." — lead in ink, rest muted.
 const cards = computed(() =>
   groups.value.map((group) => {
     const at = group.benefit.indexOf(': ')

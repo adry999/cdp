@@ -1,8 +1,5 @@
 <script setup lang="ts">
-/** The hero of a top-level page below the homepage: a section label in the
- * 160px column, a large h1 and an intro paragraph — first used by the
- * service pages, now shared with the portfolio index. The default slot
- * renders below the intro (used for the grants audience chips). */
+// Default slot renders below the intro.
 defineProps<{
   number: string
   label: string

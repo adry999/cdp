@@ -1,8 +1,7 @@
 import { isStageId, type StageId } from '#layers/core/shared/types/service-stage'
 import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
 
-// The single source of the five budget keys: the component's <select> options
-// and the domain's label map both derive from this list.
+// Single source of the budget keys; select options and labels derive from it.
 export const LEAD_BUDGET_KEYS = ['under1k', '1to2k', '2to5k', 'over5k', 'unsure'] as const
 export type LeadBudgetKey = (typeof LEAD_BUDGET_KEYS)[number]
 
@@ -25,7 +24,7 @@ export function leadBudgetLabel(value: string | null): string {
 }
 
 // The admin is Romanian-only; these mirror the contact form's stage chips.
-export const LEAD_STAGE_LABELS: Record<StageId, string> = {
+const LEAD_STAGE_LABELS: Record<StageId, string> = {
   E: 'Express',
   B: 'Concept',
   A: 'Design → cod',
@@ -41,7 +40,7 @@ export function leadStageLabel(value: string | null): string {
 export const LEAD_STATUSES = ['nou', 'in_discutie', 'castigat', 'refuzat'] as const
 export type LeadStatus = (typeof LEAD_STATUSES)[number]
 
-export const LEAD_STATUS_LABELS: Record<LeadStatus, string> = {
+const LEAD_STATUS_LABELS: Record<LeadStatus, string> = {
   nou: 'Nou',
   in_discutie: 'În discuție',
   castigat: 'Câștigat',
@@ -70,8 +69,8 @@ export const LEAD_FIELD_LIMITS = {
 
 // The only UTM keys ever read back out of a lead; anything else in the
 // query string (or a hand-crafted POST body) is dropped rather than stored.
-export const LEAD_UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const
-export const LEAD_UTM_VALUE_MAX = 200
+const LEAD_UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const
+const LEAD_UTM_VALUE_MAX = 200
 
 export interface ContactSubmission {
   name?: string

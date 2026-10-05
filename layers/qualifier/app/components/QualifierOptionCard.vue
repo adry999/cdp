@@ -1,6 +1,5 @@
 <script setup lang="ts">
-// A single selectable card used by the stage and budget steps. Wraps a real (visually hidden)
-// radio input so keyboard/screen-reader behaviour is native; the visible card is just the label.
+// Wraps a visually hidden radio input so keyboard and screen-reader behaviour stays native.
 
 defineProps<{
   name: string

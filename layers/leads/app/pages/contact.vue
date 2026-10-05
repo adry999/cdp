@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useSiteSettings } from '#layers/content'
 
-const { t, tm, rt } = useI18n()
+const { t } = useI18n()
 const settings = useSiteSettings()
 
-const steps = computed(() => (tm('contactPage.steps') as string[]).map((step) => rt(step)))
+const i18nList = useI18nList()
+const steps = computed(() => i18nList('contactPage.steps'))
 
 // The work email is never rendered into the markup (same rule as the homepage #contact
 // section): visitors reach us through the form below.

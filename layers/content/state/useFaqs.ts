@@ -1,7 +1,7 @@
 import { pick } from '#layers/core/shared/utils/pick'
 import { FAQS } from '#layers/content/data/faqs'
 
-// Localises `data/faqs.ts` (edit values there) into the view-models HomeFaq.vue renders.
+// Localises `data/faqs.ts` into view-models.
 export function useFaqs() {
   const { locale } = useI18n()
 

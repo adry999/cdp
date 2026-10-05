@@ -5,7 +5,7 @@ import { isServiceTagId } from '#layers/core/shared/types/service-tag'
 export const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
 /** Slugs that collide with admin routes rather than naming a project. */
-export const RESERVED_SLUGS = ['nou', 'new']
+const RESERVED_SLUGS = ['nou', 'new']
 
 const DIACRITICS: Record<string, string> = {
   ă: 'a', â: 'a', î: 'i', ș: 's', ş: 's', ț: 't', ţ: 't',

@@ -1,30 +1,16 @@
-import { expect, test, type APIRequestContext, type Page } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
+import { dismissConsentBanner, firstPublishedProject, pinLocale } from './support/helpers'
 
 const DIALOG_NAME = 'Hai să găsim punctul de pornire potrivit.'
 const DIALOG_NAME_EN = "Let's find the right starting point."
 
-// Reads the current published projects instead of hardcoding a slug, so this
-// suite doesn't break the day a real case study is renamed or unpublished.
-async function firstPublishedProject(request: APIRequestContext) {
-  const res = await request.get('/api/projects')
-  const projects = (await res.json()) as { slug_ro: string; slug_en: string | null }[]
-  test.skip(!projects.length, 'No published projects to test against')
-  const [project] = projects
-  if (!project) throw new Error('No published projects to test against')
-  return project
-}
-
-// The redirect middleware only fires on `/` and `/en`; pinning the locale
-// cookie keeps it from interfering with these fixed-locale flows.
 test.beforeEach(async ({ context }) => {
-  await context.addCookies([{ name: 'codepedia_locale', value: 'ro', domain: 'localhost', path: '/' }])
+  await pinLocale(context)
 })
 
-// ConsentBanner takes focus when it mounts; a visitor dismisses it before
-// reaching any call to action.
 async function visitHome(page: Page) {
   await page.goto('/')
-  await page.getByRole('button', { name: 'Doar necesare' }).click()
+  await dismissConsentBanner(page)
 }
 
 async function openFromHero(page: Page) {
@@ -147,7 +133,7 @@ test('delivery failure keeps the contact step and shows the error', async ({ pag
 
 test('EN dialog opens from /en and posts the English locale', async ({ page, context }) => {
   await context.clearCookies()
-  await context.addCookies([{ name: 'codepedia_locale', value: 'en', domain: 'localhost', path: '/' }])
+  await pinLocale(context, 'en')
   let body: unknown
   await page.route('**/api/contact', async (route) => {
     body = route.request().postDataJSON()

@@ -5,12 +5,12 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const stages = useServiceStages()
 
-// The stage the prototype highlights (Design → cod) gets the inverted card.
+// The highlighted stage (Design → cod) gets the inverted card.
 const FEATURED_STAGE = 'A'
 </script>
 
 <template>
-  <!-- Full container width like the prototype: no 160px label column, so all five cards fit one row. -->
+  <!-- Full container width (no label column) so all five cards fit one row. -->
   <section id="stages" class="scroll-mt-16 border-t border-hairline">
     <div class="container-site py-[clamp(32px,4vw,56px)]">
       <div class="grid grid-fit-safe-220 gap-4">

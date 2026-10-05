@@ -1,10 +1,11 @@
 import type { Service } from '#layers/services/domain/service'
+import { SERVICE_LINKS } from '#layers/services/data/serviceLinks'
 
-export const SERVICES = [
+type ServicePageCopy = Omit<Service, 'routeSlug' | 'name' | 'qualifierStage'>
+
+const SERVICE_COPY: readonly ServicePageCopy[] = [
   {
     slug: 'website',
-    routeSlug: { ro: 'website', en: 'website' },
-    name: { ro: 'Website', en: 'Website' },
     seoTitle: { ro: 'Creare site de prezentare în Chișinău', en: 'Website and landing page development' },
     intro: {
       ro: 'O pagină de prezentare modernă care-ți validează ideea și atrage primii clienți. De la concept la lansare în zile, nu săptămâni.',
@@ -52,12 +53,9 @@ export const SERVICES = [
       },
     ],
     priceFrom: null,
-    qualifierStage: 'E',
   },
   {
     slug: 'web-app',
-    routeSlug: { ro: 'aplicatie-web', en: 'web-app' },
-    name: { ro: 'Aplicație web', en: 'Web app' },
     seoTitle: { ro: 'Dezvoltare aplicații web la comandă', en: 'Custom web application development' },
     seoDescription: {
       ro: 'Aplicația ta, din design în cod de producție, pe Postgres și Nuxt sau Next. Arhitectură curată, testată și ușor de extins.',
@@ -109,12 +107,9 @@ export const SERVICES = [
       },
     ],
     priceFrom: null,
-    qualifierStage: 'A',
   },
   {
     slug: 'wordpress',
-    routeSlug: { ro: 'wordpress', en: 'wordpress' },
-    name: { ro: 'WordPress', en: 'WordPress' },
     seoTitle: { ro: 'Site WordPress rapid și sigur', en: 'Fast, secure WordPress websites' },
     intro: {
       ro: 'Site WordPress rapid, securizat și ușor de menținut, pe infrastructura modernă cu cache și CDN global.',
@@ -162,12 +157,9 @@ export const SERVICES = [
       },
     ],
     priceFrom: null,
-    qualifierStage: 'E',
   },
   {
     slug: 'shopify',
-    routeSlug: { ro: 'shopify', en: 'shopify' },
-    name: { ro: 'Shopify', en: 'Shopify' },
     seoTitle: { ro: 'Magazin online pe Shopify, la comandă', en: 'Custom Shopify store development' },
     intro: {
       ro: 'Magazin Shopify optimizat pentru conversie, cu design custom și integrări cu logistica și analitică reală.',
@@ -215,12 +207,9 @@ export const SERVICES = [
       },
     ],
     priceFrom: null,
-    qualifierStage: 'E',
   },
   {
     slug: 'ai-automation',
-    routeSlug: { ro: 'automatizare-ai', en: 'ai-automation' },
-    name: { ro: 'Automatizare cu AI', en: 'AI automation' },
     seoTitle: { ro: 'Automatizare cu AI pentru afaceri', en: 'AI automation for businesses' },
     intro: {
       ro: 'Sisteme AI custom integrate în fluxul tău de lucru, care reduc zeci de ore manuale pe lună și reduc costurile operaționale.',
@@ -268,15 +257,9 @@ export const SERVICES = [
       },
     ],
     priceFrom: null,
-    qualifierStage: 'D',
   },
   {
     slug: 'granturi',
-    routeSlug: { ro: 'granturi', en: 'grants' },
-    name: {
-      ro: 'Proiecte finanțate prin granturi',
-      en: 'Proiecte finanțate prin granturi',
-    },
     seoTitle: { ro: 'Aplicații web pentru proiecte cu grant', en: 'Aplicații web pentru proiecte cu grant' },
     intro: {
       ro: 'Ai câștigat un grant european sau ODA și trebuie să livrezi o aplicație la termen? Construim partea tehnică a proiectului și pregătim documentele de care ai nevoie la raportare.',
@@ -369,6 +352,11 @@ export const SERVICES = [
       },
     ],
     priceFrom: null,
-    qualifierStage: 'A',
   },
-] as const satisfies readonly Service[]
+]
+
+export const SERVICES: readonly Service[] = SERVICE_COPY.map((copy) => {
+  const link = SERVICE_LINKS.find((entry) => entry.slug === copy.slug)
+  if (!link) throw new Error(`Missing service link for ${copy.slug}`)
+  return { ...link, ...copy }
+})

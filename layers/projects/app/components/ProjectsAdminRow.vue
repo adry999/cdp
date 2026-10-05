@@ -18,14 +18,6 @@ defineEmits<{
   confirmDelete: []
   duplicate: []
 }>()
-
-const thumbnailStyle = {
-  backgroundImage:
-    'url(/brand/codepedia-mark-watermark.svg), repeating-linear-gradient(45deg, var(--color-hatch) 0 1px, transparent 1px 7px)',
-  backgroundRepeat: 'no-repeat, repeat',
-  backgroundPosition: 'center 44%, 0 0',
-  backgroundSize: '20px auto, auto',
-}
 </script>
 
 <template>
@@ -44,7 +36,7 @@ const thumbnailStyle = {
       alt=""
       class="h-[30px] w-12 flex-none rounded border border-hairline object-cover"
     >
-    <div v-else class="h-[30px] w-12 flex-none rounded border border-hairline" :style="thumbnailStyle" />
+    <div v-else class="h-[30px] w-12 flex-none rounded border border-hairline media-placeholder [--placeholder-mark:20px]" />
     <div class="min-w-0 flex-[2_1_200px] text-[15px]">
       {{ project.card_title_ro }}
       <span v-if="project.featured" title="Afișat pe homepage" class="ml-1 text-signal" aria-hidden="true">●</span>

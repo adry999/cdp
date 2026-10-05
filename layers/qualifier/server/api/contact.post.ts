@@ -1,11 +1,7 @@
 import { checkRateLimit } from '#layers/core/server/utils/checkRateLimit'
-import { createLeadRepository, notifyTeam } from '#layers/leads/server'
+import { createLeadRepository, LEAD_RATE_LIMIT, notifyTeam } from '#layers/leads/server'
 import type { RawQualificationSubmission } from '#layers/qualifier/domain/qualification'
 import { submitQualification } from '#layers/qualifier/server/services/submitQualification'
-
-// Shares the check_lead_rate_limit RPC with POST /api/leads, so a flood on
-// either endpoint is throttled.
-const RATE_LIMIT = { max: 3, windowSeconds: 10 * 60 }
 
 export default defineEventHandler(async (event) => {
   if (useRuntimeConfig(event).public.qualifierEnabled !== true) {
@@ -17,7 +13,7 @@ export default defineEventHandler(async (event) => {
   const result = await submitQualification(submission, {
     repository: createLeadRepository(event),
     notify: notifyTeam,
-    checkRateLimit: () => checkRateLimit(event, RATE_LIMIT),
+    checkRateLimit: () => checkRateLimit(event, LEAD_RATE_LIMIT),
     now: () => new Date(),
   })
 

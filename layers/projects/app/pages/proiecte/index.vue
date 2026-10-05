@@ -5,7 +5,8 @@ import { useSiteSettings } from '#layers/content'
 
 const route = useRoute()
 const router = useRouter()
-const { t, locale } = useI18n()
+const { t } = useI18n()
+const siteLocale = useSiteLocale()
 
 const { projects: rows } = await usePublishedProjects()
 const settings = useSiteSettings()
@@ -23,7 +24,7 @@ const activeTag = computed<ServiceTagId | null>(() => {
 
 const filteredCards = computed(() =>
   (activeTag.value ? list.value.filter((row) => row.service_tag === activeTag.value) : list.value).map((row) =>
-    mapProjectCard(row, locale.value as 'ro' | 'en'),
+    mapProjectCard(row, siteLocale.value),
   ),
 )
 

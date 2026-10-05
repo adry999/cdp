@@ -35,6 +35,17 @@
   --spacing-section-gap: clamp(24px, 4vw, 48px);
 }
 
+@utility media-placeholder {
+  background-image:
+    url(/brand/codepedia-mark-watermark.svg),
+    repeating-linear-gradient(45deg, var(--color-hatch) 0 1px, transparent 1px 7px);
+  background-repeat: no-repeat, repeat;
+  background-position:
+    center 44%,
+    0 0;
+  background-size: var(--placeholder-mark, 56px) auto, auto;
+}
+
 @utility eyebrow {
   @apply font-mono text-xs uppercase tracking-[0.08em];
 }

@@ -1,6 +1,5 @@
-// Pure routing rules for the qualification modal — framework-free so the modal and
-// POST /api/contact share the exact same rules; the server re-derives tag and route
-// rather than trusting the client payload.
+// Framework-free so the modal and POST /api/contact share one rule set; the server
+// re-derives tag and route instead of trusting the client payload.
 
 import type { StageId } from '#layers/core/shared/types/service-stage'
 
@@ -13,13 +12,12 @@ export const STAGE_TAGS: Record<StageId, string> = {
   E: 'Mass-Market-Page',
 }
 
-// Concrete tiers only, no `unsure`; the low end splits into under500/500to1k for precision.
+// Concrete tiers only (no `unsure`).
 export const QUALIFIER_BUDGET_KEYS = ['under500', '500to1k', '1to2k', '2to5k', 'over5k'] as const
 export type QualifierBudgetKey = (typeof QUALIFIER_BUDGET_KEYS)[number]
 
 export type QualifierRoute = 'mass-market-express' | 'custom-engineering-ai'
 
-/** Human-readable route label for the notification email. */
 export const ROUTE_LABELS: Record<QualifierRoute, string> = {
   'mass-market-express': 'Mass-Market Express',
   'custom-engineering-ai': 'Custom Engineering / AI',
@@ -33,7 +31,7 @@ export function resolveRoute(stage: StageId, budget: QualifierBudgetKey): Qualif
   return 'custom-engineering-ai'
 }
 
-// Mass-market is one shared card; the custom route is framed per stage to match step 1.
+// Mass-market is one shared card; the custom route is framed per stage.
 export function offerKey(stage: StageId, route: QualifierRoute): string {
   if (route === 'mass-market-express') return 'massMarket'
   const byStage: Record<Exclude<StageId, 'E'>, string> = {

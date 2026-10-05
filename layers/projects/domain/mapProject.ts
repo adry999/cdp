@@ -28,7 +28,6 @@ export interface ProjectImageRow {
   sort_order: number
 }
 
-/** The columns every list consumer needs to render a card — `PROJECT_CARD_SELECT`. */
 export interface ProjectCardRow {
   slug_ro: string
   slug_en: string | null
@@ -86,7 +85,6 @@ export interface ProjectRow extends ProjectCardRow {
 
 type Locale = 'ro' | 'en'
 
-/** Frames the case-study design reserves for gallery screenshots. */
 const GALLERY_PLACEHOLDER_COUNT = 2
 
 function paragraphs(ro: string | null, en: string | null, locale: Locale): string[] {
@@ -102,9 +100,7 @@ export function mapProjectCard(row: ProjectCardRow, locale: Locale) {
     tech: row.tech,
     title: pick(row.card_title_ro, row.card_title_en, locale),
     text: pick(row.summary_ro, row.summary_en, locale),
-    // Bracketed *Label strings caption the hatched placeholder frame when no
-    // image exists yet. *Alt carries the real text — bound to <img alt> once
-    // an image is uploaded — never the bracketed placeholder wording.
+    // *Label captions the placeholder frame; *Alt is the real <img alt> text.
     thumbnailLabel: `[ ${pick(row.cover_alt_ro ?? row.card_title_ro, row.cover_alt_en, locale)} ]`,
     coverAlt: pick(row.cover_alt_ro ?? row.card_title_ro, row.cover_alt_en, locale),
     coverPath: row.cover_path,
@@ -154,9 +150,7 @@ export function mapProject(row: ProjectRow, locale: Locale) {
       changesParagraphs: paragraphs(row.changes_body_ro, row.changes_body_en, locale),
       resultParagraphs: paragraphs(row.result_body_ro, row.result_body_en, locale),
       screensDemo: row.screens_demo,
-      // The design shows two 16/10 frames. Until real screenshots exist the frames
-      // stay as visible placeholders — rendered from nothing, not from blank
-      // rows in project_images (a NOT NULL path of '' renders a broken image).
+      // Placeholders come from nothing, not blank project_images rows (an empty path renders a broken image).
       gallery: galleryImages.length
         ? galleryImages.map((img) => `[ ${pick(img.alt_ro, img.alt_en, locale)} ]`)
         : Array.from({ length: GALLERY_PLACEHOLDER_COUNT }, () =>

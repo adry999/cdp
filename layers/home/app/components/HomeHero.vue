@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue'
 
-const { t, tm, rt } = useI18n()
+const { t } = useI18n()
 // The rotating part of the h1. First entry is rendered verbatim on the server and
 // is the animation's starting point on the client, so the h1 always carries real
 // text for SEO and no-JS.
-const phrases = (tm('home.hero.titlePhrases') as unknown[]).map((entry) => rt(entry as string))
+const phrases = useI18nList()('home.hero.titlePhrases')
 const typed = ref(phrases[0] ?? '')
 
 if (import.meta.client && phrases.length > 1) {

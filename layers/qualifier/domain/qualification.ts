@@ -45,7 +45,7 @@ export const QUALIFIER_FIELD_LIMITS = {
 } as const
 
 // The team inbox is Romanian-only, so these labels are not run through i18n.
-export const QUALIFIER_BUDGET_LABELS: Record<QualifierBudgetKey, string> = {
+const QUALIFIER_BUDGET_LABELS: Record<QualifierBudgetKey, string> = {
   under500: 'sub 500 EUR',
   '500to1k': '500 – 1.000 EUR',
   '1to2k': '1.000 – 2.000 EUR',

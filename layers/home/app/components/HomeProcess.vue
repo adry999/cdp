@@ -7,14 +7,11 @@ const tracks = useProcessTracks()
 const activeId = ref<ProcessTrackId>('fast')
 const activeTrack = computed(() => tracks.value.find((tr) => tr.id === activeId.value) ?? tracks.value[0]!)
 
-// Roving-tabindex arrow-key nav across the two toggle buttons, matching
-// HomeServices. Home/End are redundant with only two tabs, so left/right only.
 function onKeydown(event: KeyboardEvent) {
-  if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
-  event.preventDefault()
   const ids = tracks.value.map((tr) => tr.id)
-  const i = ids.indexOf(activeId.value)
-  const next = event.key === 'ArrowRight' ? (i + 1) % ids.length : (i - 1 + ids.length) % ids.length
+  const next = nextTabIndex(event.key, ids.indexOf(activeId.value), ids.length, true)
+  if (next === null) return
+  event.preventDefault()
   activeId.value = ids[next]!
   nextTick(() => document.getElementById(`process-tab-${ids[next]}`)?.focus())
 }
@@ -27,7 +24,6 @@ function onKeydown(event: KeyboardEvent) {
     </h2>
     <p class="mb-0 mt-4 max-w-[62ch] text-base text-muted">{{ t('home.process.subtitle') }}</p>
 
-    <!-- Track toggle -->
     <div
       role="tablist"
       :aria-label="t('home.process.trackLabel')"
@@ -67,7 +63,6 @@ function onKeydown(event: KeyboardEvent) {
           :tabindex="track.id === activeTrack.id ? 0 : -1"
           class="w-full"
         >
-          <!-- Track header -->
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h3 class="m-0 text-xl font-medium tracking-[-0.02em]">{{ track.name }}</h3>
             <span
@@ -79,7 +74,6 @@ function onKeydown(event: KeyboardEvent) {
           </div>
           <p class="mb-0 mt-3 max-w-[60ch] text-base text-muted">{{ track.summary }}</p>
 
-          <!-- Step pipeline -->
           <ol class="mt-[clamp(24px,3vw,32px)] flex flex-col">
             <li
               v-for="(step, i) in track.steps"

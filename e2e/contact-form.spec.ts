@@ -1,18 +1,9 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test } from '@playwright/test'
+import { dismissConsentBanner, pinLocale } from './support/helpers'
 
-// The redirect middleware only fires on `/` and `/en`; pinning the locale
-// cookie keeps it from interfering with these fixed-locale flows.
 test.beforeEach(async ({ context }) => {
-  await context.addCookies([{ name: 'codepedia_locale', value: 'ro', domain: 'localhost', path: '/' }])
+  await pinLocale(context)
 })
-
-// ConsentBanner moves focus to itself the tick it mounts (a dialog must own
-// focus while open). Left open, that steals focus mid-fill on whichever
-// field happens to be in progress when it appears. Dismissing it first
-// matches how a real visitor reaches the form anyway.
-async function dismissConsentBanner(page: Page) {
-  await page.getByRole('button', { name: 'Doar necesare' }).click()
-}
 
 test('RO empty submit shows the required-field errors and makes no request', async ({ page }) => {
   let requested = false

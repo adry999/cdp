@@ -1,16 +1,5 @@
-import { expect, test, type APIRequestContext } from '@playwright/test'
-
-// Reads the current published projects instead of hardcoding a slug, so this
-// suite doesn't break the day a real case study is renamed, unpublished, or
-// replaced — it only asserts that *whatever* is currently published renders.
-async function firstPublishedProject(request: APIRequestContext) {
-  const res = await request.get('/api/projects')
-  const projects = (await res.json()) as { slug_ro: string; slug_en: string | null }[]
-  test.skip(!projects.length, 'No published projects to test against')
-  const [project] = projects
-  if (!project) throw new Error('No published projects to test against')
-  return project
-}
+import { expect, test } from '@playwright/test'
+import { firstPublishedProject } from './support/helpers'
 
 test('RO homepage renders', async ({ page }) => {
   await page.setExtraHTTPHeaders({ 'x-vercel-ip-country': 'RO' })

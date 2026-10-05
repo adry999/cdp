@@ -1,4 +1,5 @@
-import type { LeadRecord, LeadRepository } from '#layers/leads/server'
+import { notifyBestEffort } from '#layers/core/server/utils/notifyBestEffort'
+import type { LeadRecord, LeadRepository, TeamNotifier } from '#layers/leads/server'
 import {
   buildQualificationSummary,
   isHoneypotTriggered,
@@ -10,7 +11,7 @@ import { resolveRoute } from '#layers/qualifier/domain/routing'
 
 export interface SubmitQualificationDependencies {
   repository: LeadRepository
-  notify: (notification: { subject: string; lines: string[] }) => Promise<'sent' | 'skipped'>
+  notify: TeamNotifier
   checkRateLimit: () => Promise<boolean>
   now: () => Date
 }
@@ -53,15 +54,7 @@ export async function submitQualification(
   // any other delivery failure) must never lose the submission.
   await deps.repository.insertLead(toLeadRecord(input))
 
-  try {
-    const delivery = await deps.notify(buildQualificationSummary(input, deps.now()))
-    if (delivery === 'skipped') {
-      console.warn('[qualifier] submitQualification: notification skipped, submission was still saved')
-    }
-  } catch (error) {
-    // The submission is already saved, so a failed notification must not fail the request.
-    console.warn('[qualifier] submitQualification: team notification failed', error instanceof Error ? error.message : error)
-  }
+  await notifyBestEffort(deps.notify, buildQualificationSummary(input, deps.now()), 'qualifier')
 
   return { outcome: 'accepted' }
 }

@@ -1,9 +1,7 @@
-// schema.org JSON-LD builders shared by the public pages. Each returns a plain
-// object for `useHead({ script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(...) }] })`.
+// schema.org JSON-LD builders; each returns a plain object to stringify into a ld+json script.
 
 export interface BreadcrumbItem {
   name: string
-  /** Absolute URL. */
   url: string
 }
 

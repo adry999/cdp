@@ -7,13 +7,12 @@ import {
   type ContactSubmission,
   type LeadRecord,
 } from '#layers/leads/domain/lead'
-import type { TeamNotification } from '#layers/leads/server/services/leadNotification'
+import { notifyBestEffort } from '#layers/core/server/utils/notifyBestEffort'
+import type { TeamNotifier } from '#layers/leads/server/services/leadNotification'
 
 export interface LeadRepository {
   insertLead(record: LeadRecord): Promise<void>
 }
-
-export type TeamNotifier = (notification: TeamNotification) => Promise<'sent' | 'skipped'>
 
 export interface SubmitLeadDependencies {
   repository: LeadRepository
@@ -42,8 +41,9 @@ export async function submitLead(
   const record = toLeadRecord(submission, referrer)
   await deps.repository.insertLead(record)
 
-  try {
-    await deps.notify({
+  await notifyBestEffort(
+    deps.notify,
+    {
       subject: `Solicitare nouă — ${record.name}`,
       lines: [
         `Nume: ${record.name}`,
@@ -54,11 +54,9 @@ export async function submitLead(
         '',
         record.message,
       ],
-    })
-  } catch (error) {
-    // The lead is already saved, so a failed notification must not fail the request.
-    console.warn('[leads] submitLead: team notification failed', error instanceof Error ? error.message : error)
-  }
+    },
+    'leads',
+  )
 
   return { outcome: 'accepted' }
 }

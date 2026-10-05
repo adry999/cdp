@@ -3,14 +3,15 @@ import type { Service } from '#layers/services/domain/service'
 import { mapProjectCard, usePublishedProjects } from '#layers/projects'
 
 const props = defineProps<{ service: Service }>()
-const { t, locale } = useI18n()
+const { t } = useI18n()
+const siteLocale = useSiteLocale()
 
 const { projects: rows } = await usePublishedProjects()
 
 const list = computed(() =>
   (rows.value ?? [])
     .filter((row) => row.service_tag === props.service.slug)
-    .map((row) => mapProjectCard(row, locale.value as 'ro' | 'en')),
+    .map((row) => mapProjectCard(row, siteLocale.value)),
 )
 </script>
 

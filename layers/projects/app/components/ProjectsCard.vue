@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { MappedProjectCard } from '#layers/projects/domain/mapProject'
 
-/** The project card from homepage section 04. `showTech` off drops the tech
- * line and gives the heading the larger top margin the service pages use. */
+// `showTech` off drops the tech line and enlarges the heading's top margin.
 withDefaults(defineProps<{ project: MappedProjectCard; showTech?: boolean }>(), { showTech: true })
 
 const { t } = useI18n()

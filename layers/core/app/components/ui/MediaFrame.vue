@@ -27,14 +27,6 @@ const intrinsicSize = computed(() => {
   if (props.ratio === '4/3') return { width: 1200, height: 900 }
   return { width: 1200, height: 750 }
 })
-
-const placeholderStyle = {
-  backgroundImage:
-    'url(/brand/codepedia-mark-watermark.svg), repeating-linear-gradient(45deg, var(--color-hatch) 0 1px, transparent 1px 7px)',
-  backgroundRepeat: 'no-repeat, repeat',
-  backgroundPosition: 'center 44%, 0 0',
-  backgroundSize: '56px auto, auto',
-}
 </script>
 
 <template>
@@ -52,9 +44,8 @@ const placeholderStyle = {
   />
   <div
     v-else
-    class="flex items-end justify-center rounded border border-hairline pb-[14px]"
+    class="flex items-end justify-center rounded border border-hairline pb-[14px] media-placeholder"
     :class="aspectClass"
-    :style="placeholderStyle"
   >
     <span v-if="label" class="eyebrow-sm text-muted">
       {{ label }}

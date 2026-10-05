@@ -2,9 +2,10 @@
 import { resolvePrivacyPolicy } from '#layers/consent/domain/privacyPolicy'
 import { useSiteSettings } from '#layers/content'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
+const siteLocale = useSiteLocale()
 const siteSettings = useSiteSettings()
-const content = computed(() => resolvePrivacyPolicy(locale.value as 'ro' | 'en', siteSettings.value.contactEmail))
+const content = computed(() => resolvePrivacyPolicy(siteLocale.value, siteSettings.value.contactEmail))
 
 usePageSeo({
   title: () => content.value.title,

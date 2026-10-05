@@ -5,7 +5,7 @@ export type StackGroupId = (typeof STACK_GROUP_IDS)[number]
 export interface StackGroup {
   id: StackGroupId
   name: string
-  /** "Lead: sentence." — HomeStack splits on the first colon. */
+  /** "Lead: sentence." — split on the first colon. */
   benefit: string
   tags: string[]
 }

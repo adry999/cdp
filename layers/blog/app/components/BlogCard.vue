@@ -2,10 +2,10 @@
 import { blogSlug, formatPostDate, type BlogPostSummary } from '#layers/blog'
 
 const props = defineProps<{ post: BlogPostSummary }>()
-const { locale } = useI18n()
+const siteLocale = useSiteLocale()
 const localePath = useLocalePath()
 
-const displayDate = computed(() => formatPostDate(props.post.date, locale.value as 'ro' | 'en'))
+const displayDate = computed(() => formatPostDate(props.post.date, siteLocale.value))
 </script>
 
 <template>

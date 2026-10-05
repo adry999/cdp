@@ -3,7 +3,8 @@ import { SERVICE_STAGE_DEFS, type ServiceStage } from '#layers/content/domain/se
 // Joins services.ts's stage order with `home.services.stages.<id>` i18n copy into the
 // ServiceStage view-models HomeServices.vue renders.
 export function useServiceStages() {
-  const { t, tm, rt } = useI18n()
+  const { t } = useI18n()
+  const i18nList = useI18nList()
 
   return computed<ServiceStage[]>(() =>
     SERVICE_STAGE_DEFS.map((def) => ({
@@ -12,7 +13,7 @@ export function useServiceStages() {
       priceTime: t(`home.services.stages.${def.id}.priceTime`),
       whereYouAre: t(`home.services.stages.${def.id}.whereYouAre`),
       whatYouGet: t(`home.services.stages.${def.id}.whatYouGet`),
-      badges: (tm(`home.services.stages.${def.id}.badges`) as unknown[]).map((entry) => rt(entry as string)),
+      badges: i18nList(`home.services.stages.${def.id}.badges`),
       cta: t(`home.services.stages.${def.id}.cta`),
     })),
   )

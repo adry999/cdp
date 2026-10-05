@@ -61,7 +61,7 @@ describe('submitQualification', () => {
     expect(await submitQualification(buildQualificationSubmission(), deps)).toEqual({ outcome: 'accepted' })
     expect(deps.repository.insertLead).toHaveBeenCalled()
     expect(warn).toHaveBeenCalledWith(
-      '[qualifier] submitQualification: notification skipped, submission was still saved',
+      '[qualifier] notification skipped, submission was still saved',
     )
     warn.mockRestore()
   })
@@ -77,7 +77,7 @@ describe('submitQualification', () => {
     expect(await submitQualification(buildQualificationSubmission(), deps)).toEqual({ outcome: 'accepted' })
     expect(deps.repository.insertLead).toHaveBeenCalled()
     expect(warn).toHaveBeenCalledWith(
-      '[qualifier] submitQualification: team notification failed',
+      '[qualifier] team notification failed',
       cause.message,
     )
     warn.mockRestore()

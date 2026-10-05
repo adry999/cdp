@@ -99,7 +99,7 @@ describe('submitLead', () => {
     const result = await submitLead(buildContactSubmission(), null, deps)
     expect(result).toEqual({ outcome: 'accepted' })
     expect(savedRecords).toHaveLength(1)
-    expect(warn).toHaveBeenCalledWith('[leads] submitLead: team notification failed', 'resend down')
+    expect(warn).toHaveBeenCalledWith('[leads] team notification failed', 'resend down')
     warn.mockRestore()
   })
 })

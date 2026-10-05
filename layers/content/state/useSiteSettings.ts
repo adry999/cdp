@@ -1,7 +1,7 @@
 import { pick } from '#layers/core/shared/utils/pick'
 import { SITE_SETTINGS } from '#layers/content/data/siteSettings'
 
-// Localises `data/siteSettings.ts` (edit values there) for HomeContact/HomeWork/SiteFooter/app.vue.
+// Localises `data/siteSettings.ts`.
 export function useSiteSettings() {
   const { locale } = useI18n()
 
