@@ -13,6 +13,44 @@ rămâne vizibil ca placeholder.
 
 - [ ] Confirmare că `contact@codepedia.md` este adresa corectă
 
+## Domenii multiple — etapă viitoare
+
+Decizie (2026-10-06): același site pe toate domeniile, fără redirect 301 între ele.
+Fiecare domeniu are o limbă implicită; vizitatorul poate schimba limba și rămâne
+pe domeniul curent.
+
+| Domeniu | Limba implicită | Rol |
+|---|---|---|
+| `codepedia.studio` | EN | principal, selector cu toate limbile |
+| `codepedia.md` | RO | `ro-MD` |
+| `codepedia.ro` | RO | `ro-RO` (viitor) |
+| `codepedia.it` | IT | `it` (viitor) |
+
+SEO: fiecare limbă are un singur domeniu oficial. `<link rel="canonical">` indică
+mereu acel domeniu (EN → `.studio`, RO → `.md` / `.ro` ca variantă regională,
+IT → `.it`), cu `hreflang` între toate variantele și `x-default` pe `.studio`.
+Așa, `codepedia.md/en/...` funcționează, dar Google indexează doar
+`codepedia.studio/en/...`.
+
+- [ ] `@nuxtjs/i18n`: configurare pe domenii (mai multe domenii per locale, limbă
+      implicită per domeniu) — de verificat în documentația versiunii instalate
+- [ ] Tabel unic limbă → domeniu oficial, folosit de canonical, `hreflang` și sitemap
+- [ ] `layers/core/server/middleware/locale-redirect.ts` și `resolveLocale.ts`:
+      limba implicită vine din domeniu; cookie-ul `codepedia_locale` are prioritate
+- [ ] Sitemap per domeniu, doar cu paginile al căror canonical e acel domeniu
+- [ ] Italiană: `i18n/locales/it.json`, coloane `_it` pentru proiecte (migrare +
+      admin + `save_project`), conținutul din `layers/*/data/` în IT
+- [ ] Vercel: toate domeniile pe același proiect, fără redirect între ele;
+      `NUXT_PUBLIC_SITE_URL` → `https://codepedia.studio`
+- [ ] Google Search Console: fiecare domeniu adăugat separat
+
+## Email
+
+- [ ] Adresa principală `contact@codepedia.studio` (2026-10-06); `contact@codepedia.md`,
+      `.ro`, `.it` ca aliasuri spre aceeași căsuță. De schimbat în
+      `layers/content/data/siteSettings.ts` și `layers/core/server/utils/sendMail.ts`
+      doar după ce căsuța `.studio` există și are SPF/DKIM/DMARC
+
 ## Confidențialitate
 
 - [ ] Perioada de retenție pentru `leads` (formular de contact + chestionar de
