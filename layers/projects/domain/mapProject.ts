@@ -8,11 +8,10 @@ export interface ProjectFactRow {
   value_en: string | null
   sort_order: number
 }
-export interface ProjectStepRow {
-  title_ro: string
-  title_en: string | null
-  body_ro: string
-  body_en: string | null
+export interface ProjectStackRow {
+  name: string
+  role_ro: string
+  role_en: string | null
   sort_order: number
 }
 export interface ProjectStatRow {
@@ -37,6 +36,8 @@ export interface ProjectCardRow {
   card_title_en: string | null
   summary_ro: string
   summary_en: string | null
+  kind_ro: string | null
+  kind_en: string | null
   tech: string[]
   service_tag: string | null
   featured: boolean
@@ -55,22 +56,30 @@ export interface ProjectRow extends ProjectCardRow {
   hero_path: string | null
   hero_alt_ro: string | null
   hero_alt_en: string | null
-  context_heading_ro: string | null
-  context_heading_en: string | null
+  tags_ro: string[]
+  tags_en: string[]
+  live_url: string | null
+  live_url_label_ro: string | null
+  live_url_label_en: string | null
+  screens_demo: boolean
   context_body_ro: string | null
   context_body_en: string | null
-  solution_heading_ro: string | null
-  solution_heading_en: string | null
+  solution_body_ro: string | null
+  solution_body_en: string | null
+  obstacles_body_ro: string | null
+  obstacles_body_en: string | null
+  changes_body_ro: string | null
+  changes_body_en: string | null
+  result_body_ro: string | null
+  result_body_en: string | null
   quote_ro: string | null
   quote_en: string | null
   quote_author: string | null
   quote_role_ro: string | null
   quote_role_en: string | null
   quote_company: string | null
-  next_title_ro: string | null
-  next_title_en: string | null
   project_facts: ProjectFactRow[]
-  project_steps: ProjectStepRow[]
+  project_stack: ProjectStackRow[]
   project_stats: ProjectStatRow[]
   project_images: ProjectImageRow[]
 }
@@ -80,9 +89,16 @@ type Locale = 'ro' | 'en'
 /** Frames the case-study design reserves for gallery screenshots. */
 const GALLERY_PLACEHOLDER_COUNT = 2
 
+function paragraphs(ro: string | null, en: string | null, locale: Locale): string[] {
+  return pick(ro ?? '', en, locale)
+    .split(/\n\s*\n/)
+    .filter((p) => p.trim())
+}
+
 export function mapProjectCard(row: ProjectCardRow, locale: Locale) {
   return {
     slug: (locale === 'en' && row.slug_en) || row.slug_ro,
+    kind: pick(row.kind_ro ?? '', row.kind_en, locale),
     tech: row.tech,
     title: pick(row.card_title_ro, row.card_title_en, locale),
     text: pick(row.summary_ro, row.summary_en, locale),
@@ -126,19 +142,19 @@ export function mapProject(row: ProjectRow, locale: Locale) {
       facts: [...row.project_facts]
         .sort((a, b) => a.sort_order - b.sort_order)
         .map((f) => ({ label: pick(f.label_ro, f.label_en, locale), value: pick(f.value_ro, f.value_en, locale) })),
-      contextTitle: pick(row.context_heading_ro ?? '', row.context_heading_en, locale),
-      contextParagraphs: pick(row.context_body_ro ?? '', row.context_body_en, locale)
-        .split(/\n\s*\n/)
-        .filter(Boolean),
-      solutionTitle: pick(row.solution_heading_ro ?? '', row.solution_heading_en, locale),
-      steps: [...row.project_steps]
+      tags: locale === 'en' ? row.tags_en : row.tags_ro,
+      liveUrl: row.live_url?.trim() || null,
+      liveUrlLabel: pick(row.live_url_label_ro ?? '', row.live_url_label_en, locale),
+      problemParagraphs: paragraphs(row.context_body_ro, row.context_body_en, locale),
+      solutionParagraphs: paragraphs(row.solution_body_ro, row.solution_body_en, locale),
+      stack: [...row.project_stack]
         .sort((a, b) => a.sort_order - b.sort_order)
-        .map((s, i) => ({
-          number: String(i + 1).padStart(2, '0'),
-          title: pick(s.title_ro, s.title_en, locale),
-          text: pick(s.body_ro, s.body_en, locale),
-        })),
-      // The design shows two 4/3 frames. Until real screenshots exist the frames
+        .map((s) => ({ name: s.name, role: pick(s.role_ro, s.role_en, locale) })),
+      obstaclesParagraphs: paragraphs(row.obstacles_body_ro, row.obstacles_body_en, locale),
+      changesParagraphs: paragraphs(row.changes_body_ro, row.changes_body_en, locale),
+      resultParagraphs: paragraphs(row.result_body_ro, row.result_body_en, locale),
+      screensDemo: row.screens_demo,
+      // The design shows two 16/10 frames. Until real screenshots exist the frames
       // stay as visible placeholders — rendered from nothing, not from blank
       // rows in project_images (a NOT NULL path of '' renders a broken image).
       gallery: galleryImages.length
@@ -157,7 +173,6 @@ export function mapProject(row: ProjectRow, locale: Locale) {
         .map((s) => ({ value: s.value, label: pick(s.label_ro, s.label_en, locale) })),
       quote: pick(row.quote_ro ?? '', row.quote_en, locale),
       attribution,
-      nextTitle: pick(row.next_title_ro ?? '', row.next_title_en, locale),
     },
   }
 }

@@ -268,11 +268,48 @@
     "sections": {
       "hero": "Case study",
       "facts": "Facts",
-      "context": "Context",
-      "solution": "Solution",
-      "result": "Result",
-      "next": "Next"
-    }
+      "next": "Next",
+      "problem": {
+        "label": "Problem",
+        "heading": "The starting point",
+        "placeholder": "Section copy."
+      },
+      "solution": {
+        "label": "Solution",
+        "heading": "How we found the answer",
+        "placeholder": "Section copy."
+      },
+      "stack": {
+        "label": "Stack",
+        "heading": "The technology we used",
+        "placeholder": "The stack used."
+      },
+      "obstacles": {
+        "label": "Obstacles",
+        "heading": "What got in the way",
+        "placeholder": "Section copy."
+      },
+      "changes": {
+        "label": "Changes",
+        "heading": "What we changed along the way",
+        "placeholder": "Section copy."
+      },
+      "result": {
+        "label": "Result",
+        "heading": "The final result",
+        "placeholder": "Result figures."
+      },
+      "feedback": {
+        "label": "Feedback",
+        "heading": "What the client says",
+        "placeholder": "A quote from the client, with name and role."
+      }
+    },
+    "toComplete": "To complete",
+    "screensDemo": "Screens with demo data",
+    "nextTitle": "Have a similar project?",
+    "cta": "Let’s talk",
+    "quote": "“{text}”"
   },
   "qualifier": {
     "trigger": "Start a project",

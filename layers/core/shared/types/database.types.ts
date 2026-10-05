@@ -240,6 +240,41 @@ export type Database = {
           },
         ]
       }
+      project_stack: {
+        Row: {
+          id: string
+          name: string
+          project_id: string
+          role_en: string | null
+          role_ro: string
+          sort_order: number
+        }
+        Insert: {
+          id?: string
+          name: string
+          project_id: string
+          role_en?: string | null
+          role_ro: string
+          sort_order?: number
+        }
+        Update: {
+          id?: string
+          name?: string
+          project_id?: string
+          role_en?: string | null
+          role_ro?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_stack_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       project_stats: {
         Row: {
           id: string
@@ -317,6 +352,8 @@ export type Database = {
         Row: {
           card_title_en: string | null
           card_title_ro: string
+          changes_body_en: string | null
+          changes_body_ro: string | null
           context_body_en: string | null
           context_body_ro: string | null
           context_heading_en: string | null
@@ -330,10 +367,17 @@ export type Database = {
           hero_alt_ro: string | null
           hero_path: string | null
           id: string
+          kind_en: string | null
+          kind_ro: string | null
           lead_en: string | null
           lead_ro: string
+          live_url: string | null
+          live_url_label_en: string | null
+          live_url_label_ro: string | null
           next_title_en: string | null
           next_title_ro: string | null
+          obstacles_body_en: string | null
+          obstacles_body_ro: string | null
           preview_token: string
           published_at: string | null
           quote_author: string | null
@@ -343,14 +387,21 @@ export type Database = {
           quote_role_en: string | null
           quote_role_ro: string | null
           // hand-added ahead of supabase gen types — re-check after the migration is applied and types are regenerated
+          result_body_en: string | null
+          result_body_ro: string | null
+          screens_demo: boolean
           service_tag: string | null
           slug_en: string | null
           slug_ro: string
+          solution_body_en: string | null
+          solution_body_ro: string | null
           solution_heading_en: string | null
           solution_heading_ro: string | null
           sort_order: number
           summary_en: string | null
           summary_ro: string
+          tags_en: string[]
+          tags_ro: string[]
           tech: string[]
           title_en: string | null
           title_ro: string
@@ -361,6 +412,8 @@ export type Database = {
         Insert: {
           card_title_en?: string | null
           card_title_ro: string
+          changes_body_en?: string | null
+          changes_body_ro?: string | null
           context_body_en?: string | null
           context_body_ro?: string | null
           context_heading_en?: string | null
@@ -374,10 +427,17 @@ export type Database = {
           hero_alt_ro?: string | null
           hero_path?: string | null
           id?: string
+          kind_en?: string | null
+          kind_ro?: string | null
           lead_en?: string | null
           lead_ro: string
+          live_url?: string | null
+          live_url_label_en?: string | null
+          live_url_label_ro?: string | null
           next_title_en?: string | null
           next_title_ro?: string | null
+          obstacles_body_en?: string | null
+          obstacles_body_ro?: string | null
           preview_token?: string
           published_at?: string | null
           quote_author?: string | null
@@ -386,14 +446,21 @@ export type Database = {
           quote_ro?: string | null
           quote_role_en?: string | null
           quote_role_ro?: string | null
+          result_body_en?: string | null
+          result_body_ro?: string | null
+          screens_demo?: boolean
           service_tag?: string | null
           slug_en?: string | null
           slug_ro: string
+          solution_body_en?: string | null
+          solution_body_ro?: string | null
           solution_heading_en?: string | null
           solution_heading_ro?: string | null
           sort_order?: number
           summary_en?: string | null
           summary_ro: string
+          tags_en?: string[]
+          tags_ro?: string[]
           tech?: string[]
           title_en?: string | null
           title_ro: string
@@ -404,6 +471,8 @@ export type Database = {
         Update: {
           card_title_en?: string | null
           card_title_ro?: string
+          changes_body_en?: string | null
+          changes_body_ro?: string | null
           context_body_en?: string | null
           context_body_ro?: string | null
           context_heading_en?: string | null
@@ -417,10 +486,17 @@ export type Database = {
           hero_alt_ro?: string | null
           hero_path?: string | null
           id?: string
+          kind_en?: string | null
+          kind_ro?: string | null
           lead_en?: string | null
           lead_ro?: string
+          live_url?: string | null
+          live_url_label_en?: string | null
+          live_url_label_ro?: string | null
           next_title_en?: string | null
           next_title_ro?: string | null
+          obstacles_body_en?: string | null
+          obstacles_body_ro?: string | null
           preview_token?: string
           published_at?: string | null
           quote_author?: string | null
@@ -429,14 +505,21 @@ export type Database = {
           quote_ro?: string | null
           quote_role_en?: string | null
           quote_role_ro?: string | null
+          result_body_en?: string | null
+          result_body_ro?: string | null
+          screens_demo?: boolean
           service_tag?: string | null
           slug_en?: string | null
           slug_ro?: string
+          solution_body_en?: string | null
+          solution_body_ro?: string | null
           solution_heading_en?: string | null
           solution_heading_ro?: string | null
           sort_order?: number
           summary_en?: string | null
           summary_ro?: string
+          tags_en?: string[]
+          tags_ro?: string[]
           tech?: string[]
           title_en?: string | null
           title_ro?: string

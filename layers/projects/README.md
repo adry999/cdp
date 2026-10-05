@@ -12,14 +12,14 @@ public API of `layers/qualifier`.
   shape every case-study component renders from. Built on top of
   `mapProjectCard`.
 - `mapProjectCard(row, locale)` — the card-only half: title, text, tech,
-  thumbnail, `serviceTag`, `featured`. What every list consumer (`HomeWork`,
+  thumbnail, `kind`, `serviceTag`, `featured`. What every list consumer (`HomeWork`,
   `ServicesRelatedProjects`, `/proiecte`) actually renders.
 - `selectHomeProjects(rows)` — the rows the homepage shows: the featured ones
   in `sort_order`, or the first three if none are featured.
 - `availableTags(rows)` — the `ServiceTagId`s present in a row list, in
   canonical order; drives the `/proiecte` filter chips.
 - `MappedProject`, `MappedProjectCard`, `ProjectRow`, `ProjectCardRow`,
-  `ProjectFactRow`, `ProjectStepRow`, `ProjectStatRow`, `ProjectImageRow` —
+  `ProjectFactRow`, `ProjectStackRow`, `ProjectStatRow`, `ProjectImageRow` —
   domain types. `ProjectRow` extends `ProjectCardRow`.
 
 ## Public API (server) — `server/index.ts`
@@ -54,9 +54,13 @@ public API of `layers/qualifier`.
 
 ## Components
 
-- `ProjectsCaseStudyHero`, `ProjectsCaseStudyFacts`, `ProjectsCaseStudyContext`,
-  `ProjectsCaseStudySolution`, `ProjectsCaseStudyResult`, `ProjectsCaseStudyNext`
-  — the case-study sections, rendered from a `MappedProject` prop.
+- `ProjectsCaseStudyHero`, `ProjectsCaseStudyFacts`, `ProjectsCaseStudyNext`
+  — the unnumbered case-study blocks, rendered from a `MappedProject` prop.
+  `Next` also lists every other published project (`GET /api/projects`).
+- `ProjectsCaseStudySection` — one numbered section (01–07: problem, solution,
+  stack, obstacles, changes, result, feedback): label, heading, paragraphs, a
+  default slot for gallery / stack / stats / quote, and the dashed "to complete"
+  box when `empty`.
 - `ProjectsCaseStudyHeader` — sticky case-study header with the RO/EN slug
   switcher; used by the root `case-study` layout.
 - `ProjectsCard` — the project card (`HomeWork`'s original markup), `project`
@@ -70,10 +74,10 @@ public API of `layers/qualifier`.
 ## Data
 
 - `domain/projectSelect.ts` — `PROJECT_CARD_SELECT` (list consumers) and
-  `PROJECT_SELECT` (case-study route, facts/steps/stats/gallery images with
+  `PROJECT_SELECT` (case-study route, facts/stack/stats/gallery images with
   `aspect` and `sort_order` included). `ADMIN_PROJECT_SELECT` adds `id` and
   `published_at` for the admin editor. The editor saves back what it loaded,
-  so a gallery image keeps its stored `aspect`; new images default to `'4/3'`.
+  so a gallery image keeps its stored `aspect`; new images default to `'16/10'`.
 - `domain/mapProject.ts` — `ProjectCardRow`/`ProjectRow` → `MappedProjectCard`/
   `MappedProject`.
 - `domain/projectList.ts` — `selectHomeProjects`, `availableTags`.

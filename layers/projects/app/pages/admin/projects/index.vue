@@ -135,7 +135,7 @@ async function confirmDelete(slug: string) {
   await refresh()
 }
 
-const CHILD_TABLES = ['project_facts', 'project_steps', 'project_stats', 'project_images'] as const
+const CHILD_TABLES = ['project_facts', 'project_steps', 'project_stack', 'project_stats', 'project_images'] as const
 const MEDIA_BUCKET = 'project-media'
 
 // Copies the underlying Storage object rather than reusing its URL, so each

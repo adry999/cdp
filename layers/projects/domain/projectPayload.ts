@@ -37,7 +37,7 @@ export interface ProjectPayloadInput {
   cardTitle: { ro: string; en: string }
   summary: { ro: string; en: string }
   lead: { ro: string; en: string }
-  contextHeading: { ro: string; en: string }
+  contextBody: { ro: string; en: string }
   serviceTag: string | null
   gallery: ProjectImageInput[]
 }
@@ -52,7 +52,7 @@ const REQUIRED_RO: [keyof ProjectPayloadInput, string][] = [
   ['cardTitle', 'Titlu card'],
   ['summary', 'Descriere card'],
   ['lead', 'Lead'],
-  ['contextHeading', 'Titlu context'],
+  ['contextBody', 'Problema'],
 ]
 
 // Returns every problem at once rather than the first, so the editor can mark all offending fields in one pass.

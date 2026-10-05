@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     .not('published_at', 'is', null)
     .or(`slug_ro.eq.${slug},slug_en.eq.${slug}`)
     .order('sort_order', { foreignTable: 'project_facts' })
-    .order('sort_order', { foreignTable: 'project_steps' })
+    .order('sort_order', { foreignTable: 'project_stack' })
     .order('sort_order', { foreignTable: 'project_stats' })
     .order('sort_order', { foreignTable: 'project_images' })
     .maybeSingle()

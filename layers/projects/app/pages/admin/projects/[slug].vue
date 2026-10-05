@@ -41,6 +41,10 @@ const form = reactive({
   tech: [...(existingProject?.tech ?? [])] as string[],
   techInput: '',
   serviceTag: existingProject?.service_tag ?? null,
+  kind: bilingual(existingProject?.kind_ro ?? '', existingProject?.kind_en ?? ''),
+  tags: bilingual((existingProject?.tags_ro ?? []).join(', '), (existingProject?.tags_en ?? []).join(', ')),
+  liveUrl: existingProject?.live_url ?? '',
+  liveUrlLabel: bilingual(existingProject?.live_url_label_ro ?? '', existingProject?.live_url_label_en ?? ''),
 
   coverPath: existingProject?.cover_path ?? null,
   coverAlt: bilingual(existingProject?.cover_alt_ro ?? '', existingProject?.cover_alt_en ?? ''),
@@ -66,21 +70,19 @@ const form = reactive({
         ]
   ).map((f) => ({ label: bilingual(f.label_ro, f.label_en ?? ''), value: bilingual(f.value_ro, f.value_en ?? '') })),
 
-  contextHeading: bilingual(existingProject?.context_heading_ro ?? '', existingProject?.context_heading_en ?? ''),
   contextBody: bilingual(existingProject?.context_body_ro ?? '', existingProject?.context_body_en ?? ''),
-
-  solutionHeading: bilingual(existingProject?.solution_heading_ro ?? '', existingProject?.solution_heading_en ?? ''),
-  steps: (existingProject?.project_steps?.length ? existingProject.project_steps : [{ title_ro: '', title_en: '', body_ro: '', body_en: '' }]).map(
-    (s) => ({ title: bilingual(s.title_ro, s.title_en ?? ''), body: bilingual(s.body_ro, s.body_en ?? '') }),
-  ),
+  solutionBody: bilingual(existingProject?.solution_body_ro ?? '', existingProject?.solution_body_en ?? ''),
+  stack: (existingProject?.project_stack ?? []).map((s) => ({ name: s.name, role: bilingual(s.role_ro, s.role_en ?? '') })),
+  obstaclesBody: bilingual(existingProject?.obstacles_body_ro ?? '', existingProject?.obstacles_body_en ?? ''),
+  changesBody: bilingual(existingProject?.changes_body_ro ?? '', existingProject?.changes_body_en ?? ''),
+  resultBody: bilingual(existingProject?.result_body_ro ?? '', existingProject?.result_body_en ?? ''),
+  screensDemo: existingProject?.screens_demo ?? false,
 
   stats: (existingProject?.project_stats ?? []).map((s) => ({ value: s.value, label: bilingual(s.label_ro, s.label_en ?? '') })),
   quote: bilingual(existingProject?.quote_ro ?? '', existingProject?.quote_en ?? ''),
   quoteAuthor: existingProject?.quote_author ?? '',
   quoteRole: bilingual(existingProject?.quote_role_ro ?? '', existingProject?.quote_role_en ?? ''),
   quoteCompany: existingProject?.quote_company ?? '',
-
-  nextTitle: bilingual(existingProject?.next_title_ro ?? '', existingProject?.next_title_en ?? ''),
 
   published: !!existingProject?.published_at,
   featured: existingProject?.featured ?? false,
@@ -100,11 +102,18 @@ function addTech() {
 function removeTech(i: number) {
   form.tech.splice(i, 1)
 }
-function addStep() {
-  form.steps.push({ title: bilingual(), body: bilingual() })
+function addStackItem() {
+  form.stack.push({ name: '', role: bilingual() })
 }
-function removeStep(i: number) {
-  if (form.steps.length > 1) form.steps.splice(i, 1)
+function removeStackItem(i: number) {
+  form.stack.splice(i, 1)
+}
+// Comma-separated editor input -> text[] column.
+function splitTags(input: string): string[] {
+  return input
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter(Boolean)
 }
 function addStat() {
   if (form.stats.length < 4) form.stats.push({ value: '', label: bilingual() })
@@ -119,18 +128,18 @@ function removeFact(i: number) {
   if (form.facts.length > 1) form.facts.splice(i, 1)
 }
 function addGalleryImage() {
-  form.gallery.push({ path: null, altRo: '', altEn: '', aspect: '4/3' })
+  form.gallery.push({ path: null, altRo: '', altEn: '', aspect: '16/10' })
 }
 function removeGalleryImage(i: number) {
   form.gallery.splice(i, 1)
 }
 
-const dragInfo = ref<{ list: 'facts' | 'steps' | 'stats'; index: number } | null>(null)
+const dragInfo = ref<{ list: 'facts' | 'stack' | 'stats'; index: number } | null>(null)
 
-function reorderStart(list: 'facts' | 'steps' | 'stats', index: number) {
+function reorderStart(list: 'facts' | 'stack' | 'stats', index: number) {
   dragInfo.value = { list, index }
 }
-function reorderDrop(list: 'facts' | 'steps' | 'stats', index: number) {
+function reorderDrop(list: 'facts' | 'stack' | 'stats', index: number) {
   if (!dragInfo.value || dragInfo.value.list !== list || dragInfo.value.index === index) return
   const arr = form[list]
   const [moved] = arr.splice(dragInfo.value.index, 1)
@@ -153,7 +162,7 @@ async function save() {
     cardTitle: form.cardTitle,
     summary: form.summary,
     lead: form.lead,
-    contextHeading: form.contextHeading,
+    contextBody: form.contextBody,
     serviceTag: form.serviceTag,
     gallery: form.gallery,
   })
@@ -167,7 +176,7 @@ async function save() {
   saveState.value = 'saving'
 
   // Single RPC, single transaction: either the whole project saves — project
-  // row, facts, steps, stats, gallery, redirect on slug change — or none of it
+  // row, facts, stack, stats, gallery, redirect on slug change — or none of it
   // does. See supabase/migrations/20260826120200_save_project_rpc.sql.
   const { data, error } = await supabase.rpc('save_project', {
     payload: {
@@ -193,20 +202,30 @@ async function save() {
       hero_path: form.heroPath,
       hero_alt_ro: form.heroAlt.ro || null,
       hero_alt_en: form.heroAlt.en || null,
-      context_heading_ro: form.contextHeading.ro,
-      context_heading_en: form.contextHeading.en || null,
+      kind_ro: form.kind.ro || null,
+      kind_en: form.kind.en || null,
+      tags_ro: splitTags(form.tags.ro),
+      tags_en: splitTags(form.tags.en),
+      live_url: form.liveUrl.trim() || null,
+      live_url_label_ro: form.liveUrlLabel.ro || null,
+      live_url_label_en: form.liveUrlLabel.en || null,
+      screens_demo: form.screensDemo,
       context_body_ro: form.contextBody.ro || null,
       context_body_en: form.contextBody.en || null,
-      solution_heading_ro: form.solutionHeading.ro || null,
-      solution_heading_en: form.solutionHeading.en || null,
+      solution_body_ro: form.solutionBody.ro || null,
+      solution_body_en: form.solutionBody.en || null,
+      obstacles_body_ro: form.obstaclesBody.ro || null,
+      obstacles_body_en: form.obstaclesBody.en || null,
+      changes_body_ro: form.changesBody.ro || null,
+      changes_body_en: form.changesBody.en || null,
+      result_body_ro: form.resultBody.ro || null,
+      result_body_en: form.resultBody.en || null,
       quote_ro: form.quote.ro || null,
       quote_en: form.quote.en || null,
       quote_author: form.quoteAuthor || null,
       quote_role_ro: form.quoteRole.ro || null,
       quote_role_en: form.quoteRole.en || null,
       quote_company: form.quoteCompany || null,
-      next_title_ro: form.nextTitle.ro || null,
-      next_title_en: form.nextTitle.en || null,
       sort_order: null,
       facts: form.facts.map((f) => ({
         label_ro: f.label.ro,
@@ -214,12 +233,13 @@ async function save() {
         value_ro: f.value.ro,
         value_en: f.value.en || null,
       })),
-      steps: form.steps.map((s) => ({
-        title_ro: s.title.ro,
-        title_en: s.title.en || null,
-        body_ro: s.body.ro,
-        body_en: s.body.en || null,
-      })),
+      stack: form.stack
+        .filter((s) => s.name.trim())
+        .map((s) => ({
+          name: s.name.trim(),
+          role_ro: s.role.ro,
+          role_en: s.role.en || null,
+        })),
       stats: form.stats.map((s) => ({
         value: s.value,
         label_ro: s.label.ro,
@@ -348,6 +368,10 @@ async function cleanupReplacedMedia() {
                 </div>
               </div>
             </div>
+            <AdminFieldPair v-model:ro="form.kind.ro" v-model:en="form.kind.en" label="Tip proiect (ex. Aplicație web)" />
+            <AdminFieldPair v-model:ro="form.tags.ro" v-model:en="form.tags.en" label="Etichete hero (separate prin virgulă)" />
+            <AdminField v-model="form.liveUrl" label="Link live (opțional)" />
+            <AdminFieldPair v-model:ro="form.liveUrlLabel.ro" v-model:en="form.liveUrlLabel.en" label="Text link live" />
             <div>
               <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Serviciu</div>
               <select v-model="form.serviceTag" class="mt-2 w-full border border-hairline bg-paper px-3 py-2 outline-none focus:border-ink">
@@ -400,7 +424,7 @@ async function cleanupReplacedMedia() {
                 <div v-for="(img, i) in form.gallery" :key="i" class="relative">
                   <AdminImageUpload
                     v-model="img.path"
-                    ratio="4/3"
+                    ratio="16/10"
                     :label="`[ galerie ${i + 1} ]`"
                     :path-prefix="`${form.slugRo || 'proiect-nou'}/gallery-${i}`"
                   />
@@ -421,7 +445,7 @@ async function cleanupReplacedMedia() {
         <!-- Date -->
         <section class="rounded border border-hairline p-6">
           <div class="flex items-center justify-between">
-            <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Date (secțiunea 01)</div>
+            <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Date</div>
             <button type="button" class="cursor-pointer border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-[0.08em] text-signal" @click="addFact">
               + Fapt
             </button>
@@ -453,56 +477,78 @@ async function cleanupReplacedMedia() {
           </div>
         </section>
 
-        <!-- Context -->
+        <!-- Problema -->
         <section class="rounded border border-hairline p-6">
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Context (secțiunea 02)</div>
+          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Problema (secțiunea 01)</div>
           <div class="mt-4 flex flex-col gap-4">
-            <AdminFieldPair v-model:ro="form.contextHeading.ro" v-model:en="form.contextHeading.en" label="Titlu" required />
             <AdminFieldPair v-model:ro="form.contextBody.ro" v-model:en="form.contextBody.en" label="Text (paragrafe separate de o linie goală)" textarea required />
           </div>
         </section>
 
-        <!-- Soluție -->
+        <!-- Soluția -->
+        <section class="rounded border border-hairline p-6">
+          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Soluția (secțiunea 02)</div>
+          <div class="mt-4 flex flex-col gap-4">
+            <AdminFieldPair v-model:ro="form.solutionBody.ro" v-model:en="form.solutionBody.en" label="Text (paragrafe separate de o linie goală)" textarea />
+            <label class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.08em]">
+              <input v-model="form.screensDemo" type="checkbox" class="accent-signal" >
+              <span :class="form.screensDemo ? 'text-signal' : 'text-muted'">Ecrane cu date demonstrative</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- Stack -->
         <section class="rounded border border-hairline p-6">
           <div class="flex items-center justify-between">
-            <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Soluție (secțiunea 03)</div>
-            <button type="button" class="cursor-pointer border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-[0.08em] text-signal" @click="addStep">
-              + Pas
+                    <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Stack (secțiunea 03)</div>
+            <button type="button" class="cursor-pointer border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-[0.08em] text-signal" @click="addStackItem">
+              + Tehnologie
             </button>
           </div>
           <div class="mt-4 flex flex-col gap-4">
-            <AdminFieldPair v-model:ro="form.solutionHeading.ro" v-model:en="form.solutionHeading.en" label="Titlu secțiune" required />
             <div
-              v-for="(step, i) in form.steps"
+              v-for="(item, i) in form.stack"
               :key="i"
               draggable="true"
-              class="flex cursor-grab flex-col gap-3 border-t border-hairline pt-4"
-              :class="{ 'opacity-40': dragInfo?.list === 'steps' && dragInfo.index === i }"
-              @dragstart="reorderStart('steps', i)"
+              class="flex cursor-grab items-end gap-3 border-t border-hairline pt-4 first:border-t-0 first:pt-0"
+              :class="{ 'opacity-40': dragInfo?.list === 'stack' && dragInfo.index === i }"
+              @dragstart="reorderStart('stack', i)"
               @dragover.prevent
-              @drop="reorderDrop('steps', i)"
+              @drop="reorderDrop('stack', i)"
             >
-              <div class="flex items-center justify-between">
-                <span class="font-mono text-xs tracking-[0.08em] text-muted">⠿ Pas {{ String(i + 1).padStart(2, '0') }}</span>
-                <button
-                  v-if="form.steps.length > 1"
-                  type="button"
-                  class="cursor-pointer border-0 bg-transparent p-0 font-mono text-[11px] uppercase tracking-[0.08em] text-muted hover:text-signal"
-                  @click="removeStep(i)"
-                >
-                  Șterge
-                </button>
+              <div class="w-48 flex-none">
+                <AdminField v-model="item.name" label="Nume" />
               </div>
-              <AdminFieldPair v-model:ro="step.title.ro" v-model:en="step.title.en" label="Titlu pas" />
-              <AdminFieldPair v-model:ro="step.body.ro" v-model:en="step.body.en" label="Descriere" textarea />
+              <div class="flex-1">
+                <AdminFieldPair v-model:ro="item.role.ro" v-model:en="item.role.en" label="Rol" />
+              </div>
+              <button type="button" class="mb-2.5 cursor-pointer border-0 bg-transparent p-0 font-mono text-[11px] uppercase tracking-[0.08em] text-muted hover:text-signal" @click="removeStackItem(i)">
+                Șterge
+              </button>
             </div>
+          </div>
+        </section>
+
+        <!-- Obstacole -->
+        <section class="rounded border border-hairline p-6">
+          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Obstacole (secțiunea 04)</div>
+          <div class="mt-4 flex flex-col gap-4">
+            <AdminFieldPair v-model:ro="form.obstaclesBody.ro" v-model:en="form.obstaclesBody.en" label="Text (paragrafe separate de o linie goală)" textarea />
+          </div>
+        </section>
+
+        <!-- Schimbări -->
+        <section class="rounded border border-hairline p-6">
+          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Schimbări (secțiunea 05)</div>
+          <div class="mt-4 flex flex-col gap-4">
+            <AdminFieldPair v-model:ro="form.changesBody.ro" v-model:en="form.changesBody.en" label="Text (paragrafe separate de o linie goală)" textarea />
           </div>
         </section>
 
         <!-- Rezultat -->
         <section class="rounded border border-hairline p-6">
           <div class="flex items-center justify-between">
-            <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Rezultat (secțiunea 04)</div>
+            <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Rezultat și feedback (secțiuni 06–07)</div>
             <button
               v-if="form.stats.length < 4"
               type="button"
@@ -513,6 +559,7 @@ async function cleanupReplacedMedia() {
             </button>
           </div>
           <div class="mt-4 flex flex-col gap-4">
+            <AdminFieldPair v-model:ro="form.resultBody.ro" v-model:en="form.resultBody.en" label="Text rezultat (paragrafe separate de o linie goală)" textarea />
             <div
               v-for="(stat, i) in form.stats"
               :key="i"
@@ -543,14 +590,6 @@ async function cleanupReplacedMedia() {
               <AdminFieldPair v-model:ro="form.quoteRole.ro" v-model:en="form.quoteRole.en" label="Funcție" />
               <AdminField v-model="form.quoteCompany" label="Companie" />
             </div>
-          </div>
-        </section>
-
-        <!-- Următorul pas -->
-        <section class="rounded border border-hairline p-6">
-          <div class="font-mono text-xs uppercase tracking-[0.08em] text-muted">Următorul pas (secțiunea 05)</div>
-          <div class="mt-4">
-            <AdminFieldPair v-model:ro="form.nextTitle.ro" v-model:en="form.nextTitle.en" label="Titlu CTA de final" />
           </div>
         </section>
 

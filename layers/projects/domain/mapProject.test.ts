@@ -22,26 +22,36 @@ const baseRow: ProjectRow = {
   hero_path: null,
   hero_alt_ro: null,
   hero_alt_en: null,
-  context_heading_ro: 'Context RO',
-  context_heading_en: 'Context EN',
+  kind_ro: 'Aplicație web',
+  kind_en: 'Web app',
+  tags_ro: [],
+  tags_en: [],
+  live_url: null,
+  live_url_label_ro: null,
+  live_url_label_en: null,
+  screens_demo: false,
   context_body_ro: 'Primul paragraf.\n\nAl doilea paragraf.',
   context_body_en: 'First paragraph.\n\nSecond paragraph.',
-  solution_heading_ro: 'Soluție RO',
-  solution_heading_en: 'Solution EN',
+  solution_body_ro: null,
+  solution_body_en: null,
+  obstacles_body_ro: null,
+  obstacles_body_en: null,
+  changes_body_ro: null,
+  changes_body_en: null,
+  result_body_ro: null,
+  result_body_en: null,
   quote_ro: 'Citat RO',
   quote_en: 'Quote EN',
   quote_author: null,
   quote_role_ro: null,
   quote_role_en: null,
   quote_company: null,
-  next_title_ro: 'Următorul RO',
-  next_title_en: 'Next EN',
   sort_order: 0,
   project_facts: [
     { label_ro: 'Doi', label_en: 'Two', value_ro: '2', value_en: '2', sort_order: 2 },
     { label_ro: 'Unu', label_en: 'One', value_ro: '1', value_en: '1', sort_order: 1 },
   ],
-  project_steps: [],
+  project_stack: [],
   project_stats: [],
   project_images: [],
 }
@@ -84,11 +94,58 @@ describe('mapProject', () => {
     expect(facts.map((f) => f.value)).toEqual(['1', '2'])
   })
 
-  it('splits context body into paragraphs on blank lines', () => {
-    expect(mapProject(baseRow, 'ro').caseStudy.contextParagraphs).toEqual([
+  it('splits the problem text into paragraphs on blank lines', () => {
+    expect(mapProject(baseRow, 'ro').caseStudy.problemParagraphs).toEqual([
       'Primul paragraf.',
       'Al doilea paragraf.',
     ])
+  })
+
+  it('splits solution, obstacles, changes and result text the same way, empty when unset', () => {
+    const row = {
+      ...baseRow,
+      solution_body_ro: 'A.\n\nB.',
+      obstacles_body_en: 'Hurdle.',
+      result_body_ro: '  ',
+    }
+    const cs = mapProject(row, 'ro').caseStudy
+    expect(cs.solutionParagraphs).toEqual(['A.', 'B.'])
+    expect(cs.obstaclesParagraphs).toEqual([])
+    expect(cs.changesParagraphs).toEqual([])
+    expect(cs.resultParagraphs).toEqual([])
+    expect(mapProject(row, 'en').caseStudy.obstaclesParagraphs).toEqual(['Hurdle.'])
+  })
+
+  it('uses the locale tags, empty when none are set', () => {
+    const row = { ...baseRow, tags_ro: ['SaaS', 'B2B'], tags_en: [] }
+    expect(mapProject(row, 'ro').caseStudy.tags).toEqual(['SaaS', 'B2B'])
+    expect(mapProject(baseRow, 'en').caseStudy.tags).toEqual([])
+  })
+
+  it('maps the live link only when a url is set, falling back to the RO label', () => {
+    expect(mapProject(baseRow, 'ro').caseStudy.liveUrl).toBeNull()
+    const row = { ...baseRow, live_url: 'https://example.com', live_url_label_ro: 'Vezi live', live_url_label_en: null }
+    const cs = mapProject(row, 'en').caseStudy
+    expect(cs.liveUrl).toBe('https://example.com')
+    expect(cs.liveUrlLabel).toBe('Vezi live')
+  })
+
+  it('sorts stack rows by sort_order and picks the locale role', () => {
+    const row = {
+      ...baseRow,
+      project_stack: [
+        { name: 'B', role_ro: 'Doi', role_en: 'Two', sort_order: 2 },
+        { name: 'A', role_ro: 'Unu', role_en: null, sort_order: 1 },
+      ],
+    }
+    expect(mapProject(row, 'en').caseStudy.stack).toEqual([
+      { name: 'A', role: 'Unu' },
+      { name: 'B', role: 'Two' },
+    ])
+  })
+
+  it('carries screens_demo through', () => {
+    expect(mapProject({ ...baseRow, screens_demo: true }, 'ro').caseStudy.screensDemo).toBe(true)
   })
 
   it('wraps the cover thumbnail label in brackets, falling back to the title when no alt text is set', () => {
@@ -107,6 +164,11 @@ describe('mapProjectCard', () => {
     expect(card.title).toBe('Card EN')
     expect(card.text).toBe('Summary EN')
     expect(card.featured).toBe(true)
+  })
+
+  it('picks the locale kind, empty when unset', () => {
+    expect(mapProjectCard(baseRow, 'en').kind).toBe('Web app')
+    expect(mapProjectCard({ ...baseRow, kind_ro: null, kind_en: null }, 'ro').kind).toBe('')
   })
 
   it('maps a known service_tag to serviceTag', () => {

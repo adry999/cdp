@@ -268,11 +268,48 @@
     "sections": {
       "hero": "Studiu de caz",
       "facts": "Date",
-      "context": "Context",
-      "solution": "Soluție",
-      "result": "Rezultat",
-      "next": "Următorul pas"
-    }
+      "next": "Următorul pas",
+      "problem": {
+        "label": "Problema",
+        "heading": "Punctul de plecare",
+        "placeholder": "Textul secțiunii."
+      },
+      "solution": {
+        "label": "Soluția",
+        "heading": "Cum am găsit rezolvarea",
+        "placeholder": "Textul secțiunii."
+      },
+      "stack": {
+        "label": "Stack",
+        "heading": "Tehnologiile folosite",
+        "placeholder": "Stack-ul folosit."
+      },
+      "obstacles": {
+        "label": "Obstacole",
+        "heading": "Ce probleme am întâmpinat",
+        "placeholder": "Textul secțiunii."
+      },
+      "changes": {
+        "label": "Schimbări",
+        "heading": "Ce am schimbat pe parcurs",
+        "placeholder": "Textul secțiunii."
+      },
+      "result": {
+        "label": "Rezultat",
+        "heading": "Rezultatul final",
+        "placeholder": "Cifrele de rezultat."
+      },
+      "feedback": {
+        "label": "Feedback",
+        "heading": "Ce spune clientul",
+        "placeholder": "Un citat de la client, cu nume și funcție."
+      }
+    },
+    "toComplete": "De completat",
+    "screensDemo": "Ecrane cu date demonstrative",
+    "nextTitle": "Ai un proiect asemănător?",
+    "cta": "Hai să discutăm",
+    "quote": "„{text}”"
   },
   "qualifier": {
     "trigger": "Începe un proiect",

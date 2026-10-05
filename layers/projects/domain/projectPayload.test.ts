@@ -16,7 +16,7 @@ function base(overrides: Partial<ProjectPayloadInput> = {}): ProjectPayloadInput
     cardTitle: { ro: 'Card', en: '' },
     summary: { ro: 'Sumar', en: '' },
     lead: { ro: 'Lead', en: '' },
-    contextHeading: { ro: 'Context', en: '' },
+    contextBody: { ro: 'Problema', en: '' },
     serviceTag: null,
     gallery: [],
     ...overrides,
@@ -61,6 +61,11 @@ describe('validateProjectPayload', () => {
       base({ title: { ro: '', en: '' }, lead: { ro: '  ', en: '' } }),
     )
     expect(issues.map((i) => i.field)).toEqual(expect.arrayContaining(['title', 'lead']))
+  })
+
+  it('requires the problem text (RO)', () => {
+    const issues = validateProjectPayload(base({ contextBody: { ro: ' ', en: 'x' } }))
+    expect(issues).toEqual([{ field: 'contextBody', message: 'Problema (RO) este obligatoriu.' }])
   })
 
   it('allows publishing with no gallery images', () => {
