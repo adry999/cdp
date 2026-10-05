@@ -29,6 +29,10 @@ const copyrightLine = computed(() => `© ${settings.value.copyrightYear}`)
       >
         {{ pick(service.name.ro, service.name.en, locale) }}
       </NuxtLink>
+      <NuxtLink :to="localePath('servicii')" class="hover:text-ink">{{ t('nav.services') }}</NuxtLink>
+      <NuxtLink :to="localePath('preturi')" class="hover:text-ink">{{ t('nav.pricing') }}</NuxtLink>
+      <NuxtLink :to="localePath('despre')" class="hover:text-ink">{{ t('nav.about') }}</NuxtLink>
+      <NuxtLink :to="localePath('contact')" class="hover:text-ink">{{ t('nav.contact') }}</NuxtLink>
       <NuxtLink :to="localePath('proiecte')" class="hover:text-ink">{{ t('nav.work') }}</NuxtLink>
       <NuxtLink :to="localePath('blog')" class="hover:text-ink">{{ t('nav.blog') }}</NuxtLink>
       <NuxtLink :to="localePath('confidentialitate')" class="hover:text-ink">{{ t('footer.privacy') }}</NuxtLink>

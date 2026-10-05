@@ -3,25 +3,19 @@ const { locale, t } = useI18n()
 const localePath = useLocalePath()
 const { setLocaleOverride } = useLocaleOverride()
 const route = useRoute()
+const getRouteBaseName = useRouteBaseName()
 
 const menuOpen = ref(false)
 const menuToggle = ref<HTMLButtonElement | null>(null)
 const mobileMenuId = 'site-mobile-menu'
 
-type NavLink =
-  | { kind: 'hash'; hash: string; label: string }
-  | { kind: 'route'; routeName: string; label: string }
+const navLinks = computed(() => (getRouteBaseName(route) === 'index' ? HOME_NAV_LINKS : PAGE_NAV_LINKS))
 
-const navLinks: NavLink[] = [
-  { kind: 'hash', hash: '#servicii', label: 'nav.services' },
-  { kind: 'hash', hash: '#stack', label: 'nav.stack' },
-  { kind: 'hash', hash: '#proces', label: 'nav.process' },
-  { kind: 'hash', hash: '#proiecte', label: 'nav.work' },
-  { kind: 'route', routeName: 'blog', label: 'nav.blog' },
-  { kind: 'hash', hash: '#contact', label: 'nav.contact' },
-]
+function isCtaLink(link: SiteNavLink): boolean {
+  return link.kind === 'hash' ? link.hash === '#contact' : link.routeName === 'contact'
+}
 
-function navLinkKey(link: NavLink): string {
+function navLinkKey(link: SiteNavLink): string {
   return link.kind === 'hash' ? link.hash : link.routeName
 }
 
@@ -61,7 +55,7 @@ onMounted(() => {
 <template>
   <header class="sticky top-0 z-20 bg-paper" @keydown="onMenuKeydown">
     <div class="mx-auto flex min-h-16 max-w-[1280px] items-center justify-between gap-6 px-gutter">
-      <NuxtLink :to="localePath('index')" aria-label="Codepedia" class="flex items-center">
+      <NuxtLink :to="localePath('index')" class="flex items-center">
         <img
           src="/brand/codepedia-wordmark.svg"
           alt="Codepedia"
@@ -71,12 +65,12 @@ onMounted(() => {
         >
       </NuxtLink>
 
-      <nav class="flex items-center gap-[clamp(14px,2vw,28px)] font-mono text-xs uppercase tracking-[0.08em]">
+      <nav :aria-label="t('nav.main')" class="flex items-center gap-[clamp(14px,2vw,28px)] font-mono text-xs uppercase tracking-[0.08em]">
         <div class="hidden items-center gap-[clamp(14px,2vw,28px)] border-r border-hairline pr-[clamp(14px,2vw,28px)] nav:flex">
           <template v-for="link in navLinks" :key="navLinkKey(link)">
-            <NuxtLink v-if="link.kind === 'hash'" :to="`${localePath('index')}${link.hash}`" aria-current="false" class="text-muted hover:text-signal">
+            <a v-if="link.kind === 'hash'" :href="`${localePath('index')}${link.hash}`" class="text-muted hover:text-signal">
               {{ t(link.label) }}
-            </NuxtLink>
+            </a>
             <NuxtLink v-else :to="localePath({ name: link.routeName })" class="text-muted hover:text-signal">
               {{ t(link.label) }}
             </NuxtLink>
@@ -134,25 +128,24 @@ onMounted(() => {
       class="flex flex-col border-t border-hairline px-gutter pb-5 pt-2 font-mono text-xs uppercase tracking-[0.08em] nav:hidden"
     >
       <template v-for="(link, i) in navLinks" :key="navLinkKey(link)">
-        <NuxtLink
+        <a
           v-if="link.kind === 'hash'"
-          :to="`${localePath('index')}${link.hash}`"
-          aria-current="false"
+          :href="`${localePath('index')}${link.hash}`"
           class="py-4"
           :class="[
-            i === navLinks.length - 1 ? 'text-ink underline decoration-signal underline-offset-4' : 'text-ink',
+            isCtaLink(link) ? 'text-ink underline decoration-signal underline-offset-4' : 'text-ink',
             { 'border-b border-hairline': i !== navLinks.length - 1 },
           ]"
           @click="closeMenu()"
         >
           {{ t(link.label) }}
-        </NuxtLink>
+        </a>
         <NuxtLink
           v-else
           :to="localePath({ name: link.routeName })"
           class="py-4"
           :class="[
-            i === navLinks.length - 1 ? 'text-ink underline decoration-signal underline-offset-4' : 'text-ink',
+            isCtaLink(link) ? 'text-ink underline decoration-signal underline-offset-4' : 'text-ink',
             { 'border-b border-hairline': i !== navLinks.length - 1 },
           ]"
           @click="closeMenu()"

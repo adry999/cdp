@@ -21,7 +21,7 @@ function caseStudyLocalePath(target: 'ro' | 'en') {
 <template>
   <header class="sticky top-0 z-20 bg-paper">
     <div class="mx-auto flex min-h-16 max-w-[1280px] items-center justify-between gap-6 px-gutter">
-      <NuxtLink :to="localePath('index')" aria-label="Codepedia" class="flex items-center">
+      <NuxtLink :to="localePath('index')" class="flex items-center">
         <img
           src="/brand/codepedia-wordmark.svg"
           alt="Codepedia"
@@ -30,10 +30,13 @@ function caseStudyLocalePath(target: 'ro' | 'en') {
           class="block h-[18px] w-auto"
         >
       </NuxtLink>
-      <nav class="flex items-center gap-[clamp(14px,2vw,28px)] font-mono text-xs uppercase tracking-[0.08em]">
+      <nav :aria-label="t('nav.main')" class="flex items-center gap-[clamp(14px,2vw,28px)] font-mono text-xs uppercase tracking-[0.08em]">
+        <div class="hidden items-center gap-[clamp(14px,2vw,28px)] border-r border-hairline pr-[clamp(14px,2vw,28px)] nav:flex">
+          <slot name="nav" />
+        </div>
         <NuxtLink
           :to="localePath('proiecte')"
-          class="border-r border-hairline pr-[clamp(14px,2vw,28px)] text-muted"
+          class="border-r border-hairline pr-[clamp(14px,2vw,28px)] text-muted nav:hidden"
         >
           {{ t('caseStudy.back') }}
         </NuxtLink>
