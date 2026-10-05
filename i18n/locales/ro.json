@@ -249,6 +249,15 @@
         "name": "Nume",
         "email": "Email",
         "company": "Companie (opțional)",
+        "stage": "Etapa",
+        "stageOptions": {
+          "E": "Express",
+          "B": "Concept",
+          "A": "Design → cod",
+          "C": "Scalare",
+          "D": "AI",
+          "unsure": "Nu știu"
+        },
         "message": "Descrierea problemei",
         "budget": "Buget",
         "budgetPlaceholder": "Alege un interval",

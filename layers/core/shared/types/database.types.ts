@@ -98,6 +98,7 @@ export type Database = {
           page: string | null
           referrer: string | null
           source: string | null
+          stage: string | null
           status: string
           utm: Json | null
         }
@@ -115,6 +116,7 @@ export type Database = {
           page?: string | null
           referrer?: string | null
           source?: string | null
+          stage?: string | null
           status?: string
           utm?: Json | null
         }
@@ -132,6 +134,7 @@ export type Database = {
           page?: string | null
           referrer?: string | null
           source?: string | null
+          stage?: string | null
           status?: string
           utm?: Json | null
         }

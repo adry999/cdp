@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import type { StageId } from '#layers/core/shared/types/service-stage'
 import type { LeadRecord } from '#layers/leads/domain/lead'
 import { buildContactSubmission } from '#layers/leads/test-support/buildContactSubmission'
 import { submitLead, type SubmitLeadDependencies } from './submitLead'
@@ -66,6 +67,26 @@ describe('submitLead', () => {
         'Vrem un portal pentru clienți.',
       ],
     })
+  })
+
+  it('rejects an unknown stage before checking the rate limit', async () => {
+    const { deps } = buildDeps()
+    const stage = 'Z' as unknown as StageId
+    const result = await submitLead(buildContactSubmission({ stage }), null, deps)
+    expect(result).toEqual({ outcome: 'invalid', errors: { stage: 'invalid_stage' } })
+    expect(deps.checkRateLimit).not.toHaveBeenCalled()
+    expect(deps.repository.insertLead).not.toHaveBeenCalled()
+  })
+
+  it('saves the stage and names it in the notification', async () => {
+    const { deps, savedRecords } = buildDeps()
+    await submitLead(buildContactSubmission({ stage: 'C' }), null, deps)
+    expect(savedRecords[0]?.stage).toBe('C')
+    expect(deps.notify).toHaveBeenCalledWith(
+      expect.objectContaining({
+        lines: expect.arrayContaining(['Etapă: Scalare']),
+      }),
+    )
   })
 
   it('still accepts the lead when the team notification fails, logging only the message', async () => {

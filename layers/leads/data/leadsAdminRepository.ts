@@ -4,7 +4,7 @@ import type { LeadStatus } from '#layers/leads/domain/lead'
 
 type SupabaseClient = ReturnType<typeof useSupabaseClient<Database>>
 
-const LEAD_LIST_COLUMNS = 'id, created_at, name, email, company, budget, message, status, archived_at'
+const LEAD_LIST_COLUMNS = 'id, created_at, name, email, company, budget, stage, message, status, archived_at'
 
 function failure(message: string, cause: unknown): AppError {
   return { code: 'unexpected', message, cause }

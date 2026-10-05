@@ -65,3 +65,9 @@ niciun vizual — este mai bună decât stock photography.
       marcat), lista completă e la `/proiecte`, filtrabilă pe tip de serviciu.
 - [ ] Traducerile EN pentru studiile de caz există în prototipuri; de verificat de
       un vorbitor nativ înainte de lansare
+
+## Formular contact — EN de tradus
+
+Designul nu are versiune EN pentru câmpul „Etapa”; valorile EN sunt textul RO până la traducere.
+
+- [ ] EN de tradus: `i18n/locales/en.json` — `home.contact.form.stage` și `home.contact.form.stageOptions.*` (Express, Concept, Design → cod, Scalare, AI, Nu știu)

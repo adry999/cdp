@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { leadBudgetLabel, leadStatusLabel } from '#layers/leads/domain/lead'
+import { leadBudgetLabel, leadStageLabel, leadStatusLabel } from '#layers/leads/domain/lead'
 import { useLeadsAdminList } from '#layers/leads/state/useLeadsAdminList'
 
 definePageMeta({ layout: 'admin', i18n: false })
@@ -37,6 +37,7 @@ const STATUS_CLASS: Record<string, string> = {
           <div class="min-w-0 flex-[1_1_180px] text-[15px] text-muted">{{ lead.email }}</div>
           <div class="min-w-0 flex-[1_1_140px] text-[15px] text-muted">{{ lead.company || '—' }}</div>
           <div class="flex-[0_0_140px] text-[15px] text-muted">{{ leadBudgetLabel(lead.budget) }}</div>
+          <div class="flex-[0_0_110px] text-[15px] text-muted">{{ leadStageLabel(lead.stage) }}</div>
           <div class="min-w-0 flex-[2_1_200px] truncate text-[15px] text-muted">{{ lead.message }}</div>
           <div class="flex-[0_0_100px] font-mono text-xs uppercase tracking-[0.08em]" :class="STATUS_CLASS[lead.status]">
             {{ leadStatusLabel(lead.status) }}

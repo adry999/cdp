@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { STAGE_ORDER, type StageId } from '#layers/core/shared/types/service-stage'
 import { LEAD_BUDGET_KEYS, type ContactFieldErrors } from '#layers/leads/domain/lead'
 import { useLeadSubmission } from '#layers/leads/state/useLeadSubmission'
 
@@ -13,6 +14,7 @@ const form = reactive({
   company: '',
   message: '',
   budget: '',
+  stage: undefined as StageId | undefined,
   source: '',
   website: '', // honeypot
 })
@@ -20,11 +22,17 @@ const form = reactive({
 const ERROR_MESSAGE_KEYS = {
   required: 'home.contact.form.errorRequired',
   invalid_email: 'home.contact.form.errorEmail',
+  invalid_stage: 'home.contact.form.error',
 } as const
 
 function fieldError(field: keyof ContactFieldErrors): string | undefined {
   const code = fieldErrors.value[field]
   return code ? t(ERROR_MESSAGE_KEYS[code]) : undefined
+}
+
+// Single-select, optional: picking the active chip again (or "Nu știu") clears it.
+function toggleStage(stage: StageId | undefined) {
+  form.stage = form.stage === stage ? undefined : stage
 }
 
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const
@@ -107,6 +115,34 @@ watch(status, (value) => {
         autocomplete="organization"
         class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
+    </div>
+
+    <div role="group" aria-labelledby="lead-stage-label">
+      <div id="lead-stage-label" class="font-mono text-xs uppercase tracking-[0.08em] text-muted">
+        {{ t('home.contact.form.stage') }}
+      </div>
+      <div class="mt-2 flex flex-wrap gap-1.5">
+        <button
+          v-for="stage in STAGE_ORDER"
+          :key="stage"
+          type="button"
+          :aria-pressed="form.stage === stage"
+          class="cursor-pointer rounded border px-2.5 py-[7px] font-mono text-[11px] uppercase tracking-[0.06em] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          :class="form.stage === stage ? 'border-ink bg-ink text-paper' : 'border-hairline text-muted'"
+          @click="toggleStage(stage)"
+        >
+          {{ t(`home.contact.form.stageOptions.${stage}`) }}
+        </button>
+        <button
+          type="button"
+          :aria-pressed="form.stage === undefined"
+          class="cursor-pointer rounded border px-2.5 py-[7px] font-mono text-[11px] uppercase tracking-[0.06em] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          :class="form.stage === undefined ? 'border-ink bg-ink text-paper' : 'border-hairline text-muted'"
+          @click="form.stage = undefined"
+        >
+          {{ t('home.contact.form.stageOptions.unsure') }}
+        </button>
+      </div>
     </div>
 
     <div>

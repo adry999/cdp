@@ -1,3 +1,4 @@
+import { isStageId, type StageId } from '#layers/core/shared/types/service-stage'
 import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
 
 // The single source of the five budget keys: the component's <select> options
@@ -21,6 +22,20 @@ function isLeadBudgetKey(value: string): value is LeadBudgetKey {
 export function leadBudgetLabel(value: string | null): string {
   if (!value) return '—'
   return isLeadBudgetKey(value) ? LEAD_BUDGET_LABELS[value] : value
+}
+
+// The admin is Romanian-only; these mirror the contact form's stage chips.
+export const LEAD_STAGE_LABELS: Record<StageId, string> = {
+  E: 'Express',
+  B: 'Concept',
+  A: 'Design → cod',
+  C: 'Scalare',
+  D: 'AI',
+}
+
+export function leadStageLabel(value: string | null): string {
+  if (!value) return '—'
+  return isStageId(value) ? LEAD_STAGE_LABELS[value] : value
 }
 
 export const LEAD_STATUSES = ['nou', 'in_discutie', 'castigat', 'refuzat'] as const
@@ -64,6 +79,7 @@ export interface ContactSubmission {
   company?: string
   message?: string
   budget?: string
+  stage?: StageId
   source?: string
   lang?: string
   page?: string
@@ -77,6 +93,7 @@ export interface LeadRecord {
   company: string | null
   message: string
   budget: string | null
+  stage?: StageId | null
   source: string | null
   lang: 'ro' | 'en'
   page: string | null
@@ -88,6 +105,7 @@ export interface ContactFieldErrors {
   name?: 'required'
   email?: 'required' | 'invalid_email'
   message?: 'required'
+  stage?: 'invalid_stage'
 }
 
 export function validateContactSubmission(input: ContactSubmission): ContactFieldErrors {
@@ -97,6 +115,7 @@ export function validateContactSubmission(input: ContactSubmission): ContactFiel
   if (!email) errors.email = 'required'
   else if (!EMAIL_PATTERN.test(email)) errors.email = 'invalid_email'
   if (!clipText(input.message, LEAD_FIELD_LIMITS.message)) errors.message = 'required'
+  if (input.stage !== undefined && !isStageId(input.stage)) errors.stage = 'invalid_stage'
   return errors
 }
 
@@ -115,6 +134,7 @@ export function toLeadRecord(input: ContactSubmission, referrer: string | null):
     company: clipText(input.company, LEAD_FIELD_LIMITS.company) || null,
     message: clipText(input.message, LEAD_FIELD_LIMITS.message),
     budget: clipText(input.budget, LEAD_FIELD_LIMITS.budget) || null,
+    stage: isStageId(input.stage) ? input.stage : null,
     source: clipText(input.source, LEAD_FIELD_LIMITS.source) || null,
     lang: input.lang === 'en' ? 'en' : 'ro',
     page: clipText(input.page, LEAD_FIELD_LIMITS.page) || null,
