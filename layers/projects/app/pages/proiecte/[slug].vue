@@ -36,10 +36,18 @@ caseStudySlugs.value = {
   en: row.value.slug_en ?? row.value.slug_ro,
 }
 
+// hreflang alternates come from useLocaleHead, which only knows the current
+// route params — without this, a project whose EN slug differs advertises a
+// 404 as its alternate.
+const setI18nParams = useSetI18nParams()
+setI18nParams({ ro: { slug: caseStudySlugs.value.ro }, en: { slug: caseStudySlugs.value.en } })
+
 const siteUrl = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
 
 useSeoMeta({
-  title: () => project.value.caseStudy.heroTitle,
+  // The card title ("Trucker HQ, dispatch și unelte…") names the client and
+  // fits in a search result; the hero title is a full sentence that gets cut off.
+  title: () => project.value.title,
   description: () => project.value.caseStudy.heroLead,
   ogTitle: () => project.value.caseStudy.heroTitle,
   ogDescription: () => project.value.caseStudy.heroLead,

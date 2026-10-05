@@ -566,6 +566,9 @@
     }
   },
   "about": {
+    "seo": {
+      "description": "We run a few projects at a time so each gets the hours it needs. You talk directly to the engineer building your product."
+    },
     "principlesLabel": "Cum lucrăm",
     "team": {
       "label": "Echipa",

@@ -9,9 +9,9 @@ const FACT_IDS = ['based', 'markets', 'languages'] as const
 
 useSeoMeta({
   title: () => t('home.about.title'),
-  description: () => t('home.about.lead'),
+  description: () => t('about.seo.description'),
   ogTitle: () => t('home.about.title'),
-  ogDescription: () => t('home.about.lead'),
+  ogDescription: () => t('about.seo.description'),
   ogImage: `${siteUrl}/og-image.png`,
   ogType: 'website',
   twitterCard: 'summary_large_image',

@@ -566,6 +566,9 @@
     }
   },
   "about": {
+    "seo": {
+      "description": "Studio boutique din Chișinău: puține proiecte în paralel, ingineri seniori și discuții directe cu cel care îți construiește produsul."
+    },
     "principlesLabel": "Cum lucrăm",
     "team": {
       "label": "Echipa",
