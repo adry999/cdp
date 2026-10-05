@@ -21,13 +21,19 @@ rămâne vizibil ca placeholder.
 
 ## Studii de caz — per proiect
 
-Pentru fiecare dintre cele trei proiecte:
+Cele 7 studii de caz publicate (Startica app, Bloom, Trucker HQ, Startica site,
+Aurelia Badiur, EnglishMinds, SwissCars) au textul din prototip; secțiunile fără
+date afișează caseta „De completat". Pentru fiecare proiect:
 
-- [ ] cifrele de rezultat (`[ X ]%`, `[ X ] €`) — trei statistici per proiect
-- [ ] citatul clientului, una sau două propoziții
+- [ ] cifrele de rezultat — trei statistici per proiect (secțiunea 06)
+- [ ] citatul clientului, una sau două propoziții (secțiunea 07)
 - [ ] atribuirea: nume, funcție, companie (sau acord scris pentru anonimizare —
       dacă proiectul e sub NDA, blocul de citat se omite, nu se falsifică)
-- [ ] confirmarea duratei și a numărului de utilizatori din secțiunea „Date"
+- [ ] stack-ul pentru Startica site, Aurelia Badiur și EnglishMinds; restul
+      stack-ului pentru Startica app (bază de date, hosting, SMS) și SwissCars
+      (hosting, panou de administrare)
+- [ ] SwissCars: pe site-ul live apar încă mesajele „Telefon lipsește” și
+      „Adresa lipsește” — de verificat cu clientul
 
 ## Granturi — EN de tradus
 
@@ -47,15 +53,14 @@ Designul nu are versiune EN pentru indexul /servicii; valorile EN sunt textul RO
 
 ## Imagini
 
-Niciuna nu există. Necesare per proiect:
-
-- [ ] copertă card — 16/10, min. 1200 × 750
-- [ ] captură principală — 16/9, 1600 × 900
-- [ ] două capturi secundare — 4/3
-
-Dacă produsele clienților nu pot fi arătate, alternativele acceptabile sunt:
-capturi cu date anonimizate, sau un cadru de interfață redesenat. A treia variantă —
-niciun vizual — este mai bună decât stock photography.
+- [x] Imaginile celor 7 proiecte sunt în Storage (`project-media/case-studies/<slug>/`):
+      captura principală (folosită și ca copertă) și două capturi de galerie.
+      Sursa: `design/assets/proiecte` și site-urile clienților (Startica, Aurelia
+      Badiur, SwissCars).
+- [ ] Capturile Startica app, Bloom, Trucker HQ și SwissCars conțin date
+      demonstrative (pagina o spune sub galerie); de înlocuit cu capturi reale
+      anonimizate dacă e cazul.
+- [ ] Copertă separată la 16/10 — acum cardul folosește captura principală.
 
 ## Conținut de decis
 
