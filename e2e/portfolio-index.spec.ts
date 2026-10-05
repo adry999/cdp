@@ -24,9 +24,11 @@ test('clicking a filter chip narrows the grid and updates the query', async ({ p
 
   // The first non-"all" chip.
   const tagChip = chipRow.nth(1)
-  await tagChip.click()
-
-  await expect(page).toHaveURL(/\?tag=/)
+  // A click that lands before hydration does nothing — retry until it takes.
+  await expect(async () => {
+    await tagChip.click()
+    await expect(page).toHaveURL(/\?tag=/, { timeout: 1_000 })
+  }).toPass()
   const filteredCount = await cardLinks.count()
   expect(filteredCount).toBeLessThanOrEqual(totalCards)
   expect(filteredCount).toBeGreaterThan(0)
