@@ -24,17 +24,11 @@ usePageSeo({
     </SiteSection>
 
     <SiteSection :label="t('about.principlesLabel')">
-      <div class="flex flex-col border-b border-hairline">
-        <div
-          v-for="pillar in pillars"
-          :key="pillar.id"
-          class="flex flex-wrap gap-x-[clamp(16px,3vw,40px)] gap-y-3 border-t border-hairline py-[clamp(22px,3vw,32px)]"
-        >
-          <span class="flex-[0_0_48px] font-mono text-xs tracking-[0.14em] text-signal">{{ pillar.index }}</span>
-          <h2 class="m-0 flex-[0_0_260px] text-xl font-medium tracking-[-0.02em]">{{ pillar.title }}</h2>
-          <p class="m-0 flex-[1_1_300px] text-base text-muted">{{ pillar.body }}</p>
-        </div>
-      </div>
+      <RowList>
+        <RowListItem v-for="pillar in pillars" :key="pillar.id" size="lg" tag="h2" :index="pillar.index" :title="pillar.title">
+          {{ pillar.body }}
+        </RowListItem>
+      </RowList>
     </SiteSection>
 
     <SiteAboutTeam />
