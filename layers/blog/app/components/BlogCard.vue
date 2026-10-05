@@ -16,7 +16,7 @@ const displayDate = computed(() => formatPostDate(props.post.date, locale.value 
     <MediaFrame
       ratio="16/10"
       :src="post.cover"
-      :alt="post.title"
+      alt=""
       :label="`[ ${post.title} ]`"
       sizes="xs:100vw sm:45vw lg:380px"
     />
