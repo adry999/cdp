@@ -32,9 +32,15 @@ only.
 
 ## Public API (server) — `server/index.ts`
 
-- `listPublishedBlogPosts(event, locale)` — non-draft posts in one locale's
-  collection, newest first. Used by the root sitemap
-  (`server/routes/sitemap.xml.ts`) and both RSS routes.
+- `buildBlogRss(event, locale)` — the RSS 2.0 document for one locale's
+  non-draft posts. Used by both root RSS routes.
+- `listBlogSitemapPages(event)` — the blog index (only while posts exist) and
+  every post, as `SitemapPage`s for the root sitemap
+  (`server/routes/sitemap.xml.ts`).
+
+All `@nuxt/content` queries live in `server/repository/blogRepository.ts`
+(`listPublished`, `findPublished`); RSS rendering is the pure
+`domain/rss.ts`.
 
 ## Routes
 
@@ -47,12 +53,13 @@ only.
   `draft: true` — a draft is not publicly reachable even by direct URL.
 - `server/api/blog.get.ts` (`GET /api/blog?locale=ro|en`) and
   `server/api/blog/[slug].get.ts` (`GET /api/blog/<slug>?locale=ro|en`) — the
-  pages' only data source. The queries must stay here: `@nuxt/content`'s
-  app-side `queryCollection` falls back to a WASM SQLite engine on client
-  navigation, which the site's CSP blocks.
+  pages' only data source. The queries must stay server-side:
+  `@nuxt/content`'s app-side `queryCollection` falls back to a WASM SQLite
+  engine on client navigation, which the site's CSP blocks.
 - `server/routes/blog/rss.xml.ts`, `server/routes/en/blog/rss.xml.ts` —
   root-level (not layer-scoped, matching how `sitemap.xml.ts` lives at the
-  project root too) — one RSS 2.0 feed per locale.
+  project root too) — one-line routes over `buildBlogRss`, one RSS 2.0 feed
+  per locale.
 
 ## Components
 

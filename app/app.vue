@@ -9,7 +9,7 @@ const { locale } = useI18n()
 useHead(head)
 
 // The EN version of a page whose EN copy is still Romanian is noindex — see
-// EN_PENDING_TRANSLATION. plugins/en-pending-hreflang.ts drops its EN alternates.
+// app/utils/enPendingTranslation.ts. plugins/en-pending-hreflang.ts drops its EN alternates.
 useHead(() => ({
   meta:
     locale.value === 'en' && isEnPendingTranslation(switchLocalePath('ro'))

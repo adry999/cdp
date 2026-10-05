@@ -1,0 +1,48 @@
+import { escapeXml } from '#layers/core/shared/utils/escapeXml'
+
+export interface RssPost {
+  slug: string
+  title: string
+  description: string
+  date: string
+}
+
+const FEEDS = {
+  ro: {
+    title: 'Codepedia — Blog (RO)',
+    description: 'Notițe tehnice și studii de caz scurte din munca Codepedia.',
+    pathPrefix: '/blog',
+  },
+  en: {
+    title: 'Codepedia — Blog (EN)',
+    description: "Technical notes and short case studies from Codepedia's work.",
+    pathPrefix: '/en/blog',
+  },
+} as const
+
+export function renderBlogRss(baseUrl: string, locale: 'ro' | 'en', posts: readonly RssPost[]): string {
+  const feed = FEEDS[locale]
+
+  const items = posts
+    .map(
+      (post) => `    <item>
+      <title>${escapeXml(post.title)}</title>
+      <link>${escapeXml(`${baseUrl}${feed.pathPrefix}/${post.slug}`)}</link>
+      <description>${escapeXml(post.description)}</description>
+      <pubDate>${new Date(post.date).toUTCString()}</pubDate>
+      <guid>${escapeXml(`${baseUrl}${feed.pathPrefix}/${post.slug}`)}</guid>
+    </item>`,
+    )
+    .join('\n')
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>${feed.title}</title>
+    <link>${baseUrl}${feed.pathPrefix}</link>
+    <description>${feed.description}</description>
+    <language>${locale}</language>
+${items}
+  </channel>
+</rss>`
+}

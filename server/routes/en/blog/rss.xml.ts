@@ -1,35 +1,6 @@
-import { getSiteUrl } from '#layers/core/server/utils/getSiteUrl'
-import { listPublishedBlogPosts } from '#layers/blog/server'
-import { escapeXml } from '#layers/core/shared/utils/escapeXml'
+import { buildBlogRss } from '#layers/blog/server'
 
-export default defineEventHandler(async (event) => {
-  const baseUrl = getSiteUrl(event)
-
-  const posts = await listPublishedBlogPosts(event, 'en')
-
-  const items = posts
-    .map(
-      (post) => `    <item>
-      <title>${escapeXml(post.title)}</title>
-      <link>${escapeXml(`${baseUrl}/en/blog/${post.slug}`)}</link>
-      <description>${escapeXml(post.description)}</description>
-      <pubDate>${new Date(post.date).toUTCString()}</pubDate>
-      <guid>${escapeXml(`${baseUrl}/en/blog/${post.slug}`)}</guid>
-    </item>`,
-    )
-    .join('\n')
-
-  const body = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
-  <channel>
-    <title>Codepedia — Blog (EN)</title>
-    <link>${baseUrl}/en/blog</link>
-    <description>Technical notes and short case studies from Codepedia's work.</description>
-    <language>en</language>
-${items}
-  </channel>
-</rss>`
-
+export default defineEventHandler((event) => {
   setResponseHeader(event, 'content-type', 'application/xml; charset=utf-8')
-  return body
+  return buildBlogRss(event, 'en')
 })

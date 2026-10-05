@@ -1,18 +1,10 @@
-import { queryCollection } from '@nuxt/content/server'
 import type { BlogPostSummary } from '#layers/blog'
+import { listPublished } from '#layers/blog/server/repository/blogRepository'
 
-/** Card data for the index page and `BlogRelated`. The query lives here rather
- * than in the pages because `queryCollection`'s app-side build falls back to a
- * WASM SQLite engine on client navigation, which this site's CSP forbids. */
+/** Card data for the index page and `BlogRelated`. */
 export default defineEventHandler(async (event): Promise<BlogPostSummary[]> => {
   const locale = getQuery(event).locale === 'en' ? 'en' : 'ro'
-  const collection = locale === 'en' ? 'blog_en' : 'blog_ro'
-
-  const rows = await queryCollection(event, collection)
-    .where('draft', '=', false)
-    .order('date', 'DESC')
-    .select('path', 'title', 'summary', 'date', 'cover')
-    .all()
+  const rows = await listPublished(event, locale)
 
   return rows.map((row) => ({
     path: row.path,
