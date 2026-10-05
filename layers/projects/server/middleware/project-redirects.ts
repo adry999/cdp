@@ -1,5 +1,4 @@
-import { serverSupabaseClient } from '#supabase/server'
-import type { Database } from '#layers/core/shared/types/database.types'
+import { createProjectRepository } from '#layers/projects/server/repository/projectRepository'
 
 // save_project() writes a `redirects` row when a published slug changes; this only matches
 // the two path shapes it writes, so other requests skip the DB round trip.
@@ -9,8 +8,7 @@ export default defineEventHandler(async (event) => {
   const { pathname } = getRequestURL(event)
   if (!REDIRECTABLE.test(pathname)) return
 
-  const client = await serverSupabaseClient<Database>(event)
-  const { data } = await client.from('redirects').select('to_path, status').eq('from_path', pathname).maybeSingle()
+  const data = await createProjectRepository(event).findRedirect(pathname)
   if (!data) return
 
   // A redirect target the RPC itself already refuses to create (self-loop —
