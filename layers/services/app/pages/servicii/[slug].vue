@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { breadcrumbList } from '#layers/core/shared/utils/jsonLd'
 import { SERVICES } from '#layers/services/data/services'
 
 const route = useRoute()
-const { locale } = useI18n()
+const { locale, t } = useI18n()
+const localePath = useLocalePath()
 
 const service = SERVICES.find((entry) => entry.routeSlug[locale.value] === route.params.slug)
 
@@ -43,6 +45,16 @@ useHead(() => ({
           url: siteUrl,
         },
       }),
+    },
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(
+        breadcrumbList([
+          { name: 'Codepedia', url: `${siteUrl}${localePath('/')}` },
+          { name: t('nav.services'), url: `${siteUrl}${localePath({ name: 'servicii' })}` },
+          { name: pick(service.name.ro, service.name.en, locale.value), url: `${siteUrl}${route.path}` },
+        ]),
+      ),
     },
   ],
 }))

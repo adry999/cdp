@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { breadcrumbList } from '#layers/core/shared/utils/jsonLd'
 import { mapProject, type ProjectRow } from '#layers/projects/domain/mapProject'
 import { useCaseStudySlugs } from '#layers/projects/state/useCaseStudySlugs'
 
@@ -54,6 +55,39 @@ useSeoMeta({
   ogImage: () => project.value.caseStudy.heroPath ?? `${siteUrl}/og-image.png`,
   ogType: 'article',
   twitterCard: 'summary_large_image',
+})
+
+useHead(() => {
+  const url = `${siteUrl}${localePath({ name: 'proiecte-slug', params: { slug: project.value.slug } })}`
+  return {
+    script: [
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'CreativeWork',
+          name: project.value.title,
+          headline: caseStudy.value.heroTitle,
+          description: caseStudy.value.heroLead,
+          genre: project.value.kind || undefined,
+          url,
+          image: caseStudy.value.heroPath ?? undefined,
+          inLanguage: locale.value === 'en' ? 'en-US' : 'ro-RO',
+          creator: { '@type': 'Organization', name: 'Codepedia', url: siteUrl },
+        }),
+      },
+      {
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify(
+          breadcrumbList([
+            { name: 'Codepedia', url: `${siteUrl}${localePath('/')}` },
+            { name: t('nav.work'), url: `${siteUrl}${localePath({ name: 'proiecte' })}` },
+            { name: project.value.title, url },
+          ]),
+        ),
+      },
+    ],
+  }
 })
 </script>
 

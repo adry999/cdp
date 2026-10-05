@@ -34,9 +34,12 @@ useHead(() => ({
             '@type': 'Organization',
             name: 'Codepedia',
             url: siteUrl,
+            // Raster, square, ≥ 112 px: what Google accepts for an Organization logo.
             logo: {
               '@type': 'ImageObject',
-              url: `${siteUrl}/brand/codepedia-mark.svg`,
+              url: `${siteUrl}/icon-512.png`,
+              width: 512,
+              height: 512,
             },
             email: settings.value.contactEmail,
             address: {
