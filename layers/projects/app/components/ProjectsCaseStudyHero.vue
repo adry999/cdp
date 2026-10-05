@@ -51,7 +51,7 @@ const chips = computed(() => {
         :alt="project.caseStudy.heroAlt"
         :label="project.caseStudy.mainScreenshotLabel"
         sizes="xs:100vw md:100vw lg:100vw xl:1216px"
-        loading="eager"
+        priority
       />
     </div>
   </section>

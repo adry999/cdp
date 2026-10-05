@@ -21,7 +21,7 @@ const displayDate = computed(() => formatPostDate(props.post.date, locale.value 
         ratio="16/9"
         :src="post.cover"
         :alt="post.title"
-        loading="eager"
+        priority
         sizes="xs:100vw md:100vw lg:1024px"
         class="mt-8"
       />

@@ -7,18 +7,11 @@ const props = withDefaults(
     src?: string
     alt?: string
     label?: string
-    /** Passed straight to NuxtImg so it generates a real srcset — without it
-     *  every viewport downloads the same full-size image. Override per call
-     *  site when the frame isn't close to full container width. Uses
-     *  @nuxt/image syntax with a screen key on every entry
-     *  (`xs:100vw sm:45vw lg:380px`), not CSS media queries — a bare value
-     *  parses as a 1px screen and the image renders blank. */
+    /** @nuxt/image syntax: every entry needs a screen key (xs:100vw lg:380px), or the image renders blank. */
     sizes?: string
-    /** 'eager' for the above-the-fold hero screenshot (the page's LCP
-     *  candidate); everything else should stay lazy. */
-    loading?: 'lazy' | 'eager'
+    priority?: boolean
   }>(),
-  { ratio: '16/10', src: undefined, alt: '', label: undefined, sizes: 'xs:100vw md:100vw lg:100vw', loading: 'lazy' },
+  { ratio: '16/10', src: undefined, alt: '', label: undefined, sizes: 'xs:100vw md:100vw lg:100vw', priority: false },
 )
 
 const aspectClass = computed(() => {
@@ -52,7 +45,9 @@ const placeholderStyle = {
     :width="intrinsicSize.width"
     :height="intrinsicSize.height"
     :sizes="sizes"
-    :loading="loading"
+    :loading="priority ? 'eager' : 'lazy'"
+    :fetchpriority="priority ? 'high' : undefined"
+    :preload="priority ? { fetchPriority: 'high' } : undefined"
     :class="[aspectClass, 'block w-full rounded border border-hairline object-cover']"
   />
   <div
