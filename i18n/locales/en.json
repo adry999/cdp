@@ -442,6 +442,15 @@
     },
     "hero": {
       "audienceLabel": "Pentru"
+    },
+    "index": {
+      "title": "Cinci etape. Pornim de unde ești acum.",
+      "intro": "De la o pagină rapidă până la inginerie AI la comandă. Fiecare etapă are preț fix, termen asumat și 30 de zile de remedieri după lansare.",
+      "cta": {
+        "title": "Nu știi în ce etapă ești?",
+        "body": "Descrie problema în câteva rânduri. Îți răspundem într-o zi lucrătoare cu etapa potrivită și o estimare.",
+        "button": "Vezi dacă te putem ajuta"
+      }
     }
   },
   "blog": {

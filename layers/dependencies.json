@@ -7,5 +7,5 @@
   "blog": ["core"],
   "projects": ["core", "qualifier", "content"],
   "home": ["core", "content", "projects", "qualifier", "leads", "services"],
-  "services": ["core", "projects", "qualifier"]
+  "services": ["core", "projects", "qualifier", "content"]
 }

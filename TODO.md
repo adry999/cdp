@@ -38,6 +38,13 @@ Designul nu are versiune EN pentru granturi; valorile EN sunt textul RO până l
 - [ ] EN de tradus: `i18n/locales/en.json` — `services.hero.audienceLabel` („Pentru”) și `projects.filters.granturi` („Granturi”)
 - [ ] Programe de finanțare numite și proiecte finanțate prin grant: lipsesc, nu se inventează.
 
+## Pagina /servicii — EN de tradus
+
+Designul nu are versiune EN pentru indexul /servicii; valorile EN sunt textul RO până la traducere.
+
+- [ ] EN de tradus: `i18n/locales/en.json` — `services.index.title`, `services.index.intro`
+- [ ] EN de tradus: `i18n/locales/en.json` — `services.index.cta.title`, `.body`, `.button`
+
 ## Imagini
 
 Niciuna nu există. Necesare per proiect:

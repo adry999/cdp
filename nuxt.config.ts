@@ -158,6 +158,10 @@ export default defineNuxtConfig({
         ro: '/proiecte/[slug]',
         en: '/work/[slug]',
       },
+      servicii: {
+        ro: '/servicii',
+        en: '/services',
+      },
       'servicii-slug': {
         ro: '/servicii/[slug]',
         en: '/services/[slug]',

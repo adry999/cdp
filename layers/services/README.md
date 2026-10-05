@@ -1,8 +1,8 @@
 # layers/services
 
-Six SEO landing pages, one per service offering — code-only content, no admin
+Six SEO landing pages plus an index page, one per service offering — code-only content, no admin
 editor, no database table. Depends on `layers/core`, `layers/projects` (related
-case studies) and `layers/qualifier` (the qualification CTA).
+case studies), `layers/content` (stage copy) and `layers/qualifier` (the qualification CTA).
 
 ## Content
 
@@ -28,11 +28,17 @@ case studies) and `layers/qualifier` (the qualification CTA).
 
 ## Routes
 
+- `/servicii`, `/en/services` (route name `servicii`) — `app/pages/servicii/index.vue`:
+  hero, the five stages (copy from `content`'s `useServiceStages`, i18n
+  `home.services.stages.*`) and a dark "don't know your stage" CTA. Each stage
+  lists the service pages whose `qualifierStage` matches it (via `SERVICE_LINKS`);
+  `granturi` has stage `A`, so it sits beside "Aplicație web" under stage 03.
+  Page copy is in `services.index.*`; route mapping in the root `nuxt.config.ts`.
 - `/servicii/[slug]`, `/en/services/[slug]` (route name `servicii-slug`) —
   `app/pages/servicii/[slug].vue`, matched against `routeSlug`, not the
   canonical `ServiceTagId`. Unknown slug → 404, same pattern as
   `layers/projects/app/pages/proiecte/[slug].vue`.
-- `server/routes/sitemap.xml.ts` lists the 6×2 static service URLs alongside
+- `server/routes/sitemap.xml.ts` lists the index (×2 locales) and the 6×2 static service URLs alongside
   the project rows it already lists.
 
 ## Components
@@ -44,6 +50,10 @@ case studies) and `layers/qualifier` (the qualification CTA).
 - `ServicesRelatedProjects` — fetches `GET /api/projects` and filters
   client-side by `service_tag`; renders nothing when there are no matches.
   Renders `projects`' `ProjectsCard` with `show-tech="false"`.
+- `ServicesIndexStages` — one `SiteSection` per stage on the index; CTA opens the
+  qualifier at that stage (homepage `#contact` fallback when the flag is off).
+- `ServicesIndexCta` — dark closing CTA of the index; opens the qualifier with no
+  stage preselected.
 - `ServicesCta` — opens the qualifier modal preselected at the service's
   `qualifierStage`, or falls back to the homepage contact section when the
   qualifier flag is off. Shows `priceFrom` when it isn't `null`.
@@ -51,7 +61,8 @@ case studies) and `layers/qualifier` (the qualification CTA).
 ## Depends on
 
 - `layers/core` — `pick`, `SiteSection`, `SectionLabel`, `AppButton`,
-  `MediaFrame`, `PageHero`.
+  `MediaFrame`, `PageHero`, `TechChip`.
+- `layers/content` — `useServiceStages` (stage copy shared with the homepage timeline).
 - `layers/projects` — `mapProjectCard`, `ProjectCardRow`, `ProjectsCard` for
   the related-case-studies section.
 - `layers/qualifier` — `useQualifierAvailability`, the `qualifier:open` hook.
