@@ -185,8 +185,8 @@
           "repo": [
             "app/pages/preturi.vue"
           ],
-          "status": "de_implementat",
-          "note": "Necesită prețuri reale."
+          "status": "de_verificat",
+          "note": "Structura gata; prețurile (carduri, abonamente, FAQ) sunt placeholder [ X ] EUR până există cifre reale. EN = RO, de tradus."
         },
         {
           "id": "pg-despre",
@@ -194,8 +194,8 @@
           "repo": [
             "app/pages/despre.vue"
           ],
-          "status": "de_implementat",
-          "note": "Echipa e demo."
+          "status": "de_verificat",
+          "note": "Structura gata; echipa e placeholder ([ Nume ], [ Funcție ], fără fotografii). Hero și principii refolosesc home.about. Textele noi sunt EN = RO, de tradus."
         },
         {
           "id": "pg-contact",
@@ -205,7 +205,8 @@
             "layers/leads/domain/lead.ts",
             "migrare leads.stage"
           ],
-          "status": "de_implementat"
+          "status": "de_verificat",
+          "note": "Formularul (cu chip-urile Etapa) refolosit din LeadsContactForm; emailul și telefonul nu apar în markup, ca pe homepage. Pașii sunt EN = RO, de tradus."
         }
       ]
     },

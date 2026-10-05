@@ -71,3 +71,26 @@ niciun vizual — este mai bună decât stock photography.
 Designul nu are versiune EN pentru câmpul „Etapa”; valorile EN sunt textul RO până la traducere.
 
 - [ ] EN de tradus: `i18n/locales/en.json` — `home.contact.form.stage` și `home.contact.form.stageOptions.*` (Express, Concept, Design → cod, Scalare, AI, Nu știu)
+
+## Pagina /preturi — EN de tradus
+
+Designul nu are versiune EN; valorile EN sunt textul RO până la traducere (excepție: cele 3 întrebări au EN din `layers/content/data/faqs.ts`).
+
+- [ ] EN de tradus: `i18n/locales/en.json` — `pricing.seo.*`, `pricing.sectionLabel`, `pricing.title`, `pricing.intro`, `pricing.stages.*.pricePrefix` și `.time`
+- [ ] EN de tradus: `pricing.included.*`, `pricing.afterLaunch.*` (titlu, 2 abonamente, nota despre garanție)
+- [ ] Prețuri reale (placeholder `[ X ] EUR`): cele 5 carduri de etapă, „de la [ X ] EUR / lună” pentru Mentenanță și Dezvoltare continuă (designul are 300 / 2.000 EUR, marcate demo), cifra din întrebarea „Cât costă un proiect?” (`pricing.faq.items[0]`)
+
+## Pagina /despre — EN de tradus
+
+Hero-ul și principiile refolosesc `home.about.*` (EN existent). Restul nu are EN în design.
+
+- [ ] EN de tradus: `i18n/locales/en.json` — `about.principlesLabel`, `about.team.label`, `.title`, `.photo`, `.name`, `.role`, `.placeholderNote`, `about.facts.*`
+- [ ] Echipa reală: nume, funcții, fotografii (acum 3 carduri placeholder în `app/components/site/SiteAboutTeam.vue`)
+
+## Pagina /contact — EN de tradus
+
+Titlul, textul introductiv, formularul și datele de contact refolosesc `home.contact.*`.
+
+- [ ] EN de tradus: `i18n/locales/en.json` — `contactPage.steps` (3 pași)
+- [ ] Telefon / Telegram din design (demo `+373 60 000 000`): nu există în `siteSettings.ts` și nu e afișat; de decis dacă se adaugă
+- [ ] Adresa de email nu apare în markup (decizie existentă); designul folosește `salut@codepedia.md`, repo-ul `contact@codepedia.md` — de confirmat (vezi „Contact”)

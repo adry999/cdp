@@ -166,6 +166,18 @@ export default defineNuxtConfig({
         ro: '/servicii/[slug]',
         en: '/services/[slug]',
       },
+      contact: {
+        ro: '/contact',
+        en: '/contact',
+      },
+      despre: {
+        ro: '/despre',
+        en: '/about',
+      },
+      preturi: {
+        ro: '/preturi',
+        en: '/pricing',
+      },
       confidentialitate: {
         ro: '/confidentialitate',
         en: '/privacy',

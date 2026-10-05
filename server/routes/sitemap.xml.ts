@@ -105,6 +105,30 @@ export default defineEventHandler(async (event) => {
       loc: `${baseUrl}/en/services`,
       alt: alternates(`${baseUrl}/servicii`, `${baseUrl}/en/services`),
     },
+    {
+      loc: `${baseUrl}/contact`,
+      alt: alternates(`${baseUrl}/contact`, `${baseUrl}/en/contact`),
+    },
+    {
+      loc: `${baseUrl}/en/contact`,
+      alt: alternates(`${baseUrl}/contact`, `${baseUrl}/en/contact`),
+    },
+    {
+      loc: `${baseUrl}/despre`,
+      alt: alternates(`${baseUrl}/despre`, `${baseUrl}/en/about`),
+    },
+    {
+      loc: `${baseUrl}/en/about`,
+      alt: alternates(`${baseUrl}/despre`, `${baseUrl}/en/about`),
+    },
+    {
+      loc: `${baseUrl}/preturi`,
+      alt: alternates(`${baseUrl}/preturi`, `${baseUrl}/en/pricing`),
+    },
+    {
+      loc: `${baseUrl}/en/pricing`,
+      alt: alternates(`${baseUrl}/preturi`, `${baseUrl}/en/pricing`),
+    },
     ...SERVICES.flatMap(({ routeSlug }) => [
       {
         loc: `${baseUrl}/servicii/${routeSlug.ro}`,

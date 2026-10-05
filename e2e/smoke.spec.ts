@@ -56,3 +56,19 @@ test('admin login page renders and hydrates', async ({ page }) => {
   await expect(page.locator('input#email')).toBeVisible()
   await expect(page.locator('input#password')).toBeVisible()
 })
+
+for (const [path, lang] of [
+  ['/preturi', 'ro-RO'],
+  ['/en/pricing', 'en-US'],
+  ['/despre', 'ro-RO'],
+  ['/en/about', 'en-US'],
+  ['/contact', 'ro-RO'],
+  ['/en/contact', 'en-US'],
+] as const) {
+  test(`${path} renders`, async ({ page }) => {
+    const response = await page.goto(path)
+    expect(response?.status()).toBe(200)
+    await expect(page.locator('html')).toHaveAttribute('lang', lang)
+    await expect(page.locator('h1')).toBeVisible()
+  })
+}
