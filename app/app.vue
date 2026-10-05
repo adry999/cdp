@@ -2,7 +2,19 @@
 import { useSiteSettings } from '#layers/content'
 
 const head = useLocaleHead()
+const switchLocalePath = useSwitchLocalePath()
+const { locale } = useI18n()
+
 useHead(head)
+
+// The EN version of a page whose EN copy is still Romanian is noindex — see
+// EN_PENDING_TRANSLATION. plugins/en-pending-hreflang.ts drops its EN alternates.
+useHead(() => ({
+  meta:
+    locale.value === 'en' && isEnPendingTranslation(switchLocalePath('ro'))
+      ? [{ name: 'robots', content: 'noindex, follow' }]
+      : [],
+}))
 
 const route = useRoute()
 const isAdmin = computed(() => route.path.startsWith('/admin'))

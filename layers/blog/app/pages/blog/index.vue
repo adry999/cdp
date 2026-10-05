@@ -17,6 +17,8 @@ useSeoMeta({
   ogImage: `${siteUrl}/og-image.png`,
   ogType: 'website',
   twitterCard: 'summary_large_image',
+  // An empty index is thin content; it becomes indexable with the first post.
+  robots: () => (posts.value?.length ? undefined : 'noindex, follow'),
 })
 
 useHead(() => ({

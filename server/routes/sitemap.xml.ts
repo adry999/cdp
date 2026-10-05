@@ -1,23 +1,20 @@
 import { listPublishedBlogPosts } from '#layers/blog/server'
 import { escapeXml } from '#layers/core/shared/utils/escapeXml'
+import { isEnPendingTranslation } from '#layers/core/shared/utils/enPendingTranslation'
 import { listPublishedProjectSlugs } from '#layers/projects/server'
 import { SERVICES } from '#layers/services/server'
+
+// One page in both locales, as paths relative to the site root.
+interface PagePair {
+  ro: string
+  en: string
+  lastmod?: string
+}
 
 interface SitemapUrl {
   loc: string
   lastmod?: string
   alt: { hreflang: string; href: string }[]
-}
-
-// x-default points search engines at the RO page when no other alternate
-// matches the visitor's language — RO is the site's default locale
-// (i18n.defaultLocale / strategy: prefix_except_default).
-function alternates(ro: string, en: string) {
-  return [
-    { hreflang: 'ro', href: ro },
-    { hreflang: 'en', href: en },
-    { hreflang: 'x-default', href: ro },
-  ]
 }
 
 // Postgres timestamptz -> sitemap <lastmod> date (YYYY-MM-DD). Real dates
@@ -26,120 +23,70 @@ function toLastmod(value: string) {
   return new Date(value).toISOString().slice(0, 10)
 }
 
+// x-default points search engines at the RO page when no other alternate
+// matches the visitor's language — RO is the site's default locale
+// (i18n.defaultLocale / strategy: prefix_except_default). A page whose EN copy
+// is still Romanian lists only its RO URL, with no EN alternate.
+function toUrls(baseUrl: string, page: PagePair): SitemapUrl[] {
+  const ro = `${baseUrl}${page.ro}`
+  const en = `${baseUrl}${page.en}`
+  if (isEnPendingTranslation(page.ro)) {
+    return [{ loc: ro, lastmod: page.lastmod, alt: [] }]
+  }
+  const alt = [
+    { hreflang: 'ro', href: ro },
+    { hreflang: 'en', href: en },
+    { hreflang: 'x-default', href: ro },
+  ]
+  return [
+    { loc: ro, lastmod: page.lastmod, alt },
+    { loc: en, lastmod: page.lastmod, alt },
+  ]
+}
+
+// The sitemap must not fail with the database: without projects it still
+// lists every static page.
+async function projectPages(event: Parameters<typeof listPublishedProjectSlugs>[0]): Promise<PagePair[]> {
+  try {
+    const projects = await listPublishedProjectSlugs(event)
+    return projects.map(({ ro, en, updatedAt }) => ({
+      ro: `/proiecte/${ro}`,
+      en: `/en/work/${en ?? ro}`,
+      lastmod: toLastmod(updatedAt),
+    }))
+  } catch (error) {
+    console.warn('[sitemap] project slugs unavailable, listing static pages only', error)
+    return []
+  }
+}
+
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
   const baseUrl = config.public.siteUrl.replace(/\/$/, '')
-
-  const projects = await listPublishedProjectSlugs(event)
 
   // content.test.ts guarantees the RO and EN slug sets match, so the RO list
   // alone enumerates every post in both locales.
   const roPosts = await listPublishedBlogPosts(event, 'ro')
 
-  const urls: SitemapUrl[] = [
-    {
-      loc: `${baseUrl}/`,
-      alt: alternates(`${baseUrl}/`, `${baseUrl}/en`),
-    },
-    {
-      loc: `${baseUrl}/en`,
-      alt: alternates(`${baseUrl}/`, `${baseUrl}/en`),
-    },
-    {
-      loc: `${baseUrl}/proiecte`,
-      alt: alternates(`${baseUrl}/proiecte`, `${baseUrl}/en/work`),
-    },
-    {
-      loc: `${baseUrl}/en/work`,
-      alt: alternates(`${baseUrl}/proiecte`, `${baseUrl}/en/work`),
-    },
-    {
-      loc: `${baseUrl}/confidentialitate`,
-      alt: alternates(`${baseUrl}/confidentialitate`, `${baseUrl}/en/privacy`),
-    },
-    {
-      loc: `${baseUrl}/en/privacy`,
-      alt: alternates(`${baseUrl}/confidentialitate`, `${baseUrl}/en/privacy`),
-    },
-    ...projects.flatMap(({ ro, en, updatedAt }) => {
-      const enSlug = en ?? ro
-      const lastmod = toLastmod(updatedAt)
-      return [
-        {
-          loc: `${baseUrl}/proiecte/${ro}`,
-          lastmod,
-          alt: alternates(`${baseUrl}/proiecte/${ro}`, `${baseUrl}/en/work/${enSlug}`),
-        },
-        {
-          loc: `${baseUrl}/en/work/${enSlug}`,
-          lastmod,
-          alt: alternates(`${baseUrl}/proiecte/${ro}`, `${baseUrl}/en/work/${enSlug}`),
-        },
-      ]
-    }),
-    {
-      loc: `${baseUrl}/blog`,
-      alt: alternates(`${baseUrl}/blog`, `${baseUrl}/en/blog`),
-    },
-    {
-      loc: `${baseUrl}/en/blog`,
-      alt: alternates(`${baseUrl}/blog`, `${baseUrl}/en/blog`),
-    },
-    ...roPosts.flatMap(({ slug, date }) => [
-      {
-        loc: `${baseUrl}/blog/${slug}`,
-        lastmod: date,
-        alt: alternates(`${baseUrl}/blog/${slug}`, `${baseUrl}/en/blog/${slug}`),
-      },
-      {
-        loc: `${baseUrl}/en/blog/${slug}`,
-        lastmod: date,
-        alt: alternates(`${baseUrl}/blog/${slug}`, `${baseUrl}/en/blog/${slug}`),
-      },
-    ]),
-    {
-      loc: `${baseUrl}/servicii`,
-      alt: alternates(`${baseUrl}/servicii`, `${baseUrl}/en/services`),
-    },
-    {
-      loc: `${baseUrl}/en/services`,
-      alt: alternates(`${baseUrl}/servicii`, `${baseUrl}/en/services`),
-    },
-    {
-      loc: `${baseUrl}/contact`,
-      alt: alternates(`${baseUrl}/contact`, `${baseUrl}/en/contact`),
-    },
-    {
-      loc: `${baseUrl}/en/contact`,
-      alt: alternates(`${baseUrl}/contact`, `${baseUrl}/en/contact`),
-    },
-    {
-      loc: `${baseUrl}/despre`,
-      alt: alternates(`${baseUrl}/despre`, `${baseUrl}/en/about`),
-    },
-    {
-      loc: `${baseUrl}/en/about`,
-      alt: alternates(`${baseUrl}/despre`, `${baseUrl}/en/about`),
-    },
-    {
-      loc: `${baseUrl}/preturi`,
-      alt: alternates(`${baseUrl}/preturi`, `${baseUrl}/en/pricing`),
-    },
-    {
-      loc: `${baseUrl}/en/pricing`,
-      alt: alternates(`${baseUrl}/preturi`, `${baseUrl}/en/pricing`),
-    },
-    ...SERVICES.flatMap(({ routeSlug }) => [
-      {
-        loc: `${baseUrl}/servicii/${routeSlug.ro}`,
-        alt: alternates(`${baseUrl}/servicii/${routeSlug.ro}`, `${baseUrl}/en/services/${routeSlug.en}`),
-      },
-      {
-        loc: `${baseUrl}/en/services/${routeSlug.en}`,
-        alt: alternates(`${baseUrl}/servicii/${routeSlug.ro}`, `${baseUrl}/en/services/${routeSlug.en}`),
-      },
-    ]),
+  const pages: PagePair[] = [
+    { ro: '/', en: '/en' },
+    { ro: '/proiecte', en: '/en/work' },
+    { ro: '/confidentialitate', en: '/en/privacy' },
+    ...(await projectPages(event)),
+    // The blog index is noindex while it has no posts.
+    ...(roPosts.length ? [{ ro: '/blog', en: '/en/blog' }] : []),
+    ...roPosts.map(({ slug, date }) => ({ ro: `/blog/${slug}`, en: `/en/blog/${slug}`, lastmod: date })),
+    { ro: '/servicii', en: '/en/services' },
+    { ro: '/contact', en: '/en/contact' },
+    { ro: '/despre', en: '/en/about' },
+    { ro: '/preturi', en: '/en/pricing' },
+    ...SERVICES.map(({ routeSlug }) => ({
+      ro: `/servicii/${routeSlug.ro}`,
+      en: `/en/services/${routeSlug.en}`,
+    })),
   ]
+
+  const urls = pages.flatMap((page) => toUrls(baseUrl, page))
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
