@@ -33,16 +33,9 @@ function selectTag(tag: ServiceTagId | null) {
   router.push({ query: tag ? { tag } : {} })
 }
 
-const siteUrl = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
-
-useSeoMeta({
+usePageSeo({
   title: () => t('projects.seo.title'),
   description: () => t('projects.seo.description'),
-  ogTitle: () => t('projects.seo.title'),
-  ogDescription: () => t('projects.seo.description'),
-  ogImage: `${siteUrl}/og-image.png`,
-  ogType: 'website',
-  twitterCard: 'summary_large_image',
 })
 </script>
 

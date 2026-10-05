@@ -12,39 +12,30 @@ const { data: post } = await useAsyncData<BlogPostDoc | null>(`blog-post-${local
   $fetch(`/api/blog/${encodeURIComponent(slug)}`, { query: { locale: locale.value } }),
 )
 
-if (!post.value) {
+const doc = post.value
+if (!doc) {
   throw createError({ statusCode: 404, statusMessage: 'Post not found' })
 }
 
-const siteUrl = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
+const siteUrl = useSiteUrl()
 
-useSeoMeta({
-  title: () => post.value!.title,
-  description: () => post.value!.description,
-  ogTitle: () => post.value!.title,
-  ogDescription: () => post.value!.description,
-  ogImage: () => (post.value!.cover ? `${siteUrl}${post.value!.cover}` : `${siteUrl}/og-image.png`),
-  ogType: 'article',
-  twitterCard: 'summary_large_image',
+usePageSeo({
+  title: () => doc.title,
+  description: () => doc.description,
+  image: () => (doc.cover ? `${siteUrl}${doc.cover}` : null),
+  type: 'article',
 })
 
-useHead(() => ({
-  script: [
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'BlogPosting',
-        headline: post.value!.title,
-        description: post.value!.description,
-        url: `${siteUrl}${route.path}`,
-        inLanguage: locale.value,
-        datePublished: post.value!.date,
-        ...(post.value!.cover ? { image: `${siteUrl}${post.value!.cover}` } : {}),
-        author: { '@type': 'Organization', name: 'Codepedia' },
-      }),
-    },
-  ],
+useJsonLd(() => ({
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: doc.title,
+  description: doc.description,
+  url: `${siteUrl}${route.path}`,
+  inLanguage: locale.value,
+  datePublished: doc.date,
+  ...(doc.cover ? { image: `${siteUrl}${doc.cover}` } : {}),
+  author: { '@type': 'Organization', name: 'Codepedia' },
 }))
 </script>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { breadcrumbList } from '#layers/core/shared/utils/jsonLd'
+import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonLd'
 import { mapProject, type ProjectRow } from '#layers/projects/domain/mapProject'
 import { useCaseStudySlugs } from '#layers/projects/state/useCaseStudySlugs'
 
@@ -13,28 +13,29 @@ const { data: row } = await useAsyncData<ProjectRow>(`project-${route.params.slu
   $fetch(`/api/projects/${route.params.slug}`),
 )
 
-if (!row.value) {
+const projectRow = row.value
+if (!projectRow) {
   throw createError({ statusCode: 404, statusMessage: 'Project not found' })
 }
 
 // The API matches a slug against both locales' columns, so a project keeps resolving under
 // its old slug across a rename — redirect to the canonical slug so each project has one
 // indexable URL per locale.
-const canonicalSlug = locale.value === 'en' ? (row.value.slug_en ?? row.value.slug_ro) : row.value.slug_ro
+const canonicalSlug = locale.value === 'en' ? (projectRow.slug_en ?? projectRow.slug_ro) : projectRow.slug_ro
 if (canonicalSlug !== route.params.slug) {
   // Awaited, not returned — a bare top-level `return` doesn't type-check in `<script setup>`.
   await navigateTo(localePath({ name: 'proiecte-slug', params: { slug: canonicalSlug } }), { redirectCode: 301 })
 }
 
-const project = computed(() => mapProject(row.value as ProjectRow, locale.value as 'ro' | 'en'))
+const project = computed(() => mapProject(projectRow, locale.value as 'ro' | 'en'))
 
 const caseStudy = computed(() => project.value.caseStudy)
 const hasGalleryImages = computed(() => caseStudy.value.galleryPaths.some(Boolean))
 
 const caseStudySlugs = useCaseStudySlugs()
 caseStudySlugs.value = {
-  ro: row.value.slug_ro,
-  en: row.value.slug_en ?? row.value.slug_ro,
+  ro: projectRow.slug_ro,
+  en: projectRow.slug_en ?? projectRow.slug_ro,
 }
 
 // hreflang alternates come from useLocaleHead, which only knows the current
@@ -43,52 +44,42 @@ caseStudySlugs.value = {
 const setI18nParams = useSetI18nParams()
 setI18nParams({ ro: { slug: caseStudySlugs.value.ro }, en: { slug: caseStudySlugs.value.en } })
 
-const siteUrl = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
+const siteUrl = useSiteUrl()
 
-useSeoMeta({
+usePageSeo({
   // The card title ("Trucker HQ, dispatch și unelte…") names the client and
   // fits in a search result; the hero title is a full sentence that gets cut off.
   title: () => project.value.title,
-  description: () => project.value.caseStudy.heroLead,
-  ogTitle: () => project.value.caseStudy.heroTitle,
-  ogDescription: () => project.value.caseStudy.heroLead,
-  ogImage: () => project.value.caseStudy.heroPath ?? `${siteUrl}/og-image.png`,
-  ogType: 'article',
-  twitterCard: 'summary_large_image',
+  description: () => caseStudy.value.heroLead,
+  ogTitle: () => caseStudy.value.heroTitle,
+  image: () => caseStudy.value.heroPath,
+  type: 'article',
 })
 
-useHead(() => {
-  const url = `${siteUrl}${localePath({ name: 'proiecte-slug', params: { slug: project.value.slug } })}`
-  return {
-    script: [
-      {
-        type: 'application/ld+json',
-        innerHTML: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'CreativeWork',
-          name: project.value.title,
-          headline: caseStudy.value.heroTitle,
-          description: caseStudy.value.heroLead,
-          genre: project.value.kind || undefined,
-          url,
-          image: caseStudy.value.heroPath ?? undefined,
-          inLanguage: locale.value === 'en' ? 'en-US' : 'ro-RO',
-          creator: { '@type': 'Organization', name: 'Codepedia', url: siteUrl },
-        }),
-      },
-      {
-        type: 'application/ld+json',
-        innerHTML: JSON.stringify(
-          breadcrumbList([
-            { name: 'Codepedia', url: `${siteUrl}${localePath('/')}` },
-            { name: t('nav.work'), url: `${siteUrl}${localePath({ name: 'proiecte' })}` },
-            { name: project.value.title, url },
-          ]),
-        ),
-      },
-    ],
-  }
-})
+const projectUrl = computed(
+  () => `${siteUrl}${localePath({ name: 'proiecte-slug', params: { slug: project.value.slug } })}`,
+)
+
+useJsonLd(
+  () => ({
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: project.value.title,
+    headline: caseStudy.value.heroTitle,
+    description: caseStudy.value.heroLead,
+    genre: project.value.kind || undefined,
+    url: projectUrl.value,
+    image: caseStudy.value.heroPath ?? undefined,
+    inLanguage: locale.value === 'en' ? 'en-US' : 'ro-RO',
+    creator: organizationRef(siteUrl),
+  }),
+  () =>
+    breadcrumbList([
+      { name: 'Codepedia', url: `${siteUrl}${localePath('/')}` },
+      { name: t('nav.work'), url: `${siteUrl}${localePath({ name: 'proiecte' })}` },
+      { name: project.value.title, url: projectUrl.value },
+    ]),
+)
 </script>
 
 <template>

@@ -3,18 +3,12 @@ import { useAboutPillars } from '#layers/content'
 
 const { t } = useI18n()
 const pillars = useAboutPillars()
-const siteUrl = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
 
 const FACT_IDS = ['based', 'markets', 'languages'] as const
 
-useSeoMeta({
+usePageSeo({
   title: () => t('home.about.title'),
   description: () => t('about.seo.description'),
-  ogTitle: () => t('home.about.title'),
-  ogDescription: () => t('about.seo.description'),
-  ogImage: `${siteUrl}/og-image.png`,
-  ogType: 'website',
-  twitterCard: 'summary_large_image',
 })
 </script>
 

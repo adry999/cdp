@@ -1,3 +1,4 @@
+import { getSiteUrl } from '#layers/core/server/utils/getSiteUrl'
 import { listPublishedBlogPosts } from '#layers/blog/server'
 import { escapeXml } from '#layers/core/shared/utils/escapeXml'
 import { isEnPendingTranslation } from '#layers/core/shared/utils/enPendingTranslation'
@@ -61,8 +62,7 @@ async function projectPages(event: Parameters<typeof listPublishedProjectSlugs>[
 }
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
-  const baseUrl = config.public.siteUrl.replace(/\/$/, '')
+  const baseUrl = getSiteUrl(event)
 
   // content.test.ts guarantees the RO and EN slug sets match, so the RO list
   // alone enumerates every post in both locales.

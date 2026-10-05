@@ -5,16 +5,10 @@ import { useSiteSettings } from '#layers/content'
 const { t, locale } = useI18n()
 const siteSettings = useSiteSettings()
 const content = computed(() => resolvePrivacyPolicy(locale.value as 'ro' | 'en', siteSettings.value.contactEmail))
-const siteUrl = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
 
-useSeoMeta({
+usePageSeo({
   title: () => content.value.title,
   description: () => t('privacy.seo.description'),
-  ogTitle: () => content.value.title,
-  ogDescription: () => t('privacy.seo.description'),
-  ogImage: `${siteUrl}/og-image.png`,
-  ogType: 'website',
-  twitterCard: 'summary_large_image',
 })
 </script>
 

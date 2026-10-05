@@ -1,3 +1,4 @@
+import { getSiteUrl } from '#layers/core/server/utils/getSiteUrl'
 import { serverSupabaseServiceRole, serverSupabaseUser } from '#supabase/server'
 import type { Database } from '#layers/core/shared/types/database.types'
 import { listPublishedProjectSlugs } from '#layers/projects/server'
@@ -26,7 +27,7 @@ export default defineEventHandler(async (event) => {
     return { success: true, method: 'storage-clear' as const }
   }
 
-  const siteUrl = config.public.siteUrl.replace(/\/$/, '')
+  const siteUrl = getSiteUrl(event)
   const projects = await listPublishedProjectSlugs(event)
   const paths = [
     '/proiecte',

@@ -3,20 +3,14 @@ import { useSiteSettings } from '#layers/content'
 
 const { t, tm, rt } = useI18n()
 const settings = useSiteSettings()
-const siteUrl = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
 
 const steps = computed(() => (tm('contactPage.steps') as string[]).map((step) => rt(step)))
 
 // The work email is never rendered into the markup (same rule as the homepage #contact
 // section): visitors reach us through the form below.
-useSeoMeta({
+usePageSeo({
   title: () => t('home.contact.title'),
   description: () => t('home.contact.lead'),
-  ogTitle: () => t('home.contact.title'),
-  ogDescription: () => t('home.contact.lead'),
-  ogImage: `${siteUrl}/og-image.png`,
-  ogType: 'website',
-  twitterCard: 'summary_large_image',
 })
 </script>
 

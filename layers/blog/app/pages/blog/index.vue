@@ -7,33 +7,20 @@ const { data: posts } = await useAsyncData<BlogPostSummary[]>(`blog-posts-${loca
   $fetch('/api/blog', { query: { locale: locale.value } }),
 )
 
-const siteUrl = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
-
-useSeoMeta({
+usePageSeo({
   title: () => t('blog.seo.title'),
   description: () => t('blog.seo.description'),
-  ogTitle: () => t('blog.seo.title'),
-  ogDescription: () => t('blog.seo.description'),
-  ogImage: `${siteUrl}/og-image.png`,
-  ogType: 'website',
-  twitterCard: 'summary_large_image',
-  // An empty index is thin content; it becomes indexable with the first post.
-  robots: () => (posts.value?.length ? undefined : 'noindex, follow'),
 })
 
-useHead(() => ({
-  script: [
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'Blog',
-        name: t('blog.seo.title'),
-        description: t('blog.seo.description'),
-        publisher: { '@type': 'Organization', name: 'Codepedia' },
-      }),
-    },
-  ],
+// An empty index is thin content; it becomes indexable with the first post.
+useSeoMeta({ robots: () => (posts.value?.length ? undefined : 'noindex, follow') })
+
+useJsonLd(() => ({
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: t('blog.seo.title'),
+  description: t('blog.seo.description'),
+  publisher: { '@type': 'Organization', name: 'Codepedia' },
 }))
 </script>
 

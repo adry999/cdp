@@ -19,3 +19,7 @@ export function breadcrumbList(items: readonly BreadcrumbItem[]) {
     })),
   }
 }
+
+export function organizationRef(siteUrl: string) {
+  return { '@type': 'Organization', name: 'Codepedia', url: siteUrl }
+}

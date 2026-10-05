@@ -1,6 +1,6 @@
+import { getSiteUrl } from '#layers/core/server/utils/getSiteUrl'
 export default defineEventHandler((event) => {
-  const config = useRuntimeConfig(event)
-  const baseUrl = config.public.siteUrl.replace(/\/$/, '')
+  const baseUrl = getSiteUrl(event)
 
   const body = `User-agent: *
 Disallow: /admin

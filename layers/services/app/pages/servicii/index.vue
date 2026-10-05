@@ -1,15 +1,9 @@
 <script setup lang="ts">
 const { t } = useI18n()
-const siteUrl = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
 
-useSeoMeta({
+usePageSeo({
   title: () => t('services.index.seo.title'),
   description: () => t('services.index.intro'),
-  ogTitle: () => t('services.index.seo.title'),
-  ogDescription: () => t('services.index.intro'),
-  ogImage: `${siteUrl}/og-image.png`,
-  ogType: 'website',
-  twitterCard: 'summary_large_image',
 })
 </script>
 

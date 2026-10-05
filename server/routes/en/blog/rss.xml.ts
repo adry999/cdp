@@ -1,9 +1,9 @@
+import { getSiteUrl } from '#layers/core/server/utils/getSiteUrl'
 import { listPublishedBlogPosts } from '#layers/blog/server'
 import { escapeXml } from '#layers/core/shared/utils/escapeXml'
 
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig(event)
-  const baseUrl = config.public.siteUrl.replace(/\/$/, '')
+  const baseUrl = getSiteUrl(event)
 
   const posts = await listPublishedBlogPosts(event, 'en')
 
