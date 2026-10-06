@@ -23,6 +23,8 @@ export async function revalidatePublicCache(deps: RevalidateDependencies): Promi
 
   const projects = await deps.listProjectSlugs()
   const paths = [
+    '/',
+    '/en',
     '/proiecte',
     '/en/work',
     ...projects.flatMap(({ ro, en }) => {
