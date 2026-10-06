@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { faqPage } from '#layers/core/shared/utils/jsonLd'
+
 const { t, tm, rt } = useI18n()
 
 interface TextItem {
@@ -23,6 +25,8 @@ const faq = computed<FaqItem[]>(() =>
     answer: rt(item.answer),
   })),
 )
+useJsonLd(() => (faq.value.length ? faqPage(faq.value) : null))
+
 const PLAN_IDS = ['maintenance', 'continuous'] as const
 </script>
 

@@ -21,3 +21,20 @@ export function breadcrumbList(items: readonly BreadcrumbItem[]) {
 export function organizationRef(siteUrl: string) {
   return { '@type': 'Organization', name: 'Codepedia', url: siteUrl }
 }
+
+export interface FaqEntry {
+  question: string
+  answer: string
+}
+
+export function faqPage(items: readonly FaqEntry[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  }
+}

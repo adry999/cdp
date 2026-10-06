@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { useFaqs } from '#layers/content'
+import { faqPage } from '#layers/core/shared/utils/jsonLd'
 
 const { t } = useI18n()
 const items = useFaqs()
+
+useJsonLd(() => (items.value.length ? faqPage(items.value) : null))
 </script>
 
 <template>

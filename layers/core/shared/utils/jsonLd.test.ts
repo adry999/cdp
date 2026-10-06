@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { breadcrumbList, organizationRef } from './jsonLd'
+import { breadcrumbList, faqPage, organizationRef } from './jsonLd'
 
 describe('breadcrumbList', () => {
   it('numbers the items from 1 in order', () => {
@@ -25,6 +25,22 @@ describe('organizationRef', () => {
       '@type': 'Organization',
       name: 'Codepedia',
       url: 'https://codepedia.md',
+    })
+  })
+})
+
+describe('faqPage', () => {
+  it('maps each entry to a Question with an accepted Answer', () => {
+    expect(faqPage([{ question: 'Cât durează?', answer: 'Două săptămâni.' }])).toEqual({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Cât durează?',
+          acceptedAnswer: { '@type': 'Answer', text: 'Două săptămâni.' },
+        },
+      ],
     })
   })
 })
