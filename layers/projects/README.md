@@ -111,9 +111,6 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
 - `domain/projectPayload.ts` — `validateProjectPayload`, `usableGallery`,
   `slugify`, `SLUG_RE`, `RESERVED_SLUGS`; shared by the admin editor and the
   `save_project()` RPC's expectations.
-- `domain/caseStudyLink.ts` — `resolveCaseStudySlug` (which slug a case-study
-  locale switch should target — RO and EN case studies live at different
-  slugs).
 - `domain/storagePath.ts` — `storageKeyFromPublicUrl`, recovers a Storage
   object's bucket-relative key from the public URL `cover_path`/`hero_path`/
   `project_images.path` store.
@@ -128,8 +125,6 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
 - `state/usePublishedProjects.ts`, `state/useProjectsAdminList.ts`,
   `state/useProjectsEditor.ts` — see above.
 - `test-support/buildAdminProjectRow.ts` — fixture factory for `AdminProjectRow`.
-- `state/useCaseStudySlugs.ts` — bridges the current project's per-locale
-  slug pair from the page to `ProjectsCaseStudyHeader`.
 - `state/useRevalidatePublicCache.ts` — best-effort `POST /api/admin/revalidate`
   after an admin write.
 

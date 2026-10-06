@@ -1,21 +1,7 @@
 <script setup lang="ts">
-import { resolveCaseStudySlug } from '#layers/projects/domain/caseStudyLink'
-import { useCaseStudySlugs } from '#layers/projects/state/useCaseStudySlugs'
-
 const { t, locale } = useI18n()
-const switchLocalePath = useSwitchLocalePath()
 const localePath = useLocalePath()
-const caseStudySlugs = useCaseStudySlugs()
 const { setLocaleOverride } = useLocaleOverride()
-
-// Falls back to switchLocalePath() before the page has set the slug pair
-// (e.g. mid-navigation, before hydration completes). See resolveCaseStudySlug
-// for why this can't just reuse the current route's slug.
-function caseStudyLocalePath(target: 'ro' | 'en') {
-  const slug = resolveCaseStudySlug(caseStudySlugs.value, target)
-  if (!slug) return switchLocalePath(target)
-  return localePath({ name: 'proiecte-slug', params: { slug } }, target)
-}
 </script>
 
 <template>
@@ -31,18 +17,12 @@ function caseStudyLocalePath(target: 'ro' | 'en') {
         >
       </NuxtLink>
       <nav :aria-label="t('nav.main')" class="flex items-center gap-[clamp(14px,2vw,28px)] eyebrow">
-        <div class="hidden items-center gap-[clamp(14px,2vw,28px)] border-r border-hairline pr-[clamp(14px,2vw,28px)] nav:flex">
-          <slot name="nav" />
-        </div>
-        <NuxtLink
-          :to="localePath('proiecte')"
-          class="border-r border-hairline pr-[clamp(14px,2vw,28px)] text-muted nav:hidden"
-        >
+        <NuxtLink :to="localePath('proiecte')" class="border-r border-hairline pr-[clamp(14px,2vw,28px)] text-muted">
           {{ t('caseStudy.back') }}
         </NuxtLink>
         <span class="flex items-center gap-1.5">
-          <NuxtLink
-            :to="caseStudyLocalePath('ro')"
+          <SwitchLocalePathLink
+            locale="ro"
             hreflang="ro"
             lang="ro"
             class="no-underline hover:no-underline"
@@ -51,10 +31,10 @@ function caseStudyLocalePath(target: 'ro' | 'en') {
             @click="setLocaleOverride('ro')"
           >
             RO
-          </NuxtLink>
+          </SwitchLocalePathLink>
           <span class="text-hairline">|</span>
-          <NuxtLink
-            :to="caseStudyLocalePath('en')"
+          <SwitchLocalePathLink
+            locale="en"
             hreflang="en"
             lang="en"
             class="no-underline hover:no-underline"
@@ -63,7 +43,7 @@ function caseStudyLocalePath(target: 'ro' | 'en') {
             @click="setLocaleOverride('en')"
           >
             EN
-          </NuxtLink>
+          </SwitchLocalePathLink>
         </span>
       </nav>
     </div>

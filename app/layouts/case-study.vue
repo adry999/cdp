@@ -8,11 +8,7 @@ const { isQualifierEnabled } = useQualifierAvailability()
 <template>
   <div class="flex min-h-screen flex-col">
     <a href="#main-content" class="skip-link">{{ t('nav.skipToContent') }}</a>
-    <ProjectsCaseStudyHeader>
-      <template #nav>
-        <SitePageNavLinks />
-      </template>
-    </ProjectsCaseStudyHeader>
+    <ProjectsCaseStudyHeader />
     <main id="main-content" class="flex-1">
       <slot />
     </main>

@@ -9,7 +9,7 @@ description: Folosește în repo-ul Codepedia (Nuxt 4 + Supabase) când decizi u
 
 Deciziile de arhitectură luate pentru acest repo. Se aplică înaintea regulilor generale din `senior-architecture`; unde diferă, câștigă acest fișier. Designul complet, cu motivația fiecărei decizii: `docs/superpowers/specs/2026-09-13-feature-driven-architecture-design.md`.
 
-**Stare:** toți pașii migrării sunt în `main`. Modulele din `layers/`: `core`, `consent`, `leads`, `qualifier`, `content`, `blog`, `projects`, `home`, `services`; dependențele lor stau în `layers/dependencies.json`. În `app/` rămân `app.vue`, `error.vue`, layout-urile, `SiteHeader`, `SiteFooter`, `SitePageNavLinks`, `app/utils/` (`siteNav`, `enPendingTranslation` — compune listele EN-în-așteptare ale modulelor), pluginul `en-pending-hreflang`, pagina de login admin și `AdminSidebar`. Nu există `layers/admin`.
+**Stare:** toți pașii migrării sunt în `main`. Modulele din `layers/`: `core`, `consent`, `leads`, `qualifier`, `content`, `blog`, `projects`, `home`, `services`; dependențele lor stau în `layers/dependencies.json`. În `app/` rămân `app.vue`, `error.vue`, layout-urile, `SiteHeader`, `SiteFooter`, `app/utils/` (`siteNav`, `enPendingTranslation` — compune listele EN-în-așteptare ale modulelor), pluginul `en-pending-hreflang`, pagina de login admin și `AdminSidebar`. Nu există `layers/admin`.
 
 ## Triggers
 
@@ -30,7 +30,7 @@ Un modul = un Nuxt layer în `layers/<nume>/`. Nuxt îl înregistrează automat,
 
 | Modul | Deține | Poate importa |
 |---|---|---|
-| `app/` (rădăcină) | composition root: `app.vue`, `error.vue`, layout-urile (`default`, `case-study`, `admin`, `admin-auth`), `SiteHeader`, `SiteFooter`, `SitePageNavLinks`, `utils/` (`siteNav`, `enPendingTranslation`), pluginul `en-pending-hreflang`, `pages/admin/login.vue`, `AdminSidebar`; tema Tailwind în `assets/css/main.css` | API-ul public al oricărui modul |
+| `app/` (rădăcină) | composition root: `app.vue`, `error.vue`, layout-urile (`default`, `case-study`, `admin`, `admin-auth`), `SiteHeader`, `SiteFooter`, `utils/` (`siteNav`, `enPendingTranslation`), pluginul `en-pending-hreflang`, `pages/admin/login.vue`, `AdminSidebar`; tema Tailwind în `assets/css/main.css` | API-ul public al oricărui modul |
 | `server/` (rădăcină) | `routes/sitemap.xml.ts` (compune `SitemapPage`-urile declarate de fiecare modul), `routes/blog/rss.xml.ts`, `routes/en/blog/rss.xml.ts`, `routes/robots.txt.ts`, `plugins/strip-powered-by.ts` | API-ul server public al oricărui modul |
 | `core` | design system (primitive UI și admin: `SiteSection`, `PageHero`, `RowList`, `FaqList`, `ToggleChip`, `TextLink`, `AdminField`, `AdminTopbar` …), contracte (`AsyncStatus`, `AppError`/`toAppError`, `LocalizedText`, `StageId`, `ServiceTagId`, `SitemapPage`, hook-ul `qualifier:open`), composables (`usePageSeo`, `useJsonLd`, `useSiteUrl`, `useSiteLocale`, `useFocusTrap` …), utilitare server (`requireAdmin`, `logAndThrow`, `checkRateLimit`, `sendMail`, `notifyBestEffort`, `getSiteUrl`, helperii de sitemap), tipuri DB, redirect de limbă, testul de arhitectură | nimic din `layers/*` |
 | `consent` | consimțământ cookie, banner, plugin analytics, pagina de confidențialitate | `core`, `#layers/content` (doar `useSiteSettings`) |

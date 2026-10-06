@@ -2,7 +2,6 @@
 import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonLd'
 import { fetchProject } from '#layers/projects/data/projectsRepository'
 import { mapProject } from '#layers/projects/domain/mapProject'
-import { useCaseStudySlugs } from '#layers/projects/state/useCaseStudySlugs'
 
 definePageMeta({ layout: 'case-study' })
 
@@ -30,15 +29,9 @@ const project = computed(() => mapProject(projectRow, siteLocale.value))
 const caseStudy = computed(() => project.value.caseStudy)
 const hasGalleryImages = computed(() => caseStudy.value.galleryPaths.some(Boolean))
 
-const caseStudySlugs = useCaseStudySlugs()
-caseStudySlugs.value = {
-  ro: projectRow.slug_ro,
-  en: projectRow.slug_en ?? projectRow.slug_ro,
-}
-
-// useLocaleHead only knows the current route params; without this, hreflang alternates 404 when slugs differ per locale.
+// The language switch and hreflang alternates only know the current route params; slugs can differ per locale.
 const setI18nParams = useSetI18nParams()
-setI18nParams({ ro: { slug: caseStudySlugs.value.ro }, en: { slug: caseStudySlugs.value.en } })
+setI18nParams({ ro: { slug: projectRow.slug_ro }, en: { slug: projectRow.slug_en ?? projectRow.slug_ro } })
 
 const siteUrl = useSiteUrl()
 
