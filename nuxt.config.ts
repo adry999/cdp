@@ -1,4 +1,5 @@
 import tailwindcss from '@tailwindcss/vite'
+import { localeRedirectRoutes } from './layers/core/shared/utils/localeRedirectRoutes'
 
 // Skipped outside production (nuxt dev) — every real build, including Vercel, must supply these.
 function assertEnv(names: string[]) {
@@ -77,6 +78,8 @@ export default defineNuxtConfig({
     vercel: {
       config: {
         bypassToken: process.env.VERCEL_ISR_BYPASS_TOKEN || undefined,
+        // Run before the ISR cache, so / and /en can be cached and still redirect by language.
+        routes: localeRedirectRoutes(),
       },
     },
   },
@@ -85,7 +88,9 @@ export default defineNuxtConfig({
   sourcemap: { client: false, server: true },
 
   routeRules: {
-    // No ISR on / and /en: Vercel cache hits would skip the locale-redirect middleware.
+    // / and /en redirect by language before the cache (nitro.vercel.config.routes above).
+    '/': { swr: 300 },
+    '/en': { swr: 300 },
     '/proiecte': { swr: 300 },
     '/en/work': { swr: 300 },
     '/proiecte/**': { swr: 300 },
@@ -94,6 +99,19 @@ export default defineNuxtConfig({
     '/en/blog': { swr: 300 },
     '/blog/**': { swr: 300 },
     '/en/blog/**': { swr: 300 },
+    '/servicii': { swr: 300 },
+    '/en/services': { swr: 300 },
+    '/servicii/**': { swr: 300 },
+    '/en/services/**': { swr: 300 },
+    // Content lives in the repo, so it only changes with a deploy, which clears the cache.
+    '/despre': { swr: 3600 },
+    '/en/about': { swr: 3600 },
+    '/preturi': { swr: 3600 },
+    '/en/pricing': { swr: 3600 },
+    '/contact': { swr: 3600 },
+    '/en/contact': { swr: 3600 },
+    '/confidentialitate': { swr: 3600 },
+    '/en/privacy': { swr: 3600 },
     '/api/projects': { swr: 60 },
     '/api/projects/**': { swr: 300 },
     '/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
