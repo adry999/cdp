@@ -43,7 +43,7 @@ Așa, `codepedia.md/en/...` funcționează, dar Google indexează doar
 
 ## Securitate (audit 2026-10-06)
 
-- [ ] Aplicat `supabase/migrations/20261006120000_security_hardening.sql` pe producție
+- [x] Aplicat `supabase/migrations/20261006114133_security_hardening.sql` pe producție (2026-10-06)
 - [ ] Supabase Auth: protecție parole compromise, MFA pe contul de admin,
       înregistrare conturi noi oprită
 - [ ] CSP fără `'unsafe-inline'` în `script-src` (nonce/hash, loader Meta Pixel extern)
