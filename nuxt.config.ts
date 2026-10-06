@@ -18,6 +18,7 @@ assertEnv([
   'SUPABASE_SERVICE_ROLE_KEY',
 ])
 
+// The primary (EN) domain; NUXT_PUBLIC_SITE_URL_RO is the official RO domain and defaults to it.
 const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
 // Production guarantees this via assertEnv above; in dev a missing value just skips the host-scoped CSP/image entries below.
@@ -56,6 +57,8 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     resendApiKey: process.env.RESEND_API_KEY,
+    // Vercel Cron sends `Authorization: Bearer $CRON_SECRET`; unset, /api/health answers 404.
+    cronSecret: process.env.CRON_SECRET || '',
     // Mirrors nitro.vercel.config.bypassToken below; server/api/admin/revalidate.post.ts sends it back as
     // `x-prerender-revalidate` to force an ISR refresh. Empty off Vercel falls back to a storage cache clear.
     isrBypassToken: process.env.VERCEL_ISR_BYPASS_TOKEN || '',
@@ -63,6 +66,7 @@ export default defineNuxtConfig({
       gaId: process.env.NUXT_PUBLIC_GA_ID || '',
       metaPixelId: process.env.NUXT_PUBLIC_META_PIXEL_ID || '',
       siteUrl,
+      siteUrlRo: process.env.NUXT_PUBLIC_SITE_URL_RO || '',
     },
   },
 
@@ -92,6 +96,8 @@ export default defineNuxtConfig({
     '/en/blog/**': { swr: 300 },
     '/api/projects': { swr: 60 },
     '/api/projects/**': { swr: 300 },
+    '/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
+    '/api/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
 
     '/**': {
       headers: {
