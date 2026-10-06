@@ -68,6 +68,7 @@ export default defineNuxtConfig({
       metaPixelId: process.env.NUXT_PUBLIC_META_PIXEL_ID || '',
       siteUrl,
       siteUrlRo: process.env.NUXT_PUBLIC_SITE_URL_RO || '',
+      noindex: process.env.NUXT_PUBLIC_NOINDEX === 'true',
     },
   },
 
