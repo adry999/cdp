@@ -86,6 +86,12 @@ describe('validateProjectPayload', () => {
     const nullTag = base({ serviceTag: null })
     expect(validateProjectPayload(nullTag)).toEqual([])
   })
+
+  it('accepts only an http(s) live link', () => {
+    expect(validateProjectPayload(base({ liveUrl: '' }))).toEqual([])
+    expect(validateProjectPayload(base({ liveUrl: 'https://example.com' }))).toEqual([])
+    expect(validateProjectPayload(base({ liveUrl: 'javascript:alert(1)' })).map((i) => i.field)).toEqual(['liveUrl'])
+  })
 })
 
 describe('usableGallery', () => {
