@@ -129,7 +129,7 @@ layers/<modul>/
 
 ### Design system
 
-- Tokenii (culori, `--spacing-gutter`, `--spacing-section-gap`, `--breakpoint-nav`) și utilitarele de temă stau în `app/assets/css/main.css`. Utilitare: `media-placeholder`, `eyebrow`, `eyebrow-sm`, `heading-section`, `heading-display`, `heading-card`, `container-site`, `grid-fit-<px>`, `grid-fit-safe-<px>`.
+- Tokenii (culori, `--spacing-gutter`, `--spacing-section-gap`, `--breakpoint-nav`) și utilitarele de temă stau în `app/assets/css/main.css`. Utilitare: `media-placeholder`, `eyebrow`, `eyebrow-sm`, `heading-section`, `heading-display`, `heading-card`, `container-site`, `grid-fit-<px>`, `grid-fit-safe-<px>`. Textul mic portocaliu pe fundal deschis folosește `text-signal-text` (`#C2370A`, AA); `text-signal` rămâne pentru accente și fundaluri închise.
 - Primitivele stau în `layers/core/app/components/ui/` (`SiteSection`, `PageHero`, `SectionLabel`, `RowList`, `RowListItem`, `FaqList`, `FactCard`, `TableRow`, `TechChip`, `ToggleChip`, `TextLink`, `MediaFrame`, `AppButton`, `CoreHoneypotField`) și în `components/admin/`.
 - Fără secțiune, hero, listă sau chip scrise de mână: se folosește primitiva. Un tipar nou care se repetă (3+ locuri) devine primitivă sau utilitar, denumit după rol sau mărime, niciodată după pagină.
 
@@ -189,3 +189,4 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-10-06: Fiecare modul declară `SitemapPage`-urile și căile EN-în-așteptare (`*_SITEMAP_PAGES`, `*_EN_PENDING_PATHS`); rădăcina le compune în `server/routes/sitemap.xml.ts` și `app/utils/enPendingTranslation.ts` — audit 2026-10-06.
 - 2026-10-06: Titlul, descrierea, OG și JSON-LD ale paginilor trec prin `usePageSeo` și `useJsonLd` din `core`, nu prin `useSeoMeta` / `useHead` directe (rămân directe doar `robots` și layout-urile) — audit 2026-10-06.
 - 2026-10-06: `requireAdmin` stă în `core` și citește id-ul utilizatorului din `sub`-ul claim-urilor JWT, apoi verifică `app_users` cu clientul service-role — audit 2026-10-06.
+- 2026-10-06: Textul mic portocaliu pe fundal deschis folosește tokenul signal-text (#C2370A, AA); signal rămâne pentru accente și fundaluri închise — audit Lighthouse.

@@ -34,7 +34,7 @@ function isActive(to: string) {
         "
       >
         {{ item.label }}
-        <span v-if="item.to === '/admin/leads' && newLeadsCount" class="ml-2 text-signal">{{ newLeadsCount }}</span>
+        <span v-if="item.to === '/admin/leads' && newLeadsCount" class="ml-2 text-signal-text">{{ newLeadsCount }}</span>
       </NuxtLink>
     </nav>
   </aside>

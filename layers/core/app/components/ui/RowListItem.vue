@@ -46,7 +46,7 @@ const cfg = computed(() => SIZES[props.size])
 
 <template>
   <div class="flex flex-wrap border-t border-hairline" :class="cfg.row">
-    <div v-if="index" class="font-mono text-xs text-signal" :class="cfg.index">{{ index }}</div>
+    <div v-if="index" class="font-mono text-xs text-signal-text" :class="cfg.index">{{ index }}</div>
     <div v-if="cfg.group" class="flex min-w-0 flex-[1_1_340px] flex-wrap" :class="cfg.groupGap">
       <component :is="tag" class="m-0 font-medium tracking-[-0.02em]" :class="cfg.title">{{ title }}</component>
       <p class="m-0 text-base text-muted" :class="cfg.body"><slot /></p>

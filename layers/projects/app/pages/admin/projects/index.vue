@@ -36,7 +36,7 @@ const drag = useDragReorder(reorder)
         <span
           v-if="canReorder"
           class="eyebrow-sm"
-          :class="reorderStatus === 'error' ? 'text-signal' : 'text-muted'"
+          :class="reorderStatus === 'error' ? 'text-signal-text' : 'text-muted'"
         >
           {{ reorderStatus === 'error' ? 'Ordinea nu s-a salvat — reîncearcă' : reorderStatus === 'pending' ? 'Se salvează ordinea…' : 'Trage ⠿ pentru a reordona' }}
         </span>

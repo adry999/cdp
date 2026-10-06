@@ -21,7 +21,7 @@ function servicesFor(stageId: StageId) {
     padding="xs"
   >
     <template #label>
-      <span class="font-mono text-[clamp(32px,4vw,48px)] font-medium leading-none text-signal">
+      <span class="font-mono text-[clamp(32px,4vw,48px)] font-medium leading-none text-signal-text">
         {{ String(i + 1).padStart(2, '0') }}
       </span>
     </template>
@@ -53,7 +53,7 @@ function servicesFor(stageId: StageId) {
           v-for="service in servicesFor(stage.id)"
           :key="service.slug"
           :to="localePath({ name: 'servicii-slug', params: { slug: service.routeSlug[locale] } })"
-          class="eyebrow text-muted hover:text-signal"
+          class="eyebrow text-muted hover:text-signal-text"
         >
           {{ pick(service.name.ro, service.name.en, locale) }} →
         </NuxtLink>

@@ -181,7 +181,7 @@ onMounted(() => {
               v-for="service in relatedServicesFor(stage.id)"
               :key="service.slug"
               :to="localePath({ name: 'servicii-slug', params: { slug: service.routeSlug[locale] } })"
-              class="eyebrow text-muted hover:text-signal"
+              class="eyebrow text-muted hover:text-signal-text"
             >
               {{ pick(service.name.ro, service.name.en, locale) }} →
             </NuxtLink>
@@ -209,7 +209,7 @@ onMounted(() => {
         <AppButton variant="ink" :href="grantsHref">{{ t('home.services.grants.cta') }}</AppButton>
         <NuxtLink
           :to="`${localePath('index')}#contact`"
-          class="eyebrow text-muted hover:text-signal"
+          class="eyebrow text-muted hover:text-signal-text"
         >
           {{ t('home.services.grants.contact') }}
         </NuxtLink>

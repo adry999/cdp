@@ -26,7 +26,7 @@ async function logout() {
       <slot name="actions" />
       <div class="flex items-center gap-3 border-l border-hairline pl-4 eyebrow text-muted">
         <span>{{ user?.email }}</span>
-        <button type="button" class="cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-signal" @click="logout">
+        <button type="button" class="cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-signal-text" @click="logout">
           Ieși
         </button>
       </div>

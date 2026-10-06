@@ -28,7 +28,7 @@ function update(lang: 'ro' | 'en', event: Event) {
 <template>
   <div>
     <div :id="groupId" class="eyebrow text-muted">
-      {{ label }}<span v-if="required" class="text-signal"> *</span>
+      {{ label }}<span v-if="required" class="text-signal-text"> *</span>
     </div>
     <div class="mt-2 grid grid-cols-2 gap-3">
       <div v-for="col in columns" :key="col.lang">

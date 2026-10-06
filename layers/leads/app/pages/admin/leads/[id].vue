@@ -112,13 +112,13 @@ const NOTES_STATE_LABELS = {
           <p
             aria-live="polite"
             class="mt-1 eyebrow-sm"
-            :class="notesState === 'error' ? 'text-signal' : 'text-muted'"
+            :class="notesState === 'error' ? 'text-signal-text' : 'text-muted'"
           >
             {{ NOTES_STATE_LABELS[notesState] }}
           </p>
         </section>
 
-        <p v-if="actionError" role="alert" class="eyebrow text-signal">
+        <p v-if="actionError" role="alert" class="eyebrow text-signal-text">
           {{ actionError.message }}
         </p>
 

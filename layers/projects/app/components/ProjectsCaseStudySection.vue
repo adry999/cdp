@@ -19,7 +19,7 @@ const { t } = useI18n()
       {{ paragraph }}
     </p>
     <div v-if="empty" class="mt-6 flex max-w-[64ch] flex-col gap-1.5 rounded border border-dashed border-rule px-5 py-[18px]">
-      <span class="eyebrow-sm text-signal">{{ t('caseStudy.toComplete') }}</span>
+      <span class="eyebrow-sm text-signal-text">{{ t('caseStudy.toComplete') }}</span>
       <span class="text-base text-muted">{{ placeholder }}</span>
     </div>
     <slot />

@@ -21,7 +21,7 @@ const FEATURED_STAGE = 'A'
           :class="stage.id === FEATURED_STAGE ? 'border-ink bg-ink text-paper' : 'border-hairline bg-paper text-ink'"
         >
           <div class="flex items-center justify-between gap-2">
-            <span class="font-mono text-xs tracking-[0.08em] text-signal">{{ String(i + 1).padStart(2, '0') }}</span>
+            <span class="font-mono text-xs tracking-[0.08em]" :class="stage.id === FEATURED_STAGE ? 'text-signal' : 'text-signal-text'">{{ String(i + 1).padStart(2, '0') }}</span>
             <span
               class="eyebrow-sm"
               :class="stage.id === FEATURED_STAGE ? 'text-body-ink' : 'text-muted'"
@@ -46,7 +46,7 @@ const FEATURED_STAGE = 'A'
             :class="stage.id === FEATURED_STAGE ? 'border-hairline-ink' : 'border-hairline'"
           >
             <li v-for="badge in stage.badges" :key="badge" class="flex gap-2 text-sm leading-[1.4]">
-              <span class="text-signal" aria-hidden="true">+</span>{{ badge }}
+              <span :class="stage.id === FEATURED_STAGE ? 'text-signal' : 'text-signal-text'" aria-hidden="true">+</span>{{ badge }}
             </li>
           </ul>
           <div class="mt-6">

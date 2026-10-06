@@ -45,7 +45,7 @@ function removeGalleryImage(index: number) {
       <div>
         <div class="flex items-center justify-between">
           <div class="eyebrow text-muted">Galerie</div>
-          <button type="button" class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal" @click="addGalleryImage">
+          <button type="button" class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal-text" @click="addGalleryImage">
             + Imagine
           </button>
         </div>
@@ -65,7 +65,7 @@ function removeGalleryImage(index: number) {
               <div class="flex-1">
                 <AdminFieldPair v-model:ro="img.altRo" v-model:en="img.altEn" label="Text alternativ" />
               </div>
-              <button type="button" class="mt-6 cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal" @click="removeGalleryImage(i)">
+              <button type="button" class="mt-6 cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal-text" @click="removeGalleryImage(i)">
                 Șterge
               </button>
             </div>

@@ -17,13 +17,13 @@ const saveLabel = computed(() => {
   <div>
     <AdminTopbar :title="isNew ? 'Proiect nou' : form.cardTitle.ro || slug">
       <template #actions>
-        <span class="eyebrow" :class="form.published ? 'text-signal' : 'text-muted'">
+        <span class="eyebrow" :class="form.published ? 'text-signal-text' : 'text-muted'">
           {{ form.published ? 'Publicat' : 'Draft' }}
         </span>
         <span
           v-if="saveStatus !== 'idle'"
           class="eyebrow"
-          :class="saveStatus === 'error' ? 'text-signal' : 'text-muted'"
+          :class="saveStatus === 'error' ? 'text-signal-text' : 'text-muted'"
         >
           {{ saveLabel }}
         </span>
@@ -40,7 +40,7 @@ const saveLabel = computed(() => {
         <ProjectsEditorNarrative v-model="form.solutionBody" title="Soluția (secțiunea 02)">
           <label class="flex items-center gap-2 eyebrow">
             <input v-model="form.screensDemo" type="checkbox" class="accent-signal" >
-            <span :class="form.screensDemo ? 'text-signal' : 'text-muted'">Ecrane cu date demonstrative</span>
+            <span :class="form.screensDemo ? 'text-signal-text' : 'text-muted'">Ecrane cu date demonstrative</span>
           </label>
         </ProjectsEditorNarrative>
         <ProjectsEditorStack v-model="form" />

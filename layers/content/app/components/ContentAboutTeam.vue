@@ -21,7 +21,7 @@ const PLACEHOLDER_COUNT = 3
         </div>
       </li>
     </ul>
-    <p class="m-0 mt-4 eyebrow-sm text-signal">
+    <p class="m-0 mt-4 eyebrow-sm text-signal-text">
       {{ t('about.team.placeholderNote') }}
     </p>
   </SiteSection>

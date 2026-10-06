@@ -10,13 +10,13 @@ const form = defineModel<ProjectForm>({ required: true })
       <div class="flex flex-wrap gap-6">
         <label class="flex items-center gap-2 eyebrow">
           <input v-model="form.published" type="checkbox" class="accent-signal" >
-          <span :class="form.published ? 'text-signal' : 'text-muted'">
+          <span :class="form.published ? 'text-signal-text' : 'text-muted'">
             {{ form.published ? 'Publicat' : 'Draft' }}
           </span>
         </label>
         <label class="flex items-center gap-2 eyebrow">
           <input v-model="form.featured" type="checkbox" class="accent-signal" >
-          <span :class="form.featured ? 'text-signal' : 'text-muted'">Afișat pe homepage</span>
+          <span :class="form.featured ? 'text-signal-text' : 'text-muted'">Afișat pe homepage</span>
         </label>
       </div>
       <div class="flex gap-3 eyebrow">

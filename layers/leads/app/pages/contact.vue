@@ -27,7 +27,7 @@ usePageSeo({
         </p>
         <ol class="m-0 mt-9 flex list-none flex-col border-b border-hairline p-0">
           <li v-for="(step, i) in steps" :key="step" class="flex gap-4 border-t border-hairline py-4">
-            <span class="flex-[0_0_32px] font-mono text-xs text-signal">{{ String(i + 1).padStart(2, '0') }}</span>
+            <span class="flex-[0_0_32px] font-mono text-xs text-signal-text">{{ String(i + 1).padStart(2, '0') }}</span>
             <span class="text-[15px]">{{ step }}</span>
           </li>
         </ol>

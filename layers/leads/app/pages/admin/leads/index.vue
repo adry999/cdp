@@ -7,7 +7,7 @@ definePageMeta({ layout: 'admin', i18n: false })
 const { leads } = await useLeadsAdminList()
 
 const STATUS_CLASS: Record<string, string> = {
-  nou: 'text-signal',
+  nou: 'text-signal-text',
   in_discutie: 'text-ink',
   castigat: 'text-ink',
   refuzat: 'text-muted',

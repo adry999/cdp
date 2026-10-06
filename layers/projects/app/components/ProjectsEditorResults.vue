@@ -23,7 +23,7 @@ function removeStat(index: number) {
       <button
         v-if="form.stats.length < MAX_STATS"
         type="button"
-        class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal"
+        class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal-text"
         @click="addStat"
       >
         + Statistică
@@ -47,7 +47,7 @@ function removeStat(index: number) {
         <div class="flex-1">
           <AdminFieldPair v-model:ro="stat.label.ro" v-model:en="stat.label.en" label="Etichetă" />
         </div>
-        <button type="button" class="mb-2.5 cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal" @click="removeStat(i)">
+        <button type="button" class="mb-2.5 cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal-text" @click="removeStat(i)">
           Șterge
         </button>
       </div>

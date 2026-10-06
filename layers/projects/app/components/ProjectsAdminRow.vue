@@ -47,7 +47,7 @@ defineEmits<{
     </div>
     <div
       class="flex-[0_0_90px] eyebrow"
-      :class="project.published_at ? 'text-signal' : 'text-muted'"
+      :class="project.published_at ? 'text-signal-text' : 'text-muted'"
     >
       {{ project.published_at ? 'Publicat' : 'Draft' }}
     </div>
@@ -58,7 +58,7 @@ defineEmits<{
       <template v-if="confirming">
         <button
           type="button"
-          class="cursor-pointer border-0 bg-transparent p-0 text-signal"
+          class="cursor-pointer border-0 bg-transparent p-0 text-signal-text"
           :disabled="busy"
           @click="$emit('confirmDelete')"
         >
@@ -80,7 +80,7 @@ defineEmits<{
         </button>
         <button
           type="button"
-          class="cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-signal"
+          class="cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-signal-text"
           @click="$emit('askDelete')"
         >
           Șterge

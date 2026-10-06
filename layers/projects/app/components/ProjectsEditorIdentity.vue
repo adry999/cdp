@@ -29,11 +29,11 @@ function removeTech(index: number) {
       <AdminFieldPair v-model:ro="form.cardTitle.ro" v-model:en="form.cardTitle.en" label="Titlu card (homepage)" required />
       <div>
         <AdminFieldPair v-model:ro="form.summary.ro" v-model:en="form.summary.en" label="Descriere card" textarea required />
-        <div class="mt-1 text-right eyebrow-sm" :class="summaryWarn ? 'text-signal' : 'text-muted'">
+        <div class="mt-1 text-right eyebrow-sm" :class="summaryWarn ? 'text-signal-text' : 'text-muted'">
           {{ form.summary.ro.length }} / 200
         </div>
       </div>
-      <div v-if="titleWarn" class="eyebrow-sm text-signal">
+      <div v-if="titleWarn" class="eyebrow-sm text-signal-text">
         Titlul RO depășește 60 de caractere — designul se poate strica.
       </div>
       <AdminFieldPair v-model:ro="form.lead.ro" v-model:en="form.lead.en" label="Lead (sub H1)" textarea required />
@@ -44,7 +44,7 @@ function removeTech(index: number) {
           <div class="mt-2 flex flex-wrap items-center gap-2">
             <TechChip v-for="(tech, i) in form.tech" :key="tech">
               {{ tech }}
-              <button type="button" class="ml-1.5 cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-signal" @click="removeTech(i)">×</button>
+              <button type="button" class="ml-1.5 cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-signal-text" @click="removeTech(i)">×</button>
             </TechChip>
             <input
               v-model="form.techInput"

@@ -11,7 +11,7 @@ withDefaults(
 
 <template>
   <div v-if="number" class="eyebrow" :class="inverted ? 'text-muted-ink' : 'text-muted'">
-    <span class="text-signal">{{ number }}</span> / {{ label }}
+    <span :class="inverted ? 'text-signal' : 'text-signal-text'">{{ number }}</span> / {{ label }}
   </div>
   <span v-else class="eyebrow" :class="inverted ? 'text-muted-ink' : 'text-muted'">{{
     label

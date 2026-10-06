@@ -68,10 +68,10 @@ onMounted(() => {
       <nav :aria-label="t('nav.main')" class="flex items-center gap-[clamp(14px,2vw,28px)] eyebrow">
         <div class="hidden items-center gap-[clamp(14px,2vw,28px)] border-r border-hairline pr-[clamp(14px,2vw,28px)] nav:flex">
           <template v-for="link in navLinks" :key="navLinkKey(link)">
-            <a v-if="link.kind === 'hash'" :href="`${localePath('index')}${link.hash}`" class="text-muted hover:text-signal">
+            <a v-if="link.kind === 'hash'" :href="`${localePath('index')}${link.hash}`" class="text-muted hover:text-signal-text">
               {{ t(link.label) }}
             </a>
-            <NuxtLink v-else :to="localePath({ name: link.routeName })" class="text-muted hover:text-signal">
+            <NuxtLink v-else :to="localePath({ name: link.routeName })" class="text-muted hover:text-signal-text">
               {{ t(link.label) }}
             </NuxtLink>
           </template>
