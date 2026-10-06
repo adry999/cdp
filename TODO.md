@@ -7,7 +7,7 @@ rămâne vizibil ca placeholder.
 
 - [ ] Confirmare că `contact@codepedia.md` este adresa corectă
 
-## Domenii multiple — etapă viitoare
+## Domenii multiple
 
 Decizie (2026-10-06): același site pe toate domeniile, fără redirect 301 între ele.
 Fiecare domeniu are o limbă implicită; vizitatorul poate schimba limba și rămâne
@@ -26,17 +26,29 @@ IT → `.it`), cu `hreflang` între toate variantele și `x-default` pe `.studio
 Așa, `codepedia.md/en/...` funcționează, dar Google indexează doar
 `codepedia.studio/en/...`.
 
-- [ ] `@nuxtjs/i18n`: configurare pe domenii (mai multe domenii per locale, limbă
-      implicită per domeniu) — de verificat în documentația versiunii instalate
-- [ ] Tabel unic limbă → domeniu oficial, folosit de canonical, `hreflang` și sitemap
-- [ ] `layers/core/server/middleware/locale-redirect.ts` și `layers/core/shared/utils/resolveLocale.ts`:
-      limba implicită vine din domeniu; cookie-ul `codepedia_locale` are prioritate
-- [ ] Sitemap per domeniu, doar cu paginile al căror canonical e acel domeniu
+- [x] Aceleași căi pe toate domeniile (fără `differentDomains` în i18n): cache-ul
+      ISR al Vercel e pe cale, nu pe domeniu (2026-10-06)
+- [x] Domeniu oficial per limbă (`layers/core/shared/utils/siteOrigins.ts`), folosit
+      de canonical, `hreflang`, JSON-LD, RSS și sitemap
+- [x] Redirect pe `/` și `/en`: cookie → domeniu → geo-IP → engleză
+- [x] Sitemap și `robots.txt` per domeniu
+- [ ] Domeniul `.ro`: deocamdată pe RO, cu canonical spre `.md`; ca variantă `ro-RO`
+      separată are nevoie de propriul origin în `siteOrigins.ts`
 - [ ] Italiană: `i18n/locales/it.json`, coloane `_it` pentru proiecte (migrare +
       admin + `save_project`), conținutul din `layers/*/data/` în IT
 - [ ] Vercel: toate domeniile pe același proiect, fără redirect între ele;
-      `NUXT_PUBLIC_SITE_URL` → `https://codepedia.studio`
+      `NUXT_PUBLIC_SITE_URL=https://codepedia.studio`,
+      `NUXT_PUBLIC_SITE_URL_RO=https://codepedia.md`, `CRON_SECRET`
 - [ ] Google Search Console: fiecare domeniu adăugat separat
+
+## Securitate (audit 2026-10-06)
+
+- [ ] Aplicat `supabase/migrations/20261006120000_security_hardening.sql` pe producție
+- [ ] Supabase Auth: protecție parole compromise, MFA pe contul de admin,
+      înregistrare conturi noi oprită
+- [ ] CSP fără `'unsafe-inline'` în `script-src` (nonce/hash, loader Meta Pixel extern)
+- [ ] `npm audit fix` (vue, devalue, undici — patch-uri, fără major)
+- [ ] Ștergere lead din admin + perioadă de retenție (vezi Confidențialitate)
 
 ## Email
 

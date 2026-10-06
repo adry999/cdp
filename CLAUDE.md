@@ -88,10 +88,15 @@ scopul inițial al acestui fișier. Documentate integral (design + plan de
 implementare) în `docs/superpowers/specs/` și `docs/superpowers/plans/`:
 
 - **Detectare automată a limbii** — `layers/core/server/middleware/locale-redirect.ts`.
-  Geo-IP (header Vercel `x-vercel-ip-country`) e semnalul principal: RO/MD →
-  română, altfel engleză. Fallback pe domeniu (`.md`/`.ro`) doar când geo
-  lipsește. Alegerea manuală din switcher (cookie `codepedia_locale`) are
-  mereu prioritate. Acționează doar pe `/` și `/en` — nu pe pagini adânci.
+  Ordinea: alegerea manuală din switcher (cookie `codepedia_locale`) →
+  domeniul (`.studio` → engleză, `.md`/`.ro` → română) → geo-IP (header
+  Vercel `x-vercel-ip-country`, RO/MD → română, altfel engleză) → engleză.
+  Acționează doar pe `/` și `/en` — nu pe pagini adânci.
+- **Domenii multiple** — toate domeniile servesc aceleași căi (RO fără
+  prefix, EN sub `/en`), deci cache-ul ISR pe cale rămâne corect. Domeniul
+  oficial al fiecărei limbi (`NUXT_PUBLIC_SITE_URL` = EN, `NUXT_PUBLIC_SITE_URL_RO`
+  = RO) apare în canonical, `hreflang` (`app/plugins/locale-alternates.ts`),
+  sitemap și `robots.txt`, ambele filtrate pe domeniul cererii.
 - **Consimțământ cookie-uri + politică de confidențialitate** —
   modulul `layers/consent/` (`state/useCookieConsent.ts`,
   `app/components/ConsentBanner.vue`, `app/plugins/analytics.client.ts`),
