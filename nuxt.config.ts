@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import { localeRedirectRoutes } from './layers/core/shared/utils/localeRedirectRoutes'
 
@@ -21,6 +22,11 @@ assertEnv([
 
 // The primary (EN) domain; NUXT_PUBLIC_SITE_URL_RO is the official RO domain and defaults to it.
 const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+
+// @nuxtjs/supabase registers its browser client as a global plugin, which shipped all of
+// supabase-js to every visitor. The plugin is dropped from the app (hooks below) and
+// loaded on /admin only, by layers/core/app/middleware/admin-session.global.ts.
+const SUPABASE_BROWSER_PLUGIN = '@nuxtjs/supabase/dist/runtime/plugins/supabase.client'
 
 // Production guarantees this via assertEnv above; in dev a missing value just skips the host-scoped CSP/image entries below.
 const supabaseHost = process.env.NUXT_PUBLIC_SUPABASE_URL
@@ -137,11 +143,26 @@ export default defineNuxtConfig({
 
   supabase: {
     types: '~~/layers/core/shared/types/database.types.ts',
-    redirectOptions: {
-      login: '/admin/login',
-      callback: '/admin/login',
-      include: ['/admin(/*)?'],
-      exclude: ['/admin/login'],
+    // The /admin login redirect lives in admin-session.global.ts, next to the client it waits for.
+    redirect: false,
+  },
+
+  alias: {
+    '#supabase-browser-plugin': fileURLToPath(new URL(`./node_modules/${SUPABASE_BROWSER_PLUGIN}`, import.meta.url)),
+  },
+
+  hooks: {
+    'app:resolve'(app) {
+      const before = app.plugins.length
+      app.plugins = app.plugins.filter((plugin) => !plugin.src.replace(/\\/g, '/').includes(SUPABASE_BROWSER_PLUGIN))
+      // A module upgrade that moves the plugin must fail the build, not silently ship it again.
+      if (app.plugins.length === before) throw new Error(`${SUPABASE_BROWSER_PLUGIN} not found — update nuxt.config.ts`)
+    },
+    // Otherwise every public page still prefetches the now-lazy supabase-js chunks.
+    'build:manifest'(manifest) {
+      for (const [key, chunk] of Object.entries(manifest)) {
+        if (key.includes('supabase')) chunk.prefetch = false
+      }
     },
   },
 
