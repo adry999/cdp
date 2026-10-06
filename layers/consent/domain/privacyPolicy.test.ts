@@ -47,4 +47,22 @@ describe('resolvePrivacyPolicy', () => {
     const text = flatten(locale).toLowerCase()
     expect(text).toMatch(/supervisory authority|autoritate de supraveghere/)
   })
+
+  it.each(['ro', 'en'] as const)('identifies the controller by its IDNO (%s)', (locale) => {
+    expect(resolvePrivacyPolicy(locale, TEST_EMAIL).sections[0]?.body.join(' ')).toContain('IDNO 1023600068387')
+  })
+
+  it.each(['ro', 'en'] as const)('names the legal basis for each processing purpose (%s)', (locale) => {
+    const text = flatten(locale)
+    for (const letter of ['a', 'b', 'f']) {
+      expect(text).toContain(locale === 'ro' ? `lit. ${letter} GDPR` : `Art. 6(1)(${letter}) GDPR`)
+    }
+  })
+
+  it.each(['ro', 'en'] as const)('lists restriction, portability and objection among the rights (%s)', (locale) => {
+    const text = flatten(locale).toLowerCase()
+    expect(text).toMatch(/restric/)
+    expect(text).toMatch(/portab/)
+    expect(text).toMatch(/opun|object/)
+  })
 })

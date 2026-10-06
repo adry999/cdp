@@ -17,16 +17,29 @@ const CONTACT_EMAIL_TOKEN = '{{contactEmail}}'
 export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
   ro: {
     title: 'Politica de confidențialitate',
-    updated: 'Actualizat: 27 septembrie 2026',
+    updated: 'Actualizat: 6 octombrie 2026',
     intro:
-      'Această pagină descrie ce date colectăm prin acest site, de ce, și cum le poți controla. Codepedia SRL, Chișinău, Moldova, este operatorul datelor descrise aici.',
+      'Această pagină descrie ce date colectăm prin acest site, de ce, cât timp le păstrăm și cum le poți controla. Se aplică pe toate domeniile Codepedia (codepedia.studio, codepedia.md).',
     sections: [
+      {
+        heading: 'Cine este operatorul',
+        body: [
+          'S.R.L. „CODEPEDIA", IDNO 1023600068387, Chișinău, Republica Moldova.',
+          `Pentru orice întrebare despre datele tale: ${CONTACT_EMAIL_TOKEN}.`,
+        ],
+      },
       {
         heading: 'Ce colectăm prin formularul de contact',
         body: [
           'Când trimiți formularul de contact, colectăm: numele, adresa de email, compania (opțional), mesajul, intervalul de buget (opțional) și cum ai aflat de noi (opțional). Reținem și pagina de pe care ai trimis formularul și pagina de la care ai venit (referrer).',
           'Dacă folosești chestionarul de calificare de pe site, colectăm suplimentar: etapa proiectului, bugetul estimat, un link/handle de contact și notele tale. Aceste date sunt salvate în aceeași bază de solicitări ca formularul de contact.',
           'Adresa IP este folosită exclusiv pentru a limita trimiterile automate/abuzive și nu este salvată alături de solicitarea ta. Înregistrările de limitare mai vechi de 10 minute sunt șterse automat la următoarea trimitere de formular din partea oricărui vizitator (nu pe un program fix).',
+        ],
+      },
+      {
+        heading: 'Ce se înregistrează automat',
+        body: [
+          'La fiecare vizită, furnizorul de găzduire (Vercel) înregistrează tehnic adresa IP, pagina cerută, data și tipul de browser, pentru ca site-ul să funcționeze și să rămână sigur. Nu folosim aceste jurnale pentru a te identifica sau a-ți crea un profil.',
         ],
       },
       {
@@ -40,9 +53,10 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'De ce procesăm aceste date',
         body: [
-          'Datele din formularul de contact și din chestionarul de calificare: pentru a răspunde solicitării tale.',
-          'Adresa IP (temporar): interes legitim de a preveni abuzul.',
-          'Analiză și marketing: doar cu acordul tău explicit.',
+          'Datele din formularul de contact și din chestionarul de calificare: pentru a răspunde solicitării tale și a face, la cererea ta, demersurile de dinaintea unei eventuale colaborări (art. 6 alin. (1) lit. b GDPR).',
+          'Adresa IP (temporar) și jurnalele de găzduire: interesul legitim de a preveni abuzul și de a păstra site-ul sigur (art. 6 alin. (1) lit. f GDPR).',
+          'Analiză și marketing: doar cu acordul tău explicit (art. 6 alin. (1) lit. a GDPR). Îl poți retrage oricând din „Setări cookie-uri", fără să afecteze ce s-a prelucrat înainte.',
+          'Nu luăm decizii automate și nu facem profilare care să producă efecte juridice asupra ta.',
         ],
       },
       {
@@ -54,14 +68,21 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'Cu cine împărtășim datele',
         body: [
-          'Datele sunt găzduite prin Supabase (bază de date) și Vercel (găzduire site). Notificarea internă trimisă echipei la o solicitare nouă este livrată prin Resend (SUA), furnizorul nostru de servicii de email.',
+          'Supabase — baza de date, cu servere în Uniunea Europeană (Irlanda). Vercel — găzduirea site-ului (SUA). Resend — livrarea notificării interne trimise echipei la o solicitare nouă (SUA).',
           'Google Analytics și Meta Pixel primesc date doar dacă ai consimțit explicit.',
+          'Nu vindem datele tale și nu le împărtășim în alte scopuri.',
+        ],
+      },
+      {
+        heading: 'Transferuri în afara Uniunii Europene',
+        body: [
+          'Vercel și Resend pot prelucra date în SUA. Transferul se face pe baza garanțiilor din acordurile lor de prelucrare a datelor, care includ clauzele contractuale standard ale Comisiei Europene.',
         ],
       },
       {
         heading: 'Drepturile tale',
         body: [
-          `Poți cere oricând acces, corectarea sau ștergerea datelor tale, scriindu-ne la ${CONTACT_EMAIL_TOKEN}.`,
+          `Poți cere oricând acces la datele tale, corectarea, ștergerea sau restricționarea lor, o copie într-un format structurat (portabilitate) și te poți opune prelucrării bazate pe interes legitim. Scrie-ne la ${CONTACT_EMAIL_TOKEN}; răspundem în cel mult o lună.`,
           'Ai dreptul să depui o plângere la o autoritate de supraveghere: în Moldova, Centrul Național pentru Protecția Datelor cu Caracter Personal; dacă ești rezident al Uniunii Europene, autoritatea de protecție a datelor din țara ta de reședință.',
         ],
       },
@@ -69,16 +90,29 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
   },
   en: {
     title: 'Privacy Policy',
-    updated: 'Updated: September 27, 2026',
+    updated: 'Updated: October 6, 2026',
     intro:
-      'This page describes what data we collect through this site, why, and how you can control it. Codepedia SRL, Chișinău, Moldova, is the controller of the data described here.',
+      'This page describes what data we collect through this site, why, how long we keep it, and how you can control it. It applies to every Codepedia domain (codepedia.studio, codepedia.md).',
     sections: [
+      {
+        heading: 'Who the controller is',
+        body: [
+          'S.R.L. "CODEPEDIA", IDNO 1023600068387, Chișinău, Republic of Moldova.',
+          `For any question about your data: ${CONTACT_EMAIL_TOKEN}.`,
+        ],
+      },
       {
         heading: 'What we collect through the contact form',
         body: [
           'When you submit the contact form, we collect: your name, email address, company (optional), message, budget range (optional), and how you heard about us (optional). We also keep the page you submitted from and the page you arrived from (referrer).',
           "If you use the site's qualification questionnaire, we additionally collect: your project stage, estimated budget, a contact link/handle, and your notes. This data is saved in the same request store as the contact form.",
           'Your IP address is used solely to limit automated/abusive submissions and is not stored alongside your request. Rate-limit entries older than 10 minutes are automatically deleted the next time any visitor submits a form (not on a fixed schedule).',
+        ],
+      },
+      {
+        heading: 'What is logged automatically',
+        body: [
+          'On every visit, our hosting provider (Vercel) technically logs your IP address, the page requested, the date and your browser type, so the site keeps working and stays secure. We do not use these logs to identify or profile you.',
         ],
       },
       {
@@ -92,9 +126,10 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'Why we process this data',
         body: [
-          'Contact form and qualification questionnaire data: to respond to your request.',
-          'IP address (temporary): legitimate interest in preventing abuse.',
-          'Analytics and marketing: only with your explicit consent.',
+          'Contact form and qualification questionnaire data: to respond to your request and, at your request, take the steps before a possible collaboration (Art. 6(1)(b) GDPR).',
+          'IP address (temporary) and hosting logs: our legitimate interest in preventing abuse and keeping the site secure (Art. 6(1)(f) GDPR).',
+          'Analytics and marketing: only with your explicit consent (Art. 6(1)(a) GDPR). You can withdraw it anytime via "Cookie settings", without affecting processing that happened before.',
+          'We make no automated decisions and do no profiling that produces legal effects for you.',
         ],
       },
       {
@@ -106,14 +141,21 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'Who we share data with',
         body: [
-          'Data is hosted via Supabase (database) and Vercel (site hosting). The internal notification sent to our team about a new request is delivered through Resend (US), our email delivery provider.',
+          'Supabase — the database, with servers in the European Union (Ireland). Vercel — site hosting (US). Resend — delivery of the internal notification sent to our team about a new request (US).',
           'Google Analytics and Meta Pixel only receive data if you explicitly consented.',
+          'We do not sell your data or share it for any other purpose.',
+        ],
+      },
+      {
+        heading: 'Transfers outside the European Union',
+        body: [
+          "Vercel and Resend may process data in the US. These transfers rely on the safeguards in their data processing agreements, which include the European Commission's standard contractual clauses.",
         ],
       },
       {
         heading: 'Your rights',
         body: [
-          `You can request access to, correction of, or deletion of your data at any time by writing to ${CONTACT_EMAIL_TOKEN}.`,
+          `You can ask at any time for access to your data, its correction, deletion or restriction, a copy in a structured format (portability), and you can object to processing based on legitimate interest. Write to us at ${CONTACT_EMAIL_TOKEN}; we reply within one month.`,
           'You have the right to lodge a complaint with a supervisory authority: in Moldova, the National Center for Personal Data Protection (Centrul Național pentru Protecția Datelor cu Caracter Personal); if you are an EU resident, your local data protection authority.',
         ],
       },
