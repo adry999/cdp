@@ -2,9 +2,10 @@ import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import { localeRedirectRoutes } from './layers/core/shared/utils/localeRedirectRoutes'
 
-// Skipped outside production (nuxt dev) — every real build, including Vercel, must supply these.
+// Every real build, including Vercel, must supply these. Skipped in dev and in
+// `nuxt prepare` (the postinstall step), where hosts may not expose secrets yet.
 function assertEnv(names: string[]) {
-  if (process.env.NODE_ENV !== 'production') return
+  if (process.env.NODE_ENV !== 'production' || process.argv.includes('prepare')) return
   const missing = names.filter((name) => !process.env[name])
   if (missing.length) {
     throw new Error(
