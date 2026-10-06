@@ -5,11 +5,12 @@ import { useLeadsAdminDetail } from '#layers/leads/state/useLeadsAdminDetail'
 definePageMeta({ layout: 'admin', i18n: false })
 
 const route = useRoute()
-const { lead, notesState, actionError, updateStatus, saveNotes, archive } = await useLeadsAdminDetail(
+const { lead, notesState, actionError, updateStatus, saveNotes, archive, remove } = await useLeadsAdminDetail(
   String(route.params.id),
 )
 
 const notes = ref(lead.value?.notes ?? '')
+const confirmingRemove = ref(false)
 
 const NOTES_STATE_LABELS = {
   idle: 'Salvat automat la ieșirea din câmp',
@@ -122,7 +123,31 @@ const NOTES_STATE_LABELS = {
           {{ actionError.message }}
         </p>
 
-        <AppButton variant="outline" class="w-fit" @click="archive">Arhivează</AppButton>
+        <div class="flex flex-wrap items-center gap-6">
+          <AppButton variant="outline" class="w-fit" @click="archive">Arhivează</AppButton>
+          <div class="flex gap-3 eyebrow">
+            <template v-if="confirmingRemove">
+              <button type="button" class="cursor-pointer border-0 bg-transparent p-0 text-signal-text" @click="remove">
+                Sigur? Șterge definitiv
+              </button>
+              <button
+                type="button"
+                class="cursor-pointer border-0 bg-transparent p-0 text-muted"
+                @click="confirmingRemove = false"
+              >
+                Anulează
+              </button>
+            </template>
+            <button
+              v-else
+              type="button"
+              class="cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-signal-text"
+              @click="confirmingRemove = true"
+            >
+              Șterge definitiv
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

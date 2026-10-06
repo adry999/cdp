@@ -52,5 +52,12 @@ export function createLeadsAdminRepository(client: SupabaseClient) {
       const { error } = await client.from('leads').update({ archived_at: new Date().toISOString() }).eq('id', id)
       if (error) throw failure(`Solicitarea nu a putut fi arhivată: ${error.message}`, error)
     },
+
+    // Erasure on request (privacy policy); RLS returns no error for a blocked delete, so the row count is checked.
+    async remove(id: string) {
+      const { error, count } = await client.from('leads').delete({ count: 'exact' }).eq('id', id)
+      if (error) throw failure(`Solicitarea nu a putut fi ștearsă: ${error.message}`, error)
+      if (count !== 1) throw failure('Solicitarea nu a putut fi ștearsă.', null)
+    },
   }
 }
