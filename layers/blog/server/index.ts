@@ -17,7 +17,7 @@ async function listPublishedBlogPosts(event: H3Event, locale: BlogLocale): Promi
 
 /** The RSS 2.0 document for one locale's published posts. */
 export async function buildBlogRss(event: H3Event, locale: BlogLocale): Promise<string> {
-  return renderBlogRss(getSiteUrl(event), locale, await listPublishedBlogPosts(event, locale))
+  return renderBlogRss(getSiteUrl(event, locale), locale, await listPublishedBlogPosts(event, locale))
 }
 
 /** The blog index (only while it has posts — it is noindex when empty) and

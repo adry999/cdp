@@ -1,17 +1,49 @@
-// A page whose EN copy is still Romanian (app/utils/enPendingTranslation.ts) must not
-// advertise its EN version as an alternate. Filtered at tag resolution because
-// two sources emit the alternates — useLocaleHead in app.vue and
-// useSetI18nParams on slug pages — and the later one wins the dedupe.
+import { toSiteOrigins } from '#layers/core/shared/utils/siteOrigins'
+
+// useLocaleHead builds every URL on i18n.baseUrl (NUXT_PUBLIC_SITE_URL). Here each
+// URL moves to its locale's official domain, x-default goes to the EN page, and a
+// page whose EN copy is still Romanian (app/utils/enPendingTranslation.ts) drops
+// its EN alternates. Done at tag resolution because two sources emit the
+// alternates — useLocaleHead in app.vue and useSetI18nParams on slug pages — and
+// the later one wins the dedupe.
 export default defineNuxtPlugin({
-  name: 'site:en-pending-hreflang',
+  name: 'site:locale-alternates',
   dependsOn: ['i18n:plugin'],
   setup(nuxtApp) {
     const head = injectHead()
     const switchLocalePath = useSwitchLocalePath(nuxtApp)
+    const config = useRuntimeConfig().public
+    const origins = toSiteOrigins(config)
+    const i18nBase = String(config.i18n?.baseUrl || origins.en).replace(/\/$/, '')
+    const locale = nuxtApp.$i18n.locale
+
+    const onOrigin = (href: string, origin: string) =>
+      href.startsWith(i18nBase) ? `${origin}${href.slice(i18nBase.length)}` : href
 
     head?.hooks?.hook('tags:resolve', (ctx) => {
-      if (!isEnPendingTranslation(switchLocalePath('ro'))) return
-      ctx.tags = ctx.tags.filter((tag) => !(tag.tag === 'link' && String(tag.props.hreflang ?? '').startsWith('en')))
+      const enPending = isEnPendingTranslation(switchLocalePath('ro'))
+      const currentOrigin = origins[locale.value === 'en' ? 'en' : 'ro']
+      const enHref = ctx.tags.find((tag) => tag.tag === 'link' && tag.props.hreflang === 'en')?.props.href
+
+      ctx.tags = ctx.tags.filter((tag) => !(enPending && tag.tag === 'link' && String(tag.props.hreflang ?? '').startsWith('en')))
+
+      for (const tag of ctx.tags) {
+        const { props } = tag
+        if (tag.tag === 'meta' && props.property === 'og:url' && typeof props.content === 'string') {
+          props.content = onOrigin(props.content, currentOrigin)
+        }
+        if (tag.tag !== 'link' || typeof props.href !== 'string') continue
+        if (props.rel === 'canonical') {
+          props.href = onOrigin(props.href, currentOrigin)
+          continue
+        }
+        if (props.rel !== 'alternate' || typeof props.hreflang !== 'string') continue
+        if (props.hreflang === 'x-default') {
+          props.href = !enPending && typeof enHref === 'string' ? onOrigin(enHref, origins.en) : onOrigin(props.href, origins.ro)
+        } else {
+          props.href = onOrigin(props.href, props.hreflang.startsWith('en') ? origins.en : origins.ro)
+        }
+      }
     })
   },
 })

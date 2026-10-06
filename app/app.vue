@@ -22,7 +22,7 @@ const isAdmin = computed(() => route.path.startsWith('/admin'))
 
 // Organization JSON-LD is public-SEO-only.
 const settings = useSiteSettings()
-const siteUrl = useSiteUrl()
+const siteUrl = useSiteUrl('en')
 
 useJsonLd(() =>
   isAdmin.value

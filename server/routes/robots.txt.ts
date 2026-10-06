@@ -1,6 +1,9 @@
-import { getSiteUrl } from '#layers/core/server/utils/getSiteUrl'
+import { getSiteOrigins } from '#layers/core/server/utils/getSiteUrl'
+import { originForHost } from '#layers/core/shared/utils/siteOrigins'
+
 export default defineEventHandler((event) => {
-  const baseUrl = getSiteUrl(event)
+  const origins = getSiteOrigins(event)
+  const baseUrl = originForHost(origins, getRequestHost(event)) ?? origins.en
 
   const body = `User-agent: *
 Disallow: /admin

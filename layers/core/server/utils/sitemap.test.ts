@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { renderSitemap, toLastmod, toSitemapUrls } from './sitemap'
+import { renderSitemap, sitemapUrlsForOrigin, toLastmod, toSitemapUrls } from './sitemap'
 
 const base = 'https://example.test'
+const single = { ro: base, en: base }
+const split = { ro: 'https://codepedia.md', en: 'https://codepedia.studio' }
 
 describe('toLastmod', () => {
   it('keeps only the UTC date', () => {
@@ -12,11 +14,11 @@ describe('toLastmod', () => {
 
 describe('toSitemapUrls', () => {
   it('lists both locales with ro, en and x-default alternates', () => {
-    const urls = toSitemapUrls(base, [{ ro: '/proiecte', en: '/en/work', lastmod: '2026-01-02' }])
+    const urls = toSitemapUrls(single, [{ ro: '/proiecte', en: '/en/work', lastmod: '2026-01-02' }])
     const alt = [
       { hreflang: 'ro', href: `${base}/proiecte` },
       { hreflang: 'en', href: `${base}/en/work` },
-      { hreflang: 'x-default', href: `${base}/proiecte` },
+      { hreflang: 'x-default', href: `${base}/en/work` },
     ]
     expect(urls).toEqual([
       { loc: `${base}/proiecte`, lastmod: '2026-01-02', alt },
@@ -25,18 +27,42 @@ describe('toSitemapUrls', () => {
   })
 
   it('lists only the RO URL, with no alternates, while the EN copy is pending', () => {
-    expect(toSitemapUrls(base, [{ ro: '/preturi', en: '/en/pricing', enPending: true }])).toEqual([
+    expect(toSitemapUrls(single, [{ ro: '/preturi', en: '/en/pricing', enPending: true }])).toEqual([
       { loc: `${base}/preturi`, lastmod: undefined, alt: [] },
     ])
   })
 })
 
+describe('sitemapUrlsForOrigin', () => {
+  const urls = toSitemapUrls(split, [{ ro: '/', en: '/en' }, { ro: '/preturi', en: '/en/pricing', enPending: true }])
+
+  it('puts each locale on its own domain', () => {
+    expect(urls.map((url) => url.loc)).toEqual([
+      'https://codepedia.md/',
+      'https://codepedia.studio/en',
+      'https://codepedia.md/preturi',
+    ])
+  })
+
+  it('keeps only the URLs canonical on the requested domain', () => {
+    expect(sitemapUrlsForOrigin(urls, split.ro).map((url) => url.loc)).toEqual([
+      'https://codepedia.md/',
+      'https://codepedia.md/preturi',
+    ])
+    expect(sitemapUrlsForOrigin(urls, split.en).map((url) => url.loc)).toEqual(['https://codepedia.studio/en'])
+  })
+
+  it('keeps every URL on an unknown host', () => {
+    expect(sitemapUrlsForOrigin(urls, undefined)).toHaveLength(3)
+  })
+})
+
 describe('renderSitemap', () => {
   it('omits lastmod when absent and renders alternates', () => {
-    const xml = renderSitemap(toSitemapUrls(base, [{ ro: '/', en: '/en' }]))
+    const xml = renderSitemap(toSitemapUrls(single, [{ ro: '/', en: '/en' }]))
     expect(xml).toContain(`<loc>${base}/</loc>\n    <xhtml:link rel="alternate" hreflang="ro" href="${base}/" />`)
     expect(xml).not.toContain('<lastmod>')
-    expect(xml).toContain(`hreflang="x-default" href="${base}/" />`)
+    expect(xml).toContain(`hreflang="x-default" href="${base}/en" />`)
   })
 
   it('renders lastmod and escapes XML special characters', () => {

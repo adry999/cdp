@@ -18,6 +18,7 @@ const setI18nParams = useSetI18nParams()
 setI18nParams({ ro: { slug: service.routeSlug.ro }, en: { slug: service.routeSlug.en } })
 
 const siteUrl = useSiteUrl()
+const primarySiteUrl = useSiteUrl('en')
 const seoDescription = service.seoDescription ?? service.intro
 
 usePageSeo({
@@ -32,7 +33,7 @@ useJsonLd(
     name: pick(service.name.ro, service.name.en, locale.value),
     description: pick(service.intro.ro, service.intro.en, locale.value),
     url: `${siteUrl}${route.path}`,
-    provider: organizationRef(siteUrl),
+    provider: organizationRef(primarySiteUrl),
   }),
   () =>
     breadcrumbList([

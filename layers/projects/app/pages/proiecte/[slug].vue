@@ -34,6 +34,7 @@ const setI18nParams = useSetI18nParams()
 setI18nParams({ ro: { slug: projectRow.slug_ro }, en: { slug: projectRow.slug_en ?? projectRow.slug_ro } })
 
 const siteUrl = useSiteUrl()
+const primarySiteUrl = useSiteUrl('en')
 
 usePageSeo({
   // The card title fits a search result; the hero title is a full sentence that gets cut off.
@@ -59,7 +60,7 @@ useJsonLd(
     url: projectUrl.value,
     image: caseStudy.value.heroPath ?? undefined,
     inLanguage: locale.value === 'en' ? 'en-US' : 'ro-RO',
-    creator: organizationRef(siteUrl),
+    creator: organizationRef(primarySiteUrl),
   }),
   () =>
     breadcrumbList([

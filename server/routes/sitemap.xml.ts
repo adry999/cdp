@@ -1,5 +1,6 @@
-import { getSiteUrl } from '#layers/core/server/utils/getSiteUrl'
-import { renderSitemap, toSitemapUrls } from '#layers/core/server/utils/sitemap'
+import { getSiteOrigins } from '#layers/core/server/utils/getSiteUrl'
+import { renderSitemap, sitemapUrlsForOrigin, toSitemapUrls } from '#layers/core/server/utils/sitemap'
+import { originForHost } from '#layers/core/shared/utils/siteOrigins'
 import type { SitemapPage } from '#layers/core/shared/types/sitemap'
 import { listBlogSitemapPages } from '#layers/blog/server'
 import { CONSENT_SITEMAP_PAGES } from '#layers/consent/server'
@@ -25,5 +26,7 @@ export default defineEventHandler(async (event) => {
   ]
 
   setResponseHeader(event, 'content-type', 'application/xml; charset=utf-8')
-  return renderSitemap(toSitemapUrls(getSiteUrl(event), pages))
+  const origins = getSiteOrigins(event)
+  const urls = toSitemapUrls(origins, pages)
+  return renderSitemap(sitemapUrlsForOrigin(urls, originForHost(origins, getRequestHost(event))))
 })

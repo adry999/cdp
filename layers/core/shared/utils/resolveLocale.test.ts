@@ -19,10 +19,11 @@ describe('resolveLocale', () => {
     expect(resolveLocale({ geoCountry: 'DE' })).toBe('en')
   })
 
-  it('falls back to domain when geo is unavailable', () => {
+  it('resolves from the domain alone', () => {
     expect(resolveLocale({ host: 'codepedia.md' })).toBe('ro')
     expect(resolveLocale({ host: 'codepedia.ro' })).toBe('ro')
     expect(resolveLocale({ host: 'www.codepedia.md' })).toBe('ro')
+    expect(resolveLocale({ host: 'codepedia.studio' })).toBe('en')
     expect(resolveLocale({ host: 'localhost:3000' })).toBe('en')
     expect(resolveLocale({ host: 'example.com' })).toBe('en')
   })
@@ -31,8 +32,14 @@ describe('resolveLocale', () => {
     expect(resolveLocale({})).toBe('en')
   })
 
-  it('prefers geo over domain when both are present', () => {
-    expect(resolveLocale({ geoCountry: 'US', host: 'codepedia.md' })).toBe('en')
+  it('prefers the domain over geo', () => {
+    expect(resolveLocale({ geoCountry: 'US', host: 'codepedia.md' })).toBe('ro')
+    expect(resolveLocale({ geoCountry: 'MD', host: 'codepedia.studio' })).toBe('en')
+  })
+
+  it('falls back to geo on any other host', () => {
+    expect(resolveLocale({ geoCountry: 'MD', host: 'codepedia-git-main.vercel.app' })).toBe('ro')
+    expect(resolveLocale({ geoCountry: 'MD', host: 'evilcodepedia.studio' })).toBe('ro')
   })
 })
 
