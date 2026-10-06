@@ -47,8 +47,12 @@ Așa, `codepedia.md/en/...` funcționează, dar Google indexează doar
 - [ ] Supabase Auth: protecție parole compromise, MFA pe contul de admin,
       înregistrare conturi noi oprită
 - [ ] CSP fără `'unsafe-inline'` în `script-src` (nonce/hash, loader Meta Pixel extern)
-- [ ] `npm audit fix` (vue, devalue, undici — patch-uri, fără major)
-- [ ] Ștergere lead din admin + perioadă de retenție (vezi Confidențialitate)
+- [ ] Actualizare dependențe: `npm audit fix` (2026-10-06) a ridicat și o versiune majoră și
+      a stricat build-ul de producție (500, „Either manifest or precomputed data must be
+      provided”), deci a fost anulat. De făcut țintit, pachet cu pachet, cu build + e2e.
+      Alertele rămase: vue <3.5.42 (SSR, neaplicabil aici), devalue, undici, sharp (doar local)
+- [x] Ștergere lead din admin (2026-10-06)
+- [ ] Perioadă de retenție pentru leads + purjare automată (vezi Confidențialitate)
 
 ## Email
 
