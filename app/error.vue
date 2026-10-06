@@ -3,15 +3,17 @@ import type { NuxtError } from '#app'
 
 const props = defineProps<{ error: NuxtError }>()
 
-const { t } = useI18n()
+const { t, localeProperties } = useI18n()
 const localePath = useLocalePath()
 
 const isNotFound = computed(() => props.error?.status === 404)
 const title = computed(() => (isNotFound.value ? t('error.notFoundTitle') : t('error.genericTitle')))
 const body = computed(() => (isNotFound.value ? t('error.notFoundBody') : t('error.genericBody')))
 
+// app.vue, which sets <html lang> through useLocaleHead, does not render on the error page.
+useHead({ htmlAttrs: { lang: () => localeProperties.value.language } })
 useSeoMeta({
-  title: () => title.value,
+  title: () => title.value.replace(/\.$/, ''),
 })
 
 function goHome() {
