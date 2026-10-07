@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.17.0",
+    "@nuxt/icon": "^2.5.1",
     "@playwright/test": "^1.62.1",
     "eslint": "^10.9.1",
     "png-to-ico": "^3.0.2",

@@ -7,14 +7,15 @@
   },
   "nav": {
     "services": "Services",
-    "stack": "Stack",
+    "stack": "Tech Stack",
     "process": "Process",
-    "work": "Work",
+    "work": "Portfolio",
     "blog": "Blog",
     "pricing": "Pricing",
     "about": "About",
     "main": "Main navigation",
     "contact": "Contact",
+    "letsTalk": "Let's talk",
     "menu": "Menu",
     "skipToContent": "Skip to content"
   },
@@ -167,7 +168,7 @@
       "sectionLabel": "Stack",
       "title": "The stack we ship with.",
       "subtitle": "TypeScript on both ends, Postgres for data, deployed on Vercel. Tools we've used in production, not a wish list.",
-      "integrationNote": "Already running a Shopify store or an existing CMS? We integrate natively over headless APIs.",
+      "integrationNote": "Every project is unique. The best way forward is to hop on a quick call or drop us an email about your specific needs so we can discover how to help you best.",
       "groups": {
         "frontend": {
           "name": "Frontend & UI",
@@ -187,7 +188,7 @@
           "tags": [
             "PostgreSQL",
             "Supabase",
-            "Drizzle ORM",
+            "C# / .NET Core",
             "Node.js",
             "Edge Functions"
           ]
@@ -272,8 +273,9 @@
       }
     },
     "work": {
-      "sectionLabel": "Work",
-      "title": "Selected work.",
+      "sectionLabel": "Portfolio",
+      "title": "Projects we are proud to share.",
+      "intro": "A selection of our latest projects and case studies showcasing our approach to solving technical challenges and driving business value.",
       "caseStudyLink": "Read the case study →",
       "allProjects": "All projects →"
     },

@@ -13,9 +13,9 @@ usePageSeo({
   <div>
     <HomeHero />
     <HomeServices />
-    <HomeStack />
-    <HomeProcess />
     <HomeWork />
+    <HomeStack />
+    <!-- <HomeProcess /> -->
     <HomeAbout />
     <HomeFaq />
     <HomeContact />

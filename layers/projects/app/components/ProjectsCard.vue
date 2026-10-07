@@ -9,7 +9,10 @@ const localePath = useLocalePath()
 </script>
 
 <template>
-  <div class="rounded border border-hairline bg-paper p-[clamp(18px,2vw,22px)]">
+  <NuxtLink
+    :to="localePath({ name: 'proiecte-slug', params: { slug: project.slug } })"
+    class="group block flex flex-col rounded border border-hairline bg-paper p-[clamp(18px,2vw,22px)] transition-all duration-300 hover:-translate-y-1 hover:border-signal/30 hover:shadow-lg hover:shadow-signal/5"
+  >
     <MediaFrame
       ratio="16/10"
       :src="project.coverPath ?? undefined"
@@ -27,8 +30,10 @@ const localePath = useLocalePath()
       {{ project.title }}
     </h3>
     <p class="m-0 text-base text-muted">{{ project.text }}</p>
-    <TextLink :to="localePath({ name: 'proiecte-slug', params: { slug: project.slug } })" class="mt-4 inline-block">
-      {{ t('home.work.caseStudyLink') }}
-    </TextLink>
-  </div>
+    <div class="mt-auto pt-4">
+      <span class="inline-block eyebrow text-ink underline decoration-signal underline-offset-[3px] transition-colors group-hover:decoration-ink">
+        {{ t('home.work.caseStudyLink') }}
+      </span>
+    </div>
+  </NuxtLink>
 </template>

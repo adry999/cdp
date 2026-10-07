@@ -56,7 +56,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-08-05',
   devtools: { enabled: true },
 
-  modules: ['@nuxtjs/i18n', '@nuxt/image', '@nuxt/fonts', '@nuxtjs/supabase', '@nuxt/content', '@nuxt/eslint'],
+  modules: ['@nuxtjs/i18n', '@nuxt/image', '@nuxt/fonts', '@nuxtjs/supabase', '@nuxt/content', '@nuxt/eslint', '@nuxt/icon'],
 
   // Node's built-in SQLite instead of the better-sqlite3 native addon — no compiled binary to build or ship.
   content: {

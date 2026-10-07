@@ -7,14 +7,15 @@
   },
   "nav": {
     "services": "Servicii",
-    "stack": "Stack",
+    "stack": "Tech Stack",
     "process": "Proces",
-    "work": "Proiecte",
+    "work": "Portofoliu",
     "blog": "Blog",
     "pricing": "Prețuri",
     "about": "Despre",
     "main": "Navigație principală",
     "contact": "Contact",
+    "letsTalk": "Hai să vorbim",
     "menu": "Meniu",
     "skipToContent": "Sari la conținut"
   },
@@ -167,7 +168,7 @@
       "sectionLabel": "Stack",
       "title": "Tehnologiile cu care livrăm.",
       "subtitle": "TypeScript pe frontend și backend, Postgres pentru date, deploy pe Vercel. Unelte folosite deja în producție, nu o listă de dorințe.",
-      "integrationNote": "Ai deja un magazin pe Shopify sau un CMS existent? Ne integrăm nativ prin API-uri headless.",
+      "integrationNote": "Fiecare proiect are particularitățile sale. Cel mai bine este să ne auzim la un apel sau pe email legat de nevoile tale specifice, pentru a descoperi cum te putem ajuta la maximum.",
       "groups": {
         "frontend": {
           "name": "Frontend & UI",
@@ -187,7 +188,7 @@
           "tags": [
             "PostgreSQL",
             "Supabase",
-            "Drizzle ORM",
+            "C# / .NET Core",
             "Node.js",
             "Edge Functions"
           ]
@@ -272,8 +273,9 @@
       }
     },
     "work": {
-      "sectionLabel": "Proiecte",
-      "title": "Proiecte selectate.",
+      "sectionLabel": "Portofoliu",
+      "title": "Proiecte cu care ne mândrim.",
+      "intro": "O selecție a celor mai recente proiecte și studii de caz care ilustrează abordarea noastră în rezolvarea provocărilor tehnice și generarea de valoare pentru business.",
       "caseStudyLink": "Vezi studiul de caz →",
       "allProjects": "Toate proiectele →"
     },
