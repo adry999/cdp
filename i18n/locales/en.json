@@ -72,7 +72,8 @@
       "sectionLabel": "Services",
       "title": "Where do you want to start? See each stage.",
       "intro": "Five stages, from a fast one-page launch to custom AI engineering. Pick where you are now — that's where we begin.",
-      "note": "Some projects are under NDA. Detailed references available on the diagnostic call.",
+      "note": "Prices and timelines are indicative and depend on specific project scope.",
+      "notSureLink": "Not sure which stage fits you best? Write to us.",
       "grants": {
         "kicker": "Proiecte finanțate prin granturi",
         "title": "Ai câștigat un grant european sau ODA? Livrăm aplicația din proiect, la termenele din contract.",
@@ -95,42 +96,72 @@
           "priceTime": "Under 1,000 EUR · 2–3 days",
           "whereYouAre": "You need a modern, fast page to validate an idea, win your first customers or replace an outdated site.",
           "whatYouGet": "A fast-loading 1–3 page landing site, mobile-optimised, wired straight to Telegram or a form so enquiries reach you from day one.",
-          "badges": ["Launch in 2–3 Days", "Modern Design", "Mobile-Optimised", "Form Connected"],
-          "cta": "Launch my page"
+          "badges": [
+            "Launch in 2–3 Days",
+            "Modern Design",
+            "Mobile-Optimised",
+            "Form Connected"
+          ],
+          "cta": "Launch my page",
+          "whyUs": "DIY builders save money now but cost you credibility. A pro page loads faster and actually converts your traffic."
         },
         "B": {
           "name": "CONCEPT TO SPEC",
           "priceTime": "From 1,000 EUR · ~1 week",
           "whereYouAre": "You have a product or business idea, but it's still theoretical and you need full clarity before investing in development.",
           "whatYouGet": "A complete execution plan: from user flows and a visual prototype to a clear technical spec, ready to hand to a dev team.",
-          "badges": ["AI Prototyping", "Wireframing", "Product Scope"],
-          "cta": "Map out my concept"
+          "badges": [
+            "AI Prototyping",
+            "Wireframing",
+            "Product Scope"
+          ],
+          "cta": "Map out my concept",
+          "whyUs": "Skipping the spec phase usually means scope creep later. We align business logic with tech reality before writing any code."
         },
         "A": {
           "name": "DESIGN TO CODE",
           "priceTime": "From 2,000 EUR · 3–6 weeks",
           "whereYouAre": "Your design is ready in Figma, or your visual assets are prepared, and you want a technical team to turn them into well-built production code.",
           "whatYouGet": "Your Figma screens built as a working app: front end, Postgres database and the API integrations it needs.",
-          "badges": ["Pixel-Perfect", "Full-Stack Architecture", "Deploy on Vercel", "Postgres Schema"],
-          "cta": "Turn my design into code"
+          "badges": [
+            "Pixel-Perfect",
+            "Full-Stack Architecture",
+            "Deploy on Vercel",
+            "Postgres Schema"
+          ],
+          "cta": "Turn my design into code",
+          "whyUs": "Offshore agencies often produce unmaintainable code. We ship clean, typed, scalable architecture you actually own."
         },
         "C": {
           "name": "SCALE & EXTEND",
           "priceTime": "From 2,000 EUR · 4–8 weeks",
           "whereYouAre": "You have a live product but need engineering capacity to ship new modules, clear performance bottlenecks or increase delivery speed.",
           "whatYouGet": "New feature development, code refactoring, database tuning and an architecture ready to scale — with zero downtime.",
-          "badges": ["New Features", "Speed Optimisation", "Scalable Architecture", "Incremental Refactor"],
-          "cta": "Scale my product"
+          "badges": [
+            "New Features",
+            "Speed Optimisation",
+            "Scalable Architecture",
+            "Incremental Refactor"
+          ],
+          "cta": "Scale my product",
+          "whyUs": "Instead of just patching bugs, we modernize your stack iteratively so you can grow without throwing away existing code."
         },
         "D": {
           "name": "AI PROCESS AUTOMATION",
           "priceTime": "From 5,000 EUR · 6–12 weeks",
           "whereYouAre": "Your team loses dozens of hours on repetitive tasks, manual data processing or fragmented workflows that slow your growth.",
           "whatYouGet": "LLM steps wired into the tools you already use (n8n, Make or custom code), plus a dashboard where your team reviews every automated action.",
-          "badges": ["Lower Operating Costs", "Custom AI Integrations", "Automated Processing", "Control & Audit"],
-          "cta": "Automate my workflow"
+          "badges": [
+            "Lower Operating Costs",
+            "Custom AI Integrations",
+            "Automated Processing",
+            "Control & Audit"
+          ],
+          "cta": "Automate my workflow",
+          "whyUs": "Off-the-shelf AI tools are generic. We build custom automations that fit your exact business process securely."
         }
-      }
+      },
+      "whyUsLabel": "Why work with us?"
     },
     "stack": {
       "sectionLabel": "Stack",
@@ -141,22 +172,45 @@
         "frontend": {
           "name": "Frontend & UI",
           "benefit": "Performance & SEO: Server-rendered pages with metadata, sitemap and hreflang set up from day one.",
-          "tags": ["React", "Next.js", "Vue 3", "Nuxt", "TypeScript", "Tailwind CSS"]
+          "tags": [
+            "React",
+            "Next.js",
+            "Vue 3",
+            "Nuxt",
+            "TypeScript",
+            "Tailwind CSS"
+          ]
         },
         "backend": {
           "name": "Backend & Data",
           "benefit": "Solid Infrastructure: Postgres with row-level security and migrations kept in Git.",
-          "tags": ["PostgreSQL", "Supabase", "Drizzle ORM", "Node.js", "Edge Functions"]
+          "tags": [
+            "PostgreSQL",
+            "Supabase",
+            "Drizzle ORM",
+            "Node.js",
+            "Edge Functions"
+          ]
         },
         "infra": {
           "name": "Cloud & Infra",
           "benefit": "Automated deploys: Every commit reaches production through CI, with a CDN and a preview for every change.",
-          "tags": ["Vercel", "Cloudflare", "Docker", "GitHub Actions"]
+          "tags": [
+            "Vercel",
+            "Cloudflare",
+            "Docker",
+            "GitHub Actions"
+          ]
         },
         "ai": {
           "name": "AI & Vector Data",
           "benefit": "LLM automation: Models wired into your workflows, with semantic search over your own data.",
-          "tags": ["OpenAI API", "Anthropic", "pgvector", "Streaming"]
+          "tags": [
+            "OpenAI API",
+            "Anthropic",
+            "pgvector",
+            "Streaming"
+          ]
         }
       }
     },
@@ -384,11 +438,26 @@
     "budget": {
       "legend": "What's your starting budget?",
       "options": {
-        "under500": { "label": "Under 500 EUR", "hint": "Fast-track 1–3 page landing" },
-        "500to1k": { "label": "500 – 1,000 EUR", "hint": "Small site or a short scoped sprint" },
-        "1to2k": { "label": "1,000 – 2,000 EUR", "hint": "Blueprint, or a focused build" },
-        "2to5k": { "label": "2,000 – 5,000 EUR", "hint": "Full build from designs or an existing codebase" },
-        "over5k": { "label": "Over 5,000 EUR", "hint": "Heavier engineering or custom AI" }
+        "under500": {
+          "label": "Under 500 EUR",
+          "hint": "Fast-track 1–3 page landing"
+        },
+        "500to1k": {
+          "label": "500 – 1,000 EUR",
+          "hint": "Small site or a short scoped sprint"
+        },
+        "1to2k": {
+          "label": "1,000 – 2,000 EUR",
+          "hint": "Blueprint, or a focused build"
+        },
+        "2to5k": {
+          "label": "2,000 – 5,000 EUR",
+          "hint": "Full build from designs or an existing codebase"
+        },
+        "over5k": {
+          "label": "Over 5,000 EUR",
+          "hint": "Heavier engineering or custom AI"
+        }
       }
     },
     "offer": {

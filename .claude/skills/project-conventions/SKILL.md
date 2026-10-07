@@ -190,3 +190,4 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-10-06: Titlul, descrierea, OG și JSON-LD ale paginilor trec prin `usePageSeo` și `useJsonLd` din `core`, nu prin `useSeoMeta` / `useHead` directe (rămân directe doar `robots` și layout-urile) — audit 2026-10-06.
 - 2026-10-06: `requireAdmin` stă în `core` și citește id-ul utilizatorului din `sub`-ul claim-urilor JWT, apoi verifică `app_users` cu clientul service-role — audit 2026-10-06.
 - 2026-10-06: Textul mic portocaliu pe fundal deschis folosește tokenul signal-text (#C2370A, AA); signal rămâne pentru accente și fundaluri închise — audit Lighthouse.
+- 2026-10-07: Iconurile SVG inline (CoreStageIcon) au fost reintroduse pentru a distinge vizual etapele de servicii. Regula "fără bibliotecă de iconuri" se referă doar la pachete externe, nu la SVG-urile noastre interne.

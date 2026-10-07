@@ -22,7 +22,7 @@ const copyrightLine = computed(() => `© ${settings.value.copyrightYear}`)
       class="container-site flex flex-wrap gap-x-6 gap-y-3 border-b border-hairline py-5 eyebrow-sm text-muted"
     >
       <NuxtLink
-        v-for="service in SERVICE_LINKS"
+        v-for="service in SERVICE_LINKS.filter(s => s.slug !== 'granturi' || useRuntimeConfig().public.grantsEnabled)"
         :key="service.slug"
         :to="localePath({ name: 'servicii-slug', params: { slug: service.routeSlug[locale] } })"
         class="hover:text-ink"

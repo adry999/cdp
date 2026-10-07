@@ -77,6 +77,7 @@ export default defineNuxtConfig({
       siteUrlRo: process.env.NUXT_PUBLIC_SITE_URL_RO || '',
       noindex: process.env.NUXT_PUBLIC_NOINDEX === 'true',
       heroBgVariant: (process.env.NUXT_PUBLIC_HERO_BG_VARIANT as string) || 'dot-matrix',
+      grantsEnabled: process.env.NUXT_PUBLIC_GRANTS_ENABLED === 'true',
     },
   },
 

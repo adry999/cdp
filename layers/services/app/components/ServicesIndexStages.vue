@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import type { StageId } from '#layers/core/shared/types/service-stage'
 import { useServiceStages } from '#layers/content'
-import { SERVICE_LINKS } from '#layers/services/data/serviceLinks'
+
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
-const stages = useServiceStages()
+const stages = await useServiceStages()
 
-// Same grouping as the homepage timeline: a service page is listed under the stage
-// its `qualifierStage` names, so stages without a matching page list none.
-function servicesFor(stageId: StageId) {
-  return SERVICE_LINKS.filter((service) => service.qualifierStage === stageId)
-}
+// Removed servicesFor since links were cleaned up
 </script>
 
 <template>
@@ -27,19 +23,24 @@ function servicesFor(stageId: StageId) {
     </template>
     <article>
       <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
-        <h2 class="m-0 font-mono text-[clamp(18px,2.2vw,22px)] font-medium uppercase leading-tight tracking-[0.04em]">
+        <h2 class="m-0 flex items-center gap-3 font-mono text-[clamp(18px,2.2vw,22px)] font-medium uppercase leading-tight tracking-[0.04em]">
+          <CoreStageIcon :stage="stage.id" class="text-signal w-6 h-6" />
           {{ stage.name }}
         </h2>
         <span class="eyebrow text-muted">{{ stage.priceTime }}</span>
       </div>
       <div class="mt-6 grid grid-fit-safe-280 gap-6">
-        <div>
-          <div class="eyebrow text-muted">{{ t('home.services.whereYouAreLabel') }}</div>
-          <p class="m-0 mt-2.5 text-base text-muted text-pretty">{{ stage.whereYouAre }}</p>
+        <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
+          <div class="eyebrow text-muted transition-colors duration-500 group-hover:text-signal">{{ t('home.services.whereYouAreLabel') }}</div>
+          <p class="m-0 mt-2.5 text-base text-pretty text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whereYouAre }}</p>
         </div>
-        <div>
-          <div class="eyebrow text-muted">{{ t('home.services.whatYouGetLabel') }}</div>
-          <p class="m-0 mt-2.5 text-base text-pretty">{{ stage.whatYouGet }}</p>
+        <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
+          <div class="eyebrow text-muted transition-colors duration-500 group-hover:text-signal">{{ t('home.services.whyUsLabel') }}</div>
+          <p class="m-0 mt-2.5 text-base text-pretty text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whyUs }}</p>
+        </div>
+        <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
+          <div class="eyebrow text-muted transition-colors duration-500 group-hover:text-signal">{{ t('home.services.whatYouGetLabel') }}</div>
+          <p class="m-0 mt-2.5 text-base text-pretty text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whatYouGet }}</p>
         </div>
       </div>
       <ul class="m-0 mt-6 flex list-none flex-wrap gap-2 p-0">
@@ -49,14 +50,6 @@ function servicesFor(stageId: StageId) {
       </ul>
       <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-4">
         <QualifierCta variant="ink" :stage="stage.id">{{ stage.cta }}</QualifierCta>
-        <NuxtLink
-          v-for="service in servicesFor(stage.id)"
-          :key="service.slug"
-          :to="localePath({ name: 'servicii-slug', params: { slug: service.routeSlug[locale] } })"
-          class="eyebrow text-muted hover:text-signal-text"
-        >
-          {{ pick(service.name.ro, service.name.en, locale) }} →
-        </NuxtLink>
       </div>
     </article>
   </SiteSection>

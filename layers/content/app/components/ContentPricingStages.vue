@@ -3,7 +3,7 @@ import { useServiceStages } from '#layers/content'
 
 const { t } = useI18n()
 const localePath = useLocalePath()
-const stages = useServiceStages()
+const stages = await useServiceStages()
 
 // The highlighted stage (Design → cod) gets the inverted card.
 const FEATURED_STAGE = 'A'
@@ -26,7 +26,7 @@ const FEATURED_STAGE = 'A'
               class="eyebrow-sm"
               :class="stage.id === FEATURED_STAGE ? 'text-body-ink' : 'text-muted'"
             >
-              {{ t(`pricing.stages.${stage.id}.time`) }}
+              {{ stage.timing }}
             </span>
           </div>
           <h2 class="m-0 mt-4 min-h-[2.6em] font-mono text-sm font-medium uppercase leading-[1.3] tracking-[0.04em]">
@@ -36,7 +36,7 @@ const FEATURED_STAGE = 'A'
             class="mt-5 eyebrow-sm"
             :class="stage.id === FEATURED_STAGE ? 'text-body-ink' : 'text-muted'"
           >
-            {{ t(`pricing.stages.${stage.id}.pricePrefix`) }}
+            {{ stage.pricing }}
           </div>
           <div class="mt-1 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em]">
             {{ t('pricing.pricePlaceholder') }}
