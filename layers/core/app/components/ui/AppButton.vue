@@ -1,5 +1,5 @@
 <script setup lang="ts">
-type Variant = 'ink' | 'signal' | 'outline'
+type Variant = 'ink' | 'signal' | 'outline' | 'ghost'
 
 const props = withDefaults(
   defineProps<{
@@ -12,9 +12,12 @@ const props = withDefaults(
 )
 
 const base =
-  'inline-block rounded text-[15px] font-medium no-underline transition-colors duration-[120ms] ease-out hover:no-underline disabled:cursor-not-allowed disabled:opacity-60'
+  'inline-block cursor-pointer rounded text-[15px] font-medium no-underline transition-colors duration-[120ms] ease-out hover:no-underline disabled:cursor-not-allowed disabled:opacity-60'
 
 const variantClass = computed(() => {
+  if (props.variant === 'ghost') {
+    return `${base} border border-ink/25 bg-ink/[0.04] px-[21px] py-[13px] text-ink hover:border-ink/50 hover:bg-ink/[0.08]`
+  }
   if (props.variant === 'outline') {
     return `${base} border border-ink px-[21px] py-[13px] text-ink hover:border-muted hover:text-ink`
   }

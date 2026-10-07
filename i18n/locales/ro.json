@@ -53,17 +53,19 @@
         "Integrări cu terți"
       ],
       "titleSuffix": "construite ca să-ți aducă rezultate de durată.",
-      "problem": "Multe proiecte rămân neterminate și greu de întreținut. Noi predăm cod pe care echipa ta îl poate duce mai departe, cu documentație și 30 de zile de remedieri incluse.",
-      "lead": "Lucrăm cu fondatori la început de drum și cu companii consacrate, din Chișinău pentru clienți din Europa și America de Nord.",
+      "lead": "Construim pentru fondatori și companii în creștere aplicații web rapide, robuste și scalabile — ducându-ți produsul de la concept la o lansare de impact, gata să convertească clienți și să scaleze fără datorie tehnică.",
       "ctaPrimary": "Vezi dacă te putem ajuta",
       "ctaSecondary": "Cum lucrăm",
       "facts": {
-        "location": "Bazați în",
+        "location": "Sediul central",
         "locationValue": "Chișinău, Moldova",
+        "itPark": "Rezident Moldova IT Park",
+        "itParkTooltip": "Regim fiscal și juridic special garantat prin lege: contractare B2B internațională simplificată în EUR/USD, transfer complet de proprietate intelectuală și TVA 0% la exportul de servicii software pentru clienți din UE și America de Nord.",
+        "itParkTooltipAria": "Detalii despre avantajele rezidenței Moldova IT Park",
         "markets": "Piețe",
-        "marketsValue": "Moldova/România · UE · America de Nord · Lumea întreagă",
+        "marketsValue": "România & Moldova · Uniunea Europeană · America de Nord",
         "stack": "Stack tehnologic",
-        "stackValue": "React (Next.js), Vue (Nuxt.js), Node.js, PostgreSQL, Supabase, n8n, Make, LLM pipelines"
+        "stackValue": "React (Next.js), Vue (Nuxt.js), C# / .NET Core, Node.js, Python (FastAPI), PostgreSQL, Supabase, n8n, LLM pipelines"
       }
     },
     "services": {

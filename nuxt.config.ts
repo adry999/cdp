@@ -76,6 +76,7 @@ export default defineNuxtConfig({
       siteUrl,
       siteUrlRo: process.env.NUXT_PUBLIC_SITE_URL_RO || '',
       noindex: process.env.NUXT_PUBLIC_NOINDEX === 'true',
+      heroBgVariant: (process.env.NUXT_PUBLIC_HERO_BG_VARIANT as string) || 'dot-matrix',
     },
   },
 
@@ -151,6 +152,11 @@ export default defineNuxtConfig({
 
   alias: {
     '#supabase-browser-plugin': fileURLToPath(new URL(`./node_modules/${SUPABASE_BROWSER_PLUGIN}`, import.meta.url)),
+    '/components/site/QualifierModal.vue': fileURLToPath(new URL('./layers/qualifier/app/components/QualifierModal.vue', import.meta.url)),
+    '/components/site/QualifierOptionCard.vue': fileURLToPath(new URL('./layers/qualifier/app/components/QualifierOptionCard.vue', import.meta.url)),
+    '/components/site/QualifierStepBudget.vue': fileURLToPath(new URL('./layers/qualifier/app/components/QualifierStepBudget.vue', import.meta.url)),
+    '/components/site/QualifierStepContact.vue': fileURLToPath(new URL('./layers/qualifier/app/components/QualifierStepContact.vue', import.meta.url)),
+    '/components/site/QualifierStepStage.vue': fileURLToPath(new URL('./layers/qualifier/app/components/QualifierStepStage.vue', import.meta.url)),
   },
 
   hooks: {

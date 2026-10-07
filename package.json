@@ -8,6 +8,8 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:clean": "nuxt cleanup && rm -rf node_modules/.cache && nuxt dev",
+    "clean": "nuxt cleanup && rm -rf node_modules/.cache",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",

@@ -53,17 +53,19 @@
         "Third-Party Integrations"
       ],
       "titleSuffix": "built to bring you lasting results.",
-      "problem": "Plenty of projects end half-finished and impossible to maintain. We hand over code your team can run, with documentation and 30 days of fixes included.",
-      "lead": "We work with early-stage founders and established companies, from Chișinău to clients across Europe and North America.",
+      "lead": "We build fast, robust, and scalable web applications for founders and growing companies — taking your product from concept to a high-impact launch that converts users and scales without technical debt.",
       "ctaPrimary": "Find out if we can help",
       "ctaSecondary": "How we work",
       "facts": {
-        "location": "Base Location",
+        "location": "Headquarters",
         "locationValue": "Chișinău, Moldova",
+        "itPark": "Moldova IT Park Resident",
+        "itParkTooltip": "Special legal and tax framework guaranteed by law: streamlined international B2B contracting in EUR/USD, full intellectual property transfer, and 0% VAT on cross-border software export for EU and North American clients.",
+        "itParkTooltipAria": "Details about Moldova IT Park residency advantages",
         "markets": "Markets",
-        "marketsValue": "Moldova/Romania · EU · North America · Worldwide",
+        "marketsValue": "Romania & Moldova · European Union · North America",
         "stack": "Tech Stack",
-        "stackValue": "React (Next.js), Vue (Nuxt.js), Node.js, PostgreSQL, Supabase, n8n, Make, LLM pipelines"
+        "stackValue": "React (Next.js), Vue (Nuxt.js), C# / .NET Core, Node.js, Python (FastAPI), PostgreSQL, Supabase, n8n, LLM pipelines"
       }
     },
     "services": {
