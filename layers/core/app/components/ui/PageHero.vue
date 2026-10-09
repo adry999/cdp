@@ -10,6 +10,9 @@ defineProps<{
 
 <template>
   <SiteSection section-id="top" :number="number" :label="label" padding="hero" :top-border="false">
+    <template #background>
+      <CoreInteractiveBackground variant="dot-matrix" />
+    </template>
     <h1
       class="m-0 max-w-[20ch] text-[clamp(34px,6vw,64px)] font-semibold leading-[1.04] tracking-[-0.025em] text-pretty"
     >

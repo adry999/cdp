@@ -11,10 +11,6 @@ const mobileMenuId = 'site-mobile-menu'
 
 const navLinks = computed(() => (getRouteBaseName(route) === 'index' ? HOME_NAV_LINKS : PAGE_NAV_LINKS))
 
-function isCtaLink(link: SiteNavLink): boolean {
-  return link.kind === 'hash' ? link.hash === '#contact' : link.routeName === 'contact'
-}
-
 function navLinkKey(link: SiteNavLink): string {
   return link.kind === 'hash' ? link.hash : link.routeName
 }
@@ -66,7 +62,7 @@ onMounted(() => {
       </NuxtLink>
 
       <nav :aria-label="t('nav.main')" class="flex items-center gap-[clamp(14px,2vw,28px)] eyebrow">
-        <div class="hidden items-center gap-[clamp(14px,2vw,28px)] border-r border-hairline pr-[clamp(14px,2vw,28px)] nav:flex">
+        <div class="hidden items-center gap-[clamp(14px,2vw,28px)] nav:flex">
           <template v-for="link in navLinks" :key="navLinkKey(link)">
             <a v-if="link.kind === 'hash'" :href="`${localePath('index')}${link.hash}`" class="text-muted hover:text-signal-text">
               {{ t(link.label) }}
@@ -76,6 +72,13 @@ onMounted(() => {
             </NuxtLink>
           </template>
         </div>
+
+        <NuxtLink
+          :to="localePath({ name: 'contact' })"
+          class="hidden h-[clamp(32px,4vw,40px)] items-center justify-center rounded bg-signal px-[clamp(16px,2vw,24px)] text-paper transition-opacity hover:opacity-90 nav:flex"
+        >
+          {{ t('nav.letsTalk') }}
+        </NuxtLink>
 
         <span class="flex items-center gap-1.5">
           <!-- SwitchLocalePathLink, not NuxtLink + switchLocalePath(): the header
@@ -127,15 +130,11 @@ onMounted(() => {
       :id="mobileMenuId"
       class="flex flex-col border-t border-hairline px-gutter pb-5 pt-2 eyebrow nav:hidden"
     >
-      <template v-for="(link, i) in navLinks" :key="navLinkKey(link)">
+      <template v-for="link in navLinks" :key="navLinkKey(link)">
         <a
           v-if="link.kind === 'hash'"
           :href="`${localePath('index')}${link.hash}`"
-          class="py-4"
-          :class="[
-            isCtaLink(link) ? 'text-ink underline decoration-signal underline-offset-4' : 'text-ink',
-            { 'border-b border-hairline': i !== navLinks.length - 1 },
-          ]"
+          class="border-b border-hairline py-4 text-ink"
           @click="closeMenu()"
         >
           {{ t(link.label) }}
@@ -143,16 +142,20 @@ onMounted(() => {
         <NuxtLink
           v-else
           :to="localePath({ name: link.routeName })"
-          class="py-4"
-          :class="[
-            isCtaLink(link) ? 'text-ink underline decoration-signal underline-offset-4' : 'text-ink',
-            { 'border-b border-hairline': i !== navLinks.length - 1 },
-          ]"
+          class="border-b border-hairline py-4 text-ink"
           @click="closeMenu()"
         >
           {{ t(link.label) }}
         </NuxtLink>
       </template>
+
+      <NuxtLink
+        :to="localePath({ name: 'contact' })"
+        class="mt-6 flex h-12 w-full items-center justify-center rounded bg-signal text-paper transition-opacity hover:opacity-90"
+        @click="closeMenu()"
+      >
+        {{ t('nav.letsTalk') }}
+      </NuxtLink>
     </div>
 
     <div class="h-[2px] bg-signal" />

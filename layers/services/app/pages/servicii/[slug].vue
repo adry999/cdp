@@ -9,7 +9,7 @@ const localePath = useLocalePath()
 
 const service: Service | undefined = SERVICES.find((entry) => entry.routeSlug[locale.value] === route.params.slug)
 
-if (!service) {
+if (!service || (service.slug === 'granturi' && !useRuntimeConfig().public.grantsEnabled)) {
   throw createError({ statusCode: 404, statusMessage: 'Service not found' })
 }
 

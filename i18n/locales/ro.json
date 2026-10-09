@@ -7,15 +7,16 @@
   },
   "nav": {
     "services": "Servicii",
-    "stack": "Stack",
+    "stack": "Tech Stack",
     "process": "Proces",
-    "work": "Proiecte",
+    "work": "Portofoliu",
     "blog": "Blog",
     "news": "Noutăți",
     "pricing": "Prețuri",
     "about": "Despre",
     "main": "Navigație principală",
     "contact": "Contact",
+    "letsTalk": "Hai să vorbim",
     "menu": "Meniu",
     "skipToContent": "Sari la conținut"
   },
@@ -54,24 +55,27 @@
         "Integrări cu terți"
       ],
       "titleSuffix": "construite ca să-ți aducă rezultate de durată.",
-      "problem": "Multe proiecte rămân neterminate și greu de întreținut. Noi predăm cod pe care echipa ta îl poate duce mai departe, cu documentație și 30 de zile de remedieri incluse.",
-      "lead": "Lucrăm cu fondatori la început de drum și cu companii consacrate, din Chișinău pentru clienți din Europa și America de Nord.",
+      "lead": "Construim pentru fondatori și companii în creștere aplicații web rapide, robuste și scalabile — ducându-ți produsul de la concept la o lansare de impact, gata să convertească clienți și să scaleze fără datorie tehnică.",
       "ctaPrimary": "Vezi dacă te putem ajuta",
       "ctaSecondary": "Cum lucrăm",
       "facts": {
-        "location": "Bazați în",
+        "location": "Sediul central",
         "locationValue": "Chișinău, Moldova",
+        "itPark": "Rezident Moldova IT Park",
+        "itParkTooltip": "Regim fiscal și juridic special garantat prin lege: contractare B2B internațională simplificată în EUR/USD, transfer complet de proprietate intelectuală și TVA 0% la exportul de servicii software pentru clienți din UE și America de Nord.",
+        "itParkTooltipAria": "Detalii despre avantajele rezidenței Moldova IT Park",
         "markets": "Piețe",
-        "marketsValue": "Moldova/România · UE · America de Nord · Lumea întreagă",
+        "marketsValue": "România & Moldova · Uniunea Europeană · America de Nord",
         "stack": "Stack tehnologic",
-        "stackValue": "React (Next.js), Vue (Nuxt.js), Node.js, PostgreSQL, Supabase, n8n, Make, LLM pipelines"
+        "stackValue": "React (Next.js), Vue (Nuxt.js), C# / .NET Core, Node.js, Python (FastAPI), PostgreSQL, Supabase, n8n, LLM pipelines"
       }
     },
     "services": {
       "sectionLabel": "Servicii",
       "title": "De unde ai vrea să începem munca? Vezi fiecare etapă.",
       "intro": "Cinci etape, de la o pagină rapidă până la inginerie AI la comandă. Alege unde ești acum — de acolo pornim.",
-      "note": "Unele proiecte sunt sub NDA. Referințe detaliate la discuția de diagnostic.",
+      "note": "Colaborarea se desfășoară prin audit tehnic inițial și sprinturi sau abonament lunar, adaptându-ne pe parcurs la specificul proiectului.",
+      "notSureLink": "Nu ești sigur ce etapă ți se potrivește? Scrie-ne.",
       "grants": {
         "kicker": "Proiecte finanțate prin granturi",
         "title": "Ai câștigat un grant european sau ODA? Livrăm aplicația din proiect, la termenele din contract.",
@@ -94,68 +98,136 @@
           "priceTime": "Sub 1.000 EUR · 2–3 zile",
           "whereYouAre": "Ai nevoie de o pagină modernă și rapidă care să-ți valideze ideea, să atragă primii clienți sau să înlocuiască un site învechit.",
           "whatYouGet": "Un landing page (1–3 pagini) cu încărcare rapidă, optimizat pentru mobil, cu integrare directă Telegram/formular ca să primești cereri de ofertă din prima zi.",
-          "badges": ["Lansare în 2–3 zile", "Design modern", "Optimizat pentru mobil", "Formular conectat"],
-          "cta": "Lansează pagina"
+          "badges": [
+            "Lansare în 2–3 zile",
+            "Design modern",
+            "Optimizat pentru mobil",
+            "Formular conectat"
+          ],
+          "cta": "Lansează pagina",
+          "whyUs": "Site-urile construite în platforme de tip DIY (do-it-yourself) îți economisesc bani acum, dar te costă credibilitate. O pagină creată de profesioniști se încarcă mai rapid și chiar convertește vizitatorii în clienți.",
+          "pricing": "Preț fix (400€–600€)",
+          "timing": "2–3 zile",
+          "pricingTooltip": "Plătești o sumă fixă definită în contract pentru un pachet cu specificații stricte (Pagină Express)."
         },
         "B": {
           "name": "DE LA CONCEPT LA SPECIFICAȚIE",
           "priceTime": "De la 1.000 EUR · ~1 săptămână",
           "whereYouAre": "Ai o idee de produs sau afacere, dar este încă la nivel teoretic și ai nevoie de claritate maximă înainte de a investi în dezvoltare.",
           "whatYouGet": "Planul complet de execuție: de la scenariul utilizatorului și prototip vizual, până la specificația tehnică clară, gata de transmis echipei de dev.",
-          "badges": ["Prototipare AI", "Wireframing", "Definirea produsului"],
-          "cta": "Clarifică-mi conceptul"
+          "badges": [
+            "Prototipare AI",
+            "Wireframing",
+            "Definirea produsului"
+          ],
+          "cta": "Clarifică-mi conceptul",
+          "whyUs": "Sărirea peste etapa de specificație înseamnă de obicei costuri suplimentare și întârzieri mai târziu. Aliniem logica de business cu realitatea tehnică înainte de a scrie vreo linie de cod.",
+          "pricing": "Audit & Arhitectură (de la 1.000€)",
+          "timing": "~1 săptămână",
+          "pricingTooltip": "Un audit tehnic la preț fix pentru a defini exact specificațiile, arhitectura și planul de execuție."
         },
         "A": {
           "name": "DIN DESIGN ÎN COD",
           "priceTime": "De la 2.000 EUR · 3–6 săptămâni",
           "whereYouAre": "Ai designul gata în Figma sau resursele vizuale pregătite și cauți o echipă tehnică care să le transforme în cod real, bine construit.",
           "whatYouGet": "Ecranele din Figma devin o aplicație funcțională: frontend, bază de date Postgres și integrările API de care are nevoie.",
-          "badges": ["Pixel-perfect", "Arhitectură full-stack", "Deploy pe Vercel", "Schemă Postgres"],
-          "cta": "Transformă designul în cod"
+          "badges": [
+            "Pixel-perfect",
+            "Arhitectură full-stack",
+            "Deploy pe Vercel",
+            "Schemă Postgres"
+          ],
+          "cta": "Transformă designul în cod",
+          "whyUs": "Agențiile offshore livrează deseori cod greu de întreținut. Noi livrăm o arhitectură curată, scalabilă, pe care o deții în totalitate.",
+          "pricing": "Abonament / Sprint",
+          "timing": "3–6 săptămâni",
+          "pricingTooltip": "Lucrăm ca echipa ta tehnică. Plătești un abonament lunar sau pe sprint, având flexibilitate totală la specificații."
         },
         "C": {
           "name": "SCALARE ȘI EXTINDERE",
           "priceTime": "De la 2.000 EUR · 4–8 săptămâni",
           "whereYouAre": "Ai un produs deja lansat, dar ai nevoie de resurse tehnice pentru a adăuga module noi, a rezolva blocajele de performanță sau a crește viteza de livrare.",
           "whatYouGet": "Dezvoltare de feature-uri noi, refactorizare de cod, optimizare de bază de date și arhitectură pregătită pentru scalare — fără timp de nefuncționare.",
-          "badges": ["Funcționalități noi", "Optimizare viteză", "Arhitectură scalabilă", "Refactorizare incrementală"],
-          "cta": "Extinde-mi produsul"
+          "badges": [
+            "Funcționalități noi",
+            "Optimizare viteză",
+            "Arhitectură scalabilă",
+            "Refactorizare incrementală"
+          ],
+          "cta": "Extinde-mi produsul",
+          "whyUs": "În loc doar să aplicăm „plasturi” peste erori, modernizăm stiva tehnologică treptat, astfel încât să poți crește fără a arunca la gunoi codul existent.",
+          "pricing": "Abonament lunar",
+          "timing": "Continuu",
+          "pricingTooltip": "Capacitate tehnică dedicată continuă, care asigură stabilitate, actualizări constante și timp de reacție rapid."
         },
         "D": {
           "name": "AUTOMATIZAREA PROCESELOR CU AI",
           "priceTime": "De la 5.000 EUR · 6–12 săptămâni",
           "whereYouAre": "Echipa ta pierde zeci de ore pe sarcini repetitive, procesare manuală de date sau fluxuri fragmentate care îți încetinesc creșterea.",
           "whatYouGet": "Pași LLM conectați la instrumentele pe care le folosești deja (n8n, Make sau cod propriu), plus un dashboard în care echipa verifică fiecare acțiune automată.",
-          "badges": ["Costuri operaționale mai mici", "Integrări AI la comandă", "Procesare automată", "Control & audit"],
-          "cta": "Automatizează-mi fluxul"
+          "badges": [
+            "Costuri operaționale mai mici",
+            "Integrări AI la comandă",
+            "Procesare automată",
+            "Control & audit"
+          ],
+          "cta": "Automatizează-mi fluxul",
+          "whyUs": "Soluțiile de inteligență artificială generice sunt limitate. Construim automatizări sigure și personalizate pentru fluxul tău specific de business.",
+          "pricing": "Abonament / Sprint",
+          "timing": "6–12 săptămâni",
+          "pricingTooltip": "Automatizările complexe sunt construite în sprinturi gestionate, oferindu-ți control total asupra ritmului și bugetului."
         }
-      }
+      },
+      "whyUsLabel": "De ce noi?"
     },
     "stack": {
       "sectionLabel": "Stack",
       "title": "Tehnologiile cu care livrăm.",
       "subtitle": "TypeScript pe frontend și backend, Postgres pentru date, deploy pe Vercel. Unelte folosite deja în producție, nu o listă de dorințe.",
-      "integrationNote": "Ai deja un magazin pe Shopify sau un CMS existent? Ne integrăm nativ prin API-uri headless.",
+      "integrationNote": "Fiecare proiect are particularitățile sale. Cel mai bine este să ne auzim la un apel sau pe email legat de nevoile tale specifice, pentru a descoperi cum te putem ajuta la maximum.",
       "groups": {
         "frontend": {
           "name": "Frontend & UI",
           "benefit": "Performanță și SEO: Pagini randate pe server, cu metadate, sitemap și hreflang configurate din prima zi.",
-          "tags": ["React", "Next.js", "Vue 3", "Nuxt", "TypeScript", "Tailwind CSS"]
+          "tags": [
+            "React",
+            "Next.js",
+            "Vue 3",
+            "Nuxt",
+            "TypeScript",
+            "Tailwind CSS"
+          ]
         },
         "backend": {
           "name": "Backend & Data",
           "benefit": "Infrastructură solidă: Postgres cu row-level security și migrații păstrate în Git.",
-          "tags": ["PostgreSQL", "Supabase", "Drizzle ORM", "Node.js", "Edge Functions"]
+          "tags": [
+            "PostgreSQL",
+            "Supabase",
+            "C# / .NET Core",
+            "Node.js",
+            "Edge Functions"
+          ]
         },
         "infra": {
           "name": "Cloud & Infra",
           "benefit": "Deploy automat: Fiecare commit ajunge în producție prin CI, cu CDN și preview pentru fiecare modificare.",
-          "tags": ["Vercel", "Cloudflare", "Docker", "GitHub Actions"]
+          "tags": [
+            "Vercel",
+            "Cloudflare",
+            "Docker",
+            "GitHub Actions"
+          ]
         },
         "ai": {
           "name": "AI & Vector Data",
           "benefit": "Automatizare cu LLM: Modele integrate în fluxurile tale de lucru, cu căutare semantică peste datele proprii.",
-          "tags": ["OpenAI API", "Anthropic", "pgvector", "Streaming"]
+          "tags": [
+            "OpenAI API",
+            "Anthropic",
+            "pgvector",
+            "Streaming"
+          ]
         }
       }
     },
@@ -217,36 +289,38 @@
       }
     },
     "work": {
-      "sectionLabel": "Proiecte",
-      "title": "Proiecte selectate.",
+      "sectionLabel": "Portofoliu",
+      "title": "Proiecte cu care ne mândrim.",
+      "intro": "O selecție a celor mai recente proiecte și studii de caz care ilustrează abordarea noastră în rezolvarea provocărilor tehnice și generarea de valoare pentru business.",
       "caseStudyLink": "Vezi studiul de caz →",
       "allProjects": "Toate proiectele →"
     },
     "about": {
       "sectionLabel": "Despre",
-      "title": "Studio boutique. Ingineri seniori. Acces direct.",
-      "lead": "Lucrăm la puține proiecte în paralel, ca fiecare să primească orele de care are nevoie. Fără intermediari care traduc greșit cerințele și fără juniori care învață pe bugetul tău. Discuți direct cu inginerul care îți construiește produsul.",
+      "title": "Construim cu responsabilitate. Fără scuze.",
+      "lead": "Știm cât de costisitoare sunt proiectele întârziate, comunicarea defectuoasă și codul greu de întreținut. Ne asumăm doar proiectele cărora le putem dedica întreaga noastră expertiză. Lucrezi direct cu ingineri seniori, ai vizibilitate totală asupra progresului și garanția unui buget respectat. Suntem partenerul tehnic pe care te poți baza pe termen lung.",
       "pillars": {
         "ownership": {
-          "title": "Proprietate 100% din prima zi",
-          "body": "Codul sursă, baza de date și infrastructura sunt configurate direct în conturile tale. Ai control total și poți schimba echipa oricând."
+          "title": "Transparență din prima zi",
+          "body": "Codul sursă și infrastructura sunt configurate direct pe conturile tale. Ai proprietate 100%, fără blocaje de tip vendor lock-in și fără costuri ascunse."
         },
         "pricing": {
-          "title": "Estimări fixe și cost asumat",
-          "body": "Preț fix pe fiecare etapă agreată. Dacă subestimăm complexitatea unei sarcini, absorbim costul orelor suplimentare."
+          "title": "Costuri și termene asumate",
+          "body": "Oferim estimări clare pe fiecare etapă. Dacă subestimăm complexitatea tehnică, absorbim costul orelor suplimentare. Fără facturi surpriză."
         },
         "communication": {
-          "title": "Comunicare directă și multilingvă",
-          "body": "Discuții tehnice și specificații clare în română, engleză sau rusă. Fără jargon inutil, doar decizii rapide de inginerie."
+          "title": "Comunicare tehnică directă",
+          "body": "Fără manageri de proiect care îngreunează procesul. Discuți strategii și soluții direct cu inginerul responsabil de succesul produsului tău."
         }
-      }
+      },
+      "cta": "Discută cu un inginer"
     },
     "faq": {
       "sectionLabel": "Întrebări"
     },
     "contact": {
       "sectionLabel": "Contact",
-      "title": "Spune-ne ce trebuie construit.",
+      "title": "Spune-ne problema. O rezolvăm împreună.",
       "lead": "O descriere scurtă a problemei este suficientă. Primești un răspuns scris într-o zi lucrătoare, cu o părere sinceră despre dacă suntem studioul potrivit.",
       "preferMessage": "Preferi să scrii un mesaj?",
       "form": {
@@ -275,7 +349,7 @@
         "source": "Cum ai aflat de noi (opțional)",
         "privacyNotice": "Trimițând acest formular, ești de acord cu",
         "privacyNoticeLink": "politica de confidențialitate",
-        "submit": "Trimite",
+        "submit": "Vezi dacă te putem ajuta",
         "submitting": "Se trimite…",
         "success": "Trimis. Primești un răspuns într-o zi lucrătoare.",
         "error": "Ceva n-a mers. Încearcă din nou sau scrie direct pe email.",
@@ -370,11 +444,26 @@
     "budget": {
       "legend": "Care e bugetul de pornire?",
       "options": {
-        "under500": { "label": "Sub 500 EUR", "hint": "Landing rapid, 1–3 pagini" },
-        "500to1k": { "label": "500 – 1.000 EUR", "hint": "Site mic sau un sprint scurt, bine delimitat" },
-        "1to2k": { "label": "1.000 – 2.000 EUR", "hint": "Blueprint, sau o construcție focusată" },
-        "2to5k": { "label": "2.000 – 5.000 EUR", "hint": "Construcție completă, din design sau cod existent" },
-        "over5k": { "label": "Peste 5.000 EUR", "hint": "Inginerie mai amplă sau AI custom" }
+        "under500": {
+          "label": "Sub 500 EUR",
+          "hint": "Landing rapid, 1–3 pagini"
+        },
+        "500to1k": {
+          "label": "500 – 1.000 EUR",
+          "hint": "Site mic sau un sprint scurt, bine delimitat"
+        },
+        "1to2k": {
+          "label": "1.000 – 2.000 EUR",
+          "hint": "Blueprint, sau o construcție focusată"
+        },
+        "2to5k": {
+          "label": "2.000 – 5.000 EUR",
+          "hint": "Construcție completă, din design sau cod existent"
+        },
+        "over5k": {
+          "label": "Peste 5.000 EUR",
+          "hint": "Inginerie mai amplă sau AI custom"
+        }
       }
     },
     "offer": {
@@ -516,33 +605,11 @@
   "pricing": {
     "sectionLabel": "Prețuri",
     "seo": {
-      "title": "Preț fix pe fiecare etapă.",
-      "description": "Dacă subestimăm complexitatea unei sarcini, absorbim costul orelor suplimentare. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră."
+      "title": "Echipa ta tehnică, la abonament.",
+      "description": "Fără costuri ascunse. În loc de pachete rigide, lucrăm prin sprinturi agile sau abonamente lunare, devenind partenerul tău tehnic pe termen lung."
     },
-    "title": "Preț fix pe fiecare etapă.",
-    "intro": "Dacă subestimăm complexitatea unei sarcini, absorbim costul orelor suplimentare. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră.",
-    "stages": {
-      "E": {
-        "pricePrefix": "Sub",
-        "time": "2–3 zile"
-      },
-      "B": {
-        "pricePrefix": "De la",
-        "time": "~1 săptămână"
-      },
-      "A": {
-        "pricePrefix": "De la",
-        "time": "3–6 săpt."
-      },
-      "C": {
-        "pricePrefix": "De la",
-        "time": "4–8 săpt."
-      },
-      "D": {
-        "pricePrefix": "De la",
-        "time": "6–12 săpt."
-      }
-    },
+    "title": "Echipa ta tehnică, la abonament.",
+    "intro": "Fiecare afacere are cerințe unice. În loc de estimări oarbe și bugete depășite, facem o analiză tehnică (diagnostic), apoi devenim echipa ta tehnică printr-un parteneriat pe termen lung.",
     "included": {
       "label": "Inclus mereu",
       "items": [
@@ -561,16 +628,18 @@
       ]
     },
     "afterLaunch": {
-      "label": "După lansare",
-      "title": "Abonament lunar sau echipa ta. Ambele funcționează.",
+      "label": "Modelul nostru",
+      "title": "Abonament lunar sau sprinturi dedicate.",
       "plans": {
         "maintenance": {
           "label": "Mentenanță",
-          "body": "Actualizări, monitorizare, backup și un număr fix de ore pentru modificări mici."
+          "price": "Predictibil",
+          "body": "Pentru produse deja lansate. Actualizări, monitorizare, backup și un număr fix de ore sau sprinturi lunare pentru dezvoltare."
         },
         "continuous": {
           "label": "Dezvoltare continuă",
-          "body": "Sprinturi de două săptămâni cu demo, pentru funcționalități noi și scalare."
+          "price": "Agil & Flexibil",
+          "body": "Pentru construcția unui produs nou sau scalare agresivă. Sprinturi de două săptămâni cu demo."
         }
       },
       "warrantyNote": "*Garanția acoperă erorile tehnice și conformitatea cu specificația agreată; modificările de design sau funcționalitățile noi reprezintă extinderi de scop."
@@ -580,7 +649,7 @@
       "items": [
         {
           "question": "Cât costă un proiect?",
-          "answer": "Fiecare proiect pornește cu o primă versiune funcțională și continuă pe etape. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră."
+          "answer": "Majoritatea colaborărilor noastre se desfășoară pe bază de abonament lunar sau sprinturi. Înainte de a scrie cod, realizăm un audit plătit (diagnostic) în urma căruia primești specificația tehnică și planul de dezvoltare."
         },
         {
           "question": "Preluați proiecte începute de altcineva?",
@@ -591,7 +660,8 @@
           "answer": "Treizeci de zile de suport pentru bug-uri sunt incluse. După aceea poți continua cu un abonament lunar sau cu echipa ta. Ambele variante funcționează."
         }
       ]
-    }
+    },
+    "engagementModel": "Model de colaborare"
   },
   "about": {
     "seo": {

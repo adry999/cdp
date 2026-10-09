@@ -13,24 +13,19 @@ const i18nList = useI18nList()
 const localePath = useLocalePath()
 const nuxtApp = useNuxtApp()
 const { isQualifierEnabled } = useQualifierAvailability()
-const stages = useServiceStages()
+const stages = await useServiceStages()
 
 const active = ref(0)
 const activeStage = computed(() => stages.value[active.value]!)
-// Stages B and C currently have no matching service page, so they render none.
-function relatedServicesFor(stageId: StageId) {
-  return SERVICE_LINKS.filter((service) => service.qualifierStage === stageId)
-}
+// Removed relatedServicesFor since buttons were cleaned up
 // The grants block links to the service page it summarises.
 const grantsService = SERVICE_LINKS.find((service) => service.slug === 'granturi')
 const grantsHref = computed(() =>
   grantsService ? localePath({ name: 'servicii-slug', params: { slug: grantsService.routeSlug[locale.value] } }) : undefined,
 )
 const grantSteps = computed(() => i18nList('home.services.grants.steps'))
-const mounted = ref(false)
-const drawn = ref(false)
+const { el: timelineEl, isVisible: drawn, hasMounted: mounted } = useReveal({ once: false, threshold: 0.3 })
 
-const timelineEl = ref<HTMLElement | null>(null)
 const nodeEls = ref<HTMLButtonElement[]>([])
 
 function setNodeRef(el: Element | ComponentPublicInstance | null, i: number) {
@@ -58,29 +53,6 @@ function startAt(id: StageId) {
   // section (scroll-behavior in main.css already respects reduced motion).
   document.getElementById('contact')?.scrollIntoView()
 }
-
-onMounted(() => {
-  mounted.value = true
-  const el = timelineEl.value
-  if (!el || typeof IntersectionObserver === 'undefined') {
-    drawn.value = true
-    return
-  }
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          drawn.value = true
-          io.disconnect()
-          break
-        }
-      }
-    },
-    { threshold: 0.3 },
-  )
-  io.observe(el)
-  onBeforeUnmount(() => io.disconnect())
-})
 </script>
 
 <template>
@@ -121,7 +93,9 @@ onMounted(() => {
         <span
           class="dot relative z-[1] flex h-11 w-11 shrink-0 items-center justify-center rounded-full border bg-paper transition duration-200"
           :class="idx === active ? 'scale-[1.15] border-signal text-signal' : 'border-hairline text-muted'"
-        />
+        >
+          <CoreStageIcon :stage="stage.id" />
+        </span>
         <span class="flex min-w-0 flex-col gap-0.5 md:items-center">
           <span :id="`svc-tab-${stage.id}-prefix`" class="sr-only">{{ t('home.services.stageWord') }}</span
           >{{ ' ' }}<span
@@ -153,20 +127,26 @@ onMounted(() => {
           class="rounded border border-hairline p-[clamp(20px,2.5vw,28px)]"
         >
           <div class="flex flex-wrap items-baseline justify-between gap-3">
-            <h3 class="m-0 flex items-center gap-2 font-mono text-[clamp(18px,2.2vw,22px)] font-medium uppercase leading-tight tracking-[0.04em] text-ink">
-              <span aria-hidden="true" class="inline-block h-2 w-2 shrink-0 rounded-full bg-signal" />
+            <h3 class="m-0 flex items-center gap-3 font-mono text-[clamp(18px,2.2vw,22px)] font-medium uppercase leading-tight tracking-[0.04em] text-ink">
+              <CoreStageIcon :stage="stage.id" class="text-signal w-5 h-5" />
               {{ stage.name }}
             </h3>
             <span class="eyebrow text-muted">{{ stage.priceTime }}</span>
           </div>
 
-          <div class="mt-6 flex flex-col">
-            <TableRow :label="t('home.services.whereYouAreLabel')">
-              <p class="m-0 max-w-[58ch] text-base text-muted">{{ stage.whereYouAre }}</p>
-            </TableRow>
-            <TableRow :label="t('home.services.whatYouGetLabel')" :last="true">
-              <p class="m-0 max-w-[58ch] text-base">{{ stage.whatYouGet }}</p>
-            </TableRow>
+          <div class="mt-6 flex flex-col gap-4">
+            <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
+              <div class="eyebrow mb-2 text-muted transition-colors duration-500 group-hover:text-signal">{{ t('home.services.whereYouAreLabel') }}</div>
+              <p class="m-0 max-w-[58ch] text-base text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whereYouAre }}</p>
+            </div>
+            <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
+              <div class="eyebrow mb-2 text-muted transition-colors duration-500 group-hover:text-signal">{{ t('home.services.whyUsLabel') }}</div>
+              <p class="m-0 max-w-[58ch] text-base text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whyUs }}</p>
+            </div>
+            <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
+              <div class="eyebrow mb-2 text-muted transition-colors duration-500 group-hover:text-signal">{{ t('home.services.whatYouGetLabel') }}</div>
+              <p class="m-0 max-w-[58ch] text-base text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whatYouGet }}</p>
+            </div>
           </div>
 
           <div class="mt-5 flex flex-wrap gap-2">
@@ -177,22 +157,19 @@ onMounted(() => {
             <AppButton variant="signal" @click="startAt(stage.id)">
               {{ stage.cta }}
             </AppButton>
-            <NuxtLink
-              v-for="service in relatedServicesFor(stage.id)"
-              :key="service.slug"
-              :to="localePath({ name: 'servicii-slug', params: { slug: service.routeSlug[locale] } })"
-              class="eyebrow text-muted hover:text-signal-text"
-            >
-              {{ pick(service.name.ro, service.name.en, locale) }} →
-            </NuxtLink>
           </div>
         </div>
       </Transition>
     </div>
 
-    <p class="mb-0 mt-5 eyebrow text-muted">{{ t('home.services.note') }}</p>
+    <p class="mb-0 mt-5 eyebrow text-muted">
+      * {{ t('home.services.note') }}
+      <NuxtLink :to="`${localePath('index')}#contact`" class="text-signal hover:underline">
+        {{ t('home.services.notSureLink') }}
+      </NuxtLink>
+    </p>
 
-    <div class="mt-[clamp(32px,4vw,48px)] flex flex-col gap-4 rounded border border-hairline bg-hatch p-[clamp(20px,2.5vw,28px)]">
+    <div v-if="useRuntimeConfig().public.grantsEnabled" class="mt-[clamp(32px,4vw,48px)] flex flex-col gap-4 rounded border border-hairline bg-hatch p-[clamp(20px,2.5vw,28px)]">
       <span class="eyebrow text-muted">
         <span aria-hidden="true" class="text-signal">●</span> {{ t('home.services.grants.kicker') }}
       </span>

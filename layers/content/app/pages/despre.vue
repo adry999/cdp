@@ -15,6 +15,9 @@ usePageSeo({
 <template>
   <div>
     <SiteSection number="—" :label="t('home.about.sectionLabel')" inverted padding="xl">
+      <template #background>
+        <CoreInteractiveBackground variant="dot-matrix" inverted />
+      </template>
       <h1 class="m-0 max-w-[18ch] text-[clamp(34px,5.4vw,60px)] font-semibold leading-[1.04] tracking-[-0.025em] text-pretty">
         {{ t('home.about.title') }}
       </h1>

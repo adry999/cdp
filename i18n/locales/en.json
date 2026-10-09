@@ -7,15 +7,16 @@
   },
   "nav": {
     "services": "Services",
-    "stack": "Stack",
+    "stack": "Tech Stack",
     "process": "Process",
-    "work": "Work",
+    "work": "Portfolio",
     "blog": "Blog",
     "news": "News",
     "pricing": "Pricing",
     "about": "About",
     "main": "Main navigation",
     "contact": "Contact",
+    "letsTalk": "Let's talk",
     "menu": "Menu",
     "skipToContent": "Skip to content"
   },
@@ -54,24 +55,27 @@
         "Third-Party Integrations"
       ],
       "titleSuffix": "built to bring you lasting results.",
-      "problem": "Plenty of projects end half-finished and impossible to maintain. We hand over code your team can run, with documentation and 30 days of fixes included.",
-      "lead": "We work with early-stage founders and established companies, from Chișinău to clients across Europe and North America.",
+      "lead": "We build fast, robust, and scalable web applications for founders and growing companies — taking your product from concept to a high-impact launch that converts users and scales without technical debt.",
       "ctaPrimary": "Find out if we can help",
       "ctaSecondary": "How we work",
       "facts": {
-        "location": "Base Location",
+        "location": "Headquarters",
         "locationValue": "Chișinău, Moldova",
+        "itPark": "Moldova IT Park Resident",
+        "itParkTooltip": "Special legal and tax framework guaranteed by law: streamlined international B2B contracting in EUR/USD, full intellectual property transfer, and 0% VAT on cross-border software export for EU and North American clients.",
+        "itParkTooltipAria": "Details about Moldova IT Park residency advantages",
         "markets": "Markets",
-        "marketsValue": "Moldova/Romania · EU · North America · Worldwide",
+        "marketsValue": "Romania & Moldova · European Union · North America",
         "stack": "Tech Stack",
-        "stackValue": "React (Next.js), Vue (Nuxt.js), Node.js, PostgreSQL, Supabase, n8n, Make, LLM pipelines"
+        "stackValue": "React (Next.js), Vue (Nuxt.js), C# / .NET Core, Node.js, Python (FastAPI), PostgreSQL, Supabase, n8n, LLM pipelines"
       }
     },
     "services": {
       "sectionLabel": "Services",
       "title": "Where do you want to start? See each stage.",
       "intro": "Five stages, from a fast one-page launch to custom AI engineering. Pick where you are now — that's where we begin.",
-      "note": "Some projects are under NDA. Detailed references available on the diagnostic call.",
+      "note": "Engagements start with a technical audit, followed by sprints or a monthly retainer, adapting to the evolving needs of your product.",
+      "notSureLink": "Not sure which stage fits you best? Write to us.",
       "grants": {
         "kicker": "Grant-funded projects",
         "title": "Won a European or ODA grant? We deliver the application from your project, on the contract deadlines.",
@@ -94,68 +98,136 @@
           "priceTime": "Under 1,000 EUR · 2–3 days",
           "whereYouAre": "You need a modern, fast page to validate an idea, win your first customers or replace an outdated site.",
           "whatYouGet": "A fast-loading 1–3 page landing site, mobile-optimised, wired straight to Telegram or a form so enquiries reach you from day one.",
-          "badges": ["Launch in 2–3 Days", "Modern Design", "Mobile-Optimised", "Form Connected"],
-          "cta": "Launch my page"
+          "badges": [
+            "Launch in 2–3 Days",
+            "Modern Design",
+            "Mobile-Optimised",
+            "Form Connected"
+          ],
+          "cta": "Launch my page",
+          "whyUs": "DIY builders save money now but cost you credibility. A pro page loads faster and actually converts your traffic.",
+          "pricing": "Fixed Price (€400–€600)",
+          "timing": "2–3 days",
+          "pricingTooltip": "You pay a fixed amount defined in the contract for a strictly defined scope (Express Page)."
         },
         "B": {
           "name": "CONCEPT TO SPEC",
           "priceTime": "From 1,000 EUR · ~1 week",
           "whereYouAre": "You have a product or business idea, but it's still theoretical and you need full clarity before investing in development.",
           "whatYouGet": "A complete execution plan: from user flows and a visual prototype to a clear technical spec, ready to hand to a dev team.",
-          "badges": ["AI Prototyping", "Wireframing", "Product Scope"],
-          "cta": "Map out my concept"
+          "badges": [
+            "AI Prototyping",
+            "Wireframing",
+            "Product Scope"
+          ],
+          "cta": "Map out my concept",
+          "whyUs": "Skipping the spec phase usually means scope creep later. We align business logic with tech reality before writing any code.",
+          "pricing": "Paid Discovery (from €1,000)",
+          "timing": "~1 week",
+          "pricingTooltip": "A fixed-price technical audit to map out requirements, architecture, and exact roadmap before any build."
         },
         "A": {
           "name": "DESIGN TO CODE",
           "priceTime": "From 2,000 EUR · 3–6 weeks",
           "whereYouAre": "Your design is ready in Figma, or your visual assets are prepared, and you want a technical team to turn them into well-built production code.",
           "whatYouGet": "Your Figma screens built as a working app: front end, Postgres database and the API integrations it needs.",
-          "badges": ["Pixel-Perfect", "Full-Stack Architecture", "Deploy on Vercel", "Postgres Schema"],
-          "cta": "Turn my design into code"
+          "badges": [
+            "Pixel-Perfect",
+            "Full-Stack Architecture",
+            "Deploy on Vercel",
+            "Postgres Schema"
+          ],
+          "cta": "Turn my design into code",
+          "whyUs": "Offshore agencies often produce unmaintainable code. We ship clean, typed, scalable architecture you actually own.",
+          "pricing": "Retainer",
+          "timing": "3–6 weeks",
+          "pricingTooltip": "We work as your dedicated team. You pay a predictable monthly retainer or per sprint, prioritizing features as we go."
         },
         "C": {
           "name": "SCALE & EXTEND",
           "priceTime": "From 2,000 EUR · 4–8 weeks",
           "whereYouAre": "You have a live product but need engineering capacity to ship new modules, clear performance bottlenecks or increase delivery speed.",
           "whatYouGet": "New feature development, code refactoring, database tuning and an architecture ready to scale — with zero downtime.",
-          "badges": ["New Features", "Speed Optimisation", "Scalable Architecture", "Incremental Refactor"],
-          "cta": "Scale my product"
+          "badges": [
+            "New Features",
+            "Speed Optimisation",
+            "Scalable Architecture",
+            "Incremental Refactor"
+          ],
+          "cta": "Scale my product",
+          "whyUs": "Instead of just patching bugs, we modernize your stack iteratively so you can grow without throwing away existing code.",
+          "pricing": "Retainer",
+          "timing": "Ongoing",
+          "pricingTooltip": "Ongoing dedicated capacity for active products to ensure stability, continuous delivery, and quick pivots."
         },
         "D": {
           "name": "AI PROCESS AUTOMATION",
           "priceTime": "From 5,000 EUR · 6–12 weeks",
           "whereYouAre": "Your team loses dozens of hours on repetitive tasks, manual data processing or fragmented workflows that slow your growth.",
           "whatYouGet": "LLM steps wired into the tools you already use (n8n, Make or custom code), plus a dashboard where your team reviews every automated action.",
-          "badges": ["Lower Operating Costs", "Custom AI Integrations", "Automated Processing", "Control & Audit"],
-          "cta": "Automate my workflow"
+          "badges": [
+            "Lower Operating Costs",
+            "Custom AI Integrations",
+            "Automated Processing",
+            "Control & Audit"
+          ],
+          "cta": "Automate my workflow",
+          "whyUs": "Off-the-shelf AI tools are generic. We build custom automations that fit your exact business process securely.",
+          "pricing": "Retainer",
+          "timing": "6–12 weeks",
+          "pricingTooltip": "Complex custom automations are built in managed sprints, giving you full control over the pace and scope."
         }
-      }
+      },
+      "whyUsLabel": "Why work with us?"
     },
     "stack": {
       "sectionLabel": "Stack",
       "title": "The stack we ship with.",
       "subtitle": "TypeScript on both ends, Postgres for data, deployed on Vercel. Tools we've used in production, not a wish list.",
-      "integrationNote": "Already running a Shopify store or an existing CMS? We integrate natively over headless APIs.",
+      "integrationNote": "Every project is unique. The best way forward is to hop on a quick call or drop us an email about your specific needs so we can discover how to help you best.",
       "groups": {
         "frontend": {
           "name": "Frontend & UI",
           "benefit": "Performance & SEO: Server-rendered pages with metadata, sitemap and hreflang set up from day one.",
-          "tags": ["React", "Next.js", "Vue 3", "Nuxt", "TypeScript", "Tailwind CSS"]
+          "tags": [
+            "React",
+            "Next.js",
+            "Vue 3",
+            "Nuxt",
+            "TypeScript",
+            "Tailwind CSS"
+          ]
         },
         "backend": {
           "name": "Backend & Data",
           "benefit": "Solid Infrastructure: Postgres with row-level security and migrations kept in Git.",
-          "tags": ["PostgreSQL", "Supabase", "Drizzle ORM", "Node.js", "Edge Functions"]
+          "tags": [
+            "PostgreSQL",
+            "Supabase",
+            "C# / .NET Core",
+            "Node.js",
+            "Edge Functions"
+          ]
         },
         "infra": {
           "name": "Cloud & Infra",
           "benefit": "Automated deploys: Every commit reaches production through CI, with a CDN and a preview for every change.",
-          "tags": ["Vercel", "Cloudflare", "Docker", "GitHub Actions"]
+          "tags": [
+            "Vercel",
+            "Cloudflare",
+            "Docker",
+            "GitHub Actions"
+          ]
         },
         "ai": {
           "name": "AI & Vector Data",
           "benefit": "LLM automation: Models wired into your workflows, with semantic search over your own data.",
-          "tags": ["OpenAI API", "Anthropic", "pgvector", "Streaming"]
+          "tags": [
+            "OpenAI API",
+            "Anthropic",
+            "pgvector",
+            "Streaming"
+          ]
         }
       }
     },
@@ -217,36 +289,38 @@
       }
     },
     "work": {
-      "sectionLabel": "Work",
-      "title": "Selected work.",
+      "sectionLabel": "Portfolio",
+      "title": "Projects we are proud to share.",
+      "intro": "A selection of our latest projects and case studies showcasing our approach to solving technical challenges and driving business value.",
       "caseStudyLink": "Read the case study →",
       "allProjects": "All projects →"
     },
     "about": {
       "sectionLabel": "About",
-      "title": "Boutique studio. Senior engineers. Direct access.",
-      "lead": "We run a few projects at a time so each gets the hours it needs. No middlemen mistranslating the requirements, no juniors learning on your budget. You talk directly to the engineer building your product.",
+      "title": "We build responsibly. No excuses.",
+      "lead": "We know how costly delayed timelines, poor communication, and fragile code can be. We only take on projects where we can dedicate our full expertise. You work directly with senior engineers, getting complete visibility into progress and a guarantee that your budget is respected. We are the technical partner you can rely on for the long haul.",
       "pillars": {
         "ownership": {
-          "title": "100% ownership from day one",
-          "body": "Source code, database and infrastructure are set up directly in your own accounts. You keep full control and can move to another team at any time."
+          "title": "Transparency from day one",
+          "body": "Source code and infrastructure are set up directly in your own accounts. You retain 100% ownership, zero vendor lock-in, and absolutely no hidden fees."
         },
         "pricing": {
-          "title": "Fixed estimates, owned cost",
-          "body": "A fixed price for every agreed stage. If we underestimate the complexity of a task, we absorb the cost of the extra hours."
+          "title": "Owned costs and deadlines",
+          "body": "We provide clear estimates for every milestone. If we underestimate technical complexity, we absorb the extra hours. No surprise invoices."
         },
         "communication": {
-          "title": "Direct, multilingual communication",
-          "body": "Technical discussion and clear specs in Romanian, English or Russian. No needless jargon, just fast engineering decisions."
+          "title": "Direct technical communication",
+          "body": "No account managers slowing down the process. You discuss strategies and engineering decisions directly with the person building your product."
         }
-      }
+      },
+      "cta": "Talk to an engineer"
     },
     "faq": {
       "sectionLabel": "Questions"
     },
     "contact": {
       "sectionLabel": "Contact",
-      "title": "Tell us what needs to be built.",
+      "title": "Tell us your problem. Let's solve it together.",
       "lead": "A short description of the problem is enough. You get a written answer within one working day, with an honest opinion on whether we are the right studio for it.",
       "preferMessage": "Prefer to write a message?",
       "form": {
@@ -257,8 +331,8 @@
         "stageOptions": {
           "E": "Express",
           "B": "Concept",
-          "A": "Design → code",
-          "C": "Scaling",
+          "A": "Design → Code",
+          "C": "Scale",
           "D": "AI",
           "unsure": "Not sure"
         },
@@ -275,7 +349,7 @@
         "source": "How did you hear about us (optional)",
         "privacyNotice": "By submitting this form, you agree to our",
         "privacyNoticeLink": "privacy policy",
-        "submit": "Send",
+        "submit": "Find out if we can help",
         "submitting": "Sending…",
         "success": "Sent. You'll get a reply within one working day.",
         "error": "Something went wrong. Try again or email us directly.",
@@ -370,11 +444,26 @@
     "budget": {
       "legend": "What's your starting budget?",
       "options": {
-        "under500": { "label": "Under 500 EUR", "hint": "Fast-track 1–3 page landing" },
-        "500to1k": { "label": "500 – 1,000 EUR", "hint": "Small site or a short scoped sprint" },
-        "1to2k": { "label": "1,000 – 2,000 EUR", "hint": "Blueprint, or a focused build" },
-        "2to5k": { "label": "2,000 – 5,000 EUR", "hint": "Full build from designs or an existing codebase" },
-        "over5k": { "label": "Over 5,000 EUR", "hint": "Heavier engineering or custom AI" }
+        "under500": {
+          "label": "Under 500 EUR",
+          "hint": "Fast-track 1–3 page landing"
+        },
+        "500to1k": {
+          "label": "500 – 1,000 EUR",
+          "hint": "Small site or a short scoped sprint"
+        },
+        "1to2k": {
+          "label": "1,000 – 2,000 EUR",
+          "hint": "Blueprint, or a focused build"
+        },
+        "2to5k": {
+          "label": "2,000 – 5,000 EUR",
+          "hint": "Full build from designs or an existing codebase"
+        },
+        "over5k": {
+          "label": "Over 5,000 EUR",
+          "hint": "Heavier engineering or custom AI"
+        }
       }
     },
     "offer": {
@@ -516,71 +605,51 @@
   "pricing": {
     "sectionLabel": "Pricing",
     "seo": {
-      "title": "A fixed price for every stage.",
-      "description": "If we underestimate the complexity of a task, we absorb the cost of the extra hours. The written estimate after the diagnostic always contains a figure."
+      "title": "Your tech team on subscription.",
+      "description": "No hidden costs. Instead of rigid packages, we work in agile sprints or monthly retainers, becoming your long-term technical partner."
     },
-    "title": "A fixed price for every stage.",
-    "intro": "If we underestimate the complexity of a task, we absorb the cost of the extra hours. The written estimate after the diagnostic always contains a figure.",
-    "stages": {
-      "E": {
-        "pricePrefix": "Under",
-        "time": "2–3 days"
-      },
-      "B": {
-        "pricePrefix": "From",
-        "time": "~1 week"
-      },
-      "A": {
-        "pricePrefix": "From",
-        "time": "3–6 wks"
-      },
-      "C": {
-        "pricePrefix": "From",
-        "time": "4–8 wks"
-      },
-      "D": {
-        "pricePrefix": "From",
-        "time": "6–12 wks"
-      }
-    },
+    "title": "Your tech team on subscription.",
+    "intro": "Every business has unique requirements. Instead of blind estimates and blown budgets, we perform a technical diagnostic, then become your engineering team through a long-term partnership.",
     "included": {
       "label": "Always included",
       "items": [
         {
-          "title": "Code in your own accounts",
-          "body": "The repository, database and infrastructure are set up directly in your accounts from day one."
+          "title": "Code in your accounts",
+          "body": "Repositories, databases, and infrastructure are deployed directly to your accounts from day one."
         },
         {
-          "title": "30 days of fixes",
-          "body": "Technical errors and deviations from the agreed specification, resolved at no cost."
+          "title": "30 days bug fixing",
+          "body": "Technical bugs and deviations from the agreed specifications are resolved at no extra cost."
         },
         {
           "title": "Documentation and handover",
-          "body": "Your team can carry the code forward without us."
+          "body": "Your internal team can take over the codebase seamlessly without us."
         }
       ]
     },
     "afterLaunch": {
-      "label": "After launch",
-      "title": "A monthly retainer or your own team. Both work.",
+      "label": "Our Model",
+      "title": "Monthly retainer or dedicated sprints.",
       "plans": {
         "maintenance": {
-          "label": "Maintenance",
-          "body": "Updates, monitoring, backups and a fixed number of hours for small changes."
+          "label": "Retainer / Maintenance",
+          "price": "Predictable",
+          "body": "For live products. Updates, monitoring, backups, and a fixed number of hours or monthly sprints for ongoing development."
         },
         "continuous": {
-          "label": "Continuous development",
-          "body": "Two-week sprints with a demo, for new features and scaling."
+          "label": "Continuous Development",
+          "price": "Agile & Flexible",
+          "body": "For building new products or scaling fast. Two-week sprints with regular demos and full transparency."
         }
       },
-      "warrantyNote": "*The warranty covers technical errors and conformity with the agreed specification; design changes or new features count as scope extensions."
+      "warrantyNote": "*Warranty covers technical bugs and specification compliance; design changes or new features are scoped separately."
     },
     "faq": {
       "label": "Questions",
       "items": [
         {
           "question": "What does a project cost?",
-          "answer": "Every project starts with a working first version and moves in stages from there. The written assessment after the diagnostic call always contains a number."
+          "answer": "Most of our partnerships operate on a monthly retainer or sprint basis. Before writing code, we conduct a paid diagnostic (audit), resulting in a clear technical specification and roadmap."
         },
         {
           "question": "Do you take over someone else's project?",
@@ -591,7 +660,8 @@
           "answer": "Thirty days of bug support are included. After that you can keep us on a monthly retainer or run the project with your own team. Both work."
         }
       ]
-    }
+    },
+    "engagementModel": "Engagement Model"
   },
   "about": {
     "seo": {
@@ -620,8 +690,8 @@
   "contactPage": {
     "steps": [
       "Written reply within 1 working day",
-      "A 60-minute discovery call, if it makes sense",
-      "Scope specification and price within 48 hours"
+      "60-minute discovery call, if it makes sense",
+      "Scope and price specification within 48 hours"
     ]
   }
 }

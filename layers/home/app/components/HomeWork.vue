@@ -13,15 +13,27 @@ const allRows = computed(() => rows.value ?? [])
 const list = computed(() => selectHomeProjects(allRows.value).map((row) => mapProjectCard(row, siteLocale.value)))
 const ndaNote = computed(() => settings.value.ndaNote)
 const hasMore = computed(() => allRows.value.length > list.value.length)
+const { el: gridEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: false })
 </script>
 
 <template>
-  <SiteSection v-if="list.length" number="04" :label="t('home.work.sectionLabel')" section-id="proiecte">
-    <h2 class="m-0 heading-section">
+  <SiteSection v-if="list.length" number="02" :label="t('home.work.sectionLabel')" section-id="proiecte">
+    <h2 class="m-0 max-w-[26ch] heading-section">
       {{ t('home.work.title') }}
     </h2>
-    <div class="mt-[clamp(28px,3vw,40px)] grid grid-fit-280 gap-4">
-      <ProjectsCard v-for="project in list" :key="project.slug" :project="project" />
+    <p class="mb-0 mt-4 max-w-[60ch] text-base text-muted">{{ t('home.work.intro') }}</p>
+    <div ref="gridEl" class="mt-[clamp(28px,3vw,40px)] grid grid-fit-280 gap-4">
+      <ProjectsCard 
+        v-for="(project, i) in list" 
+        :key="project.slug" 
+        :project="project" 
+        class="transition-all"
+        :class="[
+          hasMounted && !isVisible ? 'opacity-0 translate-y-6' : 'opacity-100',
+          hasMounted && isVisible ? 'duration-700 ease-out' : 'duration-300'
+        ]"
+        :style="{ transitionDelay: hasMounted && isVisible ? `${i * 120}ms` : '0ms' }"
+      />
     </div>
     <div v-if="ndaNote || hasMore" class="mt-5 flex flex-wrap items-center justify-between gap-3">
       <p v-if="ndaNote" class="m-0 eyebrow text-muted">{{ ndaNote }}</p>

@@ -18,6 +18,9 @@ const shotCount = computed(() => props.project.caseStudy.shots.length)
 <template>
   <div>
     <SiteSection number="00" :label="t('caseStudy.sections.hero')" padding="heroCompact" :top-border="false">
+      <template #background>
+        <CoreInteractiveBackground variant="dot-matrix" />
+      </template>
       <NuxtLink :to="localePath('proiecte')" class="mb-5 inline-block eyebrow text-muted no-underline hover:text-ink">
         {{ t('caseStudy.back') }}
       </NuxtLink>

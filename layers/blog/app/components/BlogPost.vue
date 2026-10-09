@@ -19,6 +19,9 @@ const showUpdated = computed(() => props.post.updated !== props.post.date)
 <template>
   <article>
     <SiteSection padding="heroCompact" :top-border="false">
+      <template #background>
+        <CoreInteractiveBackground variant="dot-matrix" />
+      </template>
       <template #label>
         <NuxtLink :to="localePath('blog')" class="eyebrow text-muted no-underline hover:text-signal-text hover:no-underline">
           ← {{ t('blog.back') }}

@@ -8,6 +8,8 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:clean": "nuxt cleanup && rm -rf node_modules/.cache && nuxt dev",
+    "clean": "nuxt cleanup && rm -rf node_modules/.cache",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -33,6 +35,7 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.17.0",
+    "@nuxt/icon": "^2.5.1",
     "@playwright/test": "^1.62.1",
     "eslint": "^10.9.1",
     "png-to-ico": "^3.0.2",
