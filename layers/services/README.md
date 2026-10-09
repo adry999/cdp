@@ -2,7 +2,7 @@
 
 Six SEO landing pages plus an index page, one per service offering — code-only content, no admin
 editor, no database table. Depends on `layers/core`, `layers/projects` (related
-case studies), `layers/content` (stage copy) and `layers/qualifier` (the qualification CTA).
+case studies), `layers/content` (stage copy) and `layers/qualifier` (the qualification CTA) and `layers/blog` (linked posts).
 
 ## Content
 
@@ -70,6 +70,7 @@ case studies), `layers/content` (stage copy) and `layers/qualifier` (the qualifi
 - `layers/content` — `useServiceStages` (stage copy shared with the homepage timeline).
 - `layers/projects` — `usePublishedProjects`, `mapProjectCard`, `ProjectsCard` for
   the related-case-studies section.
+- `layers/blog` — `BlogLinked` ("From the blog" block on `/servicii/[slug]`, the latest 3 posts whose `service` is the page's RO route slug).
 - `layers/qualifier` — `QualifierCta` (`ServicesCta`, `ServicesIndexStages`, `ServicesIndexCta`).
 
 ## Consumed by

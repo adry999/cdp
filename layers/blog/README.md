@@ -102,7 +102,7 @@ All `@nuxt/content` queries live in `server/repository/blogRepository.ts`
   `app/pages/blog/[slug].vue`, default layout. 404s when the slug isn't in
   the current locale's collection, or when the matching post has
   `draft: true` — a draft is not publicly reachable even by direct URL.
-- `server/api/blog.get.ts` (`GET /api/blog?locale=ro|en`) and
+- `server/api/blog.get.ts` (`GET /api/blog?locale=ro|en&service=<ro route slug>&case=<ro project slug>&limit=1..12`, filters optional, validated by `domain/listQuery.ts`, 400 on bad values) and
   `server/api/blog/[slug].get.ts` (`GET /api/blog/<slug>?locale=ro|en`) — the
   pages' only data source. The queries must stay server-side:
   `@nuxt/content`'s app-side `queryCollection` falls back to a WASM SQLite
@@ -119,8 +119,13 @@ All `@nuxt/content` queries live in `server/repository/blogRepository.ts`
 - `BlogPost` — a post's header, rendered body (`<ContentRenderer>`, styled
   by the `.blog-prose` scoped block — the first place in the site that
   renders arbitrary Markdown structure), and `BlogRelated`.
+- `BlogLinked` — the latest 3 posts for a service page (`service` = RO route slug) or a case study (`case-slug` = RO project slug), under the label "Din blog" / "From the blog"; fetches `/api/blog` with those filters and renders nothing when empty. Rendered by `services` and `projects` pages.
 - `BlogRelated` — the 2–3 most recent other posts (recency-based, no
   taxonomy to match on). Hidden when fewer than 2 exist.
+
+## Analytics
+
+The article CTA and TOC links emit `blog_cta_click` (`post_slug`, `service`) and `blog_toc_click` (`post_slug`, `anchor_id`) through core's `useTrackEvent()` (the `analytics:event` hook); this layer never imports `consent`.
 
 ## Depends on
 
@@ -130,6 +135,7 @@ All `@nuxt/content` queries live in `server/repository/blogRepository.ts`
 
 ## Consumed by
 
+- `layers/services` (`/servicii/[slug]`) and `layers/projects` (`/proiecte/[slug]`) — the `BlogLinked` component and `GET /api/blog` filters.
 - `server/routes/sitemap.xml.ts` — `listBlogSitemapPages` via
   `#layers/blog/server`.
 - `server/routes/blog/rss.xml.ts`, `server/routes/en/blog/rss.xml.ts` —

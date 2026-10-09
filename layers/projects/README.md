@@ -3,7 +3,7 @@
 Case studies end to end: the public case-study pages, the `/proiecte` portfolio
 index, `GET /api/projects*`, the old-slug redirect middleware, and the admin
 project list and editor. Depends on `layers/core`, `layers/content` (only
-`useSiteSettings`, for the NDA note) and, through `ProjectsCaseStudyNext`, the
+`useSiteSettings`, for the NDA note) `layers/blog` (`BlogLinked`, posts whose `case` is the project's `slug_ro`, shown on the case-study page) and, through `ProjectsCaseStudyNext`, the
 public API of `layers/qualifier`.
 
 ## Public API (client) — `index.ts`

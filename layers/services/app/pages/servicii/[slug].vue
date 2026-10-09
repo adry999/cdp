@@ -50,6 +50,7 @@ useJsonLd(
     <ServicesFeatures :service="service" />
     <ServicesProcess :service="service" />
     <ServicesRelatedProjects :service="service" />
+    <BlogLinked number="04" :service="service.routeSlug.ro" />
     <ServicesCta :service="service" />
   </div>
 </template>

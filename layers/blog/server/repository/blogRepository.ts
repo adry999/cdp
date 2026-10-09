@@ -12,10 +12,17 @@ function collectionFor(locale: BlogLocale) {
 }
 
 /** Non-draft posts in one locale's collection, newest first. */
-export async function listPublished(event: H3Event, locale: BlogLocale) {
-  return queryCollection(event, collectionFor(locale))
-    .where('draft', '=', false)
-    .order('date', 'DESC')
+export async function listPublished(
+  event: H3Event,
+  locale: BlogLocale,
+  filter: { service?: string; caseSlug?: string; limit?: number } = {},
+) {
+  let query = queryCollection(event, collectionFor(locale)).where('draft', '=', false)
+  if (filter.service) query = query.where('service', '=', filter.service)
+  if (filter.caseSlug) query = query.where('case', '=', filter.caseSlug)
+  query = query.order('date', 'DESC')
+  if (filter.limit) query = query.limit(filter.limit)
+  return query
     .select('path', 'title', 'description', 'date', 'updated', 'category', 'keyword', 'readingTime', 'alt', 'cover')
     .all()
 }

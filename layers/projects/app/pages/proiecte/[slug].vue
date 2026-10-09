@@ -183,6 +183,8 @@ useJsonLd(
       </template>
     </ProjectsCaseStudySection>
 
+    <BlogLinked number="08" :case-slug="projectRow.slug_ro" />
+
     <ProjectsCaseStudyNext :project="project" />
   </div>
 </template>
