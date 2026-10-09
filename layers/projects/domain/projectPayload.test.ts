@@ -96,6 +96,11 @@ describe('validateProjectPayload', () => {
     )
     expect(issues.map((i) => i.field)).toEqual(['links.1'])
   })
+
+  it('flags a link that has notes but no url, which save would otherwise drop', () => {
+    const issues = validateProjectPayload(base({ links: [{ url: ' ', note: { ro: 'Cont demo', en: '' } }] }))
+    expect(issues.map((i) => i.field)).toEqual(['links.0'])
+  })
 })
 
 describe('usableGallery', () => {
