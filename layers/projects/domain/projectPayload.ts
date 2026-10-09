@@ -39,7 +39,7 @@ export interface ProjectPayloadInput {
   lead: { ro: string; en: string }
   contextBody: { ro: string; en: string }
   serviceTag: string | null
-  liveUrl?: string
+  links?: { url: string }[]
   gallery: ProjectImageInput[]
 }
 
@@ -88,10 +88,12 @@ export function validateProjectPayload(input: ProjectPayloadInput): ValidationIs
     issues.push({ field: 'serviceTag', message: 'Serviciu invalid.' })
   }
 
-  const liveUrl = input.liveUrl?.trim()
-  if (liveUrl && !/^https?:\/\//.test(liveUrl)) {
-    issues.push({ field: 'liveUrl', message: 'Link-ul live trebuie să înceapă cu https://.' })
-  }
+  input.links?.forEach((link, i) => {
+    const url = link.url.trim()
+    if (url && !/^https?:\/\//.test(url)) {
+      issues.push({ field: `links.${i}`, message: `Linkul ${i + 1} trebuie să înceapă cu https://.` })
+    }
+  })
 
   return issues
 }

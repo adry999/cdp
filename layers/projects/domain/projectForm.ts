@@ -1,6 +1,16 @@
 import type { Json } from '#layers/core/shared/types/database.types'
 import { usableGallery, type ProjectImageInput } from '#layers/projects/domain/projectPayload'
 import type { AdminProjectRow } from '#layers/projects/domain/projectSelect'
+import {
+  toConstraints,
+  toFigures,
+  toIncident,
+  toLinks,
+  toStrings,
+  type LinkKind,
+  type StarConstraint,
+  type StarFigure,
+} from '#layers/projects/domain/star'
 
 export interface Bilingual {
   ro: string
@@ -22,6 +32,35 @@ export interface StatForm {
   label: Bilingual
 }
 
+/** RO and EN are separate lists: each locale has its own jsonb column. */
+export interface PerLocale<T> {
+  ro: T
+  en: T
+}
+
+export interface IncidentForm {
+  found: string
+  risk: string
+  action: string
+  outcome: StarFigure[]
+}
+
+export interface LinkForm {
+  kind: LinkKind
+  url: string
+  note: Bilingual
+}
+
+export interface StarForm {
+  cost: PerLocale<StarFigure[]>
+  goal: Bilingual
+  constraints: PerLocale<StarConstraint[]>
+  biz: PerLocale<string[]>
+  incident: PerLocale<IncidentForm>
+  gains: PerLocale<StarFigure[]>
+  savings: PerLocale<StarFigure[]>
+}
+
 export interface ProjectForm {
   slugRo: string
   slugEn: string
@@ -35,8 +74,9 @@ export interface ProjectForm {
   serviceTag: string | null
   kind: Bilingual
   tags: Bilingual
-  liveUrl: string
-  liveUrlLabel: Bilingual
+  links: LinkForm[]
+  winValue: Bilingual
+  winLabel: Bilingual
   coverPath: string | null
   coverAlt: Bilingual
   heroPath: string | null
@@ -49,6 +89,7 @@ export interface ProjectForm {
   obstaclesBody: Bilingual
   changesBody: Bilingual
   resultBody: Bilingual
+  star: StarForm
   screensDemo: boolean
   stats: StatForm[]
   quote: Bilingual
@@ -76,6 +117,26 @@ function bilingual(ro: string | null, en: string | null): Bilingual {
   return { ro: ro ?? '', en: en ?? '' }
 }
 
+export function emptyIncident(): IncidentForm {
+  return { found: '', risk: '', action: '', outcome: [] }
+}
+
+function toIncidentForm(value: Json | null | undefined): IncidentForm {
+  return toIncident(value) ?? emptyIncident()
+}
+
+function toStarForm(row: AdminProjectRow | null): StarForm {
+  return {
+    cost: { ro: toFigures(row?.star_cost_ro), en: toFigures(row?.star_cost_en) },
+    goal: bilingual(row?.star_goal_ro ?? null, row?.star_goal_en ?? null),
+    constraints: { ro: toConstraints(row?.star_constraints_ro), en: toConstraints(row?.star_constraints_en) },
+    biz: { ro: toStrings(row?.star_biz_ro), en: toStrings(row?.star_biz_en) },
+    incident: { ro: toIncidentForm(row?.star_incident_ro), en: toIncidentForm(row?.star_incident_en) },
+    gains: { ro: toFigures(row?.star_gains_ro), en: toFigures(row?.star_gains_en) },
+    savings: { ro: toFigures(row?.star_savings_ro), en: toFigures(row?.star_savings_en) },
+  }
+}
+
 /** A blank form for a new project, or the editable copy of a loaded row. */
 export function toProjectForm(row: AdminProjectRow | null): ProjectForm {
   return {
@@ -91,8 +152,13 @@ export function toProjectForm(row: AdminProjectRow | null): ProjectForm {
     serviceTag: row?.service_tag ?? null,
     kind: bilingual(row?.kind_ro ?? null, row?.kind_en ?? null),
     tags: { ro: (row?.tags_ro ?? []).join(', '), en: (row?.tags_en ?? []).join(', ') },
-    liveUrl: row?.live_url ?? '',
-    liveUrlLabel: bilingual(row?.live_url_label_ro ?? null, row?.live_url_label_en ?? null),
+    links: toLinks(row?.links).map((link) => ({
+      kind: link.kind,
+      url: link.url,
+      note: bilingual(link.note_ro ?? null, link.note_en ?? null),
+    })),
+    winValue: bilingual(row?.win_value_ro ?? null, row?.win_value_en ?? null),
+    winLabel: bilingual(row?.win_label_ro ?? null, row?.win_label_en ?? null),
 
     coverPath: row?.cover_path ?? null,
     coverAlt: bilingual(row?.cover_alt_ro ?? null, row?.cover_alt_en ?? null),
@@ -116,6 +182,7 @@ export function toProjectForm(row: AdminProjectRow | null): ProjectForm {
     obstaclesBody: bilingual(row?.obstacles_body_ro ?? null, row?.obstacles_body_en ?? null),
     changesBody: bilingual(row?.changes_body_ro ?? null, row?.changes_body_en ?? null),
     resultBody: bilingual(row?.result_body_ro ?? null, row?.result_body_en ?? null),
+    star: toStarForm(row),
     screensDemo: row?.screens_demo ?? false,
 
     stats: (row?.project_stats ?? []).map((stat) => ({ value: stat.value, label: bilingual(stat.label_ro, stat.label_en) })),
@@ -138,6 +205,29 @@ function splitTags(input: string): string[] {
 }
 
 type SavePayload = { [key: string]: Json }
+
+function cleanFigures(items: StarFigure[]): Json {
+  const kept = items.map((f) => ({ v: f.v.trim(), k: f.k.trim() })).filter((f) => f.v || f.k)
+  return kept.length ? kept : null
+}
+
+function cleanConstraints(items: StarConstraint[]): Json {
+  const kept = items.map((c) => ({ k: c.k.trim(), v: c.v.trim() })).filter((c) => c.k || c.v)
+  return kept.length ? kept : null
+}
+
+function cleanStrings(items: string[]): Json {
+  const kept = items.map((s) => s.trim()).filter(Boolean)
+  return kept.length ? kept : null
+}
+
+function cleanIncident(incident: IncidentForm): Json {
+  const outcome = cleanFigures(incident.outcome) ?? []
+  const found = incident.found.trim()
+  const risk = incident.risk.trim()
+  const action = incident.action.trim()
+  return found || risk || action || (Array.isArray(outcome) && outcome.length) ? { found, risk, action, outcome } : null
+}
 
 /** The argument of the `save_project` RPC; an empty English field is stored as null. */
 export function toSavePayload(form: ProjectForm, projectId: string | null): SavePayload {
@@ -168,9 +258,32 @@ export function toSavePayload(form: ProjectForm, projectId: string | null): Save
     kind_en: form.kind.en || null,
     tags_ro: splitTags(form.tags.ro),
     tags_en: splitTags(form.tags.en),
-    live_url: form.liveUrl.trim() || null,
-    live_url_label_ro: form.liveUrlLabel.ro || null,
-    live_url_label_en: form.liveUrlLabel.en || null,
+    links: form.links
+      .filter((link) => link.url.trim())
+      .map((link) => ({
+        kind: link.kind,
+        url: link.url.trim(),
+        note_ro: link.note.ro.trim() || null,
+        note_en: link.note.en.trim() || null,
+      })),
+    win_value_ro: form.winValue.ro.trim() || null,
+    win_value_en: form.winValue.en.trim() || null,
+    win_label_ro: form.winLabel.ro.trim() || null,
+    win_label_en: form.winLabel.en.trim() || null,
+    star_cost_ro: cleanFigures(form.star.cost.ro),
+    star_cost_en: cleanFigures(form.star.cost.en),
+    star_goal_ro: form.star.goal.ro.trim() || null,
+    star_goal_en: form.star.goal.en.trim() || null,
+    star_constraints_ro: cleanConstraints(form.star.constraints.ro),
+    star_constraints_en: cleanConstraints(form.star.constraints.en),
+    star_biz_ro: cleanStrings(form.star.biz.ro),
+    star_biz_en: cleanStrings(form.star.biz.en),
+    star_incident_ro: cleanIncident(form.star.incident.ro),
+    star_incident_en: cleanIncident(form.star.incident.en),
+    star_gains_ro: cleanFigures(form.star.gains.ro),
+    star_gains_en: cleanFigures(form.star.gains.en),
+    star_savings_ro: cleanFigures(form.star.savings.ro),
+    star_savings_en: cleanFigures(form.star.savings.en),
     screens_demo: form.screensDemo,
     context_body_ro: form.contextBody.ro || null,
     context_body_en: form.contextBody.en || null,

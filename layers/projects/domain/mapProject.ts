@@ -1,5 +1,7 @@
+import type { Json } from '#layers/core/shared/types/database.types'
 import { pick } from '#layers/core/shared/utils/pick'
 import { isServiceTagId } from '#layers/core/shared/types/service-tag'
+import { pickJson, toConstraints, toFigures, toIncident, toLinks, toStrings } from '#layers/projects/domain/star'
 
 export interface ProjectFactRow {
   label_ro: string
@@ -43,7 +45,13 @@ export interface ProjectCardRow {
   cover_path: string | null
   cover_alt_ro: string | null
   cover_alt_en: string | null
+  win_value_ro: string | null
+  win_value_en: string | null
+  win_label_ro: string | null
+  win_label_en: string | null
   sort_order: number
+  /** Set only by the dev demo fixture (layers/projects/server/dev/), never by the database. */
+  demo?: boolean
 }
 
 export interface ProjectRow extends ProjectCardRow {
@@ -57,9 +65,7 @@ export interface ProjectRow extends ProjectCardRow {
   hero_alt_en: string | null
   tags_ro: string[]
   tags_en: string[]
-  live_url: string | null
-  live_url_label_ro: string | null
-  live_url_label_en: string | null
+  links: Json
   screens_demo: boolean
   context_body_ro: string | null
   context_body_en: string | null
@@ -77,6 +83,20 @@ export interface ProjectRow extends ProjectCardRow {
   quote_role_ro: string | null
   quote_role_en: string | null
   quote_company: string | null
+  star_cost_ro: Json | null
+  star_cost_en: Json | null
+  star_goal_ro: string | null
+  star_goal_en: string | null
+  star_constraints_ro: Json | null
+  star_constraints_en: Json | null
+  star_biz_ro: Json | null
+  star_biz_en: Json | null
+  star_incident_ro: Json | null
+  star_incident_en: Json | null
+  star_gains_ro: Json | null
+  star_gains_en: Json | null
+  star_savings_ro: Json | null
+  star_savings_en: Json | null
   project_facts: ProjectFactRow[]
   project_stack: ProjectStackRow[]
   project_stats: ProjectStatRow[]
@@ -94,6 +114,8 @@ function paragraphs(ro: string | null, en: string | null, locale: Locale): strin
 }
 
 export function mapProjectCard(row: ProjectCardRow, locale: Locale) {
+  const winValue = pick(row.win_value_ro?.trim() ?? '', row.win_value_en?.trim(), locale)
+  const winLabel = pick(row.win_label_ro?.trim() ?? '', row.win_label_en?.trim(), locale)
   return {
     slug: (locale === 'en' && row.slug_en) || row.slug_ro,
     kind: pick(row.kind_ro ?? '', row.kind_en, locale),
@@ -106,6 +128,9 @@ export function mapProjectCard(row: ProjectCardRow, locale: Locale) {
     coverPath: row.cover_path,
     serviceTag: isServiceTagId(row.service_tag) ? row.service_tag : null,
     featured: row.featured,
+    // The short card result; hidden unless the value is set.
+    win: winValue ? { value: winValue, label: winLabel } : null,
+    demo: row.demo ?? false,
   }
 }
 
@@ -139,8 +164,27 @@ export function mapProject(row: ProjectRow, locale: Locale) {
         .sort((a, b) => a.sort_order - b.sort_order)
         .map((f) => ({ label: pick(f.label_ro, f.label_en, locale), value: pick(f.value_ro, f.value_en, locale) })),
       tags: locale === 'en' ? row.tags_en : row.tags_ro,
-      liveUrl: row.live_url?.trim() || null,
-      liveUrlLabel: pick(row.live_url_label_ro ?? '', row.live_url_label_en, locale),
+      links: toLinks(row.links).map((link) => ({
+        kind: link.kind,
+        url: link.url,
+        note: pick(link.note_ro ?? '', link.note_en, locale),
+      })),
+      star: {
+        cost: toFigures(pickJson(row.star_cost_ro, row.star_cost_en, locale)),
+        goal: pick(row.star_goal_ro?.trim() ?? '', row.star_goal_en?.trim(), locale),
+        constraints: toConstraints(pickJson(row.star_constraints_ro, row.star_constraints_en, locale)),
+        biz: toStrings(pickJson(row.star_biz_ro, row.star_biz_en, locale)),
+        incident: toIncident(pickJson(row.star_incident_ro, row.star_incident_en, locale)),
+        gains: toFigures(pickJson(row.star_gains_ro, row.star_gains_en, locale)),
+        savings: toFigures(pickJson(row.star_savings_ro, row.star_savings_en, locale)),
+      },
+      // Every real screenshot, hero first, for the 07 grid and the lightbox.
+      shots: [
+        ...(row.hero_path ? [{ path: row.hero_path, alt: pick(row.hero_alt_ro ?? row.title_ro, row.hero_alt_en, locale) }] : []),
+        ...galleryImages
+          .filter((img) => img.path !== row.hero_path)
+          .map((img) => ({ path: img.path as string, alt: pick(img.alt_ro, img.alt_en, locale) })),
+      ],
       problemParagraphs: paragraphs(row.context_body_ro, row.context_body_en, locale),
       solutionParagraphs: paragraphs(row.solution_body_ro, row.solution_body_en, locale),
       stack: [...row.project_stack]

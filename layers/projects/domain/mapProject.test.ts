@@ -26,9 +26,25 @@ const baseRow: ProjectRow = {
   kind_en: 'Web app',
   tags_ro: [],
   tags_en: [],
-  live_url: null,
-  live_url_label_ro: null,
-  live_url_label_en: null,
+  links: [],
+  win_value_ro: null,
+  win_value_en: null,
+  win_label_ro: null,
+  win_label_en: null,
+  star_cost_ro: null,
+  star_cost_en: null,
+  star_goal_ro: null,
+  star_goal_en: null,
+  star_constraints_ro: null,
+  star_constraints_en: null,
+  star_biz_ro: null,
+  star_biz_en: null,
+  star_incident_ro: null,
+  star_incident_en: null,
+  star_gains_ro: null,
+  star_gains_en: null,
+  star_savings_ro: null,
+  star_savings_en: null,
   screens_demo: false,
   context_body_ro: 'Primul paragraf.\n\nAl doilea paragraf.',
   context_body_en: 'First paragraph.\n\nSecond paragraph.',
@@ -122,12 +138,63 @@ describe('mapProject', () => {
     expect(mapProject(baseRow, 'en').caseStudy.tags).toEqual([])
   })
 
-  it('maps the live link only when a url is set, falling back to the RO label', () => {
-    expect(mapProject(baseRow, 'ro').caseStudy.liveUrl).toBeNull()
-    const row = { ...baseRow, live_url: 'https://example.com', live_url_label_ro: 'Vezi live', live_url_label_en: null }
-    const cs = mapProject(row, 'en').caseStudy
-    expect(cs.liveUrl).toBe('https://example.com')
-    expect(cs.liveUrlLabel).toBe('Vezi live')
+  it('maps only well-formed links, with the note falling back to RO', () => {
+    expect(mapProject(baseRow, 'ro').caseStudy.links).toEqual([])
+    const row = {
+      ...baseRow,
+      links: [
+        { kind: 'live', url: 'https://example.com', note_ro: 'Vezi live', note_en: null },
+        { kind: 'figma', url: 'javascript:alert(1)', note_ro: null, note_en: null },
+      ],
+    }
+    expect(mapProject(row, 'en').caseStudy.links).toEqual([
+      { kind: 'live', url: 'https://example.com', note: 'Vezi live' },
+    ])
+  })
+
+  it('lists the hero screenshot first, then the gallery without repeating it', () => {
+    const row = {
+      ...baseRow,
+      hero_path: 'hero.jpg',
+      hero_alt_ro: 'Hero RO',
+      hero_alt_en: 'Hero EN',
+      project_images: [
+        { path: 'g2.jpg', alt_ro: 'G2', alt_en: null, aspect: '4/3', sort_order: 2 },
+        { path: 'hero.jpg', alt_ro: 'Dublură', alt_en: null, aspect: '4/3', sort_order: 1 },
+        { path: 'g1.jpg', alt_ro: 'G1', alt_en: 'G1 EN', aspect: '4/3', sort_order: 0 },
+      ],
+    }
+    expect(mapProject(row, 'en').caseStudy.shots).toEqual([
+      { path: 'hero.jpg', alt: 'Hero EN' },
+      { path: 'g1.jpg', alt: 'G1 EN' },
+      { path: 'g2.jpg', alt: 'G2' },
+    ])
+  })
+
+  it('falls back to the RO star lists and goal when the EN ones are empty', () => {
+    const row = {
+      ...baseRow,
+      star_cost_ro: [{ v: '−35%', k: 'pierderi de flori' }],
+      star_cost_en: [],
+      star_goal_ro: 'Scop RO',
+      star_goal_en: null,
+      star_biz_ro: ['Unu', 'Doi'],
+      star_biz_en: null,
+    }
+    const star = mapProject(row, 'en').caseStudy.star
+    expect(star.cost).toEqual([{ v: '−35%', k: 'pierderi de flori' }])
+    expect(star.goal).toBe('Scop RO')
+    expect(star.biz).toEqual(['Unu', 'Doi'])
+  })
+
+  it('uses the EN star lists when they have content', () => {
+    const row = {
+      ...baseRow,
+      star_biz_ro: ['Unu'],
+      star_biz_en: ['One'],
+    }
+    expect(mapProject(row, 'en').caseStudy.star.biz).toEqual(['One'])
+    expect(mapProject(row, 'ro').caseStudy.star.biz).toEqual(['Unu'])
   })
 
   it('sorts stack rows by sort_order and picks the locale role', () => {
@@ -178,6 +245,16 @@ describe('mapProjectCard', () => {
   it('maps a missing or unknown service_tag to null', () => {
     expect(mapProjectCard(baseRow, 'ro').serviceTag).toBeNull()
     expect(mapProjectCard({ ...baseRow, service_tag: 'seo' }, 'ro').serviceTag).toBeNull()
+  })
+
+  it('maps the card win only when its value is set', () => {
+    expect(mapProjectCard(baseRow, 'ro').win).toBeNull()
+    expect(mapProjectCard({ ...baseRow, win_value_ro: '  ', win_label_ro: 'Label' }, 'ro').win).toBeNull()
+    const card = mapProjectCard(
+      { ...baseRow, win_value_ro: '−35%', win_label_ro: 'pierderi de flori' },
+      'en',
+    )
+    expect(card.win).toEqual({ value: '−35%', label: 'pierderi de flori' })
   })
 
   it('is the card half of mapProject', () => {
