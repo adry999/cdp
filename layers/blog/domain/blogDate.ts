@@ -3,5 +3,6 @@ export function formatPostDate(date: string, locale: 'ro' | 'en'): string {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'UTC',
   })
 }

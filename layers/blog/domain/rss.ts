@@ -1,21 +1,23 @@
 import { escapeXml } from '#layers/core/shared/utils/escapeXml'
+import { CATEGORIES, type CategoryCode } from './category'
 
 export interface RssPost {
   slug: string
   title: string
   description: string
   date: string
+  category: CategoryCode
 }
 
 const FEEDS = {
   ro: {
-    title: 'Codepedia — Blog (RO)',
-    description: 'Notițe tehnice și studii de caz scurte din munca Codepedia.',
+    title: 'CODEPEDIA — Blog (RO)',
+    description: 'Notițe tehnice și studii de caz scurte din munca CODEPEDIA.',
     pathPrefix: '/blog',
   },
   en: {
-    title: 'Codepedia — Blog (EN)',
-    description: "Technical notes and short case studies from Codepedia's work.",
+    title: 'CODEPEDIA — Blog (EN)',
+    description: "Technical notes and short case studies from CODEPEDIA's work.",
     pathPrefix: '/en/blog',
   },
 } as const
@@ -29,6 +31,7 @@ export function renderBlogRss(baseUrl: string, locale: 'ro' | 'en', posts: reado
       <title>${escapeXml(post.title)}</title>
       <link>${escapeXml(`${baseUrl}${feed.pathPrefix}/${post.slug}`)}</link>
       <description>${escapeXml(post.description)}</description>
+      <category>${escapeXml(CATEGORIES[post.category].name[locale])}</category>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       <guid>${escapeXml(`${baseUrl}${feed.pathPrefix}/${post.slug}`)}</guid>
     </item>`,

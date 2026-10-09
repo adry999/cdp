@@ -11,6 +11,7 @@
     "process": "Process",
     "work": "Work",
     "blog": "Blog",
+    "news": "News",
     "pricing": "Pricing",
     "about": "About",
     "main": "Main navigation",
@@ -37,7 +38,7 @@
   },
   "privacy": {
     "seo": {
-      "description": "Codepedia's privacy policy: what data we collect, how we use it, and how you can control cookies."
+      "description": "CODEPEDIA's privacy policy: what data we collect, how we use it, and how you can control cookies."
     }
   },
   "home": {
@@ -418,11 +419,11 @@
   "projects": {
     "seo": {
       "title": "Projects",
-      "description": "Codepedia case studies: web apps, websites, WordPress, Shopify and AI automation delivered for clients around the world."
+      "description": "CODEPEDIA case studies: web apps, websites, WordPress, Shopify and AI automation delivered for clients around the world."
     },
     "hero": {
       "title": "Projects.",
-      "intro": "Case studies from the Codepedia portfolio, filterable by service type."
+      "intro": "Case studies from the CODEPEDIA portfolio, filterable by service type."
     },
     "filters": {
       "all": "All",
@@ -455,17 +456,54 @@
       }
     }
   },
+  "news": {
+    "seo": {
+      "title": "News",
+      "description": "Articles and news from other sources, picked by the CODEPEDIA team, with our own summary and a link to the original."
+    },
+    "hero": {
+      "title": "News",
+      "intro": "Articles and news from other sources, picked by the CODEPEDIA team, with a summary and a link to the original."
+    },
+    "empty": "No news published yet.",
+    "latest": "Latest",
+    "readAtSource": "Read at the source ↗",
+    "openOriginal": "Read the original article ↗",
+    "details": "Summary",
+    "back": "News",
+    "breadcrumb": "Breadcrumb",
+    "sourceLabel": "Source: {name}",
+    "originalDate": "Originally published: {date}",
+    "why": "Why it matters",
+    "disclaimer": "Summary written by the CODEPEDIA team. The full article belongs to {name}."
+  },
   "blog": {
     "seo": {
       "title": "Blog",
-      "description": "Technical notes and short case studies from Codepedia's work — web development, automation, architecture."
+      "description": "Pricing, comparisons and guides for businesses planning a website or a web app. Written from CODEPEDIA projects."
     },
     "hero": {
-      "title": "Blog.",
-      "intro": "Technical notes from Codepedia's work — what we built, what we learned, what we changed."
+      "title": "What it costs, what to choose, how to build.",
+      "intro": "Pricing, comparisons and guides for businesses planning a website or a web app. Written from CODEPEDIA projects."
     },
     "empty": "No published posts yet.",
-    "related": "Related articles"
+    "related": "Read next",
+    "fromBlog": "From the blog",
+    "all": "All",
+    "latest": "Latest",
+    "read": "Read",
+    "toc": "Contents",
+    "published": "Published",
+    "updated": "Updated",
+    "next": "Next step",
+    "min": "min",
+    "back": "Blog",
+    "breadcrumb": "Breadcrumb",
+    "categories": "Categories",
+    "category": {
+      "seoTitle": "{name} · Blog",
+      "seoDescription": "CODEPEDIA articles in “{name}”: pricing, comparisons and guides for businesses planning a website or a web app."
+    }
   },
   "error": {
     "sectionLabel": "Error",

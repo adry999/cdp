@@ -6,9 +6,11 @@ interface PageSeo {
   ogTitle?: MaybeRefOrGetter<string>
   image?: MaybeRefOrGetter<string | null | undefined>
   type?: 'website' | 'article'
+  /** `article:*` Open Graph tags; only meaningful with `type: 'article'`. */
+  article?: { publishedTime: string; modifiedTime: string; section: string }
 }
 
-export function usePageSeo({ title, description, ogTitle, image, type = 'website' }: PageSeo) {
+export function usePageSeo({ title, description, ogTitle, image, type = 'website', article }: PageSeo) {
   const defaultImage = `${useSiteUrl()}/og-image.png`
 
   useSeoMeta({
@@ -19,5 +21,8 @@ export function usePageSeo({ title, description, ogTitle, image, type = 'website
     ogImage: () => toValue(image) ?? defaultImage,
     ogType: type,
     twitterCard: 'summary_large_image',
+    ...(article
+      ? { articlePublishedTime: article.publishedTime, articleModifiedTime: article.modifiedTime, articleSection: article.section }
+      : {}),
   })
 }

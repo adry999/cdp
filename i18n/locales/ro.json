@@ -11,6 +11,7 @@
     "process": "Proces",
     "work": "Proiecte",
     "blog": "Blog",
+    "news": "Noutăți",
     "pricing": "Prețuri",
     "about": "Despre",
     "main": "Navigație principală",
@@ -37,7 +38,7 @@
   },
   "privacy": {
     "seo": {
-      "description": "Politica de confidențialitate Codepedia: ce date colectăm, cum le folosim și cum poți controla cookie-urile."
+      "description": "Politica de confidențialitate CODEPEDIA: ce date colectăm, cum le folosim și cum poți controla cookie-urile."
     }
   },
   "home": {
@@ -418,11 +419,11 @@
   "projects": {
     "seo": {
       "title": "Proiecte",
-      "description": "Studii de caz Codepedia: aplicații web, site-uri, WordPress, Shopify și automatizări AI livrate pentru clienți din toată lumea."
+      "description": "Studii de caz CODEPEDIA: aplicații web, site-uri, WordPress, Shopify și automatizări AI livrate pentru clienți din toată lumea."
     },
     "hero": {
       "title": "Proiecte.",
-      "intro": "Studii de caz din portofoliul Codepedia, filtrabile după tipul de serviciu."
+      "intro": "Studii de caz din portofoliul CODEPEDIA, filtrabile după tipul de serviciu."
     },
     "filters": {
       "all": "Toate",
@@ -455,17 +456,54 @@
       }
     }
   },
+  "news": {
+    "seo": {
+      "title": "Noutăți",
+      "description": "Articole și știri din alte surse, alese de echipa CODEPEDIA, cu un rezumat scris de noi și link la original."
+    },
+    "hero": {
+      "title": "Noutăți",
+      "intro": "Articole și știri din alte surse, alese de echipa CODEPEDIA, cu un rezumat și link la original."
+    },
+    "empty": "Nu sunt încă noutăți publicate.",
+    "latest": "Cele mai noi",
+    "readAtSource": "Citește la sursă ↗",
+    "openOriginal": "Citește articolul original ↗",
+    "details": "Rezumat",
+    "back": "Noutăți",
+    "breadcrumb": "Navigare",
+    "sourceLabel": "Sursa: {name}",
+    "originalDate": "Publicat inițial: {date}",
+    "why": "De ce contează",
+    "disclaimer": "Rezumat scris de echipa CODEPEDIA. Articolul complet aparține {name}."
+  },
   "blog": {
     "seo": {
       "title": "Blog",
-      "description": "Notițe tehnice și studii de caz scurte din munca Codepedia — dezvoltare web, automatizare, arhitectură."
+      "description": "Prețuri, comparații și ghiduri pentru firmele care pregătesc un site sau o aplicație. Scrise din proiectele CODEPEDIA."
     },
     "hero": {
-      "title": "Blog.",
-      "intro": "Notițe tehnice din munca Codepedia — ce am construit, ce am învățat, ce am schimbat."
+      "title": "Ce costă, ce alegi, cum construiești.",
+      "intro": "Prețuri, comparații și ghiduri pentru firmele care pregătesc un site sau o aplicație. Scrise din proiectele CODEPEDIA."
     },
     "empty": "Momentan nu avem articole publicate.",
-    "related": "Articole similare"
+    "related": "Citește și",
+    "fromBlog": "Din blog",
+    "all": "Toate",
+    "latest": "Cel mai nou",
+    "read": "Citește",
+    "toc": "Cuprins",
+    "published": "Publicat",
+    "updated": "Actualizat",
+    "next": "Pasul următor",
+    "min": "min",
+    "back": "Blog",
+    "breadcrumb": "Breadcrumb",
+    "categories": "Categorii",
+    "category": {
+      "seoTitle": "{name} · Blog",
+      "seoDescription": "Articole CODEPEDIA din categoria „{name}”: prețuri, comparații și ghiduri pentru firmele care pregătesc un site sau o aplicație."
+    }
   },
   "error": {
     "sectionLabel": "Eroare",

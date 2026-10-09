@@ -6,6 +6,8 @@ Cookie consent: the visitor's choice, the banner that records it, the analytics 
 
 - `useCookieConsent()` → `{ consent, showBanner, acceptAll, rejectAll, savePreferences, openSettings }`. `openSettings()` reopens the banner.
 
+- `analytics:event` hook (declared in core) — the analytics plugin forwards `blog_cta_click` / `blog_toc_click` to GA only when GA is loaded (ID set + analytics consent); everything else is dropped (`domain/analyticsEvent.ts`).
+
 ## Public API (server) — `server/index.ts`
 
 - `CONSENT_SITEMAP_PAGES` — the privacy page as a `SitemapPage`, for the root sitemap.

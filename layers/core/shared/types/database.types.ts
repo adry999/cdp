@@ -140,6 +140,77 @@ export type Database = {
         }
         Relationships: []
       }
+      news_items: {
+        Row: {
+          category: string | null
+          created_at: string
+          id: string
+          published_at: string | null
+          slug_en: string | null
+          slug_ro: string
+          source_author: string | null
+          source_name: string
+          source_published_on: string | null
+          source_url: string
+          summary_en: string | null
+          summary_ro: string
+          title_en: string | null
+          title_ro: string
+          updated_at: string
+          updated_by: string | null
+          why_en: string | null
+          why_ro: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          published_at?: string | null
+          slug_en?: string | null
+          slug_ro: string
+          source_author?: string | null
+          source_name: string
+          source_published_on?: string | null
+          source_url: string
+          summary_en?: string | null
+          summary_ro: string
+          title_en?: string | null
+          title_ro: string
+          updated_at?: string
+          updated_by?: string | null
+          why_en?: string | null
+          why_ro?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          published_at?: string | null
+          slug_en?: string | null
+          slug_ro?: string
+          source_author?: string | null
+          source_name?: string
+          source_published_on?: string | null
+          source_url?: string
+          summary_en?: string | null
+          summary_ro?: string
+          title_en?: string | null
+          title_ro?: string
+          updated_at?: string
+          updated_by?: string | null
+          why_en?: string | null
+          why_ro?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "news_items_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       process_steps: {
         Row: {
           body_en: string | null

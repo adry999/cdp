@@ -6,6 +6,7 @@ import { listBlogSitemapPages } from '#layers/blog/server'
 import { CONSENT_SITEMAP_PAGES } from '#layers/consent/server'
 import { CONTENT_SITEMAP_PAGES } from '#layers/content/server'
 import { LEADS_SITEMAP_PAGES } from '#layers/leads/server'
+import { listNewsSitemapPages } from '#layers/news/server'
 import { listProjectSitemapPages, PROJECTS_INDEX_PAGE } from '#layers/projects/server'
 import { SERVICE_SITEMAP_PAGES, SERVICES_INDEX_PAGE } from '#layers/services/server'
 
@@ -19,6 +20,7 @@ export default defineEventHandler(async (event) => {
     ...CONSENT_SITEMAP_PAGES,
     ...(await listProjectSitemapPages(event)),
     ...(await listBlogSitemapPages(event)),
+    ...(await listNewsSitemapPages(event)),
     SERVICES_INDEX_PAGE,
     ...LEADS_SITEMAP_PAGES,
     ...CONTENT_SITEMAP_PAGES,

@@ -103,10 +103,16 @@ export default defineNuxtConfig({
     '/en/work': { swr: 300 },
     '/proiecte/**': { swr: 300 },
     '/en/work/**': { swr: 300 },
-    '/blog': { swr: 300 },
-    '/en/blog': { swr: 300 },
-    '/blog/**': { swr: 300 },
-    '/en/blog/**': { swr: 300 },
+    // Blog content lives in the repo: prerendered at build (URLs listed in layers/blog/nuxt.config.ts).
+    // News comes from the database (like projects), so it is cached, not prerendered.
+    '/noutati': { swr: 300 },
+    '/en/news': { swr: 300 },
+    '/noutati/**': { swr: 300 },
+    '/en/news/**': { swr: 300 },
+    '/blog': { prerender: true },
+    '/en/blog': { prerender: true },
+    '/blog/**': { prerender: true },
+    '/en/blog/**': { prerender: true },
     '/servicii': { swr: 300 },
     '/en/services': { swr: 300 },
     '/servicii/**': { swr: 300 },
@@ -122,6 +128,8 @@ export default defineNuxtConfig({
     '/en/privacy': { swr: 3600 },
     '/api/projects': { swr: 60 },
     '/api/projects/**': { swr: 300 },
+    '/api/news': { swr: 60 },
+    '/api/news/**': { swr: 300 },
     '/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
     '/api/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
 
@@ -205,6 +213,14 @@ export default defineNuxtConfig({
         ro: '/proiecte/[slug]',
         en: '/work/[slug]',
       },
+      noutati: {
+        ro: '/noutati',
+        en: '/news',
+      },
+      'noutati-slug': {
+        ro: '/noutati/[slug]',
+        en: '/news/[slug]',
+      },
       servicii: {
         ro: '/servicii',
         en: '/services',
@@ -212,6 +228,10 @@ export default defineNuxtConfig({
       'servicii-slug': {
         ro: '/servicii/[slug]',
         en: '/services/[slug]',
+      },
+      'blog-categorie-slug': {
+        ro: '/blog/categorie/[slug]',
+        en: '/blog/category/[slug]',
       },
       contact: {
         ro: '/contact',
@@ -242,7 +262,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      titleTemplate: '%s · Codepedia',
+      titleTemplate: '%s | CODEPEDIA',
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', sizes: '48x48' },

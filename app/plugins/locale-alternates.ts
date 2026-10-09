@@ -1,7 +1,7 @@
 import { toSiteOrigins } from '#layers/core/shared/utils/siteOrigins'
 
 // useLocaleHead builds every URL on i18n.baseUrl (NUXT_PUBLIC_SITE_URL). Here each
-// URL moves to its locale's official domain, x-default goes to the EN page, and a
+// URL moves to its locale's official domain, x-default goes to the EN page (the RO page for /blog/**, which is written Romanian-first), and a
 // page whose EN copy is still Romanian (app/utils/enPendingTranslation.ts) drops
 // its EN alternates; an error page drops them all. Done at tag resolution because two sources emit the
 // alternates — useLocaleHead in app.vue and useSetI18nParams on slug pages — and
@@ -27,8 +27,11 @@ export default defineNuxtPlugin({
         ctx.tags = ctx.tags.filter((tag) => !(tag.tag === 'link' && (tag.props.rel === 'alternate' || tag.props.rel === 'canonical')))
         return
       }
-      const enPending = isEnPendingTranslation(switchLocalePath('ro'))
+      const roPath = switchLocalePath('ro')
+      const enPending = isEnPendingTranslation(roPath)
+      const xDefault = xDefaultLocale(roPath)
       const currentOrigin = origins[locale.value === 'en' ? 'en' : 'ro']
+      const roHref = ctx.tags.find((tag) => tag.tag === 'link' && tag.props.hreflang === 'ro')?.props.href
       const enHref = ctx.tags.find((tag) => tag.tag === 'link' && tag.props.hreflang === 'en')?.props.href
 
       ctx.tags = ctx.tags.filter((tag) => !(enPending && tag.tag === 'link' && String(tag.props.hreflang ?? '').startsWith('en')))
@@ -45,7 +48,8 @@ export default defineNuxtPlugin({
         }
         if (props.rel !== 'alternate' || typeof props.hreflang !== 'string') continue
         if (props.hreflang === 'x-default') {
-          props.href = !enPending && typeof enHref === 'string' ? onOrigin(enHref, origins.en) : onOrigin(props.href, origins.ro)
+          if (xDefault === 'ro' && typeof roHref === 'string') props.href = onOrigin(roHref, origins.ro)
+          else props.href = !enPending && typeof enHref === 'string' ? onOrigin(enHref, origins.en) : onOrigin(props.href, origins.ro)
         } else {
           props.href = onOrigin(props.href, props.hreflang.startsWith('en') ? origins.en : origins.ro)
         }

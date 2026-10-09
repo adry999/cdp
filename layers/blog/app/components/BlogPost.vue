@@ -1,161 +1,65 @@
 <script setup lang="ts">
-import { formatPostDate, type BlogPostDoc } from '#layers/blog'
+import { CATEGORIES, blogSlug, formatPostDate, type BlogPostDoc } from '#layers/blog'
 
 const props = defineProps<{ post: BlogPostDoc }>()
+const { t } = useI18n()
 const siteLocale = useSiteLocale()
+const localePath = useLocalePath()
+const track = useTrackEvent()
 
-const displayDate = computed(() => formatPostDate(props.post.date, siteLocale.value))
+const category = computed(() => CATEGORIES[props.post.category])
+const categoryTo = computed(() =>
+  localePath({ name: 'blog-categorie-slug', params: { slug: category.value.slug[siteLocale.value] } }),
+)
+const published = computed(() => formatPostDate(props.post.date, siteLocale.value))
+const updated = computed(() => formatPostDate(props.post.updated, siteLocale.value))
+const showUpdated = computed(() => props.post.updated !== props.post.date)
 </script>
 
 <template>
   <article>
-    <SiteSection number="00" :label="displayDate" padding="hero">
-      <h1
-        class="m-0 max-w-[26ch] text-[clamp(28px,4.5vw,48px)] font-semibold leading-[1.08] tracking-[-0.02em] text-pretty"
-      >
+    <SiteSection padding="heroCompact" :top-border="false">
+      <template #label>
+        <NuxtLink :to="localePath('blog')" class="eyebrow text-muted no-underline hover:text-signal-text hover:no-underline">
+          ← {{ t('blog.back') }}
+        </NuxtLink>
+      </template>
+      <nav :aria-label="t('blog.breadcrumb')" class="flex flex-wrap gap-2 eyebrow-sm text-muted">
+        <span>CODEPEDIA</span><span aria-hidden="true">/</span>
+        <NuxtLink :to="localePath('blog')" class="text-muted no-underline hover:text-signal-text hover:no-underline">Blog</NuxtLink>
+        <span aria-hidden="true">/</span>
+        <NuxtLink :to="categoryTo" class="text-signal-text no-underline hover:no-underline">{{ category.name[siteLocale] }}</NuxtLink>
+      </nav>
+      <h1 class="m-0 mt-5 max-w-[24ch] text-[clamp(30px,4.8vw,52px)] font-semibold leading-[1.06] tracking-[-0.025em] text-pretty">
         {{ post.title }}
       </h1>
-      <MediaFrame
-        v-if="post.cover"
-        ratio="16/9"
-        :src="post.cover"
-        :alt="post.title"
-        priority
-        sizes="xs:100vw md:100vw lg:1024px"
-        class="mt-8"
-      />
-    </SiteSection>
-    <SiteSection number="01" :label="displayDate">
-      <div class="blog-prose max-w-[68ch]">
-        <ContentRenderer :value="post" />
+      <p class="m-0 mt-5 max-w-[60ch] text-[clamp(16px,1.4vw,19px)] text-muted text-pretty">{{ post.description }}</p>
+      <div class="mt-7 flex flex-wrap gap-x-7 gap-y-2 border-t border-hairline pt-4 eyebrow-sm text-muted">
+        <span>{{ post.author }}</span>
+        <span>{{ t('blog.published') }} {{ published }}</span>
+        <span v-if="showUpdated">{{ t('blog.updated') }} {{ updated }}</span>
+        <span>{{ post.readingTime }} {{ t('blog.min') }}</span>
       </div>
     </SiteSection>
-    <BlogRelated :current-path="post.path" />
+
+    <SiteSection padding="sm">
+      <template #label>
+        <nav v-if="post.toc.length" :aria-label="t('blog.toc')" class="sticky top-24 flex flex-col gap-2.5">
+          <div class="eyebrow-sm text-muted">{{ t('blog.toc') }}</div>
+          <a
+            v-for="item in post.toc"
+            :key="item.id"
+            :href="`#${item.id}`"
+            class="text-[13px] leading-[1.35] text-muted no-underline text-pretty hover:text-signal-text hover:no-underline"
+            @click="track('blog_toc_click', { post_slug: blogSlug(post.path), anchor_id: item.id })"
+          >
+            {{ item.text }}
+          </a>
+        </nav>
+      </template>
+      <BlogBody :blocks="post.blocks" :post-slug="blogSlug(post.path)" :service="post.service" />
+    </SiteSection>
+
+    <BlogRelated :posts="post.related" />
   </article>
 </template>
-
-<style scoped>
-.blog-prose :deep(h2) {
-  margin: 2.5rem 0 1rem;
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--color-ink);
-}
-
-.blog-prose :deep(h3) {
-  margin: 2rem 0 0.75rem;
-  font-size: 1.25rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--color-ink);
-}
-
-.blog-prose :deep(p) {
-  margin: 0 0 1.25rem;
-  color: var(--color-ink);
-  line-height: 1.7;
-}
-
-.blog-prose :deep(ul),
-.blog-prose :deep(ol) {
-  margin: 0 0 1.25rem;
-  padding-left: 1.25rem;
-  color: var(--color-ink);
-  line-height: 1.7;
-}
-
-.blog-prose :deep(li) {
-  margin-bottom: 0.4rem;
-}
-
-.blog-prose :deep(a) {
-  color: var(--color-ink);
-  text-decoration: underline;
-  text-decoration-color: var(--color-signal);
-}
-
-.blog-prose :deep(code) {
-  font-family: var(--font-mono);
-  font-size: 0.9em;
-  background: var(--color-hatch);
-  padding: 0.1em 0.35em;
-  border-radius: 3px;
-}
-
-.blog-prose :deep(pre) {
-  margin: 0 0 1.5rem;
-  padding: 1rem;
-  border: 1px solid var(--color-hairline);
-  border-radius: 4px;
-  overflow-x: auto;
-  background: var(--color-hatch);
-}
-
-.blog-prose :deep(pre code) {
-  background: none;
-  padding: 0;
-}
-
-.blog-prose :deep(img) {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin: 0 0 1.25rem;
-  border-radius: 4px;
-  border: 1px solid var(--color-hairline);
-}
-
-.blog-prose :deep(blockquote) {
-  margin: 0 0 1.25rem;
-  padding-left: 1rem;
-  border-left: 2px solid var(--color-hairline);
-  color: var(--color-muted);
-}
-
-.blog-prose :deep(hr) {
-  margin: 2rem 0;
-  border: none;
-  border-top: 1px solid var(--color-hairline);
-}
-
-.blog-prose :deep(table) {
-  width: 100%;
-  margin: 0 0 1.5rem;
-  border-collapse: collapse;
-  font-size: 0.95em;
-}
-
-.blog-prose :deep(th),
-.blog-prose :deep(td) {
-  padding: 0.6rem 0.75rem;
-  border: 1px solid var(--color-hairline);
-  text-align: left;
-  vertical-align: top;
-}
-
-.blog-prose :deep(th) {
-  font-family: var(--font-mono);
-  font-size: 0.75em;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-muted);
-  background: var(--color-hatch);
-}
-
-.blog-prose :deep(figure) {
-  margin: 0 0 1.5rem;
-}
-
-.blog-prose :deep(figure img) {
-  margin-bottom: 0.5rem;
-}
-
-.blog-prose :deep(figcaption) {
-  font-family: var(--font-mono);
-  font-size: 0.75em;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-muted);
-}
-</style>
