@@ -27,6 +27,14 @@ const localePath = useLocalePath()
       {{ project.title }}
     </h3>
     <p class="m-0 text-base text-muted">{{ project.text }}</p>
+    <div
+      v-if="project.win"
+      class="mt-3.5 flex flex-wrap items-baseline gap-x-2.5 gap-y-1 border-t border-hairline pt-3"
+    >
+      <span class="text-[22px] font-semibold tracking-[-0.02em]">{{ project.win.value }}</span>
+      <span class="eyebrow-sm text-muted">{{ project.win.label }}</span>
+      <span v-if="project.demo" class="font-mono text-[10px] uppercase tracking-[0.08em] text-signal-text">{{ t('projects.demoBadge') }}</span>
+    </div>
     <TextLink :to="localePath({ name: 'proiecte-slug', params: { slug: project.slug } })" class="mt-4 inline-block">
       {{ t('home.work.caseStudyLink') }}
     </TextLink>
