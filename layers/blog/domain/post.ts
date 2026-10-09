@@ -1,13 +1,24 @@
+import type { CategoryCode } from './category'
+import type { PostService } from './frontMatter'
+
 export interface BlogPostSummary {
   path: string
   title: string
-  summary: string
+  description: string
   date: string
+  updated: string
+  category: CategoryCode
+  readingTime: number
+  /** Slug of the same post in the other locale. */
+  alt: string
   cover?: string
 }
 
 export interface BlogPostDoc extends BlogPostSummary {
-  description: string
+  keyword: string
+  author: string
+  service: PostService
+  case: string
   body: unknown
 }
 
