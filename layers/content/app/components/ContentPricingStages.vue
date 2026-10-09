@@ -6,7 +6,7 @@ const localePath = useLocalePath()
 const stages = await useServiceStages()
 
 // The highlighted stage (Design → cod) gets the inverted card.
-// A stage shows its price only once `pricing.stages.<id>.price` exists in the locale files.
+// The stage price comes from useServiceStages; the large figure shows only once `pricing.stages.<id>.price` exists.
 const FEATURED_STAGE = 'A'
 </script>
 
@@ -33,17 +33,16 @@ const FEATURED_STAGE = 'A'
           <h2 class="m-0 mt-4 min-h-[2.6em] font-mono text-sm font-medium uppercase leading-[1.3] tracking-[0.04em]">
             {{ stage.name }}
           </h2>
-          <template v-if="te(`pricing.stages.${stage.id}.price`)">
-            <div
-              class="mt-5 eyebrow-sm"
-              :class="stage.id === FEATURED_STAGE ? 'text-body-ink' : 'text-muted'"
-            >
-              {{ stage.pricing }}
-            </div>
-            <div class="mt-1 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em]">
-              {{ t(`pricing.stages.${stage.id}.price`) }}
-            </div>
-          </template>
+          <div
+            v-if="stage.pricing"
+            class="mt-5 eyebrow-sm"
+            :class="stage.id === FEATURED_STAGE ? 'text-body-ink' : 'text-muted'"
+          >
+            {{ stage.pricing }}
+          </div>
+          <div v-if="te(`pricing.stages.${stage.id}.price`)" class="mt-1 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em]">
+            {{ t(`pricing.stages.${stage.id}.price`) }}
+          </div>
           <ul
             class="m-0 mt-5 flex flex-1 list-none flex-col gap-2 border-t p-0 pt-4"
             :class="stage.id === FEATURED_STAGE ? 'border-hairline-ink' : 'border-hairline'"
