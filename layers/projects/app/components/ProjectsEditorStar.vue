@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { ProjectForm } from '#layers/projects/domain/projectForm'
 
+// The midway incident is no longer on the case study, so its editor is hidden;
+// stored values still round-trip through the form.
 const form = defineModel<ProjectForm>({ required: true })
 
 const locales = ['ro', 'en'] as const
@@ -56,24 +58,6 @@ const locales = ['ro', 'en'] as const
         </div>
       </section>
 
-      <section aria-labelledby="star-i" class="flex flex-col gap-4">
-        <h3 id="star-i" class="eyebrow text-ink">Pe parcurs — Incident</h3>
-        <div class="grid grid-cols-2 gap-4">
-          <div v-for="lang in locales" :key="lang" class="flex flex-col gap-3">
-            <AdminField v-model="form.star.incident[lang].found" :label="`Ce am descoperit (${lang.toUpperCase()})`" as="textarea" rows="3" />
-            <AdminField v-model="form.star.incident[lang].risk" :label="`Riscul (${lang.toUpperCase()})`" as="textarea" rows="3" />
-            <AdminField v-model="form.star.incident[lang].action" :label="`Ce am făcut (${lang.toUpperCase()})`" as="textarea" rows="3" />
-            <ProjectsEditorPairList
-              v-model="form.star.incident[lang].outcome"
-              :title="`Rezultat incident ${lang.toUpperCase()}`"
-              first-key="v"
-              :first-label="`Valoare (${lang.toUpperCase()})`"
-              :second-label="`Descriere (${lang.toUpperCase()})`"
-              add-label="+ Cifră"
-            />
-          </div>
-        </div>
-      </section>
 
       <section aria-labelledby="star-r" class="flex flex-col gap-4">
         <h3 id="star-r" class="eyebrow text-ink">Rezultat</h3>

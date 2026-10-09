@@ -117,19 +117,17 @@ describe('mapProject', () => {
     ])
   })
 
-  it('splits solution, obstacles, changes and result text the same way, empty when unset', () => {
+  it('splits solution and result text the same way, empty when unset', () => {
     const row = {
       ...baseRow,
       solution_body_ro: 'A.\n\nB.',
-      obstacles_body_en: 'Hurdle.',
       result_body_ro: '  ',
+      result_body_en: 'Done.',
     }
     const cs = mapProject(row, 'ro').caseStudy
     expect(cs.solutionParagraphs).toEqual(['A.', 'B.'])
-    expect(cs.obstaclesParagraphs).toEqual([])
-    expect(cs.changesParagraphs).toEqual([])
     expect(cs.resultParagraphs).toEqual([])
-    expect(mapProject(row, 'en').caseStudy.obstaclesParagraphs).toEqual(['Hurdle.'])
+    expect(mapProject(row, 'en').caseStudy.resultParagraphs).toEqual(['Done.'])
   })
 
   it('uses the locale tags, empty when none are set', () => {

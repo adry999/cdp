@@ -107,8 +107,6 @@ export const DEFAULT_FACTS: AdminProjectRow['project_facts'] = [
   { label_ro: 'Utilizatori', label_en: 'Users', value_ro: '', value_en: '', sort_order: 3 },
 ]
 
-export const MAX_STATS = 4
-
 export function emptyBilingual(): Bilingual {
   return { ro: '', en: '' }
 }

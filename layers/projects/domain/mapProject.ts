@@ -1,7 +1,7 @@
 import type { Json } from '#layers/core/shared/types/database.types'
 import { pick } from '#layers/core/shared/utils/pick'
 import { isServiceTagId } from '#layers/core/shared/types/service-tag'
-import { pickJson, toConstraints, toFigures, toIncident, toLinks, toStrings } from '#layers/projects/domain/star'
+import { pickJson, toConstraints, toFigures, toLinks, toStrings } from '#layers/projects/domain/star'
 
 export interface ProjectFactRow {
   label_ro: string
@@ -105,8 +105,6 @@ export interface ProjectRow extends ProjectCardRow {
 
 type Locale = 'ro' | 'en'
 
-const GALLERY_PLACEHOLDER_COUNT = 2
-
 function paragraphs(ro: string | null, en: string | null, locale: Locale): string[] {
   return pick(ro ?? '', en, locale)
     .split(/\n\s*\n/)
@@ -170,45 +168,25 @@ export function mapProject(row: ProjectRow, locale: Locale) {
         note: pick(link.note_ro ?? '', link.note_en, locale),
       })),
       star: {
-        cost: toFigures(pickJson(row.star_cost_ro, row.star_cost_en, locale)),
+        cost: pickJson(row.star_cost_ro, row.star_cost_en, locale, toFigures),
         goal: pick(row.star_goal_ro?.trim() ?? '', row.star_goal_en?.trim(), locale),
-        constraints: toConstraints(pickJson(row.star_constraints_ro, row.star_constraints_en, locale)),
-        biz: toStrings(pickJson(row.star_biz_ro, row.star_biz_en, locale)),
-        incident: toIncident(pickJson(row.star_incident_ro, row.star_incident_en, locale)),
-        gains: toFigures(pickJson(row.star_gains_ro, row.star_gains_en, locale)),
-        savings: toFigures(pickJson(row.star_savings_ro, row.star_savings_en, locale)),
+        constraints: pickJson(row.star_constraints_ro, row.star_constraints_en, locale, toConstraints),
+        biz: pickJson(row.star_biz_ro, row.star_biz_en, locale, toStrings),
+        gains: pickJson(row.star_gains_ro, row.star_gains_en, locale, toFigures),
+        savings: pickJson(row.star_savings_ro, row.star_savings_en, locale, toFigures),
       },
-      // Every real screenshot, hero first, for the 07 grid and the lightbox.
+      // Every real screenshot once, hero first, for the 06 grid and the lightbox.
       shots: [
         ...(row.hero_path ? [{ path: row.hero_path, alt: pick(row.hero_alt_ro ?? row.title_ro, row.hero_alt_en, locale) }] : []),
-        ...galleryImages
-          .filter((img) => img.path !== row.hero_path)
-          .map((img) => ({ path: img.path as string, alt: pick(img.alt_ro, img.alt_en, locale) })),
-      ],
+        ...galleryImages.map((img) => ({ path: img.path as string, alt: pick(img.alt_ro, img.alt_en, locale) })),
+      ].filter((shot, i, all) => all.findIndex((other) => other.path === shot.path) === i),
       problemParagraphs: paragraphs(row.context_body_ro, row.context_body_en, locale),
       solutionParagraphs: paragraphs(row.solution_body_ro, row.solution_body_en, locale),
       stack: [...row.project_stack]
         .sort((a, b) => a.sort_order - b.sort_order)
         .map((s) => ({ name: s.name, role: pick(s.role_ro, s.role_en, locale) })),
-      obstaclesParagraphs: paragraphs(row.obstacles_body_ro, row.obstacles_body_en, locale),
-      changesParagraphs: paragraphs(row.changes_body_ro, row.changes_body_en, locale),
       resultParagraphs: paragraphs(row.result_body_ro, row.result_body_en, locale),
       screensDemo: row.screens_demo,
-      // Placeholders come from nothing, not blank project_images rows (an empty path renders a broken image).
-      gallery: galleryImages.length
-        ? galleryImages.map((img) => `[ ${pick(img.alt_ro, img.alt_en, locale)} ]`)
-        : Array.from({ length: GALLERY_PLACEHOLDER_COUNT }, () =>
-            locale === 'en' ? '[ screenshot ]' : '[ captură ]',
-          ),
-      galleryAlt: galleryImages.length
-        ? galleryImages.map((img) => pick(img.alt_ro, img.alt_en, locale))
-        : Array.from({ length: GALLERY_PLACEHOLDER_COUNT }, () => ''),
-      galleryPaths: galleryImages.length
-        ? galleryImages.map((img) => img.path)
-        : Array.from({ length: GALLERY_PLACEHOLDER_COUNT }, () => null),
-      resultStats: [...row.project_stats]
-        .sort((a, b) => a.sort_order - b.sort_order)
-        .map((s) => ({ value: s.value, label: pick(s.label_ro, s.label_en, locale) })),
       quote: pick(row.quote_ro ?? '', row.quote_en, locale),
       attribution,
     },

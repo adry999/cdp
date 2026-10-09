@@ -10,8 +10,9 @@ const { t } = useI18n()
 const dialog = ref<HTMLElement | null>(null)
 const closeButton = ref<HTMLButtonElement | null>(null)
 
-const isOpen = computed(() => props.index !== null && props.shots.length > 0)
 const current = computed(() => (props.index === null ? undefined : props.shots[props.index]))
+// Open only while the index points at a shot, so a shrinking list cannot leave the page locked.
+const isOpen = computed(() => current.value !== undefined)
 
 function step(delta: number) {
   if (props.index === null) return

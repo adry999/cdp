@@ -92,9 +92,20 @@ export function toLinks(value: Json | null | undefined): ProjectLinkRow[] {
     })
 }
 
-/** The English column when it has content, otherwise the Romanian one (same rule as `pick`). */
-export function pickJson(ro: Json | null, en: Json | null, locale: string): Json | null {
-  const hasContent = (value: Json | null) =>
-    Array.isArray(value) ? value.length > 0 : isObject(value ?? undefined) ? Object.keys(value as JsonObject).length > 0 : false
-  return locale === 'en' && hasContent(en) ? en : ro
+/**
+ * The parsed English column when it yields content, otherwise the parsed Romanian
+ * one (same rule as `pick`). Decided after parsing, so an English column holding
+ * only blank entries falls back instead of hiding the block.
+ */
+export function pickJson<T>(
+  ro: Json | null,
+  en: Json | null,
+  locale: string,
+  parse: (value: Json | null) => T,
+): T {
+  if (locale === 'en') {
+    const parsed = parse(en)
+    if (parsed !== null && !(Array.isArray(parsed) && parsed.length === 0)) return parsed
+  }
+  return parse(ro)
 }

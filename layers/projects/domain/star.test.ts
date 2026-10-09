@@ -124,22 +124,27 @@ describe('isLinkKind', () => {
 
 describe('pickJson', () => {
   it('uses the EN value for the en locale when it has content', () => {
-    expect(pickJson([{ v: 'ro' }], [{ v: 'en' }], 'en')).toEqual([{ v: 'en' }])
+    expect(pickJson([{ v: 'ro' }], [{ v: 'en' }], 'en', toFigures)).toEqual([{ v: 'en', k: '' }])
   })
 
   it('uses the RO value for the ro locale', () => {
-    expect(pickJson([{ v: 'ro' }], [{ v: 'en' }], 'ro')).toEqual([{ v: 'ro' }])
+    expect(pickJson([{ v: 'ro' }], [{ v: 'en' }], 'ro', toFigures)).toEqual([{ v: 'ro', k: '' }])
   })
 
   it('falls back to RO when EN is null', () => {
-    expect(pickJson(['ro'], null, 'en')).toEqual(['ro'])
+    expect(pickJson(['ro'], null, 'en', toStrings)).toEqual(['ro'])
   })
 
   it('falls back to RO when EN is an empty array', () => {
-    expect(pickJson(['ro'], [], 'en')).toEqual(['ro'])
+    expect(pickJson(['ro'], [], 'en', toStrings)).toEqual(['ro'])
   })
 
   it('falls back to RO when EN is an empty object', () => {
-    expect(pickJson({ found: 'ro' }, {}, 'en')).toEqual({ found: 'ro' })
+    expect(pickJson({ found: 'ro' }, {}, 'en', toIncident)?.found).toBe('ro')
+  })
+
+  it('falls back to RO when EN holds only blank entries', () => {
+    expect(pickJson([{ v: '−35%', k: 'ro' }], [{ v: '', k: '' }], 'en', toFigures)).toEqual([{ v: '−35%', k: 'ro' }])
+    expect(pickJson({ found: 'ro' }, { found: '', risk: '', action: '', outcome: [] }, 'en', toIncident)?.found).toBe('ro')
   })
 })

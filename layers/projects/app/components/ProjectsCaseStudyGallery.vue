@@ -12,7 +12,7 @@ const caseStudy = computed(() => props.project.caseStudy)
   <ProjectsCaseStudySection
     v-if="caseStudy.shots.length"
     section-id="galerie"
-    number="07"
+    number="06"
     :label="t('caseStudy.sections.gallery.label')"
     :heading="t('caseStudy.sections.gallery.heading')"
   >
@@ -39,8 +39,8 @@ const caseStudy = computed(() => props.project.caseStudy)
     </p>
     <div v-if="caseStudy.links.length" class="mt-[clamp(24px,3vw,32px)] flex flex-wrap gap-[10px]">
       <a
-        v-for="link in caseStudy.links"
-        :key="`${link.kind}-${link.url}`"
+        v-for="(link, i) in caseStudy.links"
+        :key="i"
         :href="link.url"
         target="_blank"
         rel="noopener"

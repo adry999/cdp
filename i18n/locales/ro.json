@@ -297,23 +297,14 @@
       "situation": { "label": "Situație", "heading": "Problema de business" },
       "task": { "label": "Sarcină" },
       "action": { "label": "Acțiune", "heading": "Soluția oferită" },
-      "midway": { "label": "Pe parcurs", "heading": "Ce am descoperit la mijlocul proiectului" },
       "result": { "label": "Rezultat", "heading": "Ce a câștigat clientul" },
       "feedback": { "label": "Feedback", "heading": "Ce spune clientul" },
       "gallery": { "label": "Galerie", "heading": "Cum arată" }
-    },
-    "star": {
-      "situation": "Situație: problema de business",
-      "task": "Sarcină: obiectiv și constrângeri",
-      "action": "Acțiune: business și tehnic",
-      "result": "Rezultat: câștig și economii"
     },
     "cost": "Cât costa problema",
     "constraints": "Constrângeri",
     "business": "Business",
     "tech": "Tehnic",
-    "incident": { "found": "Descoperirea", "risk": "Riscul", "action": "Ce am făcut" },
-    "otherObstacles": "Alte obstacole și ajustări",
     "gains": "Câștig",
     "savings": "Economii",
     "links": { "live": "Site live", "preview": "Preview CODEPEDIA", "figma": "Figma" },

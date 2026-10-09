@@ -31,8 +31,8 @@ const hasPreviewLinks = computed(() => props.project.caseStudy.links.some((link)
       </p>
       <div v-if="project.caseStudy.links.length || shotCount" class="mt-7 flex flex-wrap gap-[10px]">
         <a
-          v-for="link in project.caseStudy.links"
-          :key="`${link.kind}-${link.url}`"
+          v-for="(link, i) in project.caseStudy.links"
+          :key="i"
           :href="link.url"
           target="_blank"
           rel="noopener"

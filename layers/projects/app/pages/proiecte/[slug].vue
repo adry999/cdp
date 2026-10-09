@@ -28,9 +28,8 @@ const project = computed(() => mapProject(projectRow, siteLocale.value))
 
 const caseStudy = computed(() => project.value.caseStudy)
 const star = computed(() => caseStudy.value.star)
-const galleryImages = computed(() =>
-  caseStudy.value.galleryPaths.flatMap((path, i) => (path ? [{ path, alt: caseStudy.value.galleryAlt[i] ?? '' }] : [])),
-)
+// The Action grid shows the screenshots without the hero, which already sits at the top.
+const galleryImages = computed(() => caseStudy.value.shots.filter((shot) => shot.path !== caseStudy.value.heroPath))
 
 // Each section shows only what exists; a section with nothing in it is left out (numbers stay fixed).
 const hasSituation = computed(() => caseStudy.value.problemParagraphs.length > 0 || star.value.cost.length > 0)
@@ -42,18 +41,9 @@ const hasAction = computed(
     caseStudy.value.stack.length > 0 ||
     galleryImages.value.length > 0,
 )
-const hasOtherObstacles = computed(
-  () => caseStudy.value.obstaclesParagraphs.length > 0 || caseStudy.value.changesParagraphs.length > 0,
-)
-const hasMidway = computed(() => !!star.value.incident || hasOtherObstacles.value)
 const hasResult = computed(
   () => caseStudy.value.resultParagraphs.length > 0 || star.value.gains.length > 0 || star.value.savings.length > 0,
 )
-const incidentRows = [
-  { key: 'found', tone: 'text-muted' },
-  { key: 'risk', tone: 'text-signal-text' },
-  { key: 'action', tone: 'text-muted' },
-] as const
 
 const lightboxIndex = ref<number | null>(null)
 function openLightbox(index: number) {
@@ -106,7 +96,6 @@ useJsonLd(
   <div>
     <ProjectsCaseStudyHero :project="project" @open-gallery="openLightbox(0)" />
     <ProjectsCaseStudyFacts :project="project" />
-    <ProjectsCaseStudyStarBand />
 
     <ProjectsCaseStudySection
       v-if="hasSituation"
@@ -200,44 +189,10 @@ useJsonLd(
       </template>
     </ProjectsCaseStudySection>
 
-    <ProjectsCaseStudySection v-if="hasMidway" number="04" :label="t('caseStudy.sections.midway.label')">
-      <template v-if="star.incident">
-        <ProjectsCaseStudyDemoBadge v-if="project.demo" />
-        <h2 class="m-0 max-w-[28ch] heading-section text-pretty">{{ t('caseStudy.sections.midway.heading') }}</h2>
-        <div class="mt-[clamp(24px,3vw,36px)] overflow-hidden rounded border border-ink">
-          <div
-            v-if="star.incident.found || star.incident.risk || star.incident.action"
-            class="flex flex-col gap-5 p-[clamp(20px,2.5vw,28px)]"
-          >
-            <template v-for="line in incidentRows" :key="line.key">
-              <div v-if="star.incident[line.key]" class="flex flex-wrap gap-x-[clamp(16px,3vw,32px)] gap-y-1.5">
-                <div class="flex-[0_0_160px] eyebrow" :class="line.tone">{{ t(`caseStudy.incident.${line.key}`) }}</div>
-                <div class="min-w-0 flex-[1_1_300px] text-[17px] text-pretty">{{ star.incident[line.key] }}</div>
-              </div>
-            </template>
-          </div>
-          <div v-if="star.incident.outcome.length" class="bg-ink p-[clamp(20px,2.5vw,28px)] text-paper">
-            <ProjectsCaseStudyFigures :figures="star.incident.outcome" variant="strip" />
-          </div>
-        </div>
-      </template>
-      <template v-if="hasOtherObstacles">
-        <div class="eyebrow text-muted" :class="star.incident ? 'mt-[clamp(32px,4vw,48px)]' : undefined">
-          {{ t('caseStudy.otherObstacles') }}
-        </div>
-        <p
-          v-for="paragraph in [...caseStudy.obstaclesParagraphs, ...caseStudy.changesParagraphs]"
-          :key="paragraph"
-          class="mt-5 max-w-[64ch] text-[17px] text-muted text-pretty"
-        >
-          {{ paragraph }}
-        </p>
-      </template>
-    </ProjectsCaseStudySection>
 
     <ProjectsCaseStudySection
       v-if="hasResult"
-      number="05"
+      number="04"
       :label="t('caseStudy.sections.result.label')"
       :heading="t('caseStudy.sections.result.heading')"
     >
@@ -265,7 +220,7 @@ useJsonLd(
 
     <ProjectsCaseStudySection
       v-if="caseStudy.quote"
-      number="06"
+      number="05"
       :label="t('caseStudy.sections.feedback.label')"
       :heading="t('caseStudy.sections.feedback.heading')"
     >
