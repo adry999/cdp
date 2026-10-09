@@ -39,7 +39,7 @@ Prices are for CODEPEDIA projects. For an exact estimate, [see our pricing page]
 What counts is layouts, not page count. Ten product pages on one template cost little more than one. An About page and a Pricing page, each with its own layout, are priced separately.
 
 ### Languages
-Each language adds copy, its own URLs and `hreflang` tags so Google shows the right version to each visitor. For the [Startica](/en/projects/startica-site) kindergarten site, three languages were close to a third of the effort.
+Each language adds copy, its own URLs and `hreflang` tags so Google shows the right version to each visitor. For the [Startica](/en/work/startica-site) kindergarten site, three languages were close to a third of the effort.
 
 ### Integrations
 Online payments, shipping, CRM, SMS or messaging. Each one has its own tests and failure cases: what happens if the payment goes through but the confirmation never arrives?

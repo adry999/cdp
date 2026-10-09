@@ -33,7 +33,7 @@ Themes, plugins, external services. Each has a yearly cost that should be in the
 Deposit, test version, launch. Each payment matches something you can see and test.
 
 ### 5. What happens if something new turns up mid-project?
-Ask for a real example. At [Bloom](/en/projects/bloom), an issue found in load tests before 8 March was fixed without moving the launch. You want an agency with stories like that, not one that says it never happens.
+Ask for a real example. At [Bloom](/en/work/bloom), an issue found in load tests before 8 March was fixed without moving the launch. You want an agency with stories like that, not one that says it never happens.
 
 ### 6. How are new requests handled along the way?
 Right: estimated separately, in writing, before they're built. Wrong: "we'll do it and see".

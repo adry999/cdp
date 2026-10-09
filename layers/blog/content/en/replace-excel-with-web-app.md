@@ -45,7 +45,7 @@ If three or more apply, an app usually pays for itself within the first year.
 
 ## Example: Bloom florist
 
-[Bloom](/en/projects/bloom) kept orders, stock and payments in three separate records. Flower losses only showed up at stocktake. We built an app with an order board by status, batch stock and losses logged by reason. Financial data stayed visible to the admin only.
+[Bloom](/en/work/bloom) kept orders, stock and payments in three separate records. Flower losses only showed up at stocktake. We built an app with an order board by status, batch stock and losses logged by reason. Financial data stayed visible to the admin only.
 
 Before 8 March, load tests showed two simultaneous orders on the last flowers of a batch could both go through. We moved stock reservation into the database as a single operation, and on the busiest sales day there wasn't one out-of-stock order.
 

@@ -62,7 +62,7 @@ For the first weeks, a person approves every result. Full automation comes only 
 
 For simple flows, tools like n8n or Make are enough and fast. For high volume, complex rules or sensitive data, a service built for you is cheaper long term. More on the [automation page](/en/services/ai-automation).
 
-For [Trucker HQ](/en/projects/truckerhq), FMCSA carrier data is checked automatically, and the free tools on the site bring the first customer contact.
+For [Trucker HQ](/en/work/truckerhq), FMCSA carrier data is checked automatically, and the free tools on the site bring the first customer contact.
 
 ## Frequently asked questions
 

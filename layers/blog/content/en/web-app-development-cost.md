@@ -33,7 +33,7 @@ readingTime: 6
 | External integrations | Accounting, couriers, APIs | Medium – high |
 | Offline / mobile mode | Working without internet, sync | High |
 
-The modules add up to the estimate. The [Startica](/en/projects/startica-app) kindergarten app had 7: children, groups, attendance, payments, expenses, SMS and an accounting report.
+The modules add up to the estimate. The [Startica](/en/work/startica-app) kindergarten app had 7: children, groups, attendance, payments, expenses, SMS and an accounting report.
 
 ## Hidden cost drivers
 

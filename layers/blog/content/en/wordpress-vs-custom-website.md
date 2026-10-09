@@ -48,7 +48,7 @@ At CODEPEDIA we build WordPress themes from scratch, without bought themes, so t
 - The site calculates something: leasing, quotes, rates
 - It must connect to other systems: accounting, CRM, external APIs
 
-For [SwissCars](/en/projects/swisscars), stock changes weekly, each car has 30–60 photos and leasing options, and marking a car "Sold" must remove it from the list within seconds. On WordPress that would take 5–6 plugins wired together. The custom app does all of it from one panel.
+For [SwissCars](/en/work/swisscars), stock changes weekly, each car has 30–60 photos and leasing options, and marking a car "Sold" must remove it from the list within seconds. On WordPress that would take 5–6 plugins wired together. The custom app does all of it from one panel.
 
 ## The middle ground: both
 
