@@ -8,6 +8,7 @@ export const HOME_NAV_LINKS: SiteNavLink[] = [
   { kind: 'hash', hash: '#proces', label: 'nav.process' },
   { kind: 'hash', hash: '#proiecte', label: 'nav.work' },
   { kind: 'route', routeName: 'blog', label: 'nav.blog' },
+  { kind: 'route', routeName: 'noutati', label: 'nav.news' },
   { kind: 'hash', hash: '#contact', label: 'nav.contact' },
 ]
 
@@ -18,4 +19,5 @@ export const PAGE_NAV_LINKS: SiteNavLink[] = [
   { kind: 'route', routeName: 'contact', label: 'nav.contact' },
   { kind: 'route', routeName: 'proiecte', label: 'nav.work' },
   { kind: 'route', routeName: 'blog', label: 'nav.blog' },
+  { kind: 'route', routeName: 'noutati', label: 'nav.news' },
 ]

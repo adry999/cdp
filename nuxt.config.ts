@@ -104,6 +104,11 @@ export default defineNuxtConfig({
     '/proiecte/**': { swr: 300 },
     '/en/work/**': { swr: 300 },
     // Blog content lives in the repo: prerendered at build (URLs listed in layers/blog/nuxt.config.ts).
+    // News comes from the database (like projects), so it is cached, not prerendered.
+    '/noutati': { swr: 300 },
+    '/en/news': { swr: 300 },
+    '/noutati/**': { swr: 300 },
+    '/en/news/**': { swr: 300 },
     '/blog': { prerender: true },
     '/en/blog': { prerender: true },
     '/blog/**': { prerender: true },
@@ -123,6 +128,8 @@ export default defineNuxtConfig({
     '/en/privacy': { swr: 3600 },
     '/api/projects': { swr: 60 },
     '/api/projects/**': { swr: 300 },
+    '/api/news': { swr: 60 },
+    '/api/news/**': { swr: 300 },
     '/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
     '/api/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
 
@@ -205,6 +212,14 @@ export default defineNuxtConfig({
       'proiecte-slug': {
         ro: '/proiecte/[slug]',
         en: '/work/[slug]',
+      },
+      noutati: {
+        ro: '/noutati',
+        en: '/news',
+      },
+      'noutati-slug': {
+        ro: '/noutati/[slug]',
+        en: '/news/[slug]',
       },
       servicii: {
         ro: '/servicii',

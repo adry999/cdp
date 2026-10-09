@@ -11,6 +11,7 @@
     "process": "Process",
     "work": "Work",
     "blog": "Blog",
+    "news": "News",
     "pricing": "Pricing",
     "about": "About",
     "main": "Main navigation",
@@ -467,6 +468,27 @@
         "button": "Vezi dacă te putem ajuta"
       }
     }
+  },
+  "news": {
+    "seo": {
+      "title": "News",
+      "description": "Articles and news from other sources, picked by the CODEPEDIA team, with our own summary and a link to the original."
+    },
+    "hero": {
+      "title": "News",
+      "intro": "Articles and news from other sources, picked by the CODEPEDIA team, with a summary and a link to the original."
+    },
+    "empty": "No news published yet.",
+    "latest": "Latest",
+    "readAtSource": "Read at the source ↗",
+    "openOriginal": "Read the original article ↗",
+    "details": "Summary",
+    "back": "News",
+    "breadcrumb": "Breadcrumb",
+    "sourceLabel": "Source: {name}",
+    "originalDate": "Originally published: {date}",
+    "why": "Why it matters",
+    "disclaimer": "Summary written by the CODEPEDIA team. The full article belongs to {name}."
   },
   "blog": {
     "seo": {

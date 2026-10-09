@@ -5,6 +5,7 @@
   "qualifier": ["core", "leads"],
   "content": ["core"],
   "blog": ["core"],
+  "news": ["core", "blog"],
   "projects": ["core", "qualifier", "content", "blog"],
   "home": ["core", "content", "projects", "qualifier", "leads", "services"],
   "services": ["core", "projects", "qualifier", "content", "blog"]

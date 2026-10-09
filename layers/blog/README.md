@@ -43,6 +43,7 @@ only.
   `path`, giving the bare slug used in routes.
 - `BlogPostSummary`, `BlogPostDoc` — domain types.
 - `domain/category.ts` — category codes, localized URL slugs and names, guards.
+  `CATEGORIES`, `CATEGORY_CODES`, `isCategoryCode` are re-exported from `index.ts` (used by `layers/news`).
 
 ## Public API (server) — `server/index.ts`
 
@@ -140,5 +141,6 @@ The article CTA and TOC links emit `blog_cta_click` (`post_slug`, `service`) and
   `#layers/blog/server`.
 - `server/routes/blog/rss.xml.ts`, `server/routes/en/blog/rss.xml.ts` —
   `buildBlogRss` via `#layers/blog/server`.
+- `layers/news` — category codes/names and `formatPostDate`.
 - The root header and footer link to the `blog` route by name, without
   importing from this layer.

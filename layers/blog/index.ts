@@ -1,6 +1,6 @@
 export { formatPostDate } from './domain/blogDate'
 export { blogSlug, categoryChips, pickRelated } from './domain/post'
-export { CATEGORIES, categoryFromSlug, isCategoryIndexable } from './domain/category'
+export { CATEGORIES, CATEGORY_CODES, categoryFromSlug, isCategoryCode, isCategoryIndexable } from './domain/category'
 export type { CategoryCode } from './domain/category'
 export type { CategoryChip } from './domain/post'
 export type { InlineNode, PostBlock, TocItem } from './domain/body'
