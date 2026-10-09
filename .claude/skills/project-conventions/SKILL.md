@@ -128,6 +128,14 @@ layers/<modul>/
 - Mutarea fișierelor și schimbarea comportamentului în commit-uri separate.
 - Istoricul dinainte de 2026-09-13 nu are prefixe și nu se rescrie.
 
+### Workspace
+
+- Repo-ul e în `D:\CODE\0 Codepedia website\main`; containerul `D:\CODE\0 Codepedia website` nu e repo. Claude pornește din `main\`.
+- Nimic din proiect nu se scrie în afara containerului. Temporarele (log-uri, scripturi, snapshot-uri) merg în `..\.tmp\`, nu în temp-ul sistemului. Niciun worktree în home (de ex. `~/.config/superpowers/worktrees`).
+- Worktree-urile manuale: `git worktree add ..\wt-<branch> <branch>`, apoi `npm install` și copierea fișierelor ignorate de git (`.env`).
+- Worktree-urile Claude Code (pornit din `main\`) ajung în `main\.claude\worktrees\`, ignorat de git.
+- După o mutare a repo-ului, `npx nuxt prepare` regenerează tipurile din `.nuxt` (altfel typecheck-ul citește căile vechi).
+
 ### Design system
 
 - Tokenii (culori, `--spacing-gutter`, `--spacing-section-gap`, `--breakpoint-nav`) și utilitarele de temă stau în `app/assets/css/main.css`. Utilitare: `media-placeholder`, `eyebrow`, `eyebrow-sm`, `heading-section`, `heading-display`, `heading-card`, `container-site`, `grid-fit-<px>`, `grid-fit-safe-<px>`. Textul mic portocaliu pe fundal deschis folosește `text-signal-text` (`#C2370A`, AA); `text-signal` rămâne pentru accente și fundaluri închise.
@@ -192,3 +200,4 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-10-06: `requireAdmin` stă în `core` și citește id-ul utilizatorului din `sub`-ul claim-urilor JWT, apoi verifică `app_users` cu clientul service-role — audit 2026-10-06.
 - 2026-10-06: Textul mic portocaliu pe fundal deschis folosește tokenul signal-text (#C2370A, AA); signal rămâne pentru accente și fundaluri închise — audit Lighthouse.
 - 2026-10-09: Modulul `news` (noutăți externe: rezumat propriu + sursă, în `news_items`) poate importa `blog` (categoriile și data) — are ciclu de viață și admin propriu, deci modul nou.
+- 2026-10-09: Proiectul folosește structura container + main: repo-ul în `main\`, worktree-uri ca foldere-frate `wt-<branch>\`, temporare în `.tmp\` — skill-ul container-layout.
