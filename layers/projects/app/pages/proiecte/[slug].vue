@@ -102,6 +102,7 @@ useJsonLd(
           :alt="caseStudy.galleryAlt[i]"
           :label="label"
           sizes="xs:100vw sm:100vw md:50vw xl:640px"
+          zoomable
         />
       </div>
       <p

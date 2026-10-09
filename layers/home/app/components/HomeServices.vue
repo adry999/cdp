@@ -24,10 +24,8 @@ const grantsHref = computed(() =>
   grantsService ? localePath({ name: 'servicii-slug', params: { slug: grantsService.routeSlug[locale.value] } }) : undefined,
 )
 const grantSteps = computed(() => i18nList('home.services.grants.steps'))
-const mounted = ref(false)
-const drawn = ref(false)
+const { el: timelineEl, isVisible: drawn, hasMounted: mounted } = useReveal({ once: false, threshold: 0.3 })
 
-const timelineEl = ref<HTMLElement | null>(null)
 const nodeEls = ref<HTMLButtonElement[]>([])
 
 function setNodeRef(el: Element | ComponentPublicInstance | null, i: number) {
@@ -55,29 +53,6 @@ function startAt(id: StageId) {
   // section (scroll-behavior in main.css already respects reduced motion).
   document.getElementById('contact')?.scrollIntoView()
 }
-
-onMounted(() => {
-  mounted.value = true
-  const el = timelineEl.value
-  if (!el || typeof IntersectionObserver === 'undefined') {
-    drawn.value = true
-    return
-  }
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          drawn.value = true
-          io.disconnect()
-          break
-        }
-      }
-    },
-    { threshold: 0.3 },
-  )
-  io.observe(el)
-  onBeforeUnmount(() => io.disconnect())
-})
 </script>
 
 <template>

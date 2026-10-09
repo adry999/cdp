@@ -16,32 +16,7 @@ const cards = computed(() =>
   }),
 )
 
-const mounted = ref(false)
-const drawn = ref(false)
-const sectionEl = ref<HTMLElement | null>(null)
-
-onMounted(() => {
-  mounted.value = true
-  const el = sectionEl.value
-  if (!el || typeof IntersectionObserver === 'undefined') {
-    drawn.value = true
-    return
-  }
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          drawn.value = true
-          io.disconnect()
-          break
-        }
-      }
-    },
-    { threshold: 0.1 },
-  )
-  io.observe(el)
-  onBeforeUnmount(() => io.disconnect())
-})
+const { el: sectionEl, isVisible: drawn, hasMounted: mounted } = useReveal({ once: false })
 </script>
 
 <template>

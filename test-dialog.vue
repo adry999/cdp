@@ -1,0 +1,4 @@
+<template>
+  <NuxtImg />
+  <dialog />
+</template>

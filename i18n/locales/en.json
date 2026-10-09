@@ -281,43 +281,44 @@
     },
     "about": {
       "sectionLabel": "About",
-      "title": "Boutique studio. Senior engineers. Direct access.",
-      "lead": "We run a few projects at a time so each gets the hours it needs. No middlemen mistranslating the requirements, no juniors learning on your budget. You talk directly to the engineer building your product.",
+      "title": "We build responsibly. No excuses.",
+      "lead": "We know how costly delayed timelines, poor communication, and fragile code can be. We only take on projects where we can dedicate our full expertise. You work directly with senior engineers, getting complete visibility into progress and a guarantee that your budget is respected. We are the technical partner you can rely on for the long haul.",
       "pillars": {
         "ownership": {
-          "title": "100% ownership from day one",
-          "body": "Source code, database and infrastructure are set up directly in your own accounts. You keep full control and can move to another team at any time."
+          "title": "Transparency from day one",
+          "body": "Source code and infrastructure are set up directly in your own accounts. You retain 100% ownership, zero vendor lock-in, and absolutely no hidden fees."
         },
         "pricing": {
-          "title": "Fixed estimates, owned cost",
-          "body": "A fixed price for every agreed stage. If we underestimate the complexity of a task, we absorb the cost of the extra hours."
+          "title": "Owned costs and deadlines",
+          "body": "We provide clear estimates for every milestone. If we underestimate technical complexity, we absorb the extra hours. No surprise invoices."
         },
         "communication": {
-          "title": "Direct, multilingual communication",
-          "body": "Technical discussion and clear specs in Romanian, English or Russian. No needless jargon, just fast engineering decisions."
+          "title": "Direct technical communication",
+          "body": "No account managers slowing down the process. You discuss strategies and engineering decisions directly with the person building your product."
         }
-      }
+      },
+      "cta": "Talk to an engineer"
     },
     "faq": {
       "sectionLabel": "Questions"
     },
     "contact": {
       "sectionLabel": "Contact",
-      "title": "Tell us what needs to be built.",
+      "title": "Tell us your problem. Let's solve it together.",
       "lead": "A short description of the problem is enough. You get a written answer within one working day, with an honest opinion on whether we are the right studio for it.",
       "preferMessage": "Prefer to write a message?",
       "form": {
         "name": "Name",
         "email": "Email",
         "company": "Company (optional)",
-        "stage": "Etapa",
+        "stage": "Stage",
         "stageOptions": {
           "E": "Express",
           "B": "Concept",
-          "A": "Design → cod",
-          "C": "Scalare",
+          "A": "Design → Code",
+          "C": "Scale",
           "D": "AI",
-          "unsure": "Nu știu"
+          "unsure": "Not sure"
         },
         "message": "Describe the problem",
         "budget": "Budget",
@@ -332,7 +333,7 @@
         "source": "How did you hear about us (optional)",
         "privacyNotice": "By submitting this form, you agree to our",
         "privacyNoticeLink": "privacy policy",
-        "submit": "Send",
+        "submit": "Find out if we can help",
         "submitting": "Sending…",
         "success": "Sent. You'll get a reply within one working day.",
         "error": "Something went wrong. Try again or email us directly.",
@@ -674,9 +675,9 @@
   },
   "contactPage": {
     "steps": [
-      "Răspuns scris în 1 zi lucrătoare",
-      "Discovery de 60 de minute, dacă are sens",
-      "Specificație de scop și preț în 48 de ore"
+      "Written reply within 1 working day",
+      "60-minute discovery call, if it makes sense",
+      "Scope and price specification within 48 hours"
     ]
   }
 }

@@ -27,7 +27,7 @@ const showForm = ref(false)
 
     <template v-if="isQualifierEnabled">
       <div class="mt-[clamp(28px,3vw,40px)] flex flex-wrap items-center gap-x-6 gap-y-3">
-        <QualifierCta variant="signal">{{ t('qualifier.trigger') }}</QualifierCta>
+        <QualifierCta variant="signal">{{ t('home.hero.ctaPrimary') }}</QualifierCta>
         <button
           v-if="!showForm"
           type="button"

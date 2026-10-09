@@ -15,6 +15,7 @@ function onKeydown(event: KeyboardEvent) {
   activeId.value = ids[next]!
   nextTick(() => document.getElementById(`process-tab-${ids[next]}`)?.focus())
 }
+const { el: processEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: false })
 </script>
 
 <template>
@@ -53,7 +54,7 @@ function onKeydown(event: KeyboardEvent) {
       </button>
     </div>
 
-    <div class="relative mt-[clamp(24px,3vw,36px)]">
+    <div ref="processEl" class="relative mt-[clamp(24px,3vw,36px)]">
       <Transition v-for="track in tracks" :key="track.id" name="process-panel">
         <div
           v-show="track.id === activeTrack.id"
@@ -61,7 +62,11 @@ function onKeydown(event: KeyboardEvent) {
           role="tabpanel"
           :aria-labelledby="`process-tab-${track.id}`"
           :tabindex="track.id === activeTrack.id ? 0 : -1"
-          class="w-full"
+          class="w-full transition-all"
+          :class="[
+            hasMounted && !isVisible ? 'opacity-0 translate-y-6' : 'opacity-100',
+            hasMounted && isVisible ? 'duration-700 ease-out' : 'duration-300'
+          ]"
         >
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h3 class="m-0 text-xl font-medium tracking-[-0.02em]">{{ track.name }}</h3>

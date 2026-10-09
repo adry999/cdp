@@ -281,29 +281,30 @@
     },
     "about": {
       "sectionLabel": "Despre",
-      "title": "Studio boutique. Ingineri seniori. Acces direct.",
-      "lead": "Lucrăm la puține proiecte în paralel, ca fiecare să primească orele de care are nevoie. Fără intermediari care traduc greșit cerințele și fără juniori care învață pe bugetul tău. Discuți direct cu inginerul care îți construiește produsul.",
+      "title": "Construim cu responsabilitate. Fără scuze.",
+      "lead": "Știm cât de costisitoare sunt proiectele întârziate, comunicarea defectuoasă și codul greu de întreținut. Ne asumăm doar proiectele cărora le putem dedica întreaga noastră expertiză. Lucrezi direct cu ingineri seniori, ai vizibilitate totală asupra progresului și garanția unui buget respectat. Suntem partenerul tehnic pe care te poți baza pe termen lung.",
       "pillars": {
         "ownership": {
-          "title": "Proprietate 100% din prima zi",
-          "body": "Codul sursă, baza de date și infrastructura sunt configurate direct în conturile tale. Ai control total și poți schimba echipa oricând."
+          "title": "Transparență din prima zi",
+          "body": "Codul sursă și infrastructura sunt configurate direct pe conturile tale. Ai proprietate 100%, fără blocaje de tip vendor lock-in și fără costuri ascunse."
         },
         "pricing": {
-          "title": "Estimări fixe și cost asumat",
-          "body": "Preț fix pe fiecare etapă agreată. Dacă subestimăm complexitatea unei sarcini, absorbim costul orelor suplimentare."
+          "title": "Costuri și termene asumate",
+          "body": "Oferim estimări clare pe fiecare etapă. Dacă subestimăm complexitatea tehnică, absorbim costul orelor suplimentare. Fără facturi surpriză."
         },
         "communication": {
-          "title": "Comunicare directă și multilingvă",
-          "body": "Discuții tehnice și specificații clare în română, engleză sau rusă. Fără jargon inutil, doar decizii rapide de inginerie."
+          "title": "Comunicare tehnică directă",
+          "body": "Fără manageri de proiect care îngreunează procesul. Discuți strategii și soluții direct cu inginerul responsabil de succesul produsului tău."
         }
-      }
+      },
+      "cta": "Discută cu un inginer"
     },
     "faq": {
       "sectionLabel": "Întrebări"
     },
     "contact": {
       "sectionLabel": "Contact",
-      "title": "Spune-ne ce trebuie construit.",
+      "title": "Spune-ne problema. O rezolvăm împreună.",
       "lead": "O descriere scurtă a problemei este suficientă. Primești un răspuns scris într-o zi lucrătoare, cu o părere sinceră despre dacă suntem studioul potrivit.",
       "preferMessage": "Preferi să scrii un mesaj?",
       "form": {
@@ -332,7 +333,7 @@
         "source": "Cum ai aflat de noi (opțional)",
         "privacyNotice": "Trimițând acest formular, ești de acord cu",
         "privacyNoticeLink": "politica de confidențialitate",
-        "submit": "Trimite",
+        "submit": "Vezi dacă te putem ajuta",
         "submitting": "Se trimite…",
         "success": "Trimis. Primești un răspuns într-o zi lucrătoare.",
         "error": "Ceva n-a mers. Încearcă din nou sau scrie direct pe email.",
