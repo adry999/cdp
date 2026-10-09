@@ -4,6 +4,7 @@ import type { MappedProject } from '#layers/projects/domain/mapProject'
 const props = defineProps<{ project: MappedProject }>()
 const emit = defineEmits<{ openGallery: [] }>()
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 // Falls back to tech + year until a project has its own tags.
 const chips = computed(() => {
@@ -12,12 +13,14 @@ const chips = computed(() => {
 })
 
 const shotCount = computed(() => props.project.caseStudy.shots.length)
-const hasPreviewLinks = computed(() => props.project.caseStudy.links.some((link) => link.kind !== 'live'))
 </script>
 
 <template>
   <div>
     <SiteSection number="00" :label="t('caseStudy.sections.hero')" padding="heroCompact" :top-border="false">
+      <NuxtLink :to="localePath('proiecte')" class="mb-5 inline-block eyebrow text-muted no-underline hover:text-ink">
+        {{ t('caseStudy.back') }}
+      </NuxtLink>
       <div class="flex flex-wrap gap-x-4 gap-y-2 eyebrow-sm text-muted">
         <span v-for="chip in chips" :key="chip">{{ chip }}</span>
       </div>
@@ -50,9 +53,6 @@ const hasPreviewLinks = computed(() => props.project.caseStudy.links.some((link)
           <span class="eyebrow">{{ t('caseStudy.galleryButton', { count: shotCount }) }}</span>
           <span class="text-[13px] opacity-70">{{ t('caseStudy.galleryHint') }}</span>
         </button>
-      </div>
-      <div v-if="project.demo && hasPreviewLinks" class="mt-[10px] eyebrow-sm text-signal-text">
-        {{ t('caseStudy.linksDemo') }}
       </div>
     </SiteSection>
     <div class="container-site pb-[clamp(32px,4vw,56px)]">
