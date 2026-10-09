@@ -34,9 +34,6 @@ const caseStudy = computed(() => props.project.caseStudy)
         />
       </button>
     </div>
-    <p v-if="caseStudy.screensDemo" class="m-0 mt-3 eyebrow-sm text-muted">
-      {{ t('caseStudy.screensDemo') }}
-    </p>
     <div v-if="caseStudy.links.length" class="mt-[clamp(24px,3vw,32px)] flex flex-wrap gap-[10px]">
       <a
         v-for="(link, i) in caseStudy.links"
