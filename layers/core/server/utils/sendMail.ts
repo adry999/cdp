@@ -11,7 +11,7 @@ export async function sendMail(message: MailMessage): Promise<'sent' | 'skipped'
     headers: { Authorization: `Bearer ${resendApiKey}` },
     body: {
       // Sandbox sender: Resend only allows other senders from a verified domain.
-      from: 'Codepedia <onboarding@resend.dev>',
+      from: 'CODEPEDIA <onboarding@resend.dev>',
       to: 'contact@codepedia.md',
       subject: message.subject,
       text: message.text,

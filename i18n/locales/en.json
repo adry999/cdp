@@ -37,7 +37,7 @@
   },
   "privacy": {
     "seo": {
-      "description": "Codepedia's privacy policy: what data we collect, how we use it, and how you can control cookies."
+      "description": "CODEPEDIA's privacy policy: what data we collect, how we use it, and how you can control cookies."
     }
   },
   "home": {
@@ -431,11 +431,11 @@
   "projects": {
     "seo": {
       "title": "Projects",
-      "description": "Codepedia case studies: web apps, websites, WordPress, Shopify and AI automation delivered for clients around the world."
+      "description": "CODEPEDIA case studies: web apps, websites, WordPress, Shopify and AI automation delivered for clients around the world."
     },
     "hero": {
       "title": "Projects.",
-      "intro": "Case studies from the Codepedia portfolio, filterable by service type."
+      "intro": "Case studies from the CODEPEDIA portfolio, filterable by service type."
     },
     "filters": {
       "all": "All",
@@ -471,11 +471,11 @@
   "blog": {
     "seo": {
       "title": "Blog",
-      "description": "Technical notes and short case studies from Codepedia's work — web development, automation, architecture."
+      "description": "Technical notes and short case studies from CODEPEDIA's work — web development, automation, architecture."
     },
     "hero": {
       "title": "Blog.",
-      "intro": "Technical notes from Codepedia's work — what we built, what we learned, what we changed."
+      "intro": "Technical notes from CODEPEDIA's work — what we built, what we learned, what we changed."
     },
     "empty": "No published posts yet.",
     "related": "Related articles"

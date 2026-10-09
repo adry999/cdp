@@ -5,14 +5,14 @@ describe('breadcrumbList', () => {
   it('numbers the items from 1 in order', () => {
     expect(
       breadcrumbList([
-        { name: 'Codepedia', url: 'https://codepedia.md/' },
+        { name: 'CODEPEDIA', url: 'https://codepedia.md/' },
         { name: 'Servicii', url: 'https://codepedia.md/servicii' },
       ]),
     ).toEqual({
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Codepedia', item: 'https://codepedia.md/' },
+        { '@type': 'ListItem', position: 1, name: 'CODEPEDIA', item: 'https://codepedia.md/' },
         { '@type': 'ListItem', position: 2, name: 'Servicii', item: 'https://codepedia.md/servicii' },
       ],
     })
@@ -20,10 +20,10 @@ describe('breadcrumbList', () => {
 })
 
 describe('organizationRef', () => {
-  it('names Codepedia with the site url', () => {
+  it('names CODEPEDIA with the site url', () => {
     expect(organizationRef('https://codepedia.md')).toEqual({
       '@type': 'Organization',
-      name: 'Codepedia',
+      name: 'CODEPEDIA',
       url: 'https://codepedia.md',
     })
   })

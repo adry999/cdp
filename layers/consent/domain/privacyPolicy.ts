@@ -19,7 +19,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
     title: 'Politica de confidențialitate',
     updated: 'Actualizat: 6 octombrie 2026',
     intro:
-      'Această pagină descrie ce date colectăm prin acest site, de ce, cât timp le păstrăm și cum le poți controla. Se aplică pe toate domeniile Codepedia (codepedia.studio, codepedia.md).',
+      'Această pagină descrie ce date colectăm prin acest site, de ce, cât timp le păstrăm și cum le poți controla. Se aplică pe toate domeniile CODEPEDIA (codepedia.studio, codepedia.md).',
     sections: [
       {
         heading: 'Cine este operatorul',
@@ -92,7 +92,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
     title: 'Privacy Policy',
     updated: 'Updated: October 6, 2026',
     intro:
-      'This page describes what data we collect through this site, why, how long we keep it, and how you can control it. It applies to every Codepedia domain (codepedia.studio, codepedia.md).',
+      'This page describes what data we collect through this site, why, how long we keep it, and how you can control it. It applies to every CODEPEDIA domain (codepedia.studio, codepedia.md).',
     sections: [
       {
         heading: 'Who the controller is',
