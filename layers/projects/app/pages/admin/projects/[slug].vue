@@ -36,16 +36,15 @@ const saveLabel = computed(() => {
         <ProjectsEditorIdentity v-model="form" />
         <ProjectsEditorImages v-model="form" />
         <ProjectsEditorFacts v-model="form" />
-        <ProjectsEditorNarrative v-model="form.contextBody" title="Problema (secțiunea 01)" required />
-        <ProjectsEditorNarrative v-model="form.solutionBody" title="Soluția (secțiunea 02)">
+        <ProjectsEditorNarrative v-model="form.contextBody" title="Situație (secțiunea 01)" required />
+        <ProjectsEditorNarrative v-model="form.solutionBody" title="Acțiune (secțiunea 03)">
           <label class="flex items-center gap-2 eyebrow">
             <input v-model="form.screensDemo" type="checkbox" class="accent-signal" >
             <span :class="form.screensDemo ? 'text-signal-text' : 'text-muted'">Ecrane cu date demonstrative</span>
           </label>
         </ProjectsEditorNarrative>
         <ProjectsEditorStack v-model="form" />
-        <ProjectsEditorNarrative v-model="form.obstaclesBody" title="Obstacole (secțiunea 04)" />
-        <ProjectsEditorNarrative v-model="form.changesBody" title="Schimbări (secțiunea 05)" />
+        <ProjectsEditorStar v-model="form" />
         <ProjectsEditorResults v-model="form" />
         <ProjectsEditorPublish v-model="form" />
       </div>

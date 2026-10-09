@@ -9,5 +9,5 @@ export const SERVICE_LINKS: readonly ServiceLink[] = [
   { slug: 'wordpress', routeSlug: { ro: 'wordpress', en: 'wordpress' }, name: { ro: 'WordPress', en: 'WordPress' }, qualifierStage: 'E' },
   { slug: 'shopify', routeSlug: { ro: 'shopify', en: 'shopify' }, name: { ro: 'Shopify', en: 'Shopify' }, qualifierStage: 'E' },
   { slug: 'ai-automation', routeSlug: { ro: 'automatizare-ai', en: 'ai-automation' }, name: { ro: 'Automatizare cu AI', en: 'AI automation' }, qualifierStage: 'D' },
-  { slug: 'granturi', routeSlug: { ro: 'granturi', en: 'grants' }, name: { ro: 'Proiecte finanțate prin granturi', en: 'Proiecte finanțate prin granturi' }, qualifierStage: 'A' },
+  { slug: 'granturi', routeSlug: { ro: 'granturi', en: 'grants' }, name: { ro: 'Proiecte finanțate prin granturi', en: 'Grant-funded projects' }, qualifierStage: 'A' },
 ]

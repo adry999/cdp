@@ -87,10 +87,19 @@ describe('validateProjectPayload', () => {
     expect(validateProjectPayload(nullTag)).toEqual([])
   })
 
-  it('accepts only an http(s) live link', () => {
-    expect(validateProjectPayload(base({ liveUrl: '' }))).toEqual([])
-    expect(validateProjectPayload(base({ liveUrl: 'https://example.com' }))).toEqual([])
-    expect(validateProjectPayload(base({ liveUrl: 'javascript:alert(1)' })).map((i) => i.field)).toEqual(['liveUrl'])
+  it('accepts only http(s) links, flagging the offending row by index', () => {
+    expect(validateProjectPayload(base({ links: [] }))).toEqual([])
+    expect(validateProjectPayload(base({ links: [{ url: '' }] }))).toEqual([])
+    expect(validateProjectPayload(base({ links: [{ url: 'https://example.com' }] }))).toEqual([])
+    const issues = validateProjectPayload(
+      base({ links: [{ url: 'https://example.com' }, { url: 'javascript:alert(1)' }] }),
+    )
+    expect(issues.map((i) => i.field)).toEqual(['links.1'])
+  })
+
+  it('flags a link that has notes but no url, which save would otherwise drop', () => {
+    const issues = validateProjectPayload(base({ links: [{ url: ' ', note: { ro: 'Cont demo', en: '' } }] }))
+    expect(issues.map((i) => i.field)).toEqual(['links.0'])
   })
 })
 
