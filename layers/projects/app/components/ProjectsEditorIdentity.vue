@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { SERVICE_TAG_IDS } from '#layers/core/shared/types/service-tag'
-import type { ProjectForm } from '#layers/projects/domain/projectForm'
+import { moveItem } from '#layers/core/shared/utils/moveItem'
+import { emptyBilingual, type ProjectForm } from '#layers/projects/domain/projectForm'
+import { LINK_KINDS, type LinkKind } from '#layers/projects/domain/star'
+
+const LINK_KIND_LABELS: Record<LinkKind, string> = {
+  live: 'Site live',
+  preview: 'Preview CODEPEDIA',
+  figma: 'Figma',
+}
 
 const form = defineModel<ProjectForm>({ required: true })
 
@@ -11,6 +19,19 @@ function addTech() {
   const value = form.value.techInput.trim()
   if (value && !form.value.tech.includes(value)) form.value.tech.push(value)
   form.value.techInput = ''
+}
+
+function addLink() {
+  form.value.links.push({ kind: 'live', url: '', note: emptyBilingual() })
+}
+
+function removeLink(index: number) {
+  form.value.links.splice(index, 1)
+}
+
+function moveLink(index: number, to: number) {
+  if (to < 0 || to >= form.value.links.length) return
+  form.value.links = moveItem(form.value.links, index, to)
 }
 
 function removeTech(index: number) {
@@ -32,6 +53,10 @@ function removeTech(index: number) {
         <div class="mt-1 text-right eyebrow-sm" :class="summaryWarn ? 'text-signal-text' : 'text-muted'">
           {{ form.summary.ro.length }} / 200
         </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <AdminFieldPair v-model:ro="form.winValue.ro" v-model:en="form.winValue.en" label="Rezultat pe card — valoare (ex. −35%)" />
+        <AdminFieldPair v-model:ro="form.winLabel.ro" v-model:en="form.winLabel.en" label="Rezultat pe card — descriere" />
       </div>
       <div v-if="titleWarn" class="eyebrow-sm text-signal-text">
         Titlul RO depășește 60 de caractere — designul se poate strica.
@@ -57,8 +82,33 @@ function removeTech(index: number) {
       </div>
       <AdminFieldPair v-model:ro="form.kind.ro" v-model:en="form.kind.en" label="Tip proiect (ex. Aplicație web)" />
       <AdminFieldPair v-model:ro="form.tags.ro" v-model:en="form.tags.en" label="Etichete hero (separate prin virgulă)" />
-      <AdminField v-model="form.liveUrl" label="Link live (opțional)" />
-      <AdminFieldPair v-model:ro="form.liveUrlLabel.ro" v-model:en="form.liveUrlLabel.en" label="Text link live" />
+      <div>
+        <div class="flex items-center justify-between">
+          <div class="eyebrow text-muted">Linkuri</div>
+          <button type="button" class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal-text" @click="addLink">
+            + Link
+          </button>
+        </div>
+        <div class="mt-2 flex flex-col gap-4">
+          <div v-for="(link, i) in form.links" :key="i" class="flex flex-col gap-3 border-t border-hairline pt-4 first:border-t-0 first:pt-0">
+            <div class="grid grid-cols-[180px_1fr] gap-4">
+              <div>
+                <label :for="`link-kind-${i}`" class="block eyebrow text-muted">Tip</label>
+                <select :id="`link-kind-${i}`" v-model="link.kind" class="mt-2 w-full border border-hairline bg-paper px-3 py-2.5 outline-none focus:border-ink">
+                  <option v-for="kind in LINK_KINDS" :key="kind" :value="kind">{{ LINK_KIND_LABELS[kind] }}</option>
+                </select>
+              </div>
+              <AdminField v-model="link.url" :label="`URL link ${i + 1}`" type="url" />
+            </div>
+            <AdminFieldPair v-model:ro="link.note.ro" v-model:en="link.note.en" :label="`Notă link ${i + 1} (opțional)`" />
+            <div class="flex gap-3 eyebrow-sm text-muted">
+              <button type="button" class="cursor-pointer border-0 bg-transparent p-0 hover:text-ink" :disabled="i === 0" :aria-label="`Mută sus link ${i + 1}`" @click="moveLink(i, i - 1)">Sus</button>
+              <button type="button" class="cursor-pointer border-0 bg-transparent p-0 hover:text-ink" :disabled="i === form.links.length - 1" :aria-label="`Mută jos link ${i + 1}`" @click="moveLink(i, i + 1)">Jos</button>
+              <button type="button" class="cursor-pointer border-0 bg-transparent p-0 hover:text-signal-text" :aria-label="`Șterge link ${i + 1}`" @click="removeLink(i)">Șterge</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div>
         <div class="eyebrow text-muted">Serviciu</div>
         <select v-model="form.serviceTag" class="mt-2 w-full border border-hairline bg-paper px-3 py-2 outline-none focus:border-ink">

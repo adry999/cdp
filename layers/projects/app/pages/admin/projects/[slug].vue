@@ -46,6 +46,7 @@ const saveLabel = computed(() => {
         <ProjectsEditorStack v-model="form" />
         <ProjectsEditorNarrative v-model="form.obstaclesBody" title="Obstacole (secțiunea 04)" />
         <ProjectsEditorNarrative v-model="form.changesBody" title="Schimbări (secțiunea 05)" />
+        <ProjectsEditorStar v-model="form" />
         <ProjectsEditorResults v-model="form" />
         <ProjectsEditorPublish v-model="form" />
       </div>
