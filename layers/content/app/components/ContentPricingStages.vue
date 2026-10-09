@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useServiceStages } from '#layers/content'
 
-const { t, te } = useI18n()
+const { t } = useI18n()
 const localePath = useLocalePath()
 const stages = await useServiceStages()
 
