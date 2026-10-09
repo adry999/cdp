@@ -106,7 +106,7 @@
           ],
           "cta": "Lansează pagina",
           "whyUs": "Site-urile construite în platforme de tip DIY (do-it-yourself) îți economisesc bani acum, dar te costă credibilitate. O pagină creată de profesioniști se încarcă mai rapid și chiar convertește vizitatorii în clienți.",
-          "pricing": "Preț fix",
+          "pricing": "Preț fix (400€–600€)",
           "timing": "2–3 zile",
           "pricingTooltip": "Plătești o sumă fixă definită în contract pentru un pachet cu specificații stricte (Pagină Express)."
         },
@@ -122,7 +122,7 @@
           ],
           "cta": "Clarifică-mi conceptul",
           "whyUs": "Sărirea peste etapa de specificație înseamnă de obicei costuri suplimentare și întârzieri mai târziu. Aliniem logica de business cu realitatea tehnică înainte de a scrie vreo linie de cod.",
-          "pricing": "Audit & Arhitectură",
+          "pricing": "Audit & Arhitectură (de la 1.000€)",
           "timing": "~1 săptămână",
           "pricingTooltip": "Un audit tehnic la preț fix pentru a defini exact specificațiile, arhitectura și planul de execuție."
         },

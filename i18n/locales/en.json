@@ -106,7 +106,7 @@
           ],
           "cta": "Launch my page",
           "whyUs": "DIY builders save money now but cost you credibility. A pro page loads faster and actually converts your traffic.",
-          "pricing": "Fixed Price",
+          "pricing": "Fixed Price (€400–€600)",
           "timing": "2–3 days",
           "pricingTooltip": "You pay a fixed amount defined in the contract for a strictly defined scope (Express Page)."
         },
@@ -122,7 +122,7 @@
           ],
           "cta": "Map out my concept",
           "whyUs": "Skipping the spec phase usually means scope creep later. We align business logic with tech reality before writing any code.",
-          "pricing": "Paid Discovery",
+          "pricing": "Paid Discovery (from €1,000)",
           "timing": "~1 week",
           "pricingTooltip": "A fixed-price technical audit to map out requirements, architecture, and exact roadmap before any build."
         },
