@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #FAF8F4; color: #0B0B0B; font-family: 'Inter Tight', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #0B0B0B; text-decoration: none; }
+  a:hover { color: #FF4D14; }
+</style>
+</helmet>
+
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Login" style="min-height:100vh;display:grid;place-items:center;padding:24px">
+    <div style="width:100%;max-width:380px;border:1px solid #E2DED6;border-radius:4px;padding:32px">
+      <img src="assets/codepedia-mark.svg" alt="CODEPEDIA" style="display:block;height:20px;width:auto" />
+      <h1 style="margin:24px 0 0;font-size:22px;font-weight:500;letter-spacing:-0.02em">Autentificare</h1>
+      <label style="display:block;margin-top:20px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Email<input type="email" style="display:block;margin-top:8px;width:100%;border:1px solid #E2DED6;border-radius:4px;padding:12px 14px;font-family:'Inter Tight',sans-serif;font-size:16px;background:#FAF8F4;text-transform:none;letter-spacing:0" /></label>
+      <label style="display:block;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Parolă<input type="password" style="display:block;margin-top:8px;width:100%;border:1px solid #E2DED6;border-radius:4px;padding:12px 14px;font-family:'Inter Tight',sans-serif;font-size:16px;background:#FAF8F4;text-transform:none;letter-spacing:0" /></label>
+      <button onClick="{{ login }}" style="margin-top:20px;width:100%;border:0;cursor:pointer;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:13px 20px;font-family:inherit;font-size:15px;font-weight:500" style-hover="background:#FF4D14">Intră</button>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;min-height:100vh">
+  <aside data-screen-label="Sidebar" style="display:flex;flex-direction:column;width:240px;flex:none;border-right:1px solid #E2DED6;background:#FAF8F4">
+    <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #E2DED6;padding:0 20px"><a href="Codepedia.dc.html" aria-label="CODEPEDIA"><img src="assets/codepedia-mark.svg" alt="" style="display:block;height:20px;width:auto" /></a></div>
+    <nav style="display:flex;flex-direction:column;padding:12px 0">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="2">
+        <button onClick="{{ n.go }}" style="text-align:left;cursor:pointer;background:transparent;border:0;border-left:2px solid {{ n.border }};padding:10px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:{{ n.color }}" style-hover="color:#0B0B0B">{{ n.label }}<span style="margin-left:8px;color:#FF4D14">{{ n.badge }}</span></button>
+      </sc-for>
+    </nav>
+  </aside>
+
+  <div style="display:flex;flex-direction:column;flex:1;min-width:0">
+    <div style="display:flex;flex:none;align-items:center;justify-content:space-between;gap:16px;height:64px;border-bottom:1px solid #E2DED6;padding:0 24px">
+      <div style="display:flex;align-items:center;gap:12px;min-width:0">
+        <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}"><button onClick="{{ backToLeads }}" style="border:0;background:transparent;padding:0;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862" style-hover="color:#0B0B0B">← Solicitări</button></sc-if>
+        <h1 style="margin:0;font-size:18px;font-weight:500;letter-spacing:-0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ title }}</h1>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px">
+        <sc-if value="{{ isProjects }}" hint-placeholder-val="{{ true }}"><button style="border:0;cursor:pointer;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:10px 16px;font-family:inherit;font-size:14px;font-weight:500" style-hover="background:#FF4D14">Proiect nou</button></sc-if>
+        <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}"><a href="mailto:{{ lead.email }}" style="border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:10px 16px;font-size:14px;font-weight:500" style-hover="background:#FF4D14;color:#FAF8F4">Răspunde</a></sc-if>
+        <div style="display:flex;align-items:center;gap:12px;border-left:1px solid #E2DED6;padding-left:16px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+          <span>admin@codepedia.md</span>
+          <button onClick="{{ logout }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862" style-hover="color:#FF4D14">Ieși</button>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ isProjects }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Admin · Proiecte" style="flex:1;padding:24px">
+        <div style="margin-bottom:16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px">
+          <div style="display:flex;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+            <sc-for list="{{ filters }}" as="f" hint-placeholder-count="3">
+              <button onClick="{{ f.select }}" style="cursor:pointer;border-radius:4px;border:1px solid {{ f.border }};padding:6px 12px;font:inherit;text-transform:inherit;letter-spacing:inherit;background:{{ f.bg }};color:{{ f.color }}">{{ f.label }}</button>
+            </sc-for>
+          </div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Pe homepage: {{ featuredCount }}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ reorderHint }}</span>
+        </div>
+        <div style="display:flex;flex-direction:column;border-bottom:1px solid #E2DED6">
+          <sc-for list="{{ projects }}" as="p" hint-placeholder-count="7">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;border-top:1px solid #E2DED6;padding:12px 0" style-hover="background:#F1EEE7">
+              <span aria-hidden="true" style="flex:none;font-family:'JetBrains Mono',monospace;font-size:12px;color:#6B6862;cursor:grab;opacity:{{ p.gripOpacity }}">⠿</span>
+              <img src="{{ p.img }}" alt="" style="flex:none;width:48px;height:30px;border:1px solid #E2DED6;border-radius:4px;object-fit:cover"></img>
+              <div style="min-width:0;flex:2 1 200px;font-size:15px">{{ p.title }}<sc-if value="{{ p.featured }}" hint-placeholder-val="{{ false }}"><span title="Afișat pe homepage" style="margin-left:4px;color:#FF4D14">●</span></sc-if></div>
+              <div style="display:flex;flex:1 1 160px;flex-wrap:wrap;gap:6px">
+                <sc-for list="{{ p.tech }}" as="t" hint-placeholder-count="2">
+                  <span style="border:1px solid #E2DED6;border-radius:4px;padding:3px 7px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ t }}</span>
+                </sc-for>
+              </div>
+              <div style="flex:0 0 90px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:{{ p.statusColor }}">{{ p.status }}</div>
+              <div style="flex:0 0 100px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ p.date }}</div>
+              <div style="display:flex;flex:0 0 180px;justify-content:flex-end;gap:12px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+                <sc-if value="{{ p.confirming }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ p.remove }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#FF4D14">Sigur? Șterge</button>
+                  <button onClick="{{ p.cancel }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862">Anulează</button>
+                </sc-if>
+                <sc-if value="{{ p.idle }}" hint-placeholder-val="{{ true }}">
+                  <button style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862" style-hover="color:#0B0B0B">Editează</button>
+                  <button onClick="{{ p.duplicate }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862" style-hover="color:#0B0B0B">Duplică</button>
+                  <button onClick="{{ p.ask }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862" style-hover="color:#FF4D14">Șterge</button>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ noProjects }}" hint-placeholder-val="{{ false }}"><div style="border:1px solid #E2DED6;border-radius:4px;padding:32px;text-align:center;color:#6B6862">Niciun proiect.</div></sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isLeads }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Admin · Solicitări" style="flex:1;overflow-y:auto;padding:24px">
+        <div style="display:flex;flex-direction:column;border-bottom:1px solid #E2DED6">
+          <sc-for list="{{ leads }}" as="l" hint-placeholder-count="6">
+            <button onClick="{{ l.open }}" style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;border:0;border-top:1px solid #E2DED6;background:transparent;padding:12px 0;cursor:pointer;text-align:left;font:inherit;color:inherit;opacity:{{ l.opacity }}" style-hover="background:#F1EEE7">
+              <div style="flex:0 0 100px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ l.date }}</div>
+              <div style="min-width:0;flex:1 1 160px;font-size:15px">{{ l.name }}</div>
+              <div style="min-width:0;flex:1 1 180px;font-size:15px;color:#6B6862">{{ l.email }}</div>
+              <div style="min-width:0;flex:1 1 140px;font-size:15px;color:#6B6862">{{ l.company }}</div>
+              <div style="flex:0 0 140px;font-size:15px;color:#6B6862">{{ l.budget }}</div>
+              <div style="min-width:0;flex:2 1 200px;font-size:15px;color:#6B6862;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.message }}</div>
+              <div style="flex:0 0 100px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:{{ l.statusColor }}">{{ l.status }}</div>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Admin · Solicitare" style="flex:1;overflow-y:auto;padding:24px">
+        <div style="display:flex;flex-direction:column;gap:32px;max-width:720px">
+          <section style="border:1px solid #E2DED6;border-radius:4px;padding:24px">
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px">
+              <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Nume</div><div style="margin-top:4px;font-size:15px">{{ lead.name }}</div></div>
+              <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Email</div><div style="margin-top:4px;font-size:15px">{{ lead.email }}</div></div>
+              <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Companie</div><div style="margin-top:4px;font-size:15px">{{ lead.company }}</div></div>
+              <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Buget</div><div style="margin-top:4px;font-size:15px">{{ lead.budget }}</div></div>
+            </div>
+            <div style="margin-top:16px;border-top:1px solid #E2DED6;padding-top:16px">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Mesaj</div>
+              <p style="margin:8px 0 0;font-size:15px;white-space:pre-wrap">{{ lead.message }}</p>
+            </div>
+          </section>
+          <section style="border:1px solid #E2DED6;border-radius:4px;padding:24px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Sursă</div>
+            <div style="margin-top:12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px">
+              <sc-for list="{{ lead.meta }}" as="m" hint-placeholder-count="6">
+                <div style="min-width:0"><div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ m.k }}</div><div style="margin-top:4px;font-size:15px;color:#6B6862;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.v }}</div></div>
+              </sc-for>
+            </div>
+          </section>
+          <section style="border:1px solid #E2DED6;border-radius:4px;padding:24px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Stare</div>
+            <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ statusBtns }}" as="b" hint-placeholder-count="4">
+                <button onClick="{{ b.select }}" style="cursor:pointer;border-radius:4px;border:1px solid {{ b.border }};padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;background:{{ b.bg }};color:{{ b.color }}" style-hover="border-color:#0B0B0B">{{ b.label }}</button>
+              </sc-for>
+            </div>
+          </section>
+          <section style="border:1px solid #E2DED6;border-radius:4px;padding:24px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Note interne</div>
+            <textarea rows="4" onBlur="{{ saveNotes }}" style="display:block;margin-top:12px;width:100%;border:1px solid #E2DED6;border-radius:4px;padding:12px 14px;font-family:inherit;font-size:16px;background:#FAF8F4;outline:none" style-focus="border-color:#0B0B0B"></textarea>
+            <p aria-live="polite" style="margin:4px 0 0;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ notesLabel }}</p>
+          </section>
+          <button onClick="{{ archive }}" style="width:fit-content;cursor:pointer;border-radius:4px;border:1px solid #0B0B0B;background:transparent;color:#0B0B0B;padding:11px 18px;font-family:inherit;font-size:15px;font-weight:500" style-hover="border-color:#6B6862">Arhivează</button>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;view&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;login&quot;,&quot;projects&quot;,&quot;leads&quot;,&quot;lead&quot;],&quot;default&quot;:&quot;projects&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const PROJECTS = [
+  { title: 'Startica, aplicație de administrare', img: 'assets/proiecte/startica-app-dashboard-crop.png', tech: ['Nuxt', 'Supabase'], pub: '2026-09-20', featured: true },
+  { title: 'Startica, grădiniță în Chișinău', img: 'https://startica.md/media/filer_public_thumbnails/filer_public/20/a7/20a767a2-71dc-4a4f-af3b-2a1b5a632053/grupa-2.jpeg__880x605_crop_subsampling-2_upscale.webp', tech: ['Site', 'RO/EN/RU'], pub: '2026-09-18', featured: true },
+  { title: 'Aurelia Badiur, consultant oenolog', img: 'https://aureliabadiur.com/images/hero.jpg', tech: ['Site', 'RO/EN'], pub: '2026-09-15', featured: true },
+  { title: 'EnglishMinds, școală de engleză', img: 'assets/proiecte/englishminds-class.jpg', tech: ['Brand', 'Site'], pub: '2026-09-12', featured: true },
+  { title: 'SwissCars, auto din Elveția', img: 'https://krltqxdhxiguxwookqgg.supabase.co/storage/v1/object/public/car-images/cars/ae25eba6-b9ae-4b21-9a3b-85b025e69e21.jpg', tech: ['Aplicație web', 'Stoc', 'Admin'], pub: '2026-09-10', featured: true },
+  { title: 'Bloom Florist, gestiune florărie', img: 'assets/proiecte/bloom-panou-1600.png', tech: ['Nuxt', 'Supabase'], pub: '2026-09-29', featured: true },
+  { title: 'Trucker HQ, dispatch auto', img: 'assets/proiecte/truckerhq-acasa-1600.png', tech: ['Site', 'Unelte'], pub: null, featured: false },
+];
+const LEADS = [
+  { date: '2026-10-01', name: 'Ion Rusu', email: 'ion@exemplu.md', company: 'Agro Nord SRL', budget: '2.000 – 5.000 EUR', status: 'nou', message: 'Avem designul în Figma pentru o platformă de comenzi B2B. Căutăm echipă pentru frontend și baza de date.', source: 'Google', page: '/servicii/aplicatie-web', referrer: 'https://www.google.com/', utm: 'utm_source=google · utm_medium=cpc', lang: 'ro' },
+  { date: '2026-09-30', name: 'Anna Keller', email: 'anna@keller.de', company: 'Keller Logistik', budget: 'peste 5.000 EUR', status: 'in_discutie', message: 'We want to automate invoice processing with an LLM step and a review dashboard.', source: 'LinkedIn', page: '/en', referrer: 'https://www.linkedin.com/', utm: '—', lang: 'en' },
+  { date: '2026-09-28', name: 'Maria Ceban', email: 'maria@studio.md', company: '—', budget: 'sub 1.000 EUR', status: 'castigat', message: 'Landing page pentru un studio de yoga, cu formular de programare pe Telegram.', source: 'Recomandare', page: '/', referrer: '—', utm: '—', lang: 'ro' },
+  { date: '2026-09-25', name: 'Victor Lungu', email: 'victor@shop.ro', company: 'Lungu Shop', budget: '1.000 – 2.000 EUR', status: 'refuzat', message: 'Migrare magazin WooCommerce pe Shopify, cu import produse.', source: 'Instagram', page: '/servicii/shopify', referrer: 'https://l.instagram.com/', utm: 'utm_source=instagram', lang: 'ro' },
+  { date: '2026-09-22', name: 'Elena Popa', email: 'elena@clinic.md', company: 'Clinica Vita', budget: 'Nu știu încă', status: 'nou', message: 'Avem un site vechi și vrem o aplicație de programări pentru pacienți.', source: '—', page: '/contact', referrer: '—', utm: '—', lang: 'ro' },
+];
+const ST = { nou: 'Nou', in_discutie: 'În discuție', castigat: 'Câștigat', refuzat: 'Refuzat' };
+const ST_COLOR = { nou: '#FF4D14', in_discutie: '#0B0B0B', castigat: '#0B0B0B', refuzat: '#6B6862' };
+const fmt = d => d ? new Date(d).toLocaleDateString('ro-RO') : '—';
+class Component extends DCLogic {
+  state = { view: null, filter: 'toate', confirm: null, projects: PROJECTS, leadIdx: 0, statuses: LEADS.map(l => l.status), archived: [], notes: 'idle' };
+  renderVals() {
+    const view = this.state.view ?? this.props.view ?? 'projects';
+    const set = o => this.setState(o);
+    const { filter, confirm, projects, leadIdx, statuses, archived } = this.state;
+    const shown = projects.filter(p => filter === 'toate' || (filter === 'draft' ? !p.pub : !!p.pub));
+    const L = LEADS[leadIdx];
+    const newCount = statuses.filter(s => s === 'nou').length;
+    return {
+      isLogin: view === 'login', isApp: view !== 'login',
+      isProjects: view === 'projects', isLeads: view === 'leads', isDetail: view === 'lead',
+      login: () => set({ view: 'projects' }), logout: () => set({ view: 'login' }),
+      title: view === 'projects' ? 'Proiecte' : view === 'leads' ? 'Solicitări' : L.name,
+      nav: [['projects', 'Proiecte', ''], ['leads', 'Solicitări', newCount ? String(newCount) : '']].map(([id, label, badge]) => {
+        const on = view === id || (id === 'leads' && view === 'lead');
+        return { label, badge, go: () => set({ view: id }), border: on ? '#FF4D14' : 'transparent', color: on ? '#0B0B0B' : '#6B6862' };
+      }),
+      filters: ['toate', 'draft', 'publicate'].map(f => ({ label: f, select: () => set({ filter: f }), bg: f === filter ? '#0B0B0B' : 'transparent', color: f === filter ? '#FAF8F4' : '#6B6862', border: f === filter ? '#0B0B0B' : '#E2DED6' })),
+      featuredCount: projects.filter(p => p.featured).length,
+      reorderHint: filter === 'toate' ? 'Trage ⠿ pentru a reordona' : '',
+      noProjects: shown.length === 0,
+      projects: shown.map(p => {
+        const key = p.title;
+        return { ...p, gripOpacity: filter === 'toate' ? 1 : 0, status: p.pub ? 'Publicat' : 'Draft', statusColor: p.pub ? '#FF4D14' : '#6B6862', date: fmt(p.pub),
+          confirming: confirm === key, idle: confirm !== key,
+          ask: () => set({ confirm: key }), cancel: () => set({ confirm: null }),
+          remove: () => set({ confirm: null, projects: projects.filter(x => x.title !== key) }),
+          duplicate: () => { const i = projects.indexOf(p); const c = { ...p, title: p.title + ' (copie)', pub: null, featured: false }; set({ projects: [...projects.slice(0, i + 1), c, ...projects.slice(i + 1)] }); } };
+      }),
+      leads: LEADS.map((l, i) => ({ ...l, date: fmt(l.date), status: ST[statuses[i]], statusColor: ST_COLOR[statuses[i]], opacity: archived.includes(i) ? 0.4 : 1, open: () => set({ view: 'lead', leadIdx: i, notes: 'idle' }) })),
+      backToLeads: () => set({ view: 'leads' }),
+      lead: { ...L, meta: [{ k: 'Cum a aflat', v: L.source }, { k: 'Pagină', v: L.page }, { k: 'Referrer', v: L.referrer }, { k: 'UTM', v: L.utm }, { k: 'Limbă', v: L.lang }, { k: 'Dată', v: new Date(L.date).toLocaleString('ro-RO') }] },
+      statusBtns: Object.keys(ST).map(k => { const on = statuses[leadIdx] === k; return { label: ST[k], bg: on ? '#0B0B0B' : 'transparent', color: on ? '#FAF8F4' : '#6B6862', border: on ? '#0B0B0B' : '#E2DED6', select: () => set({ statuses: statuses.map((s, i) => i === leadIdx ? k : s) }) }; }),
+      saveNotes: () => { set({ notes: 'pending' }); setTimeout(() => this.setState({ notes: 'idle' }), 700); },
+      notesLabel: this.state.notes === 'pending' ? 'Se salvează…' : 'Salvat automat la ieșirea din câmp',
+      archive: () => set({ archived: [...archived, leadIdx], view: 'leads' }),
+    };
+  }
+}
+</script>
+</body>
+</html>
