@@ -13,6 +13,7 @@
     "postinstall": "nuxt prepare",
     "favicons": "node scripts/generate-favicons.mjs",
     "og-image": "node scripts/generate-og-image.mjs",
+    "blog-og": "node scripts/generate-blog-og.mjs",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "lint": "eslint .",
