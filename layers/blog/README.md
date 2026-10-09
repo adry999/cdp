@@ -48,13 +48,50 @@ only.
 
 - `buildBlogRss(event, locale)` — the RSS 2.0 document for one locale's
   non-draft posts. Used by both root RSS routes.
-- `listBlogSitemapPages(event)` — the blog index (only while posts exist) and
-  every post (RO/EN paired by `alt`, `lastmod` = `updated`), as `SitemapPage`s for the root sitemap
-  (`server/routes/sitemap.xml.ts`).
+- `listBlogSitemapPages(event)` — the blog index (only while posts exist),
+  every **indexable** category page (`isCategoryIndexable`; thin `noindex`
+  categories are left out) and every post (RO/EN paired by `alt`, `lastmod` =
+  `updated`), as `SitemapPage`s for the root sitemap
+  (`server/routes/sitemap.xml.ts`). All blog entries set `xDefault: 'ro'`.
 
 All `@nuxt/content` queries live in `server/repository/blogRepository.ts`
 (`listPublished`, `findPublished`); RSS rendering is the pure
 `domain/rss.ts`.
+
+## SEO (SEO_SPEC §3, §4, §6, §7)
+
+- `domain/seo.ts` — pure JSON-LD builders over core's `breadcrumbList` /
+  `faqPage` / `organizationRef`: `articleGraph` (one `@graph`: `BlogPosting`,
+  `BreadcrumbList` CODEPEDIA → Blog → Category → Article, `FAQPage` built from
+  the same `faq` blocks the page renders via `faqEntries`), `blogIndexGraph`
+  (`Blog` + `ItemList`), `categoryGraph` (`CollectionPage` + breadcrumb).
+  Author and publisher are core's `Organization` (EN primary origin, logo
+  `/icon-512.png`).
+- `domain/paths.ts` — `blogPaths(locale)` and `ogImagePath`. Kept free of
+  `#layers/...` imports because `nuxt.config.ts` loads it (and
+  `domain/blogRoutes.ts`) before Nuxt's aliases exist.
+- Article head: `usePageSeo` with `type: 'article'` + `article:published_time`,
+  `article:modified_time`, `article:section` (category name); the title template
+  is `%s | CODEPEDIA` on articles only (site-wide it stays `%s · Codepedia`);
+  canonical and hreflang come from the site-wide `locale-alternates` plugin
+  (each locale's official domain), which points **x-default at RO for
+  `/blog/**`** (`xDefaultLocale` in core) instead of EN. The sitemap does the
+  same through `SitemapPage.xDefault`.
+- `useBlogRssLink()` adds `<link rel="alternate" type="application/rss+xml">`
+  to the index, category and article pages. Feed items carry `<category>`.
+- OG images: `npm run blog-og` (`scripts/generate-blog-og.mjs`) writes
+  `public/blog/og/<locale>/<slug>.png` (1200x630, category in signal mono,
+  title in paper Inter Tight on ink, wordmark) for every non-draft post, using
+  the OFL font files in `scripts/fonts/`. Commit the PNGs; `content.test.ts`
+  fails when a published post has none. Re-run after changing a title or
+  category. A post's `cover` takes precedence for `og:image`. The script
+  mirrors the category names from `domain/category.ts` (it can't import TS).
+- Prerender: `/blog`, `/en/blog`, `/blog/**`, `/en/blog/**` have
+  `prerender: true` in `routeRules`; because `nuxt build` doesn't crawl, this
+  layer's `nuxt.config.ts` lists every URL (indexes, both feeds, non-draft
+  posts, categories with at least one post) in `nitro.prerender.routes` via
+  `blogPrerenderRoutes`. A new post needs a rebuild, as with any content.
+  Articles have no image above the title.
 
 ## Routes
 

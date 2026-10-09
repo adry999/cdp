@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { validatePostFrontMatter } from './domain/frontMatter'
@@ -13,5 +14,13 @@ describe('blog content', () => {
 
   it('has valid, correctly paired front matter in every post', () => {
     expect(validatePostFrontMatter(posts)).toEqual([])
+  })
+
+  it('has a generated OG image per published post (run `npm run blog-og`)', () => {
+    const missing = posts
+      .filter((p) => p.data.draft !== true)
+      .map((p) => `public/blog/og/${p.folder}/${p.file}.png`)
+      .filter((path) => !existsSync(fileURLToPath(new URL(`../../${path}`, import.meta.url))))
+    expect(missing).toEqual([])
   })
 })
