@@ -1,10 +1,12 @@
 import { escapeXml } from '#layers/core/shared/utils/escapeXml'
+import { CATEGORIES, type CategoryCode } from './category'
 
 export interface RssPost {
   slug: string
   title: string
   description: string
   date: string
+  category: CategoryCode
 }
 
 const FEEDS = {
@@ -29,6 +31,7 @@ export function renderBlogRss(baseUrl: string, locale: 'ro' | 'en', posts: reado
       <title>${escapeXml(post.title)}</title>
       <link>${escapeXml(`${baseUrl}${feed.pathPrefix}/${post.slug}`)}</link>
       <description>${escapeXml(post.description)}</description>
+      <category>${escapeXml(CATEGORIES[post.category].name[locale])}</category>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
       <guid>${escapeXml(`${baseUrl}${feed.pathPrefix}/${post.slug}`)}</guid>
     </item>`,

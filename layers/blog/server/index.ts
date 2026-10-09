@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3'
 import { blogSlug } from '#layers/blog'
+import { blogSitemapPages } from '#layers/blog/domain/blogRoutes'
 import { renderBlogRss, type RssPost } from '#layers/blog/domain/rss'
 import { listPublished, type BlogLocale } from '#layers/blog/server/repository/blogRepository'
 import type { SitemapPage } from '#layers/core/shared/types/sitemap'
@@ -12,6 +13,7 @@ async function listPublishedBlogPosts(event: H3Event, locale: BlogLocale): Promi
     title: row.title,
     description: row.description,
     date: row.date,
+    category: row.category,
   }))
 }
 
@@ -20,20 +22,14 @@ export async function buildBlogRss(event: H3Event, locale: BlogLocale): Promise<
   return renderBlogRss(getSiteUrl(event, locale), locale, await listPublishedBlogPosts(event, locale))
 }
 
-/** The blog index (only while it has posts — it is noindex when empty) and
- * every published post, RO and EN paired by `alt` since the slugs differ per
- * locale. The RO list enumerates the pairs; a post whose counterpart isn't
- * published is left out (front-matter validation keeps `draft` in sync). */
+/** The blog's sitemap entries (index, indexable categories, paired posts); see `blogSitemapPages`. */
 export async function listBlogSitemapPages(event: H3Event): Promise<SitemapPage[]> {
   const [roRows, enRows] = await Promise.all([listPublished(event, 'ro'), listPublished(event, 'en')])
-  const enSlugs = new Set(enRows.map((row) => blogSlug(row.path)))
-  const pairs = roRows.filter((row) => enSlugs.has(row.alt))
-  return [
-    ...(pairs.length ? [{ ro: '/blog', en: '/en/blog' }] : []),
-    ...pairs.map((row) => ({
-      ro: `/blog/${blogSlug(row.path)}`,
-      en: `/en/blog/${row.alt}`,
-      lastmod: row.updated,
-    })),
-  ]
+  const toRoutePost = (row: (typeof roRows)[number]) => ({
+    slug: blogSlug(row.path),
+    alt: row.alt,
+    category: row.category,
+    updated: row.updated,
+  })
+  return blogSitemapPages(roRows.map(toRoutePost), enRows.map(toRoutePost))
 }

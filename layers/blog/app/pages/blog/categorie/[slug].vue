@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { CATEGORIES, categoryFromSlug, isCategoryIndexable, type BlogPostSummary } from '#layers/blog'
+import { CATEGORIES, categoryFromSlug, categoryGraph, isCategoryIndexable, type BlogPostSummary } from '#layers/blog'
 
 const route = useRoute()
 const { t, locale } = useI18n()
 const siteLocale = useSiteLocale()
+const origin = useSiteUrl()
 
 const category = categoryFromSlug(route.params.slug as string, siteLocale.value)
 if (!category) {
@@ -26,10 +27,23 @@ if (postCount === 0) {
 
 const name = CATEGORIES[category].name[siteLocale.value]
 
-usePageSeo({
-  title: () => t('blog.category.seoTitle', { name }),
-  description: () => t('blog.category.seoDescription', { name }),
-})
+const title = t('blog.category.seoTitle', { name })
+const description = t('blog.category.seoDescription', { name })
+
+usePageSeo({ title, description })
+
+useBlogRssLink()
+
+useJsonLd(() =>
+  categoryGraph({
+    locale: siteLocale.value,
+    origin,
+    category,
+    name: title,
+    description,
+    labels: { home: 'CODEPEDIA', blog: t('nav.blog') },
+  }),
+)
 
 // Thin category pages stay reachable but out of the index.
 useSeoMeta({ robots: isCategoryIndexable(postCount) ? undefined : 'noindex, follow' })
