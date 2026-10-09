@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-05",
+  "updated": "2026-10-09",
   "statuses": {
     "sincronizat": "Designul și codul coincid",
     "de_implementat": "Există în design, lipsește în cod",
@@ -80,7 +80,7 @@
             "layers/home/app/components/Home*.vue"
           ],
           "status": "sincronizat",
-          "note": "Prețuri „de la [ X ] EUR” în 01."
+          "note": "Prețuri „de la [ X ] EUR” în 01. Carduri 04: rezultat scurt (win_value · win_label), gol în DB până la cifre reale."
         },
         {
           "id": "home-en",
@@ -124,7 +124,7 @@
             "layers/services/data/services.ts"
           ],
           "status": "sincronizat",
-          "note": "priceFrom = null"
+          "note": "priceFrom = null. SwissCars mutat aici (service_tag web-app), tip „Aplicație web”."
         },
         {
           "id": "svc-wordpress",
@@ -281,16 +281,20 @@
             "layers/projects/app/pages/proiecte/index.vue"
           ],
           "status": "sincronizat",
-          "note": "Fără design separat; folosește ProjectsCard."
+          "note": "Fără design separat; folosește ProjectsCard (cu rezultat scurt win_value/win_label)."
         },
         {
           "id": "prj-case",
           "title": "/proiecte/[slug] — studiu de caz",
           "repo": [
-            "layers/projects/app/pages/proiecte/[slug].vue"
+            "layers/projects/app/pages/proiecte/[slug].vue",
+            "layers/projects/app/components/ProjectsCaseStudy*.vue",
+            "layers/projects/domain/star.ts",
+            "supabase/migrations/20261009082215_case_study_star.sql"
           ],
           "status": "de_verificat",
-          "note": "Structura nouă cu 7 secțiuni; cifre/citate rămân placeholder; imagini și migrări neaplicate."
+          "note": "Structura STAR (bandă S/T/A/R, 01–07, incident, linkuri, galerie + lightbox), RO/EN. Cifrele, incidentele și linkurile din design sunt exemple: doar în fixture-ul de dev (layers/projects/server/dev/), marcate „exemplu”; în DB câmpurile star_* sunt goale până la date reale.",
+          "design": "Studiu de caz.dc.html"
         }
       ]
     },
@@ -311,9 +315,13 @@
           "id": "adm-projects",
           "title": "/admin/projects",
           "repo": [
-            "layers/projects/app/pages/admin/projects/index.vue"
+            "layers/projects/app/pages/admin/projects/index.vue",
+            "layers/projects/app/pages/admin/projects/[slug].vue",
+            "layers/projects/app/components/ProjectsEditorStar.vue",
+            "layers/projects/app/components/ProjectsEditorIdentity.vue"
           ],
-          "status": "sincronizat"
+          "status": "de_verificat",
+          "note": "Editor: grup STAR (repeater k/v, repeater text, card incident, RO/EN separat), linkuri live/preview/figma, rezultat pe card."
         },
         {
           "id": "adm-leads",
