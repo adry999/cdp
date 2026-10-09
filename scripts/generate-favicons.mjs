@@ -1,5 +1,5 @@
 // Generates the full favicon set from assets/codepedia-favicon-square-filled.svg
-// per IDENTITY.md. Run: npm run favicons
+// per docs/IDENTITY.md. Run: npm run favicons
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import sharp from 'sharp'
