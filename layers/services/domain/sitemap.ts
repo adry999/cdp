@@ -4,7 +4,7 @@ import { isEnPendingPath } from '#layers/core/shared/utils/enPendingTranslation'
 
 // Kept apart from SERVICES so the client can read it without loading the
 // service data.
-export const SERVICES_EN_PENDING_PATHS: readonly string[] = ['/servicii', '/servicii/granturi']
+export const SERVICES_EN_PENDING_PATHS: readonly string[] = []
 
 export const SERVICES_INDEX_PAGE: SitemapPage = {
   ro: '/servicii',
