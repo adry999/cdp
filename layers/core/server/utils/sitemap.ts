@@ -9,7 +9,7 @@ export function toLastmod(value: string): string {
 }
 
 /** Each URL sits on its locale's official domain. x-default points at the EN
- * URL on the primary domain. A page whose EN copy is still Romanian lists only
+ * URL on the primary domain, unless the page sets `xDefault: 'ro'` (the blog). A page whose EN copy is still Romanian lists only
  * its RO URL, with no EN alternate. */
 export function toSitemapUrls(origins: SiteOrigins, pages: readonly SitemapPage[]): SitemapUrl[] {
   return pages.flatMap((page) => {
@@ -21,7 +21,7 @@ export function toSitemapUrls(origins: SiteOrigins, pages: readonly SitemapPage[
     const alt = [
       { hreflang: 'ro', href: ro },
       { hreflang: 'en', href: en },
-      { hreflang: 'x-default', href: en },
+      { hreflang: 'x-default', href: page.xDefault === 'ro' ? ro : en },
     ]
     return [
       { loc: ro, lastmod: page.lastmod, alt },
