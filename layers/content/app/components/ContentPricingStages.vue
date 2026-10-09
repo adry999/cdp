@@ -5,9 +5,6 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const stages = await useServiceStages()
 
-// The highlighted stage (Design → cod) gets the inverted card.
-// The stage price comes from useServiceStages; the large figure shows only once `pricing.stages.<id>.price` exists.
-const FEATURED_STAGE = 'A'
 </script>
 
 <template>
@@ -32,19 +29,33 @@ const FEATURED_STAGE = 'A'
           <h2 class="m-0 mt-5 min-h-[2.6em] font-mono text-sm font-medium uppercase leading-[1.3] tracking-[0.04em] transition-colors duration-500 group-hover:text-signal">
             {{ stage.name }}
           </h2>
+          <div v-if="stage.pricing" class="mt-5 text-[10px] font-medium uppercase tracking-[0.06em] text-muted">
+            {{ t('pricing.engagementModel') }}
+          </div>
           <div
             v-if="stage.pricing"
-            class="mt-5 eyebrow-sm"
-            :class="stage.id === FEATURED_STAGE ? 'text-body-ink' : 'text-muted'"
+            class="mt-1 flex items-center gap-2 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] text-ink"
           >
             {{ stage.pricing }}
-          </div>
-          <div class="mt-1 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em]">
-            {{ t('pricing.pricePlaceholder') }}
+            <span class="group/tooltip relative inline-flex items-center">
+              <button
+                type="button"
+                class="inline-flex h-5 w-5 cursor-default items-center justify-center rounded-full border border-rule/70 text-[11px] font-mono font-medium text-muted transition-colors hover:border-ink hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-signal"
+                aria-label="Info"
+              >
+                i
+              </button>
+              <span
+                role="tooltip"
+                class="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 w-[min(300px,85vw)] -translate-x-1/2 rounded border border-hairline bg-ink p-3 text-[13px] font-normal leading-relaxed text-paper shadow-lg opacity-0 transition-opacity duration-150 group-hover/tooltip:pointer-events-auto group-hover/tooltip:opacity-100 group-focus-within/tooltip:pointer-events-auto group-focus-within/tooltip:opacity-100 tracking-normal"
+              >
+                {{ stage.pricingTooltip }}
+                <span class="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-ink" aria-hidden="true" />
+              </span>
+            </span>
           </div>
           <ul
-            class="m-0 mt-5 flex flex-1 list-none flex-col gap-2 border-t p-0 pt-4"
-            :class="stage.id === FEATURED_STAGE ? 'border-hairline-ink' : 'border-hairline'"
+            class="m-0 mt-5 flex flex-1 list-none flex-col gap-2 border-t border-hairline p-0 pt-4"
           >
             <li v-for="badge in stage.badges" :key="badge" class="flex gap-2 text-sm leading-[1.4]">
               <span class="text-signal" aria-hidden="true">+</span>{{ badge }}

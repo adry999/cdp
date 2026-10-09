@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { faqPage } from '#layers/core/shared/utils/jsonLd'
 
-const { t, te, tm, rt } = useI18n()
+const { t, tm, rt } = useI18n()
 
 interface TextItem {
   title: string
@@ -27,7 +27,6 @@ const faq = computed<FaqItem[]>(() =>
 )
 useJsonLd(() => (faq.value.length ? faqPage(faq.value) : null))
 
-// A plan shows its price only once `pricing.afterLaunch.plans.<id>.price` exists in the locale files.
 const PLAN_IDS = ['maintenance', 'continuous'] as const
 </script>
 
@@ -51,9 +50,7 @@ const PLAN_IDS = ['maintenance', 'continuous'] as const
           <div class="eyebrow text-muted">
             {{ t(`pricing.afterLaunch.plans.${id}.label`) }}
           </div>
-          <div
-            v-if="te(`pricing.afterLaunch.plans.${id}.price`)"
-            class="mt-3 text-[26px] font-semibold tracking-[-0.02em]">
+          <div class="mt-3 text-[26px] font-semibold tracking-[-0.02em]">
             {{ t(`pricing.afterLaunch.plans.${id}.price`) }}
           </div>
           <p class="m-0 mt-2.5 text-[15px] text-muted">{{ t(`pricing.afterLaunch.plans.${id}.body`) }}</p>
