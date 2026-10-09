@@ -471,14 +471,29 @@
   "blog": {
     "seo": {
       "title": "Blog",
-      "description": "Notițe tehnice și studii de caz scurte din munca Codepedia — dezvoltare web, automatizare, arhitectură."
+      "description": "Prețuri, comparații și ghiduri pentru firmele care pregătesc un site sau o aplicație. Scrise din proiectele CODEPEDIA."
     },
     "hero": {
-      "title": "Blog.",
-      "intro": "Notițe tehnice din munca Codepedia — ce am construit, ce am învățat, ce am schimbat."
+      "title": "Ce costă, ce alegi, cum construiești.",
+      "intro": "Prețuri, comparații și ghiduri pentru firmele care pregătesc un site sau o aplicație. Scrise din proiectele CODEPEDIA."
     },
     "empty": "Momentan nu avem articole publicate.",
-    "related": "Articole similare"
+    "related": "Citește și",
+    "all": "Toate",
+    "latest": "Cel mai nou",
+    "read": "Citește",
+    "toc": "Cuprins",
+    "published": "Publicat",
+    "updated": "Actualizat",
+    "next": "Pasul următor",
+    "min": "min",
+    "back": "Blog",
+    "breadcrumb": "Breadcrumb",
+    "categories": "Categorii",
+    "category": {
+      "seoTitle": "{name} · Blog",
+      "seoDescription": "Articole Codepedia din categoria „{name}”: prețuri, comparații și ghiduri pentru firmele care pregătesc un site sau o aplicație."
+    }
   },
   "error": {
     "sectionLabel": "Eroare",

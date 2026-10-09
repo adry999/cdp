@@ -471,14 +471,29 @@
   "blog": {
     "seo": {
       "title": "Blog",
-      "description": "Technical notes and short case studies from Codepedia's work — web development, automation, architecture."
+      "description": "Pricing, comparisons and guides for businesses planning a website or a web app. Written from CODEPEDIA projects."
     },
     "hero": {
-      "title": "Blog.",
-      "intro": "Technical notes from Codepedia's work — what we built, what we learned, what we changed."
+      "title": "What it costs, what to choose, how to build.",
+      "intro": "Pricing, comparisons and guides for businesses planning a website or a web app. Written from CODEPEDIA projects."
     },
     "empty": "No published posts yet.",
-    "related": "Related articles"
+    "related": "Read next",
+    "all": "All",
+    "latest": "Latest",
+    "read": "Read",
+    "toc": "Contents",
+    "published": "Published",
+    "updated": "Updated",
+    "next": "Next step",
+    "min": "min",
+    "back": "Blog",
+    "breadcrumb": "Breadcrumb",
+    "categories": "Categories",
+    "category": {
+      "seoTitle": "{name} · Blog",
+      "seoDescription": "Codepedia articles in “{name}”: pricing, comparisons and guides for businesses planning a website or a web app."
+    }
   },
   "error": {
     "sectionLabel": "Error",

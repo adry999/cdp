@@ -213,6 +213,10 @@ export default defineNuxtConfig({
         ro: '/servicii/[slug]',
         en: '/services/[slug]',
       },
+      'blog-categorie-slug': {
+        ro: '/blog/categorie/[slug]',
+        en: '/blog/category/[slug]',
+      },
       contact: {
         ro: '/contact',
         en: '/contact',

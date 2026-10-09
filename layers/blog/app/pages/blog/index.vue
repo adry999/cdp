@@ -26,13 +26,7 @@ useJsonLd(() => ({
 
 <template>
   <div>
-    <BlogHero />
-    <SiteSection number="01" :label="t('nav.blog')">
-      <h2 class="sr-only">{{ t('nav.blog') }}</h2>
-      <div v-if="posts?.length" class="grid grid-fit-280 gap-4">
-        <BlogCard v-for="post in posts" :key="post.path" :post="post" />
-      </div>
-      <p v-else class="m-0 text-base text-muted">{{ t('blog.empty') }}</p>
-    </SiteSection>
+    <BlogHero :posts="posts ?? []" :current="null" />
+    <BlogListing :posts="posts ?? []" :category="null" />
   </div>
 </template>
