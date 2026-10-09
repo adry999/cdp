@@ -79,11 +79,13 @@ Fotografiile și datele site-ului stau în conturile clientului, nu pe serverul 
 The site's photos and data live in the client's own accounts, not on the old server. For parents, the site looks the same as before, only built to load well on phones too.$t$
 where slug_ro = 'startica-site';
 
+-- The live "Client" fact stays: the client is already named on the public page.
 delete from public.project_facts
- where project_id = (select id from public.projects where slug_ro = 'startica-site');
+ where project_id = (select id from public.projects where slug_ro = 'startica-site')
+   and label_en <> 'Client';
 
 insert into public.project_facts (project_id, label_ro, label_en, value_ro, value_en, sort_order)
-select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order
+select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order + 1
   from public.projects p
  cross join (values
    ('Tip', 'Type', 'Site de business cu panou de administrare', 'Business website with admin panel', 0),

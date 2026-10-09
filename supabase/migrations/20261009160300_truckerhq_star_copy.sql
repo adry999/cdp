@@ -81,11 +81,13 @@ Omul primește confirmarea pe loc, echipa vede din analytics ce pagini și instr
 The carrier gets a confirmation on the spot, the team sees in analytics which pages and tools bring in clients, and Russian speakers find the service in their own language.$t$
 where slug_ro = 'truckerhq';
 
+-- The live "Client" fact stays: the client is already named on the public page.
 delete from public.project_facts
- where project_id = (select id from public.projects where slug_ro = 'truckerhq');
+ where project_id = (select id from public.projects where slug_ro = 'truckerhq')
+   and label_en <> 'Client';
 
 insert into public.project_facts (project_id, label_ro, label_en, value_ro, value_en, sort_order)
-select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order
+select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order + 1
   from public.projects p
  cross join (values
    ('Tip', 'Type', 'Platformă web de generare a clienților', 'Lead generation web platform', 0),

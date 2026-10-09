@@ -80,11 +80,13 @@ Site-ul arată bine pe telefon, se poate parcurge cu tastatura, apare corect în
 The site works well on phones, can be used by keyboard, appears correctly in search in both languages, and needs no daily upkeep.$t$
 where slug_ro = 'aurelia-badiur';
 
+-- The live "Client" fact stays: the client is already named on the public page.
 delete from public.project_facts
- where project_id = (select id from public.projects where slug_ro = 'aurelia-badiur');
+ where project_id = (select id from public.projects where slug_ro = 'aurelia-badiur')
+   and label_en <> 'Client';
 
 insert into public.project_facts (project_id, label_ro, label_en, value_ro, value_en, sort_order)
-select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order
+select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order + 1
   from public.projects p
  cross join (values
    ('Tip', 'Type', 'Site de prezentare, o pagină, 2 limbi', 'One-page presentation site, 2 languages', 0),

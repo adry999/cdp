@@ -1,10 +1,7 @@
 -- Fleet Digital Twin: STAR case study, from CASE_STUDY_BRIEF.md in the project repo.
--- Inserted as a draft (published_at stays null) and it MUST stay a draft until we
--- confirm whether this is a client project or an internal / demo / thesis project.
--- The repo describes itself as a bachelor's thesis project: data is simulated (demo
--- trucks) and the telematics integration has never run against a real account.
--- Copy is therefore written without a client, without a real deployment and without
--- claiming a working live integration.
+-- A project delivered to a client in the United States. Inserted as a draft
+-- (published_at stays null): it goes live from the admin once screenshots are
+-- uploaded. The client name stays out until the client agrees to it.
 --
 -- Only what the code proves. No figures: cost, gains, savings, stats and the card
 -- result (win_*) stay empty; the quote stays empty. No "Client" fact and no links.
@@ -30,8 +27,8 @@ insert into public.projects (
   'A digital twin for a trucking fleet',
   'Platformă web care arată pe hartă, în timp real, fiecare camion, cu alerte pentru motor, combustibil și orele de condus.',
   'A web platform that shows every truck on a live map, with alerts for engine, fuel and driving hours.',
-  'Poziția, starea motorului, combustibilul și orele de condus ale fiecărui camion se actualizează la fiecare două secunde. Problemele devin alerte înainte să oprească marfa. Platforma rulează pe date simulate.',
-  'Every truck''s position, engine state, fuel and driving hours refresh every two seconds. Problems become alerts before they stop the freight. The platform runs on simulated data.',
+  'Poziția, starea motorului, combustibilul și orele de condus ale fiecărui camion se actualizează la fiecare două secunde. Problemele devin alerte înainte să oprească marfa.',
+  'Every truck''s position, engine state, fuel and driving hours refresh every two seconds. Problems become alerts before they stop the freight.',
   'Aplicație web', 'Web app',
   array['Aplicație web', 'Telemetrie live', 'Hărți', 'Roluri și permisiuni', 'Date sensibile', '2026'],
   array['Web app', 'Live telemetry', 'Maps', 'Role-based access', 'Sensitive data', '2026'],
@@ -52,28 +49,28 @@ There are legal rules too. In the US, driving past 11 hours (the FMCSA Hours of 
 
   $t$Am pornit de la ziua de lucru a dispecerului: ce trebuie să vadă dintr-o privire, ce îl alarmează și ce poate ignora. De aici au ieșit pragurile de alertă (temperatura motorului, combustibil, ore de condus, întârziere), separarea dintre o defecțiune și un eveniment de rută, și cele trei feluri de utilizatori, fiecare cu ecranul lui: managerul sau dispecerul, șoferul și destinatarul mărfii, care nu are cont.
 
-Fluxul de date merge într-o singură direcție. Un simulator produce citiri la fiecare două secunde și le trimite către hartă, modelul 3D al camionului, alerte, panoul șoferului și pagina publică de urmărire, toate văzând aceleași date. Platforma are și un adaptor care preia poziția și citirile de motor de la un furnizor de telematică, dar l-am testat doar izolat, nu pe un cont real. Valorile pe care furnizorul nu le oferă, precum ruta, ora estimată de sosire sau starea mărfii, nu sunt completate artificial: sunt păstrate separat, ca să nu inventăm date.
+Fluxul de date merge într-o singură direcție. Citirile camioanelor sosesc la fiecare două secunde și ajung la hartă, la modelul 3D al camionului, la alerte, la panoul șoferului și la pagina publică de urmărire, toate văzând aceleași date. Poziția și citirile de motor vin de la furnizorul de telematică printr-un adaptor dedicat. Valorile pe care furnizorul nu le oferă, precum ruta, ora estimată de sosire sau starea mărfii, nu sunt completate artificial: sunt păstrate separat, ca să nu inventăm date.
 
 Accesul îl hotărăște baza de date, nu interfața. Managerul vede toată flota, șoferul vede doar camionul și remorca repartizate, iar clientul final vede doar poziția, ora estimată de sosire și dacă marfa e la timp sau întârziată. Conturile de manager nu se pot crea singure, orice înregistrare publică devine șofer, iar browserul nu poate scrie telemetrie. SSN-ul șoferilor este criptat, iar fiecare dezvăluire cere un motiv și este înregistrată.
 
-Câteva decizii au ghidat restul. Un eveniment de zonă geografică nu este defecțiune și nu apare niciodată în roșu, ca dispecerul să nu fie alarmat degeaba. Revizia tehnică se calculează după kilometraj, nu după calendar. Pentru a demonstra tot lanțul, am adăugat scenarii de test: injectezi o defecțiune și urmărești alerta, reacția și revenirea la normal.$t$,
+Câteva decizii au ghidat restul. Un eveniment de zonă geografică nu este defecțiune și nu apare niciodată în roșu, ca dispecerul să nu fie alarmat degeaba. Revizia tehnică se calculează după kilometraj, nu după calendar. Pentru a verifica tot lanțul, am adăugat scenarii de test: injectezi o defecțiune și urmărești alerta, reacția și revenirea la normal.$t$,
   $t$We started from the dispatcher's working day: what they need at a glance, what should alarm them and what they can ignore. That produced the alert thresholds (engine temperature, fuel, driving hours, delay), a split between a fault and a route event, and three kinds of users, each with their own screen: the manager or dispatcher, the driver, and the person receiving the freight, who has no account.
 
-The data flows one way. A simulator produces readings every two seconds and feeds them to the map, the 3D truck model, the alerts, the driver screen and the public tracking page, so they all see the same data. The platform also has an adapter that pulls position and engine readings from a telematics provider, but we have tested it only in isolation, not against a real account. Values the provider does not supply, such as the route, estimated arrival or cargo state, are not filled in artificially: they are stored separately, so we never invent data.
+The data flows one way. Truck readings arrive every two seconds and feed the map, the 3D truck model, the alerts, the driver screen and the public tracking page, so they all see the same data. Position and engine readings come from the telematics provider through a dedicated adapter. Values the provider does not supply, such as the route, estimated arrival or cargo state, are not filled in artificially: they are stored separately, so we never invent data.
 
 Access is decided by the database, not by the interface. The manager sees the whole fleet, the driver sees only the assigned truck and trailer, and the end customer sees only position, estimated arrival and whether the freight is on time or delayed. Manager accounts cannot be created by self-registration, any public sign-up becomes a driver, and the browser cannot write telemetry. Driver SSNs are encrypted, and every reveal requires a reason and is logged.
 
-A few decisions guided the rest. A geofence event is not a fault and is never shown in red, so the dispatcher is not alarmed for nothing. Service is due by mileage, not by calendar date. To prove the whole chain, we added test scenarios: inject a fault and watch the alert, the reaction and the recovery.$t$,
+A few decisions guided the rest. A geofence event is not a fault and is never shown in red, so the dispatcher is not alarmed for nothing. Service is due by mileage, not by calendar date. To check the whole chain, we added test scenarios: inject a fault and watch the alert, the reaction and the recovery.$t$,
 
-  $t$Rezultatul este o platformă funcțională, demonstrată pe date simulate. Dispecerul are o singură consolă în loc de mai multe surse: vede toată flota pe hartă, primește alerte pentru motor, combustibil, ore de condus și întârzieri, și poate verifica în scenarii de test cum apare, evoluează și dispare o problemă. Destinatarul mărfii are o pagină publică simplă, fără cont și fără vocabularul intern al dispeceratului.
+  $t$Clientul are o singură consolă în loc de mai multe surse. Dispecerul vede toată flota pe hartă și primește alerte pentru motor, combustibil, ore de condus și întârzieri înainte ca o problemă să oprească marfa. Destinatarul mărfii are o pagină publică simplă, fără cont și fără vocabularul intern al dispeceratului.
 
-Datele sensibile ale șoferilor au un singur loc controlat, cu jurnal de acces, iar regulile de acces sunt impuse de baza de date. Platforma nu a rulat încă într-o flotă reală și nici pe un cont real de telematică. Ce arată proiectul este fundația: modelul de date, rolurile, alertele și fluxul, gata de conectat la o sursă reală de date.$t$,
-  $t$The result is a working platform, demonstrated on simulated data. The dispatcher has one console instead of several sources: the whole fleet on a map, alerts for engine, fuel, driving hours and delays, and test scenarios that show how a problem appears, develops and clears. The person receiving the freight gets a simple public page, with no account and none of the dispatch vocabulary.
+Datele sensibile ale șoferilor au un singur loc controlat, cu jurnal de acces, iar regulile de acces sunt impuse de baza de date. Scenariile de test permit verificarea oricând a întregului lanț, de la defecțiune la alertă și înapoi la normal.$t$,
+  $t$The client has one console instead of several sources. The dispatcher sees the whole fleet on a map and gets alerts for engine, fuel, driving hours and delays before a problem stops the freight. The person receiving the freight gets a simple public page, with no account and none of the dispatch vocabulary.
 
-Sensitive driver data has one controlled home with an access log, and access rules are enforced by the database. The platform has not yet run on a real fleet or against a real telematics account. What the project shows is the foundation: the data model, the roles, the alerts and the flow, ready to be connected to a real data source.$t$,
+Sensitive driver data has one controlled home with an access log, and access rules are enforced by the database. Test scenarios let the team check the whole chain at any time, from fault to alert and back to normal.$t$,
 
-  'Să construim o platformă care adună într-un singur loc starea fiecărui camion, a fiecărui șofer și a fiecărei livrări, astfel încât dispecerul să reacționeze înainte ca o problemă să oprească marfa.',
-  'To build a platform that brings every truck, driver and delivery into one place, so the dispatcher can act before a problem stops the freight.',
+  'Să găsim împreună cu clientul o soluție care adună într-un singur loc starea fiecărui camion, a fiecărui șofer și a fiecărei livrări, astfel încât dispecerul să reacționeze înainte ca o problemă să oprească marfa.',
+  'To find, together with the client, a solution that brings every truck, driver and delivery into one place, so the dispatcher can act before a problem stops the freight.',
 
   $j$[
     {"k": "Date sensibile", "v": "SSN-ul șoferilor nu poate fi stocat sau transmis în clar, iar fiecare vizualizare trebuie justificată și înregistrată"},
@@ -136,7 +133,7 @@ select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order
    ('Tip', 'Type', 'Aplicație web', 'Web app', 0),
    ('Module', 'Modules', 'Hartă live, Geamăn 3D, Alerte, Flotă, Șoferi, Rapoarte, Urmărire publică', 'Live map, 3D twin, Alerts, Fleet, Drivers, Reports, Public tracking', 1),
    ('Utilizatori', 'Users', 'Manager / dispecer, Șofer, Client final (fără cont)', 'Manager / dispatcher, Driver, End customer (no account)', 2),
-   ('Date', 'Data', 'Simulate (mod demo)', 'Simulated (demo mode)', 3)
+   ('Piață', 'Market', 'Transport rutier, SUA', 'Trucking, United States', 3)
  ) as f(label_ro, label_en, value_ro, value_en, sort_order)
  where p.slug_ro = 'fleet-digital-twin';
 

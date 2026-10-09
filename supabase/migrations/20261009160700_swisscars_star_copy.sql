@@ -83,11 +83,13 @@ Are control asupra a ceea ce se vede pe site (mașini, texte, contacte) și vizi
 The dealer controls what the site shows (cars, texts, contacts) and sees incoming enquiries and newsletter subscribers. Buyers can browse the catalog, save cars to favourites, estimate a leasing payment and request an offer without having to start with a phone call.$t$
 where slug_ro = 'swisscars';
 
+-- The live "Client" fact stays: the client is already named on the public page.
 delete from public.project_facts
- where project_id = (select id from public.projects where slug_ro = 'swisscars');
+ where project_id = (select id from public.projects where slug_ro = 'swisscars')
+   and label_en <> 'Client';
 
 insert into public.project_facts (project_id, label_ro, label_en, value_ro, value_en, sort_order)
-select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order
+select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order + 1
   from public.projects p
  cross join (values
    ('Tip', 'Type', 'Site de business cu panou de administrare', 'Business website with admin panel', 0),

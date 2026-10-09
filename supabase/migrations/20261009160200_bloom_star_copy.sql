@@ -81,11 +81,13 @@ Vânzătorii nu mai pot vinde ce nu există, iar orice modificare are un autor �
 Sellers can no longer sell what isn't there, and every change has an author in the log.$t$
 where slug_ro = 'bloom';
 
+-- The live "Client" fact stays: the client is already named on the public page.
 delete from public.project_facts
- where project_id = (select id from public.projects where slug_ro = 'bloom');
+ where project_id = (select id from public.projects where slug_ro = 'bloom')
+   and label_en <> 'Client';
 
 insert into public.project_facts (project_id, label_ro, label_en, value_ro, value_en, sort_order)
-select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order
+select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order + 1
   from public.projects p
  cross join (values
    ('Tip', 'Type', 'Aplicație web internă', 'Internal web app', 0),

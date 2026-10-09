@@ -88,11 +88,13 @@ Copilul primește o diplomă cu numele lui, pe care familia o poate păstra și 
 The child gets a diploma with their name, which the family can keep and share. The website, the flyer and social media look the same, so parents recognise the school wherever they see it.$t$
 where slug_ro = 'englishminds';
 
+-- The live "Client" fact stays: the client is already named on the public page.
 delete from public.project_facts
- where project_id = (select id from public.projects where slug_ro = 'englishminds');
+ where project_id = (select id from public.projects where slug_ro = 'englishminds')
+   and label_en <> 'Client';
 
 insert into public.project_facts (project_id, label_ro, label_en, value_ro, value_en, sort_order)
-select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order
+select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order + 1
   from public.projects p
  cross join (values
    ('Tip', 'Type', 'Site de business, brand și marketing', 'Business website, brand and marketing', 0),
