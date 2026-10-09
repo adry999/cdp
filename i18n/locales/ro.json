@@ -74,7 +74,7 @@
       "sectionLabel": "Servicii",
       "title": "De unde ai vrea să începem munca? Vezi fiecare etapă.",
       "intro": "Cinci etape, de la o pagină rapidă până la inginerie AI la comandă. Alege unde ești acum — de acolo pornim.",
-      "note": "Prețurile și termenele de execuție sunt orientative și depind de specificațiile proiectului.",
+      "note": "Colaborarea se desfășoară prin audit tehnic inițial și sprinturi sau abonament lunar, adaptându-ne pe parcurs la specificul proiectului.",
       "notSureLink": "Nu ești sigur ce etapă ți se potrivește? Scrie-ne.",
       "grants": {
         "kicker": "Proiecte finanțate prin granturi",
@@ -105,7 +105,10 @@
             "Formular conectat"
           ],
           "cta": "Lansează pagina",
-          "whyUs": "Site-urile construite în platforme de tip DIY (do-it-yourself) îți economisesc bani acum, dar te costă credibilitate. O pagină creată de profesioniști se încarcă mai rapid și chiar convertește vizitatorii în clienți."
+          "whyUs": "Site-urile construite în platforme de tip DIY (do-it-yourself) îți economisesc bani acum, dar te costă credibilitate. O pagină creată de profesioniști se încarcă mai rapid și chiar convertește vizitatorii în clienți.",
+          "pricing": "Preț fix",
+          "timing": "2–3 zile",
+          "pricingTooltip": "Plătești o sumă fixă definită în contract pentru un pachet cu specificații stricte (Pagină Express)."
         },
         "B": {
           "name": "DE LA CONCEPT LA SPECIFICAȚIE",
@@ -118,7 +121,10 @@
             "Definirea produsului"
           ],
           "cta": "Clarifică-mi conceptul",
-          "whyUs": "Sărirea peste etapa de specificație înseamnă de obicei costuri suplimentare și întârzieri mai târziu. Aliniem logica de business cu realitatea tehnică înainte de a scrie vreo linie de cod."
+          "whyUs": "Sărirea peste etapa de specificație înseamnă de obicei costuri suplimentare și întârzieri mai târziu. Aliniem logica de business cu realitatea tehnică înainte de a scrie vreo linie de cod.",
+          "pricing": "Audit & Arhitectură",
+          "timing": "~1 săptămână",
+          "pricingTooltip": "Un audit tehnic la preț fix pentru a defini exact specificațiile, arhitectura și planul de execuție."
         },
         "A": {
           "name": "DIN DESIGN ÎN COD",
@@ -132,7 +138,10 @@
             "Schemă Postgres"
           ],
           "cta": "Transformă designul în cod",
-          "whyUs": "Agențiile offshore livrează deseori cod greu de întreținut. Noi livrăm o arhitectură curată, scalabilă, pe care o deții în totalitate."
+          "whyUs": "Agențiile offshore livrează deseori cod greu de întreținut. Noi livrăm o arhitectură curată, scalabilă, pe care o deții în totalitate.",
+          "pricing": "Abonament / Sprint",
+          "timing": "3–6 săptămâni",
+          "pricingTooltip": "Lucrăm ca echipa ta tehnică. Plătești un abonament lunar sau pe sprint, având flexibilitate totală la specificații."
         },
         "C": {
           "name": "SCALARE ȘI EXTINDERE",
@@ -146,7 +155,10 @@
             "Refactorizare incrementală"
           ],
           "cta": "Extinde-mi produsul",
-          "whyUs": "În loc doar să aplicăm „plasturi” peste erori, modernizăm stiva tehnologică treptat, astfel încât să poți crește fără a arunca la gunoi codul existent."
+          "whyUs": "În loc doar să aplicăm „plasturi” peste erori, modernizăm stiva tehnologică treptat, astfel încât să poți crește fără a arunca la gunoi codul existent.",
+          "pricing": "Abonament lunar",
+          "timing": "Continuu",
+          "pricingTooltip": "Capacitate tehnică dedicată continuă, care asigură stabilitate, actualizări constante și timp de reacție rapid."
         },
         "D": {
           "name": "AUTOMATIZAREA PROCESELOR CU AI",
@@ -160,7 +172,10 @@
             "Control & audit"
           ],
           "cta": "Automatizează-mi fluxul",
-          "whyUs": "Soluțiile de inteligență artificială generice sunt limitate. Construim automatizări sigure și personalizate pentru fluxul tău specific de business."
+          "whyUs": "Soluțiile de inteligență artificială generice sunt limitate. Construim automatizări sigure și personalizate pentru fluxul tău specific de business.",
+          "pricing": "Abonament / Sprint",
+          "timing": "6–12 săptămâni",
+          "pricingTooltip": "Automatizările complexe sunt construite în sprinturi gestionate, oferindu-ți control total asupra ritmului și bugetului."
         }
       },
       "whyUsLabel": "De ce noi?"
@@ -590,33 +605,11 @@
   "pricing": {
     "sectionLabel": "Prețuri",
     "seo": {
-      "title": "Preț fix pe fiecare etapă.",
-      "description": "Dacă subestimăm complexitatea unei sarcini, absorbim costul orelor suplimentare. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră."
+      "title": "Echipa ta tehnică, la abonament.",
+      "description": "Fără costuri ascunse. În loc de pachete rigide, lucrăm prin sprinturi agile sau abonamente lunare, devenind partenerul tău tehnic pe termen lung."
     },
-    "title": "Preț fix pe fiecare etapă.",
-    "intro": "Dacă subestimăm complexitatea unei sarcini, absorbim costul orelor suplimentare. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră.",
-    "stages": {
-      "E": {
-        "pricePrefix": "Sub",
-        "time": "2–3 zile"
-      },
-      "B": {
-        "pricePrefix": "De la",
-        "time": "~1 săptămână"
-      },
-      "A": {
-        "pricePrefix": "De la",
-        "time": "3–6 săpt."
-      },
-      "C": {
-        "pricePrefix": "De la",
-        "time": "4–8 săpt."
-      },
-      "D": {
-        "pricePrefix": "De la",
-        "time": "6–12 săpt."
-      }
-    },
+    "title": "Echipa ta tehnică, la abonament.",
+    "intro": "Fiecare afacere are cerințe unice. În loc de estimări oarbe și bugete depășite, facem o analiză tehnică (diagnostic), apoi devenim echipa ta tehnică printr-un parteneriat pe termen lung.",
     "included": {
       "label": "Inclus mereu",
       "items": [
@@ -635,16 +628,18 @@
       ]
     },
     "afterLaunch": {
-      "label": "După lansare",
-      "title": "Abonament lunar sau echipa ta. Ambele funcționează.",
+      "label": "Modelul nostru",
+      "title": "Abonament lunar sau sprinturi dedicate.",
       "plans": {
         "maintenance": {
           "label": "Mentenanță",
-          "body": "Actualizări, monitorizare, backup și un număr fix de ore pentru modificări mici."
+          "price": "Predictibil",
+          "body": "Pentru produse deja lansate. Actualizări, monitorizare, backup și un număr fix de ore sau sprinturi lunare pentru dezvoltare."
         },
         "continuous": {
           "label": "Dezvoltare continuă",
-          "body": "Sprinturi de două săptămâni cu demo, pentru funcționalități noi și scalare."
+          "price": "Agil & Flexibil",
+          "body": "Pentru construcția unui produs nou sau scalare agresivă. Sprinturi de două săptămâni cu demo."
         }
       },
       "warrantyNote": "*Garanția acoperă erorile tehnice și conformitatea cu specificația agreată; modificările de design sau funcționalitățile noi reprezintă extinderi de scop."
@@ -654,7 +649,7 @@
       "items": [
         {
           "question": "Cât costă un proiect?",
-          "answer": "Fiecare proiect pornește cu o primă versiune funcțională și continuă pe etape. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră."
+          "answer": "Majoritatea colaborărilor noastre se desfășoară pe bază de abonament lunar sau sprinturi. Înainte de a scrie cod, realizăm un audit plătit (diagnostic) în urma căruia primești specificația tehnică și planul de dezvoltare."
         },
         {
           "question": "Preluați proiecte începute de altcineva?",
@@ -665,7 +660,8 @@
           "answer": "Treizeci de zile de suport pentru bug-uri sunt incluse. După aceea poți continua cu un abonament lunar sau cu echipa ta. Ambele variante funcționează."
         }
       ]
-    }
+    },
+    "engagementModel": "Model de colaborare"
   },
   "about": {
     "seo": {

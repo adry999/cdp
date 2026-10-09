@@ -6,10 +6,12 @@ export const HOME_NAV_LINKS: SiteNavLink[] = [
   { kind: 'hash', hash: '#servicii', label: 'nav.services' },
   { kind: 'hash', hash: '#proiecte', label: 'nav.work' },
   { kind: 'hash', hash: '#stack', label: 'nav.stack' },
+  { kind: 'route', routeName: 'preturi', label: 'nav.pricing' },
 ]
 
 export const PAGE_NAV_LINKS: SiteNavLink[] = [
   { kind: 'route', routeName: 'servicii', label: 'nav.services' },
   { kind: 'route', routeName: 'proiecte', label: 'nav.work' },
   { kind: 'hash', hash: '#stack', label: 'nav.stack' },
+  { kind: 'route', routeName: 'preturi', label: 'nav.pricing' },
 ]

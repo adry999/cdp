@@ -60,7 +60,7 @@ if (import.meta.client && phrases.length > 1) {
 
 <template>
   <div class="relative overflow-hidden">
-    <HomeInteractiveBackground v-if="heroVariant" :variant="heroVariant" />
+    <CoreInteractiveBackground v-if="heroVariant" :variant="heroVariant" />
     <div class="relative z-10">
       <SiteSection section-id="top" number="00" :label="t('home.hero.sectionLabel')" padding="heroCompact" :top-border="false">
       <h1 class="sr-only">{{ phrases[0] }} {{ t('home.hero.titleSuffix') }}</h1>

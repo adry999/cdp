@@ -17,6 +17,9 @@ usePageSeo({
 
 <template>
   <SiteSection number="—" :label="t('home.contact.sectionLabel')" padding="hero" :top-border="false">
+    <template #background>
+      <CoreInteractiveBackground variant="dot-matrix" />
+    </template>
     <div class="flex flex-wrap gap-[clamp(32px,5vw,72px)]">
       <div class="min-w-0 flex-[1_1_380px]">
         <h1 class="m-0 max-w-[16ch] text-[clamp(34px,5vw,56px)] font-semibold leading-[1.05] tracking-[-0.025em]">

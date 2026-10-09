@@ -14,10 +14,12 @@ usePageSeo({
 </script>
 
 <template>
-  <div class="mx-auto max-w-[720px] px-gutter py-[clamp(48px,8vw,96px)]">
-    <h1 class="m-0 max-w-[28ch] text-[clamp(28px,4vw,44px)] font-semibold leading-[1.1] tracking-[-0.025em]">
-      {{ content.title }}
-    </h1>
+  <div class="relative overflow-hidden">
+    <CoreInteractiveBackground variant="dot-matrix" />
+    <div class="relative z-10 mx-auto max-w-[720px] px-gutter py-[clamp(48px,8vw,96px)]">
+      <h1 class="m-0 max-w-[28ch] text-[clamp(28px,4vw,44px)] font-semibold leading-[1.1] tracking-[-0.025em]">
+        {{ content.title }}
+      </h1>
     <p class="mt-3 eyebrow text-muted">{{ content.updated }}</p>
     <p class="mt-6 text-base text-muted">{{ content.intro }}</p>
 
@@ -29,5 +31,6 @@ usePageSeo({
         </p>
       </div>
     </div>
+  </div>
   </div>
 </template>

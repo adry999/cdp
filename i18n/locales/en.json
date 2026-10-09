@@ -74,7 +74,7 @@
       "sectionLabel": "Services",
       "title": "Where do you want to start? See each stage.",
       "intro": "Five stages, from a fast one-page launch to custom AI engineering. Pick where you are now — that's where we begin.",
-      "note": "Prices and timelines are indicative and depend on specific project scope.",
+      "note": "Engagements start with a technical audit, followed by sprints or a monthly retainer, adapting to the evolving needs of your product.",
       "notSureLink": "Not sure which stage fits you best? Write to us.",
       "grants": {
         "kicker": "Grant-funded projects",
@@ -105,7 +105,10 @@
             "Form Connected"
           ],
           "cta": "Launch my page",
-          "whyUs": "DIY builders save money now but cost you credibility. A pro page loads faster and actually converts your traffic."
+          "whyUs": "DIY builders save money now but cost you credibility. A pro page loads faster and actually converts your traffic.",
+          "pricing": "Fixed Price",
+          "timing": "2–3 days",
+          "pricingTooltip": "You pay a fixed amount defined in the contract for a strictly defined scope (Express Page)."
         },
         "B": {
           "name": "CONCEPT TO SPEC",
@@ -118,7 +121,10 @@
             "Product Scope"
           ],
           "cta": "Map out my concept",
-          "whyUs": "Skipping the spec phase usually means scope creep later. We align business logic with tech reality before writing any code."
+          "whyUs": "Skipping the spec phase usually means scope creep later. We align business logic with tech reality before writing any code.",
+          "pricing": "Paid Discovery",
+          "timing": "~1 week",
+          "pricingTooltip": "A fixed-price technical audit to map out requirements, architecture, and exact roadmap before any build."
         },
         "A": {
           "name": "DESIGN TO CODE",
@@ -132,7 +138,10 @@
             "Postgres Schema"
           ],
           "cta": "Turn my design into code",
-          "whyUs": "Offshore agencies often produce unmaintainable code. We ship clean, typed, scalable architecture you actually own."
+          "whyUs": "Offshore agencies often produce unmaintainable code. We ship clean, typed, scalable architecture you actually own.",
+          "pricing": "Retainer",
+          "timing": "3–6 weeks",
+          "pricingTooltip": "We work as your dedicated team. You pay a predictable monthly retainer or per sprint, prioritizing features as we go."
         },
         "C": {
           "name": "SCALE & EXTEND",
@@ -146,7 +155,10 @@
             "Incremental Refactor"
           ],
           "cta": "Scale my product",
-          "whyUs": "Instead of just patching bugs, we modernize your stack iteratively so you can grow without throwing away existing code."
+          "whyUs": "Instead of just patching bugs, we modernize your stack iteratively so you can grow without throwing away existing code.",
+          "pricing": "Retainer",
+          "timing": "Ongoing",
+          "pricingTooltip": "Ongoing dedicated capacity for active products to ensure stability, continuous delivery, and quick pivots."
         },
         "D": {
           "name": "AI PROCESS AUTOMATION",
@@ -160,7 +172,10 @@
             "Control & Audit"
           ],
           "cta": "Automate my workflow",
-          "whyUs": "Off-the-shelf AI tools are generic. We build custom automations that fit your exact business process securely."
+          "whyUs": "Off-the-shelf AI tools are generic. We build custom automations that fit your exact business process securely.",
+          "pricing": "Retainer",
+          "timing": "6–12 weeks",
+          "pricingTooltip": "Complex custom automations are built in managed sprints, giving you full control over the pace and scope."
         }
       },
       "whyUsLabel": "Why work with us?"
@@ -590,71 +605,51 @@
   "pricing": {
     "sectionLabel": "Pricing",
     "seo": {
-      "title": "A fixed price for every stage.",
-      "description": "If we underestimate the complexity of a task, we absorb the cost of the extra hours. The written estimate after the diagnostic always contains a figure."
+      "title": "Your tech team on subscription.",
+      "description": "No hidden costs. Instead of rigid packages, we work in agile sprints or monthly retainers, becoming your long-term technical partner."
     },
-    "title": "A fixed price for every stage.",
-    "intro": "If we underestimate the complexity of a task, we absorb the cost of the extra hours. The written estimate after the diagnostic always contains a figure.",
-    "stages": {
-      "E": {
-        "pricePrefix": "Under",
-        "time": "2–3 days"
-      },
-      "B": {
-        "pricePrefix": "From",
-        "time": "~1 week"
-      },
-      "A": {
-        "pricePrefix": "From",
-        "time": "3–6 wks"
-      },
-      "C": {
-        "pricePrefix": "From",
-        "time": "4–8 wks"
-      },
-      "D": {
-        "pricePrefix": "From",
-        "time": "6–12 wks"
-      }
-    },
+    "title": "Your tech team on subscription.",
+    "intro": "Every business has unique requirements. Instead of blind estimates and blown budgets, we perform a technical diagnostic, then become your engineering team through a long-term partnership.",
     "included": {
       "label": "Always included",
       "items": [
         {
-          "title": "Code in your own accounts",
-          "body": "The repository, database and infrastructure are set up directly in your accounts from day one."
+          "title": "Code in your accounts",
+          "body": "Repositories, databases, and infrastructure are deployed directly to your accounts from day one."
         },
         {
-          "title": "30 days of fixes",
-          "body": "Technical errors and deviations from the agreed specification, resolved at no cost."
+          "title": "30 days bug fixing",
+          "body": "Technical bugs and deviations from the agreed specifications are resolved at no extra cost."
         },
         {
           "title": "Documentation and handover",
-          "body": "Your team can carry the code forward without us."
+          "body": "Your internal team can take over the codebase seamlessly without us."
         }
       ]
     },
     "afterLaunch": {
-      "label": "After launch",
-      "title": "A monthly retainer or your own team. Both work.",
+      "label": "Our Model",
+      "title": "Monthly retainer or dedicated sprints.",
       "plans": {
         "maintenance": {
-          "label": "Maintenance",
-          "body": "Updates, monitoring, backups and a fixed number of hours for small changes."
+          "label": "Retainer / Maintenance",
+          "price": "Predictable",
+          "body": "For live products. Updates, monitoring, backups, and a fixed number of hours or monthly sprints for ongoing development."
         },
         "continuous": {
-          "label": "Continuous development",
-          "body": "Two-week sprints with a demo, for new features and scaling."
+          "label": "Continuous Development",
+          "price": "Agile & Flexible",
+          "body": "For building new products or scaling fast. Two-week sprints with regular demos and full transparency."
         }
       },
-      "warrantyNote": "*The warranty covers technical errors and conformity with the agreed specification; design changes or new features count as scope extensions."
+      "warrantyNote": "*Warranty covers technical bugs and specification compliance; design changes or new features are scoped separately."
     },
     "faq": {
       "label": "Questions",
       "items": [
         {
           "question": "What does a project cost?",
-          "answer": "Every project starts with a working first version and moves in stages from there. The written assessment after the diagnostic call always contains a number."
+          "answer": "Most of our partnerships operate on a monthly retainer or sprint basis. Before writing code, we conduct a paid diagnostic (audit), resulting in a clear technical specification and roadmap."
         },
         {
           "question": "Do you take over someone else's project?",
@@ -665,7 +660,8 @@
           "answer": "Thirty days of bug support are included. After that you can keep us on a monthly retainer or run the project with your own team. Both work."
         }
       ]
-    }
+    },
+    "engagementModel": "Engagement Model"
   },
   "about": {
     "seo": {

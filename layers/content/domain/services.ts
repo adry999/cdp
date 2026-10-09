@@ -12,6 +12,7 @@ export interface ServiceStage extends ServiceStageDef {
   whatYouGet: string
   badges: string[]
   cta: string
+  pricingTooltip?: string
 }
 
 export const SERVICE_STAGE_DEFS: readonly ServiceStageDef[] = STAGE_ORDER.map((id) => ({ id }))

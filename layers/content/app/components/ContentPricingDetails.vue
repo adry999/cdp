@@ -33,11 +33,11 @@ const PLAN_IDS = ['maintenance', 'continuous'] as const
 
 <template>
   <div>
-    <SiteSection :label="t('pricing.included.label')">
+    <SiteSection :label="t('pricing.included.label')" inverted>
       <div class="grid grid-fit-safe-240 gap-x-6 gap-y-8">
         <div v-for="item in included" :key="item.title">
           <h3 class="m-0 text-lg font-medium tracking-[-0.02em]">{{ item.title }}</h3>
-          <p class="m-0 mt-2.5 text-[15px] text-muted">{{ item.body }}</p>
+          <p class="m-0 mt-2.5 text-[15px] text-paper/80">{{ item.body }}</p>
         </div>
       </div>
     </SiteSection>
