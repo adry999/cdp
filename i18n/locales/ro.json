@@ -310,8 +310,6 @@
     "links": { "live": "Site live", "preview": "Preview CODEPEDIA", "figma": "Figma" },
     "galleryButton": "Galerie · {count} ecrane",
     "galleryHint": "Se deschide aici",
-    "demoConfirm": "Exemplu · de confirmat",
-    "linksDemo": "Linkuri preview / Figma: exemplu · de confirmat",
     "lightbox": {
       "label": "Galerie de capturi",
       "openImage": "Deschide imaginea {n}",
@@ -321,7 +319,6 @@
       "next": "Următor",
       "counter": "{current} / {total}"
     },
-    "screensDemo": "Ecrane cu date demonstrative",
     "nextTitle": "Ai un proiect asemănător?",
     "cta": "Hai să discutăm",
     "quote": "„{text}”"
@@ -419,7 +416,6 @@
     }
   },
   "projects": {
-    "demoBadge": "exemplu",
     "seo": {
       "title": "Proiecte",
       "description": "Studii de caz Codepedia: aplicații web, site-uri, WordPress, Shopify și automatizări AI livrate pentru clienți din toată lumea."
@@ -487,7 +483,6 @@
     },
     "title": "Preț fix pe fiecare etapă.",
     "intro": "Dacă subestimăm complexitatea unei sarcini, absorbim costul orelor suplimentare. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră.",
-    "pricePlaceholder": "[ X ] EUR",
     "stages": {
       "E": {
         "pricePrefix": "Sub",
@@ -533,12 +528,10 @@
       "plans": {
         "maintenance": {
           "label": "Mentenanță",
-          "price": "de la [ X ] EUR / lună",
           "body": "Actualizări, monitorizare, backup și un număr fix de ore pentru modificări mici."
         },
         "continuous": {
           "label": "Dezvoltare continuă",
-          "price": "de la [ X ] EUR / lună",
           "body": "Sprinturi de două săptămâni cu demo, pentru funcționalități noi și scalare."
         }
       },
@@ -549,7 +542,7 @@
       "items": [
         {
           "question": "Cât costă un proiect?",
-          "answer": "Majoritatea proiectelor pornesc de la [ X ] EUR pentru o primă versiune funcțională și continuă pe etape. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră."
+          "answer": "Fiecare proiect pornește cu o primă versiune funcțională și continuă pe etape. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră."
         },
         {
           "question": "Preluați proiecte începute de altcineva?",
@@ -569,11 +562,7 @@
     "principlesLabel": "Cum lucrăm",
     "team": {
       "label": "Echipa",
-      "title": "Oamenii cu care vorbești direct.",
-      "photo": "Fotografie",
-      "name": "[ Nume ]",
-      "role": "[ Funcție ]",
-      "placeholderNote": "Placeholder · nume, roluri și fotografii de completat"
+      "title": "Oamenii cu care vorbești direct."
     },
     "facts": {
       "based": {
