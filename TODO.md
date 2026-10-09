@@ -69,19 +69,30 @@ Așa, `codepedia.md/en/...` funcționează, dar Google indexează doar
 
 ## Studii de caz — per proiect
 
-Cele 7 studii de caz publicate (Startica app, Bloom, Trucker HQ, Startica site,
-Aurelia Badiur, EnglishMinds, SwissCars) au textul din prototip; secțiunile fără
-date afișează caseta „De completat". Pentru fiecare proiect:
+Toate studiile au text STAR scris din `CASE_STUDY_BRIEF*.md` al fiecărui proiect
+(PR #31, aplicat în baza de date 2026-10-09). Secțiunile fără date reale sunt
+ascunse, nu afișate ca placeholder. Ce lipsește încă vine de la client, nu se inventează.
 
-- [ ] cifrele de rezultat — trei statistici per proiect (secțiunea 06)
-- [ ] citatul clientului, una sau două propoziții (secțiunea 07)
-- [ ] atribuirea: nume, funcție, companie (sau acord scris pentru anonimizare —
-      dacă proiectul e sub NDA, blocul de citat se omite, nu se falsifică)
-- [ ] stack-ul pentru Startica site, Aurelia Badiur și EnglishMinds; restul
-      stack-ului pentru Startica app (bază de date, hosting, SMS) și SwissCars
-      (hosting, panou de administrare)
+Publicate (Startica app, Startica site, Bloom, Trucker HQ, Aurelia Badiur,
+EnglishMinds, SwissCars), pentru fiecare:
+
+- [ ] cifrele de rezultat (statistici, câștiguri, economii)
+- [ ] citatul clientului, una sau două propoziții, cu atribuire: nume, funcție,
+      companie (sau acord scris pentru anonimizare — dacă proiectul e sub NDA,
+      blocul de citat se omite, nu se falsifică)
+- [ ] data lansării, pentru intervalul de 6 luni de mentenanță din text
+- [ ] Startica app: sincronizarea între filiale apare ca „pregătită”; textul se
+      actualizează când rulează la client
 - [ ] SwissCars: pe site-ul live apar încă mesajele „Telefon lipsește” și
       „Adresa lipsește” — de verificat cu clientul
+
+Ciorne (Mees 68, Asfactorum, FC Scânteia, Fleet Digital Twin, Kindergarten app),
+de publicat din admin după:
+
+- [ ] capturi de ecran (Kindergarten app: doar pe date demo, repo-ul are date
+      reale ale copiilor)
+- [ ] numele clientului și acordul de a fi numit, linkul live
+- [ ] cifrele și citatul, ca mai sus
 
 ## EN de tradus — indexare
 
