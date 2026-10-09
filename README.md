@@ -20,7 +20,7 @@ Livrabilul de implementat are două părți:
    pagină de studiu de caz per proiect.
 2. **Admin dashboard** — zona din care se adaugă și se editează proiectele,
    serviciile, prețurile, FAQ-ul și setările de contact, în ambele limbi, fără
-   deploy. Specificația completă: `ADMIN.md`. Schema de bază de date: `DATA_MODEL.sql`.
+   deploy. Specificația completă: `docs/ADMIN.md`. Schema de bază de date: `docs/DATA_MODEL.sql`.
 
 ## About the Design Files
 
@@ -71,7 +71,7 @@ face cu linii de 1px `#E2DED6`.
 
 `#0B0B0B` este negrul oficial al brandului, preluat din sistemul de identitate.
 Identitatea este strict monocromă; portocaliul este o culoare de interfață, nu de
-brand. Detalii: `IDENTITY.md`.
+brand. Detalii: `docs/IDENTITY.md`.
 
 ### Tipografie
 
@@ -189,7 +189,7 @@ H3 pe `flex: 0 0 200px` și descrierea alături.
 **04 / Proiecte** — grilă de carduri de proiect (`minmax(280px,1fr)`): placeholder
 16/10, chip-uri de tech în mono 11px, H3 19px, descriere 16px, link „Vezi studiul de
 caz →" în mono 12px `#FF4D14`. Sub grilă, o notă mono: „Unele proiecte sunt sub NDA…".
-**Această grilă se populează din baza de date** (vezi `ADMIN.md`).
+**Această grilă se populează din baza de date** (vezi `docs/ADMIN.md`).
 
 **05 / Despre** — secțiune inversată (bg `#0B0B0B`). H2 „Un studio mic, cu oameni
 seniori pe fiecare proiect.", lead pe `#B4AFA6`, apoi trei rânduri (Proprietate,
@@ -247,7 +247,7 @@ exportat separat ca PDF/imagine dacă e nevoie.
 
 ### 4. Admin dashboard — `/admin`
 
-Specificație completă în `ADMIN.md`.
+Specificație completă în `docs/ADMIN.md`.
 
 ## Interactions & Behavior
 
@@ -310,7 +310,7 @@ Date, toate încărcate pe server (SSR / SSG cu revalidare):
 - `site_settings` pentru contact, program, următoarea disponibilitate, footer
 
 Admin — stare per formular, autentificare prin sesiune Supabase, invalidare de
-cache la salvare. Detalii în `ADMIN.md`.
+cache la salvare. Detalii în `docs/ADMIN.md`.
 
 ## Assets
 
@@ -318,7 +318,7 @@ cache la salvare. Detalii în `ADMIN.md`.
   self-host prin `@nuxt/fonts` pentru a evita requesturi externe.
 - **Logo**: sistem de identitate finalizat, livrat vectorial în `assets/`. Simbol
   `</>` și wordmark `CODEPEDIA`, ambele convertite în contururi, plus patru variante
-  de favicon. Reguli complete de utilizare, spațiu liber și geometrie: `IDENTITY.md`.
+  de favicon. Reguli complete de utilizare, spațiu liber și geometrie: `docs/IDENTITY.md`.
   **Nu redesena marca.**
 - **Iconuri**: designul nu folosește niciun icon. Săgețile sunt caractere text
   (`→`, `←`). Nu introduce o bibliotecă de iconuri.
@@ -347,8 +347,8 @@ Documente însoțitoare:
 | Fișier | Conținut |
 | --- | --- |
 | `CLAUDE.md` | Instrucțiuni pentru repo-ul Nuxt nou: stack, convenții, ordinea de lucru |
-| `IDENTITY.md` | Reguli de utilizare a logo-ului, favicon-ului și marcii |
+| `docs/IDENTITY.md` | Reguli de utilizare a logo-ului, favicon-ului și marcii |
 | `assets/` | Logo, wordmark și favicon, vectorial |
-| `ADMIN.md` | Specificația dashboard-ului de administrare |
-| `DATA_MODEL.sql` | Schema Postgres propusă, cu RLS |
+| `docs/ADMIN.md` | Specificația dashboard-ului de administrare |
+| `docs/DATA_MODEL.sql` | Schema Postgres propusă, cu RLS |
 | `TODO.md` | Ce lipsește ca date reale înainte de lansare |

@@ -1,5 +1,5 @@
 // Generates public/og-image.png: wordmark negative, centered on #0B0B0B, 1200 x 630.
-// Per IDENTITY.md "Imagine OG" spec. Run: npm run og-image
+// Per docs/IDENTITY.md "Imagine OG" spec. Run: npm run og-image
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import sharp from 'sharp'
