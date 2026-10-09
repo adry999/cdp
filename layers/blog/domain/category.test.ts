@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { CATEGORIES, CATEGORY_CODES, categoryFromSlug, isCategoryCode } from './category'
+import { CATEGORIES, CATEGORY_CODES, CATEGORY_INDEX_MIN_POSTS, categoryFromSlug, isCategoryCode, isCategoryIndexable } from './category'
 
 describe('category', () => {
   it('has a unique URL slug per locale for every code', () => {
@@ -19,5 +19,11 @@ describe('category', () => {
     expect(categoryFromSlug('preturi', 'ro')).toBe('COST')
     expect(categoryFromSlug('tech-choices', 'en')).toBe('ALEG')
     expect(categoryFromSlug('preturi', 'en')).toBeNull()
+  })
+
+  it('indexes a category page only from the minimum post count', () => {
+    expect(isCategoryIndexable(CATEGORY_INDEX_MIN_POSTS - 1)).toBe(false)
+    expect(isCategoryIndexable(CATEGORY_INDEX_MIN_POSTS)).toBe(true)
+    expect(isCategoryIndexable(0)).toBe(false)
   })
 })
