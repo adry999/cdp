@@ -32,5 +32,6 @@ Thumbs.db
 
 # Local agent config
 .claude/settings.local.json
+.claude/worktrees/
 supabase/.temp/
 .worktrees
