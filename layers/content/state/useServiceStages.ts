@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { SERVICE_STAGE_DEFS } from '#layers/content/domain/services'
 
 export async function useServiceStages() {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const i18nList = useI18nList()
 
   // Mocking the dynamic data (pricing and timing) with the intention of fetching it from Supabase later.
@@ -19,7 +19,7 @@ export async function useServiceStages() {
   })
 
   return computed(() => {
-    const loc = t('lang') === 'ro' ? 'ro' : 'en'
+    const loc = locale.value === 'ro' ? 'ro' : 'en'
     
     return SERVICE_STAGE_DEFS.map((def) => {
       const dyn = dynamicData.value?.find(d => d.id === def.id)
