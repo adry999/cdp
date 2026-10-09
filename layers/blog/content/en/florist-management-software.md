@@ -44,7 +44,7 @@ Florists need to see what to prepare in delivery order, on a phone or tablet, wi
 
 ## Example: Bloom
 
-[Bloom](/en/work/bloom) kept orders, stock and payments in three separate records, and losses only showed at stocktake. The app we built has an order board by status, batch stock, suppliers, losses by reason and online payments. Before the 8 March peak we tested simultaneous orders on the same batch and moved stock reservation straight into the database.
+[Bloom](/en/work/bloom) kept orders, stock and payments in three separate records, and losses only showed at stocktake. The app we built has an order board by status, batch stock, suppliers, losses by reason and online payments. An order, its items and reserved stock are created in a single database operation, and online payments are protected against paying twice for the same order.
 
 ## Off-the-shelf or your own app?
 

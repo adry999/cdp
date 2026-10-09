@@ -47,7 +47,7 @@ Dacă te regăsești în trei sau mai multe, o aplicație se plătește de obice
 
 [Bloom](/proiecte/bloom) ținea comenzile, stocul și plățile în trei evidențe separate. Pierderile de flori se vedeau doar la inventar. Am construit o aplicație cu tablă de comenzi pe statusuri, stoc pe loturi și pierderi înregistrate pe motive. Datele financiare au rămas vizibile doar pentru administrator.
 
-Înainte de 8 Martie, testele de încărcare au arătat că două comenzi simultane pe ultimele flori dintr-un lot puteau trece amândouă. Am mutat rezervarea stocului în baza de date, ca o singură operație, iar în ziua cu cele mai multe vânzări nu a existat nicio comandă fără stoc.
+Crearea unei comenzi atinge mai multe tabele deodată: comanda, articolele, stocul rezervat și jurnalul. Am mutat-o într-o singură operație în baza de date, ca o comandă să nu rămână niciodată salvată pe jumătate.
 
 ## Cât costă și cât durează
 

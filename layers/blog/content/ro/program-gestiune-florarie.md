@@ -44,7 +44,7 @@ Florarii trebuie să vadă ce au de pregătit în ordinea livrării, pe telefon 
 
 ## Exemplu: Bloom
 
-[Bloom](/proiecte/bloom) ținea comenzile, stocul și plățile în trei evidențe separate, iar pierderile se vedeau doar la inventar. Aplicația construită de noi are tablă de comenzi, stoc pe loturi, furnizori, pierderi pe motive și plăți online. Înainte de 8 Martie am testat comenzile simultane pe același lot și am mutat rezervarea stocului direct în baza de date.
+[Bloom](/proiecte/bloom) ținea comenzile, stocul și plățile în trei evidențe separate, iar pierderile se vedeau doar la inventar. Aplicația construită de noi are tablă de comenzi, stoc pe loturi, furnizori, pierderi pe motive și plăți online. Crearea unei comenzi, cu articolele și stocul rezervat, se face într-o singură operație în baza de date, iar plățile online sunt protejate de plata dublă pentru aceeași comandă.
 
 ## Program gata făcut sau aplicație proprie?
 

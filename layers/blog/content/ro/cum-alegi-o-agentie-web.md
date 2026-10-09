@@ -33,7 +33,7 @@ Teme, pluginuri, servicii externe. Fiecare are un cost anual care trebuie să ap
 Avans, versiune de test, lansare. Fiecare plată corespunde unui lucru pe care îl poți vedea și testa.
 
 ### 5. Ce se întâmplă dacă descoperim ceva nou la jumătatea proiectului?
-Întreabă de un exemplu real. La [Bloom](/proiecte/bloom), o problemă găsită la testele dinainte de 8 Martie a fost rezolvată fără să mute lansarea. Vrei o agenție care are astfel de povești, nu una care spune că nu i s-a întâmplat niciodată.
+Întreabă de un exemplu real. La [Bloom](/proiecte/bloom), pe parcurs au apărut vânzarea directă din magazin, raportul de pierderi pe motive și navigarea de jos pentru vânzătorii care lucrează de pe telefon. Vrei o agenție care are astfel de povești, nu una care spune că nu i s-a întâmplat niciodată.
 
 ### 6. Cum se tratează cererile noi apărute pe parcurs?
 Corect: se estimează separat, în scris, înainte să fie construite. Greșit: „le facem și vedem”.
