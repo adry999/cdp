@@ -130,7 +130,7 @@ onMounted(() => {
       :id="mobileMenuId"
       class="flex flex-col border-t border-hairline px-gutter pb-5 pt-2 eyebrow nav:hidden"
     >
-      <template v-for="(link, i) in navLinks" :key="navLinkKey(link)">
+      <template v-for="link in navLinks" :key="navLinkKey(link)">
         <a
           v-if="link.kind === 'hash'"
           :href="`${localePath('index')}${link.hash}`"

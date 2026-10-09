@@ -2,7 +2,6 @@
 import { useAboutPillars } from '#layers/content'
 
 const { t } = useI18n()
-const localePath = useLocalePath()
 const pillars = useAboutPillars()
 const { el: gridEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: false })
 </script>

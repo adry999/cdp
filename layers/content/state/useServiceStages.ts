@@ -1,6 +1,6 @@
 import { useI18n, useI18nList, useAsyncData } from '#imports'
 import { computed } from 'vue'
-import { SERVICE_STAGE_DEFS, type ServiceStage } from '#layers/content/domain/services'
+import { SERVICE_STAGE_DEFS } from '#layers/content/domain/services'
 
 export async function useServiceStages() {
   const { t } = useI18n()

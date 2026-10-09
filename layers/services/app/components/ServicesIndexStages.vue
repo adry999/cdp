@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import type { StageId } from '#layers/core/shared/types/service-stage'
 import { useServiceStages } from '#layers/content'
 
 
-const { t, locale } = useI18n()
-const localePath = useLocalePath()
+const { t } = useI18n()
 const stages = await useServiceStages()
 
 // Removed servicesFor since links were cleaned up
