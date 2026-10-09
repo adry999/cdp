@@ -140,6 +140,77 @@ export type Database = {
         }
         Relationships: []
       }
+      news_items: {
+        Row: {
+          category: string | null
+          created_at: string
+          id: string
+          published_at: string | null
+          slug_en: string | null
+          slug_ro: string
+          source_author: string | null
+          source_name: string
+          source_published_on: string | null
+          source_url: string
+          summary_en: string | null
+          summary_ro: string
+          title_en: string | null
+          title_ro: string
+          updated_at: string
+          updated_by: string | null
+          why_en: string | null
+          why_ro: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          published_at?: string | null
+          slug_en?: string | null
+          slug_ro: string
+          source_author?: string | null
+          source_name: string
+          source_published_on?: string | null
+          source_url: string
+          summary_en?: string | null
+          summary_ro: string
+          title_en?: string | null
+          title_ro: string
+          updated_at?: string
+          updated_by?: string | null
+          why_en?: string | null
+          why_ro?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          published_at?: string | null
+          slug_en?: string | null
+          slug_ro?: string
+          source_author?: string | null
+          source_name?: string
+          source_published_on?: string | null
+          source_url?: string
+          summary_en?: string | null
+          summary_ro?: string
+          title_en?: string | null
+          title_ro?: string
+          updated_at?: string
+          updated_by?: string | null
+          why_en?: string | null
+          why_ro?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "news_items_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       process_steps: {
         Row: {
           body_en: string | null
@@ -374,6 +445,7 @@ export type Database = {
           kind_ro: string | null
           lead_en: string | null
           lead_ro: string
+          links: Json
           live_url: string | null
           live_url_label_en: string | null
           live_url_label_ro: string | null
@@ -401,6 +473,20 @@ export type Database = {
           solution_heading_en: string | null
           solution_heading_ro: string | null
           sort_order: number
+          star_biz_en: Json | null
+          star_biz_ro: Json | null
+          star_constraints_en: Json | null
+          star_constraints_ro: Json | null
+          star_cost_en: Json | null
+          star_cost_ro: Json | null
+          star_gains_en: Json | null
+          star_gains_ro: Json | null
+          star_goal_en: string | null
+          star_goal_ro: string | null
+          star_incident_en: Json | null
+          star_incident_ro: Json | null
+          star_savings_en: Json | null
+          star_savings_ro: Json | null
           summary_en: string | null
           summary_ro: string
           tags_en: string[]
@@ -410,6 +496,10 @@ export type Database = {
           title_ro: string
           updated_at: string
           updated_by: string | null
+          win_label_en: string | null
+          win_label_ro: string | null
+          win_value_en: string | null
+          win_value_ro: string | null
           year: number | null
         }
         Insert: {
@@ -434,6 +524,7 @@ export type Database = {
           kind_ro?: string | null
           lead_en?: string | null
           lead_ro: string
+          links?: Json
           live_url?: string | null
           live_url_label_en?: string | null
           live_url_label_ro?: string | null
@@ -460,6 +551,20 @@ export type Database = {
           solution_heading_en?: string | null
           solution_heading_ro?: string | null
           sort_order?: number
+          star_biz_en?: Json | null
+          star_biz_ro?: Json | null
+          star_constraints_en?: Json | null
+          star_constraints_ro?: Json | null
+          star_cost_en?: Json | null
+          star_cost_ro?: Json | null
+          star_gains_en?: Json | null
+          star_gains_ro?: Json | null
+          star_goal_en?: string | null
+          star_goal_ro?: string | null
+          star_incident_en?: Json | null
+          star_incident_ro?: Json | null
+          star_savings_en?: Json | null
+          star_savings_ro?: Json | null
           summary_en?: string | null
           summary_ro: string
           tags_en?: string[]
@@ -469,6 +574,10 @@ export type Database = {
           title_ro: string
           updated_at?: string
           updated_by?: string | null
+          win_label_en?: string | null
+          win_label_ro?: string | null
+          win_value_en?: string | null
+          win_value_ro?: string | null
           year?: number | null
         }
         Update: {
@@ -493,6 +602,7 @@ export type Database = {
           kind_ro?: string | null
           lead_en?: string | null
           lead_ro?: string
+          links?: Json
           live_url?: string | null
           live_url_label_en?: string | null
           live_url_label_ro?: string | null
@@ -519,6 +629,20 @@ export type Database = {
           solution_heading_en?: string | null
           solution_heading_ro?: string | null
           sort_order?: number
+          star_biz_en?: Json | null
+          star_biz_ro?: Json | null
+          star_constraints_en?: Json | null
+          star_constraints_ro?: Json | null
+          star_cost_en?: Json | null
+          star_cost_ro?: Json | null
+          star_gains_en?: Json | null
+          star_gains_ro?: Json | null
+          star_goal_en?: string | null
+          star_goal_ro?: string | null
+          star_incident_en?: Json | null
+          star_incident_ro?: Json | null
+          star_savings_en?: Json | null
+          star_savings_ro?: Json | null
           summary_en?: string | null
           summary_ro?: string
           tags_en?: string[]
@@ -528,6 +652,10 @@ export type Database = {
           title_ro?: string
           updated_at?: string
           updated_by?: string | null
+          win_label_en?: string | null
+          win_label_ro?: string | null
+          win_value_en?: string | null
+          win_value_ro?: string | null
           year?: number | null
         }
         Relationships: [
@@ -759,6 +887,7 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: never; Returns: boolean }
+      project_links_valid: { Args: { p_links: Json }; Returns: boolean }
       save_project: { Args: { payload: Json }; Returns: Json }
     }
     Enums: {

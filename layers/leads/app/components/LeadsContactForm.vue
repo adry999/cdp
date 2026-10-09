@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { STAGE_ORDER, type StageId } from '#layers/core/shared/types/service-stage'
+import { stageForServiceParam } from '#layers/core/shared/utils/serviceStage'
 import { LEAD_BUDGET_KEYS, type ContactFieldErrors } from '#layers/leads/domain/lead'
 import { useLeadSubmission } from '#layers/leads/state/useLeadSubmission'
 
@@ -14,7 +15,8 @@ const form = reactive({
   company: '',
   message: '',
   budget: '',
-  stage: undefined as StageId | undefined,
+  // Blog CTAs link to /contact?serviciu=<slug> (RO) or ?service=<slug> (EN); unknown values are ignored.
+  stage: stageForServiceParam(route.query.serviciu ?? route.query.service),
   source: '',
   website: '', // honeypot
 })
@@ -34,6 +36,14 @@ function fieldError(field: keyof ContactFieldErrors): string | undefined {
 function toggleStage(stage: StageId | undefined) {
   form.stage = form.stage === stage ? undefined : stage
 }
+
+// Only fills an empty choice: a stage the visitor already picked is never overwritten.
+watch(
+  () => route.query.serviciu ?? route.query.service,
+  (value) => {
+    form.stage ??= stageForServiceParam(value)
+  },
+)
 
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const
 

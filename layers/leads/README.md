@@ -24,7 +24,7 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 
 ## Components
 
-- `LeadsContactForm` — inline contact form; maps domain error codes to `home.contact.form.*` i18n keys.
+- `LeadsContactForm` — inline contact form; pre-selects the stage chip from `?serviciu=<ro slug>` / `?service=<en slug>` (core's `stageForServiceParam`; unknown values ignored, never overrides a picked stage); maps domain error codes to `home.contact.form.*` i18n keys.
 
 ## Depends on
 

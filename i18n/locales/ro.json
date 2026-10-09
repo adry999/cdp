@@ -11,6 +11,7 @@
     "process": "Proces",
     "work": "Portofoliu",
     "blog": "Blog",
+    "news": "Noutăți",
     "pricing": "Prețuri",
     "about": "Despre",
     "main": "Navigație principală",
@@ -38,7 +39,7 @@
   },
   "privacy": {
     "seo": {
-      "description": "Politica de confidențialitate Codepedia: ce date colectăm, cum le folosim și cum poți controla cookie-urile."
+      "description": "Politica de confidențialitate CODEPEDIA: ce date colectăm, cum le folosim și cum poți controla cookie-urile."
     }
   },
   "home": {
@@ -353,44 +354,31 @@
       "hero": "Studiu de caz",
       "facts": "Date",
       "next": "Următorul pas",
-      "problem": {
-        "label": "Problema",
-        "heading": "Punctul de plecare",
-        "placeholder": "Textul secțiunii."
-      },
-      "solution": {
-        "label": "Soluția",
-        "heading": "Cum am găsit rezolvarea",
-        "placeholder": "Textul secțiunii."
-      },
-      "stack": {
-        "label": "Stack",
-        "heading": "Tehnologiile folosite",
-        "placeholder": "Stack-ul folosit."
-      },
-      "obstacles": {
-        "label": "Obstacole",
-        "heading": "Ce probleme am întâmpinat",
-        "placeholder": "Textul secțiunii."
-      },
-      "changes": {
-        "label": "Schimbări",
-        "heading": "Ce am schimbat pe parcurs",
-        "placeholder": "Textul secțiunii."
-      },
-      "result": {
-        "label": "Rezultat",
-        "heading": "Rezultatul final",
-        "placeholder": "Cifrele de rezultat."
-      },
-      "feedback": {
-        "label": "Feedback",
-        "heading": "Ce spune clientul",
-        "placeholder": "Un citat de la client, cu nume și funcție."
-      }
+      "situation": { "label": "Situație", "heading": "Problema de business" },
+      "task": { "label": "Sarcină" },
+      "action": { "label": "Acțiune", "heading": "Soluția oferită" },
+      "result": { "label": "Rezultat", "heading": "Ce a câștigat clientul" },
+      "feedback": { "label": "Feedback", "heading": "Ce spune clientul" },
+      "gallery": { "label": "Galerie", "heading": "Cum arată" }
     },
-    "toComplete": "De completat",
-    "screensDemo": "Ecrane cu date demonstrative",
+    "cost": "Cât costa problema",
+    "constraints": "Constrângeri",
+    "business": "Business",
+    "tech": "Tehnic",
+    "gains": "Câștig",
+    "savings": "Economii",
+    "links": { "live": "Site live", "preview": "Preview CODEPEDIA", "figma": "Figma" },
+    "galleryButton": "Galerie · {count} ecrane",
+    "galleryHint": "Se deschide aici",
+    "lightbox": {
+      "label": "Galerie de capturi",
+      "openImage": "Deschide imaginea {n}",
+      "close": "Închide galeria",
+      "closeButton": "Închide ✕",
+      "prev": "Anterior",
+      "next": "Următor",
+      "counter": "{current} / {total}"
+    },
     "nextTitle": "Ai un proiect asemănător?",
     "cta": "Hai să discutăm",
     "quote": "„{text}”"
@@ -505,11 +493,11 @@
   "projects": {
     "seo": {
       "title": "Proiecte",
-      "description": "Studii de caz Codepedia: aplicații web, site-uri, WordPress, Shopify și automatizări AI livrate pentru clienți din toată lumea."
+      "description": "Studii de caz CODEPEDIA: aplicații web, site-uri, WordPress, Shopify și automatizări AI livrate pentru clienți din toată lumea."
     },
     "hero": {
       "title": "Proiecte.",
-      "intro": "Studii de caz din portofoliul Codepedia, filtrabile după tipul de serviciu."
+      "intro": "Studii de caz din portofoliul CODEPEDIA, filtrabile după tipul de serviciu."
     },
     "filters": {
       "all": "Toate",
@@ -542,17 +530,54 @@
       }
     }
   },
+  "news": {
+    "seo": {
+      "title": "Noutăți",
+      "description": "Articole și știri din alte surse, alese de echipa CODEPEDIA, cu un rezumat scris de noi și link la original."
+    },
+    "hero": {
+      "title": "Noutăți",
+      "intro": "Articole și știri din alte surse, alese de echipa CODEPEDIA, cu un rezumat și link la original."
+    },
+    "empty": "Nu sunt încă noutăți publicate.",
+    "latest": "Cele mai noi",
+    "readAtSource": "Citește la sursă ↗",
+    "openOriginal": "Citește articolul original ↗",
+    "details": "Rezumat",
+    "back": "Noutăți",
+    "breadcrumb": "Navigare",
+    "sourceLabel": "Sursa: {name}",
+    "originalDate": "Publicat inițial: {date}",
+    "why": "De ce contează",
+    "disclaimer": "Rezumat scris de echipa CODEPEDIA. Articolul complet aparține {name}."
+  },
   "blog": {
     "seo": {
       "title": "Blog",
-      "description": "Notițe tehnice și studii de caz scurte din munca Codepedia — dezvoltare web, automatizare, arhitectură."
+      "description": "Prețuri, comparații și ghiduri pentru firmele care pregătesc un site sau o aplicație. Scrise din proiectele CODEPEDIA."
     },
     "hero": {
-      "title": "Blog.",
-      "intro": "Notițe tehnice din munca Codepedia — ce am construit, ce am învățat, ce am schimbat."
+      "title": "Ce costă, ce alegi, cum construiești.",
+      "intro": "Prețuri, comparații și ghiduri pentru firmele care pregătesc un site sau o aplicație. Scrise din proiectele CODEPEDIA."
     },
     "empty": "Momentan nu avem articole publicate.",
-    "related": "Articole similare"
+    "related": "Citește și",
+    "fromBlog": "Din blog",
+    "all": "Toate",
+    "latest": "Cel mai nou",
+    "read": "Citește",
+    "toc": "Cuprins",
+    "published": "Publicat",
+    "updated": "Actualizat",
+    "next": "Pasul următor",
+    "min": "min",
+    "back": "Blog",
+    "breadcrumb": "Breadcrumb",
+    "categories": "Categorii",
+    "category": {
+      "seoTitle": "{name} · Blog",
+      "seoDescription": "Articole CODEPEDIA din categoria „{name}”: prețuri, comparații și ghiduri pentru firmele care pregătesc un site sau o aplicație."
+    }
   },
   "error": {
     "sectionLabel": "Eroare",
@@ -570,7 +595,6 @@
     },
     "title": "Preț fix pe fiecare etapă.",
     "intro": "Dacă subestimăm complexitatea unei sarcini, absorbim costul orelor suplimentare. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră.",
-    "pricePlaceholder": "[ X ] EUR",
     "stages": {
       "E": {
         "pricePrefix": "Sub",
@@ -616,12 +640,10 @@
       "plans": {
         "maintenance": {
           "label": "Mentenanță",
-          "price": "de la [ X ] EUR / lună",
           "body": "Actualizări, monitorizare, backup și un număr fix de ore pentru modificări mici."
         },
         "continuous": {
           "label": "Dezvoltare continuă",
-          "price": "de la [ X ] EUR / lună",
           "body": "Sprinturi de două săptămâni cu demo, pentru funcționalități noi și scalare."
         }
       },
@@ -632,7 +654,7 @@
       "items": [
         {
           "question": "Cât costă un proiect?",
-          "answer": "Majoritatea proiectelor pornesc de la [ X ] EUR pentru o primă versiune funcțională și continuă pe etape. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră."
+          "answer": "Fiecare proiect pornește cu o primă versiune funcțională și continuă pe etape. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră."
         },
         {
           "question": "Preluați proiecte începute de altcineva?",
@@ -652,11 +674,7 @@
     "principlesLabel": "Cum lucrăm",
     "team": {
       "label": "Echipa",
-      "title": "Oamenii cu care vorbești direct.",
-      "photo": "Fotografie",
-      "name": "[ Nume ]",
-      "role": "[ Funcție ]",
-      "placeholderNote": "Placeholder · nume, roluri și fotografii de completat"
+      "title": "Oamenii cu care vorbești direct."
     },
     "facts": {
       "based": {

@@ -37,7 +37,7 @@ useJsonLd(
   }),
   () =>
     breadcrumbList([
-      { name: 'Codepedia', url: `${siteUrl}${localePath('/')}` },
+      { name: 'CODEPEDIA', url: `${siteUrl}${localePath('/')}` },
       { name: t('nav.services'), url: `${siteUrl}${localePath({ name: 'servicii' })}` },
       { name: pick(service.name.ro, service.name.en, locale.value), url: `${siteUrl}${route.path}` },
     ]),
@@ -50,6 +50,7 @@ useJsonLd(
     <ServicesFeatures :service="service" />
     <ServicesProcess :service="service" />
     <ServicesRelatedProjects :service="service" />
+    <BlogLinked number="04" :service="service.routeSlug.ro" />
     <ServicesCta :service="service" />
   </div>
 </template>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #FAF8F4; color: #0B0B0B; font-family: 'Inter Tight', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.6; letter-spacing: -0.004em; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  ::selection { background: #FF4D14; color: #FAF8F4; }
+  a { color: #0B0B0B; text-decoration: none; }
+  a:hover { color: #FF4D14; }
+  @keyframes caret { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+</style>
+</helmet>
+
+<div style="display:flex;flex-direction:column;min-height:100vh">
+
+<header data-screen-label="Header" style="position:sticky;top:0;z-index:20;background:#FAF8F4">
+  <div style="max-width:1280px;margin:0 auto;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 clamp(20px,5vw,64px)">
+    <a href="#top" style="display:flex;align-items:center"><img src="assets/codepedia-wordmark.svg" alt="CODEPEDIA" style="display:block;height:18px;width:auto" /></a>
+    <nav style="display:flex;align-items:center;gap:clamp(14px,2vw,28px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(14px,2vw,28px);border-right:1px solid #E2DED6;padding-right:clamp(14px,2vw,28px)">
+        <a href="#servicii" style="color:#6B6862" style-hover="color:#FF4D14">Servicii</a>
+        <a href="#stack" style="color:#6B6862" style-hover="color:#FF4D14">Stack</a>
+        <a href="#proces" style="color:#6B6862" style-hover="color:#FF4D14">Proces</a>
+        <a href="#proiecte" style="color:#6B6862" style-hover="color:#FF4D14">Proiecte</a>
+        <a href="#" style="color:#6B6862" style-hover="color:#FF4D14">Blog</a>
+        <a href="#contact" style="color:#6B6862" style-hover="color:#FF4D14">Contact</a>
+      </div>
+      <span style="display:flex;align-items:center;gap:6px"><span style="color:#0B0B0B">RO</span><span style="color:#E2DED6">|</span><a href="Codepedia EN.dc.html" hreflang="en" lang="en" style="color:#6B6862" style-hover="color:#6B6862">EN</a></span>
+    </nav>
+  </div>
+  <div style="height:2px;background:#FF4D14"></div>
+</header>
+
+<main style="flex:1">
+
+<section id="top" data-screen-label="00 Studio">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,8vw,120px) clamp(20px,5vw,64px) clamp(40px,5vw,72px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">00</span> / Studio</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h1 style="margin:0;max-width:20ch;font-size:clamp(34px,6vw,64px);font-weight:600;line-height:1.04;letter-spacing:-0.025em;text-wrap:pretty">
+        <span style="display:grid;min-height:2.1em;align-items:end"><span style="font-family:'JetBrains Mono',monospace;font-weight:500;letter-spacing:0">{{ typed }}{{ caret }}</span></span>
+        <span style="display:block">construite ca să-ți aducă rezultate de durată.</span>
+      </h1>
+      <p style="margin:clamp(20px,2.6vw,28px) 0 0;max-width:42ch;font-size:clamp(20px,2.2vw,26px);font-weight:500;line-height:1.2;letter-spacing:-0.02em;text-wrap:pretty">Multe proiecte rămân neterminate și greu de întreținut. Noi predăm cod pe care echipa ta îl poate duce mai departe, cu documentație și 30 de zile de remedieri incluse.</p>
+      <p style="margin:clamp(20px,2.6vw,28px) 0 0;max-width:62ch;font-size:clamp(16px,1.4vw,18px);color:#6B6862">Lucrăm cu fondatori la început de drum și cu companii consacrate, din Chișinău pentru clienți din Europa și America de Nord.</p>
+      <div style="margin-top:clamp(28px,3vw,40px);display:flex;flex-wrap:wrap;gap:12px">
+        <a href="#contact" style="display:inline-block;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:14px 22px;font-size:15px;font-weight:500" style-hover="background:#FF4D14;color:#FAF8F4">Vezi dacă te putem ajuta</a>
+        <a href="#proces" style="display:inline-block;border-radius:4px;border:1px solid #0B0B0B;color:#0B0B0B;padding:13px 21px;font-size:15px;font-weight:500" style-hover="border-color:#6B6862;color:#0B0B0B">Cum lucrăm</a>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px) clamp(40px,5vw,64px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
+      <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Bazați în</div><div style="margin-top:8px;font-size:16px;font-weight:500">Chișinău, Moldova</div></div>
+      <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Piețe</div><div style="margin-top:8px;font-size:16px;font-weight:500">Moldova/România · UE · America de Nord · Lumea întreagă</div></div>
+      <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Stack tehnologic</div><div style="margin-top:8px;font-size:16px;font-weight:500">React (Next.js), Vue (Nuxt.js), Node.js, PostgreSQL, Supabase, n8n, Make, LLM pipelines</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="servicii" data-screen-label="01 Servicii" style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">01</span> / Servicii</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h2 style="margin:0;max-width:26ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em">De unde ai vrea să începem munca? Vezi fiecare etapă.</h2>
+      <p style="margin:16px 0 0;max-width:60ch;font-size:16px;color:#6B6862">Cinci etape, de la o pagină rapidă până la inginerie AI la comandă. Alege unde ești acum — de acolo pornim.</p>
+      <div style="margin-top:clamp(28px,3.5vw,44px);display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;position:relative">
+        <div style="position:absolute;left:10%;right:10%;top:21px;height:2px;background:#E2DED6"></div>
+        <sc-for list="{{ stages }}" as="s" hint-placeholder-count="5">
+          <button onClick="{{ s.select }}" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;padding:0 0 8px;background:transparent;border:0;cursor:pointer;text-align:center;font-family:inherit">
+            <span style="position:relative;z-index:1;width:44px;height:44px;border-radius:50%;background:#FAF8F4;border:1px solid {{ s.dotBorder }};transform:scale({{ s.scale }});transition:all 0.2s"></span>
+            <span style="display:flex;flex-direction:column;gap:2px;align-items:center">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;color:{{ s.color }}">{{ s.num }}</span>
+              <span style="font-size:13px;font-weight:500;line-height:1.25;color:{{ s.color }}">{{ s.name }}</span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="margin-top:clamp(24px,3vw,36px);border:1px solid #E2DED6;border-radius:4px;padding:clamp(20px,2.5vw,28px)">
+        <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px">
+          <h3 style="margin:0;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:clamp(18px,2.2vw,22px);font-weight:500;text-transform:uppercase;line-height:1.25;letter-spacing:0.04em"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#FF4D14;flex-shrink:0"></span>{{ stage.name }}</h3>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ stage.priceTime }}</span>
+        </div>
+        <div style="margin-top:24px;display:flex;flex-direction:column">
+          <div style="display:flex;flex-wrap:wrap;gap:16px;padding:20px 0;border-top:1px solid #E2DED6">
+            <div style="flex:0 0 150px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Unde ești</div>
+            <p style="flex:1;min-width:0;margin:0;max-width:58ch;font-size:16px;color:#6B6862">{{ stage.whereYouAre }}</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:16px;padding:20px 0;border-top:1px solid #E2DED6;border-bottom:1px solid #E2DED6">
+            <div style="flex:0 0 150px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Ce primești</div>
+            <p style="flex:1;min-width:0;margin:0;max-width:58ch;font-size:16px">{{ stage.whatYouGet }}</p>
+          </div>
+        </div>
+        <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ stage.badges }}" as="b" hint-placeholder-count="4">
+            <span style="display:inline-block;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ b }}</span>
+          </sc-for>
+        </div>
+        <div style="margin-top:24px;display:flex;flex-wrap:wrap;align-items:center;gap:20px">
+          <a href="#contact" style="display:inline-block;border-radius:4px;background:#FF4D14;color:#FAF8F4;padding:14px 22px;font-size:15px;font-weight:500" style-hover="background:#0B0B0B;color:#FAF8F4">{{ stage.cta }}</a>
+          <sc-for list="{{ stage.links }}" as="l" hint-placeholder-count="0">
+            <a href="#" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862" style-hover="color:#FF4D14">{{ l }} →</a>
+          </sc-for>
+        </div>
+      </div>
+      <p style="margin:20px 0 0;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Unele proiecte sunt sub NDA. Referințe detaliate la discuția de diagnostic.</p>
+      <div data-screen-label="01 Granturi" style="margin-top:clamp(32px,4vw,48px);border:1px solid #E2DED6;border-radius:4px;background:#F1EEE7;padding:clamp(20px,2.5vw,28px);display:flex;flex-direction:column;gap:16px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">●</span> Proiecte finanțate prin granturi</span>
+        <h3 style="margin:0;max-width:30ch;font-size:clamp(20px,2.4vw,26px);font-weight:500;line-height:1.2;letter-spacing:-0.02em;text-wrap:pretty">Ai câștigat un grant european sau ODA? Livrăm aplicația din proiect, la termenele din contract.</h3>
+        <p style="margin:0;max-width:62ch;font-size:16px;color:#6B6862;text-wrap:pretty">Lucrăm cu startup-uri, IMM-uri, ONG-uri, instituții publice și asociații de afaceri. Intrăm în proiect în orice etapă, de la cererea de finanțare până după încheierea ei.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span style="border:1px solid #E2DED6;background:#FAF8F4;border-radius:4px;padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">01 Înainte de aplicare</span>
+          <span style="border:1px solid #E2DED6;background:#FAF8F4;border-radius:4px;padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">02 Implementare</span>
+          <span style="border:1px solid #E2DED6;background:#FAF8F4;border-radius:4px;padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">03 Raportare și audit</span>
+          <span style="border:1px solid #E2DED6;background:#FAF8F4;border-radius:4px;padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">04 După grant</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:20px;margin-top:4px">
+          <a href="Codepedia Servicii.dc.html?s=granturi" style="display:inline-block;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:12px 20px;font-size:15px;font-weight:500" style-hover="background:#FF4D14;color:#FAF8F4">Cum lucrăm pe granturi</a>
+          <a href="#contact" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862" style-hover="color:#FF4D14">Discută proiectul →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stack" data-screen-label="02 Stack" style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">02</span> / Stack</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h2 style="margin:0;max-width:28ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em">Tehnologiile cu care livrăm.</h2>
+      <p style="margin:16px 0 0;max-width:62ch;font-size:16px;color:#6B6862">TypeScript pe frontend și backend, Postgres pentru date, deploy pe Vercel. Unelte folosite deja în producție, nu o listă de dorințe.</p>
+      <div style="margin-top:clamp(28px,3vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px">
+        <sc-for list="{{ stack }}" as="g" hint-placeholder-count="4">
+          <article style="display:flex;flex-direction:column;border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:clamp(20px,2.5vw,28px);transition:border-color 0.2s" style-hover="border-color:#8D8880">
+            <h3 style="margin:0;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ g.name }}</h3>
+            <p style="flex:1;margin:16px 0 0;font-size:15px;line-height:1.625;color:#6B6862"><span style="font-weight:500;color:#0B0B0B">{{ g.lead }}. </span>{{ g.body }}</p>
+            <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ g.tags }}" as="t" hint-placeholder-count="4">
+                <span style="display:inline-block;border:1px solid #E2DED6;border-radius:4px;padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ t }}</span>
+              </sc-for>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+      <p style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:62ch;font-size:14px;color:#6B6862">Ai deja un magazin pe Shopify sau un CMS existent? Ne integrăm nativ prin API-uri headless.</p>
+    </div>
+  </div>
+</section>
+
+<section id="proces" data-screen-label="03 Proces" style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">03</span> / Proces</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h2 style="margin:0;max-width:28ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em">Proces clar, adaptat la amploarea proiectului.</h2>
+      <p style="margin:16px 0 0;max-width:62ch;font-size:16px;color:#6B6862">Fără birocrație inutilă pentru proiecte rapide. Arhitectură riguroasă pentru sisteme complexe.</p>
+      <div style="margin-top:clamp(28px,3vw,40px);display:inline-flex;gap:4px;border:1px solid #E2DED6;border-radius:4px;background:#F1EEE7;padding:4px">
+        <sc-for list="{{ trackTabs }}" as="tt" hint-placeholder-count="2">
+          <button onClick="{{ tt.select }}" style="border:0;cursor:pointer;border-radius:4px;padding:8px clamp(12px,2.5vw,20px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;background:{{ tt.bg }};color:{{ tt.color }};transition:background-color 0.15s,color 0.15s">{{ tt.badge }}</button>
+        </sc-for>
+      </div>
+      <div style="margin-top:clamp(24px,3vw,36px)">
+        <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px">
+          <h3 style="margin:0;font-size:20px;font-weight:500;letter-spacing:-0.02em">{{ track.name }}</h3>
+          <span style="border:1px solid {{ track.scopeBorder }};border-radius:999px;padding:3px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:{{ track.scopeColor }}">{{ track.scope }}</span>
+        </div>
+        <p style="margin:12px 0 0;max-width:60ch;font-size:16px;color:#6B6862">{{ track.summary }}</p>
+        <ol style="margin:clamp(24px,3vw,32px) 0 0;padding:0;list-style:none;display:flex;flex-direction:column;border-bottom:1px solid #E2DED6">
+          <sc-for list="{{ track.steps }}" as="st" hint-placeholder-count="4">
+            <li style="display:flex;flex-wrap:wrap;gap:8px clamp(16px,3vw,40px);border-top:1px solid #E2DED6;padding:clamp(18px,2.5vw,26px) 0">
+              <span style="flex:0 0 64px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em">{{ st.index }}</span>
+              <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:4px clamp(16px,3vw,40px)">
+                <h4 style="flex:0 0 200px;margin:0;font-size:18px;font-weight:500;letter-spacing:-0.02em">{{ st.title }}</h4>
+                <p style="flex:1 1 280px;margin:0;max-width:60ch;font-size:16px;color:#6B6862">{{ st.body }}</p>
+              </div>
+            </li>
+          </sc-for>
+        </ol>
+      </div>
+      <p style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:68ch;font-size:14px;color:#6B6862">*Garanția acoperă erorile tehnice și conformitatea cu specificația agreată; modificările de design sau funcționalitățile noi reprezintă extinderi de scop.</p>
+    </div>
+  </div>
+</section>
+
+<section id="proiecte" data-screen-label="04 Proiecte" style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">04</span> / Proiecte</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h2 style="margin:0;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em">Proiecte selectate.</h2>
+      <div style="margin-top:clamp(28px,3vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px">
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+          <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:clamp(18px,2vw,22px)">
+            <div style="aspect-ratio:16/10;border:1px solid #E2DED6;border-radius:4px;overflow:hidden;background:#F1EEE7">
+              <img src="{{ p.img }}" alt="{{ p.title }}" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center"></img>
+            </div>
+            <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ p.tech }}</div>
+            <h3 style="margin:10px 0 8px;font-size:19px;font-weight:500;letter-spacing:-0.02em">{{ p.title }}</h3>
+            <p style="margin:0;font-size:16px;color:#6B6862">{{ p.text }}</p>
+            <sc-if value="{{ p.winV }}" hint-placeholder-val="{{ false }}"><div style="margin-top:14px;padding-top:12px;border-top:1px solid #E2DED6;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px"><span style="font-size:22px;font-weight:600;letter-spacing:-0.02em">{{ p.winV }}</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ p.winK }}</span><span style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">exemplu</span></div></sc-if>
+            <a href="{{ p.href }}" style="display:inline-block;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#0B0B0B;text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px" style-hover="text-decoration-color:#0B0B0B;color:#0B0B0B">{{ p.cta }}</a>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+        <p style="margin:0;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Unele proiecte sunt sub NDA. Referințe detaliate la discuția de diagnostic.</p>
+        <a href="#" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#0B0B0B;text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px" style-hover="text-decoration-color:#0B0B0B;color:#0B0B0B">Toate proiectele →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="05 Despre" style="background:#0B0B0B;color:#FAF8F4">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(56px,7vw,112px) clamp(20px,5vw,64px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880"><span style="color:#FF4D14">05</span> / Despre</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h2 style="margin:0;max-width:24ch;font-size:clamp(26px,3.4vw,40px);font-weight:500;line-height:1.12;letter-spacing:-0.025em">Studio boutique. Ingineri seniori. Acces direct.</h2>
+      <p style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:62ch;font-size:clamp(16px,1.4vw,18px);line-height:1.625;color:#B4AFA6">Lucrăm la puține proiecte în paralel, ca fiecare să primească orele de care are nevoie. Fără intermediari care traduc greșit cerințele și fără juniori care învață pe bugetul tău. Discuți direct cu inginerul care îți construiește produsul.</p>
+      <div style="margin-top:clamp(32px,4vw,52px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:24px">
+        <article style="display:flex;flex-direction:column;border:1px solid rgba(250,248,244,0.18);border-radius:4px;background:rgba(250,248,244,0.03);padding:clamp(20px,2.5vw,26px)" style-hover="border-color:#8D8880">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;color:#FF4D14">01</span>
+          <h3 style="margin:16px 0 0;font-size:18px;font-weight:500;line-height:1.375;letter-spacing:-0.02em">Proprietate 100% din prima zi</h3>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.625;color:#B4AFA6">Codul sursă, baza de date și infrastructura sunt configurate direct în conturile tale. Ai control total și poți schimba echipa oricând.</p>
+        </article>
+        <article style="display:flex;flex-direction:column;border:1px solid rgba(250,248,244,0.18);border-radius:4px;background:rgba(250,248,244,0.03);padding:clamp(20px,2.5vw,26px)" style-hover="border-color:#8D8880">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;color:#FF4D14">02</span>
+          <h3 style="margin:16px 0 0;font-size:18px;font-weight:500;line-height:1.375;letter-spacing:-0.02em">Estimări fixe și cost asumat</h3>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.625;color:#B4AFA6">Preț fix pe fiecare etapă agreată. Dacă subestimăm complexitatea unei sarcini, absorbim costul orelor suplimentare.</p>
+        </article>
+        <article style="display:flex;flex-direction:column;border:1px solid rgba(250,248,244,0.18);border-radius:4px;background:rgba(250,248,244,0.03);padding:clamp(20px,2.5vw,26px)" style-hover="border-color:#8D8880">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.14em;color:#FF4D14">03</span>
+          <h3 style="margin:16px 0 0;font-size:18px;font-weight:500;line-height:1.375;letter-spacing:-0.02em">Comunicare directă și multilingvă</h3>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.625;color:#B4AFA6">Discuții tehnice și specificații clare în română, engleză sau rusă. Fără jargon inutil, doar decizii rapide de inginerie.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" data-screen-label="06 Întrebări">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">06</span> / Întrebări</div>
+    <div style="flex:1 1 560px;min-width:0;display:flex;flex-direction:column;border-bottom:1px solid #E2DED6">
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px);border-top:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0"><h3 style="flex:0 0 240px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Cât costă un proiect?</h3><p style="flex:1 1 320px;margin:0;max-width:60ch;font-size:16px;color:#6B6862">Majoritatea proiectelor pornesc de la 6.000 EUR pentru o primă versiune funcțională și continuă pe etape. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră.</p></div>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px);border-top:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0"><h3 style="flex:0 0 240px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Preluați proiecte începute de altcineva?</h3><p style="flex:1 1 320px;margin:0;max-width:60ch;font-size:16px;color:#6B6862">Da, după un audit plătit. Auditul este un document scris: ce funcționează, ce trebuie rescris și cât costă până în producție.</p></div>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px);border-top:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0"><h3 style="flex:0 0 240px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Cât durează livrarea?</h3><p style="flex:1 1 320px;margin:0;max-width:60ch;font-size:16px;color:#6B6862">O primă versiune în producție durează de obicei șase până la douăsprezece săptămâni, în funcție de cât din domeniu trebuie modelat în bază de date.</p></div>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px);border-top:1px solid #E2DED6;padding:clamp(20px,2.5vw,28px) 0"><h3 style="flex:0 0 240px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Ce se întâmplă după predare?</h3><p style="flex:1 1 320px;margin:0;max-width:60ch;font-size:16px;color:#6B6862">Treizeci de zile de suport pentru bug-uri sunt incluse. După aceea poți continua cu un abonament lunar sau cu echipa ta. Ambele variante funcționează.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" data-screen-label="07 Contact" style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,6vw,96px) clamp(20px,5vw,64px)">
+    <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">07</span> / Contact</div>
+    <div style="flex:1 1 560px;min-width:0">
+      <h2 style="margin:0;max-width:22ch;font-size:clamp(28px,4vw,48px);font-weight:600;line-height:1.08;letter-spacing:-0.025em">Spune-ne ce trebuie construit.</h2>
+      <p style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:60ch;font-size:clamp(16px,1.4vw,18px);color:#6B6862">O descriere scurtă a problemei este suficientă. Primești un răspuns scris într-o zi lucrătoare, cu o părere sinceră despre dacă suntem studioul potrivit.</p>
+      <div style="margin-top:clamp(28px,3vw,44px);max-width:560px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
+        <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Timp de răspuns</div><div style="margin-top:8px;font-size:16px;font-weight:500">1 zi lucrătoare</div></div>
+        <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Program</div><div style="margin-top:8px;font-size:16px;font-weight:500">09:00 – 18:00 (ora Chișinăului)</div></div>
+      </div>
+      <div style="margin-top:clamp(28px,3vw,40px);display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px">
+        <button style="border:0;cursor:pointer;border-radius:4px;background:#FF4D14;color:#FAF8F4;padding:14px 22px;font-family:inherit;font-size:15px;font-weight:500" style-hover="background:#0B0B0B">Începe un proiect</button>
+        <sc-if value="{{ formHidden }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ showForm }}" style="border:0;background:transparent;cursor:pointer;padding:0;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862;text-decoration:underline;text-underline-offset:4px" style-hover="color:#0B0B0B">Preferi să scrii un mesaj?</button>
+        </sc-if>
+      </div>
+      <sc-if value="{{ formShown }}" hint-placeholder-val="{{ false }}">
+        <form style="margin-top:clamp(28px,3vw,40px);max-width:560px;display:flex;flex-direction:column;gap:16px">
+          <label style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Nume<input type="text" style="display:block;margin-top:8px;width:100%;border:1px solid #6B6862;border-radius:4px;padding:12px 14px;font-family:'Inter Tight',sans-serif;font-size:16px;background:#FAF8F4;text-transform:none;letter-spacing:0" /></label>
+          <label style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Email<input type="email" style="display:block;margin-top:8px;width:100%;border:1px solid #6B6862;border-radius:4px;padding:12px 14px;font-family:'Inter Tight',sans-serif;font-size:16px;background:#FAF8F4;text-transform:none;letter-spacing:0" /></label>
+          <label style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Companie (opțional)<input type="text" style="display:block;margin-top:8px;width:100%;border:1px solid #6B6862;border-radius:4px;padding:12px 14px;font-family:'Inter Tight',sans-serif;font-size:16px;background:#FAF8F4;text-transform:none;letter-spacing:0" /></label>
+          <label style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Descrierea problemei<textarea rows="4" style="display:block;margin-top:8px;width:100%;border:1px solid #6B6862;border-radius:4px;padding:12px 14px;font-family:'Inter Tight',sans-serif;font-size:16px;background:#FAF8F4;text-transform:none;letter-spacing:0"></textarea></label>
+          <label style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Buget<select style="display:block;margin-top:8px;width:100%;border:1px solid #6B6862;border-radius:4px;padding:12px 14px;font-family:'Inter Tight',sans-serif;font-size:16px;background:#FAF8F4;text-transform:none;letter-spacing:0"><option>Alege un interval</option><option>sub 1.000 EUR</option><option>1.000 – 2.000 EUR</option><option>2.000 – 5.000 EUR</option><option>peste 5.000 EUR</option><option>Nu știu încă</option></select></label>
+          <label style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Cum ai aflat de noi (opțional)<input type="text" style="display:block;margin-top:8px;width:100%;border:1px solid #6B6862;border-radius:4px;padding:12px 14px;font-family:'Inter Tight',sans-serif;font-size:16px;background:#FAF8F4;text-transform:none;letter-spacing:0" /></label>
+          <p style="margin:0;font-size:12px;color:#6B6862">Trimițând acest formular, ești de acord cu <a href="#" style="color:#0B0B0B;text-decoration:underline">politica de confidențialitate</a></p>
+          <button type="button" style="width:fit-content;border:0;cursor:pointer;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:14px 22px;font-family:inherit;font-size:15px;font-weight:500" style-hover="background:#FF4D14">Trimite</button>
+        </form>
+      </sc-if>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer data-screen-label="Footer" style="border-top:1px solid #E2DED6">
+  <nav style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px 24px;border-bottom:1px solid #E2DED6;padding:20px clamp(20px,5vw,64px);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em">
+    <a href="#" style="color:#6B6862" style-hover="color:#0B0B0B">Website</a>
+    <a href="#" style="color:#6B6862" style-hover="color:#0B0B0B">Aplicație web</a>
+    <a href="#" style="color:#6B6862" style-hover="color:#0B0B0B">WordPress</a>
+    <a href="#" style="color:#6B6862" style-hover="color:#0B0B0B">Shopify</a>
+    <a href="#" style="color:#6B6862" style-hover="color:#0B0B0B">Automatizare cu AI</a>
+    <a href="#proiecte" style="color:#6B6862" style-hover="color:#0B0B0B">Proiecte</a>
+    <a href="#" style="color:#6B6862" style-hover="color:#0B0B0B">Blog</a>
+    <a href="#" style="color:#6B6862" style-hover="color:#0B0B0B">Confidențialitate</a>
+  </nav>
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;padding:24px clamp(20px,5vw,64px);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+    <span style="display:flex;align-items:center;gap:8px"><img src="assets/codepedia-mark.svg" alt="" style="display:block;height:12px;width:auto;opacity:0.5" />CODEPEDIA SRL · Chișinău, Moldova</span>
+    <span>Dezvoltare web full-stack · Site-uri, aplicații web, WordPress, Shopify</span>
+    <span>Setări cookie-uri</span>
+    <span>© 2026</span>
+  </div>
+</footer>
+
+<dc-import name="SEO Panel" page="{{ seoKey }}" hint-size="100%,560px"></dc-import>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const STAGES = [
+  { id: 'E', name: 'PAGINĂ EXPRESS', priceTime: 'Sub 1.000 EUR · 2–3 zile', whereYouAre: 'Ai nevoie de o pagină modernă și rapidă care să-ți valideze ideea, să atragă primii clienți sau să înlocuiască un site învechit.', whatYouGet: 'Un landing page (1–3 pagini) cu încărcare rapidă, optimizat pentru mobil, cu integrare directă Telegram/formular ca să primești cereri de ofertă din prima zi.', badges: ['Lansare în 2–3 zile', 'Design modern', 'Optimizat pentru mobil', 'Formular conectat'], cta: 'Lansează pagina', links: ['Website', 'WordPress', 'Shopify'] },
+  { id: 'B', name: 'DE LA CONCEPT LA SPECIFICAȚIE', priceTime: 'De la 1.000 EUR · ~1 săptămână', whereYouAre: 'Ai o idee de produs sau afacere, dar este încă la nivel teoretic și ai nevoie de claritate maximă înainte de a investi în dezvoltare.', whatYouGet: 'Planul complet de execuție: de la scenariul utilizatorului și prototip vizual, până la specificația tehnică clară, gata de transmis echipei de dev.', badges: ['Prototipare AI', 'Wireframing', 'Definirea produsului'], cta: 'Clarifică-mi conceptul', links: [] },
+  { id: 'A', name: 'DIN DESIGN ÎN COD', priceTime: 'De la 2.000 EUR · 3–6 săptămâni', whereYouAre: 'Ai designul gata în Figma sau resursele vizuale pregătite și cauți o echipă tehnică care să le transforme în cod real, bine construit.', whatYouGet: 'Ecranele din Figma devin o aplicație funcțională: frontend, bază de date Postgres și integrările API de care are nevoie.', badges: ['Pixel-perfect', 'Arhitectură full-stack', 'Deploy pe Vercel', 'Schemă Postgres'], cta: 'Transformă designul în cod', links: ['Aplicație web'] },
+  { id: 'C', name: 'SCALARE ȘI EXTINDERE', priceTime: 'De la 2.000 EUR · 4–8 săptămâni', whereYouAre: 'Ai un produs deja lansat, dar ai nevoie de resurse tehnice pentru a adăuga module noi, a rezolva blocajele de performanță sau a crește viteza de livrare.', whatYouGet: 'Dezvoltare de feature-uri noi, refactorizare de cod, optimizare de bază de date și arhitectură pregătită pentru scalare — fără timp de nefuncționare.', badges: ['Funcționalități noi', 'Optimizare viteză', 'Arhitectură scalabilă', 'Refactorizare incrementală'], cta: 'Extinde-mi produsul', links: [] },
+  { id: 'D', name: 'AUTOMATIZAREA PROCESELOR CU AI', priceTime: 'De la 5.000 EUR · 6–12 săptămâni', whereYouAre: 'Echipa ta pierde zeci de ore pe sarcini repetitive, procesare manuală de date sau fluxuri fragmentate care îți încetinesc creșterea.', whatYouGet: 'Pași LLM conectați la instrumentele pe care le folosești deja (n8n, Make sau cod propriu), plus un dashboard în care echipa verifică fiecare acțiune automată.', badges: ['Costuri operaționale mai mici', 'Integrări AI la comandă', 'Procesare automată', 'Control & audit'], cta: 'Automatizează-mi fluxul', links: ['Automatizare cu AI'] },
+];
+const STACK = [
+  { name: 'Frontend & UI', lead: 'Performanță și SEO', body: 'Pagini randate pe server, cu metadate, sitemap și hreflang configurate din prima zi.', tags: ['React', 'Next.js', 'Vue 3', 'Nuxt', 'TypeScript', 'Tailwind CSS'] },
+  { name: 'Backend & Data', lead: 'Infrastructură solidă', body: 'Postgres cu row-level security și migrații păstrate în Git.', tags: ['PostgreSQL', 'Supabase', 'Drizzle ORM', 'Node.js', 'Edge Functions'] },
+  { name: 'Cloud & Infra', lead: 'Deploy automat', body: 'Fiecare commit ajunge în producție prin CI, cu CDN și preview pentru fiecare modificare.', tags: ['Vercel', 'Cloudflare', 'Docker', 'GitHub Actions'] },
+  { name: 'AI & Vector Data', lead: 'Automatizare cu LLM', body: 'Modele integrate în fluxurile tale de lucru, cu căutare semantică peste datele proprii.', tags: ['OpenAI API', 'Anthropic', 'pgvector', 'Streaming'] },
+];
+const TRACKS = [
+  { id: 'fast', tone: 'signal', badge: 'Fast-Track', name: 'Express & Design-to-Code', scope: '2–3 zile – 3 săptămâni', summary: 'Pentru pagini de prezentare, build-uri Express și implementare din Figma. Livrare rapidă, fără pași redundanți.', steps: [
+    ['Onboarding rapid', 'Call de 30 de minute sau aliniere pe brief în aceeași zi. Confirmăm scopul, accesele și livrabilele.'],
+    ['Execuție directă', 'Începem build-ul imediat sau implementăm fidel designul din Figma. Fără faze intermediare de wireframing.'],
+    ['Staging rapid', 'Link de preview live în 24–48 de ore. Feedback pe versiunea reală, nu pe un mockup.'],
+    ['Lansare + 30 de zile suport', 'Handover complet și 30 de zile de remedieri pentru erori tehnice după lansare.'] ] },
+  { id: 'deep', tone: 'ink', badge: 'Deep Build', name: 'Concept-to-Spec, scalare și automatizări AI', scope: '4–12 săptămâni', summary: 'Pentru aplicații custom, refactorizare și automatizări AI. Arhitectură riguroasă și sprinturi cu demo la fiecare etapă.', steps: [
+    ['Diagnostic și blueprint', 'Discovery de 60 de minute, analiză de riscuri și specificație de scop în 48 de ore.'],
+    ['Wireframing și arhitectură', 'Modele de date, contracte API și prototipuri interactive înainte de prima linie de cod.'],
+    ['Sprinturi de două săptămâni', 'Mediu de staging actualizat bi-săptămânal, cu demo-uri de milestone la fiecare iterație.'],
+    ['Handover + garanție 30 de zile', 'Transfer de repository, documentație, sesiune de handover și 30 de zile de suport.'] ] },
+];
+const PROJECTS = [
+  { winV: '−40%', winK: 'restanțe după 3 luni', tech: 'Aplicație web · Gestiune internă', title: 'Startica, aplicație de administrare', text: 'Copii, grupe, prezență, achitări, cheltuieli, SMS către părinți și raport contabil. Funcționează pe mai multe filiale, cu sincronizare între ele.', img: 'assets/proiecte/startica-app-dashboard-crop.png', href: 'Studiu de caz.dc.html?p=startica-app', cta: 'Vezi studiul de caz →' },
+  { winV: '−60%', winK: 'apeluri repetitive', tech: 'Site de business · RO / EN / RU', title: 'Startica, grădiniță în Chișinău', text: 'Site în trei limbi cu 5 grupe de vârstă, 3 programe, galerii pentru 11 spații și formular de înscriere.', img: 'https://startica.md/media/filer_public_thumbnails/filer_public/20/a7/20a767a2-71dc-4a4f-af3b-2a1b5a632053/grupa-2.jpeg__880x605_crop_subsampling-2_upscale.webp', href: 'Studiu de caz.dc.html?p=startica-site', cta: 'Vezi studiul de caz →' },
+  { winV: '8', winK: 'cereri în prima lună', tech: 'Site de prezentare · RO / EN', title: 'Aurelia Badiur, consultant oenolog', text: 'Site personal pentru o oenologă formată în Bordeaux și Bourgogne: parcurs, procesul de vinificație în 5 etape și programări 1:1.', img: 'https://aureliabadiur.com/images/hero.jpg', href: 'Studiu de caz.dc.html?p=aurelia-badiur', cta: 'Vezi studiul de caz →' },
+  { winV: '120', winK: 'teste de nivel completate', tech: 'Brand · Site · Social media', title: 'EnglishMinds, școală de engleză', text: 'Identitate vizuală, site cu grupe, metodă, tabere, test de nivel și programare la lecția demo, plus blog, flyer și postări Instagram.', img: 'assets/proiecte/englishminds-class.jpg', href: 'Studiu de caz.dc.html?p=englishminds', cta: 'Vezi studiul de caz →' },
+  { winV: '~5 h', winK: 'pe săptămână la actualizări', tech: 'Aplicație web · Stoc · Admin · RO / RU / EN', title: 'SwissCars, auto din Elveția', text: 'Stoc de mașini administrat din panou, pagini de detaliu, leasing cu parteneri și recenzii de la clienți.', img: 'https://krltqxdhxiguxwookqgg.supabase.co/storage/v1/object/public/car-images/cars/ae25eba6-b9ae-4b21-9a3b-85b025e69e21.jpg', href: 'Studiu de caz.dc.html?p=swisscars', cta: 'Vezi studiul de caz →' },
+  { winV: '−35%', winK: 'pierderi de flori', tech: 'Aplicație web · Nuxt · Supabase', title: 'Bloom Florist, gestiune florărie', text: 'Comenzi pe statusuri, stoc pe loturi, furnizori, pierderi, plăți online MAIB și PayNet și rapoarte de marjă, cu roluri de admin și vânzător.', img: 'assets/proiecte/bloom-panou-1600.png', href: 'Studiu de caz.dc.html?p=bloom', cta: 'Vezi studiul de caz →' },
+  { winV: '~1 200 $', winK: 'economisiți lunar per camion', tech: 'Site + unelte · EN / RU · SUA', title: 'Trucker HQ, dispatch auto', text: 'Dispatch cu tarif fix, joburi CDL, recrutare și unelte gratuite de verificare a transportatorilor din datele FMCSA.', img: 'assets/proiecte/truckerhq-acasa-1600.png', href: 'Studiu de caz.dc.html?p=truckerhq', cta: 'Vezi studiul de caz →' },
+];
+const NAV = [
+  { label: 'Servicii', id: 'servicii' }, { label: 'Stack', id: 'stack' }, { label: 'Proces', id: 'proces' },
+  { label: 'Proiecte', id: 'proiecte' }, { label: 'Blog', id: '' }, { label: 'Contact', id: 'contact' },
+];
+const PHRASES = ['Landing page-uri', 'Site-uri de business', 'Site-uri de produs', 'Site-uri de marketing', 'Aplicații web', 'API-uri custom', 'Integrări cu terți'];
+
+class Component extends DCLogic {
+  state = { stage: 0, track: 'fast', formShown: false, typed: PHRASES[0], wide: true, menuOpen: false, langOpen: false, lang: 'RO', active: '' };
+  componentDidMount() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let i = 0, c = PHRASES[0].length, del = true;
+    const tick = () => {
+      const cur = PHRASES[i];
+      if (del) {
+        c--; this.setState({ typed: cur.slice(0, Math.max(c, 0)) });
+        if (c <= 0) { del = false; i = (i + 1) % PHRASES.length; this.t = setTimeout(tick, 350); return; }
+        this.t = setTimeout(tick, 28);
+      } else {
+        c++; this.setState({ typed: cur.slice(0, c) });
+        if (c >= cur.length) { del = true; this.t = setTimeout(tick, 1500); return; }
+        this.t = setTimeout(tick, 55);
+      }
+    };
+    this.t = setTimeout(tick, 1500);
+  }
+  componentWillUnmount() {
+    clearTimeout(this.t);
+  }
+  renderVals() {
+    const { stage, track, formShown, typed, wide, menuOpen, langOpen, lang, active } = this.state;
+    const tr = TRACKS.find(t => t.id === track);
+    return {
+      seoKey: 'home',
+      isWide: wide, isNarrow: !wide, mobileOpen: !wide && menuOpen, menuOpen, langOpen, langCode: lang,
+      burgerMid: menuOpen ? '#FF4D14' : '#0B0B0B',
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen, langOpen: false })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      toggleLang: () => this.setState(s => ({ langOpen: !s.langOpen })),
+      langs: [['Română', 'RO'], ['English', 'EN']].map(([name, code]) => ({
+        name, code, bg: code === lang ? '#F1EEE7' : 'transparent', weight: code === lang ? 600 : 400,
+        codeColor: code === lang ? '#FF4D14' : '#6B6862',
+        pick: () => this.setState({ lang: code, langOpen: false }),
+      })),
+      navItems: NAV.map((n, i) => ({
+        label: n.label, href: n.id ? '#' + n.id : '#', num: String(i + 1).padStart(2, '0'),
+        color: n.id && n.id === active ? '#0B0B0B' : '#6B6862',
+        bg: n.id && n.id === active ? '#F1EEE7' : 'transparent',
+        numColor: n.id && n.id === active ? '#FF4D14' : '#6B6862',
+        go: () => {}, goClose: () => this.setState({ menuOpen: false }),
+      })),
+      typed,
+      caret: React.createElement('span', { 'aria-hidden': true, style: { display: 'inline-block', width: '0.07em', height: '0.8em', marginLeft: '0.08em', verticalAlign: '-0.06em', background: '#FF4D14', animation: 'caret 1.05s step-end infinite' } }),
+      stages: STAGES.map((s, i) => ({
+        num: String(i + 1).padStart(2, '0'), name: s.name,
+        color: i === stage ? '#0B0B0B' : '#6B6862',
+        dotBorder: i === stage ? '#FF4D14' : '#E2DED6',
+        scale: i === stage ? 1.15 : 1,
+        select: () => this.setState({ stage: i }),
+      })),
+      stage: STAGES[stage],
+      stack: STACK,
+      trackTabs: TRACKS.map(t => ({
+        badge: t.badge,
+        bg: t.id === track ? (t.tone === 'signal' ? '#FF4D14' : '#0B0B0B') : 'transparent',
+        color: t.id === track ? '#FAF8F4' : '#6B6862',
+        select: () => this.setState({ track: t.id }),
+      })),
+      track: {
+        ...tr,
+        scopeBorder: tr.tone === 'signal' ? 'rgba(255,77,20,0.4)' : '#E2DED6',
+        scopeColor: tr.tone === 'signal' ? '#0B0B0B' : '#6B6862',
+        steps: tr.steps.map((s, i) => ({ index: String(i + 1).padStart(2, '0'), title: s[0], body: s[1] })),
+      },
+      projects: PROJECTS,
+      formShown, formHidden: !formShown,
+      showForm: () => this.setState({ formShown: true }),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

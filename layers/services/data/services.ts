@@ -260,94 +260,94 @@ const SERVICE_COPY: readonly ServicePageCopy[] = [
   },
   {
     slug: 'granturi',
-    seoTitle: { ro: 'Aplicații web pentru proiecte cu grant', en: 'Aplicații web pentru proiecte cu grant' },
+    seoTitle: { ro: 'Aplicații web pentru proiecte cu grant', en: 'Web applications for grant-funded projects' },
     intro: {
       ro: 'Ai câștigat un grant european sau ODA și trebuie să livrezi o aplicație la termen? Construim partea tehnică a proiectului și pregătim documentele de care ai nevoie la raportare.',
-      en: 'Ai câștigat un grant european sau ODA și trebuie să livrezi o aplicație la termen? Construim partea tehnică a proiectului și pregătim documentele de care ai nevoie la raportare.',
+      en: 'Won a European or ODA grant and need to deliver an application on time? We build the technical side of the project and prepare the documents you need for reporting.',
     },
     audience: [
       {
         ro: 'Startup-uri și IMM-uri',
-        en: 'Startup-uri și IMM-uri',
+        en: 'Startups and SMEs',
       },
       {
         ro: 'ONG-uri',
-        en: 'ONG-uri',
+        en: 'NGOs',
       },
       {
         ro: 'Instituții publice și primării',
-        en: 'Instituții publice și primării',
+        en: 'Public institutions and city halls',
       },
       {
         ro: 'Asociații de afaceri',
-        en: 'Asociații de afaceri',
+        en: 'Business associations',
       },
     ],
     features: [
       {
         ro: 'Calendar de livrare aliniat la termenele din contractul de finanțare, cu etape și act de predare-primire pentru fiecare.',
-        en: 'Calendar de livrare aliniat la termenele din contractul de finanțare, cu etape și act de predare-primire pentru fiecare.',
+        en: 'Delivery schedule aligned with the deadlines in the funding contract, with milestones and a handover certificate for each.',
       },
       {
         ro: 'Documente conforme cerințelor finanțatorului: facturi, specificație tehnică, acte de predare și documentație de utilizare.',
-        en: 'Documente conforme cerințelor finanțatorului: facturi, specificație tehnică, acte de predare și documentație de utilizare.',
+        en: 'Documents that meet the requirements of the funder: invoices, technical specification, handover certificates and user documentation.',
       },
       {
         ro: 'Ofertă detaliată pentru procedura de achiziție, structurată pe liniile din bugetul proiectului.',
-        en: 'Ofertă detaliată pentru procedura de achiziție, structurată pe liniile din bugetul proiectului.',
+        en: 'Detailed offer for the procurement procedure, structured by the lines of the project budget.',
       },
       {
         ro: 'Dovezi pentru raportare: capturi de ecran, statistici de utilizare și acces pentru evaluatori.',
-        en: 'Dovezi pentru raportare: capturi de ecran, statistici de utilizare și acces pentru evaluatori.',
+        en: 'Evidence for reporting: screenshots, usage statistics and access for evaluators.',
       },
       {
         ro: 'Plan de sustenabilitate: găzduire, mentenanță și costuri estimate după încheierea finanțării.',
-        en: 'Plan de sustenabilitate: găzduire, mentenanță și costuri estimate după încheierea finanțării.',
+        en: 'Sustainability plan: hosting, maintenance and estimated costs after the funding ends.',
       },
       {
         ro: 'Echipă tehnică completă pe durata proiectului, fără angajări interne.',
-        en: 'Echipă tehnică completă pe durata proiectului, fără angajări interne.',
+        en: 'A full technical team for the duration of the project, with no in-house hiring.',
       },
     ],
     process: [
       {
         title: {
           ro: 'Înainte de aplicare',
-          en: 'Înainte de aplicare',
+          en: 'Before applying',
         },
         body: {
           ro: 'Scriem specificația tehnică și estimăm bugetul IT pentru cererea de finanțare.',
-          en: 'Scriem specificația tehnică și estimăm bugetul IT pentru cererea de finanțare.',
+          en: 'We write the technical specification and estimate the IT budget for the funding application.',
         },
       },
       {
         title: {
           ro: 'Implementare',
-          en: 'Implementare',
+          en: 'Implementation',
         },
         body: {
           ro: 'Livrăm pe etapele din contract, cu o versiune live și un act de predare la fiecare etapă.',
-          en: 'Livrăm pe etapele din contract, cu o versiune live și un act de predare la fiecare etapă.',
+          en: 'We deliver by the contract milestones, with a live version and a handover certificate at each milestone.',
         },
       },
       {
         title: {
           ro: 'Raportare și audit',
-          en: 'Raportare și audit',
+          en: 'Reporting and audit',
         },
         body: {
           ro: 'Pregătim documentele tehnice, capturile și statisticile cerute în rapoartele intermediare și finale.',
-          en: 'Pregătim documentele tehnice, capturile și statisticile cerute în rapoartele intermediare și finale.',
+          en: 'We prepare the technical documents, screenshots and statistics required in the interim and final reports.',
         },
       },
       {
         title: {
           ro: 'După grant',
-          en: 'După grant',
+          en: 'After the grant',
         },
         body: {
           ro: 'Preluăm găzduirea și mentenanța, ca aplicația să funcționeze pe toată perioada de sustenabilitate cerută de finanțator.',
-          en: 'Preluăm găzduirea și mentenanța, ca aplicația să funcționeze pe toată perioada de sustenabilitate cerută de finanțator.',
+          en: 'We take over hosting and maintenance so the application keeps running for the whole sustainability period the funder requires.',
         },
       },
     ],

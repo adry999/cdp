@@ -85,28 +85,29 @@ date afișează caseta „De completat". Pentru fiecare proiect:
 
 ## EN de tradus — indexare
 
-Paginile EN încă netraduse sunt `noindex`, fără alternativă EN în `hreflang` și
-lipsesc din sitemap. Fiecare modul declară căile propriilor pagini:
+Toate paginile EN sunt traduse (2026-10-09), deci listele de mai jos sunt goale.
+O pagină EN încă netradusă se marchează aici: devine `noindex`, fără alternativă EN în `hreflang` și
+lipsește din sitemap. Fiecare modul declară căile propriilor pagini:
 `layers/content/domain/sitemap.ts`, `layers/leads/domain/sitemap.ts`,
 `layers/services/domain/sitemap.ts`; rădăcina le compune în
 `app/utils/enPendingTranslation.ts`. După traducerea unei pagini, scoate-i calea
-din lista modulului (și `enPending` din `*_SITEMAP_PAGES`).
+din lista modulului (și `enPending` din `*_SITEMAP_PAGES`). Mecanismul rămâne pentru pagini noi.
 
 ## Granturi — EN de tradus
 
-Designul nu are versiune EN pentru granturi; valorile EN sunt textul RO până la traducere.
+Designul nu are versiune EN pentru granturi; EN tradus în cod (2026-10-09).
 
-- [ ] EN de tradus: `layers/services/data/services.ts` și `layers/services/data/serviceLinks.ts` (`name.en`) — serviciul `granturi`: `name`, `intro`, `audience` (4), `features` (6), `process` (4 × titlu + corp), `seoTitle`
-- [ ] EN de tradus: `i18n/locales/en.json` — `home.services.grants.*` (kicker, title, body, steps ×4, cta, contact)
-- [ ] EN de tradus: `i18n/locales/en.json` — `services.hero.audienceLabel` („Pentru”) și `projects.filters.granturi` („Granturi”)
+- [x] EN de tradus: `layers/services/data/services.ts` și `layers/services/data/serviceLinks.ts` (`name.en`) — serviciul `granturi`: `name`, `intro`, `audience` (4), `features` (6), `process` (4 × titlu + corp), `seoTitle`
+- [x] EN de tradus: `i18n/locales/en.json` — `home.services.grants.*` (kicker, title, body, steps ×4, cta, contact)
+- [x] EN de tradus: `i18n/locales/en.json` — `services.hero.audienceLabel` („Pentru”) și `projects.filters.granturi` („Granturi”)
 - [ ] Programe de finanțare numite și proiecte finanțate prin grant: lipsesc, nu se inventează.
 
 ## Pagina /servicii — EN de tradus
 
-Designul nu are versiune EN pentru indexul /servicii; valorile EN sunt textul RO până la traducere.
+Designul nu are versiune EN pentru indexul /servicii; EN tradus în cod (2026-10-09).
 
-- [ ] EN de tradus: `i18n/locales/en.json` — `services.index.title`, `services.index.intro`, `services.index.seo.title`
-- [ ] EN de tradus: `i18n/locales/en.json` — `services.index.cta.title`, `.body`, `.button`
+- [x] EN de tradus: `i18n/locales/en.json` — `services.index.title`, `services.index.intro`, `services.index.seo.title`
+- [x] EN de tradus: `i18n/locales/en.json` — `services.index.cta.title`, `.body`, `.button`
 
 ## Imagini
 
@@ -115,8 +116,8 @@ Designul nu are versiune EN pentru indexul /servicii; valorile EN sunt textul RO
       Sursa: `design/assets/proiecte` și site-urile clienților (Startica, Aurelia
       Badiur, SwissCars).
 - [ ] Capturile Startica app, Bloom, Trucker HQ și SwissCars conțin date
-      demonstrative (pagina o spune sub galerie); de înlocuit cu capturi reale
-      anonimizate dacă e cazul.
+      demonstrative. Nota de sub galerie nu mai apare pe site (scoasă 2026-10-09,
+      livrare finală); de înlocuit cu capturi reale anonimizate dacă e cazul.
 - [ ] Copertă separată la 16/10 — acum cardul folosește captura principală.
 
 ## Conținut de decis
@@ -130,29 +131,29 @@ Designul nu are versiune EN pentru indexul /servicii; valorile EN sunt textul RO
 
 ## Formular contact — EN de tradus
 
-Designul nu are versiune EN pentru câmpul „Etapa”; valorile EN sunt textul RO până la traducere.
+Designul nu are versiune EN pentru câmpul „Etapa”; EN tradus în cod (2026-10-09).
 
-- [ ] EN de tradus: `i18n/locales/en.json` — `home.contact.form.stage` și `home.contact.form.stageOptions.*` (Express, Concept, Design → cod, Scalare, AI, Nu știu)
+- [x] EN de tradus: `i18n/locales/en.json` — `home.contact.form.stage` și `home.contact.form.stageOptions.*` (Express, Concept, Design → cod, Scalare, AI, Nu știu)
 
 ## Pagina /preturi — EN de tradus
 
-Designul nu are versiune EN; valorile EN sunt textul RO până la traducere (excepție: cele 3 întrebări au EN din `layers/content/data/faqs.ts`).
+Designul nu are versiune EN; EN tradus în cod (2026-10-09) (excepție: cele 3 întrebări au EN din `layers/content/data/faqs.ts`).
 
-- [ ] EN de tradus: `i18n/locales/en.json` — `pricing.seo.*`, `pricing.sectionLabel`, `pricing.title`, `pricing.intro`, `pricing.stages.*.pricePrefix` și `.time`
-- [ ] EN de tradus: `pricing.included.*`, `pricing.afterLaunch.*` (titlu, 2 abonamente, nota despre garanție)
-- [ ] Prețuri reale (placeholder `[ X ] EUR`): cele 5 carduri de etapă, „de la [ X ] EUR / lună” pentru Mentenanță și Dezvoltare continuă (designul are 300 / 2.000 EUR, marcate demo), cifra din întrebarea „Cât costă un proiect?” (`pricing.faq.items[0]`); `layers/content/data/faqs.ts` spune deja „de la 6.000 EUR" — de confirmat că cifrele coincid
+- [x] EN de tradus: `i18n/locales/en.json` — `pricing.seo.*`, `pricing.sectionLabel`, `pricing.title`, `pricing.intro`, `pricing.stages.*.pricePrefix` și `.time`
+- [x] EN de tradus: `pricing.included.*`, `pricing.afterLaunch.*` (titlu, 2 abonamente, nota despre garanție)
+- [ ] Prețuri reale: cele 5 carduri de etapă și abonamentele Mentenanță / Dezvoltare continuă (designul are 300 / 2.000 EUR, marcate demo). Până atunci prețul nu apare; se afișează când există cheia `pricing.stages.<id>.price` / `pricing.afterLaunch.plans.<id>.price` în ambele locale. Întrebarea „Cât costă un proiect?” (`pricing.faq.items[0]`) nu mai conține o cifră; `layers/content/data/faqs.ts` spune deja „de la 6.000 EUR" — de confirmat că cifrele coincid
 
 ## Pagina /despre — EN de tradus
 
 Hero-ul și principiile refolosesc `home.about.*` (EN existent). Restul nu are EN în design.
 
-- [ ] EN de tradus: `i18n/locales/en.json` — `about.principlesLabel`, `about.team.label`, `.title`, `.photo`, `.name`, `.role`, `.placeholderNote`, `about.facts.*`
-- [ ] Echipa reală: nume, funcții, fotografii (acum 3 carduri placeholder în `layers/content/app/components/ContentAboutTeam.vue`)
+- [x] EN de tradus: `i18n/locales/en.json` — `about.principlesLabel`, `about.team.label`, `.title`, `about.facts.*` (cheile placeholder `.photo`, `.name`, `.role`, `.placeholderNote` au fost scoase)
+- [ ] Echipa reală: nume, funcții, fotografii în `layers/content/data/team.ts`; secțiunea Echipa e ascunsă cât timp lista e goală
 
 ## Pagina /contact — EN de tradus
 
 Titlul, textul introductiv, formularul și datele de contact refolosesc `home.contact.*`.
 
-- [ ] EN de tradus: `i18n/locales/en.json` — `contactPage.steps` (3 pași)
+- [x] EN de tradus: `i18n/locales/en.json` — `contactPage.steps` (3 pași)
 - [ ] Telefon / Telegram din design (demo `+373 60 000 000`): nu există în `layers/content/data/siteSettings.ts` și nu e afișat; de decis dacă se adaugă
 - [ ] Adresa de email nu apare în markup (decizie existentă); designul folosește `salut@codepedia.md`, repo-ul `contact@codepedia.md` — de confirmat (vezi „Contact”)

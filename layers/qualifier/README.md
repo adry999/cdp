@@ -29,5 +29,5 @@ There is no `server/index.ts`: nothing outside this layer uses its server code.
 
 ## Consumed by
 
-- `app/layouts/default.vue`, `app/layouts/case-study.vue` — `useQualifierAvailability`, `QualifierModal`.
+- `app/layouts/default.vue` — `useQualifierAvailability`, `QualifierModal`.
 - `layers/home` — `QualifierCta`, `useQualifierAvailability`; `layers/projects`, `layers/services` — `QualifierCta`.

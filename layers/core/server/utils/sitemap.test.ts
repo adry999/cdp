@@ -26,6 +26,11 @@ describe('toSitemapUrls', () => {
     ])
   })
 
+  it('points x-default at the RO URL when the page asks for it', () => {
+    const [ro] = toSitemapUrls(single, [{ ro: '/blog', en: '/en/blog', xDefault: 'ro' }])
+    expect(ro?.alt).toContainEqual({ hreflang: 'x-default', href: `${base}/blog` })
+  })
+
   it('lists only the RO URL, with no alternates, while the EN copy is pending', () => {
     expect(toSitemapUrls(single, [{ ro: '/preturi', en: '/en/pricing', enPending: true }])).toEqual([
       { loc: `${base}/preturi`, lastmod: undefined, alt: [] },

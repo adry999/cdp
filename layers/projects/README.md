@@ -3,7 +3,7 @@
 Case studies end to end: the public case-study pages, the `/proiecte` portfolio
 index, `GET /api/projects*`, the old-slug redirect middleware, and the admin
 project list and editor. Depends on `layers/core`, `layers/content` (only
-`useSiteSettings`, for the NDA note) and, through `ProjectsCaseStudyNext`, the
+`useSiteSettings`, for the NDA note) `layers/blog` (`BlogLinked`, posts whose `case` is the project's `slug_ro`, shown on the case-study page) and, through `ProjectsCaseStudyNext`, the
 public API of `layers/qualifier`.
 
 ## Public API (client) — `index.ts`
@@ -83,8 +83,6 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
   stack, obstacles, changes, result, feedback): label, heading, paragraphs, a
   default slot for gallery / stack / stats / quote, and the dashed "to complete"
   box when `empty`.
-- `ProjectsCaseStudyHeader` — sticky case-study header with the RO/EN slug
-  switcher; used by the root `case-study` layout.
 - `ProjectsCard` — the project card (`HomeWork`'s original markup), `project`
   + `showTech` (default `true`) props. `showTech: false` drops the tech line
   and tightens the heading's top margin — what `ServicesRelatedProjects` uses.
@@ -142,7 +140,6 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
 
 ## Consumed by
 
-- `app/layouts/case-study.vue` — `<ProjectsCaseStudyHeader />`.
 - `layers/home/app/components/HomeWork.vue` — `usePublishedProjects`,
   `mapProjectCard`, `selectHomeProjects` via `#layers/projects`.
 - `layers/services/app/components/ServicesRelatedProjects.vue` —

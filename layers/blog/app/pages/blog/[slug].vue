@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { BlogPostDoc } from '#layers/blog'
+import { CATEGORIES, articleGraph, ogImagePath, type BlogPostDoc } from '#layers/blog'
 
 const route = useRoute()
-const { locale } = useI18n()
+const { t, locale } = useI18n()
+const siteLocale = useSiteLocale()
 const slug = route.params.slug as string
 
 // The route 404s on a missing slug: `useAsyncData` turns the handler's 404
@@ -17,26 +18,50 @@ if (!doc) {
   throw createError({ statusCode: 404, statusMessage: 'Post not found' })
 }
 
+// Slugs differ per locale: point the language switcher and hreflang at the counterpart post.
+const setI18nParams = useSetI18nParams()
+setI18nParams(
+  locale.value === 'en' ? { en: { slug }, ro: { slug: doc.alt } } : { ro: { slug }, en: { slug: doc.alt } },
+)
+
 const siteUrl = useSiteUrl()
+const primarySiteUrl = useSiteUrl('en')
+const image = doc.cover ? `${siteUrl}${doc.cover}` : `${siteUrl}${ogImagePath(siteLocale.value, slug)}`
+
+// SEO_SPEC §3: blog article titles read "{title} | CODEPEDIA" (the site-wide template is "· CODEPEDIA").
+useHead({ titleTemplate: '%s | CODEPEDIA' })
 
 usePageSeo({
   title: () => doc.title,
   description: () => doc.description,
-  image: () => (doc.cover ? `${siteUrl}${doc.cover}` : null),
+  image: () => image,
   type: 'article',
+  article: {
+    publishedTime: doc.date,
+    modifiedTime: doc.updated,
+    section: CATEGORIES[doc.category].name[siteLocale.value],
+  },
 })
 
-useJsonLd(() => ({
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: doc.title,
-  description: doc.description,
-  url: `${siteUrl}${route.path}`,
-  inLanguage: locale.value,
-  datePublished: doc.date,
-  ...(doc.cover ? { image: `${siteUrl}${doc.cover}` } : {}),
-  author: { '@type': 'Organization', name: 'Codepedia' },
-}))
+useBlogRssLink()
+
+useJsonLd(() =>
+  articleGraph({
+    locale: siteLocale.value,
+    origin: siteUrl,
+    primaryOrigin: primarySiteUrl,
+    slug,
+    title: doc.title,
+    description: doc.description,
+    keyword: doc.keyword,
+    category: doc.category,
+    date: doc.date,
+    updated: doc.updated,
+    image,
+    blocks: doc.blocks,
+    labels: { home: 'CODEPEDIA', blog: t('nav.blog') },
+  }),
+)
 </script>
 
 <template>

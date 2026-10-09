@@ -25,7 +25,7 @@ async function handleSubmit() {
 
 <template>
   <div class="w-full max-w-[380px]">
-    <img src="/brand/codepedia-wordmark.svg" alt="Codepedia" width="183" height="18" class="mx-auto mb-8 block h-[18px] w-auto" >
+    <img src="/brand/codepedia-wordmark.svg" alt="CODEPEDIA" width="183" height="18" class="mx-auto mb-8 block h-[18px] w-auto" >
     <form class="rounded border border-hairline p-7" @submit.prevent="handleSubmit">
       <AdminField id="email" v-model="email" label="Email" type="email" required />
       <AdminField id="password" v-model="password" class="mt-5" label="Parolă" type="password" required />

@@ -1,28 +1,25 @@
 <script setup lang="ts">
-const { t } = useI18n()
+import { TEAM } from '#layers/content/data/team'
 
-// Team data does not exist yet: three placeholder cards until real names, roles and photos are supplied.
-const PLACEHOLDER_COUNT = 3
+const { t } = useI18n()
+const siteLocale = useSiteLocale()
 </script>
 
 <template>
-  <SiteSection :label="t('about.team.label')">
+  <SiteSection v-if="TEAM.length" :label="t('about.team.label')">
     <h2 class="m-0 max-w-[28ch] heading-section">
       {{ t('about.team.title') }}
     </h2>
     <ul class="m-0 mt-7 grid list-none grid-cols-[repeat(auto-fill,minmax(min(100%,220px),1fr))] gap-4 p-0">
-      <li v-for="n in PLACEHOLDER_COUNT" :key="n" class="flex flex-col gap-3">
-        <MediaFrame ratio="4/3" :label="t('about.team.photo')" />
+      <li v-for="member in TEAM" :key="member.name" class="flex flex-col gap-3">
+        <MediaFrame ratio="4/3" :src="member.photo" :alt="member.name" />
         <div>
-          <div class="text-[17px] font-medium tracking-[-0.02em]">{{ t('about.team.name') }}</div>
+          <div class="text-[17px] font-medium tracking-[-0.02em]">{{ member.name }}</div>
           <div class="mt-0.5 eyebrow-sm text-muted">
-            {{ t('about.team.role') }}
+            {{ member.role[siteLocale] }}
           </div>
         </div>
       </li>
     </ul>
-    <p class="m-0 mt-4 eyebrow-sm text-signal-text">
-      {{ t('about.team.placeholderNote') }}
-    </p>
   </SiteSection>
 </template>

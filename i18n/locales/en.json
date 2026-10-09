@@ -11,6 +11,7 @@
     "process": "Process",
     "work": "Portfolio",
     "blog": "Blog",
+    "news": "News",
     "pricing": "Pricing",
     "about": "About",
     "main": "Main navigation",
@@ -38,7 +39,7 @@
   },
   "privacy": {
     "seo": {
-      "description": "Codepedia's privacy policy: what data we collect, how we use it, and how you can control cookies."
+      "description": "CODEPEDIA's privacy policy: what data we collect, how we use it, and how you can control cookies."
     }
   },
   "home": {
@@ -76,17 +77,17 @@
       "note": "Prices and timelines are indicative and depend on specific project scope.",
       "notSureLink": "Not sure which stage fits you best? Write to us.",
       "grants": {
-        "kicker": "Proiecte finanțate prin granturi",
-        "title": "Ai câștigat un grant european sau ODA? Livrăm aplicația din proiect, la termenele din contract.",
-        "body": "Lucrăm cu startup-uri, IMM-uri, ONG-uri, instituții publice și asociații de afaceri. Intrăm în proiect în orice etapă, de la cererea de finanțare până după încheierea ei.",
+        "kicker": "Grant-funded projects",
+        "title": "Won a European or ODA grant? We deliver the application from your project, on the contract deadlines.",
+        "body": "We work with startups, SMEs, NGOs, public institutions and business associations. We join the project at any stage, from the funding application to well after it closes.",
         "steps": [
-          "Înainte de aplicare",
-          "Implementare",
-          "Raportare și audit",
-          "După grant"
+          "Before applying",
+          "Delivery",
+          "Reporting and audit",
+          "After the grant"
         ],
-        "cta": "Cum lucrăm pe granturi",
-        "contact": "Discută proiectul →"
+        "cta": "How we work on grants",
+        "contact": "Discuss your project →"
       },
       "stageWord": "Stage",
       "whereYouAreLabel": "Where you are",
@@ -353,44 +354,31 @@
       "hero": "Case study",
       "facts": "Facts",
       "next": "Next",
-      "problem": {
-        "label": "Problem",
-        "heading": "The starting point",
-        "placeholder": "Section copy."
-      },
-      "solution": {
-        "label": "Solution",
-        "heading": "How we found the answer",
-        "placeholder": "Section copy."
-      },
-      "stack": {
-        "label": "Stack",
-        "heading": "The technology we used",
-        "placeholder": "The stack used."
-      },
-      "obstacles": {
-        "label": "Obstacles",
-        "heading": "What got in the way",
-        "placeholder": "Section copy."
-      },
-      "changes": {
-        "label": "Changes",
-        "heading": "What we changed along the way",
-        "placeholder": "Section copy."
-      },
-      "result": {
-        "label": "Result",
-        "heading": "The final result",
-        "placeholder": "Result figures."
-      },
-      "feedback": {
-        "label": "Feedback",
-        "heading": "What the client says",
-        "placeholder": "A quote from the client, with name and role."
-      }
+      "situation": { "label": "Situation", "heading": "The business problem" },
+      "task": { "label": "Task" },
+      "action": { "label": "Action", "heading": "The solution" },
+      "result": { "label": "Result", "heading": "What the client gained" },
+      "feedback": { "label": "Feedback", "heading": "What the client says" },
+      "gallery": { "label": "Gallery", "heading": "What it looks like" }
     },
-    "toComplete": "To complete",
-    "screensDemo": "Screens with demo data",
+    "cost": "What the problem cost",
+    "constraints": "Constraints",
+    "business": "Business",
+    "tech": "Tech",
+    "gains": "Gains",
+    "savings": "Savings",
+    "links": { "live": "Live site", "preview": "CODEPEDIA preview", "figma": "Figma" },
+    "galleryButton": "Gallery · {count} screens",
+    "galleryHint": "Opens here",
+    "lightbox": {
+      "label": "Screenshot gallery",
+      "openImage": "Open image {n}",
+      "close": "Close gallery",
+      "closeButton": "Close ✕",
+      "prev": "Previous",
+      "next": "Next",
+      "counter": "{current} / {total}"
+    },
     "nextTitle": "Have a similar project?",
     "cta": "Let’s talk",
     "quote": "“{text}”"
@@ -505,11 +493,11 @@
   "projects": {
     "seo": {
       "title": "Projects",
-      "description": "Codepedia case studies: web apps, websites, WordPress, Shopify and AI automation delivered for clients around the world."
+      "description": "CODEPEDIA case studies: web apps, websites, WordPress, Shopify and AI automation delivered for clients around the world."
     },
     "hero": {
       "title": "Projects.",
-      "intro": "Case studies from the Codepedia portfolio, filterable by service type."
+      "intro": "Case studies from the CODEPEDIA portfolio, filterable by service type."
     },
     "filters": {
       "all": "All",
@@ -518,7 +506,7 @@
       "wordpress": "WordPress",
       "shopify": "Shopify",
       "ai-automation": "AI automation",
-      "granturi": "Granturi"
+      "granturi": "Grants"
     },
     "empty": "No published case studies yet."
   },
@@ -527,32 +515,69 @@
       "heading": "What's included"
     },
     "hero": {
-      "audienceLabel": "Pentru"
+      "audienceLabel": "For"
     },
     "index": {
       "seo": {
-        "title": "Servicii de dezvoltare web în Chișinău"
+        "title": "Web development services in Chișinău"
       },
-      "title": "Cinci etape. Pornim de unde ești acum.",
-      "intro": "De la o pagină rapidă până la inginerie AI la comandă. Fiecare etapă are preț fix, termen asumat și 30 de zile de remedieri după lansare.",
+      "title": "Five stages. We start where you are now.",
+      "intro": "From a quick page to custom AI engineering. Every stage has a fixed price, a committed timeline and 30 days of fixes after launch.",
       "cta": {
-        "title": "Nu știi în ce etapă ești?",
-        "body": "Descrie problema în câteva rânduri. Îți răspundem într-o zi lucrătoare cu etapa potrivită și o estimare.",
-        "button": "Vezi dacă te putem ajuta"
+        "title": "Not sure which stage you're at?",
+        "body": "Describe the problem in a few lines. We reply within one working day with the right stage and an estimate.",
+        "button": "See if we can help"
       }
     }
+  },
+  "news": {
+    "seo": {
+      "title": "News",
+      "description": "Articles and news from other sources, picked by the CODEPEDIA team, with our own summary and a link to the original."
+    },
+    "hero": {
+      "title": "News",
+      "intro": "Articles and news from other sources, picked by the CODEPEDIA team, with a summary and a link to the original."
+    },
+    "empty": "No news published yet.",
+    "latest": "Latest",
+    "readAtSource": "Read at the source ↗",
+    "openOriginal": "Read the original article ↗",
+    "details": "Summary",
+    "back": "News",
+    "breadcrumb": "Breadcrumb",
+    "sourceLabel": "Source: {name}",
+    "originalDate": "Originally published: {date}",
+    "why": "Why it matters",
+    "disclaimer": "Summary written by the CODEPEDIA team. The full article belongs to {name}."
   },
   "blog": {
     "seo": {
       "title": "Blog",
-      "description": "Technical notes and short case studies from Codepedia's work — web development, automation, architecture."
+      "description": "Pricing, comparisons and guides for businesses planning a website or a web app. Written from CODEPEDIA projects."
     },
     "hero": {
-      "title": "Blog.",
-      "intro": "Technical notes from Codepedia's work — what we built, what we learned, what we changed."
+      "title": "What it costs, what to choose, how to build.",
+      "intro": "Pricing, comparisons and guides for businesses planning a website or a web app. Written from CODEPEDIA projects."
     },
     "empty": "No published posts yet.",
-    "related": "Related articles"
+    "related": "Read next",
+    "fromBlog": "From the blog",
+    "all": "All",
+    "latest": "Latest",
+    "read": "Read",
+    "toc": "Contents",
+    "published": "Published",
+    "updated": "Updated",
+    "next": "Next step",
+    "min": "min",
+    "back": "Blog",
+    "breadcrumb": "Breadcrumb",
+    "categories": "Categories",
+    "category": {
+      "seoTitle": "{name} · Blog",
+      "seoDescription": "CODEPEDIA articles in “{name}”: pricing, comparisons and guides for businesses planning a website or a web app."
+    }
   },
   "error": {
     "sectionLabel": "Error",
@@ -563,76 +588,73 @@
     "backHome": "Back to homepage"
   },
   "pricing": {
-    "sectionLabel": "Prețuri",
+    "sectionLabel": "Pricing",
     "seo": {
-      "title": "Preț fix pe fiecare etapă.",
-      "description": "Dacă subestimăm complexitatea unei sarcini, absorbim costul orelor suplimentare. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră."
+      "title": "A fixed price for every stage.",
+      "description": "If we underestimate the complexity of a task, we absorb the cost of the extra hours. The written estimate after the diagnostic always contains a figure."
     },
-    "title": "Preț fix pe fiecare etapă.",
-    "intro": "Dacă subestimăm complexitatea unei sarcini, absorbim costul orelor suplimentare. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră.",
-    "pricePlaceholder": "[ X ] EUR",
+    "title": "A fixed price for every stage.",
+    "intro": "If we underestimate the complexity of a task, we absorb the cost of the extra hours. The written estimate after the diagnostic always contains a figure.",
     "stages": {
       "E": {
-        "pricePrefix": "Sub",
-        "time": "2–3 zile"
+        "pricePrefix": "Under",
+        "time": "2–3 days"
       },
       "B": {
-        "pricePrefix": "De la",
-        "time": "~1 săptămână"
+        "pricePrefix": "From",
+        "time": "~1 week"
       },
       "A": {
-        "pricePrefix": "De la",
-        "time": "3–6 săpt."
+        "pricePrefix": "From",
+        "time": "3–6 wks"
       },
       "C": {
-        "pricePrefix": "De la",
-        "time": "4–8 săpt."
+        "pricePrefix": "From",
+        "time": "4–8 wks"
       },
       "D": {
-        "pricePrefix": "De la",
-        "time": "6–12 săpt."
+        "pricePrefix": "From",
+        "time": "6–12 wks"
       }
     },
     "included": {
-      "label": "Inclus mereu",
+      "label": "Always included",
       "items": [
         {
-          "title": "Cod în conturile tale",
-          "body": "Repository, baza de date și infrastructura sunt configurate direct la tine din prima zi."
+          "title": "Code in your own accounts",
+          "body": "The repository, database and infrastructure are set up directly in your accounts from day one."
         },
         {
-          "title": "30 de zile de remedieri",
-          "body": "Erorile tehnice și neconformitățile cu specificația agreată, rezolvate fără cost."
+          "title": "30 days of fixes",
+          "body": "Technical errors and deviations from the agreed specification, resolved at no cost."
         },
         {
-          "title": "Documentație și handover",
-          "body": "Echipa ta poate duce codul mai departe fără noi."
+          "title": "Documentation and handover",
+          "body": "Your team can carry the code forward without us."
         }
       ]
     },
     "afterLaunch": {
-      "label": "După lansare",
-      "title": "Abonament lunar sau echipa ta. Ambele funcționează.",
+      "label": "After launch",
+      "title": "A monthly retainer or your own team. Both work.",
       "plans": {
         "maintenance": {
-          "label": "Mentenanță",
-          "price": "de la [ X ] EUR / lună",
-          "body": "Actualizări, monitorizare, backup și un număr fix de ore pentru modificări mici."
+          "label": "Maintenance",
+          "body": "Updates, monitoring, backups and a fixed number of hours for small changes."
         },
         "continuous": {
-          "label": "Dezvoltare continuă",
-          "price": "de la [ X ] EUR / lună",
-          "body": "Sprinturi de două săptămâni cu demo, pentru funcționalități noi și scalare."
+          "label": "Continuous development",
+          "body": "Two-week sprints with a demo, for new features and scaling."
         }
       },
-      "warrantyNote": "*Garanția acoperă erorile tehnice și conformitatea cu specificația agreată; modificările de design sau funcționalitățile noi reprezintă extinderi de scop."
+      "warrantyNote": "*The warranty covers technical errors and conformity with the agreed specification; design changes or new features count as scope extensions."
     },
     "faq": {
-      "label": "Întrebări",
+      "label": "Questions",
       "items": [
         {
           "question": "What does a project cost?",
-          "answer": "Most projects start at [ X ] EUR for a working first version and move in stages from there. The written assessment after the diagnostic call always contains a number."
+          "answer": "Every project starts with a working first version and moves in stages from there. The written assessment after the diagnostic call always contains a number."
         },
         {
           "question": "Do you take over someone else's project?",
@@ -649,27 +671,23 @@
     "seo": {
       "description": "We run a few projects at a time so each gets the hours it needs. You talk directly to the engineer building your product."
     },
-    "principlesLabel": "Cum lucrăm",
+    "principlesLabel": "How we work",
     "team": {
-      "label": "Echipa",
-      "title": "Oamenii cu care vorbești direct.",
-      "photo": "Fotografie",
-      "name": "[ Nume ]",
-      "role": "[ Funcție ]",
-      "placeholderNote": "Placeholder · nume, roluri și fotografii de completat"
+      "label": "Team",
+      "title": "The people you talk to directly."
     },
     "facts": {
       "based": {
-        "label": "Bazați în",
+        "label": "Based in",
         "value": "Chișinău, Moldova"
       },
       "markets": {
-        "label": "Piețe",
-        "value": "Moldova/România · UE · America de Nord · Lumea întreagă"
+        "label": "Markets",
+        "value": "Moldova/Romania · EU · North America · Worldwide"
       },
       "languages": {
-        "label": "Limbi",
-        "value": "Română · Engleză · Rusă"
+        "label": "Languages",
+        "value": "Romanian · English · Russian"
       }
     }
   },

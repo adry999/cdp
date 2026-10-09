@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3'
 import { blogSlug } from '#layers/blog'
+import { blogSitemapPages } from '#layers/blog/domain/blogRoutes'
 import { renderBlogRss, type RssPost } from '#layers/blog/domain/rss'
 import { listPublished, type BlogLocale } from '#layers/blog/server/repository/blogRepository'
 import type { SitemapPage } from '#layers/core/shared/types/sitemap'
@@ -12,6 +13,7 @@ async function listPublishedBlogPosts(event: H3Event, locale: BlogLocale): Promi
     title: row.title,
     description: row.description,
     date: row.date,
+    category: row.category,
   }))
 }
 
@@ -20,13 +22,14 @@ export async function buildBlogRss(event: H3Event, locale: BlogLocale): Promise<
   return renderBlogRss(getSiteUrl(event, locale), locale, await listPublishedBlogPosts(event, locale))
 }
 
-/** The blog index (only while it has posts — it is noindex when empty) and
- * every published post. content.test.ts guarantees the RO and EN slug sets
- * match, so the RO list alone enumerates every post in both locales. */
+/** The blog's sitemap entries (index, indexable categories, paired posts); see `blogSitemapPages`. */
 export async function listBlogSitemapPages(event: H3Event): Promise<SitemapPage[]> {
-  const posts = await listPublishedBlogPosts(event, 'ro')
-  return [
-    ...(posts.length ? [{ ro: '/blog', en: '/en/blog' }] : []),
-    ...posts.map(({ slug, date }) => ({ ro: `/blog/${slug}`, en: `/en/blog/${slug}`, lastmod: date })),
-  ]
+  const [roRows, enRows] = await Promise.all([listPublished(event, 'ro'), listPublished(event, 'en')])
+  const toRoutePost = (row: (typeof roRows)[number]) => ({
+    slug: blogSlug(row.path),
+    alt: row.alt,
+    category: row.category,
+    updated: row.updated,
+  })
+  return blogSitemapPages(roRows.map(toRoutePost), enRows.map(toRoutePost))
 }

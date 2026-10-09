@@ -38,6 +38,7 @@ Un modul = un Nuxt layer în `layers/<nume>/`. Nuxt îl înregistrează automat,
 | `qualifier` | modalul de calificare, `POST /api/contact` | `core`, `#layers/leads/server` |
 | `content` | paginile `/preturi` și `/despre`, servicii, stack, proces, despre (definiții + i18n), FAQ și setări (fișiere tipate în `data/`, editate manual) | `core` |
 | `blog` | `/blog`, `/blog/[slug]`, `GET /api/blog*`, constructorul RSS, paginile de blog pentru sitemap; articole Markdown în `content/` | `core` |
+| `news` | `/noutati`, `/noutati/[slug]`, `GET /api/news*`, `POST /api/admin/news/preview`, paginile admin de noutăți (tabel `news_items`) | `core`, `#layers/blog` (categorii, `formatPostDate`) |
 | `projects` | studii de caz publice, `GET /api/projects*`, paginile admin de proiecte, redirect-uri de slug, repository și servicii server (revalidarea cache-ului) | `core`, `#layers/qualifier` (doar `useQualifierAvailability` și `QualifierCta`), `#layers/content` (doar `useSiteSettings`) |
 | `home` | ruta `/` și secțiunile `Home*` | `core`, `#layers/content`, `#layers/projects`, `#layers/qualifier` (doar `useQualifierAvailability` și `QualifierCta`), `#layers/leads` (doar `LeadsContactForm`), `#layers/services` (doar `SERVICE_LINKS`) |
 | `services` | indexul `/servicii` și cele 6 pagini `/servicii/[slug]`, fără admin, fără tabel — conținut manual în `data/services.ts` | `core`, `#layers/projects` (studii de caz legate), `#layers/qualifier` (doar `useQualifierAvailability` și `QualifierCta`), `#layers/content` (doar `useServiceStages`) |
@@ -191,3 +192,4 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-10-06: `requireAdmin` stă în `core` și citește id-ul utilizatorului din `sub`-ul claim-urilor JWT, apoi verifică `app_users` cu clientul service-role — audit 2026-10-06.
 - 2026-10-06: Textul mic portocaliu pe fundal deschis folosește tokenul signal-text (#C2370A, AA); signal rămâne pentru accente și fundaluri închise — audit Lighthouse.
 - 2026-10-07: Iconurile SVG inline (CoreStageIcon) au fost reintroduse pentru a distinge vizual etapele de servicii. Regula "fără bibliotecă de iconuri" se referă doar la pachete externe, nu la SVG-urile noastre interne.
+- 2026-10-09: Modulul `news` (noutăți externe: rezumat propriu + sursă, în `news_items`) poate importa `blog` (categoriile și data) — are ciclu de viață și admin propriu, deci modul nou.

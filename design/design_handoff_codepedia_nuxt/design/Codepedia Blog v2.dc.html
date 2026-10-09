@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #FAF8F4; color: #0B0B0B; font-family: 'Inter Tight', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.6; letter-spacing: -0.004em; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  ::selection { background: #FF4D14; color: #FAF8F4; }
+  a { color: #0B0B0B; text-decoration: none; }
+  a:hover { color: #FF4D14; }
+  html { scroll-behavior: smooth; }
+  summary::-webkit-details-marker { display: none; }
+</style>
+</helmet>
+
+<div style="display:flex;flex-direction:column;min-height:100vh">
+
+<header data-screen-label="Header" style="position:sticky;top:0;z-index:20;background:#FAF8F4">
+  <div style="max-width:1280px;margin:0 auto;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 clamp(20px,5vw,64px)">
+    <a href="Codepedia.dc.html" style="display:flex;align-items:center"><img src="assets/codepedia-wordmark.svg" alt="CODEPEDIA" style="display:block;height:18px;width:auto" /></a>
+    <nav style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(14px,2vw,28px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+      <a href="Codepedia Servicii.dc.html" style="color:#6B6862" style-hover="color:#FF4D14">{{ t.nav1 }}</a>
+      <a href="Codepedia.dc.html#proiecte" style="color:#6B6862" style-hover="color:#FF4D14">{{ t.nav2 }}</a>
+      <button type="button" onClick="{{ goList }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#0B0B0B">Blog</button>
+      <a href="Codepedia.dc.html#contact" style="color:#6B6862" style-hover="color:#FF4D14">Contact</a>
+      <div style="display:flex;border:1px solid #E2DED6;border-radius:4px;overflow:hidden">
+        <button type="button" onClick="{{ setRo }}" style="border:0;padding:6px 10px;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;background:{{ roBg }};color:{{ roFg }}">RO</button>
+        <button type="button" onClick="{{ setEn }}" style="border:0;padding:6px 10px;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;background:{{ enBg }};color:{{ enFg }}">EN</button>
+      </div>
+    </nav>
+  </div>
+  <div style="height:2px;background:#FF4D14"></div>
+</header>
+
+<main style="flex:1">
+
+<sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+  <section data-screen-label="Blog · 00">
+    <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,8vw,112px) clamp(20px,5vw,64px) clamp(32px,4vw,56px)">
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">00</span> / Blog</div>
+      <div style="flex:1 1 560px;min-width:0">
+        <h1 style="margin:0;max-width:18ch;font-size:clamp(34px,6vw,64px);font-weight:600;line-height:1.04;letter-spacing:-0.025em;text-wrap:pretty">{{ t.h1 }}</h1>
+        <p style="margin:clamp(20px,2.6vw,28px) 0 0;max-width:58ch;font-size:clamp(16px,1.4vw,18px);color:#6B6862;text-wrap:pretty">{{ t.lead }}</p>
+        <div style="margin-top:clamp(28px,3.5vw,40px);display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+            <button type="button" onClick="{{ c.pick }}" style="display:flex;align-items:center;gap:8px;min-height:40px;padding:8px 14px;border:1px solid {{ c.bd }};border-radius:999px;background:{{ c.bg }};color:{{ c.fg }};cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em" style-hover="border-color:#0B0B0B">
+              <span>{{ c.label }}</span><span style="opacity:0.6">{{ c.count }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <sc-if value="{{ hasFeatured }}" hint-placeholder-val="{{ true }}">
+    <section data-screen-label="Blog · Recomandat" style="border-top:1px solid #E2DED6">
+      <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(40px,5vw,72px) clamp(20px,5vw,64px)">
+        <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">01</span> / {{ t.latest }}</div>
+        <a href="{{ featured.href }}" onClick="{{ featured.open }}" style="flex:1 1 560px;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(20px,3vw,40px);color:#0B0B0B" style-hover="color:#0B0B0B">
+          <div style="aspect-ratio:16/10;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:clamp(20px,2.5vw,32px);display:flex;flex-direction:column;justify-content:space-between">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">{{ featured.catLabel }}</span>
+            <span style="font-size:clamp(22px,2.6vw,32px);font-weight:600;line-height:1.1;letter-spacing:-0.02em;max-width:16ch;text-wrap:pretty">{{ featured.keyword }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;justify-content:center">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ featured.date }} · {{ featured.read }}</div>
+            <h2 style="margin:12px 0 12px;font-size:clamp(24px,3vw,34px);font-weight:600;line-height:1.12;letter-spacing:-0.02em;text-wrap:pretty">{{ featured.title }}</h2>
+            <p style="margin:0;max-width:52ch;color:#6B6862;font-size:17px;text-wrap:pretty">{{ featured.description }}</p>
+            <span style="margin-top:20px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px">{{ t.read }} →</span>
+          </div>
+        </a>
+      </div>
+    </section>
+  </sc-if>
+
+  <section data-screen-label="Blog · Articole" style="border-top:1px solid #E2DED6">
+    <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(40px,5vw,72px) clamp(20px,5vw,64px) clamp(56px,7vw,104px)">
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">02</span> / {{ t.all }}</div>
+      <div style="flex:1 1 560px;min-width:0">
+        <sc-if value="{{ hasRest }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:clamp(16px,2vw,24px)">
+            <sc-for list="{{ rest }}" as="p" hint-placeholder-count="2">
+              <a href="{{ p.href }}" onClick="{{ p.open }}" style="display:flex;flex-direction:column;color:#0B0B0B;border-top:1px solid #0B0B0B;padding-top:16px" style-hover="color:#0B0B0B;border-top-color:#FF4D14">
+                <div style="display:flex;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">{{ p.catLabel }}</span><span>{{ p.read }}</span></div>
+                <h3 style="margin:12px 0 8px;font-size:21px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;text-wrap:pretty">{{ p.title }}</h3>
+                <p style="margin:0;font-size:16px;color:#6B6862;text-wrap:pretty">{{ p.description }}</p>
+                <div style="margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">{{ p.date }}</div>
+              </a>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noRest }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:0;font-size:16px;color:#6B6862">{{ t.empty }}</p>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{ isPost }}" hint-placeholder-val="{{ false }}">
+  <article>
+    <section data-screen-label="Articol · 00">
+      <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(40px,7vw,96px) clamp(20px,5vw,64px) clamp(32px,4vw,48px)">
+        <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+          <button type="button" onClick="{{ goList }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862" style-hover="color:#FF4D14">← Blog</button>
+        </div>
+        <div style="flex:1 1 560px;min-width:0">
+          <nav aria-label="Breadcrumb" style="display:flex;flex-wrap:wrap;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">
+            <span>CODEPEDIA</span><span>/</span><button type="button" onClick="{{ goList }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#8D8880" style-hover="color:#FF4D14">Blog</button><span>/</span><button type="button" onClick="{{ post.pickCat }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#FF4D14">{{ post.catLabel }}</button>
+          </nav>
+          <h1 style="margin:20px 0 0;max-width:24ch;font-size:clamp(30px,4.8vw,52px);font-weight:600;line-height:1.06;letter-spacing:-0.025em;text-wrap:pretty">{{ post.title }}</h1>
+          <p style="margin:20px 0 0;max-width:60ch;font-size:clamp(16px,1.4vw,19px);color:#6B6862;text-wrap:pretty">{{ post.description }}</p>
+          <div style="margin-top:28px;padding-top:16px;border-top:1px solid #E2DED6;display:flex;flex-wrap:wrap;gap:8px 28px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+            <span>{{ post.author }}</span>
+            <span>{{ t.published }} {{ post.date }}</span>
+            <sc-if value="{{ post.showUpdated }}" hint-placeholder-val="{{ false }}"><span>{{ t.updated }} {{ post.updatedFmt }}</span></sc-if>
+            <span>{{ post.read }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section data-screen-label="Articol · 01" style="border-top:1px solid #E2DED6">
+      <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(40px,5vw,72px) clamp(20px,5vw,64px) clamp(56px,7vw,96px)">
+        <aside style="flex:0 0 160px">
+          <sc-if value="{{ showToc }}" hint-placeholder-val="{{ true }}">
+            <div style="position:sticky;top:96px;display:flex;flex-direction:column;gap:10px">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ t.toc }}</div>
+              <sc-for list="{{ toc }}" as="h" hint-placeholder-count="5">
+                <a href="#{{ h.id }}" style="font-size:13px;line-height:1.35;color:#6B6862;text-wrap:pretty" style-hover="color:#FF4D14">{{ h.text }}</a>
+              </sc-for>
+            </div>
+          </sc-if>
+        </aside>
+        <div style="flex:1 1 560px;min-width:0;max-width:70ch;line-height:1.7">
+          <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="8">
+            <sc-if value="{{ b.isCallout }}" hint-placeholder-val="{{ false }}">
+              <div style="margin:0 0 2rem;padding:clamp(18px,2.2vw,24px);border:1px solid #0B0B0B;border-radius:4px;background:#F1EEE7;font-size:17px;line-height:1.6">
+                <sc-for list="{{ b.segs }}" as="s"><sc-if value="{{ s.isText }}"><span>{{ s.t }}</span></sc-if><sc-if value="{{ s.isBold }}"><strong style="font-weight:600">{{ s.t }}</strong></sc-if><sc-if value="{{ s.isLink }}"><a href="{{ s.href }}" style="text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px">{{ s.t }}</a></sc-if><sc-if value="{{ s.isCode }}"><code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;background:#E2DED6;padding:0.1em 0.35em;border-radius:3px">{{ s.t }}</code></sc-if></sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ b.isH2 }}" hint-placeholder-val="{{ false }}">
+              <h2 id="{{ b.id }}" style="margin:3rem 0 1rem;scroll-margin-top:96px;font-size:clamp(22px,2.4vw,28px);font-weight:600;letter-spacing:-0.02em;line-height:1.2;text-wrap:pretty">{{ b.text }}</h2>
+            </sc-if>
+            <sc-if value="{{ b.isH3 }}" hint-placeholder-val="{{ false }}">
+              <h3 style="margin:2rem 0 0.5rem;font-size:19px;font-weight:600;letter-spacing:-0.01em;line-height:1.3">{{ b.text }}</h3>
+            </sc-if>
+            <sc-if value="{{ b.isP }}" hint-placeholder-val="{{ true }}">
+              <p style="margin:0 0 1.25rem;text-wrap:pretty"><sc-for list="{{ b.segs }}" as="s"><sc-if value="{{ s.isText }}"><span>{{ s.t }}</span></sc-if><sc-if value="{{ s.isBold }}"><strong style="font-weight:600">{{ s.t }}</strong></sc-if><sc-if value="{{ s.isLink }}"><a href="{{ s.href }}" style="text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px">{{ s.t }}</a></sc-if><sc-if value="{{ s.isCode }}"><code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;background:#F1EEE7;padding:0.1em 0.35em;border-radius:3px">{{ s.t }}</code></sc-if></sc-for></p>
+            </sc-if>
+            <sc-if value="{{ b.isList }}" hint-placeholder-val="{{ false }}">
+              <div style="margin:0 0 1.5rem;display:flex;flex-direction:column;border-top:1px solid #E2DED6">
+                <sc-for list="{{ b.items }}" as="it">
+                  <div style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid #E2DED6">
+                    <span style="flex:0 0 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;color:#FF4D14">{{ it.mark }}</span>
+                    <span style="flex:1;min-width:0;text-wrap:pretty"><sc-for list="{{ it.segs }}" as="s"><sc-if value="{{ s.isText }}"><span>{{ s.t }}</span></sc-if><sc-if value="{{ s.isBold }}"><strong style="font-weight:600">{{ s.t }}</strong></sc-if><sc-if value="{{ s.isLink }}"><a href="{{ s.href }}" style="text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px">{{ s.t }}</a></sc-if><sc-if value="{{ s.isCode }}"><code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;background:#F1EEE7;padding:0.1em 0.35em;border-radius:3px">{{ s.t }}</code></sc-if></sc-for></span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ b.isTable }}" hint-placeholder-val="{{ false }}">
+              <div style="margin:0 0 1.75rem;overflow-x:auto;border:1px solid #E2DED6;border-radius:4px">
+                <table style="width:100%;border-collapse:collapse;font-size:15px;line-height:1.45">
+                  <thead><tr><sc-for list="{{ b.head }}" as="h"><th style="padding:10px 14px;border-bottom:1px solid #E2DED6;text-align:left;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:400;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862;background:#F1EEE7;white-space:nowrap">{{ h }}</th></sc-for></tr></thead>
+                  <tbody>
+                    <sc-for list="{{ b.rows }}" as="r">
+                      <tr><sc-for list="{{ r.cells }}" as="c"><td style="padding:10px 14px;border-bottom:1px solid #E2DED6;vertical-align:top;min-width:120px"><sc-for list="{{ c.segs }}" as="s"><sc-if value="{{ s.isText }}"><span>{{ s.t }}</span></sc-if><sc-if value="{{ s.isBold }}"><strong style="font-weight:600">{{ s.t }}</strong></sc-if><sc-if value="{{ s.isLink }}"><a href="{{ s.href }}" style="text-decoration:underline;text-decoration-color:#FF4D14">{{ s.t }}</a></sc-if><sc-if value="{{ s.isCode }}"><code style="font-family:'JetBrains Mono',monospace;font-size:0.88em">{{ s.t }}</code></sc-if></sc-for></td></sc-for></tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </sc-if>
+            <sc-if value="{{ b.isFaq }}" hint-placeholder-val="{{ false }}">
+              <div style="margin:0 0 2rem;border-top:1px solid #0B0B0B">
+                <sc-for list="{{ b.faq }}" as="f">
+                  <details style="border-bottom:1px solid #E2DED6">
+                    <summary style="list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 0;min-height:44px;font-size:18px;font-weight:500;letter-spacing:-0.01em">{{ f.q }}<span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:16px;color:#FF4D14">+</span></summary>
+                    <p style="margin:0 0 18px;color:#3A3834;text-wrap:pretty">{{ f.a }}</p>
+                  </details>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ b.isCta }}" hint-placeholder-val="{{ false }}">
+              <div style="margin:3rem 0 0;padding:clamp(24px,3vw,36px);border-radius:4px;background:#0B0B0B;color:#FAF8F4;display:flex;flex-direction:column;gap:20px">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">{{ t.next }}</span>
+                <p style="margin:0;font-size:clamp(19px,2vw,23px);line-height:1.35;letter-spacing:-0.01em;text-wrap:pretty">{{ b.ctaText }}</p>
+                <a href="{{ b.ctaHref }}" style="align-self:flex-start;display:flex;align-items:center;min-height:44px;padding:0 20px;border-radius:4px;background:#FF4D14;color:#0B0B0B;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em" style-hover="background:#FAF8F4;color:#0B0B0B">{{ b.ctaLabel }} →</a>
+              </div>
+            </sc-if>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <sc-if value="{{ hasRelated }}" hint-placeholder-val="{{ true }}">
+      <section data-screen-label="Articol · 02" style="border-top:1px solid #E2DED6">
+        <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(40px,5vw,72px) clamp(20px,5vw,64px) clamp(56px,7vw,96px)">
+          <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">02</span> / {{ t.related }}</div>
+          <div style="flex:1 1 560px;min-width:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:clamp(16px,2vw,24px)">
+            <sc-for list="{{ related }}" as="p" hint-placeholder-count="2">
+              <a href="{{ p.href }}" onClick="{{ p.open }}" style="display:flex;flex-direction:column;color:#0B0B0B;border-top:1px solid #0B0B0B;padding-top:16px" style-hover="color:#0B0B0B;border-top-color:#FF4D14">
+                <div style="display:flex;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">{{ p.catLabel }}</span><span>{{ p.read }}</span></div>
+                <h3 style="margin:12px 0 8px;font-size:21px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;text-wrap:pretty">{{ p.title }}</h3>
+                <p style="margin:0;font-size:16px;color:#6B6862;text-wrap:pretty">{{ p.description }}</p>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+  </article>
+</sc-if>
+
+</main>
+
+<footer data-screen-label="Footer" style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;padding:24px clamp(20px,5vw,64px);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+    <span style="display:flex;align-items:center;gap:8px"><img src="assets/codepedia-mark.svg" alt="" style="display:block;height:12px;width:auto;opacity:0.5" />CODEPEDIA SRL · Chișinău, Moldova</span>
+    <span>{{ t.foot }}</span>
+    <span>© 2026</span>
+  </div>
+</footer>
+
+<dc-import name="SEO Panel" page="{{ seoKey }}" hint-size="100%,560px"></dc-import>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ro&quot;,&quot;en&quot;],&quot;default&quot;:&quot;ro&quot;,&quot;tsType&quot;:&quot;'ro' | 'en'&quot;},&quot;showToc&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const FILES = {
+  ro: ['cat-costa-un-site', 'wordpress-sau-site-custom', 'din-excel-in-aplicatie-web', 'cat-costa-o-aplicatie-web', 'cum-alegi-o-agentie-web', 'automatizare-ai-pentru-imm', 'program-gestiune-florarie'],
+  en: ['how-much-does-a-website-cost', 'wordpress-vs-custom-website', 'replace-excel-with-web-app', 'web-app-development-cost', 'how-to-choose-a-web-development-agency', 'ai-automation-for-small-business', 'florist-management-software'],
+};
+const CATS = {
+  ro: { COST: 'Prețuri', ALEG: 'Alegeri tehnice', IND: 'Pe industrie', AI: 'Automatizare și AI', GRANT: 'Granturi', PROC: 'Proces', MKT: 'SEO și marketing' },
+  en: { COST: 'Pricing', ALEG: 'Tech choices', IND: 'By industry', AI: 'Automation & AI', GRANT: 'Grants', PROC: 'Process', MKT: 'SEO & marketing' },
+};
+const T = {
+  ro: { nav1: 'Servicii', nav2: 'Proiecte', h1: 'Ce costă, ce alegi, cum construiești.', lead: 'Prețuri, comparații și ghiduri pentru firmele care pregătesc un site sau o aplicație. Scrise din proiectele CODEPEDIA.', all: 'Toate', allArt: 'Articole', latest: 'Cel mai nou', read: 'Citește', empty: 'Momentan nu sunt articole în această categorie.', toc: 'Cuprins', published: 'Publicat', updated: 'Actualizat', related: 'Citește și', next: 'Pasul următor', min: 'min', foot: 'Dezvoltare web full-stack · Site-uri, aplicații web, WordPress, Shopify', months: ['ianuarie','februarie','martie','aprilie','mai','iunie','iulie','august','septembrie','octombrie','noiembrie','decembrie'] },
+  en: { nav1: 'Services', nav2: 'Projects', h1: 'What it costs, what to choose, how to build.', lead: 'Pricing, comparisons and guides for businesses planning a website or a web app. Written from CODEPEDIA projects.', all: 'All', allArt: 'Articles', latest: 'Latest', read: 'Read', empty: 'No articles in this category yet.', toc: 'Contents', published: 'Published', updated: 'Updated', related: 'Read next', next: 'Next step', min: 'min', foot: 'Full-stack web development · Websites, web apps, WordPress, Shopify', months: ['January','February','March','April','May','June','July','August','September','October','November','December'] },
+};
+const slugify = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+function mapHref(h, lang) {
+  if (!h) return '#';
+  if (/^https?:/.test(h)) return h;
+  let m;
+  if ((m = h.match(/^\/(?:en\/)?blog\/([^/?#]+)/))) return 'Codepedia Blog v2.dc.html?lang=' + (h.startsWith('/en') ? 'en' : 'ro') + '&post=' + m[1];
+  if ((m = h.match(/^\/proiecte\/([^/?#]+)/))) return 'Studiu de caz.dc.html?p=' + m[1];
+  if ((m = h.match(/^\/en\/projects\/([^/?#]+)/))) return 'Case Study.dc.html?p=' + m[1];
+  if (/^\/(en\/)?(servicii|services)/.test(h)) return 'Codepedia Servicii.dc.html';
+  if (/^\/(en\/)?contact/.test(h)) return (lang === 'en' ? 'Codepedia EN.dc.html' : 'Codepedia.dc.html') + '#contact';
+  if (/^\/(en\/)?(preturi|pricing)/.test(h)) return 'Codepedia Pagini.dc.html';
+  return h;
+}
+function inline(text, lang) {
+  const out = [];
+  const re = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)|`[^`]+`)/g;
+  let last = 0, m;
+  const push = o => out.push({ isText: false, isBold: false, isLink: false, isCode: false, ...o });
+  while ((m = re.exec(text))) {
+    if (m.index > last) push({ isText: true, t: text.slice(last, m.index) });
+    const tok = m[0];
+    if (tok.startsWith('**')) push({ isBold: true, t: tok.slice(2, -2) });
+    else if (tok.startsWith('`')) push({ isCode: true, t: tok.slice(1, -1) });
+    else { const mm = tok.match(/^\[([^\]]+)\]\(([^)]+)\)$/); push({ isLink: true, t: mm[1], href: mapHref(mm[2], lang) }); }
+    last = m.index + tok.length;
+  }
+  if (last < text.length) push({ isText: true, t: text.slice(last) });
+  return out;
+}
+function parseMd(src, lang) {
+  src = src.replace(/\r/g, '');
+  const fmM = src.match(/^---\n([\s\S]*?)\n---\n?/);
+  const fm = {};
+  if (fmM) fmM[1].split('\n').forEach(l => { const i = l.indexOf(':'); if (i > 0) fm[l.slice(0, i).trim()] = l.slice(i + 1).trim(); });
+  const lines = (fmM ? src.slice(fmM[0].length) : src).split('\n');
+  const B = o => ({ isCallout: false, isH2: false, isH3: false, isP: false, isList: false, isTable: false, isFaq: false, isCta: false, ...o });
+  const blocks = []; const faq = [];
+  let i = 0, inFaq = false, afterHr = false;
+  const isStart = l => /^(#{2,3} |>|\||- |\d+\. |---\s*$)/.test(l);
+  while (i < lines.length) {
+    const l = lines[i];
+    if (!l.trim()) { i++; continue; }
+    if (l.startsWith('## ')) {
+      const t = l.slice(3).trim();
+      inFaq = /^(întrebări frecvente|frequently asked questions)/i.test(t);
+      blocks.push(B({ isH2: true, text: t, id: slugify(t) }));
+      if (inFaq) blocks.push(B({ isFaq: true, faq }));
+      i++; continue;
+    }
+    if (l.startsWith('### ')) {
+      const t = l.slice(4).trim(); i++;
+      if (inFaq) { const a = []; while (i < lines.length && !isStart(lines[i])) { if (lines[i].trim()) a.push(lines[i].trim()); i++; } faq.push({ q: t, a: a.join(' ') }); continue; }
+      blocks.push(B({ isH3: true, text: t })); continue;
+    }
+    if (/^---\s*$/.test(l)) { inFaq = false; afterHr = true; i++; continue; }
+    if (l.startsWith('>')) { const b = []; while (i < lines.length && lines[i].startsWith('>')) { b.push(lines[i].replace(/^>\s?/, '')); i++; } blocks.push(B({ isCallout: true, segs: inline(b.join(' '), lang) })); continue; }
+    if (l.startsWith('|')) {
+      const rows = []; while (i < lines.length && lines[i].startsWith('|')) { rows.push(lines[i]); i++; }
+      const cells = r => r.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+      blocks.push(B({ isTable: true, head: cells(rows[0]), rows: rows.slice(2).map(r => ({ cells: cells(r).map(c => ({ segs: inline(c, lang) })) })) }));
+      continue;
+    }
+    if (/^(- |\d+\. )/.test(l)) {
+      const ordered = /^\d/.test(l); const items = [];
+      while (i < lines.length && /^(- |\d+\. )/.test(lines[i])) { items.push(lines[i].replace(/^(- |\d+\. )/, '')); i++; }
+      blocks.push(B({ isList: true, items: items.map((t, k) => ({ mark: ordered ? String(k + 1).padStart(2, '0') : '—', segs: inline(t, lang) })) }));
+      continue;
+    }
+    const b = []; while (i < lines.length && lines[i].trim() && !isStart(lines[i])) { b.push(lines[i].trim()); i++; }
+    const text = b.join(' ');
+    if (afterHr) {
+      const lm = text.match(/\[([^\]]+)\]\(([^)]+)\)/);
+      blocks.push(B({ isCta: true, ctaText: text.replace(/\[([^\]]+)\]\([^)]+\)/, '$1'), ctaLabel: lm ? lm[1] : '', ctaHref: lm ? mapHref(lm[2], lang) : '#' }));
+      afterHr = false; continue;
+    }
+    blocks.push(B({ isP: true, segs: inline(text, lang) }));
+  }
+  return { ...fm, blocks, toc: blocks.filter(b => b.isH2).map(b => ({ id: b.id, text: b.text })) };
+}
+class Component extends DCLogic {
+  state = { lang: null, post: null, cat: 'all', data: { ro: [], en: [] } };
+  componentDidMount() {
+    let lang = null, post = null;
+    try { const q = new URLSearchParams(window.location.search); lang = q.get('lang'); post = q.get('post'); } catch (e) {}
+    this.setState({ lang: lang === 'en' || lang === 'ro' ? lang : null, post });
+    ['ro', 'en'].forEach(lg => Promise.all(FILES[lg].map(s => fetch('content/blog/' + lg + '/' + s + '.md').then(r => r.ok ? r.text() : '').then(t => t ? parseMd(t, lg) : null).catch(() => null)))
+      .then(arr => this.setState(st => ({ data: { ...st.data, [lg]: arr.filter(Boolean).sort((a, b) => (b.date || '').localeCompare(a.date || '')) } }))));
+  }
+  renderVals() {
+    const lang = this.state.lang || this.props.lang || 'ro';
+    const t = T[lang]; const C = CATS[lang];
+    const fmt = d => { if (!d) return ''; const [y, m, dd] = d.split('-').map(Number); return lang === 'ro' ? dd + ' ' + t.months[m - 1] + ' ' + y : t.months[m - 1] + ' ' + dd + ', ' + y; };
+    const posts = this.state.data[lang];
+    const top = () => window.scrollTo(0, 0);
+    const card = p => ({ ...p, catLabel: C[p.category] || p.category, date: fmt(p.date), read: (p.readingTime || '5') + ' ' + t.min, href: 'Codepedia Blog v2.dc.html?lang=' + lang + '&post=' + p.slug, open: e => { e.preventDefault(); this.setState({ post: p.slug }); top(); } });
+    const cur = this.state.post ? posts.find(p => p.slug === this.state.post) : null;
+    const cat = this.state.cat;
+    const counts = {}; posts.forEach(p => { counts[p.category] = (counts[p.category] || 0) + 1; });
+    const chip = (key, label, count) => { const on = cat === key; return { label, count, bg: on ? '#0B0B0B' : 'transparent', fg: on ? '#FAF8F4' : '#0B0B0B', bd: on ? '#0B0B0B' : '#E2DED6', pick: () => this.setState({ cat: key }) }; };
+    const cats = [chip('all', t.all, posts.length), ...Object.keys(C).filter(k => counts[k]).map(k => chip(k, C[k], counts[k]))];
+    const filtered = posts.filter(p => cat === 'all' || p.category === cat).map(card);
+    const featured = cat === 'all' ? filtered[0] : null;
+    const rest = featured ? filtered.slice(1) : filtered;
+    const switchLang = lg => () => {
+      if (lg === lang) return;
+      let next = null;
+      if (cur && cur.alt) next = cur.alt;
+      this.setState({ lang: lg, post: next, cat: 'all' }); top();
+    };
+    const related = cur ? posts.filter(p => p.slug !== cur.slug).sort((a, b) => (b.category === cur.category) - (a.category === cur.category)).slice(0, 2).map(card) : [];
+    const on = lg => lg === lang;
+    return {
+      t, seoKey: cur ? 'blog/post' : 'blog',
+      roBg: on('ro') ? '#0B0B0B' : 'transparent', roFg: on('ro') ? '#FAF8F4' : '#6B6862',
+      enBg: on('en') ? '#0B0B0B' : 'transparent', enFg: on('en') ? '#FAF8F4' : '#6B6862',
+      setRo: switchLang('ro'), setEn: switchLang('en'),
+      isList: !cur, isPost: !!cur,
+      goList: () => { this.setState({ post: null }); top(); },
+      cats, hasFeatured: !!featured, featured: featured || { title: '', description: '', keyword: '', catLabel: '', date: '', read: '', href: '#' },
+      rest, hasRest: rest.length > 0, noRest: posts.length > 0 && rest.length === 0 && !featured,
+      post: cur ? { ...card(cur), updatedFmt: fmt(cur.updated), showUpdated: !!cur.updated && cur.updated !== cur.date, pickCat: () => this.setState({ post: null, cat: cur.category }) } : { title: '', description: '', author: '', date: '', read: '', catLabel: '' },
+      blocks: cur ? cur.blocks : [], toc: cur ? cur.toc : [], showToc: (this.props.showToc ?? true) && !!cur,
+      related, hasRelated: related.length > 0,
+    };
+  }
+}
+</script>
+</body>
+</html>

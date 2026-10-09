@@ -1,3 +1,4 @@
+import { buildGaEvent } from '#layers/consent/domain/analyticsEvent'
 import { hasConsent } from '#layers/consent/domain/consent'
 import { consentSignals } from '#layers/consent/domain/consentSignals'
 import { buildGaInitSequence } from '#layers/consent/domain/gaInit'
@@ -14,7 +15,7 @@ function clearCookie(name: string) {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`
 }
 
-export default defineNuxtPlugin(() => {
+export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig()
   const { consent } = useCookieConsent()
 
@@ -90,6 +91,13 @@ export default defineNuxtPlugin(() => {
     metaInjected = false
     window.location.reload()
   }
+
+  // Product events are sent only while GA is loaded, which already requires an ID and analytics consent.
+  nuxtApp.hook('analytics:event', ({ name, params }) => {
+    if (!gaInjected || !hasConsent(consent.value, 'analytics') || !window.gtag) return
+    const call = buildGaEvent(name, params)
+    if (call) window.gtag(...call)
+  })
 
   injectGaIfConsented()
   injectMetaPixelIfConsented()

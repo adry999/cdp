@@ -6,6 +6,7 @@ const { count: newLeadsCount } = useNewLeadsCount()
 
 const navItems = [
   { label: 'Proiecte', to: '/admin/projects' },
+  { label: 'Noutăți', to: '/admin/news' },
   { label: 'Solicitări', to: '/admin/leads' },
 ] as const
 
@@ -17,7 +18,7 @@ function isActive(to: string) {
 <template>
   <aside class="flex w-60 flex-none flex-col border-r border-hairline bg-paper">
     <div class="flex h-16 items-center border-b border-hairline px-5">
-      <NuxtLink to="/" aria-label="Codepedia" class="flex items-center">
+      <NuxtLink to="/" aria-label="CODEPEDIA" class="flex items-center">
         <img src="/brand/codepedia-mark.svg" alt="" width="32" height="20" class="block h-5 w-auto" >
       </NuxtLink>
     </div>

@@ -8,9 +8,9 @@ Site-ul studioului Codepedia (Chișinău), bilingv RO/EN, plus un dashboard de
 administrare din care se adaugă proiectele și se editează conținutul.
 
 Design-ul este **deja finalizat** și livrat ca prototipuri HTML în
-`design_handoff_codepedia_nuxt/design/`. Documentația completă de design este în
-`README.md` din același folder. Specificația admin-ului: `ADMIN.md`. Schema bazei
-de date: fișierele din `supabase/migrations/`, în ordine — nu `DATA_MODEL.sql`,
+`design/design_handoff_codepedia_nuxt/design/`. Documentația completă de design este în
+`README.md` din același folder. Specificația admin-ului: `docs/ADMIN.md`. Schema bazei
+de date: fișierele din `supabase/migrations/`, în ordine — nu `docs/DATA_MODEL.sql`,
 care e doar primul fișier din acel istoric, păstrat separat pentru context.
 
 **Nu reinventa designul.** Fidelitate pixel-perfect față de prototipuri. Dacă un
@@ -39,7 +39,7 @@ bibliotecă de iconuri (designul nu folosește iconuri).
   `hairline` `#E2DED6`, `hatch` `#F1EEE7`, `muted-ink` `#8D8880`, `body-ink` `#B4AFA6`,
   `hairline-ink` `rgba(250,248,244,0.18)`.
 - Logo-ul și favicon-ul vin din `assets/` ca SVG-uri vectoriale gata de folosit.
-  Citește `IDENTITY.md` înainte de a le plasa. Nu redesena marca în cod, nu o
+  Citește `docs/IDENTITY.md` înainte de a le plasa. Nu redesena marca în cod, nu o
   colora, nu seta `CODEPEDIA` ca text live.
 - Componente în `app/components/`, grupate: `site/`, `admin/`, `ui/`.
   Componentele de layout care se repetă în toate secțiunile:
@@ -69,7 +69,7 @@ bibliotecă de iconuri (designul nu folosește iconuri).
    La final trebuie să fie indistinguibilă de `design/Codepedia.dc.html`.
 4. Șablonul de studiu de caz + cele trei proiecte, tot cu date hardcodate.
    Referință: `design/Proiect SaaS Logistica.dc.html`.
-5. Supabase: aplică `DATA_MODEL.sql`, migrează conținutul hardcodat în seed-uri,
+5. Supabase: aplică `docs/DATA_MODEL.sql`, migrează conținutul hardcodat în seed-uri,
    comută paginile pe date din DB. Site-ul trebuie să arate identic după comutare.
 6. Auth + shell de admin + CRUD de proiecte (ecranul cel mai important).
 7. Restul admin-ului: servicii și prețuri, FAQ, setări.
