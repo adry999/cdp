@@ -1,6 +1,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-export function useReveal(options = { threshold: 0.1, once: false }) {
+export function useReveal({ threshold = 0.1, once = false }: { threshold?: number; once?: boolean } = {}) {
+  const options = { threshold, once }
   const el = ref<HTMLElement | null>(null)
   const isVisible = ref(false)
   const hasMounted = ref(false)
