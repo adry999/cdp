@@ -7,5 +7,9 @@ export default defineEventHandler(async (event) => {
   }
   const project = await createProjectRepository(event).findPublishedBySlug(slug)
   if (!project) throw createError({ statusCode: 404, statusMessage: 'Project not found' })
+  if (import.meta.dev) {
+    const { withStarDemo } = await import('#layers/projects/server/dev/starDemo')
+    return withStarDemo(project)
+  }
   return project
 })

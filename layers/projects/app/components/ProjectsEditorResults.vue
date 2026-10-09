@@ -1,56 +1,15 @@
 <script setup lang="ts">
-import { moveItem } from '#layers/core/shared/utils/moveItem'
-import { emptyBilingual, MAX_STATS, type ProjectForm } from '#layers/projects/domain/projectForm'
+import type { ProjectForm } from '#layers/projects/domain/projectForm'
 
+// project_stats is no longer rendered on the case study (figures live in STAR gains /
+// savings), so its editor is hidden; stored rows still round-trip through the form.
 const form = defineModel<ProjectForm>({ required: true })
-
-const drag = useDragReorder((from, to) => {
-  form.value.stats = moveItem(form.value.stats, from, to)
-})
-
-function addStat() {
-  if (form.value.stats.length < MAX_STATS) form.value.stats.push({ value: '', label: emptyBilingual() })
-}
-
-function removeStat(index: number) {
-  form.value.stats.splice(index, 1)
-}
 </script>
 
 <template>
-  <ProjectsEditorSection title="Rezultat și feedback (secțiuni 06–07)">
-    <template #action>
-      <button
-        v-if="form.stats.length < MAX_STATS"
-        type="button"
-        class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal-text"
-        @click="addStat"
-      >
-        + Statistică
-      </button>
-    </template>
+  <ProjectsEditorSection title="Rezultat și feedback (secțiunile 04–05)">
     <div class="mt-4 flex flex-col gap-4">
       <AdminFieldPair v-model:ro="form.resultBody.ro" v-model:en="form.resultBody.en" label="Text rezultat (paragrafe separate de o linie goală)" textarea />
-      <div
-        v-for="(stat, i) in form.stats"
-        :key="i"
-        draggable="true"
-        class="flex cursor-grab items-end gap-3 border-t border-hairline pt-4 first:border-t-0 first:pt-0"
-        :class="{ 'opacity-40': drag.isDragging(i) }"
-        @dragstart="drag.start(i)"
-        @dragover.prevent
-        @drop="drag.drop(i)"
-      >
-        <div class="w-32 flex-none">
-          <AdminField v-model="stat.value" label="Valoare" />
-        </div>
-        <div class="flex-1">
-          <AdminFieldPair v-model:ro="stat.label.ro" v-model:en="stat.label.en" label="Etichetă" />
-        </div>
-        <button type="button" class="mb-2.5 cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal-text" @click="removeStat(i)">
-          Șterge
-        </button>
-      </div>
 
       <div class="border-t border-hairline pt-4">
         <AdminFieldPair v-model:ro="form.quote.ro" v-model:en="form.quote.en" label="Citat client" textarea />

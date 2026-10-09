@@ -295,43 +295,33 @@
       "hero": "Case study",
       "facts": "Facts",
       "next": "Next",
-      "problem": {
-        "label": "Problem",
-        "heading": "The starting point",
-        "placeholder": "Section copy."
-      },
-      "solution": {
-        "label": "Solution",
-        "heading": "How we found the answer",
-        "placeholder": "Section copy."
-      },
-      "stack": {
-        "label": "Stack",
-        "heading": "The technology we used",
-        "placeholder": "The stack used."
-      },
-      "obstacles": {
-        "label": "Obstacles",
-        "heading": "What got in the way",
-        "placeholder": "Section copy."
-      },
-      "changes": {
-        "label": "Changes",
-        "heading": "What we changed along the way",
-        "placeholder": "Section copy."
-      },
-      "result": {
-        "label": "Result",
-        "heading": "The final result",
-        "placeholder": "Result figures."
-      },
-      "feedback": {
-        "label": "Feedback",
-        "heading": "What the client says",
-        "placeholder": "A quote from the client, with name and role."
-      }
+      "situation": { "label": "Situation", "heading": "The business problem" },
+      "task": { "label": "Task" },
+      "action": { "label": "Action", "heading": "The solution" },
+      "result": { "label": "Result", "heading": "What the client gained" },
+      "feedback": { "label": "Feedback", "heading": "What the client says" },
+      "gallery": { "label": "Gallery", "heading": "What it looks like" }
     },
-    "toComplete": "To complete",
+    "cost": "What the problem cost",
+    "constraints": "Constraints",
+    "business": "Business",
+    "tech": "Tech",
+    "gains": "Gains",
+    "savings": "Savings",
+    "links": { "live": "Live site", "preview": "CODEPEDIA preview", "figma": "Figma" },
+    "galleryButton": "Gallery · {count} screens",
+    "galleryHint": "Opens here",
+    "demoConfirm": "Example · to confirm",
+    "linksDemo": "Preview / Figma links: example · to confirm",
+    "lightbox": {
+      "label": "Screenshot gallery",
+      "openImage": "Open image {n}",
+      "close": "Close gallery",
+      "closeButton": "Close ✕",
+      "prev": "Previous",
+      "next": "Next",
+      "counter": "{current} / {total}"
+    },
     "screensDemo": "Screens with demo data",
     "nextTitle": "Have a similar project?",
     "cta": "Let’s talk",
@@ -430,6 +420,7 @@
     }
   },
   "projects": {
+    "demoBadge": "example",
     "seo": {
       "title": "Projects",
       "description": "CODEPEDIA case studies: web apps, websites, WordPress, Shopify and AI automation delivered for clients around the world."

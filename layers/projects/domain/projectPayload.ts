@@ -39,7 +39,7 @@ export interface ProjectPayloadInput {
   lead: { ro: string; en: string }
   contextBody: { ro: string; en: string }
   serviceTag: string | null
-  liveUrl?: string
+  links?: { url: string; note?: { ro: string; en: string } }[]
   gallery: ProjectImageInput[]
 }
 
@@ -88,10 +88,15 @@ export function validateProjectPayload(input: ProjectPayloadInput): ValidationIs
     issues.push({ field: 'serviceTag', message: 'Serviciu invalid.' })
   }
 
-  const liveUrl = input.liveUrl?.trim()
-  if (liveUrl && !/^https?:\/\//.test(liveUrl)) {
-    issues.push({ field: 'liveUrl', message: 'Link-ul live trebuie să înceapă cu https://.' })
-  }
+  input.links?.forEach((link, i) => {
+    const url = link.url.trim()
+    // A blank row is dropped on save; one with notes but no URL would vanish silently.
+    if (!url && (link.note?.ro.trim() || link.note?.en.trim())) {
+      issues.push({ field: `links.${i}`, message: `Linkul ${i + 1} are note, dar nu are URL.` })
+    } else if (url && !/^https?:\/\//.test(url)) {
+      issues.push({ field: `links.${i}`, message: `Linkul ${i + 1} trebuie să înceapă cu https://.` })
+    }
+  })
 
   return issues
 }

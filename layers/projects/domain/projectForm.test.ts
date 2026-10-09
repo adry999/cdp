@@ -81,6 +81,81 @@ describe('toSavePayload', () => {
     expect(payload.stack).toEqual([{ name: 'Nuxt', role_ro: 'Frontend', role_en: null }])
     expect(payload.images).toEqual([{ path: 'https://x/y.jpg', alt_ro: 'Alt', alt_en: null, aspect: '16/10' }])
   })
+
+  it('drops link rows without a url and trims the rest', () => {
+    const form = toProjectForm(null)
+    form.links = [
+      { kind: 'figma', url: '  ', note: { ro: 'x', en: '' } },
+      { kind: 'preview', url: ' https://x.dev ', note: { ro: ' Preview ', en: '   ' } },
+    ]
+    expect(toSavePayload(form, null).links).toEqual([
+      { kind: 'preview', url: 'https://x.dev', note_ro: 'Preview', note_en: null },
+    ])
+  })
+
+  it('stores blank win and STAR fields as null', () => {
+    const form = toProjectForm(null)
+    form.winValue = { ro: ' ', en: '' }
+    form.winLabel = { ro: '', en: ' ' }
+    form.star.goal = { ro: '  ', en: '' }
+    form.star.cost.ro = [{ v: ' ', k: '' }]
+    form.star.biz.ro = ['  ']
+    form.star.incident.ro = { found: ' ', risk: '', action: '', outcome: [] }
+    const payload = toSavePayload(form, null)
+    expect(payload.win_value_ro).toBeNull()
+    expect(payload.win_label_en).toBeNull()
+    expect(payload.star_goal_ro).toBeNull()
+    expect(payload.star_cost_ro).toBeNull()
+    expect(payload.star_biz_ro).toBeNull()
+    expect(payload.star_incident_ro).toBeNull()
+  })
+
+  it('keeps a saved row intact through the form and back into the payload', () => {
+    const row = buildAdminProjectRow({
+      links: [{ kind: 'live', url: 'https://example.com', note_ro: 'Vezi live', note_en: null }],
+      win_value_ro: '−35%',
+      win_value_en: null,
+      win_label_ro: 'pierderi de flori',
+      win_label_en: 'flower losses',
+      star_goal_ro: 'Scop RO',
+      star_goal_en: 'Goal EN',
+      star_cost_ro: [{ v: '−35%', k: 'pierderi de flori' }],
+      star_cost_en: null,
+      star_constraints_ro: [{ k: 'Termen', v: '10 săptămâni' }],
+      star_constraints_en: null,
+      star_biz_ro: ['Unu'],
+      star_biz_en: null,
+      star_incident_ro: { found: 'Furnizor', risk: 'Risc', action: 'Acțiune', outcome: [{ v: '2', k: 'zile' }] },
+      star_incident_en: null,
+      star_gains_ro: [{ v: '+2', k: 'zile' }],
+      star_gains_en: null,
+      star_savings_ro: [{ v: '10k', k: 'lei' }],
+      star_savings_en: null,
+    })
+    const payload = toSavePayload(toProjectForm(row), row.id)
+    expect(payload.links).toEqual([{ kind: 'live', url: 'https://example.com', note_ro: 'Vezi live', note_en: null }])
+    expect(payload.win_value_ro).toBe('−35%')
+    expect(payload.win_value_en).toBeNull()
+    expect(payload.win_label_ro).toBe('pierderi de flori')
+    expect(payload.win_label_en).toBe('flower losses')
+    expect(payload.star_goal_ro).toBe('Scop RO')
+    expect(payload.star_goal_en).toBe('Goal EN')
+    expect(payload.star_cost_ro).toEqual([{ v: '−35%', k: 'pierderi de flori' }])
+    expect(payload.star_cost_en).toBeNull()
+    expect(payload.star_constraints_ro).toEqual([{ k: 'Termen', v: '10 săptămâni' }])
+    expect(payload.star_constraints_en).toBeNull()
+    expect(payload.star_biz_ro).toEqual(['Unu'])
+    expect(payload.star_biz_en).toBeNull()
+    expect(payload.star_incident_ro).toEqual({
+      found: 'Furnizor',
+      risk: 'Risc',
+      action: 'Acțiune',
+      outcome: [{ v: '2', k: 'zile' }],
+    })
+    expect(payload.star_incident_en).toBeNull()
+    expect(payload.star_gains_ro).toEqual([{ v: '+2', k: 'zile' }])
+    expect(payload.star_savings_ro).toEqual([{ v: '10k', k: 'lei' }])
+  })
 })
 
 describe('replacedMediaUrls', () => {

@@ -295,43 +295,33 @@
       "hero": "Studiu de caz",
       "facts": "Date",
       "next": "Următorul pas",
-      "problem": {
-        "label": "Problema",
-        "heading": "Punctul de plecare",
-        "placeholder": "Textul secțiunii."
-      },
-      "solution": {
-        "label": "Soluția",
-        "heading": "Cum am găsit rezolvarea",
-        "placeholder": "Textul secțiunii."
-      },
-      "stack": {
-        "label": "Stack",
-        "heading": "Tehnologiile folosite",
-        "placeholder": "Stack-ul folosit."
-      },
-      "obstacles": {
-        "label": "Obstacole",
-        "heading": "Ce probleme am întâmpinat",
-        "placeholder": "Textul secțiunii."
-      },
-      "changes": {
-        "label": "Schimbări",
-        "heading": "Ce am schimbat pe parcurs",
-        "placeholder": "Textul secțiunii."
-      },
-      "result": {
-        "label": "Rezultat",
-        "heading": "Rezultatul final",
-        "placeholder": "Cifrele de rezultat."
-      },
-      "feedback": {
-        "label": "Feedback",
-        "heading": "Ce spune clientul",
-        "placeholder": "Un citat de la client, cu nume și funcție."
-      }
+      "situation": { "label": "Situație", "heading": "Problema de business" },
+      "task": { "label": "Sarcină" },
+      "action": { "label": "Acțiune", "heading": "Soluția oferită" },
+      "result": { "label": "Rezultat", "heading": "Ce a câștigat clientul" },
+      "feedback": { "label": "Feedback", "heading": "Ce spune clientul" },
+      "gallery": { "label": "Galerie", "heading": "Cum arată" }
     },
-    "toComplete": "De completat",
+    "cost": "Cât costa problema",
+    "constraints": "Constrângeri",
+    "business": "Business",
+    "tech": "Tehnic",
+    "gains": "Câștig",
+    "savings": "Economii",
+    "links": { "live": "Site live", "preview": "Preview CODEPEDIA", "figma": "Figma" },
+    "galleryButton": "Galerie · {count} ecrane",
+    "galleryHint": "Se deschide aici",
+    "demoConfirm": "Exemplu · de confirmat",
+    "linksDemo": "Linkuri preview / Figma: exemplu · de confirmat",
+    "lightbox": {
+      "label": "Galerie de capturi",
+      "openImage": "Deschide imaginea {n}",
+      "close": "Închide galeria",
+      "closeButton": "Închide ✕",
+      "prev": "Anterior",
+      "next": "Următor",
+      "counter": "{current} / {total}"
+    },
     "screensDemo": "Ecrane cu date demonstrative",
     "nextTitle": "Ai un proiect asemănător?",
     "cta": "Hai să discutăm",
@@ -430,6 +420,7 @@
     }
   },
   "projects": {
+    "demoBadge": "exemplu",
     "seo": {
       "title": "Proiecte",
       "description": "Studii de caz CODEPEDIA: aplicații web, site-uri, WordPress, Shopify și automatizări AI livrate pentru clienți din toată lumea."
