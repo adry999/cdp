@@ -11,13 +11,13 @@ export interface RssPost {
 
 const FEEDS = {
   ro: {
-    title: 'Codepedia — Blog (RO)',
-    description: 'Notițe tehnice și studii de caz scurte din munca Codepedia.',
+    title: 'CODEPEDIA — Blog (RO)',
+    description: 'Notițe tehnice și studii de caz scurte din munca CODEPEDIA.',
     pathPrefix: '/blog',
   },
   en: {
-    title: 'Codepedia — Blog (EN)',
-    description: "Technical notes and short case studies from Codepedia's work.",
+    title: 'CODEPEDIA — Blog (EN)',
+    description: "Technical notes and short case studies from CODEPEDIA's work.",
     pathPrefix: '/en/blog',
   },
 } as const
