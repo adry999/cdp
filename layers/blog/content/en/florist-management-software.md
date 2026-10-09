@@ -6,8 +6,8 @@ lang: en
 alt: program-gestiune-florarie
 category: IND
 keyword: florist management software
-date: 2027-02-17
-updated: 2027-02-17
+date: 2026-10-07
+updated: 2026-10-07
 author: CODEPEDIA team
 service: aplicatie-web
 case: bloom

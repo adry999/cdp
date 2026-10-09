@@ -6,8 +6,8 @@ lang: ro
 alt: replace-excel-with-web-app
 category: IND
 keyword: aplicație web pentru firmă
-date: 2026-12-02
-updated: 2026-12-02
+date: 2026-09-21
+updated: 2026-09-21
 author: Echipa CODEPEDIA
 service: aplicatie-web
 case: bloom

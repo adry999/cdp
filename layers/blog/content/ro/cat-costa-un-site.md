@@ -6,8 +6,8 @@ lang: ro
 alt: how-much-does-a-website-cost
 category: COST
 keyword: cât costă un site
-date: 2026-11-04
-updated: 2026-11-04
+date: 2026-09-14
+updated: 2026-09-14
 author: Echipa CODEPEDIA
 service: website
 case: startica-site

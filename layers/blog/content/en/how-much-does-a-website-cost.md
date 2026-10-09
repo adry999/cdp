@@ -6,8 +6,8 @@ lang: en
 alt: cat-costa-un-site
 category: COST
 keyword: how much does a website cost
-date: 2026-11-04
-updated: 2026-11-04
+date: 2026-09-14
+updated: 2026-09-14
 author: CODEPEDIA team
 service: website
 case: startica-site

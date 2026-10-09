@@ -6,8 +6,8 @@ lang: en
 alt: automatizare-ai-pentru-imm
 category: AI
 keyword: AI automation for small business
-date: 2027-02-03
-updated: 2027-02-03
+date: 2026-10-02
+updated: 2026-10-02
 author: CODEPEDIA team
 service: automatizare-ai
 case: truckerhq

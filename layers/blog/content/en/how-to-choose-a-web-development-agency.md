@@ -6,8 +6,8 @@ lang: en
 alt: cum-alegi-o-agentie-web
 category: PROC
 keyword: how to choose a web development agency
-date: 2027-01-20
-updated: 2027-01-20
+date: 2026-09-29
+updated: 2026-09-29
 author: CODEPEDIA team
 service: website
 case: bloom

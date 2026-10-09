@@ -6,8 +6,8 @@ lang: ro
 alt: ai-automation-for-small-business
 category: AI
 keyword: automatizare procese AI
-date: 2027-02-03
-updated: 2027-02-03
+date: 2026-10-02
+updated: 2026-10-02
 author: Echipa CODEPEDIA
 service: automatizare-ai
 case: truckerhq

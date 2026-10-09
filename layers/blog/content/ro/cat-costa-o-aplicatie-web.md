@@ -6,8 +6,8 @@ lang: ro
 alt: web-app-development-cost
 category: COST
 keyword: cost aplicație web
-date: 2027-01-06
-updated: 2027-01-06
+date: 2026-09-24
+updated: 2026-09-24
 author: Echipa CODEPEDIA
 service: aplicatie-web
 case: startica-app

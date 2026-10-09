@@ -6,8 +6,8 @@ lang: en
 alt: cat-costa-o-aplicatie-web
 category: COST
 keyword: web app development cost
-date: 2027-01-06
-updated: 2027-01-06
+date: 2026-09-24
+updated: 2026-09-24
 author: CODEPEDIA team
 service: aplicatie-web
 case: startica-app

@@ -6,8 +6,8 @@ lang: en
 alt: din-excel-in-aplicatie-web
 category: IND
 keyword: replace excel with web app
-date: 2026-12-02
-updated: 2026-12-02
+date: 2026-09-21
+updated: 2026-09-21
 author: CODEPEDIA team
 service: aplicatie-web
 case: bloom

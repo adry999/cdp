@@ -6,8 +6,8 @@ lang: ro
 alt: how-to-choose-a-web-development-agency
 category: PROC
 keyword: cum aleg o agenție web
-date: 2027-01-20
-updated: 2027-01-20
+date: 2026-09-29
+updated: 2026-09-29
 author: Echipa CODEPEDIA
 service: website
 case: bloom

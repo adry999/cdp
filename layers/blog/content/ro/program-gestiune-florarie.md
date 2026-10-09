@@ -6,8 +6,8 @@ lang: ro
 alt: florist-management-software
 category: IND
 keyword: program gestiune florărie
-date: 2027-02-17
-updated: 2027-02-17
+date: 2026-10-07
+updated: 2026-10-07
 author: Echipa CODEPEDIA
 service: aplicatie-web
 case: bloom

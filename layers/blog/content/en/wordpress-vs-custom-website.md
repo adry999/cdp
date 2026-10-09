@@ -6,8 +6,8 @@ lang: en
 alt: wordpress-sau-site-custom
 category: ALEG
 keyword: wordpress vs custom website
-date: 2026-11-18
-updated: 2026-11-18
+date: 2026-09-17
+updated: 2026-09-17
 author: CODEPEDIA team
 service: wordpress
 case: swisscars
