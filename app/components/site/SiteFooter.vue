@@ -35,6 +35,7 @@ const copyrightLine = computed(() => `© ${settings.value.copyrightYear}`)
       <NuxtLink :to="localePath('contact')" class="hover:text-ink">{{ t('nav.contact') }}</NuxtLink>
       <NuxtLink :to="localePath('proiecte')" class="hover:text-ink">{{ t('nav.work') }}</NuxtLink>
       <NuxtLink :to="localePath('blog')" class="hover:text-ink">{{ t('nav.blog') }}</NuxtLink>
+      <NuxtLink :to="localePath('noutati')" class="hover:text-ink">{{ t('nav.news') }}</NuxtLink>
       <NuxtLink :to="localePath('confidentialitate')" class="hover:text-ink">{{ t('footer.privacy') }}</NuxtLink>
     </nav>
 

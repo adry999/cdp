@@ -11,6 +11,7 @@
     "process": "Proces",
     "work": "Proiecte",
     "blog": "Blog",
+    "news": "Noutăți",
     "pricing": "Prețuri",
     "about": "Despre",
     "main": "Navigație principală",
@@ -467,6 +468,27 @@
         "button": "Vezi dacă te putem ajuta"
       }
     }
+  },
+  "news": {
+    "seo": {
+      "title": "Noutăți",
+      "description": "Articole și știri din alte surse, alese de echipa CODEPEDIA, cu un rezumat scris de noi și link la original."
+    },
+    "hero": {
+      "title": "Noutăți",
+      "intro": "Articole și știri din alte surse, alese de echipa CODEPEDIA, cu un rezumat și link la original."
+    },
+    "empty": "Nu sunt încă noutăți publicate.",
+    "latest": "Cele mai noi",
+    "readAtSource": "Citește la sursă ↗",
+    "openOriginal": "Citește articolul original ↗",
+    "details": "Rezumat",
+    "back": "Noutăți",
+    "breadcrumb": "Navigare",
+    "sourceLabel": "Sursa: {name}",
+    "originalDate": "Publicat inițial: {date}",
+    "why": "De ce contează",
+    "disclaimer": "Rezumat scris de echipa CODEPEDIA. Articolul complet aparține {name}."
   },
   "blog": {
     "seo": {
