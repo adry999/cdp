@@ -19,7 +19,7 @@ describe('blog content', () => {
   it('has a generated OG image per published post (run `npm run blog-og`)', () => {
     const missing = posts
       .filter((p) => p.data.draft !== true)
-      .map((p) => `public/blog/og/${p.folder}/${p.file}.png`)
+      .map((p) => `public/og/blog/${p.folder}/${p.file}.png`)
       .filter((path) => !existsSync(fileURLToPath(new URL(`../../${path}`, import.meta.url))))
     expect(missing).toEqual([])
   })

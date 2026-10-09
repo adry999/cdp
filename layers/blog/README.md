@@ -81,7 +81,7 @@ All `@nuxt/content` queries live in `server/repository/blogRepository.ts`
 - `useBlogRssLink()` adds `<link rel="alternate" type="application/rss+xml">`
   to the index, category and article pages. Feed items carry `<category>`.
 - OG images: `npm run blog-og` (`scripts/generate-blog-og.mjs`) writes
-  `public/blog/og/<locale>/<slug>.png` (1200x630, category in signal mono,
+  `public/og/blog/<locale>/<slug>.png` (1200x630, category in signal mono,
   title in paper Inter Tight on ink, wordmark) for every non-draft post, using
   the OFL font files in `scripts/fonts/`. Commit the PNGs; `content.test.ts`
   fails when a published post has none. Re-run after changing a title or

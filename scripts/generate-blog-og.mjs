@@ -1,4 +1,4 @@
-// Generates public/blog/og/<locale>/<slug>.png (1200 x 630) for every non-draft post:
+// Generates public/og/blog/<locale>/<slug>.png (1200 x 630) for every non-draft post:
 // category + title on #0B0B0B, like the "Cel mai nou" card (SEO_SPEC §3). Run: npm run blog-og
 // Text is laid out by sharp's Pango text input with the site fonts in scripts/fonts (OFL,
 // the same Inter Tight / JetBrains Mono the site self-hosts); the .mjs script can't import the
@@ -9,7 +9,7 @@ import sharp from 'sharp'
 
 const root = resolve(import.meta.dirname, '..')
 const contentDir = resolve(root, 'layers/blog/content')
-const outDir = resolve(root, 'public/blog/og')
+const outDir = resolve(root, 'public/og/blog')
 const wordmarkSvg = resolve(root, 'assets/codepedia-wordmark-inverse.svg')
 const inter = resolve(root, 'scripts/fonts/InterTight[wght].ttf')
 const mono = resolve(root, 'scripts/fonts/JetBrainsMono[wght].ttf')
@@ -95,4 +95,4 @@ for (const locale of ['ro', 'en']) {
   }
 }
 
-console.log(`${count} blog OG images written to public/blog/og`)
+console.log(`${count} blog OG images written to public/og/blog`)

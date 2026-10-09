@@ -29,7 +29,7 @@ const input = {
   category: 'COST' as const,
   date: '2027-01-02',
   updated: '2027-01-05',
-  image: 'https://codepedia.md/blog/og/ro/cat-costa-un-site.png',
+  image: 'https://codepedia.md/og/blog/ro/cat-costa-un-site.png',
   blocks,
   labels: { home: 'CODEPEDIA', blog: 'Blog' },
 }
@@ -45,7 +45,7 @@ describe('blogPaths', () => {
 
 describe('ogImagePath', () => {
   it('is per locale and slug', () => {
-    expect(ogImagePath('en', 'a-b')).toBe('/blog/og/en/a-b.png')
+    expect(ogImagePath('en', 'a-b')).toBe('/og/blog/en/a-b.png')
   })
 })
 

@@ -6,7 +6,7 @@ type Locale = 'ro' | 'en'
 
 /** Public path of a post's generated Open Graph image (written by `scripts/generate-blog-og.mjs`). */
 export function ogImagePath(locale: Locale, slug: string): string {
-  return `/blog/og/${locale}/${slug}.png`
+  return `/og/blog/${locale}/${slug}.png`
 }
 
 /** Where a blog URL lives, relative to the locale's official origin. */
