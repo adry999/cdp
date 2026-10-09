@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { PostBlock } from '#layers/blog'
 
-defineProps<{ blocks: PostBlock[] }>()
+defineProps<{ blocks: PostBlock[]; postSlug: string; service: string }>()
 const { t } = useI18n()
+const track = useTrackEvent()
 
 function marker(ordered: boolean, index: number): string {
   return ordered ? String(index + 1).padStart(2, '0') : '—'
@@ -100,6 +101,7 @@ function marker(ordered: boolean, index: number): string {
         <NuxtLink
           :to="block.href"
           class="flex min-h-11 items-center self-start rounded bg-signal px-5 eyebrow text-ink no-underline hover:bg-paper hover:text-ink hover:no-underline"
+          @click="track('blog_cta_click', { post_slug: postSlug, service })"
         >
           {{ block.label }} →
         </NuxtLink>

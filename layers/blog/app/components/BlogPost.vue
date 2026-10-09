@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { CATEGORIES, formatPostDate, type BlogPostDoc } from '#layers/blog'
+import { CATEGORIES, blogSlug, formatPostDate, type BlogPostDoc } from '#layers/blog'
 
 const props = defineProps<{ post: BlogPostDoc }>()
 const { t } = useI18n()
 const siteLocale = useSiteLocale()
 const localePath = useLocalePath()
+const track = useTrackEvent()
 
 const category = computed(() => CATEGORIES[props.post.category])
 const categoryTo = computed(() =>
@@ -50,12 +51,13 @@ const showUpdated = computed(() => props.post.updated !== props.post.date)
             :key="item.id"
             :href="`#${item.id}`"
             class="text-[13px] leading-[1.35] text-muted no-underline text-pretty hover:text-signal-text hover:no-underline"
+            @click="track('blog_toc_click', { post_slug: blogSlug(post.path), anchor_id: item.id })"
           >
             {{ item.text }}
           </a>
         </nav>
       </template>
-      <BlogBody :blocks="post.blocks" />
+      <BlogBody :blocks="post.blocks" :post-slug="blogSlug(post.path)" :service="post.service" />
     </SiteSection>
 
     <BlogRelated :posts="post.related" />
