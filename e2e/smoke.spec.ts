@@ -6,7 +6,7 @@ test('RO homepage renders', async ({ page }) => {
   const response = await page.goto('/')
   expect(response?.status()).toBe(200)
   await expect(page.locator('html')).toHaveAttribute('lang', 'ro-RO')
-  await expect(page).toHaveTitle(/Codepedia/)
+  await expect(page).toHaveTitle(/CODEPEDIA/)
   await expect(page.locator('h1')).toBeVisible()
 })
 
@@ -14,7 +14,7 @@ test('EN homepage renders', async ({ page }) => {
   const response = await page.goto('/en')
   expect(response?.status()).toBe(200)
   await expect(page.locator('html')).toHaveAttribute('lang', 'en-US')
-  await expect(page).toHaveTitle(/Codepedia/)
+  await expect(page).toHaveTitle(/CODEPEDIA/)
   await expect(page.locator('h1')).toBeVisible()
 })
 

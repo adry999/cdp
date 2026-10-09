@@ -58,7 +58,7 @@ onMounted(() => {
       <NuxtLink :to="localePath('index')" class="flex items-center">
         <img
           src="/brand/codepedia-wordmark.svg"
-          alt="Codepedia"
+          alt="CODEPEDIA"
           width="183"
           height="18"
           class="block h-[18px] w-auto"

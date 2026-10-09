@@ -64,7 +64,7 @@ useJsonLd(
   }),
   () =>
     breadcrumbList([
-      { name: 'Codepedia', url: `${siteUrl}${localePath('/')}` },
+      { name: 'CODEPEDIA', url: `${siteUrl}${localePath('/')}` },
       { name: t('nav.work'), url: `${siteUrl}${localePath({ name: 'proiecte' })}` },
       { name: project.value.title, url: projectUrl.value },
     ]),

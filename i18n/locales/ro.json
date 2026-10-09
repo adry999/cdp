@@ -37,7 +37,7 @@
   },
   "privacy": {
     "seo": {
-      "description": "Politica de confidențialitate Codepedia: ce date colectăm, cum le folosim și cum poți controla cookie-urile."
+      "description": "Politica de confidențialitate CODEPEDIA: ce date colectăm, cum le folosim și cum poți controla cookie-urile."
     }
   },
   "home": {
@@ -431,11 +431,11 @@
   "projects": {
     "seo": {
       "title": "Proiecte",
-      "description": "Studii de caz Codepedia: aplicații web, site-uri, WordPress, Shopify și automatizări AI livrate pentru clienți din toată lumea."
+      "description": "Studii de caz CODEPEDIA: aplicații web, site-uri, WordPress, Shopify și automatizări AI livrate pentru clienți din toată lumea."
     },
     "hero": {
       "title": "Proiecte.",
-      "intro": "Studii de caz din portofoliul Codepedia, filtrabile după tipul de serviciu."
+      "intro": "Studii de caz din portofoliul CODEPEDIA, filtrabile după tipul de serviciu."
     },
     "filters": {
       "all": "Toate",
