@@ -21,12 +21,19 @@ export async function buildBlogRss(event: H3Event, locale: BlogLocale): Promise<
 }
 
 /** The blog index (only while it has posts — it is noindex when empty) and
- * every published post. content.test.ts guarantees the RO and EN slug sets
- * match, so the RO list alone enumerates every post in both locales. */
+ * every published post, RO and EN paired by `alt` since the slugs differ per
+ * locale. The RO list enumerates the pairs; a post whose counterpart isn't
+ * published is left out (front-matter validation keeps `draft` in sync). */
 export async function listBlogSitemapPages(event: H3Event): Promise<SitemapPage[]> {
-  const posts = await listPublishedBlogPosts(event, 'ro')
+  const [roRows, enRows] = await Promise.all([listPublished(event, 'ro'), listPublished(event, 'en')])
+  const enSlugs = new Set(enRows.map((row) => blogSlug(row.path)))
+  const pairs = roRows.filter((row) => enSlugs.has(row.alt))
   return [
-    ...(posts.length ? [{ ro: '/blog', en: '/en/blog' }] : []),
-    ...posts.map(({ slug, date }) => ({ ro: `/blog/${slug}`, en: `/en/blog/${slug}`, lastmod: date })),
+    ...(pairs.length ? [{ ro: '/blog', en: '/en/blog' }] : []),
+    ...pairs.map((row) => ({
+      ro: `/blog/${blogSlug(row.path)}`,
+      en: `/en/blog/${row.alt}`,
+      lastmod: row.updated,
+    })),
   ]
 }

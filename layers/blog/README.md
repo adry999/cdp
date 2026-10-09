@@ -7,11 +7,24 @@ only.
 ## Content
 
 - `content/ro/<slug>.md`, `content/en/<slug>.md` — one file per post per
-  locale, paired by filename. Both are required; `content.test.ts` fails if
-  either is missing or if the two disagree on `draft`.
-- Front matter: `title`, `description` (SEO), `summary` (card blurb), `date`
-  (`YYYY-MM-DD`), `cover` (optional, static path under `public/blog/<slug>/`),
-  `draft` (default `false`).
+  locale. RO and EN slugs differ; the pair is linked by the front-matter `alt`
+  field (the counterpart's slug), which must point back from both sides.
+- Front matter (all required unless noted): `title` (≤ 60 chars),
+  `description` (120–160 chars), `slug` (= filename), `lang` (= folder),
+  `alt`, `category` (`COST|ALEG|IND|AI|GRANT|PROC|MKT`, see
+  `domain/category.ts`), `keyword`, `date` and `updated` (`YYYY-MM-DD`,
+  `date` ≤ `updated`), `author`, `service` (RO route slug of a service:
+  `website|aplicatie-web|wordpress|shopify|automatizare-ai|granturi`, kept as
+  a plain enum so this layer needs nothing from `services`), `case` (project
+  slug), `readingTime` (minutes), `cover` (optional, static path under
+  `public/blog/<slug>/`), `draft` (optional, default `false`). There is no
+  `summary`; cards show `description`.
+- Paired posts must share `category`, `service`, `case` and `draft`.
+- Build gate: `domain/frontMatter.ts` (`validatePostFrontMatter`) checks all
+  of the above across both locales. `nuxt.config.ts` runs it on `nuxt build`
+  and `nuxt dev` start (not `nuxt prepare`) and throws with the issue list;
+  `content.test.ts` runs the same check. Files are read and parsed by
+  `readPosts.ts` (a small flat front-matter parser, no YAML dependency).
 - `draft: true` hides a post from `/blog`, the sitemap, and both RSS feeds.
   **It is not access control** — the URL still renders if requested directly,
   since there's no database to gate it. Use it to keep a post out of the
@@ -20,7 +33,7 @@ only.
 - No Vue components inside a post body (no MDC) — plain Markdown only, kept
   inside the site's fixed design system.
 - `content.config.ts` — defines the two collections, `blog_ro` and `blog_en`,
-  both `type: 'page'` with the schema above layered on top of `@nuxt/content`'s
+  both `type: 'page'` with the field types above layered on top of `@nuxt/content`'s
   built-in `title`/`description` fields.
 
 ## Public API (client) — `index.ts`
@@ -29,13 +42,14 @@ only.
 - `blogSlug(path)` — strips the leading slash from a collection item's
   `path`, giving the bare slug used in routes.
 - `BlogPostSummary`, `BlogPostDoc` — domain types.
+- `domain/category.ts` — category codes, localized URL slugs and names, guards.
 
 ## Public API (server) — `server/index.ts`
 
 - `buildBlogRss(event, locale)` — the RSS 2.0 document for one locale's
   non-draft posts. Used by both root RSS routes.
 - `listBlogSitemapPages(event)` — the blog index (only while posts exist) and
-  every post, as `SitemapPage`s for the root sitemap
+  every post (RO/EN paired by `alt`, `lastmod` = `updated`), as `SitemapPage`s for the root sitemap
   (`server/routes/sitemap.xml.ts`).
 
 All `@nuxt/content` queries live in `server/repository/blogRepository.ts`
@@ -64,7 +78,7 @@ All `@nuxt/content` queries live in `server/repository/blogRepository.ts`
 ## Components
 
 - `BlogHero` — thin wrapper around `core`'s `PageHero`.
-- `BlogCard` — the list card: cover, date, title, summary, link.
+- `BlogCard` — the list card: cover, date, title, description, link.
 - `BlogPost` — a post's header, rendered body (`<ContentRenderer>`, styled
   by the `.blog-prose` scoped block — the first place in the site that
   renders arbitrary Markdown structure), and `BlogRelated`.

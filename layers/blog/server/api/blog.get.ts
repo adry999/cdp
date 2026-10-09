@@ -9,8 +9,12 @@ export default defineEventHandler(async (event): Promise<BlogPostSummary[]> => {
   return rows.map((row) => ({
     path: row.path,
     title: row.title,
-    summary: row.summary,
+    description: row.description,
     date: row.date,
+    updated: row.updated,
+    category: row.category,
+    readingTime: row.readingTime,
+    alt: row.alt,
     cover: row.cover,
   }))
 })

@@ -16,7 +16,7 @@ export async function listPublished(event: H3Event, locale: BlogLocale) {
   return queryCollection(event, collectionFor(locale))
     .where('draft', '=', false)
     .order('date', 'DESC')
-    .select('path', 'title', 'summary', 'description', 'date', 'cover')
+    .select('path', 'title', 'description', 'date', 'updated', 'category', 'readingTime', 'alt', 'cover')
     .all()
 }
 

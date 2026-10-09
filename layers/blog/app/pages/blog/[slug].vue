@@ -17,6 +17,12 @@ if (!doc) {
   throw createError({ statusCode: 404, statusMessage: 'Post not found' })
 }
 
+// Slugs differ per locale: point the language switcher and hreflang at the counterpart post.
+const setI18nParams = useSetI18nParams()
+setI18nParams(
+  locale.value === 'en' ? { en: { slug }, ro: { slug: doc.alt } } : { ro: { slug }, en: { slug: doc.alt } },
+)
+
 const siteUrl = useSiteUrl()
 
 usePageSeo({
@@ -34,6 +40,7 @@ useJsonLd(() => ({
   url: `${siteUrl}${route.path}`,
   inLanguage: locale.value,
   datePublished: doc.date,
+  dateModified: doc.updated,
   ...(doc.cover ? { image: `${siteUrl}${doc.cover}` } : {}),
   author: { '@type': 'Organization', name: 'Codepedia' },
 }))

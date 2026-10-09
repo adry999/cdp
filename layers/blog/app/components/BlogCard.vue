@@ -22,6 +22,6 @@ const displayDate = computed(() => formatPostDate(props.post.date, siteLocale.va
     />
     <div class="mt-4 eyebrow-sm text-muted">{{ displayDate }}</div>
     <h3 class="mb-2 mt-2.5 heading-card text-ink">{{ post.title }}</h3>
-    <p class="m-0 text-base text-muted">{{ post.summary }}</p>
+    <p class="m-0 text-base text-muted">{{ post.description }}</p>
   </NuxtLink>
 </template>
