@@ -55,6 +55,8 @@ const CSP = [
 export default defineNuxtConfig({
   compatibilityDate: '2026-08-05',
   devtools: { enabled: true },
+  // Git worktrees for parallel branches live in .worktrees/; keep them out of scanning and the dev watcher.
+  ignore: ['.worktrees/**'],
 
   modules: ['@nuxtjs/i18n', '@nuxt/image', '@nuxt/fonts', '@nuxtjs/supabase', '@nuxt/content', '@nuxt/eslint'],
 

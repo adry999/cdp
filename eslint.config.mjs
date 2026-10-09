@@ -108,6 +108,6 @@ export default withNuxt(
     },
   },
   {
-    ignores: ['supabase/migrations/**', 'design/**', 'docs/**'],
+    ignores: ['supabase/migrations/**', 'design/**', 'docs/**', '.worktrees/**'],
   },
 )
