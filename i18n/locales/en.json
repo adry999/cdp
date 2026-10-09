@@ -73,17 +73,17 @@
       "intro": "Five stages, from a fast one-page launch to custom AI engineering. Pick where you are now — that's where we begin.",
       "note": "Some projects are under NDA. Detailed references available on the diagnostic call.",
       "grants": {
-        "kicker": "Proiecte finanțate prin granturi",
-        "title": "Ai câștigat un grant european sau ODA? Livrăm aplicația din proiect, la termenele din contract.",
-        "body": "Lucrăm cu startup-uri, IMM-uri, ONG-uri, instituții publice și asociații de afaceri. Intrăm în proiect în orice etapă, de la cererea de finanțare până după încheierea ei.",
+        "kicker": "Grant-funded projects",
+        "title": "Won a European or ODA grant? We deliver the application from your project, on the contract deadlines.",
+        "body": "We work with startups, SMEs, NGOs, public institutions and business associations. We join the project at any stage, from the funding application to well after it closes.",
         "steps": [
-          "Înainte de aplicare",
-          "Implementare",
-          "Raportare și audit",
-          "După grant"
+          "Before applying",
+          "Delivery",
+          "Reporting and audit",
+          "After the grant"
         ],
-        "cta": "Cum lucrăm pe granturi",
-        "contact": "Discută proiectul →"
+        "cta": "How we work on grants",
+        "contact": "Discuss your project →"
       },
       "stageWord": "Stage",
       "whereYouAreLabel": "Where you are",
@@ -253,14 +253,14 @@
         "name": "Name",
         "email": "Email",
         "company": "Company (optional)",
-        "stage": "Etapa",
+        "stage": "Stage",
         "stageOptions": {
           "E": "Express",
           "B": "Concept",
-          "A": "Design → cod",
-          "C": "Scalare",
+          "A": "Design → code",
+          "C": "Scaling",
           "D": "AI",
-          "unsure": "Nu știu"
+          "unsure": "Not sure"
         },
         "message": "Describe the problem",
         "budget": "Budget",
@@ -311,8 +311,6 @@
     "links": { "live": "Live site", "preview": "CODEPEDIA preview", "figma": "Figma" },
     "galleryButton": "Gallery · {count} screens",
     "galleryHint": "Opens here",
-    "demoConfirm": "Example · to confirm",
-    "linksDemo": "Preview / Figma links: example · to confirm",
     "lightbox": {
       "label": "Screenshot gallery",
       "openImage": "Open image {n}",
@@ -322,7 +320,6 @@
       "next": "Next",
       "counter": "{current} / {total}"
     },
-    "screensDemo": "Screens with demo data",
     "nextTitle": "Have a similar project?",
     "cta": "Let’s talk",
     "quote": "“{text}”"
@@ -420,7 +417,6 @@
     }
   },
   "projects": {
-    "demoBadge": "example",
     "seo": {
       "title": "Projects",
       "description": "CODEPEDIA case studies: web apps, websites, WordPress, Shopify and AI automation delivered for clients around the world."
@@ -436,7 +432,7 @@
       "wordpress": "WordPress",
       "shopify": "Shopify",
       "ai-automation": "AI automation",
-      "granturi": "Granturi"
+      "granturi": "Grants"
     },
     "empty": "No published case studies yet."
   },
@@ -445,18 +441,18 @@
       "heading": "What's included"
     },
     "hero": {
-      "audienceLabel": "Pentru"
+      "audienceLabel": "For"
     },
     "index": {
       "seo": {
-        "title": "Servicii de dezvoltare web în Chișinău"
+        "title": "Web development services in Chișinău"
       },
-      "title": "Cinci etape. Pornim de unde ești acum.",
-      "intro": "De la o pagină rapidă până la inginerie AI la comandă. Fiecare etapă are preț fix, termen asumat și 30 de zile de remedieri după lansare.",
+      "title": "Five stages. We start where you are now.",
+      "intro": "From a quick page to custom AI engineering. Every stage has a fixed price, a committed timeline and 30 days of fixes after launch.",
       "cta": {
-        "title": "Nu știi în ce etapă ești?",
-        "body": "Descrie problema în câteva rânduri. Îți răspundem într-o zi lucrătoare cu etapa potrivită și o estimare.",
-        "button": "Vezi dacă te putem ajuta"
+        "title": "Not sure which stage you're at?",
+        "body": "Describe the problem in a few lines. We reply within one working day with the right stage and an estimate.",
+        "button": "See if we can help"
       }
     }
   },
@@ -518,76 +514,73 @@
     "backHome": "Back to homepage"
   },
   "pricing": {
-    "sectionLabel": "Prețuri",
+    "sectionLabel": "Pricing",
     "seo": {
-      "title": "Preț fix pe fiecare etapă.",
-      "description": "Dacă subestimăm complexitatea unei sarcini, absorbim costul orelor suplimentare. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră."
+      "title": "A fixed price for every stage.",
+      "description": "If we underestimate the complexity of a task, we absorb the cost of the extra hours. The written estimate after the diagnostic always contains a figure."
     },
-    "title": "Preț fix pe fiecare etapă.",
-    "intro": "Dacă subestimăm complexitatea unei sarcini, absorbim costul orelor suplimentare. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră.",
-    "pricePlaceholder": "[ X ] EUR",
+    "title": "A fixed price for every stage.",
+    "intro": "If we underestimate the complexity of a task, we absorb the cost of the extra hours. The written estimate after the diagnostic always contains a figure.",
     "stages": {
       "E": {
-        "pricePrefix": "Sub",
-        "time": "2–3 zile"
+        "pricePrefix": "Under",
+        "time": "2–3 days"
       },
       "B": {
-        "pricePrefix": "De la",
-        "time": "~1 săptămână"
+        "pricePrefix": "From",
+        "time": "~1 week"
       },
       "A": {
-        "pricePrefix": "De la",
-        "time": "3–6 săpt."
+        "pricePrefix": "From",
+        "time": "3–6 wks"
       },
       "C": {
-        "pricePrefix": "De la",
-        "time": "4–8 săpt."
+        "pricePrefix": "From",
+        "time": "4–8 wks"
       },
       "D": {
-        "pricePrefix": "De la",
-        "time": "6–12 săpt."
+        "pricePrefix": "From",
+        "time": "6–12 wks"
       }
     },
     "included": {
-      "label": "Inclus mereu",
+      "label": "Always included",
       "items": [
         {
-          "title": "Cod în conturile tale",
-          "body": "Repository, baza de date și infrastructura sunt configurate direct la tine din prima zi."
+          "title": "Code in your own accounts",
+          "body": "The repository, database and infrastructure are set up directly in your accounts from day one."
         },
         {
-          "title": "30 de zile de remedieri",
-          "body": "Erorile tehnice și neconformitățile cu specificația agreată, rezolvate fără cost."
+          "title": "30 days of fixes",
+          "body": "Technical errors and deviations from the agreed specification, resolved at no cost."
         },
         {
-          "title": "Documentație și handover",
-          "body": "Echipa ta poate duce codul mai departe fără noi."
+          "title": "Documentation and handover",
+          "body": "Your team can carry the code forward without us."
         }
       ]
     },
     "afterLaunch": {
-      "label": "După lansare",
-      "title": "Abonament lunar sau echipa ta. Ambele funcționează.",
+      "label": "After launch",
+      "title": "A monthly retainer or your own team. Both work.",
       "plans": {
         "maintenance": {
-          "label": "Mentenanță",
-          "price": "de la [ X ] EUR / lună",
-          "body": "Actualizări, monitorizare, backup și un număr fix de ore pentru modificări mici."
+          "label": "Maintenance",
+          "body": "Updates, monitoring, backups and a fixed number of hours for small changes."
         },
         "continuous": {
-          "label": "Dezvoltare continuă",
-          "price": "de la [ X ] EUR / lună",
-          "body": "Sprinturi de două săptămâni cu demo, pentru funcționalități noi și scalare."
+          "label": "Continuous development",
+          "body": "Two-week sprints with a demo, for new features and scaling."
         }
       },
-      "warrantyNote": "*Garanția acoperă erorile tehnice și conformitatea cu specificația agreată; modificările de design sau funcționalitățile noi reprezintă extinderi de scop."
+      "warrantyNote": "*The warranty covers technical errors and conformity with the agreed specification; design changes or new features count as scope extensions."
     },
     "faq": {
-      "label": "Întrebări",
+      "label": "Questions",
       "items": [
         {
           "question": "What does a project cost?",
-          "answer": "Most projects start at [ X ] EUR for a working first version and move in stages from there. The written assessment after the diagnostic call always contains a number."
+          "answer": "Every project starts with a working first version and moves in stages from there. The written assessment after the diagnostic call always contains a number."
         },
         {
           "question": "Do you take over someone else's project?",
@@ -604,35 +597,31 @@
     "seo": {
       "description": "We run a few projects at a time so each gets the hours it needs. You talk directly to the engineer building your product."
     },
-    "principlesLabel": "Cum lucrăm",
+    "principlesLabel": "How we work",
     "team": {
-      "label": "Echipa",
-      "title": "Oamenii cu care vorbești direct.",
-      "photo": "Fotografie",
-      "name": "[ Nume ]",
-      "role": "[ Funcție ]",
-      "placeholderNote": "Placeholder · nume, roluri și fotografii de completat"
+      "label": "Team",
+      "title": "The people you talk to directly."
     },
     "facts": {
       "based": {
-        "label": "Bazați în",
+        "label": "Based in",
         "value": "Chișinău, Moldova"
       },
       "markets": {
-        "label": "Piețe",
-        "value": "Moldova/România · UE · America de Nord · Lumea întreagă"
+        "label": "Markets",
+        "value": "Moldova/Romania · EU · North America · Worldwide"
       },
       "languages": {
-        "label": "Limbi",
-        "value": "Română · Engleză · Rusă"
+        "label": "Languages",
+        "value": "Romanian · English · Russian"
       }
     }
   },
   "contactPage": {
     "steps": [
-      "Răspuns scris în 1 zi lucrătoare",
-      "Discovery de 60 de minute, dacă are sens",
-      "Specificație de scop și preț în 48 de ore"
+      "Written reply within 1 working day",
+      "A 60-minute discovery call, if it makes sense",
+      "Scope specification and price within 48 hours"
     ]
   }
 }

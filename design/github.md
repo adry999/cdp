@@ -11,7 +11,7 @@ branch: feat/star-case-study
 - Admin: grup „STAR” în formularul de proiect, repeater de linkuri, rezultat pe card
 - Carduri (homepage RO/EN, /proiecte, /servicii): rezultat scurt sub descriere
 - SwissCars: „Aplicație web”, titlu nou, mutat pe /servicii/aplicatie-web (și în DB)
-- Cifrele, incidentele și linkurile din design sunt exemple: doar în fixture-ul de dev `layers/projects/server/dev/starDemoData.ts`, nu în DB
+- Cifrele, incidentele și linkurile din design sunt exemple și nu apar nicăieri în site (nici în dev, nici în DB)
 - Galeria folosește `project_images` existent (cu alt RO/EN), nu o coloană `gallery text[]`
 
 ## Sync history

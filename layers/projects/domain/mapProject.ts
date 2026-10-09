@@ -50,8 +50,6 @@ export interface ProjectCardRow {
   win_label_ro: string | null
   win_label_en: string | null
   sort_order: number
-  /** Set only by the dev demo fixture (layers/projects/server/dev/), never by the database. */
-  demo?: boolean
 }
 
 export interface ProjectRow extends ProjectCardRow {
@@ -128,7 +126,6 @@ export function mapProjectCard(row: ProjectCardRow, locale: Locale) {
     featured: row.featured,
     // The short card result; hidden unless the value is set.
     win: winValue ? { value: winValue, label: winLabel } : null,
-    demo: row.demo ?? false,
   }
 }
 

@@ -3,8 +3,6 @@ import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonL
 import { fetchProject } from '#layers/projects/data/projectsRepository'
 import { mapProject } from '#layers/projects/domain/mapProject'
 
-definePageMeta({ layout: 'case-study' })
-
 const route = useRoute()
 const { t, locale } = useI18n()
 const siteLocale = useSiteLocale()
@@ -111,14 +109,12 @@ useJsonLd(
         {{ paragraph }}
       </p>
       <div v-if="star.cost.length" class="mt-[clamp(28px,3.5vw,44px)]">
-        <ProjectsCaseStudyDemoBadge v-if="project.demo" />
         <div class="eyebrow text-muted">{{ t('caseStudy.cost') }}</div>
         <ProjectsCaseStudyFigures :figures="star.cost" class="mt-4" />
       </div>
     </ProjectsCaseStudySection>
 
     <ProjectsCaseStudySection v-if="hasTask" number="02" :label="t('caseStudy.sections.task.label')">
-      <ProjectsCaseStudyDemoBadge v-if="project.demo" />
       <h2 v-if="star.goal" class="m-0 max-w-[28ch] heading-section text-pretty">{{ star.goal }}</h2>
       <template v-if="star.constraints.length">
         <div class="eyebrow text-muted" :class="star.goal ? 'mt-[clamp(24px,3vw,36px)]' : undefined">
@@ -183,9 +179,6 @@ useJsonLd(
             sizes="xs:100vw sm:100vw md:50vw xl:640px"
           />
         </div>
-        <p v-if="caseStudy.screensDemo" class="m-0 mt-3 eyebrow-sm text-muted">
-          {{ t('caseStudy.screensDemo') }}
-        </p>
       </template>
     </ProjectsCaseStudySection>
 
@@ -204,7 +197,6 @@ useJsonLd(
         {{ paragraph }}
       </p>
       <div v-if="star.gains.length || star.savings.length" class="mt-[clamp(28px,3.5vw,44px)]">
-        <ProjectsCaseStudyDemoBadge v-if="project.demo" />
         <div class="grid grid-fit-safe-300 gap-[clamp(24px,3vw,40px)]">
           <div v-if="star.gains.length">
             <div class="eyebrow text-muted"><span class="text-signal-text">+</span> {{ t('caseStudy.gains') }}</div>

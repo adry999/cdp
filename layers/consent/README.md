@@ -20,7 +20,7 @@ Cookie consent: the visitor's choice, the banner that records it, the analytics 
 ## Consumed by
 
 - `app/components/site/SiteFooter.vue` — `openSettings` behind the "Cookie settings" link.
-- `app/layouts/default.vue`, `app/layouts/case-study.vue` — `<ConsentBanner />`.
+- `app/layouts/default.vue` — `<ConsentBanner />`.
 - `server/routes/sitemap.xml.ts` — `CONSENT_SITEMAP_PAGES` via `#layers/consent/server`.
 
 ## Routes

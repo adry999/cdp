@@ -3,8 +3,6 @@ import { useCookieConsent } from '#layers/consent'
 import { useSiteSettings } from '#layers/content'
 import { SERVICE_LINKS } from '#layers/services'
 
-withDefaults(defineProps<{ compact?: boolean }>(), { compact: false })
-
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const { openSettings } = useCookieConsent()
@@ -17,7 +15,6 @@ const copyrightLine = computed(() => `© ${settings.value.copyrightYear}`)
 <template>
   <footer class="border-t border-hairline">
     <nav
-      v-if="!compact"
       :aria-label="t('footer.navLabel')"
       class="container-site flex flex-wrap gap-x-6 gap-y-3 border-b border-hairline py-5 eyebrow-sm text-muted"
     >
@@ -52,7 +49,7 @@ const copyrightLine = computed(() => `© ${settings.value.copyrightYear}`)
         >
         {{ legalLine }}
       </span>
-      <span v-if="!compact">{{ t('footer.tagline') }}</span>
+      <span>{{ t('footer.tagline') }}</span>
       <button type="button" class="cursor-pointer bg-transparent text-muted hover:text-ink" @click="openSettings">
         {{ t('footer.cookieSettings') }}
       </button>

@@ -293,7 +293,7 @@
             "supabase/migrations/20261009082215_case_study_star.sql"
           ],
           "status": "de_verificat",
-          "note": "Structura STAR (bandă S/T/A/R, 01–07, incident, linkuri, galerie + lightbox), RO/EN. Cifrele, incidentele și linkurile din design sunt exemple: doar în fixture-ul de dev (layers/projects/server/dev/), marcate „exemplu”; în DB câmpurile star_* sunt goale până la date reale.",
+          "note": "Structura STAR (bandă S/T/A/R, 01–07, incident, linkuri, galerie + lightbox), RO/EN. Cifrele, incidentele și linkurile din design sunt exemple și nu apar nicăieri în site; în DB câmpurile star_* sunt goale până la date reale.",
           "design": "Studiu de caz.dc.html"
         }
       ]
