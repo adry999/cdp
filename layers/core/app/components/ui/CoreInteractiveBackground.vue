@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { parseColorToRgb } from '#layers/core/shared/utils/parseColorToRgb'
 
 export type BackgroundVariant = 'dot-matrix' | 'constellation' | 'light-orbs'
 
@@ -45,7 +46,8 @@ interface LightOrb {
   mass: number
   angle: number
   colorRgb: [number, number, number]
-  alphaMax: number
+  alphaLight: number
+  alphaDark: number
 }
 
 onMounted(() => {
@@ -60,6 +62,27 @@ onMounted(() => {
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const canHover = window.matchMedia('(hover: hover)').matches
+
+  // Colors come from the design tokens, re-read when the theme changes. The canvas sits on
+  // a dark surface when `inverted` (always) or when the page theme is dark.
+  let isDark = false
+  let fg = '11, 11, 11'
+  let signal = '255, 77, 20'
+
+  function readRgb(token: string, fallback: string): string {
+    const raw = getComputedStyle(document.documentElement).getPropertyValue(token).trim()
+    const rgb = parseColorToRgb(raw)
+    return rgb ? rgb.join(', ') : fallback
+  }
+
+  function readPalette() {
+    fg = readRgb(props.inverted ? '--color-on-inverse' : '--color-ink', fg)
+    signal = readRgb('--color-signal', signal)
+    const [r = 0, g = 0, b = 0] = fg.split(',').map(Number)
+    isDark = r * 0.299 + g * 0.587 + b * 0.114 > 128
+  }
+
+  readPalette()
 
   let animId: number | null = null
   let isVisible = true
@@ -144,7 +167,8 @@ onMounted(() => {
         mass: 14,
         angle: 0,
         colorRgb: [255, 77, 20], // Signal Orange
-        alphaMax: props.inverted ? 0.36 : 0.14,
+        alphaLight: 0.14,
+        alphaDark: 0.36,
       },
       {
         x: width * 0.65,
@@ -155,7 +179,8 @@ onMounted(() => {
         mass: 22,
         angle: Math.PI * 0.7,
         colorRgb: [245, 158, 11], // Warm Amber
-        alphaMax: props.inverted ? 0.28 : 0.10,
+        alphaLight: 0.10,
+        alphaDark: 0.28,
       },
       {
         x: width * 0.5,
@@ -166,7 +191,8 @@ onMounted(() => {
         mass: 8,
         angle: Math.PI * 1.4,
         colorRgb: [255, 122, 69], // Flame accent
-        alphaMax: props.inverted ? 0.30 : 0.12,
+        alphaLight: 0.12,
+        alphaDark: 0.30,
       },
     ]
   }
@@ -277,6 +303,16 @@ onMounted(() => {
 
   let lastTime = performance.now()
 
+  function drawFrame(context: CanvasRenderingContext2D, now: number, dt: number) {
+    if (props.variant === 'dot-matrix') {
+      renderDotMatrix(context, now)
+    } else if (props.variant === 'constellation') {
+      renderConstellation(context, now)
+    } else if (props.variant === 'light-orbs') {
+      renderLightOrbs(context, now, dt)
+    }
+  }
+
   // Main render loop
   function loop(now: number) {
     if (!ctx) return
@@ -303,13 +339,7 @@ onMounted(() => {
 
     ctx.clearRect(0, 0, width, height)
 
-    if (props.variant === 'dot-matrix') {
-      renderDotMatrix(ctx, now)
-    } else if (props.variant === 'constellation') {
-      renderConstellation(ctx, now)
-    } else if (props.variant === 'light-orbs') {
-      renderLightOrbs(ctx, now, dt)
-    }
+    drawFrame(ctx, now, dt)
 
     if (isVisible && !prefersReduced) {
       animId = requestAnimationFrame(loop)
@@ -320,7 +350,6 @@ onMounted(() => {
 
   // --- Variant 1: Dot Matrix Render ---
   function renderDotMatrix(context: CanvasRenderingContext2D, now: number) {
-    const isDark = props.inverted
     const light = mouse.alpha
     const timeSec = now * 0.001
 
@@ -335,13 +364,13 @@ onMounted(() => {
         LENS_RADIUS * 1.15,
       )
       if (isDark) {
-        grad.addColorStop(0, `rgba(255, 77, 20, ${0.24 * light})`)
-        grad.addColorStop(0.45, `rgba(255, 77, 20, ${0.08 * light})`)
-        grad.addColorStop(1, 'rgba(255, 77, 20, 0)')
+        grad.addColorStop(0, `rgba(${signal}, ${0.24 * light})`)
+        grad.addColorStop(0.45, `rgba(${signal}, ${0.08 * light})`)
+        grad.addColorStop(1, `rgba(${signal}, 0)`)
       } else {
-        grad.addColorStop(0, `rgba(255, 77, 20, ${0.14 * light})`)
-        grad.addColorStop(0.5, `rgba(255, 77, 20, ${0.04 * light})`)
-        grad.addColorStop(1, 'rgba(255, 77, 20, 0)')
+        grad.addColorStop(0, `rgba(${signal}, ${0.14 * light})`)
+        grad.addColorStop(0.5, `rgba(${signal}, ${0.04 * light})`)
+        grad.addColorStop(1, `rgba(${signal}, 0)`)
       }
       context.fillStyle = grad
       context.beginPath()
@@ -350,7 +379,7 @@ onMounted(() => {
     }
 
     // 2. Base dots: clearly visible architectural coordinate grid
-    const baseColor = isDark ? 'rgba(250, 248, 244, 0.22)' : 'rgba(11, 11, 11, 0.20)'
+    const baseColor = isDark ? `rgba(${fg}, 0.22)` : `rgba(${fg}, 0.20)`
     context.fillStyle = baseColor
     context.beginPath()
 
@@ -387,11 +416,9 @@ onMounted(() => {
 
         if (intensity > 0.45) {
           // Inner core turns vibrant signal orange
-          color = `rgba(255, 77, 20, ${0.5 + intensity * 0.45 * light})`
-        } else if (isDark) {
-          color = `rgba(250, 248, 244, ${0.25 + intensity * 0.65 * light})`
+          color = `rgba(${signal}, ${0.5 + intensity * 0.45 * light})`
         } else {
-          color = `rgba(11, 11, 11, ${0.25 + intensity * 0.65 * light})`
+          color = `rgba(${fg}, ${0.25 + intensity * 0.65 * light})`
         }
 
         activePoints.push({ x: p.x, y: p.y, r, color })
@@ -422,7 +449,6 @@ onMounted(() => {
 
   // --- Variant 2: Constellation Render ---
   function renderConstellation(context: CanvasRenderingContext2D, now: number) {
-    const isDark = props.inverted
     const light = mouse.alpha
     const timeSec = now * 0.001
 
@@ -437,13 +463,13 @@ onMounted(() => {
         240,
       )
       if (isDark) {
-        grad.addColorStop(0, `rgba(255, 77, 20, ${0.22 * light})`)
-        grad.addColorStop(0.5, `rgba(255, 77, 20, ${0.06 * light})`)
-        grad.addColorStop(1, 'rgba(255, 77, 20, 0)')
+        grad.addColorStop(0, `rgba(${signal}, ${0.22 * light})`)
+        grad.addColorStop(0.5, `rgba(${signal}, ${0.06 * light})`)
+        grad.addColorStop(1, `rgba(${signal}, 0)`)
       } else {
-        grad.addColorStop(0, `rgba(255, 77, 20, ${0.12 * light})`)
-        grad.addColorStop(0.5, `rgba(255, 77, 20, ${0.03 * light})`)
-        grad.addColorStop(1, 'rgba(255, 77, 20, 0)')
+        grad.addColorStop(0, `rgba(${signal}, ${0.12 * light})`)
+        grad.addColorStop(0.5, `rgba(${signal}, ${0.03 * light})`)
+        grad.addColorStop(1, `rgba(${signal}, 0)`)
       }
       context.fillStyle = grad
       context.beginPath()
@@ -524,11 +550,11 @@ onMounted(() => {
           if (distToCursor < 190 && light > 0.01) {
             const beamRatio = (1 - distToCursor / 190) * light
             const alpha = (0.25 + beamRatio * 0.75) * connectionRatio
-            context.strokeStyle = `rgba(255, 77, 20, ${alpha})`
+            context.strokeStyle = `rgba(${signal}, ${alpha})`
             context.lineWidth = 1 + beamRatio * 0.8
           } else {
             const alpha = connectionRatio * (isDark ? 0.14 : 0.10)
-            context.strokeStyle = isDark ? `rgba(250, 248, 244, ${alpha})` : `rgba(11, 11, 11, ${alpha})`
+            context.strokeStyle = `rgba(${fg}, ${alpha})`
             context.lineWidth = 0.9
           }
           context.stroke()
@@ -547,11 +573,11 @@ onMounted(() => {
       context.arc(p.x, p.y, radius, 0, Math.PI * 2)
 
       if (p.isAccent || (isNearCursor && distToCursor < 90)) {
-        context.fillStyle = `rgba(255, 77, 20, ${isNearCursor ? 0.95 : 0.80})`
+        context.fillStyle = `rgba(${signal}, ${isNearCursor ? 0.95 : 0.80})`
       } else if (isDark) {
-        context.fillStyle = isNearCursor ? 'rgba(250, 248, 244, 0.95)' : 'rgba(250, 248, 244, 0.35)'
+        context.fillStyle = isNearCursor ? `rgba(${fg}, 0.95)` : `rgba(${fg}, 0.35)`
       } else {
-        context.fillStyle = isNearCursor ? 'rgba(11, 11, 11, 0.90)' : 'rgba(11, 11, 11, 0.30)'
+        context.fillStyle = isNearCursor ? `rgba(${fg}, 0.90)` : `rgba(${fg}, 0.30)`
       }
       context.fill()
     }
@@ -559,7 +585,6 @@ onMounted(() => {
 
   // --- Variant 3: Light Orbs Render ---
   function renderLightOrbs(context: CanvasRenderingContext2D, now: number, dt: number) {
-    const isDark = props.inverted
     const timeSec = now * 0.001
 
     context.globalCompositeOperation = isDark ? 'screen' : 'source-over'
@@ -592,7 +617,7 @@ onMounted(() => {
       )
 
       const [r, g, b] = orb.colorRgb
-      const maxA = orb.alphaMax
+      const maxA = isDark ? orb.alphaDark : orb.alphaLight
 
       if (isDark) {
         grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${maxA})`)
@@ -627,7 +652,18 @@ onMounted(() => {
     animId = requestAnimationFrame(loop)
   }
 
+  // Theme switches: re-read the tokens; the reduced-motion frame is static, so redraw it.
+  const themeObserver = new MutationObserver(() => {
+    readPalette()
+    if (prefersReduced && width > 0 && height > 0) {
+      ctx.clearRect(0, 0, width, height)
+      drawFrame(ctx, 0, 0.016)
+    }
+  })
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+
   onBeforeUnmount(() => {
+    themeObserver.disconnect()
     if (animId !== null) cancelAnimationFrame(animId)
     window.removeEventListener('pointermove', onPointerMove)
     document.removeEventListener('visibilitychange', onVisibilityChange)
