@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { listNavProjects } from './listNavProjects'
 import type { NavProjectRow } from '#layers/projects/domain/projectSelect'
 
-const row = (slug: string, service_tag: string | null): NavProjectRow => ({
+const row = (slug: string, nav_services: string[]): NavProjectRow => ({
   slug_ro: slug,
   slug_en: null,
   card_title_ro: slug,
@@ -12,14 +12,14 @@ const row = (slug: string, service_tag: string | null): NavProjectRow => ({
   cover_path: null,
   cover_alt_ro: null,
   cover_alt_en: null,
-  service_tag,
+  nav_services,
   featured: false,
   sort_order: 0,
 })
 
 describe('listNavProjects', () => {
   it('applies the per-service selection to what the repository returns', async () => {
-    const rows = [row('a', 'website'), row('b', null), row('c', 'web-app')]
+    const rows = [row('a', ['website']), row('b', []), row('c', ['web-app', 'wordpress'])]
     const result = await listNavProjects({ listPublishedNavRows: async () => rows })
     expect(result.map((r) => r.slug_ro)).toEqual(['a', 'c'])
   })

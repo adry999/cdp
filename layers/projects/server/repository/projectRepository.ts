@@ -30,7 +30,6 @@ export function createProjectRepository(event: H3Event) {
         .from('projects')
         .select(NAV_PROJECT_SELECT)
         .not('published_at', 'is', null)
-        .not('service_tag', 'is', null)
         .order('sort_order')
 
       if (error) logAndThrow('GET /api/projects/nav', error)

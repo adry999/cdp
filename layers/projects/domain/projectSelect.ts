@@ -28,7 +28,8 @@ export const PROJECT_SELECT = `
   project_images(path,alt_ro,alt_en,aspect,sort_order)
 `
 
-export const ADMIN_PROJECT_SELECT = `id, published_at, ${PROJECT_SELECT}` as const
+// nav_services is editor-only: the public case-study payload doesn't need it.
+export const ADMIN_PROJECT_SELECT = `id, published_at, nav_services, ${PROJECT_SELECT}` as const
 
 type Tables = Database['public']['Tables']
 
@@ -66,7 +67,7 @@ export type AdminProjectListRow = Pick<
 // Header dropdown: only what the menu shows (name, subtitle, cover, link). Kept apart from the
 // card select so the sitewide payload stays small.
 export const NAV_PROJECT_SELECT =
-  'slug_ro, slug_en, card_title_ro, card_title_en, kind_ro, kind_en, cover_path, cover_alt_ro, cover_alt_en, service_tag, featured, sort_order' as const
+  'slug_ro, slug_en, card_title_ro, card_title_en, kind_ro, kind_en, cover_path, cover_alt_ro, cover_alt_en, nav_services, featured, sort_order' as const
 
 export type NavProjectRow = Pick<
   Tables['projects']['Row'],
@@ -79,7 +80,7 @@ export type NavProjectRow = Pick<
   | 'cover_path'
   | 'cover_alt_ro'
   | 'cover_alt_en'
-  | 'service_tag'
+  | 'nav_services'
   | 'featured'
   | 'sort_order'
 >

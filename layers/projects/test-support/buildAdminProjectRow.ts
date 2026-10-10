@@ -17,6 +17,7 @@ export function buildAdminProjectRow(overrides: Partial<AdminProjectRow> = {}): 
     year: 2025,
     tech: ['Nuxt'],
     service_tag: null,
+    nav_services: [],
     featured: false,
     cover_path: null,
     cover_alt_ro: null,
