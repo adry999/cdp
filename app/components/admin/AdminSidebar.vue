@@ -7,6 +7,7 @@ const { count: newLeadsCount } = useNewLeadsCount()
 const navItems = [
   { label: 'Proiecte', to: '/admin/projects' },
   { label: 'Noutăți', to: '/admin/news' },
+  { label: 'Hero', to: '/admin/hero' },
   { label: 'Solicitări', to: '/admin/leads' },
 ] as const
 
