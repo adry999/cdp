@@ -6,6 +6,7 @@ import {
   type AdminProjectListRow,
   type AdminProjectRow,
 } from '#layers/projects/domain/projectSelect'
+import { nextCopySlug } from '#layers/projects/domain/adminProjectList'
 import { MEDIA_BUCKET, storageKeyFromPublicUrl } from '#layers/projects/domain/storagePath'
 
 type SupabaseClient = ReturnType<typeof useSupabaseClient<Database>>
@@ -77,12 +78,10 @@ export function createProjectsAdminRepository(client: SupabaseClient) {
   }
 
   async function freeCopySlug(slug: string): Promise<string> {
-    let candidate = `${slug}-copie`
-    let n = 2
-    while ((await client.from('projects').select('id').eq('slug_ro', candidate).maybeSingle()).data) {
-      candidate = `${slug}-copie-${n++}`
-    }
-    return candidate
+    const { data, error } = await client.from('projects').select('slug_ro, slug_en')
+    if (error) throw failure('Proiectul nu a putut fi duplicat.', error)
+    const taken = new Set(data.flatMap((row) => [row.slug_ro, row.slug_en].filter((value): value is string => !!value)))
+    return nextCopySlug(slug, taken)
   }
 
   return {
@@ -118,6 +117,26 @@ export function createProjectsAdminRepository(client: SupabaseClient) {
       )
       const failed = results.find((result) => result.error)
       if (failed?.error) throw failure('Ordinea nu s-a salvat.', failed.error)
+    },
+
+    async setFeatured(slug: string, featured: boolean) {
+      const { error } = await client.from('projects').update({ featured }).eq('slug_ro', slug)
+      if (error) throw failure('Nu s-a putut schimba afișarea pe homepage.', error)
+    },
+
+    // Publishing keeps an existing published_at; unpublishing clears it and, like save_project(),
+    // drops the redirects that would otherwise chain into a 404.
+    async setPublished(project: { slug_ro: string; slug_en: string | null }, published: boolean) {
+      const { error } = await client
+        .from('projects')
+        .update({ published_at: published ? new Date().toISOString() : null })
+        .eq('slug_ro', project.slug_ro)
+      if (error) throw failure(published ? 'Proiectul nu a putut fi publicat.' : 'Proiectul nu a putut fi retras.', error)
+      if (published) return
+      await client
+        .from('redirects')
+        .delete()
+        .or(`to_path.eq./proiecte/${project.slug_ro},to_path.eq./en/work/${project.slug_en ?? project.slug_ro}`)
     },
 
     async remove(slug: string) {

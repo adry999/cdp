@@ -2,9 +2,16 @@ import type { AsyncStatus } from '#layers/core/shared/types/async'
 import type { Database } from '#layers/core/shared/types/database.types'
 import { moveItem } from '#layers/core/shared/utils/moveItem'
 import { createProjectsAdminRepository } from '#layers/projects/data/projectsAdminRepository'
+import {
+  evaluateChecklist,
+  filterCounts,
+  filterProjects,
+  neighborIndex,
+  type ProjectsAdminFilter,
+} from '#layers/projects/domain/adminProjectList'
 import { useRevalidatePublicCache } from '#layers/projects/state/useRevalidatePublicCache'
 
-export type ProjectsAdminFilter = 'toate' | 'draft' | 'publicate'
+export type { ProjectsAdminFilter }
 
 export async function useProjectsAdminList() {
   const repository = createProjectsAdminRepository(useSupabaseClient<Database>())
@@ -12,30 +19,38 @@ export async function useProjectsAdminList() {
   const { data: projects, refresh } = await useAsyncData('admin-projects', () => repository.list())
 
   const filter = ref<ProjectsAdminFilter>('toate')
-  const filtered = computed(() => {
-    const all = projects.value ?? []
-    if (filter.value === 'draft') return all.filter((project) => !project.published_at)
-    if (filter.value === 'publicate') return all.filter((project) => !!project.published_at)
-    return all
-  })
+  const filtered = computed(() => filterProjects(projects.value ?? [], filter.value))
+  const counts = computed(() => filterCounts(projects.value ?? []))
   // sort_order is a global ordering; reordering a filtered subset would leave the other rows'
-  // positions ambiguous, so drag reorder only applies to the unfiltered list.
+  // positions ambiguous, so reordering only applies to the unfiltered list.
   const canReorder = computed(() => filter.value === 'toate')
   const featuredCount = computed(() => (projects.value ?? []).filter((project) => project.featured).length)
 
   const reorderStatus = ref<AsyncStatus>('idle')
-  const pendingDelete = ref<string | null>(null)
+  const deleting = ref<string | null>(null)
+  const publishing = ref<string | null>(null)
+  const consentConfirmed = ref(false)
   const busy = ref<string | null>(null)
+  const notice = ref<{ tone: 'info' | 'error'; text: string } | null>(null)
+
+  const deletingProject = computed(() => projects.value?.find((project) => project.slug_ro === deleting.value) ?? null)
+  const publishingProject = computed(() => projects.value?.find((project) => project.slug_ro === publishing.value) ?? null)
+  const checklist = computed(() =>
+    publishingProject.value ? evaluateChecklist(publishingProject.value, consentConfirmed.value) : null,
+  )
 
   async function reorder(from: number, to: number) {
     if (!projects.value) return
     const next = moveItem(projects.value, from, to)
+    const previous = projects.value
     projects.value = next
 
     reorderStatus.value = 'pending'
     try {
       await repository.reorder(next.map((project) => project.slug_ro))
-    } catch {
+    } catch (caught) {
+      console.warn('[admin] project reorder failed', caught)
+      projects.value = previous
       reorderStatus.value = 'error'
       return
     }
@@ -43,47 +58,94 @@ export async function useProjectsAdminList() {
     await revalidatePublicCache()
   }
 
-  async function confirmDelete(slug: string) {
+  function move(index: number, direction: 'up' | 'down') {
+    const target = neighborIndex(index, direction, projects.value?.length ?? 0)
+    if (target !== null) void reorder(index, target)
+  }
+
+  async function run(slug: string, action: () => Promise<void>, failure: string): Promise<boolean> {
     busy.value = slug
+    notice.value = null
     try {
-      await repository.remove(slug)
+      await action()
     } catch (caught) {
-      console.warn('[admin] project delete failed', slug, caught)
+      console.warn('[admin] project action failed', slug, caught)
+      notice.value = { tone: 'error', text: failure }
+      return false
+    } finally {
       busy.value = null
-      return
     }
-    pendingDelete.value = null
-    busy.value = null
     await revalidatePublicCache()
     await refresh()
+    return true
+  }
+
+  async function confirmDelete() {
+    const slug = deleting.value
+    if (!slug) return
+    if (await run(slug, () => repository.remove(slug), 'Proiectul nu a putut fi șters.')) deleting.value = null
   }
 
   async function duplicate(slug: string) {
-    busy.value = slug
-    let complete: boolean
-    try {
-      complete = await repository.duplicate(slug)
-    } catch (caught) {
-      console.warn('[admin] project duplicate failed', slug, caught)
-      busy.value = null
-      return
-    }
-    busy.value = null
+    let complete = true
+    const ok = await run(
+      slug,
+      async () => {
+        complete = await repository.duplicate(slug)
+      },
+      'Proiectul nu a putut fi duplicat.',
+    )
     // Surfacing a partial copy beats a silent one the admin doesn't know about.
-    if (!complete) window.alert('Proiectul a fost duplicat, dar unele elemente nu s-au copiat corect. Verifică proiectul nou.')
-    await refresh()
+    if (ok && !complete) {
+      notice.value = { tone: 'error', text: 'Proiectul a fost duplicat, dar unele elemente nu s-au copiat corect. Verifică proiectul nou.' }
+    }
+  }
+
+  function askPublish(slug: string) {
+    consentConfirmed.value = false
+    publishing.value = slug
+  }
+
+  async function confirmPublish() {
+    const project = publishingProject.value
+    if (!project || !checklist.value?.canPublish) return
+    if (await run(project.slug_ro, () => repository.setPublished(project, true), 'Proiectul nu a putut fi publicat.')) {
+      publishing.value = null
+    }
+  }
+
+  async function unpublish(slug: string) {
+    const project = projects.value?.find((row) => row.slug_ro === slug)
+    if (project) await run(slug, () => repository.setPublished(project, false), 'Proiectul nu a putut fi retras.')
+  }
+
+  async function toggleFeatured(slug: string) {
+    const project = projects.value?.find((row) => row.slug_ro === slug)
+    if (project) await run(slug, () => repository.setFeatured(slug, !project.featured), 'Afișarea pe homepage nu s-a schimbat.')
   }
 
   return {
     filter,
     filtered,
+    counts,
     canReorder,
     featuredCount,
     reorderStatus,
-    pendingDelete,
+    deleting,
+    deletingProject,
+    publishingProject,
+    publishing,
+    consentConfirmed,
+    checklist,
     busy,
+    notice,
     reorder,
+    move,
     confirmDelete,
     duplicate,
+    askPublish,
+    confirmPublish,
+    unpublish,
+    toggleFeatured,
   }
 }
