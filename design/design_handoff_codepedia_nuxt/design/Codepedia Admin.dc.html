@@ -163,14 +163,20 @@
 </sc-if>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;view&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;login&quot;,&quot;projects&quot;,&quot;leads&quot;,&quot;lead&quot;],&quot;default&quot;:&quot;projects&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const NOIMG = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="30"><rect width="48" height="30" fill="#F1EEE7"/><path d="M0 30L48 0" stroke="#C9C3B8"/></svg>');
 const PROJECTS = [
-  { title: 'Startica, aplicație de administrare', img: 'assets/proiecte/startica-app-dashboard-crop.png', tech: ['Nuxt', 'Supabase'], pub: '2026-09-20', featured: true },
+  { title: 'Startica, evidența unei grădinițe cu două filiale', img: 'assets/proiecte/startica-app-dashboard-crop.png', tech: ['Desktop', 'Windows', 'Offline'], pub: '2026-09-20', featured: true },
   { title: 'Startica, grădiniță în Chișinău', img: 'https://startica.md/media/filer_public_thumbnails/filer_public/20/a7/20a767a2-71dc-4a4f-af3b-2a1b5a632053/grupa-2.jpeg__880x605_crop_subsampling-2_upscale.webp', tech: ['Site', 'RO/EN/RU'], pub: '2026-09-18', featured: true },
   { title: 'Aurelia Badiur, consultant oenolog', img: 'https://aureliabadiur.com/images/hero.jpg', tech: ['Site', 'RO/EN'], pub: '2026-09-15', featured: true },
   { title: 'EnglishMinds, școală de engleză', img: 'assets/proiecte/englishminds-class.jpg', tech: ['Brand', 'Site'], pub: '2026-09-12', featured: true },
   { title: 'SwissCars, auto din Elveția', img: 'https://krltqxdhxiguxwookqgg.supabase.co/storage/v1/object/public/car-images/cars/ae25eba6-b9ae-4b21-9a3b-85b025e69e21.jpg', tech: ['Aplicație web', 'Stoc', 'Admin'], pub: '2026-09-10', featured: true },
   { title: 'Bloom Florist, gestiune florărie', img: 'assets/proiecte/bloom-panou-1600.png', tech: ['Nuxt', 'Supabase'], pub: '2026-09-29', featured: true },
-  { title: 'Trucker HQ, dispatch auto', img: 'assets/proiecte/truckerhq-acasa-1600.png', tech: ['Site', 'Unelte'], pub: null, featured: false },
+  { title: 'Trucker HQ, dispatch auto', img: 'assets/proiecte/truckerhq-acasa-1600.png', tech: ['Platformă web', 'EN/RU'], pub: '2026-09-08', featured: false },
+  { title: 'Mees 68, hartă interactivă a clădirii', img: NOIMG, tech: ['Aplicație web', 'Imobiliare'], pub: null, featured: false },
+  { title: 'AS Factorum: site de business industrial', img: NOIMG, tech: ['Site static', 'SEO'], pub: null, featured: false },
+  { title: 'Site pentru clubul FC Scânteia', img: NOIMG, tech: ['Site', 'Galerie foto'], pub: null, featured: false },
+  { title: 'Geamăn digital pentru o flotă de camioane', img: NOIMG, tech: ['Aplicație web', 'Telemetrie'], pub: null, featured: false },
+  { title: 'Kindergarten app, administrare modulară pentru grădinițe', img: NOIMG, tech: ['SaaS', 'Roluri', 'GDPR'], pub: null, featured: false },
 ];
 const LEADS = [
   { date: '2026-10-01', name: 'Ion Rusu', email: 'ion@exemplu.md', company: 'Agro Nord SRL', budget: '2.000 – 5.000 EUR', status: 'nou', message: 'Avem designul în Figma pentru o platformă de comenzi B2B. Căutăm echipă pentru frontend și baza de date.', source: 'Google', page: '/servicii/aplicatie-web', referrer: 'https://www.google.com/', utm: 'utm_source=google · utm_medium=cpc', lang: 'ro' },

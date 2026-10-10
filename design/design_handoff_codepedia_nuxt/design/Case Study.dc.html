@@ -12,43 +12,146 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="icon" type="image/svg+xml" href="assets/codepedia-favicon-square-filled.svg" />
+<script>try{var t=localStorage.getItem("codepedia:theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}catch(e){}</script>
 <style>
-  html, body { margin: 0; padding: 0; background: #FAF8F4; -webkit-font-smoothing: antialiased; }
+  :root { --paper:#FAF8F4; --ink:#0B0B0B; --muted:#6B6862; --hair:#E2DED6; --hatch:#F1EEE7; --panel:#F5F2EC; --rule:#C9C4BA; --inv-bg:#0B0B0B; --inv-fg:#FAF8F4; --show-light:block; --show-dark:none; --logo-filter:none; color-scheme: light; }
+  :root[data-theme="dark"] { --paper:#0F0F0E; --ink:#F2EFE9; --muted:#9C978E; --hair:#2B2A27; --hatch:#1B1A18; --panel:#161615; --rule:#4A4741; --inv-bg:#1A1918; --inv-fg:#F2EFE9; --show-light:none; --show-dark:block; --logo-filter:invert(1) brightness(0.95); color-scheme: dark; }
+  body { transition: background-color .2s, color .2s; }
+  html, body { margin: 0; padding: 0; background: var(--paper); -webkit-font-smoothing: antialiased; }
   * { box-sizing: border-box; }
   a { color: #FF4D14; text-decoration: none; }
-  a:hover { color: #0B0B0B; text-decoration: underline; text-underline-offset: 3px; }
-  ::selection { background: #FF4D14; color: #FAF8F4; }
+  a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  ::selection { background: #FF4D14; color: var(--paper); }
 </style>
 </helmet>
-<div style="background:#FAF8F4;color:#0B0B0B;font-family:'Inter Tight',Helvetica,Arial,sans-serif;font-size:17px;line-height:1.6;letter-spacing:-0.004em">
+<div style="background:var(--paper);color:var(--ink);font-family:'Inter Tight',Helvetica,Arial,sans-serif;font-size:17px;line-height:1.6;letter-spacing:-0.004em">
 
-  <header style="position:sticky;top:0;z-index:20;background:#FAF8F4;border-bottom:1px solid #E2DED6">
-    <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px);display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px">
-      <a href="Codepedia EN.dc.html" aria-label="CODEPEDIA" style="display:flex;align-items:center;color:#0B0B0B;text-decoration:none">
-        <img src="assets/codepedia-wordmark.svg" alt="CODEPEDIA" width="183" height="18" style="display:block;height:18px;width:auto" />
-      </a>
-      <a href="Codepedia EN.dc.html#proiecte" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862" style-hover="color:#0B0B0B;text-decoration:none">← All work</a>
+  <header data-screen-label="Header" style="position:sticky;top:0;z-index:30;background:var(--paper);box-shadow:{{ hdrShadow }};transition:box-shadow .2s">
+  <div style="max-width:1280px;margin:0 auto;min-height:52px;height:{{ hdrH }};transition:height .2s;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 clamp(20px,5vw,64px)">
+    <a href="{{ logoHref }}" style="display:flex;align-items:center"><img src="assets/codepedia-wordmark.svg" alt="CODEPEDIA" style="display:block;height:18px;width:auto;filter:var(--logo-filter)" /></a>
+    <sc-if value="{{ isWide }}" hint-placeholder-val="{{ true }}">
+      <nav aria-label="{{ navLabel }}" style="display:flex;align-items:center;gap:clamp(18px,2.4vw,32px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+        <div style="display:flex;align-items:center;gap:clamp(16px,2.2vw,28px)">
+          <div onMouseEnter="{{ svcEnter }}" onMouseLeave="{{ svcLeave }}">
+            <a href="{{ svc.href }}" onClick="{{ svcClick }}" aria-current="{{ svc.current }}" aria-haspopup="true" aria-expanded="{{ svcOpenStr }}" style="position:relative;display:flex;align-items:center;gap:6px;padding:8px 0;color:{{ svc.color }};text-decoration:none" style-hover="color:#FF4D14">{{ svc.label }}<span aria-hidden="true" style="display:inline-block;font-size:9px;transition:transform .2s;transform:{{ svcCaret }}">▾</span><span aria-hidden="true" style="position:absolute;left:0;right:0;bottom:2px;height:2px;background:#FF4D14;transform:scaleX({{ svc.line }});transform-origin:left;transition:transform .25s"></span></a>
+            <div style="position:absolute;top:100%;left:0;right:0;pointer-events:none;visibility:{{ svcVis }};opacity:{{ svcOp }};transform:{{ svcShift }};transition:opacity .15s,transform .15s,visibility .15s">
+              <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px);display:flex;justify-content:flex-end">
+                <div style="pointer-events:auto;width:min(860px,100%);display:grid;grid-template-columns:230px minmax(0,1fr);background:var(--paper);border:1px solid var(--hair);border-top:0;border-radius:0 0 4px 4px;box-shadow:0 28px 48px -30px rgba(11,11,11,0.45);overflow:hidden;text-transform:none;letter-spacing:0">
+                  <div style="display:flex;flex-direction:column;gap:20px;padding:22px 0;background:var(--panel);border-right:1px solid var(--hair)">
+                    <sc-for list="{{ svcGroups }}" as="g" hint-placeholder-count="2">
+                      <div style="display:flex;flex-direction:column">
+                        <div style="padding:0 20px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">{{ g.label }}</div>
+                        <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+                          <a href="{{ it.href }}" onMouseEnter="{{ it.pick }}" onFocus="{{ it.pick }}" aria-current="{{ it.current }}" style="display:block;padding:9px 20px 9px 18px;border-left:2px solid {{ it.bar }};color:{{ it.color }};font-weight:{{ it.weight }};text-decoration:none;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.3" style-hover="color:var(--ink)">{{ it.name }}</a>
+                        </sc-for>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="padding:22px 24px;display:flex;flex-direction:column;gap:16px;min-width:0">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">{{ sel.kicker }}</div>
+                    <sc-if value="{{ sel.noProj }}" hint-placeholder-val="{{ false }}">
+                      <p style="margin:0;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;line-height:1.5;color:var(--ink);text-wrap:pretty;max-width:46ch">{{ sel.intro }}</p>
+                    </sc-if>
+                    <sc-if value="{{ sel.hasProj }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:20px;align-items:start">
+                        <div style="display:flex;flex-direction:column;gap:2px">
+                          <sc-for list="{{ sel.projects }}" as="p" hint-placeholder-count="4">
+                            <a href="{{ p.href }}" onMouseEnter="{{ p.hover }}" onFocus="{{ p.hover }}" style="display:flex;flex-direction:column;gap:2px;padding:9px 10px;border-radius:3px;background:{{ p.bg }};color:var(--ink);text-decoration:none">
+                              <span style="font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;line-height:1.25">{{ p.name }}</span>
+                              <span style="font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.3;color:var(--muted)">{{ p.sub }}</span>
+                              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.04em;color:{{ p.metricColor }}">{{ p.metric }}</span>
+                            </a>
+                          </sc-for>
+                        </div>
+                        <sc-if value="{{ sel.hasCur }}" hint-placeholder-val="{{ false }}">
+                          <a href="{{ sel.cur.href }}" style="display:block;aspect-ratio:16/10;border-radius:3px;overflow:hidden;background:var(--hatch);border:1px solid var(--hair)"><div role="img" aria-label="{{ sel.cur.name }}" style="width:100%;height:100%;background-image:url({{ sel.cur.img }});background-size:cover;background-position:top left"></div></a>
+                        </sc-if>
+                      </div>
+                    </sc-if>
+                    <div style="margin-top:auto;padding-top:14px;border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em">
+                      <a href="{{ sel.href }}" style="color:var(--ink);text-decoration:none" style-hover="color:#FF4D14">{{ sel.serviceLink }} →</a>
+                      <a href="{{ allHref }}" style="color:var(--ink);text-decoration:none" style-hover="color:#FF4D14">{{ allLabel }} →</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="3">
+            <a href="{{ n.href }}" onClick="{{ n.go }}" aria-current="{{ n.current }}" style="position:relative;display:block;padding:8px 0;color:{{ n.color }};text-decoration:none" style-hover="color:#FF4D14">{{ n.label }}<span aria-hidden="true" style="position:absolute;left:0;right:0;bottom:2px;height:2px;background:#FF4D14;transform:scaleX({{ n.line }});transform-origin:left;transition:transform .25s"></span></a>
+          </sc-for>
+        </div>
+        <sc-if value="{{ hasLangs }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:6px">
+            <sc-for list="{{ langItems }}" as="l" hint-placeholder-count="2">
+              <a href="{{ l.href }}" onClick="{{ l.go }}" hreflang="{{ l.hl }}" aria-current="{{ l.current }}" style="display:flex;align-items:center;gap:6px;color:{{ l.color }};text-decoration:none" style-hover="color:#FF4D14"><span aria-hidden="true" style="display:{{ l.sep }};color:var(--rule)">/</span>{{ l.code }}</a>
+            </sc-for>
+          </div>
+        </sc-if>
+        <button type="button" onClick="{{ toggleTheme }}" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;margin:0 -6px;padding:0;border:0;border-radius:4px;background:transparent;color:var(--muted);cursor:pointer" style-hover="color:var(--ink);background:var(--hatch)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:var(--show-light)"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:var(--show-dark)"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button>
+        <a href="{{ ctaHref }}" style="display:flex;align-items:center;gap:10px;padding:9px 14px;border:1px solid var(--ink);color:var(--ink);border-radius:4px;font-weight:600;text-decoration:none;white-space:nowrap" style-hover="background:#FF4D14;border-color:#FF4D14">{{ ctaLabel }}<span aria-hidden="true">→</span></a>
+      </nav>
+    </sc-if>
+    <sc-if value="{{ isNarrow }}" hint-placeholder-val="{{ false }}">
+      <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpenStr }}" aria-label="{{ menuLabel }}" style="width:44px;height:44px;margin-right:-10px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px">
+        <span style="display:block;width:22px;height:2px;background:var(--ink);transition:transform .2s;transform:{{ bTop }}"></span>
+        <span style="display:block;width:22px;height:2px;background:#FF4D14;opacity:{{ bMidOp }}"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--ink);transition:transform .2s;transform:{{ bBot }}"></span>
+      </button>
+    </sc-if>
+  </div>
+  <div style="height:2px;background:#FF4D14"></div>
+  <sc-if value="{{ mobileOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:-1;background:var(--paper);padding:88px clamp(20px,5vw,64px) 28px;display:flex;flex-direction:column;gap:28px;overflow-y:auto">
+      <nav aria-label="{{ navLabel }}" style="display:flex;flex-direction:column">
+        <div style="padding:16px 0;border-bottom:1px solid var(--hair);display:flex;flex-direction:column;gap:16px">
+          <a href="{{ svc.href }}" onClick="{{ closeMenu }}" aria-current="{{ svc.current }}" style="display:flex;align-items:baseline;gap:16px;color:var(--ink);text-decoration:none;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:32px;font-weight:600;letter-spacing:-0.02em;line-height:1.1"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:400;letter-spacing:0.08em;color:{{ svc.numColor }}">01</span>{{ svc.label }}</a>
+          <div style="display:flex;flex-direction:column;gap:14px;padding-left:36px">
+            <sc-for list="{{ svcGroups }}" as="g" hint-placeholder-count="2">
+              <div style="display:flex;flex-direction:column">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);padding-bottom:2px">{{ g.label }}</div>
+                <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+                  <a href="{{ it.href }}" onClick="{{ it.go }}" aria-current="{{ it.current }}" style="display:flex;align-items:center;min-height:44px;color:{{ it.mColor }};text-decoration:none;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;line-height:1.3">{{ it.name }}</a>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="3">
+          <a href="{{ n.href }}" onClick="{{ n.go }}" aria-current="{{ n.current }}" style="display:flex;align-items:baseline;gap:16px;padding:16px 0;border-bottom:1px solid var(--hair);color:var(--ink);text-decoration:none;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:32px;font-weight:600;letter-spacing:-0.02em;line-height:1.1"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:400;letter-spacing:0.08em;color:{{ n.numColor }}">{{ n.num }}</span>{{ n.label }}</a>
+        </sc-for>
+      </nav>
+      <sc-if value="{{ hasLangs }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.08em">
+          <sc-for list="{{ langItems }}" as="l" hint-placeholder-count="2">
+            <a href="{{ l.href }}" onClick="{{ l.go }}" hreflang="{{ l.hl }}" aria-current="{{ l.current }}" style="display:flex;align-items:center;gap:10px;min-height:44px;color:{{ l.color }};text-decoration:none"><span aria-hidden="true" style="display:{{ l.sep }};color:var(--rule)">/</span>{{ l.code }}</a>
+          </sc-for>
+        </div>
+      </sc-if>
+      <button type="button" onClick="{{ toggleTheme }}" style="display:flex;align-items:center;gap:12px;min-height:44px;padding:0;border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.08em;text-transform:uppercase"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:var(--show-light)"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:var(--show-dark)"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg><span>{{ themeLabel }}</span></button>
+      <a href="{{ ctaHref }}" onClick="{{ closeMenu }}" style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;min-height:56px;padding:0 20px;background:#FF4D14;color:var(--ink);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;text-decoration:none">{{ ctaLabel }}<span aria-hidden="true">→</span></a>
     </div>
-  </header>
+  </sc-if>
+</header>
 
   <section data-screen-label="Project">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,7vw,96px) clamp(20px,5vw,64px) clamp(32px,4vw,56px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
-      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">00</span> / Case study</div>
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">00</span> / Case study</div>
       <div style="flex:1 1 560px;min-width:0">
-        <div style="display:flex;flex-wrap:wrap;gap:8px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+        <div style="display:flex;flex-wrap:wrap;gap:8px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">
           <sc-for list="{{ p.tags }}" as="t" hint-placeholder-count="3"><span>{{ t }}</span></sc-for>
         </div>
         <h1 style="margin:20px 0 0;font-size:clamp(30px,5vw,56px);line-height:1.05;letter-spacing:-0.025em;font-weight:600;max-width:22ch;text-wrap:pretty">{{ p.title }}</h1>
-        <p style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:60ch;color:#6B6862;font-size:clamp(16px,1.4vw,18px);text-wrap:pretty">{{ p.lead }}</p>
+        <p style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:60ch;color:var(--muted);font-size:clamp(16px,1.4vw,18px);text-wrap:pretty">{{ p.lead }}</p>
         <div style="margin-top:28px;display:flex;flex-wrap:wrap;gap:10px">
           <sc-for list="{{ links }}" as="l" hint-placeholder-count="2">
-            <a href="{{ l.url }}" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:2px;border:1px solid #0B0B0B;border-radius:4px;padding:10px 16px;color:#0B0B0B;text-decoration:none;min-height:44px;justify-content:center" style-hover="background:#0B0B0B;color:#FAF8F4;text-decoration:none">
+            <a href="{{ l.url }}" target="_blank" rel="noopener" style="display:flex;flex-direction:column;gap:2px;border:1px solid var(--ink);border-radius:4px;padding:10px 16px;color:var(--ink);text-decoration:none;min-height:44px;justify-content:center" style-hover="background:var(--inv-bg);color:var(--inv-fg);text-decoration:none">
               <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">{{ l.kind }} ↗</span>
               <span style="font-size:13px;opacity:0.7">{{ l.note }}</span>
             </a>
           </sc-for>
           <sc-if value="{{ hasShots }}" hint-placeholder-val="{{ true }}">
-            <button type="button" onClick="{{ openFirst }}" style="display:flex;flex-direction:column;gap:2px;border:1px solid #0B0B0B;border-radius:4px;padding:10px 16px;background:#0B0B0B;color:#FAF8F4;cursor:pointer;min-height:44px;justify-content:center;text-align:left;font-family:inherit" style-hover="background:#FF4D14;border-color:#FF4D14">
+            <button type="button" onClick="{{ openFirst }}" style="display:flex;flex-direction:column;gap:2px;border:1px solid var(--ink);border-radius:4px;padding:10px 16px;background:var(--inv-bg);color:var(--inv-fg);cursor:pointer;min-height:44px;justify-content:center;text-align:left;font-family:inherit" style-hover="background:#FF4D14;border-color:#FF4D14">
               <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">Gallery · {{ shotCount }} screens</span>
               <span style="font-size:13px;opacity:0.7">Opens here</span>
             </button>
@@ -58,19 +161,19 @@
       </div>
     </div>
     <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px) clamp(32px,4vw,56px)">
-      <div style="border:1px solid #E2DED6;border-radius:4px;aspect-ratio:16/9;overflow:hidden;background:#F1EEE7">
+      <div style="border:1px solid var(--hair);border-radius:4px;aspect-ratio:16/9;overflow:hidden;background:var(--hatch)">
         <sc-if value="{{ p.hero }}" hint-placeholder-val="{{ false }}"><img src="{{ p.hero }}" alt="{{ p.title }}" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center"></img></sc-if>
       </div>
     </div>
   </section>
 
-  <section data-screen-label="Facts" style="border-top:1px solid #E2DED6">
+  <section data-screen-label="Facts" style="border-top:1px solid var(--hair)">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,5vw,72px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
-      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Facts</div>
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">Facts</div>
       <div style="flex:1 1 560px;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:16px">
         <sc-for list="{{ p.facts }}" as="f" hint-placeholder-count="4">
-          <div style="border:1px solid #E2DED6;border-radius:4px;padding:20px">
-            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ f.k }}</div>
+          <div style="border:1px solid var(--hair);border-radius:4px;padding:20px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">{{ f.k }}</div>
             <div style="margin-top:8px;font-size:16px;font-weight:500">{{ f.v }}</div>
           </div>
         </sc-for>
@@ -78,177 +181,177 @@
     </div>
   </section>
 
-  <section data-screen-label="STAR" style="border-top:1px solid #E2DED6;background:#F1EEE7">
-    <div style="max-width:1280px;margin:0 auto;padding:20px clamp(20px,5vw,64px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+  <section data-screen-label="STAR" style="border-top:1px solid var(--hair);background:var(--hatch)">
+    <div style="max-width:1280px;margin:0 auto;padding:20px clamp(20px,5vw,64px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">
       <span><span style="color:#FF4D14">S</span> · Situation: the business problem</span>
       <span><span style="color:#FF4D14">T</span> · Task: goal and constraints</span>
       <span><span style="color:#FF4D14">A</span> · Action: business and tech</span>
       <span><span style="color:#FF4D14">R</span> · Result: gains and savings</span>
     </div>
   </section>
-  <section data-screen-label="01 Situation" style="border-top:1px solid #E2DED6">
+  <section data-screen-label="01 Situation" style="border-top:1px solid var(--hair)">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
-      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">01</span> / Situation</div>
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">01</span> / Situation</div>
       <div style="flex:1 1 560px;min-width:0">
         <h2 style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:28ch;text-wrap:pretty">The business problem</h2>
-        <sc-for list="{{ situation }}" as="para" hint-placeholder-count="2"><p style="margin:20px 0 0;max-width:64ch;color:#6B6862;font-size:17px;text-wrap:pretty">{{ para }}</p></sc-for>
-        <sc-if value="{{ hasStar }}" hint-placeholder-val="{{ true }}">
-          <div style="margin-top:clamp(28px,3.5vw,44px)"><sc-if value="{{ isDemo }}" hint-placeholder-val="{{ false }}"><div style="margin-bottom:12px;display:inline-block;border:1px dashed #FF4D14;border-radius:4px;padding:3px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">Example · to confirm</div></sc-if><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">What the problem cost</div>
+        <sc-for list="{{ situation }}" as="para" hint-placeholder-count="2"><p style="margin:20px 0 0;max-width:64ch;color:var(--muted);font-size:17px;text-wrap:pretty">{{ para }}</p></sc-for>
+        <sc-if value="{{ hasCost }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:clamp(28px,3.5vw,44px)"><sc-if value="{{ isDemo }}" hint-placeholder-val="{{ false }}"><div style="margin-bottom:12px;display:inline-block;border:1px dashed #FF4D14;border-radius:4px;padding:3px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">Example · to confirm</div></sc-if><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">What the problem cost</div>
             <div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:16px">
               <sc-for list="{{ star.cost }}" as="sv" hint-placeholder-count="3">
-                <div style="border-top:1px solid #0B0B0B;padding-top:16px"><div style="font-size:clamp(34px,4.4vw,56px);line-height:1;font-weight:600;letter-spacing:-0.03em">{{ sv.v }}</div><div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ sv.k }}</div></div>
+                <div style="border-top:1px solid var(--ink);padding-top:16px"><div style="font-size:clamp(34px,4.4vw,56px);line-height:1;font-weight:600;letter-spacing:-0.03em">{{ sv.v }}</div><div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">{{ sv.k }}</div></div>
               </sc-for>
             </div>
           </div>
         </sc-if>
-        <sc-if value="{{ noStar }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">To fill in</span><span style="font-size:16px;color:#6B6862">What the problem cost: lost hours, money, lost clients, errors.</span></div></sc-if>
+        <sc-if value="{{ noCost }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">To fill in</span><span style="font-size:16px;color:var(--muted)">What the problem cost: lost hours, money, lost clients, errors.</span></div></sc-if>
       </div>
     </div>
   </section>
-  <section data-screen-label="02 Task" style="border-top:1px solid #E2DED6">
+  <section data-screen-label="02 Task" style="border-top:1px solid var(--hair)">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
-      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">02</span> / Task</div>
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">02</span> / Task</div>
       <div style="flex:1 1 560px;min-width:0">
         <sc-if value="{{ hasStar }}" hint-placeholder-val="{{ true }}">
-          <sc-if value="{{ isDemo }}" hint-placeholder-val="{{ false }}"><div style="margin-bottom:12px;display:inline-block;border:1px dashed #FF4D14;border-radius:4px;padding:3px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">Example · to confirm</div></sc-if>
+          <sc-if value="{{ taskDemo }}" hint-placeholder-val="{{ false }}"><div style="margin-bottom:12px;display:inline-block;border:1px dashed #FF4D14;border-radius:4px;padding:3px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">Example · to confirm</div></sc-if>
           <h2 style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:28ch;text-wrap:pretty">{{ star.goal }}</h2>
-          <div style="margin-top:clamp(24px,3vw,36px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Constraints</div>
-          <div style="margin-top:12px;display:flex;flex-direction:column;border-bottom:1px solid #E2DED6">
+          <div style="margin-top:clamp(24px,3vw,36px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">Constraints</div>
+          <div style="margin-top:12px;display:flex;flex-direction:column;border-bottom:1px solid var(--hair)">
             <sc-for list="{{ star.constraints }}" as="c" hint-placeholder-count="4">
-              <div style="border-top:1px solid #E2DED6;padding:16px 0;display:flex;flex-wrap:wrap;gap:6px clamp(16px,3vw,40px)">
-                <div style="flex:0 0 180px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ c.k }}</div>
+              <div style="border-top:1px solid var(--hair);padding:16px 0;display:flex;flex-wrap:wrap;gap:6px clamp(16px,3vw,40px)">
+                <div style="flex:0 0 180px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">{{ c.k }}</div>
                 <div style="flex:1 1 280px;min-width:0;font-size:16px">{{ c.v }}</div>
               </div>
             </sc-for>
           </div>
         </sc-if>
-        <sc-if value="{{ noStar }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">To fill in</span><span style="font-size:16px;color:#6B6862">Project goal and constraints: deadline, budget, users, existing systems.</span></div></sc-if>
+        <sc-if value="{{ noStar }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">To fill in</span><span style="font-size:16px;color:var(--muted)">Project goal and constraints: deadline, budget, users, existing systems.</span></div></sc-if>
       </div>
     </div>
   </section>
-  <section data-screen-label="03 Action" style="border-top:1px solid #E2DED6">
+  <section data-screen-label="03 Action" style="border-top:1px solid var(--hair)">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
-      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">03</span> / Action</div>
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">03</span> / Action</div>
       <div style="flex:1 1 560px;min-width:0">
         <h2 style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:28ch;text-wrap:pretty">The solution</h2>
-        <sc-for list="{{ approach }}" as="para" hint-placeholder-count="2"><p style="margin:20px 0 0;max-width:64ch;color:#6B6862;font-size:17px;text-wrap:pretty">{{ para }}</p></sc-for>
+        <sc-for list="{{ approach }}" as="para" hint-placeholder-count="2"><p style="margin:20px 0 0;max-width:64ch;color:var(--muted);font-size:17px;text-wrap:pretty">{{ para }}</p></sc-for>
         <div style="margin-top:clamp(28px,3.5vw,44px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(24px,3vw,40px)">
           <div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">A1</span> · Business</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">A1</span> · Business</div>
             <sc-if value="{{ hasStar }}" hint-placeholder-val="{{ true }}">
-              <div style="margin-top:12px;display:flex;flex-direction:column;border-bottom:1px solid #E2DED6">
+              <div style="margin-top:12px;display:flex;flex-direction:column;border-bottom:1px solid var(--hair)">
                 <sc-for list="{{ star.biz }}" as="bz" hint-placeholder-count="3">
-                  <div style="border-top:1px solid #E2DED6;padding:16px 0;font-size:16px;text-wrap:pretty">{{ bz }}</div>
+                  <div style="border-top:1px solid var(--hair);padding:16px 0;font-size:16px;text-wrap:pretty">{{ bz }}</div>
                 </sc-for>
               </div>
             </sc-if>
-            <sc-if value="{{ noStar }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">To fill in</span><span style="font-size:16px;color:#6B6862">Business decisions: what process changed, what was prioritised.</span></div></sc-if>
+            <sc-if value="{{ noStar }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">To fill in</span><span style="font-size:16px;color:var(--muted)">Business decisions: what process changed, what was prioritised.</span></div></sc-if>
           </div>
           <div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">A2</span> · Tech</div>
-            <div style="margin-top:12px;display:flex;flex-direction:column;border-bottom:1px solid #E2DED6">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">A2</span> · Tech</div>
+            <div style="margin-top:12px;display:flex;flex-direction:column;border-bottom:1px solid var(--hair)">
               <sc-for list="{{ stack }}" as="st" hint-placeholder-count="3">
-                <div style="border-top:1px solid #E2DED6;padding:16px 0;display:flex;flex-direction:column;gap:4px">
+                <div style="border-top:1px solid var(--hair);padding:16px 0;display:flex;flex-direction:column;gap:4px">
                   <div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500">{{ st.name }}</div>
-                  <div style="color:#6B6862;font-size:16px">{{ st.role }}</div>
+                  <div style="color:var(--muted);font-size:16px">{{ st.role }}</div>
                 </div>
               </sc-for>
             </div>
-            <sc-if value="{{ stackTodo }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">To fill in</span><span style="font-size:16px;color:#6B6862">{{ stackTodoText }}</span></div></sc-if>
+            <sc-if value="{{ stackTodo }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">To fill in</span><span style="font-size:16px;color:var(--muted)">{{ stackTodoText }}</span></div></sc-if>
           </div>
         </div>
         <sc-if value="{{ hasGallery }}" hint-placeholder-val="{{ true }}">
           <div style="margin-top:clamp(28px,3.5vw,44px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px">
             <sc-for list="{{ gallery }}" as="g" hint-placeholder-count="2">
-              <div style="border:1px solid #E2DED6;border-radius:4px;aspect-ratio:16/10;overflow:hidden;background:#F1EEE7"><img src="{{ g }}" alt="" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center"></img></div>
+              <div style="border:1px solid var(--hair);border-radius:4px;aspect-ratio:16/10;overflow:hidden;background:var(--hatch)"><img src="{{ g }}" alt="" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center"></img></div>
             </sc-for>
           </div>
-          <sc-if value="{{ isMock }}" hint-placeholder-val="{{ false }}"><div style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Screens with demo data</div></sc-if>
+          <sc-if value="{{ isMock }}" hint-placeholder-val="{{ false }}"><div style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">Screens with demo data</div></sc-if>
         </sc-if>
       </div>
     </div>
   </section>
-  <section data-screen-label="04 Midway" style="border-top:1px solid #E2DED6">
+  <section data-screen-label="04 Midway" style="border-top:1px solid var(--hair)">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
-      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">04</span> / Midway</div>
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">04</span> / Midway</div>
       <div style="flex:1 1 560px;min-width:0">
-        <sc-if value="{{ hasStar }}" hint-placeholder-val="{{ true }}">
+        <sc-if value="{{ hasIncident }}" hint-placeholder-val="{{ true }}">
           <sc-if value="{{ isDemo }}" hint-placeholder-val="{{ false }}"><div style="margin-bottom:12px;display:inline-block;border:1px dashed #FF4D14;border-radius:4px;padding:3px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">Example · to confirm</div></sc-if>
           <h2 style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:28ch;text-wrap:pretty">What we found midway through</h2>
-          <div style="margin-top:clamp(24px,3vw,36px);border:1px solid #0B0B0B;border-radius:4px;overflow:hidden">
+          <div style="margin-top:clamp(24px,3vw,36px);border:1px solid var(--ink);border-radius:4px;overflow:hidden">
             <div style="padding:clamp(20px,2.5vw,28px);display:flex;flex-direction:column;gap:20px">
-              <div style="display:flex;flex-wrap:wrap;gap:6px clamp(16px,3vw,32px)"><div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">The finding</div><div style="flex:1 1 300px;min-width:0;font-size:17px;text-wrap:pretty">{{ star.incident.found }}</div></div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px clamp(16px,3vw,32px)"><div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">The finding</div><div style="flex:1 1 300px;min-width:0;font-size:17px;text-wrap:pretty">{{ star.incident.found }}</div></div>
               <div style="display:flex;flex-wrap:wrap;gap:6px clamp(16px,3vw,32px)"><div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">The risk</div><div style="flex:1 1 300px;min-width:0;font-size:17px;text-wrap:pretty">{{ star.incident.risk }}</div></div>
-              <div style="display:flex;flex-wrap:wrap;gap:6px clamp(16px,3vw,32px)"><div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">What we did</div><div style="flex:1 1 300px;min-width:0;font-size:17px;text-wrap:pretty">{{ star.incident.action }}</div></div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px clamp(16px,3vw,32px)"><div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">What we did</div><div style="flex:1 1 300px;min-width:0;font-size:17px;text-wrap:pretty">{{ star.incident.action }}</div></div>
             </div>
-            <div style="background:#0B0B0B;color:#FAF8F4;padding:clamp(20px,2.5vw,28px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:16px">
+            <div style="background:var(--inv-bg);color:var(--inv-fg);padding:clamp(20px,2.5vw,28px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:16px">
               <sc-for list="{{ star.incident.outcome }}" as="o" hint-placeholder-count="2">
                 <div><div style="font-size:clamp(30px,3.6vw,44px);line-height:1;font-weight:600;letter-spacing:-0.03em">{{ o.v }}</div><div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">{{ o.k }}</div></div>
               </sc-for>
             </div>
           </div>
         </sc-if>
-        <sc-if value="{{ noStar }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">To fill in</span><span style="font-size:16px;color:#6B6862">One moment from the project: what was found, what delay it could cause, how it was prevented.</span></div></sc-if>
-        <div style="margin-top:clamp(32px,4vw,48px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Other obstacles and adjustments</div>
-        <sc-for list="{{ obstacles }}" as="para" hint-placeholder-count="2"><p style="margin:20px 0 0;max-width:64ch;color:#6B6862;font-size:17px;text-wrap:pretty">{{ para }}</p></sc-for>
+        <sc-if value="{{ noIncident }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">To fill in</span><span style="font-size:16px;color:var(--muted)">One moment from the project: what was found, what delay it could cause, how it was prevented.</span></div></sc-if>
+        <sc-if value="{{ hasObstacles }}" hint-placeholder-val="{{ false }}"><div style="margin-top:clamp(32px,4vw,48px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">Other obstacles and adjustments</div>
+        <sc-for list="{{ obstacles }}" as="para" hint-placeholder-count="2"><p style="margin:20px 0 0;max-width:64ch;color:var(--muted);font-size:17px;text-wrap:pretty">{{ para }}</p></sc-for></sc-if>
       </div>
     </div>
   </section>
-  <section data-screen-label="05 Result" style="border-top:1px solid #E2DED6">
+  <section data-screen-label="05 Result" style="border-top:1px solid var(--hair)">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
-      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">05</span> / Result</div>
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">05</span> / Result</div>
       <div style="flex:1 1 560px;min-width:0">
         <h2 style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:28ch;text-wrap:pretty">What the client gained</h2>
-        <sc-for list="{{ result }}" as="para" hint-placeholder-count="1"><p style="margin:20px 0 0;max-width:64ch;color:#6B6862;font-size:17px;text-wrap:pretty">{{ para }}</p></sc-for>
-        <sc-if value="{{ hasStar }}" hint-placeholder-val="{{ true }}">
+        <sc-for list="{{ result }}" as="para" hint-placeholder-count="1"><p style="margin:20px 0 0;max-width:64ch;color:var(--muted);font-size:17px;text-wrap:pretty">{{ para }}</p></sc-for>
+        <sc-if value="{{ hasGains }}" hint-placeholder-val="{{ true }}">
           <div style="margin-top:clamp(28px,3.5vw,44px)"><sc-if value="{{ isDemo }}" hint-placeholder-val="{{ false }}"><div style="margin-bottom:12px;display:inline-block;border:1px dashed #FF4D14;border-radius:4px;padding:3px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">Example · to confirm</div></sc-if></div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(24px,3vw,40px)">
-            <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">+</span> Gains</div><div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:16px">
+            <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">+</span> Gains</div><div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:16px">
               <sc-for list="{{ star.gains }}" as="sv" hint-placeholder-count="2">
-                <div style="border-top:1px solid #0B0B0B;padding-top:16px"><div style="font-size:clamp(34px,4.4vw,56px);line-height:1;font-weight:600;letter-spacing:-0.03em">{{ sv.v }}</div><div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ sv.k }}</div></div>
+                <div style="border-top:1px solid var(--ink);padding-top:16px"><div style="font-size:clamp(34px,4.4vw,56px);line-height:1;font-weight:600;letter-spacing:-0.03em">{{ sv.v }}</div><div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">{{ sv.k }}</div></div>
               </sc-for>
             </div></div>
-            <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">−</span> Savings</div><div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:16px">
+            <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">−</span> Savings</div><div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:16px">
               <sc-for list="{{ star.savings }}" as="sv" hint-placeholder-count="2">
-                <div style="border-top:1px solid #0B0B0B;padding-top:16px"><div style="font-size:clamp(34px,4.4vw,56px);line-height:1;font-weight:600;letter-spacing:-0.03em">{{ sv.v }}</div><div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ sv.k }}</div></div>
+                <div style="border-top:1px solid var(--ink);padding-top:16px"><div style="font-size:clamp(34px,4.4vw,56px);line-height:1;font-weight:600;letter-spacing:-0.03em">{{ sv.v }}</div><div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">{{ sv.k }}</div></div>
               </sc-for>
             </div></div>
           </div>
         </sc-if>
-        <sc-if value="{{ resultTodo }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">To fill in</span><span style="font-size:16px;color:#6B6862">{{ resultTodoText }}</span></div></sc-if>
+        <sc-if value="{{ resultTodo }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">To fill in</span><span style="font-size:16px;color:var(--muted)">{{ resultTodoText }}</span></div></sc-if>
       </div>
     </div>
   </section>
-  <section data-screen-label="06 Feedback" style="border-top:1px solid #E2DED6">
+  <section data-screen-label="06 Feedback" style="border-top:1px solid var(--hair)">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
-      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">06</span> / Feedback</div>
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">06</span> / Feedback</div>
       <div style="flex:1 1 560px;min-width:0">
         <h2 style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:28ch;text-wrap:pretty">What the client says</h2>
         <sc-if value="{{ hasQuote }}" hint-placeholder-val="{{ true }}">
           <blockquote style="margin:24px 0 0;padding:0;font-size:clamp(20px,2.4vw,28px);line-height:1.35;letter-spacing:-0.02em;font-weight:500;max-width:34ch">“{{ quote }}”</blockquote>
-          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ author }}</div>
+          <div style="margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">{{ author }}</div>
         </sc-if>
-        <sc-if value="{{ quoteTodo }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">To fill in</span><span style="font-size:16px;color:#6B6862">{{ quoteTodoText }}</span></div></sc-if>
+        <sc-if value="{{ quoteTodo }}" hint-placeholder-val="{{ false }}"><div style="margin-top:24px;max-width:64ch;border:1px dashed #C9C3B8;border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">To fill in</span><span style="font-size:16px;color:var(--muted)">{{ quoteTodoText }}</span></div></sc-if>
       </div>
     </div>
   </section>
 
-  <section id="galerie" data-screen-label="07 Gallery" style="border-top:1px solid #E2DED6">
+  <section id="galerie" data-screen-label="07 Gallery" style="border-top:1px solid var(--hair)">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
-      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">07</span> / Gallery</div>
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">07</span> / Gallery</div>
       <div style="flex:1 1 560px;min-width:0">
         <h2 style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:28ch">What it looks like</h2>
         <div style="margin-top:clamp(24px,3vw,36px);display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:16px">
           <sc-for list="{{ shots }}" as="sh" hint-placeholder-count="4">
-            <button type="button" onClick="{{ sh.open }}" aria-label="Open image {{ sh.n }}" style="padding:0;border:1px solid #E2DED6;border-radius:4px;aspect-ratio:16/10;overflow:hidden;background:#F1EEE7;cursor:zoom-in;display:block;width:100%" style-hover="border-color:#0B0B0B">
+            <button type="button" onClick="{{ sh.open }}" aria-label="Open image {{ sh.n }}" style="padding:0;border:1px solid var(--hair);border-radius:4px;aspect-ratio:16/10;overflow:hidden;background:var(--hatch);cursor:zoom-in;display:block;width:100%" style-hover="border-color:var(--ink)">
               <img src="{{ sh.src }}" alt="" loading="lazy" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top center"></img>
             </button>
           </sc-for>
         </div>
-        <sc-if value="{{ isMock }}" hint-placeholder-val="{{ false }}"><div style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Screens with demo data</div></sc-if>
+        <sc-if value="{{ isMock }}" hint-placeholder-val="{{ false }}"><div style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">Screens with demo data</div></sc-if>
         <div style="margin-top:clamp(24px,3vw,32px);display:flex;flex-wrap:wrap;gap:10px">
           <sc-for list="{{ links }}" as="l" hint-placeholder-count="1">
-            <a href="{{ l.url }}" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#0B0B0B;text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px;padding:8px 0" style-hover="color:#FF4D14">{{ l.kind }} ↗</a>
+            <a href="{{ l.url }}" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink);text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px;padding:8px 0" style-hover="color:#FF4D14">{{ l.kind }} ↗</a>
           </sc-for>
         </div>
       </div>
@@ -257,30 +360,30 @@
 
   <sc-if value="{{ lbOpen }}" hint-placeholder-val="{{ false }}">
     <div role="dialog" aria-modal="true" onClick="{{ closeLb }}" style="position:fixed;inset:0;z-index:100;background:rgba(11,11,11,0.94);display:flex;flex-direction:column;padding:clamp(12px,3vw,32px);gap:16px">
-      <div style="display:flex;justify-content:space-between;align-items:center;color:#FAF8F4;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+      <div style="display:flex;justify-content:space-between;align-items:center;color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
         <span>{{ lbPos }}</span>
-        <button type="button" onClick="{{ closeLb }}" style="background:none;border:1px solid rgba(250,248,244,0.3);color:#FAF8F4;border-radius:4px;min-width:44px;min-height:44px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em" style-hover="border-color:#FAF8F4">Close ✕</button>
+        <button type="button" onClick="{{ closeLb }}" style="background:none;border:1px solid rgba(250,248,244,0.3);color:var(--paper);border-radius:4px;min-width:44px;min-height:44px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em" style-hover="border-color:var(--paper)">Close ✕</button>
       </div>
       <div style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:12px">
-        <button type="button" onClick="{{ prevLb }}" aria-label="Previous" style="flex:none;background:none;border:1px solid rgba(250,248,244,0.3);color:#FAF8F4;border-radius:4px;width:48px;height:48px;cursor:pointer;font-size:18px" style-hover="border-color:#FAF8F4">←</button>
+        <button type="button" onClick="{{ prevLb }}" aria-label="Previous" style="flex:none;background:none;border:1px solid rgba(250,248,244,0.3);color:var(--paper);border-radius:4px;width:48px;height:48px;cursor:pointer;font-size:18px" style-hover="border-color:var(--paper)">←</button>
         {{ lbImg }}
-        <button type="button" onClick="{{ nextLb }}" aria-label="Next" style="flex:none;background:none;border:1px solid rgba(250,248,244,0.3);color:#FAF8F4;border-radius:4px;width:48px;height:48px;cursor:pointer;font-size:18px" style-hover="border-color:#FAF8F4">→</button>
+        <button type="button" onClick="{{ nextLb }}" aria-label="Next" style="flex:none;background:none;border:1px solid rgba(250,248,244,0.3);color:var(--paper);border-radius:4px;width:48px;height:48px;cursor:pointer;font-size:18px" style-hover="border-color:var(--paper)">→</button>
       </div>
     </div>
   </sc-if>
 
-  <section data-screen-label="Next" style="background:#0B0B0B;color:#FAF8F4">
+  <section data-screen-label="Next" style="background:var(--inv-bg);color:var(--inv-fg)">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,104px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
       <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">Next</div>
       <div style="flex:1 1 560px;min-width:0">
         <h2 style="margin:0;font-size:clamp(26px,3.4vw,40px);line-height:1.1;letter-spacing:-0.025em;font-weight:600;max-width:22ch">Have a similar project?</h2>
         <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:clamp(20px,2.5vw,32px)">
-          <a href="Codepedia EN.dc.html#contact" style="display:inline-block;background:#FF4D14;color:#FAF8F4;border-radius:4px;padding:14px 22px;font-size:15px;font-weight:500;text-decoration:none" style-hover="background:#FAF8F4;color:#0B0B0B;text-decoration:none">Let’s talk</a>
+          <a href="Codepedia EN.dc.html#contact" style="display:inline-block;background:#FF4D14;color:var(--paper);border-radius:4px;padding:14px 22px;font-size:15px;font-weight:500;text-decoration:none" style-hover="background:var(--paper);color:var(--ink);text-decoration:none">Let’s talk</a>
         </div>
         <div style="margin-top:clamp(40px,5vw,64px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">Other projects</div>
         <div style="margin-top:12px;display:flex;flex-direction:column;border-bottom:1px solid rgba(250,248,244,0.18)">
           <sc-for list="{{ others }}" as="o" hint-placeholder-count="4">
-            <a href="{{ o.href }}" style="border-top:1px solid rgba(250,248,244,0.18);padding:16px 0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;color:#FAF8F4;text-decoration:none" style-hover="color:#FF4D14;text-decoration:none">
+            <a href="{{ o.href }}" style="border-top:1px solid rgba(250,248,244,0.18);padding:16px 0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;color:var(--paper);text-decoration:none" style-hover="color:#FF4D14;text-decoration:none">
               <span style="font-size:18px;font-weight:500;letter-spacing:-0.01em">{{ o.name }}</span>
               <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">{{ o.kind }} →</span>
             </a>
@@ -290,167 +393,796 @@
     </div>
   </section>
 
-  <footer style="border-top:1px solid #E2DED6">
-    <div style="max-width:1280px;margin:0 auto;padding:24px clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
-      <span style="display:flex;align-items:center;gap:8px"><img src="assets/codepedia-mark.svg" alt="" width="19" height="12" style="display:block;height:12px;width:auto;opacity:0.5" />CODEPEDIA SRL · Chișinău, Moldova</span>
-      <span>© 2026</span>
-    </div>
-  </footer>
+  <dc-import name="Site Footer" lang="{{ navLang }}" home="{{ navHome }}" hint-size="100%,420px"></dc-import>
+<dc-import name="Contact Modal" lang="{{ navLang }}" hint-size="0px,0px"></dc-import>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;showDemo&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;project&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;startica-app&quot;,&quot;startica-site&quot;,&quot;aurelia-badiur&quot;,&quot;englishminds&quot;,&quot;swisscars&quot;,&quot;bloom&quot;,&quot;truckerhq&quot;],&quot;default&quot;:&quot;startica-app&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;showDemo&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;project&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;startica-app&quot;,&quot;startica-site&quot;,&quot;aurelia-badiur&quot;,&quot;englishminds&quot;,&quot;swisscars&quot;,&quot;bloom&quot;,&quot;truckerhq&quot;],&quot;default&quot;:&quot;startica-app&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
 const S = 'https://startica.md/media/filer_public_thumbnails/filer_public/';
 const CAR = 'https://krltqxdhxiguxwookqgg.supabase.co/storage/v1/object/public/car-images/cars/';
 const PROJECTS = {
-  'startica-app': {
-    name: 'Startica, admin app', kind: 'Web app',
-    tags: ['Web app', 'Internal management', '2026'],
-    title: 'The admin app for Startica kindergarten', mock: true,
-    lead: 'Children, attendance and payments for a multi-branch kindergarten, in a single app.',
-    hero: 'assets/proiecte/startica-app-dashboard-1600-v2.png',
-    facts: [
-      { k: 'Client', v: 'Startica, private kindergarten, Chișinău' },
-      { k: 'Type', v: 'Internal management app' },
-      { k: 'Modules', v: 'Children, groups, attendance, payments, expenses, SMS, pool, accounting report' },
-      { k: 'Branches', v: 'Several, with synced data' },
+  "startica-app": {
+    "name": "Startica, desktop app",
+    "kind": "Windows desktop app",
+    "tags": [
+      "Desktop app",
+      "EUR/MDL payments",
+      "SMS",
+      "Multi-branch",
+      "Works offline"
     ],
-    problem: { paras: ['The administration worked in several places at once: attendance was recorded per group, payments were tracked separately, and expenses and the accounting report were compiled by hand at the end of the month. Each branch kept its own records, so getting the full picture took time and repeated checks.', 'The kindergarten needed one place to see, every day, who is present, who has paid and how much was spent, per branch and in total.'] },
-    approach: { paras: ['We built the app around the administration’s working day. In the morning, attendance is marked per group with a single tap per child. During the day, payments are recorded with a receipt printed on the spot, and expenses are added from the same screen.', 'The monthly dashboard shows income by payment method, expenses, arrears and the trend over the last 12 months. Parents with arrears can be notified by SMS straight from the app. Each branch works on its own data, and sync brings it together for the accounting report.'], gallery: ['assets/proiecte/startica-app-prezenta-1600-v2.png', 'assets/proiecte/startica-app-dashboard-1600-v2.png'] },
-    stack: { items: [{ name: 'React · TypeScript', role: 'App interface' }, { name: 'Sync server', role: 'Shared data across branches, with conflict resolution' }, { name: '58 mm printing', role: 'Receipts for payments and pool sessions' }], todo: 'Confirm the full stack (database, hosting, SMS provider).' },
-    obstacles: { paras: ['The hardest part was working from several branches at the same time. The same child record or payment could be edited in two places, so sync had to keep the data correct without losing anything. We added a conflict-resolution mechanism and a visible sync-status indicator.', 'The second obstacle was printing receipts on 58 mm thermal printers, with diacritics and a readable layout on a narrow strip.'] },
-    changes: { paras: ['Along the way, modules requested by day-to-day work were added: pool session tracking, visit scheduling for interested parents and the monthly report for the accountant. The attendance screen was simplified after the first weeks of use, so marking a whole group takes a few seconds.'] },
-    result: { paras: ['The administration now works in a single app for all branches. Attendance, payments and expenses are visible in real time, and the accounting report is generated without manual calculations.'], todo: 'Add concrete figures: time saved per month, how many staff use it, how many children are managed.' },
-    feedback: { todo: 'A quote from the kindergarten administration, with name and role.' },
-  },
-  'startica-site': {
-    name: 'Startica, kindergarten in Chișinău', kind: 'Business website', url: 'https://startica.md/', urlLabel: 'startica.md',
-    tags: ['Business website', 'RO / EN / RU', '2026'],
-    title: 'The Startica kindergarten website, in three languages',
-    lead: 'A website for a private kindergarten in Chișinău: age groups, programmes, spaces and online enrolment, in Romanian, English and Russian.',
-    hero: S + '20/a7/20a767a2-71dc-4a4f-af3b-2a1b5a632053/grupa-2.jpeg__880x605_crop_subsampling-2_upscale.webp',
-    facts: [
-      { k: 'Client', v: 'Startica, private kindergarten, Chișinău' },
-      { k: 'Type', v: 'Business website' },
-      { k: 'Languages', v: 'Romanian, English, Russian' },
-      { k: 'Pages', v: 'Home, Nutrition, Events, Curriculum, Contacts' },
+    "title": "One app for a private kindergarten in Chișinău, keeping its children, money and staff together, across both branches",
+    "mock": true,
+    "lead": "Fees are set in euros, parents pay in lei, and each branch runs its own computers. Together with the client we turned these rules into an app that works without internet and is ready for several computers and branches.",
+    "hero": "assets/proiecte/startica-app-dashboard-1600-v2.png",
+    "facts": [
+      {
+        "k": "Client",
+        "v": "Startica, private kindergarten, Chișinău"
+      },
+      {
+        "k": "Type",
+        "v": "Windows desktop app"
+      },
+      {
+        "k": "Modules",
+        "v": "Children, groups, attendance, menu, pool, visits, staff, payments, expenses, SMS, accounting report"
+      },
+      {
+        "k": "Branches",
+        "v": "2, ready for sync"
+      },
+      {
+        "k": "Languages",
+        "v": "Romanian interface; children's menu in Romanian and Russian"
+      }
     ],
-    problem: { paras: ['Parents choosing a kindergarten want to see the spaces, understand the daily schedule and know which group suits their child before they call. Startica has a mixed audience of Romanian, Russian and English speakers, and information reached them mostly by phone and social media.', 'The kindergarten needed a site that answers the common questions and turns a visit into an enrolment request.'] },
-    approach: { paras: ['The home page presents the 5 age groups, the 3 programmes and the 11 spaces in the building, each with its own photo gallery. Separate pages for nutrition, curriculum and events answer the questions parents ask most often.', 'At the end, the enrolment form asks for the preferred group and programme, and the manager replies within 24 hours. All copy is available in the three languages.'], gallery: [S + '65/68/65682f4b-5b06-4d75-a437-3062e5bbe888/bazine-1.jpeg__880x605_crop_subsampling-2_upscale.webp', S + 'c5/24/c524db24-c25c-4cfd-9338-951a7a8223b0/teren-de-joaca.jpeg__880x605_crop_subsampling-2_upscale.webp'] },
-    stack: { todo: 'The stack used (CMS, hosting, form, request delivery).' },
-    obstacles: { paras: ['The site has many photos, and parents open it mostly on their phones. We optimised images into modern formats and sizes suited to each screen, so galleries load quickly on mobile data too.', 'Content in three languages called for a structure where each page and gallery is managed once, with the copy translated separately.'] },
-    changes: { paras: ['The initial structure spread the information across separate pages. We moved groups, programmes and spaces onto the home page, so parents see everything in one pass without hunting through the menu.'] },
-    result: { paras: ['Parents find the basic answers on the site and can send an enrolment request in any language, at any time.'], todo: 'Add figures: enrolment requests received through the site, visits booked.' },
-    feedback: { todo: 'A quote from the client, with name and role.' },
+    "problem": {
+      "paras": [
+        "A private kindergarten with two branches tracks dozens of small things every day: who came in, who paid, who needs a reminder, what is for lunch, who on the staff is on leave. The monthly fee is set in euros, but parents pay in lei, by cash, card or bank transfer, sometimes for several months at once or for two siblings.",
+        "Each payment has to be converted at the National Bank rate of the day it is received, spread across months, and then found again in the accountant's report. On top of that, each branch has its own computers, the staff is shared, and the app has to cover many areas at once: children, attendance, pool, visits, menu, staff and payroll, parent agreements."
+      ]
+    },
+    "approach": {
+      "paras": [
+        "We did not start with screens. We started from the kindergarten's working day: attendance in the morning, parents paying or bank transfers arriving during the day, cash closed in the evening, the accountant's report prepared at month end. Together with the client we wrote a requirements document and a dated list of decisions, and open questions stayed on a separate list until they were answered.",
+        "Then we built in the order of the day, following who enters what: the teacher marks attendance, the front desk books visits from new parents, the accountant records payments, and the director sees income and what needs attention, with a morning summary. The app suggests the exact amount at the day's rate, splits it across months and prints the receipt on the spot, including on a 58 mm thermal printer. Transfers without a clear name land in a separate place, where the app suggests the child."
+      ],
+      "gallery": [
+        "assets/proiecte/startica-app-prezenta-1600-v2.png",
+        "assets/proiecte/startica-app-dashboard-1600-v2.png"
+      ]
+    },
+    "stack": {
+      "items": [
+        {
+          "name": "Desktop app",
+          "role": "Installs on Windows without admin rights and opens in its own window"
+        },
+        {
+          "name": "Local database",
+          "role": "All data lives on the computer"
+        },
+        {
+          "name": "Offline mode",
+          "role": "The app works fully without internet"
+        },
+        {
+          "name": "Multi-branch sync",
+          "role": "Ready for several computers and branches, with conflicts shown rather than hidden; not yet live at the client"
+        },
+        {
+          "name": "Payments & exchange rates",
+          "role": "Price in euros, payment in lei; the official daily rate is fetched and frozen on each payment"
+        },
+        {
+          "name": "SMS integration",
+          "role": "Messages to parents from templates, sent only when a person asks, with a preview and a monthly cap"
+        },
+        {
+          "name": "Accounting export",
+          "role": "Monthly, quarterly or yearly report exported to Excel for the accountant"
+        },
+        {
+          "name": "Access profiles",
+          "role": "Each computer sees only its allowed modules; salaries sit behind a PIN"
+        },
+        {
+          "name": "Automatic backup",
+          "role": "Automatic backups kept by day and month, with a copy to an external folder"
+        }
+      ]
+    },
+    "result": {
+      "paras": [
+        "The kindergarten now works in a single app. The director sees on one screen who has paid and who is behind, debt is calculated automatically in lei, and the accountant exports the monthly, quarterly or yearly report straight to Excel. Receipts are printed on the spot, the app works without internet, and every change stays in the history, with automatic backups.",
+        "After launch, CODEPEDIA provides 6 months of maintenance: we fix bugs and handle unforeseen situations."
+      ],
+      "todo": "Result figures confirmed by the client (stats, gains, savings)."
+    },
+    "feedback": {
+      "todo": "A quote from the kindergarten administration, with name and role."
+    }
   },
-  'aurelia-badiur': {
-    name: 'Aurelia Badiur, oenology consultant', kind: 'Presentation website', url: 'https://aureliabadiur.com/', urlLabel: 'aureliabadiur.com',
-    tags: ['Presentation website', 'RO / EN', '2026'],
-    title: 'A presentation website for an oenology consultant',
-    lead: 'A bilingual site for Aurelia Badiur, an oenologist trained in Bordeaux and Burgundy who advises wineries on winemaking and wine quality.',
-    hero: 'https://aureliabadiur.com/images/hero.jpg',
-    facts: [
-      { k: 'Client', v: 'Aurelia Badiur, oenology consultant' },
-      { k: 'Type', v: 'Presentation website' },
-      { k: 'Languages', v: 'Romanian, English' },
-      { k: 'Contact', v: 'Form, WhatsApp, email' },
+  "startica-site": {
+    "name": "Startica, kindergarten in Chișinău",
+    "kind": "Business website with admin panel",
+    "url": "https://startica.md/",
+    "urlLabel": "startica.md",
+    "tags": [
+      "Business website",
+      "Admin panel",
+      "Enrolment requests",
+      "Photo galleries",
+      "Mobile"
     ],
-    problem: { paras: ['Oenology consulting sells on trust. A winery looking for a consultant wants to know where they trained, which estates they have worked with and what the collaboration looks like in practice. Without a site of her own, this information was scattered across referrals, social profiles and direct conversations.', 'The client needed a clear presentation, in Romanian and English, that explains the services and leads to a direct conversation.'] },
-    approach: { paras: ['The site follows the order in which a winery forms an opinion: training and the estates she has worked with, the five stages of winemaking follow-up, one-off consulting and, at the end, booking a 1:1 meeting.', 'Visually, we used photos from the vineyard and the cellar and restrained typography suited to an expert service. Contact is available by form, WhatsApp and email, so each client can choose their preferred channel.'], gallery: ['https://aureliabadiur.com/images/tasting.jpeg', 'https://aureliabadiur.com/images/step-3.jpg'] },
-    stack: { todo: 'The stack used (framework, hosting, form).' },
-    obstacles: { paras: ['Consulting services are technical, and the audience includes both winery owners and technologists. The copy had to be precise for specialists and easy to follow for everyone else. We split winemaking follow-up into five stages, each with a short description of what is done and why it matters.'] },
-    changes: { paras: ['Initially, the services were presented as a list. Along the way we separated them into two tracks: full winemaking follow-up and one-off consulting. A winery now sees immediately which kind of collaboration suits it.'] },
-    result: { paras: ['Aurelia Badiur now has a professional presentation in two languages that she can send to any winery in Moldova or abroad.'], todo: 'Add the post-launch result: requests received, new collaborations.' },
-    feedback: { todo: 'A quote from Aurelia Badiur.' },
-  },
-  'englishminds': {
-    name: 'EnglishMinds, English school', kind: 'Brand · Website · Social', url: 'https://adry999.github.io/EnglishMinds_web/EnglishMinds%20Index.dc.html', urlLabel: 'View the project',
-    tags: ['Brand', 'Website', 'Social media', '2026'],
-    title: 'Brand, website and promotional materials for an English school',
-    lead: 'Visual identity, website and materials for EnglishMinds: from groups and camps to Instagram posts.',
-    hero: 'assets/proiecte/englishminds-class.jpg',
-    facts: [
-      { k: 'Client', v: 'EnglishMinds, English school' },
-      { k: 'Type', v: 'Brand, website, social media' },
-      { k: 'Pages', v: 'Groups, Method, Camps, Test, Demo lesson, Blog, Offer' },
-      { k: 'Materials', v: 'Flyer, Instagram posts and stories' },
+    "title": "A new website for a Chișinău kindergarten, with a simple panel where the team publishes events on its own and receives parents' requests",
+    "lead": "We kept the look parents already knew and replaced what sat underneath: photos now live in the client's own storage, the team publishes events, and a parent's request goes from the form straight to the administrator's phone.",
+    "hero": "https://startica.md/media/filer_public_thumbnails/filer_public/20/a7/20a767a2-71dc-4a4f-af3b-2a1b5a632053/grupa-2.jpeg__880x605_crop_subsampling-2_upscale.webp",
+    "facts": [
+      {
+        "k": "Client",
+        "v": "Startica, private kindergarten, Chișinău"
+      },
+      {
+        "k": "Type",
+        "v": "Business website with admin panel"
+      },
+      {
+        "k": "Location",
+        "v": "Chișinău, Moldova"
+      },
+      {
+        "k": "Modules",
+        "v": "5 public pages, events with galleries, admin panel, enrolment requests"
+      },
+      {
+        "k": "Languages",
+        "v": "Romanian, structure ready for RU and EN"
+      }
     ],
-    problem: { paras: ['The English-course market is crowded, and parents and students compare many schools before choosing. EnglishMinds needed an identity that is easy to recognise and a clear path from first impression to first lesson.', 'Promotional materials, the website and social media had to look like they belong to the same school.'] },
-    approach: { paras: ['We started with the visual identity: logo, colours, typography and composition rules. Then we applied it to the website, the flyer and the templates for Instagram posts and stories.', 'The site leads visitors to two actions: the level test and booking a demo lesson. Pages on groups, method and camps answer pre-enrolment questions, and the blog supports search visibility.'], gallery: ['assets/proiecte/englishminds-teacher.jpg', 'assets/proiecte/englishminds-instagram.png'] },
-    stack: { todo: 'The stack used for the site (framework, hosting, forms).' },
-    obstacles: { paras: ['The school serves several age groups, from children to adults. The identity had to feel friendly for younger learners but credible for parents and adults. We solved this with a restrained visual base and colour accents used differently on each type of material.'] },
-    changes: { paras: ['Along the way, the level test became the centre of the site. It is the easiest first step for an undecided visitor and gives the school a concrete reason to follow up with a group recommendation.'] },
-    result: { paras: ['EnglishMinds now has a unified visual system, applied across the website and social media, and a clear path to the level test and demo lesson.'], todo: 'Add figures: demo-lesson bookings, tests completed, followers.' },
-    feedback: { todo: 'A quote from the client, with name and role.' },
+    "problem": {
+      "paras": [
+        "Startica already had a website, with a clear visual identity that parents recognised. For a private kindergarten, the website is the first place where a parent decides whether to book a visit. Events (celebrations, trips, workshops) show daily life at the kindergarten and need to reach the site quickly, with photos.",
+        "The event photos, however, sat on the old server, which refused to show them on another domain, so they could not simply be moved. And an enrolment request that does not reach someone on the team quickly can mean a lost place."
+      ]
+    },
+    "approach": {
+      "paras": [
+        "We did not start with screens. We started with the existing site: we went through it page by page and built a complete inventory of its content, from copy and photos to age groups, schedules, spaces and events. Then we traced how information moves: who publishes an event, who receives an enrolment request and what they do with it. That became a requirements document capturing the decisions made with the client: what stays the same, what moves into the team's hands, and where requests land.",
+        "We first rebuilt the site identical to the original, and only once the identity was signed off did we move on to improvements. The panel holds only events, the one kind of content that changes often; the other pages stay fixed so the panel stays simple. \"Book a visit\" opens the form on the same page, so the parent is not pulled away from what they were reading, and the request lands on Telegram, on the administrator's phone."
+      ],
+      "gallery": [
+        "https://startica.md/media/filer_public_thumbnails/filer_public/65/68/65682f4b-5b06-4d75-a437-3062e5bbe888/bazine-1.jpeg__880x605_crop_subsampling-2_upscale.webp",
+        "https://startica.md/media/filer_public_thumbnails/filer_public/c5/24/c524db24-c25c-4cfd-9338-951a7a8223b0/teren-de-joaca.jpeg__880x605_crop_subsampling-2_upscale.webp"
+      ]
+    },
+    "stack": {
+      "items": [
+        {
+          "name": "Business website",
+          "role": "A fast site that loads well on phones too"
+        },
+        {
+          "name": "Events admin panel",
+          "role": "A panel where the team creates, edits and publishes events, with drafts"
+        },
+        {
+          "name": "Photo storage",
+          "role": "Photos live in the client's own storage and thumbnails are generated automatically on upload"
+        },
+        {
+          "name": "Cloud database",
+          "role": "The client's own database, with no lock-in to a CMS vendor"
+        },
+        {
+          "name": "Request notifications",
+          "role": "Every form request reaches Telegram instantly"
+        },
+        {
+          "name": "Protected admin access",
+          "role": "Only the signed-in administrator can change content; visitors only see what is published"
+        }
+      ]
+    },
+    "obstacles": {
+      "paras": [
+        "The site has many photos, and parents open it mostly on their phones. We optimised images into modern formats and sizes suited to each screen, so galleries load quickly on mobile data too.",
+        "Content in three languages called for a structure where each page and gallery is managed once, with the copy translated separately."
+      ]
+    },
+    "changes": {
+      "paras": [
+        "The initial structure spread the information across separate pages. We moved groups, programmes and spaces onto the home page, so parents see everything in one pass without hunting through the menu."
+      ]
+    },
+    "result": {
+      "paras": [
+        "The Startica team now publishes events with photos on its own, without waiting for a developer. Parents' requests reach the administrator's phone right away, and the visit form is one click away from any page.",
+        "The site's photos and data live in the client's own accounts, not on the old server. For parents, the site looks the same as before, only built to load well on phones too.",
+        "After launch, CODEPEDIA provides 6 months of maintenance: we fix bugs and handle anything unexpected, so the kindergarten's team can stay focused on the children."
+      ],
+      "todo": "Result figures confirmed by the client (stats, gains, savings)."
+    },
+    "feedback": {
+      "todo": "A quote from the client, with name and role."
+    }
   },
-  'swisscars': {
-    name: 'SwissCars, cars from Switzerland', kind: 'Web app', url: 'https://www.swisscars.md/', urlLabel: 'swisscars.md',
-    tags: ['Web app', 'Inventory', 'Admin', 'RO / RU / EN', '2026'],
-    title: 'A car inventory web app with an admin panel for an importer from Switzerland', mock: true,
-    lead: 'Inventory of cars brought from Switzerland, with detail pages, partner leasing and customer reviews.',
-    hero: 'assets/proiecte/swisscars-acasa-1600.png',
-    facts: [
-      { k: 'Client', v: 'SwissCars.md' },
-      { k: 'Type', v: 'Car catalogue website' },
-      { k: 'Languages', v: 'Romanian, Russian, English' },
-      { k: 'Sections', v: 'Inventory, Services, Leasing, Favourites' },
+  "aurelia-badiur": {
+    "name": "Aurelia Badiur, oenology consultant",
+    "kind": "Bilingual business website",
+    "url": "https://aureliabadiur.com/",
+    "urlLabel": "aureliabadiur.com",
+    "tags": [
+      "Business website",
+      "Consulting",
+      "Contact form",
+      "RO / EN",
+      "SEO"
     ],
-    problem: { paras: ['Available cars were promoted mostly on listing platforms and social media, where each listing competes with hundreds of others and the car’s history and provenance are easily lost.', 'SwissCars needed its own catalogue, updated from an admin panel, where every car has a complete page and buyers can see financing options right away.'] },
-    approach: { paras: ['Inventory is managed from the admin panel: each car has its own page with price, year, mileage, engine and photo gallery. Visitors can filter by make, save favourites and compare several cars.', 'The leasing section presents the financing partners, and customer reviews appear next to the inventory, so a new buyer sees the experience of those before them.'], gallery: ['assets/proiecte/swisscars-masina-1600-v2.png', CAR + 'ae25eba6-b9ae-4b21-9a3b-85b025e69e21.jpg'] },
-    stack: { items: [{ name: 'Next.js', role: 'The site and car pages' }, { name: 'Supabase', role: 'Car inventory and photos' }], todo: 'Complete the rest (hosting, admin panel).' },
-    obstacles: { paras: ['Every car comes with dozens of large photos. We store them separately from the pages and serve them resized for each screen, so the inventory loads quickly on phones too.', 'Inventory changes often, so pages had to update as soon as a car is added, reserved or sold, without a developer stepping in.'] },
-    changes: { paras: ['The favourites list was added along the way, after we noticed visitors return several times before calling. They can now keep the cars they are interested in without an account.'] },
-    result: { paras: ['SwissCars manages its own inventory, and every car has a complete page it can send straight to an interested customer.'], todo: 'Add figures: cars sold through the site, requests received. To check on the live site: the “Phone missing” and “Address missing” messages still appear in the footer and several sections.' },
-    feedback: { todo: 'A quote from the client, with name and role.' },
-  },
-  'bloom': {
-    name: 'Bloom Florist, management app', kind: 'Web app',
-    tags: ['Web app', 'Florist operations', 'RO / EN', '2026'],
-    title: 'The management app for the Bloom florist', mock: true,
-    lead: 'Orders, stock, suppliers, losses and online payments for a florist, in one app used by the admin and the sales staff.',
-    hero: 'assets/proiecte/bloom-panou-1600.png',
-    facts: [
-      { k: 'Client', v: 'Bloom Florist, Moldova' },
-      { k: 'Type', v: 'Internal management app' },
-      { k: 'Modules', v: 'Dashboard, Inventory, Orders, Sales, Losses, Suppliers, Activity, Reports' },
-      { k: 'Roles', v: 'Admin and seller, with separate permissions' },
+    "title": "A bilingual website that presents an oenology consultant's career and working method, and makes her easy to reach",
+    "lead": "Together with Aurelia Badiur we turned a high-level professional path into a clear story: who she is, how she works, how to reach her. A visitor goes from first impression to a meeting request in a few steps.",
+    "hero": "https://aureliabadiur.com/images/hero.jpg",
+    "facts": [
+      {
+        "k": "Client",
+        "v": "Aurelia Badiur, oenology consultant"
+      },
+      {
+        "k": "Type",
+        "v": "One-page presentation site, 2 languages"
+      },
+      {
+        "k": "Modules",
+        "v": "Career, winemaking process, consulting, contact"
+      },
+      {
+        "k": "Languages",
+        "v": "Romanian, English"
+      },
+      {
+        "k": "Users",
+        "v": "Public visitors, no accounts"
+      }
     ],
-    problem: { paras: ['In a flower shop, stock changes by the hour: flowers arrive in batches, sell as bouquets and are lost if they sit too long. Delivery orders, walk-in sales and deposits were tracked separately, and losses only showed up at stocktake.', 'The shop needed an app that shows, every day, which orders need preparing, which products are running low and what was actually earned.'] },
-    approach: { paras: ['The daily dashboard shows revenue against the previous day, active orders by status, deliveries and low-stock alerts. Orders move across a three-column board, Confirmed, In progress and Ready, and every move updates stock automatically.', 'Deliveries are received in batches with purchase price and supplier, so the app calculates average cost and margin per product. Sellers see only what they need for orders; financial data stays with the admin.'], gallery: ['assets/proiecte/bloom-comenzi-1600.png', 'assets/proiecte/bloom-panou-1600.png'] },
-    stack: { items: [{ name: 'Nuxt 4 · Pinia', role: 'App interface and order state' }, { name: 'Supabase · Postgres', role: 'Data, authentication and Row Level Security on every table' }, { name: 'MAIB · PayNet', role: 'Online order payments, with webhooks and reconciliation' }, { name: 'Vitest', role: 'Tests for stores, payments and permissions' }] },
-    obstacles: { paras: ['Creating an order touches several tables at once: the order, its items, reserved stock and the activity log. We moved creation into a single atomic database function, so an order is never left half-saved.', 'Online payments needed webhook confirmation, protection against double payment for the same order and a reconciliation screen against the provider’s records.'] },
-    changes: { paras: ['Along the way we added walk-in sales, a loss report by reason and a per-user activity log. A bottom navigation bar was added for sellers working from the shop floor on a phone.'] },
-    result: { paras: ['The shop works from one record for orders, stock and payments. Losses and per-product margin show up in the reports, with no separate calculations.'], todo: 'Add figures: orders per month, losses reduced, time saved at stocktake.' },
-    feedback: { todo: 'A quote from the shop owner, with name and role.' },
+    "problem": {
+      "paras": [
+        "An oenology consultant sells trust, and trust is built from career, references and a clearly explained way of working. Her clients are wineries: owners and technical directors who compare consultants and want to quickly understand what they get.",
+        "A first version of the site already existed: a single page that swapped its text with JavaScript. Our analysis showed it had problems with translation, accessibility and search, and that her career and working method needed to be easier to understand, especially on a phone."
+      ]
+    },
+    "approach": {
+      "paras": [
+        "We did not start with screens. We started by analysing the existing site: what failed in translation, search and accessibility. Then we set the requirements together with the client: strong SEO, a working contact form, a WhatsApp button, larger logos of the wine houses she has worked with, and no change to the visual identity.",
+        "We then thought through the visitor's path so it stays simple: read her career, see the method in five steps, from vineyard to bottling, then reach her on the channel that suits them, through the form, WhatsApp or email. We explicitly decided to stay on a static site with no framework: a presentation page that rarely changes does not justify a build system or the risk of a migration. For search, we chose two separate pages, one per language, instead of switching text with JavaScript, so each language appears correctly in results."
+      ],
+      "gallery": [
+        "https://aureliabadiur.com/images/tasting.jpeg",
+        "https://aureliabadiur.com/images/step-3.jpg"
+      ]
+    },
+    "stack": {
+      "items": [
+        {
+          "name": "Static bilingual site",
+          "role": "Two pages, one per language, fast and easy to find"
+        },
+        {
+          "name": "Search optimisation",
+          "role": "Pages appear correctly in search in both languages, with structured data and social previews"
+        },
+        {
+          "name": "Contact form",
+          "role": "Sends meeting requests to email with no server of our own"
+        },
+        {
+          "name": "WhatsApp & email links",
+          "role": "One-tap contact, including a floating button"
+        },
+        {
+          "name": "Scroll animations",
+          "role": "Reveals and the vine-line drawing on scroll, with no slowdown"
+        },
+        {
+          "name": "Accessible & responsive",
+          "role": "Usable on phones and by keyboard, with labels for screen readers"
+        }
+      ]
+    },
+    "obstacles": {
+      "paras": [
+        "Consulting services are technical, and the audience includes both winery owners and technologists. The copy had to be precise for specialists and easy to follow for everyone else. We split winemaking follow-up into five stages, each with a short description of what is done and why it matters."
+      ]
+    },
+    "changes": {
+      "paras": [
+        "Initially, the services were presented as a list. Along the way we separated them into two tracks: full winemaking follow-up and one-off consulting. A winery now sees immediately which kind of collaboration suits it."
+      ]
+    },
+    "result": {
+      "paras": [
+        "The client now has a single place, in two languages, to send prospective clients to. Her career and method are presented once, well, and contact takes a few steps, on the channel the visitor prefers.",
+        "The site works well on phones, can be used by keyboard, appears correctly in search in both languages, and needs no daily upkeep."
+      ],
+      "todo": "Result figures confirmed by the client (stats, gains, savings)."
+    },
+    "feedback": {
+      "todo": "A quote from Aurelia Badiur."
+    }
   },
-  'truckerhq': {
-    name: 'Trucker HQ, dispatch and carrier tools', kind: 'Website with tools',
-    tags: ['Website + tools', 'EN / RU', 'USA', '2026'],
-    title: 'Dispatch, CDL jobs and free tools for US carriers', mock: true,
-    lead: 'Flat-rate weekly dispatch, CDL driver jobs, hiring and carrier checks from public FMCSA data, in English and Russian.',
-    hero: 'assets/proiecte/truckerhq-acasa-1600.png',
-    facts: [
-      { k: 'Client', v: 'Trucker HQ, truck dispatch, USA' },
-      { k: 'Type', v: 'Service website with free tools' },
-      { k: 'Languages', v: 'English, Russian' },
-      { k: 'Sections', v: 'Dispatch, Jobs, Hire Drivers, Tools, Guides' },
+  "englishminds": {
+    "name": "EnglishMinds, English school",
+    "kind": "Business website, brand and marketing",
+    "url": "https://adry999.github.io/EnglishMinds_web/EnglishMinds%20Index.dc.html",
+    "urlLabel": "View the project",
+    "tags": [
+      "Business website",
+      "Level test",
+      "Lead generation",
+      "Brand",
+      "Marketing"
     ],
-    problem: { paras: ['US owner-operators usually work with dispatchers paid a percentage of each load. Many speak Russian as a first language and look for a dispatcher who answers at night, in their language.', 'Trucker HQ needed a site that explains the flat rate, brings in dispatch requests and draws steady traffic through tools carriers use every day.'] },
-    approach: { paras: ['The home page starts with a search: any broker or carrier can be checked by DOT, MC or name, with a 0–100 Health Score built from FMCSA data. Dispatch, CDL jobs and driver hiring follow below.', 'The free tools, Carrier Lookup, Profit per Mile, Compliance Alerts and New MC Checklist, need no account. Each state has a page listing local carriers, generated from one template.'], gallery: ['assets/proiecte/truckerhq-carriers-1600.png', 'assets/proiecte/truckerhq-acasa-1600.png'] },
-    stack: { items: [{ name: 'Next.js 16 · React 19', role: 'Server pages, isolated interactive components' }, { name: 'Tailwind CSS 4', role: 'Colour and type tokens from the approved design' }, { name: 'FMCSA API', role: 'Public authority, insurance and inspection data' }, { name: 'Vitest', role: 'Tests for API routes and validation' }] },
-    obstacles: { paras: ['FMCSA data arrives incomplete or delayed, and an access key isn’t required at the start. The site runs on sample data until the key is set, then switches to live data with no other changes.', 'The Russian version needs Cyrillic fonts and copy written for drivers, not translated word for word. We split copy by language and put it through a dedicated review.'] },
-    changes: { paras: ['The header was rebuilt as a road sign, with the dispatch phone number always visible. On phones, primary buttons grew to at least 48 pixels for drivers using the site from the cab.'] },
-    result: { paras: ['Trucker HQ has a site that explains the flat rate, brings in dispatch requests and job applications, and offers free tools that bring carriers back.'], todo: 'Add post-launch figures: dispatch requests, Carrier Lookup searches, job applications.' },
-    feedback: { todo: 'A quote from the client, with name and role.' },
+    "title": "A website that takes a parent from an ad to a demo lesson, with the child's level already known",
+    "lead": "The child takes a level test with Ema, the school's mascot, and gets a diploma with their name on it. The parent books a demo lesson on WhatsApp, with the recommended level already in the message.",
+    "hero": "assets/proiecte/englishminds-class.jpg",
+    "facts": [
+      {
+        "k": "Client",
+        "v": "EnglishMinds, English school"
+      },
+      {
+        "k": "Type",
+        "v": "Business website, brand and marketing"
+      },
+      {
+        "k": "Location",
+        "v": "Cluj-Napoca, Romania"
+      },
+      {
+        "k": "Modules",
+        "v": "Level test, demo booking, groups, method, camps, blog"
+      },
+      {
+        "k": "Audience",
+        "v": "Parents of children aged 5–14, 5 age groups, in Romanian"
+      }
+    ],
+    "problem": {
+      "paras": [
+        "English Minds Academy teaches English to children aged 5–14 using the Cambridge method. The school talked to parents mostly on Instagram, where the colours, Ema the mascot and the direct tone worked well. What was missing was a place where a parent could learn their child's level, see which group fits and sign up.",
+        "For a school that fills its groups at the start of the school year, every parent who leaves without leaving a contact is an empty seat. Parents did not know which group to join, and the team only learned the child's age and level on the first call."
+      ]
+    },
+    "approach": {
+      "paras": [
+        "We did not start with screens. We started from what already worked on Instagram and collected the colours, Ema the mascot and the direct tone towards parents into a brand guide, with separate rules for the voice used with parents and the one used with children.",
+        "Then, together with the academy, we mapped a parent's path in four steps: they see a post or an ad, the child takes the level test, the parent books on WhatsApp with the message already filled in, and the academy calls back knowing the age and level. Every page has a single goal: booking the free demo lesson.",
+        "We made business decisions along the way. WhatsApp instead of a classic form, because local parents already message there. The level test as a reason to stay on the site, with a diploma the child keeps. Ema only talks to children, while prices and deadlines come from the academy. We worked in design rounds, and the academy followed each page and its status.",
+        "We carried the same message into print and social media: a flyer with a QR code to the test, and Instagram templates in the same style."
+      ],
+      "gallery": [
+        "assets/proiecte/englishminds-teacher.jpg",
+        "assets/proiecte/englishminds-instagram.png"
+      ]
+    },
+    "stack": {
+      "items": [
+        {
+          "name": "Web app",
+          "role": "Fast pages that work well on phones"
+        },
+        {
+          "name": "Level test",
+          "role": "Age- or exam-based test with audio, a per-skill result and a group recommendation"
+        },
+        {
+          "name": "Diploma generator",
+          "role": "Personalised diploma, downloadable as image or PDF, generated on the parent's device"
+        },
+        {
+          "name": "WhatsApp booking",
+          "role": "Demo lesson booking, with the message pre-filled with the child's age and level"
+        },
+        {
+          "name": "Brand identity",
+          "role": "Logo, colours, typefaces and rules for Ema the mascot and the voice for parents and children"
+        },
+        {
+          "name": "Social media kit",
+          "role": "A5 flyer with a QR code to the test, and Instagram templates in the same style"
+        }
+      ]
+    },
+    "obstacles": {
+      "paras": [
+        "The school serves several age groups, from children to adults. The identity had to feel friendly for younger learners but credible for parents and adults. We solved this with a restrained visual base and colour accents used differently on each type of material."
+      ]
+    },
+    "changes": {
+      "paras": [
+        "Along the way, the level test became the centre of the site. It is the easiest first step for an undecided visitor and gives the school a concrete reason to follow up with a group recommendation."
+      ]
+    },
+    "result": {
+      "paras": [
+        "The academy has a clear path from ad to enrolment. Parents find out their child's level on their own, and the WhatsApp message they send already includes the age and the right group, so the first conversation starts from information rather than clarifying questions.",
+        "The child gets a diploma with their name, which the family can keep and share. The website, the flyer and social media look the same, so parents recognise the school wherever they see it."
+      ],
+      "todo": "Result figures confirmed by the client (stats, gains, savings)."
+    },
+    "feedback": {
+      "todo": "A quote from the client, with name and role."
+    }
   },
+  "swisscars": {
+    "name": "SwissCars, cars from Switzerland",
+    "kind": "Business website with admin panel",
+    "url": "https://www.swisscars.md/",
+    "urlLabel": "swisscars.md",
+    "tags": [
+      "Business website",
+      "Car catalog",
+      "Admin",
+      "RO / RU / EN",
+      "Customer leads"
+    ],
+    "title": "A three-language website where buyers pick a Swiss car and request an offer in a few clicks",
+    "mock": true,
+    "lead": "The dealer manages cars, homepage texts and incoming enquiries without a developer. Every enquiry reaches Telegram and email immediately.",
+    "hero": "assets/proiecte/swisscars-acasa-1600.png",
+    "facts": [
+      {
+        "k": "Client",
+        "v": "SwissCars.md"
+      },
+      {
+        "k": "Type",
+        "v": "Business website with admin panel"
+      },
+      {
+        "k": "Modules",
+        "v": "Car catalog, enquiries, leasing calculator, reviews, partners, newsletter, homepage content, settings"
+      },
+      {
+        "k": "Languages",
+        "v": "3: Romanian, Russian, English"
+      }
+    ],
+    "problem": {
+      "paras": [
+        "A dealer importing cars from Switzerland to Moldova serves buyers who search in different languages. Every car carries many details that must stay current: year, mileage, fuel, gearbox, equipment, photos. Without its own catalog, the information stays scattered across listings and private messages.",
+        "Enquiries get lost easily when they arrive through several channels, and buyers speak Romanian or Russian. It matters that every request reaches the person who answers quickly, and that the dealer can change cars, prices and texts alone, without depending on a developer."
+      ]
+    },
+    "approach": {
+      "paras": [
+        "We did not draw screens, we solved business problems. We started from the dealer's working day: how a car is added, how an enquiry arrives, who answers and how fast. That gave us the roles (visitor and administrator), the flow of an enquiry and the structure of the content in three languages.",
+        "We asked what a buyer needs to know before calling and what the dealer must receive. The buyer sees the car in their own language and requests an offer, a callback or a test drive. The dealer gets the request in the panel and immediately on Telegram and email, with name, phone and message.",
+        "A few decisions we made together: Romanian stays the default, with Russian and English covering the local market. The site does not sell online; a car is requested through a form. Homepage content is changed from the panel, so the offer can be updated without a developer. Access to the panel is limited to the administrator, and security was reviewed and hardened in separate iterations."
+      ],
+      "gallery": [
+        "assets/proiecte/swisscars-masina-1600-v2.png",
+        "https://krltqxdhxiguxwookqgg.supabase.co/storage/v1/object/public/car-images/cars/ae25eba6-b9ae-4b21-9a3b-85b025e69e21.jpg"
+      ]
+    },
+    "stack": {
+      "items": [
+        {
+          "name": "Web app",
+          "role": "A fast three-language site with a page for every car"
+        },
+        {
+          "name": "Cloud database",
+          "role": "Cars, enquiries, reviews and settings in one place, in the cloud"
+        },
+        {
+          "name": "Role-based access",
+          "role": "Only the administrator enters the panel and makes changes"
+        },
+        {
+          "name": "Lead alerts",
+          "role": "Every enquiry reaches Telegram and email immediately"
+        },
+        {
+          "name": "File storage",
+          "role": "Car photos and the logo are uploaded straight from the panel"
+        },
+        {
+          "name": "Abuse protection",
+          "role": "Limits repeated submissions and sanitizes entered text"
+        },
+        {
+          "name": "Analytics & monitoring",
+          "role": "Visit analytics and error tracking"
+        }
+      ]
+    },
+    "obstacles": {
+      "paras": [
+        "Every car comes with dozens of large photos. We store them separately from the pages and serve them resized for each screen, so the inventory loads quickly on phones too.",
+        "Inventory changes often, so pages had to update as soon as a car is added, reserved or sold, without a developer stepping in."
+      ]
+    },
+    "changes": {
+      "paras": [
+        "The favourites list was added along the way, after we noticed visitors return several times before calling. They can now keep the cars they are interested in without an account."
+      ]
+    },
+    "result": {
+      "paras": [
+        "The dealer owns a catalog in three languages and updates it alone. Enquiries land in one place, the panel, and immediately on Telegram and email, so they stop scattering across channels.",
+        "The dealer controls what the site shows (cars, texts, contacts) and sees incoming enquiries and newsletter subscribers. Buyers can browse the catalog, save cars to favourites, estimate a leasing payment and request an offer without having to start with a phone call."
+      ],
+      "todo": "Result figures confirmed by the client (stats, gains, savings)."
+    },
+    "feedback": {
+      "todo": "A quote from the client, with name and role."
+    }
+  },
+  "bloom": {
+    "name": "Bloom Florist, management app",
+    "kind": "Internal management web app",
+    "tags": [
+      "Web app",
+      "Orders",
+      "Inventory",
+      "Reports",
+      "Roles",
+      "RO / EN"
+    ],
+    "title": "We built a system for a Moldovan flower shop that brings orders, stock and reports into one place",
+    "mock": true,
+    "lead": "Sellers take orders and in-store sales, stock updates itself, and the owner sees daily revenue, losses and margin per product.",
+    "hero": "assets/proiecte/bloom-panou-1600.png",
+    "facts": [
+      {
+        "k": "Client",
+        "v": "Bloom Florist, Moldova"
+      },
+      {
+        "k": "Type",
+        "v": "Internal web app"
+      },
+      {
+        "k": "Modules",
+        "v": "Orders, walk-in sales, inventory, losses, suppliers, reports, users, activity log"
+      },
+      {
+        "k": "Roles",
+        "v": "Admin and seller"
+      },
+      {
+        "k": "Languages",
+        "v": "Romanian, English"
+      }
+    ],
+    "problem": {
+      "paras": [
+        "The shop deals with stock that spoils fast and with orders coming from several channels: phone, walk-ins, scheduled deliveries. Without a shared system, whoever takes an order can't be sure what flowers are left, and the owner only learns at month's end how much was lost to wilted or damaged stock.",
+        "It mattered because a florist's margin leaks through small things: a bouquet sold below its real cost, a batch of roses thrown away, an order forgotten for tomorrow."
+      ]
+    },
+    "approach": {
+      "paras": [
+        "We did not start with screens. We started with the shop's working day and set, together with the client, who does what: the seller takes orders and serves walk-in customers; the admin receives supplier deliveries, sets prices and watches the numbers. We then traced a flower's path, from supplier delivery, through an order or a walk-in sale, to a delivered bouquet or a write-off, and wrote a design document for each stage before any code.",
+        "We built in stages, following that same day: in the morning the admin sees today's orders and low stock, sellers move orders from \"Confirmed\" to \"In progress\" and \"Ready\", new stock is received with the supplier recorded, damaged flowers are written off with a reason, and in the evening reports show revenue, profit and losses for the period. Every important action stays in a log of who did what and when."
+      ],
+      "gallery": [
+        "assets/proiecte/bloom-comenzi-1600.png",
+        "assets/proiecte/bloom-panou-1600.png"
+      ]
+    },
+    "stack": {
+      "items": [
+        {
+          "name": "Web app",
+          "role": "Runs in the browser on desktop and phone, nothing to install"
+        },
+        {
+          "name": "Cloud database",
+          "role": "All shop data in a managed cloud database, in one place"
+        },
+        {
+          "name": "Role-based access",
+          "role": "Admin and seller see and do different things; the rules live in the database"
+        },
+        {
+          "name": "Stock ledger",
+          "role": "Every stock movement is a ledger entry; stock and average cost update automatically"
+        },
+        {
+          "name": "Safe order creation",
+          "role": "An order and its items save together or not at all; prices and order number are set by the server"
+        },
+        {
+          "name": "Audit trail",
+          "role": "A log of who did what and when that cannot be forged from the app"
+        }
+      ]
+    },
+    "obstacles": {
+      "paras": [
+        "Creating an order touches several tables at once: the order, its items, reserved stock and the activity log. We moved creation into a single atomic database function, so an order is never left half-saved.",
+        "Online payments needed webhook confirmation, protection against double payment for the same order and a reconciliation screen against the provider’s records."
+      ]
+    },
+    "changes": {
+      "paras": [
+        "Along the way we added walk-in sales, a loss report by reason and a per-user activity log. A bottom navigation bar was added for sellers working from the shop floor on a phone."
+      ]
+    },
+    "result": {
+      "paras": [
+        "The shop now works from one place: a phone order reserves the flowers right away, a walk-in sale lowers stock, and each delivery updates the cost. Every day the owner sees revenue, which products make a profit, what is running low and why stock gets lost, without adding up numbers from notebooks.",
+        "Sellers can no longer sell what isn't there, and every change has an author in the log."
+      ],
+      "todo": "Result figures confirmed by the client (stats, gains, savings)."
+    },
+    "feedback": {
+      "todo": "A quote from the shop owner, with name and role."
+    }
+  },
+  "truckerhq": {
+    "name": "Trucker HQ, dispatch and carrier tools",
+    "kind": "Web platform for trucking",
+    "tags": [
+      "Web platform",
+      "Lead generation",
+      "FMCSA data",
+      "SMS",
+      "EN / RU"
+    ],
+    "title": "We built a platform for Trucker HQ that brings in dispatch clients through free tools for truck carriers",
+    "mock": true,
+    "lead": "Owner-operators and small US fleets check their authority, work out profit per mile and find jobs. When they need a dispatcher, the request goes straight to the team and the driver gets a confirmation text.",
+    "hero": "assets/proiecte/truckerhq-acasa-1600.png",
+    "facts": [
+      {
+        "k": "Client",
+        "v": "Trucker HQ, truck dispatch, USA"
+      },
+      {
+        "k": "Type",
+        "v": "Lead generation web platform"
+      },
+      {
+        "k": "Modules",
+        "v": "Dispatch, CDL jobs, driver hiring, free tools, guides"
+      },
+      {
+        "k": "Languages",
+        "v": "English, Russian"
+      }
+    ],
+    "problem": {
+      "paras": [
+        "Trucker HQ provides dispatch for owner-operators and small US fleets, many of whom speak Russian. Dispatch is usually sold as a percentage of every load. Trucker HQ wanted to offer a flat weekly price, but a new model has to be explained and proven, and the right carriers have to be found first.",
+        "Small carriers have daily needs that have nothing to do with a dispatcher: checking their authority and insurance in the federal FMCSA registry, working out whether a load pays, finding drivers or a job. The information exists, but it is scattered, technical and English-only. Without a place these people come to on their own, every new client cost sales time and paid ads."
+      ]
+    },
+    "approach": {
+      "paras": [
+        "We did not start with screens. We started from the people who will use the site: the owner-operator with one truck, the fleet with 3–10 trucks, the carrier with a new authority, the CDL driver looking for work and the company hiring. For each we worked out with the client what they look for, what data they give us and where it goes: dispatch requests to dispatchers, applications to recruiters, alert sign-ups to the database. We also prepared an SEO plan, an ads plan and a content checklist for the client to fill in.",
+        "Then we built the platform along the user's path. A carrier lands from Google on their state or city page, or on a free tool, checks a carrier by DOT or MC, works out the profit on a load. Every tool has a natural next step into dispatch: a form that collects exactly what a dispatcher asks on the first call. The request is saved to the database, and the carrier gets a confirmation text right away."
+      ],
+      "gallery": [
+        "assets/proiecte/truckerhq-carriers-1600.png",
+        "assets/proiecte/truckerhq-acasa-1600.png"
+      ]
+    },
+    "stack": {
+      "items": [
+        {
+          "name": "Web app",
+          "role": "A fast, search-ready site in English and Russian, with pages generated for every state, city, job and guide"
+        },
+        {
+          "name": "Cloud database",
+          "role": "Safely stores every request: dispatch, applications, hiring, contact, alerts, profile claims"
+        },
+        {
+          "name": "Government data integration",
+          "role": "Looks up carriers in the federal FMCSA registry by DOT, MC or name and computes a health score"
+        },
+        {
+          "name": "SMS gateway",
+          "role": "Sends instant confirmations after a request, with consent and abuse protection"
+        },
+        {
+          "name": "Analytics & ads tracking",
+          "role": "Measures which pages and tools bring requests, with cookie consent and no personal data sent to ad platforms"
+        },
+        {
+          "name": "Search visibility",
+          "role": "Structured data, share images and a sitemap for every page type"
+        }
+      ]
+    },
+    "obstacles": {
+      "paras": [
+        "FMCSA data arrives incomplete or delayed, and an access key isn’t required at the start. The site runs on sample data until the key is set, then switches to live data with no other changes.",
+        "The Russian version needs Cyrillic fonts and copy written for drivers, not translated word for word. We split copy by language and put it through a dedicated review."
+      ]
+    },
+    "changes": {
+      "paras": [
+        "The header was rebuilt as a road sign, with the dispatch phone number always visible. On phones, primary buttons grew to at least 48 pixels for drivers using the site from the cab."
+      ]
+    },
+    "result": {
+      "paras": [
+        "The client has one place small carriers come to on their own: from searches for their state, their city or their DOT number. Every request arrives complete and structured, with equipment, lanes and the best time to call, so the dispatcher starts the conversation already knowing who they are talking to.",
+        "The carrier gets a confirmation on the spot, the team sees in analytics which pages and tools bring in clients, and Russian speakers find the service in their own language."
+      ],
+      "todo": "Result figures confirmed by the client (stats, gains, savings)."
+    },
+    "feedback": {
+      "todo": "A quote from the client, with name and role."
+    }
+  }
 };
 const DEMO = {"startica-app":{"stack":{"items":[{"name":"PostgreSQL","role":"Shared database for all branches"},{"name":"SMS gateway","role":"Arrears notifications"}]},"result":{"stats":[{"v":"−12 h","k":"manual work per month"},{"v":"6","k":"staff use it daily"},{"v":"180","k":"children managed"}]},"feedback":{"quote":"We now produce the accountant’s report in one click. It used to take us two evenings at the end of the month.","author":"—, administrator, Startica"}},"startica-site":{"stack":{"items":[{"name":"Nuxt 3","role":"Site pages, in three languages"},{"name":"Supabase","role":"Enrolment requests"},{"name":"Vercel","role":"Hosting and optimised images"}]},"result":{"stats":[{"v":"40+","k":"enrolment requests per month"},{"v":"70%","k":"visits from phones"},{"v":"3","k":"languages"}]},"feedback":{"quote":"Parents arrive for a visit already knowing the group and programme. The conversation starts at a different level.","author":"—, manager, Startica"}},"aurelia-badiur":{"stack":{"items":[{"name":"Nuxt 3","role":"Static site, in two languages"},{"name":"Vercel","role":"Hosting"},{"name":"Form + WhatsApp","role":"Direct requests from wineries"}]},"result":{"stats":[{"v":"8","k":"requests in the first month"},{"v":"3","k":"new collaborations"},{"v":"2","k":"languages"}]},"feedback":{"quote":"Now I send one link and the winery understands right away how I can help.","author":"Aurelia Badiur, oenology consultant"}},"englishminds":{"stack":{"items":[{"name":"Nuxt 3","role":"Website and blog"},{"name":"Supabase","role":"Level test and bookings"},{"name":"Figma","role":"Instagram templates"}]},"result":{"stats":[{"v":"120","k":"level tests completed"},{"v":"35","k":"demo lessons booked"},{"v":"+60%","k":"Instagram followers"}]},"feedback":{"quote":"The level test brings us students who already know what they want. It is the best first step we have had.","author":"—, founder, EnglishMinds"}},"swisscars":{"stack":{"items":[{"name":"Vercel","role":"Hosting"},{"name":"Admin panel","role":"Inventory, reservations, sales"}]},"result":{"stats":[{"v":"25","k":"cars sold through the site"},{"v":"90+","k":"requests per month"},{"v":"3","k":"languages"}]},"feedback":{"quote":"I send the customer the car’s link and they have everything: photos, history, leasing. Fewer calls just for details.","author":"—, owner, SwissCars.md"}},"bloom":{"result":{"stats":[{"v":"320","k":"orders per month"},{"v":"−30%","k":"flowers lost"},{"v":"4","k":"sellers on the app"}]},"feedback":{"quote":"In the morning I see which orders to make and which flowers to reorder. I no longer count stock on paper.","author":"—, owner, Bloom Florist"}},"truckerhq":{"result":{"stats":[{"v":"1,200","k":"Carrier Lookup searches per month"},{"v":"45","k":"dispatch requests"},{"v":"2","k":"languages"}]},"feedback":{"quote":"Drivers find us through Carrier Lookup and stay for dispatch. The free tool brings in most of our clients.","author":"—, founder, Trucker HQ"}}};
 const ORDER = ['startica-app', 'bloom', 'truckerhq', 'startica-site', 'aurelia-badiur', 'englishminds', 'swisscars'];
+const REAL = {"startica-app":{"goal":"Find, together with the kindergarten team, a solution that brings children, payments, attendance and staff into one place, so the director can always see who has paid and who needs a reminder, without depending on the internet.","constraints":[{"k":"Two currencies","v":"The price is in euros, payment is in lei, at the National Bank rate of the payment day. The rate is frozen on each payment and the payment is split across months, so that debt, counted in lei, does not drift when the rate moves"},{"k":"No guaranteed internet","v":"The app runs fully on the computer, with no connection needed"},{"k":"Several computers and branches","v":"Each branch has its own computers, the staff is shared, and the app is ready for several computers and branches; when two computers change the same thing, the app shows the difference instead of choosing for the person"},{"k":"Sensitive data about children and staff","v":"Access is set per computer and per module, salaries sit behind a PIN, and medical data never goes out over Telegram"},{"k":"Users","v":"Teachers, front desk and accountant without technical training; each sees only what they need, and permanent deletion asks for written confirmation"}],"biz":["We wrote down every money rule with the client: one payment covers one service, differences up to 5 lei are rounded, and an advance covers the following months at the rate of the payment day.","Euros stay only the price; everything collected, allocated and owed is in lei, so debt does not move with the exchange rate.","We set the data flow by role: teachers mark attendance, the front desk handles visits, the accountant records payments, and the director gets the morning summary.","Attendance is marked child by child, with no \"mark all present\": an untouched child stays unmarked instead of wrongly showing as present.","SMS to parents goes out only when a person sends it, with a preview and a monthly cap, never automatically.","Records are archived first and permanently deleted only from the archive; access is set per computer, with profiles for management, teacher, front desk and pool."]},"bloom":{"goal":"Find, together with the shop's team, a solution that keeps orders, stock and costs in one place, so sellers can work fast and the owner can see where the business earns and where it loses.","constraints":[{"k":"Protected financial data","v":"Sellers work with stock but never see purchase prices, margins or profit; the rules are enforced in the database, not only in the interface"},{"k":"Correct stock with many people at once","v":"Two sellers can sell the same flower in the same minute; stock can never go below zero, and a cancelled order returns its items exactly once"},{"k":"Users","v":"Non-technical sellers who work standing up, on their phones"},{"k":"Real cost","v":"The same rose costs differently from one delivery to the next, so cost is recomputed on every delivery to keep reported profit real"},{"k":"Languages","v":"The interface works in Romanian and English"}],"biz":["We agreed the roles with the client: what the seller and the admin can do and see.","We traced a flower's path, from supplier to customer or to write-off, and wrote a design document for each stage.","Stock is reserved when an order is created, so flowers promised to one customer can't be sold to another.","Walk-in sales reuse the order flow in a quick mode, so staff learn one way of working.","Losses are recorded with a reason and every delivery has a supplier, so the owner sees why and from where stock is lost.","Financial data stays confidential, and every important action has an author in the log."]},"truckerhq":{"goal":"Find, together with the client, a way to bring small carriers to the site through genuinely useful tools, so that those who need a dispatcher leave a complete request without a qualifying call.","constraints":[{"k":"Public but sensitive data","v":"A DOT or MC number can identify a sole proprietor; these numbers never reach ad platforms, and the forms save data without being able to read it back from the browser"},{"k":"Regulated SMS in the US","v":"Texts need explicit consent, a STOP option and an SMS terms page; sends are capped so the forms can't be abused"},{"k":"Two languages, not a translation","v":"The audience speaks English and Russian; the main pages exist in both, with Cyrillic fonts and correct signals for Google"},{"k":"Users","v":"Drivers on a phone, in a cab: short forms, large buttons, no account and no password"},{"k":"Data from a third-party system","v":"The FMCSA registry publishes no response schema, so its data is mapped to our own model, with our own carrier health score"}],"biz":["We started from the visitor types and worked out for each what they look for, what data they give us and where it goes.","The tools are free with no sign-up, to bring search traffic and build trust before any sale.","The flat price sits next to a calculator comparing it to a percentage dispatcher, so carriers see their own saving.","Packages are split by the carrier's stage, not by what we would like to sell.","Thin pages are kept out of Google, so the site is not penalised for duplicate content.","The carrier panel with accounts was postponed: we validate demand with simple forms first."]},"startica-site":{"goal":"To find, together with the client, a way to keep the website parents know while handing control to the kindergarten's team, so events go live without a developer and no request gets lost.","constraints":[{"k":"Same face, new platform","v":"Parents should not notice the switch: every page was compared with the original, element by element"},{"k":"Photos locked on the old server","v":"The old server refused images shown on another domain; the photos were moved into the client's own storage"},{"k":"Non-technical users","v":"Kindergarten staff publish events: the panel asks only for title, date, text and photos"},{"k":"Personal data","v":"The forms collect names, phone numbers and the child's age, and the data goes only to the team, never exposed publicly"},{"k":"Drafts vs. published","v":"A half-written event must not appear on the site"},{"k":"More languages later","v":"Event content is prepared for RO, RU and EN, so expanding won't require a rebuild"}],"biz":["We keep the identity parents recognise, with no visual overhaul that would not have solved a real problem.","The team publishes events on its own, with no developer and no waiting.","Every request goes straight to the person who can act on it, within seconds.","The site's photos and data live in the client's own accounts, not on someone else's platform.","A structure ready for more languages: expanding does not require rebuilding the site."]},"aurelia-badiur":{"goal":"To find, together with the client, a clear way to present her career and working method, so that a winery owner quickly understands what she offers and can contact her right away.","constraints":[{"k":"Two languages, each with its own SEO","v":"Each language has its own page with correct title, description and language links, so search engines treat them separately"},{"k":"No server of our own","v":"The site stays on static hosting, so the form has to send messages without a backend"},{"k":"Premium look","v":"Keep the burgundy and cream palette and editorial typography, with no radical redesign"},{"k":"Mobile first","v":"An audience reading on phones: large touch targets, a mobile menu, a floating WhatsApp button"},{"k":"Accessibility","v":"Keyboard navigation, checked contrast, labels for screen readers"},{"k":"Specialist content","v":"Oenology terms must be conveyed accurately in both languages"}],"biz":["Her career and working method are explained once, clearly, instead of being repeated in every conversation.","Contact on three paths (form, WhatsApp, email), because winery owners pick the channel that suits them.","Each language has its own page with its own SEO, so she is found correctly by people searching in Romanian or English.","The visual identity stays the client's own: we polished it rather than redoing it.","Static hosting and content that rarely changes: no daily upkeep."]},"englishminds":{"goal":"Find, together with the academy, a way to take a parent from a post or an ad to a free demo lesson, with the child's age and level already known, so the team only calls parents who are ready to enrol.","constraints":[{"k":"Children's data","v":"Parents provide data about minors; we decided not to keep the child's name or the test answers, and the diploma is generated only on the parent's device"},{"k":"Mobile users","v":"The parent arrives from Instagram, on a phone, with little patience; the target is booking in at most two screens"},{"k":"Children who can't read well yet","v":"The test for ages 5–8 uses colours, counting and audio questions, not just text"},{"k":"Ads and consent","v":"Campaigns need measurement, but only with the visitor's consent"},{"k":"One identity","v":"The website, the flyer and social media must look like the same school"}],"biz":["We started from what already worked on Instagram and turned it into a brand guide for all materials.","Together with the academy we mapped the parent's path from ad to demo lesson in four steps.","We chose WhatsApp over a classic form, because local parents already message there.","We handled children's data with care: we do not keep the child's name or the test answers.","We tailored the test by age, with visual and audio questions for children who can't read well yet."]},"swisscars":{"goal":"Find, together with the client, a way for buyers to see cars in their own language and request an offer easily, while the dealer keeps the catalog and enquiries under control.","constraints":[{"k":"Three languages","v":"Every car, review and page text exists in Romanian, Russian and English; Romanian stays the default"},{"k":"Non-technical users","v":"Cars, photos, the homepage, contact data and the logo are edited from the panel, with no code"},{"k":"Customer contact data","v":"Names and phones of people requesting an offer are visible to the administrator only, and forms are rate-limited against spam"},{"k":"Fast response","v":"The enquiry must reach Telegram and email without the visitor waiting on the form"},{"k":"Search visibility","v":"A page for every car, in every language, easy to find in search engines"}],"biz":["We started from the dealer's working day: how a car is added, how an enquiry arrives, who answers.","We defined the flow of an enquiry, from the form to the Telegram and email alert, so none goes unanswered.","We set clear roles: visitors browse the catalog, only the administrator enters the panel.","We structured the content in three languages, so every buyer reads everything in their own.","We protected customers' contact data and limited abusive submissions."]}};
 const STAR = {"startica-app":{"cost":[{"v":"2 evenings","k":"a month on the accounting report"},{"v":"4","k":"separate records, one per branch"},{"v":"~15%","k":"arrears noticed late"}],"goal":"One app for attendance, payments and expenses, used by every branch from the first day of the school year.","constraints":[{"k":"Deadline","v":"10 weeks, by 1 September"},{"k":"Users","v":"Administrators with no technical background"},{"k":"Existing data","v":"Separate Excel registers, one per branch"},{"k":"Budget","v":"Fixed, set in the proposal"}],"biz":["We followed an administrator through a working day before drawing any screen.","The accounting report follows the format the accountant asked for, so it is no longer redone by hand.","SMS reminders for arrears bring payments in before the end of the month.","Launch on one pilot branch, then roll out to the rest."],"incident":{"found":"In week 5 the accountant asked for the monthly report to be importable straight into his accounting software. The report had been planned as a PDF to read.","risk":"Rewriting the report after launch, and another month of typing the figures into accounting by hand.","action":"We got a sample import file from the accountant and built the export in that format in the next sprint, ahead of the secondary modules. We checked the first report with him on the test month data.","outcome":[{"v":"0 days","k":"launch delay"},{"v":"3 wks","k":"delay avoided"}]},"gains":[{"v":"180","k":"children managed in one place"},{"v":"−40%","k":"arrears after 3 months"}],"savings":[{"v":"12 h","k":"manual work saved monthly"},{"v":"~€2,400","k":"a year in admin time"}]},"startica-site":{"cost":[{"v":"30+","k":"calls a week with the same questions"},{"v":"0","k":"requests outside office hours"},{"v":"3","k":"languages, managed by hand"}],"goal":"A site that answers the frequent questions and brings enrolment requests in Romanian, Russian and English.","constraints":[{"k":"Deadline","v":"6 weeks, before enrolment season"},{"k":"Content","v":"Over 200 photos"},{"k":"Audience","v":"Mostly on phones"},{"k":"Admin","v":"From a panel, no developer needed"}],"biz":["Pages are ordered by the questions parents ask on the phone.","The form asks for group and schedule, so the manager calls prepared.","The 24-hour reply time is shown next to the form."],"incident":{"found":"While migrating the photos we found half were 6–8 MB originals straight from a phone. The home page went over 40 MB.","risk":"A slow site on mobile data right in enrolment season, and weak Google rankings.","action":"We added automatic optimisation on upload: every photo is converted to WebP in three sizes. The admin uploads any file and the site serves the size that fits the screen.","outcome":[{"v":"40 → 2 MB","k":"home page"},{"v":"0 days","k":"delay"}]},"gains":[{"v":"40+","k":"enrolment requests a month"},{"v":"24/7","k":"requests outside office hours"}],"savings":[{"v":"−60%","k":"repetitive calls"},{"v":"~6 h","k":"a week for the manager"}]},"aurelia-badiur":{"cost":[{"v":"3–4","k":"messages before the first meeting"},{"v":"0","k":"requests from outside Moldova"}],"goal":"A bilingual presentation the consultant can send to any winery, leading straight to a 1:1 conversation.","constraints":[{"k":"Deadline","v":"4 weeks"},{"k":"Content","v":"Technical copy, for specialists and owners"},{"k":"Languages","v":"Romanian and English"},{"k":"Budget","v":"Small, static site"}],"biz":["The service is split into full follow-up and one-off consulting.","Training and fields come before the services, to build trust.","Three contact channels, the winery chooses."],"incident":{"found":"In week 2 the client got a request from a winery in France that wanted a written presentation. The English version was not ready.","risk":"Losing a foreign client, or delaying launch for translations.","action":"We published the English services page first, as a separate link, and finished the rest in parallel. The full site launched on time.","outcome":[{"v":"1","k":"foreign client kept"},{"v":"0 days","k":"delay"}]},"gains":[{"v":"8","k":"requests in the first month"},{"v":"3","k":"new collaborations"}],"savings":[{"v":"1 link","k":"instead of 3–4 explaining messages"},{"v":"~3 h","k":"a week of correspondence"}]},"englishminds":{"cost":[{"v":"4","k":"different visual styles across materials"},{"v":"~5%","k":"visitors who reached contact"}],"goal":"A unified identity and a clear path from first visit to the demo lesson.","constraints":[{"k":"Deadline","v":"8 weeks, before September enrolment"},{"k":"Audience","v":"Children, parents and adults"},{"k":"Client team","v":"Posts on Instagram themselves"},{"k":"Deliverables","v":"Brand, site, flyer, templates"}],"biz":["The level test is the first step, no strings attached.","The demo lesson is the second action, after the test result.","The school team fills in the Instagram templates, no designer needed."],"incident":{"found":"Midway through we learned the school was opening a summer camp, with enrolment in 3 weeks, not September.","risk":"The camp promoted with the old materials, with no page and no sign-up form.","action":"We reordered deliveries: the camps page, the flyer and 6 posts moved ahead of the blog. The rest of the site followed the original plan.","outcome":[{"v":"on time","k":"camp promoted"},{"v":"0 days","k":"site delay"}]},"gains":[{"v":"120","k":"level tests completed"},{"v":"35","k":"demo lessons booked"}],"savings":[{"v":"~4 h","k":"a week on posts"},{"v":"€0","k":"external designer for materials"}]},"swisscars":{"cost":[{"v":"~€150","k":"a month on paid listings"},{"v":"2–3 days","k":"to update a listing"}],"goal":"An own catalogue, managed from a panel, with a full page for every car and leasing options.","constraints":[{"k":"Deadline","v":"8 weeks"},{"k":"Stock","v":"Changes weekly"},{"k":"Photos","v":"30–60 per car"},{"k":"Languages","v":"Romanian, Russian, English"}],"biz":["Every car has its own link, sent straight to the client.","Leasing sits next to the price, not on a separate page.","Real reviews sit next to the stock."],"incident":{"found":"In week 4 we noticed sold cars stayed visible for hours because of caching. A client called about a car already sold.","risk":"Lost buyer trust and wasted calls for the sales team.","action":"We tied the status in the panel to page revalidation: on “Sold”, the page updates within seconds and the car leaves the list.","outcome":[{"v":"< 10 s","k":"update after a sale"},{"v":"0 days","k":"delay"}]},"gains":[{"v":"1 link","k":"per car, ready to send"},{"v":"3","k":"languages for buyers"}],"savings":[{"v":"−€150","k":"a month on listings"},{"v":"~5 h","k":"a week on updates"}]},"bloom":{"cost":[{"v":"~8%","k":"flowers lost, noticed only at stocktake"},{"v":"3","k":"separate records"}],"goal":"One record for orders, stock and payments, with the real margin on every product.","constraints":[{"k":"Deadline","v":"12 weeks, before 8 March"},{"k":"Roles","v":"Admin and sellers, separate access"},{"k":"Payments","v":"MAIB and PayNet"},{"k":"Peaks","v":"14 February and 8 March"}],"biz":["The order board follows how florists work: Confirmed, In progress, Ready.","Losses are logged by reason, to show where they come from.","Financial data stays with the admin only."],"incident":{"found":"In load tests before 8 March we found that two simultaneous orders on the last items of a batch could both go through. Stock went negative.","risk":"Confirmed orders with no flowers, on the busiest sales day of the year.","action":"We moved order creation into an atomic database function with locking stock reservation, and added tests for this case.","outcome":[{"v":"0","k":"out-of-stock orders on 8 March"},{"v":"0 days","k":"delay"}]},"gains":[{"v":"+11%","k":"margin, after price adjustments"},{"v":"1","k":"record for everything"}],"savings":[{"v":"−35%","k":"flower losses"},{"v":"~6 h","k":"a week on stocktake"}]},"truckerhq":{"cost":[{"v":"8–10%","k":"of each load, paid to dispatchers"},{"v":"0","k":"organic traffic"}],"goal":"A site that explains the flat fee, brings dispatch requests and draws traffic through free tools.","constraints":[{"k":"Deadline","v":"10 weeks"},{"k":"Languages","v":"English, Russian"},{"k":"Data","v":"FMCSA, sometimes incomplete"},{"k":"Users","v":"Drivers, on phones"}],"biz":["The flat fee is compared directly with the percentage per load.","No-account tools are the first contact with the carrier.","Pages for every state, for local searches."],"incident":{"found":"In week 6 the FMCSA access key got stuck in approval, with an estimated 4 weeks.","risk":"The tools, the main part of the site, could not launch.","action":"We built a sample data layer with the same structure as the API. The site launched on it, and switched to live data from a setting once the key arrived.","outcome":[{"v":"4 wks","k":"delay avoided"},{"v":"1 setting","k":"to switch to live data"}]},"gains":[{"v":"50+","k":"state pages indexed"},{"v":"24/7","k":"dispatch requests"}],"savings":[{"v":"~$1,200","k":"a month per truck vs percentage"},{"v":"$0","k":"ads for the first requests"}]}};
 const LINKS = {"startica-app":[{"kind":"CODEPEDIA preview","url":"https://preview.codepedia.studio/startica-app","note":"Demo account, fictional data"},{"kind":"Figma","url":"https://www.figma.com/","note":"Mockups and flow"}],"bloom":[{"kind":"CODEPEDIA preview","url":"https://preview.codepedia.studio/bloom","note":"Demo admin / seller account"},{"kind":"Figma","url":"https://www.figma.com/","note":"Mockups"}],"truckerhq":[{"kind":"CODEPEDIA preview","url":"https://preview.codepedia.studio/truckerhq","note":"Before launch"}],"englishminds":[{"kind":"Figma","url":"https://www.figma.com/","note":"Brand and templates"}],"swisscars":[],"startica-site":[],"aurelia-badiur":[]};
 const EXTRA = {"startica-app":["assets/proiecte/startica-app-prezenta-crop.png","assets/proiecte/startica-app-dashboard-crop.png"],"truckerhq":["assets/proiecte/truckerhq-carriers-1600.png"]};
+const NAV_PROJ = {"website":[{"name":"Startica","sub":"grădiniță în Chișinău","metric":"","img":"https://startica.md/media/filer_public_thumbnails/filer_public/20/a7/20a767a2-71dc-4a4f-af3b-2a1b5a632053/grupa-2.jpeg__880x605_crop_subsampling-2_upscale.webp","href":"Studiu de caz.dc.html?p=startica-site"},{"name":"Aurelia Badiur","sub":"consultant oenolog","metric":"","img":"https://aureliabadiur.com/images/hero.jpg","href":"Studiu de caz.dc.html?p=aurelia-badiur"}],"aplicatie-web":[{"name":"Startica","sub":"aplicație desktop","metric":"","img":"assets/proiecte/startica-app-dashboard-crop.png","href":"Studiu de caz.dc.html?p=startica-app"},{"name":"Bloom Florist","sub":"gestiune florărie","metric":"","img":"assets/proiecte/bloom-panou-1600.png","href":"Studiu de caz.dc.html?p=bloom"},{"name":"Trucker HQ","sub":"dispatch auto","metric":"","img":"assets/proiecte/truckerhq-acasa-1600.png","href":"Studiu de caz.dc.html?p=truckerhq"},{"name":"SwissCars","sub":"auto din Elveția","metric":"","img":"https://krltqxdhxiguxwookqgg.supabase.co/storage/v1/object/public/car-images/cars/ae25eba6-b9ae-4b21-9a3b-85b025e69e21.jpg","href":"Studiu de caz.dc.html?p=swisscars"}]};
+const NAV_INTRO = {"website":"O pagină de prezentare modernă care-ți validează ideea și atrage primii clienți.","aplicatie-web":"Aplicația ta, din design în cod de producție, pe Postgres și Nuxt sau Next.","wordpress":"Site WordPress rapid, securizat și ușor de menținut, pe infrastructura modernă cu cache și CDN global.","shopify":"Magazin Shopify optimizat pentru conversie, cu design custom și integrări cu logistica și analitică reală.","automatizare-ai":"Sisteme AI custom integrate în fluxul tău de lucru, care reduc zeci de ore manuale pe lună și reduc costurile operaționale.","granturi":"Ai câștigat un grant european sau ODA și trebuie să livrezi o aplicație la termen? Construim partea tehnică a proiectului și pregătim documentele de care ai nevoie la raportare."};
+const NAV_INTRO_EN = {"website":"A modern presentation site that validates your idea and brings in the first clients.","aplicatie-web":"Your app, from design to production code, on Postgres and Nuxt or Next.","wordpress":"A fast, secure WordPress site that is easy to maintain, on modern infrastructure with caching and a global CDN.","shopify":"A Shopify store built for conversion, with custom design and integrations for logistics and real analytics.","automatizare-ai":"Custom AI systems built into your workflow that remove dozens of manual hours a month and lower operating costs.","granturi":"Won an EU or ODA grant and need to deliver an app on time? We build the technical side of the project and prepare the documents you need for reporting."};
+const NAV_SVC = [['website','Website','Website'],['aplicatie-web','Aplicație web','Web app'],['wordpress','WordPress','WordPress'],['shopify','Shopify','Shopify'],['automatizare-ai','Automatizare cu AI','AI automation'],['granturi','Proiecte finanțate prin granturi','Grant-funded projects']];
+const NAV_GROUPS = [{ ro: 'Site-uri', en: 'Websites', slugs: ['website', 'wordpress', 'shopify'] }, { ro: 'Aplicații și AI', en: 'Apps and AI', slugs: ['aplicatie-web', 'automatizare-ai', 'granturi'] }];
+function navVals(c, o) {
+  const { wide = true, menuOpen = false, scrolled = false, svcOpen = false } = c.state;
+  const open = !wide && menuOpen, en = o.lang === 'en', H = o.home;
+  const close = () => { document.body.style.overflow = ''; c.setState({ menuOpen: false, svcOpen: false }); };
+  const selSlug = c.state.svcSel || o.svcSlug || 'website';
+  const L = en ? ['Services', 'Work', 'Process', 'Blog'] : ['Servicii', 'Proiecte', 'Proces', 'Blog'];
+  const st = on => ({ current: on ? 'page' : 'false', color: on ? 'var(--ink)' : 'var(--muted)', line: on ? 1 : 0, numColor: on ? '#FF4D14' : 'var(--muted)' });
+  const items = [[L[1], H + '#proiecte', 'proiecte'], [L[2], H + '#proces', 'proces'], [L[3], 'Codepedia Blog v2.dc.html' + (en ? '?lang=en' : ''), 'blog']].map(([label, href, id], i) => ({ label, href, num: String(i + 2).padStart(2, '0'), ...st(o.active === id),
+    go: e => { if (id === 'blog' && o.blogGo) { e.preventDefault(); o.blogGo(); } close(); } }));
+  const cs = h => en ? h.replace('Studiu de caz.dc.html', 'Case Study.dc.html') : h;
+  const svcRow = ([slug, ro, enName]) => { const hov = slug === selSlug, cur = slug === o.svcSlug; return { name: en ? enName : ro, href: 'Codepedia Servicii.dc.html?s=' + slug, current: cur ? 'page' : 'false', color: hov ? 'var(--ink)' : 'var(--muted)', bar: hov ? '#FF4D14' : 'transparent', weight: hov ? 600 : 400, mColor: cur ? '#FF4D14' : 'var(--ink)', pick: () => c.setState({ svcSel: slug, projHover: 0 }), go: close }; };
+  const row = NAV_SVC.find(r => r[0] === selSlug), nm = en ? row[2] : row[1];
+  const pr = (NAV_PROJ[selSlug] || []).slice(0, 4), hi = Math.min(c.state.projHover || 0, Math.max(pr.length - 1, 0));
+  return {
+    themeLabel: (document.documentElement.dataset.theme === 'dark') ? (en ? 'Light theme' : 'Temă luminoasă') : (en ? 'Dark theme' : 'Temă întunecată'),
+    toggleTheme: () => { const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = t; try { localStorage.setItem('codepedia:theme', t); } catch (e) {} c.forceUpdate(); },
+    navLang: en ? 'en' : 'ro', navHome: H,
+    isWide: wide, isNarrow: !wide, mobileOpen: open, menuOpenStr: String(open),
+    hdrH: scrolled ? '52px' : '64px', hdrShadow: scrolled ? '0 10px 24px -18px rgba(11,11,11,0.35)' : 'none',
+    bTop: open ? 'translateY(7px) rotate(45deg)' : 'none', bBot: open ? 'translateY(-7px) rotate(-45deg)' : 'none', bMidOp: open ? 0 : 1,
+    toggleMenu: () => { const n = !c.state.menuOpen; document.body.style.overflow = n ? 'hidden' : ''; c.setState({ menuOpen: n }); },
+    closeMenu: close, logoHref: H || '#top',
+    navLabel: en ? 'Main navigation' : 'Navigare principală', menuLabel: en ? 'Menu' : 'Meniu',
+    ctaLabel: en ? 'Discuss a project' : 'Discută un proiect', ctaHref: H + '#contact',
+    hasLangs: o.langs.length > 0,
+    langItems: o.langs.map((l, i) => ({ code: l.code, href: l.href || '#', hl: l.code.toLowerCase(), current: l.on ? 'true' : 'false', color: l.on ? 'var(--ink)' : 'var(--muted)', sep: i ? 'inline' : 'none',
+      go: e => { if (!l.href) { e.preventDefault(); if (l.go) l.go(); } close(); } })),
+    svc: { label: L[0], href: 'Codepedia Servicii.dc.html', ...st(o.active === 'servicii') },
+    svcOpenStr: String(svcOpen), svcVis: svcOpen ? 'visible' : 'hidden', svcOp: svcOpen ? 1 : 0, svcShift: svcOpen ? 'none' : 'translateY(-6px)', svcCaret: svcOpen ? 'rotate(180deg)' : 'none',
+    svcEnter: () => { clearTimeout(c._svcT); if (!c.state.svcOpen) c.setState({ svcOpen: true }); },
+    svcLeave: () => { clearTimeout(c._svcT); c._svcT = setTimeout(() => c.setState({ svcOpen: false }), 220); },
+    svcClick: e => { if (!c.state.svcOpen) { e.preventDefault(); c.setState({ svcOpen: true }); } },
+    svcGroups: NAV_GROUPS.map(g => ({ label: en ? g.en : g.ro, items: g.slugs.map(s => svcRow(NAV_SVC.find(r => r[0] === s))) })),
+    sel: { kicker: pr.length ? (en ? 'Projects · ' : 'Proiecte · ') + nm : nm, hasProj: pr.length > 0, noProj: !pr.length, intro: (en ? NAV_INTRO_EN : NAV_INTRO)[selSlug] || '',
+      href: 'Codepedia Servicii.dc.html?s=' + selSlug, serviceLink: en ? 'About the service' : 'Despre serviciu',
+      projects: pr.map((p, k) => ({ ...p, href: cs(p.href), bg: k === hi ? 'var(--hatch)' : 'transparent', metricColor: k === hi ? '#FF4D14' : 'var(--muted)', hover: () => c.setState({ projHover: k }) })),
+      hasCur: !!pr[hi], cur: pr[hi] ? { ...pr[hi], href: cs(pr[hi].href) } : { name: '', img: '', href: '#', sub: '' } },
+    allHref: H + '#proiecte', allLabel: en ? 'See all projects' : 'Vezi toate proiectele',
+    navItems: items,
+  };
+}
+function navWatch(c, extra) {
+  const f = () => { const w = window.innerWidth >= 900, y = window.scrollY; const st = { wide: w, scrolled: y > 8, ...(extra ? extra(y) : {}) }; if (w && c.state.menuOpen) { st.menuOpen = false; document.body.style.overflow = ''; } c.setState(st); };
+  c._navF = f; window.addEventListener('scroll', f, { passive: true }); window.addEventListener('resize', f); f();
+}
+function navUnwatch(c) { window.removeEventListener('scroll', c._navF); window.removeEventListener('resize', c._navF); clearTimeout(c._svcT); document.body.style.overflow = ''; }
+
 class Component extends DCLogic {
   state = { lb: -1 };
   componentDidMount() {
+    navWatch(this);
     this._key = (e) => {
       if (this.state.lb < 0) return;
       if (e.key === 'Escape') this.setState({ lb: -1 });
@@ -459,16 +1191,19 @@ class Component extends DCLogic {
     };
     window.addEventListener('keydown', this._key);
   }
-  componentWillUnmount() { window.removeEventListener('keydown', this._key); }
+  componentWillUnmount() { navUnwatch(this); window.removeEventListener('keydown', this._key); }
   _step(d) { const n = this._n || 1; this.setState(s => ({ lb: (s.lb + d + n) % n })); }
-  renderVals() {
+  _nav(r) { return navVals(this, { lang: 'en', home: 'Codepedia EN.dc.html', active: 'proiecte', langs: [{ code: 'RO', href: 'Studiu de caz.dc.html' + window.location.search }, { code: 'EN', on: true }] }); }
+  renderVals() { const r = this._rv(); return { ...r, ...this._nav(r) }; }
+  _rv() {
     let slug = '';
     try { slug = new URLSearchParams(window.location.search).get('p') || ''; } catch (e) {}
     if (!PROJECTS[slug]) slug = this.props.project && PROJECTS[this.props.project] ? this.props.project : ORDER[0];
     const p = PROJECTS[slug];
-    const demo = this.props.showDemo ?? true;
+    const demo = this.props.showDemo ?? false;
     const D = demo ? (DEMO[slug] || {}) : {};
-    const star = demo ? STAR[slug] : null;
+    const real = REAL[slug] || null; const sd = demo ? (STAR[slug] || null) : null;
+    const star = real ? { ...real, cost: (sd && sd.cost) || [], gains: (sd && sd.gains) || [], savings: (sd && sd.savings) || [], incident: (sd && sd.incident) || { outcome: [] } } : null;
     const stack = [...((p.stack && p.stack.items) || []), ...((D.stack && D.stack.items) || [])];
     const gallery = (p.approach && p.approach.gallery) || [];
     const quote = (p.feedback && p.feedback.quote) || (D.feedback && D.feedback.quote) || '';
@@ -488,14 +1223,15 @@ class Component extends DCLogic {
       closeLb: () => this.setState({ lb: -1 }),
       prevLb: (e) => { e.stopPropagation(); this._step(-1); },
       nextLb: (e) => { e.stopPropagation(); this._step(1); },
-      lbImg: lb >= 0 && shots[lb] ? React.createElement('img', { src: shots[lb].src, alt: '', onClick: (e) => e.stopPropagation(), style: { maxWidth: '100%', maxHeight: '100%', minWidth: 0, objectFit: 'contain', borderRadius: 4, background: '#FAF8F4' } }) : null,
+      lbImg: lb >= 0 && shots[lb] ? React.createElement('img', { src: shots[lb].src, alt: '', onClick: (e) => e.stopPropagation(), style: { maxWidth: '100%', maxHeight: '100%', minWidth: 0, objectFit: 'contain', borderRadius: 4, background: 'var(--paper)' } }) : null,
       p: { ...p, url: p.url || '', urlLabel: p.urlLabel || '' }, others,
       star: star || { cost: [], constraints: [], biz: [], gains: [], savings: [], incident: { outcome: [] } },
-      hasStar: !!star, noStar: !star, isDemo: !!star,
+      hasStar: !!star, noStar: !star, isDemo: !!sd, taskDemo: false, hasCost: !!(sd && sd.cost && sd.cost.length), noCost: !(sd && sd.cost && sd.cost.length), hasIncident: !!(sd && sd.incident && sd.incident.found), noIncident: !(sd && sd.incident && sd.incident.found), hasGains: !!(sd && ((sd.gains && sd.gains.length) || (sd.savings && sd.savings.length))),
       situation: (p.problem && p.problem.paras) || [],
       approach: (p.approach && p.approach.paras) || [],
       obstacles: [...((p.obstacles && p.obstacles.paras) || []), ...((p.changes && p.changes.paras) || [])],
       result: (p.result && p.result.paras) || [],
+      hasObstacles: (((p.obstacles && p.obstacles.paras) || []).length + ((p.changes && p.changes.paras) || []).length) > 0,
       stack, gallery, hasGallery: gallery.length > 0, isMock: !!p.mock && gallery.length > 0,
       stackTodo: !stack.length || (!demo && !!(p.stack && p.stack.todo)), stackTodoText: (p.stack && p.stack.todo) || 'The stack used.',
       resultTodo: !star && !!(p.result && p.result.todo), resultTodoText: (p.result && p.result.todo) || '',
