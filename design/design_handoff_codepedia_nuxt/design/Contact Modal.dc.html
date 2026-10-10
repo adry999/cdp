@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
+  <div onMouseDown="{{ backdrop }}" style="position:fixed;inset:0;z-index:100;background:rgba(11,11,11,0.55);display:flex;align-items:flex-start;justify-content:center;padding:clamp(12px,4vh,48px) 12px;overflow-y:auto">
+    <div role="dialog" aria-modal="true" aria-labelledby="cp-modal-title" onMouseDown="{{ stop }}" style="position:relative;width:100%;max-width:620px;background:var(--paper,#FAF8F4);color:var(--ink,#0B0B0B);border:1px solid var(--hair,#E2DED6);border-radius:4px;box-shadow:0 30px 80px -20px rgba(11,11,11,0.45);font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif">
+      <div style="height:2px;background:#FF4D14;border-radius:4px 4px 0 0"></div>
+      <button type="button" onClick="{{ close }}" aria-label="{{ t.close }}" style="position:absolute;top:10px;right:10px;width:44px;height:44px;border:0;border-radius:4px;background:transparent;color:var(--muted,#6B6862);cursor:pointer;font-size:20px;line-height:1" style-hover="background:var(--hatch,#F1EEE7);color:var(--ink,#0B0B0B)">✕</button>
+      <div style="padding:clamp(24px,4vw,40px);display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;flex-direction:column;gap:12px;padding-right:40px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted,#6B6862)"><span style="color:#FF4D14">●</span> {{ t.kicker }}</span>
+          <h2 id="cp-modal-title" style="margin:0;font-size:clamp(24px,3vw,32px);font-weight:600;line-height:1.1;letter-spacing:-0.025em;text-wrap:pretty">{{ t.title }}</h2>
+          <p style="margin:0;font-size:16px;color:var(--muted,#6B6862);text-wrap:pretty">{{ t.lead }}</p>
+        </div>
+
+        <sc-if value="{{ isForm }}" hint-placeholder-val="{{ true }}">
+          <form onSubmit="{{ submit }}" noValidate="{{ true }}" style="display:flex;flex-direction:column;gap:18px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px">
+              <label style="display:flex;flex-direction:column;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted,#6B6862)">{{ t.name }}
+                <input ref="{{ firstRef }}" type="text" autoComplete="name" value="{{ f.name }}" onChange="{{ on.name }}" style="width:100%;border:1px solid {{ bd.name }};border-radius:4px;padding:12px 14px;background:var(--paper,#FAF8F4);color:var(--ink,#0B0B0B);font-family:'Inter Tight',sans-serif;font-size:16px;text-transform:none;letter-spacing:0;outline:none" style-focus="border-color:var(--ink,#0B0B0B)" />
+                <sc-if value="{{ err.name }}" hint-placeholder-val="{{ false }}"><span style="color:#FF4D14;text-transform:none;letter-spacing:0.02em">{{ err.name }}</span></sc-if>
+              </label>
+              <label style="display:flex;flex-direction:column;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted,#6B6862)">{{ t.email }}
+                <input type="email" autoComplete="email" value="{{ f.email }}" onChange="{{ on.email }}" style="width:100%;border:1px solid {{ bd.email }};border-radius:4px;padding:12px 14px;background:var(--paper,#FAF8F4);color:var(--ink,#0B0B0B);font-family:'Inter Tight',sans-serif;font-size:16px;text-transform:none;letter-spacing:0;outline:none" style-focus="border-color:var(--ink,#0B0B0B)" />
+                <sc-if value="{{ err.email }}" hint-placeholder-val="{{ false }}"><span style="color:#FF4D14;text-transform:none;letter-spacing:0.02em">{{ err.email }}</span></sc-if>
+              </label>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted,#6B6862)">{{ t.company }}
+              <input type="text" autoComplete="organization" value="{{ f.company }}" onChange="{{ on.company }}" style="width:100%;border:1px solid var(--rule,#C9C4BA);border-radius:4px;padding:12px 14px;background:var(--paper,#FAF8F4);color:var(--ink,#0B0B0B);font-family:'Inter Tight',sans-serif;font-size:16px;text-transform:none;letter-spacing:0;outline:none" style-focus="border-color:var(--ink,#0B0B0B)" />
+            </label>
+            <fieldset style="margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:10px">
+              <legend style="padding:0;margin-bottom:10px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted,#6B6862)">{{ t.service }}</legend>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <sc-for list="{{ services }}" as="s" hint-placeholder-count="7">
+                  <button type="button" onClick="{{ s.pick }}" aria-pressed="{{ s.on }}" style="min-height:40px;padding:8px 14px;border:1px solid {{ s.bd }};border-radius:999px;background:{{ s.bg }};color:{{ s.color }};cursor:pointer;font-family:'Inter Tight',sans-serif;font-size:14px;font-weight:500;transition:background .15s,color .15s,border-color .15s">{{ s.label }}</button>
+                </sc-for>
+              </div>
+            </fieldset>
+            <label style="display:flex;flex-direction:column;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted,#6B6862)">{{ t.message }}
+              <textarea rows="4" value="{{ f.message }}" onChange="{{ on.message }}" placeholder="{{ t.messageHint }}" style="width:100%;resize:vertical;border:1px solid {{ bd.message }};border-radius:4px;padding:12px 14px;background:var(--paper,#FAF8F4);color:var(--ink,#0B0B0B);font-family:'Inter Tight',sans-serif;font-size:16px;line-height:1.5;text-transform:none;letter-spacing:0;outline:none" style-focus="border-color:var(--ink,#0B0B0B)"></textarea>
+              <sc-if value="{{ err.message }}" hint-placeholder-val="{{ false }}"><span style="color:#FF4D14;text-transform:none;letter-spacing:0.02em">{{ err.message }}</span></sc-if>
+            </label>
+            <label style="display:flex;flex-direction:column;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted,#6B6862)">{{ t.budget }}
+              <select value="{{ f.budget }}" onChange="{{ on.budget }}" style="width:100%;border:1px solid var(--rule,#C9C4BA);border-radius:4px;padding:12px 14px;background:var(--paper,#FAF8F4);color:var(--ink,#0B0B0B);font-family:'Inter Tight',sans-serif;font-size:16px;text-transform:none;letter-spacing:0;outline:none">
+                <sc-for list="{{ budgets }}" as="b" hint-placeholder-count="6"><option value="{{ b.v }}">{{ b.label }}</option></sc-for>
+              </select>
+            </label>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding-top:6px">
+              <p style="margin:0;max-width:34ch;font-size:13px;line-height:1.5;color:var(--muted,#6B6862)">{{ t.privacy }} <a href="#" style="color:var(--ink,#0B0B0B);text-decoration:underline;text-underline-offset:3px">{{ t.privacyLink }}</a></p>
+              <button type="submit" style="border:0;border-radius:4px;background:#FF4D14;color:#FAF8F4;padding:14px 22px;cursor:pointer;font-family:'Inter Tight',sans-serif;font-size:15px;font-weight:500" style-hover="background:var(--ink,#0B0B0B);color:var(--paper,#FAF8F4)">{{ submitLabel }}</button>
+            </div>
+          </form>
+        </sc-if>
+
+        <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:20px;border-top:1px solid var(--hair,#E2DED6);padding-top:24px">
+            <div style="display:flex;align-items:center;gap:12px"><span style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#FF4D14;color:#FAF8F4;font-size:18px">✓</span><span style="font-size:18px;font-weight:600">{{ t.success }}</span></div>
+            <ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;border-bottom:1px solid var(--hair,#E2DED6)">
+              <sc-for list="{{ t.steps }}" as="st" hint-placeholder-count="3">
+                <li style="display:flex;gap:16px;padding:12px 0;border-top:1px solid var(--hair,#E2DED6);font-size:15px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#FF4D14">{{ st.n }}</span>{{ st.text }}</li>
+              </sc-for>
+            </ol>
+            <button type="button" onClick="{{ close }}" style="width:fit-content;border:1px solid var(--ink,#0B0B0B);border-radius:4px;background:transparent;color:var(--ink,#0B0B0B);padding:12px 20px;cursor:pointer;font-family:'Inter Tight',sans-serif;font-size:15px;font-weight:500">{{ t.done }}</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lang&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;ro&quot;, &quot;en&quot;], &quot;default&quot;: &quot;ro&quot;, &quot;tsType&quot;: &quot;'ro' | 'en'&quot;}, &quot;service&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;website&quot;, &quot;aplicatie-web&quot;, &quot;wordpress&quot;, &quot;shopify&quot;, &quot;automatizare-ai&quot;, &quot;granturi&quot;], &quot;default&quot;: null, &quot;tsType&quot;: &quot;string&quot;}}">
+const SVC = [['website', 'Website', 'Website'], ['aplicatie-web', 'Aplicație web', 'Web app'], ['wordpress', 'WordPress', 'WordPress'], ['shopify', 'Shopify', 'Shopify'], ['automatizare-ai', 'Automatizare cu AI', 'AI automation'], ['granturi', 'Proiect pe grant', 'Grant project'], ['nu-stiu', 'Nu știu încă', 'Not sure yet']];
+const T = {
+  ro: { kicker: 'Discută un proiect', title: 'Spune-ne problema. O rezolvăm împreună.', lead: 'O descriere scurtă a problemei este suficientă. Primești un răspuns scris într-o zi lucrătoare, cu o părere sinceră despre dacă suntem studioul potrivit.', close: 'Închide', name: 'Nume', email: 'Email', company: 'Companie (opțional)', service: 'Serviciu', message: 'Descrierea problemei', messageHint: 'Ce construim, pentru cine și până când?', budget: 'Buget', privacy: 'Trimițând acest formular, ești de acord cu', privacyLink: 'politica de confidențialitate', submit: 'Vezi dacă te putem ajuta', submitting: 'Se trimite…', success: 'Trimis. Primești un răspuns într-o zi lucrătoare.', done: 'Închide', req: 'Câmp obligatoriu.', bademail: 'Adresă de email invalidă.',
+    budgets: [['', 'Alege un interval'], ['under1k', 'sub 1.000 EUR'], ['1to2k', '1.000 – 2.000 EUR'], ['2to5k', '2.000 – 5.000 EUR'], ['over5k', 'peste 5.000 EUR'], ['unsure', 'Nu știu încă']],
+    steps: ['Răspuns scris în 1 zi lucrătoare', 'Discovery de 60 de minute, dacă are sens', 'Specificație de scop și preț în 48 de ore'] },
+  en: { kicker: 'Discuss a project', title: "Tell us your problem. Let's solve it together.", lead: 'A short description of the problem is enough. You get a written answer within one working day, with an honest opinion on whether we are the right studio for it.', close: 'Close', name: 'Name', email: 'Email', company: 'Company (optional)', service: 'Service', message: 'Describe the problem', messageHint: 'What are we building, for whom, and by when?', budget: 'Budget', privacy: 'By submitting this form, you agree to our', privacyLink: 'privacy policy', submit: 'Find out if we can help', submitting: 'Sending…', success: "Sent. You'll get a reply within one working day.", done: 'Close', req: 'Required field.', bademail: 'Invalid email address.',
+    budgets: [['', 'Choose a range'], ['under1k', 'under 1,000 EUR'], ['1to2k', '1,000 – 2,000 EUR'], ['2to5k', '2,000 – 5,000 EUR'], ['over5k', 'over 5,000 EUR'], ['unsure', 'Not sure yet']],
+    steps: ['Written reply within 1 working day', '60-minute discovery call, if it makes sense', 'Scope and price specification within 48 hours'] },
+};
+const EMPTY = { name: '', email: '', company: '', message: '', budget: '' };
+class Component extends DCLogic {
+  state = { open: false, phase: 'form', svc: null, f: { ...EMPTY }, err: {}, tried: false };
+  firstRef = React.createRef();
+  componentDidMount() {
+    this._click = e => {
+      const a = e.target.closest && e.target.closest('a[href$="#contact"], [data-contact]');
+      if (!a) return;
+      e.preventDefault(); e.stopPropagation();
+      this.openWith(a.getAttribute('data-service'));
+    };
+    this._evt = e => this.openWith(e.detail && e.detail.service);
+    this._key = e => { if (e.key === 'Escape' && this.state.open) this.close(); };
+    document.addEventListener('click', this._click, true);
+    window.addEventListener('cp:contact', this._evt);
+    window.addEventListener('keydown', this._key);
+  }
+  componentWillUnmount() { document.removeEventListener('click', this._click, true); window.removeEventListener('cp:contact', this._evt); window.removeEventListener('keydown', this._key); document.body.style.overflow = ''; }
+  openWith(service) {
+    let q = null; try { q = new URLSearchParams(location.search).get('s'); } catch (e) {}
+    const svc = service || this.props.service || q || null;
+    document.body.style.overflow = 'hidden';
+    this._ret = document.activeElement;
+    this.setState({ open: true, phase: 'form', svc, err: {}, tried: false }, () => setTimeout(() => this.firstRef.current && this.firstRef.current.focus(), 30));
+  }
+  close() { document.body.style.overflow = ''; this.setState({ open: false }); if (this._ret && this._ret.focus) this._ret.focus(); }
+  validate(f, t) {
+    const err = {};
+    if (!f.name.trim()) err.name = t.req;
+    if (!f.email.trim()) err.email = t.req; else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim())) err.email = t.bademail;
+    if (!f.message.trim()) err.message = t.req;
+    return err;
+  }
+  renderVals() {
+    const lang = this.props.lang === 'en' ? 'en' : 'ro', t = T[lang], { f, err, phase, svc, tried } = this.state;
+    const set = k => e => { const nf = { ...this.state.f, [k]: e.target.value }; this.setState({ f: nf, err: tried ? this.validate(nf, t) : {} }); };
+    return {
+      open: this.state.open, isForm: phase !== 'done', isDone: phase === 'done',
+      t: { ...t, steps: t.steps.map((text, i) => ({ text, n: String(i + 1).padStart(2, '0') })) },
+      f, err, firstRef: this.firstRef,
+      bd: { name: err.name ? '#FF4D14' : 'var(--rule,#C9C4BA)', email: err.email ? '#FF4D14' : 'var(--rule,#C9C4BA)', message: err.message ? '#FF4D14' : 'var(--rule,#C9C4BA)' },
+      on: { name: set('name'), email: set('email'), company: set('company'), message: set('message'), budget: set('budget') },
+      services: SVC.map(([id, ro, en]) => { const on = id === svc; return { label: lang === 'en' ? en : ro, on: String(on), bg: on ? 'var(--ink,#0B0B0B)' : 'transparent', color: on ? 'var(--paper,#FAF8F4)' : 'var(--ink,#0B0B0B)', bd: on ? 'var(--ink,#0B0B0B)' : 'var(--rule,#C9C4BA)', pick: () => this.setState({ svc: on ? null : id }) }; }),
+      budgets: t.budgets.map(([v, label]) => ({ v, label })),
+      submitLabel: phase === 'sending' ? t.submitting : t.submit,
+      submit: e => { e.preventDefault(); const er = this.validate(f, t); if (Object.keys(er).length) { this.setState({ err: er, tried: true }); return; } this.setState({ phase: 'sending' }); setTimeout(() => this.setState({ phase: 'done', f: { ...EMPTY } }), 700); },
+      close: () => this.close(), backdrop: () => this.close(), stop: e => e.stopPropagation(),
+    };
+  }
+}
+</script>
+</body>
+</html>

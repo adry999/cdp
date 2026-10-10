@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://codepedia.studio/#org","name":"CODEPEDIA","legalName":"CODEPEDIA SRL","url":"https://codepedia.studio","logo":"https://codepedia.studio/brand/codepedia-wordmark.svg","address":{"@type":"PostalAddress","addressLocality":"Chișinău","addressCountry":"MD"}},{"@type":"ProfessionalService","@id":"https://codepedia.studio/#business","name":"CODEPEDIA","parentOrganization":{"@id":"https://codepedia.studio/#org"},"url":"https://codepedia.studio","image":"https://codepedia.studio/brand/codepedia-wordmark.svg","address":{"@type":"PostalAddress","addressLocality":"Chișinău","addressCountry":"MD"},"areaServed":["MD","RO","EU","US","CA"],"knowsLanguage":["ro","en","ru"],"openingHoursSpecification":{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"},"makesOffer":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Website"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Web app"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"WordPress"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Shopify"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"AI automation"}}]}]}</script>
+</helmet>
+<footer data-screen-label="Footer" style="border-top:1px solid var(--hair,#E2DED6);background:var(--paper,#FAF8F4);color:var(--ink,#0B0B0B);font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,6vw,80px) clamp(20px,5vw,64px) clamp(32px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:clamp(32px,4vw,48px)">
+    <div style="display:flex;flex-direction:column;gap:18px;grid-column:span 1;min-width:0">
+      <a href="{{ homeHref }}" style="display:flex"><img src="assets/codepedia-wordmark.svg" alt="CODEPEDIA" style="display:block;height:16px;width:auto;filter:var(--logo-filter,none)" /></a>
+      <p style="margin:0;max-width:30ch;font-size:15px;line-height:1.5;color:var(--muted,#6B6862);text-wrap:pretty">{{ t.tagline }}</p>
+      <a href="{{ contactHref }}" data-contact="true" style="width:fit-content;display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:4px;background:#FF4D14;color:#FAF8F4;font-size:15px;font-weight:500" style-hover="background:var(--ink,#0B0B0B);color:var(--paper,#FAF8F4)">{{ t.cta }} <span aria-hidden="true">→</span></a>
+    </div>
+    <nav aria-label="{{ t.svcLabel }}" style="display:flex;flex-direction:column;gap:14px">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted,#6B6862)">{{ t.svcLabel }}</span>
+      <sc-for list="{{ services }}" as="s" hint-placeholder-count="6">
+        <a href="{{ s.href }}" style="font-size:15px;color:var(--ink,#0B0B0B)" style-hover="color:#FF4D14">{{ s.label }}</a>
+      </sc-for>
+    </nav>
+    <nav aria-label="{{ t.studioLabel }}" style="display:flex;flex-direction:column;gap:14px">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted,#6B6862)">{{ t.studioLabel }}</span>
+      <sc-for list="{{ studio }}" as="s" hint-placeholder-count="5">
+        <a href="{{ s.href }}" style="font-size:15px;color:var(--ink,#0B0B0B)" style-hover="color:#FF4D14">{{ s.label }}</a>
+      </sc-for>
+    </nav>
+    <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted,#6B6862)">{{ t.blogLabel }}</span>
+      <sc-for list="{{ posts }}" as="p" hint-placeholder-count="3">
+        <a href="{{ p.href }}" style="display:flex;flex-direction:column;gap:4px;padding-top:12px;border-top:1px solid var(--hair,#E2DED6);color:var(--ink,#0B0B0B)" style-hover="color:#FF4D14">
+          <span style="font-size:15px;font-weight:500;line-height:1.35;text-wrap:pretty">{{ p.title }}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted,#6B6862)">{{ p.cat }}</span>
+        </a>
+      </sc-for>
+      <a href="{{ blogHref }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink,#0B0B0B);text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px">{{ t.allPosts }} →</a>
+    </div>
+  </div>
+  <div style="border-top:1px solid var(--hair,#E2DED6)">
+    <div style="max-width:1280px;margin:0 auto;padding:20px clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted,#6B6862)">
+      <span style="display:flex;align-items:center;gap:8px"><img src="assets/codepedia-mark.svg" alt="" style="display:block;height:12px;width:auto;opacity:0.5;filter:var(--logo-filter,none)" />© 2026 CODEPEDIA SRL · Chișinău, Moldova</span>
+      <span style="display:flex;align-items:center;gap:8px"><span aria-hidden="true" style="width:6px;height:6px;border-radius:50%;background:#FF4D14"></span>{{ t.itPark }}</span>
+      <div style="display:flex;flex-wrap:wrap;gap:12px 24px">
+        <a href="#" style="color:var(--muted,#6B6862)" style-hover="color:var(--ink,#0B0B0B)">{{ t.privacy }}</a>
+        <button type="button" style="padding:0;border:0;background:transparent;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:var(--muted,#6B6862)" style-hover="color:var(--ink,#0B0B0B)">{{ t.cookies }}</button>
+      </div>
+    </div>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lang&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;ro&quot;, &quot;en&quot;], &quot;default&quot;: &quot;ro&quot;, &quot;tsType&quot;: &quot;'ro' | 'en'&quot;}, &quot;home&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;Codepedia.dc.html&quot;, &quot;tsType&quot;: &quot;string&quot;}}">
+const SVC = [['website', 'Website', 'Website'], ['aplicatie-web', 'Aplicație web', 'Web app'], ['wordpress', 'WordPress', 'WordPress'], ['shopify', 'Shopify', 'Shopify'], ['automatizare-ai', 'Automatizare cu AI', 'AI automation'], ['granturi', 'Proiecte finanțate prin granturi', 'Grant-funded projects']];
+const POSTS = {
+  ro: [['cat-costa-un-site', 'Cât costă un site în 2026: prețuri reale pe tipuri', 'Prețuri'], ['cat-costa-o-aplicatie-web', 'Cât costă o aplicație web și de ce variază atât', 'Prețuri'], ['wordpress-sau-site-custom', 'WordPress sau site custom: cum alegi în 2026', 'Comparații']],
+  en: [['how-much-does-a-website-cost', 'How much does a website cost in 2026? Real prices by type', 'Pricing'], ['web-app-development-cost', 'Web app development cost: why quotes vary so much', 'Pricing'], ['wordpress-vs-custom-website', 'WordPress vs custom website: how to choose in 2026', 'Comparisons']],
+};
+const T = {
+  ro: { tagline: 'Dezvoltare web full-stack · Site-uri, aplicații web, WordPress, Shopify', cta: 'Discută un proiect', svcLabel: 'Servicii', studioLabel: 'Studio', blogLabel: 'Din blog', allPosts: 'Toate articolele', itPark: 'Rezident Moldova IT Park', privacy: 'Confidențialitate', cookies: 'Setări cookie-uri', links: [['Proiecte', '#proiecte'], ['Proces', '#proces'], ['Despre', '#despre'], ['Blog', 'blog'], ['Contact', '#contact']] },
+  en: { tagline: 'Full-stack web development · Websites, web apps, WordPress, Shopify', cta: 'Discuss a project', svcLabel: 'Services', studioLabel: 'Studio', blogLabel: 'From the blog', allPosts: 'All articles', itPark: 'Moldova IT Park Resident', privacy: 'Privacy', cookies: 'Cookie settings', links: [['Work', '#proiecte'], ['Process', '#proces'], ['About', '#despre'], ['Blog', 'blog'], ['Contact', '#contact']] },
+};
+class Component extends DCLogic {
+  renderVals() {
+    const lang = this.props.lang === 'en' ? 'en' : 'ro', en = lang === 'en', t = T[lang];
+    const home = this.props.home ?? (en ? 'Codepedia EN.dc.html' : 'Codepedia.dc.html');
+    const blog = 'Codepedia Blog v2.dc.html' + (en ? '?lang=en' : '');
+    return {
+      t, homeHref: home || '#top', contactHref: home + '#contact', blogHref: blog,
+      services: SVC.map(([s, ro, e]) => ({ label: en ? e : ro, href: 'Codepedia Servicii.dc.html?s=' + s + (en ? '&lang=en' : '') })),
+      studio: t.links.map(([label, h]) => ({ label, href: h === 'blog' ? blog : home + h })),
+      posts: POSTS[lang].map(([slug, title, cat]) => ({ title, cat, href: 'Codepedia Blog v2.dc.html?post=' + slug + (en ? '&lang=en' : '') })),
+    };
+  }
+}
+</script>
+</body>
+</html>

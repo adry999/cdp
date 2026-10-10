@@ -12,142 +12,238 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="icon" type="image/svg+xml" href="assets/codepedia-favicon-square-filled.svg" />
+<script>try{var t=localStorage.getItem("codepedia:theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}catch(e){}</script>
 <style>
-  html, body { margin: 0; padding: 0; background: #FAF8F4; -webkit-font-smoothing: antialiased; }
+  :root { --paper:#FAF8F4; --ink:#0B0B0B; --muted:#6B6862; --hair:#E2DED6; --hatch:#F1EEE7; --panel:#F5F2EC; --rule:#C9C4BA; --inv-bg:#0B0B0B; --inv-fg:#FAF8F4; --show-light:block; --show-dark:none; --logo-filter:none; color-scheme: light; }
+  :root[data-theme="dark"] { --paper:#0F0F0E; --ink:#F2EFE9; --muted:#9C978E; --hair:#2B2A27; --hatch:#1B1A18; --panel:#161615; --rule:#4A4741; --inv-bg:#1A1918; --inv-fg:#F2EFE9; --show-light:none; --show-dark:block; --logo-filter:invert(1) brightness(0.95); color-scheme: dark; }
+  body { transition: background-color .2s, color .2s; }
+  html, body { margin: 0; padding: 0; background: var(--paper); -webkit-font-smoothing: antialiased; }
   * { box-sizing: border-box; }
   a { color: #FF4D14; text-decoration: none; }
-  a:hover { color: #0B0B0B; text-decoration: underline; text-underline-offset: 3px; }
-  ::selection { background: #FF4D14; color: #FAF8F4; }
+  a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  ::selection { background: #FF4D14; color: var(--paper); }
 </style>
 </helmet>
-<div ref="{{ rootRef }}" style="background:#FAF8F4;color:#0B0B0B;font-family:'Inter Tight',Helvetica,Arial,sans-serif;font-size:17px;line-height:1.6;letter-spacing:-0.004em">
+<div ref="{{ rootRef }}" style="background:var(--paper);color:var(--ink);font-family:'Inter Tight',Helvetica,Arial,sans-serif;font-size:17px;line-height:1.6;letter-spacing:-0.004em">
 
-  <header style="position:sticky;top:0;z-index:20;background:#FAF8F4;border-bottom:1px solid #E2DED6">
-    <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px);display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px">
-      <a href="Codepedia.dc.html" aria-label="Codepedia" style="display:flex;align-items:center;color:#0B0B0B;text-decoration:none">
-        <img src="assets/codepedia-wordmark.svg" alt="Codepedia" width="183" height="18" style="display:block;height:18px;width:auto" />
-      </a>
-      <nav style="display:flex;align-items:center;gap:clamp(14px,2vw,28px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
-        <a href="Codepedia.dc.html#proiecte" data-en="← All work" style="color:#6B6862;border-right:1px solid #E2DED6;padding-right:clamp(14px,2vw,28px)">← Toate proiectele</a>
-        <span style="display:flex;align-items:center;gap:6px">
-          <button type="button" onClick="{{ pickRo }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;background:none;border:0;padding:0;cursor:pointer;color: {{ roColor }}">RO</button>
-          <span style="color:#E2DED6">|</span>
-          <button type="button" onClick="{{ pickEn }}" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;background:none;border:0;padding:0;cursor:pointer;color: {{ enColor }}">EN</button>
-        </span>
+  <header data-screen-label="Header" style="position:sticky;top:0;z-index:30;background:var(--paper);box-shadow:{{ hdrShadow }};transition:box-shadow .2s">
+  <div style="max-width:1280px;margin:0 auto;min-height:52px;height:{{ hdrH }};transition:height .2s;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 clamp(20px,5vw,64px)">
+    <a href="{{ logoHref }}" style="display:flex;align-items:center"><img src="assets/codepedia-wordmark.svg" alt="CODEPEDIA" style="display:block;height:18px;width:auto;filter:var(--logo-filter)" /></a>
+    <sc-if value="{{ isWide }}" hint-placeholder-val="{{ true }}">
+      <nav aria-label="{{ navLabel }}" style="display:flex;align-items:center;gap:clamp(18px,2.4vw,32px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+        <div style="display:flex;align-items:center;gap:clamp(16px,2.2vw,28px)">
+          <div onMouseEnter="{{ svcEnter }}" onMouseLeave="{{ svcLeave }}">
+            <a href="{{ svc.href }}" onClick="{{ svcClick }}" aria-current="{{ svc.current }}" aria-haspopup="true" aria-expanded="{{ svcOpenStr }}" style="position:relative;display:flex;align-items:center;gap:6px;padding:8px 0;color:{{ svc.color }};text-decoration:none" style-hover="color:#FF4D14">{{ svc.label }}<span aria-hidden="true" style="display:inline-block;font-size:9px;transition:transform .2s;transform:{{ svcCaret }}">▾</span><span aria-hidden="true" style="position:absolute;left:0;right:0;bottom:2px;height:2px;background:#FF4D14;transform:scaleX({{ svc.line }});transform-origin:left;transition:transform .25s"></span></a>
+            <div style="position:absolute;top:100%;left:0;right:0;pointer-events:none;visibility:{{ svcVis }};opacity:{{ svcOp }};transform:{{ svcShift }};transition:opacity .15s,transform .15s,visibility .15s">
+              <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px);display:flex;justify-content:flex-end">
+                <div style="pointer-events:auto;width:min(860px,100%);display:grid;grid-template-columns:230px minmax(0,1fr);background:var(--paper);border:1px solid var(--hair);border-top:0;border-radius:0 0 4px 4px;box-shadow:0 28px 48px -30px rgba(11,11,11,0.45);overflow:hidden;text-transform:none;letter-spacing:0">
+                  <div style="display:flex;flex-direction:column;gap:20px;padding:22px 0;background:var(--panel);border-right:1px solid var(--hair)">
+                    <sc-for list="{{ svcGroups }}" as="g" hint-placeholder-count="2">
+                      <div style="display:flex;flex-direction:column">
+                        <div style="padding:0 20px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">{{ g.label }}</div>
+                        <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+                          <a href="{{ it.href }}" onMouseEnter="{{ it.pick }}" onFocus="{{ it.pick }}" aria-current="{{ it.current }}" style="display:block;padding:9px 20px 9px 18px;border-left:2px solid {{ it.bar }};color:{{ it.color }};font-weight:{{ it.weight }};text-decoration:none;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.3" style-hover="color:var(--ink)">{{ it.name }}</a>
+                        </sc-for>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="padding:22px 24px;display:flex;flex-direction:column;gap:16px;min-width:0">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">{{ sel.kicker }}</div>
+                    <sc-if value="{{ sel.noProj }}" hint-placeholder-val="{{ false }}">
+                      <p style="margin:0;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;line-height:1.5;color:var(--ink);text-wrap:pretty;max-width:46ch">{{ sel.intro }}</p>
+                    </sc-if>
+                    <sc-if value="{{ sel.hasProj }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:20px;align-items:start">
+                        <div style="display:flex;flex-direction:column;gap:2px">
+                          <sc-for list="{{ sel.projects }}" as="p" hint-placeholder-count="4">
+                            <a href="{{ p.href }}" onMouseEnter="{{ p.hover }}" onFocus="{{ p.hover }}" style="display:flex;flex-direction:column;gap:2px;padding:9px 10px;border-radius:3px;background:{{ p.bg }};color:var(--ink);text-decoration:none">
+                              <span style="font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;line-height:1.25">{{ p.name }}</span>
+                              <span style="font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.3;color:var(--muted)">{{ p.sub }}</span>
+                              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.04em;color:{{ p.metricColor }}">{{ p.metric }}</span>
+                            </a>
+                          </sc-for>
+                        </div>
+                        <sc-if value="{{ sel.hasCur }}" hint-placeholder-val="{{ false }}">
+                          <a href="{{ sel.cur.href }}" style="display:block;aspect-ratio:16/10;border-radius:3px;overflow:hidden;background:var(--hatch);border:1px solid var(--hair)"><div role="img" aria-label="{{ sel.cur.name }}" style="width:100%;height:100%;background-image:url({{ sel.cur.img }});background-size:cover;background-position:top left"></div></a>
+                        </sc-if>
+                      </div>
+                    </sc-if>
+                    <div style="margin-top:auto;padding-top:14px;border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em">
+                      <a href="{{ sel.href }}" style="color:var(--ink);text-decoration:none" style-hover="color:#FF4D14">{{ sel.serviceLink }} →</a>
+                      <a href="{{ allHref }}" style="color:var(--ink);text-decoration:none" style-hover="color:#FF4D14">{{ allLabel }} →</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="3">
+            <a href="{{ n.href }}" onClick="{{ n.go }}" aria-current="{{ n.current }}" style="position:relative;display:block;padding:8px 0;color:{{ n.color }};text-decoration:none" style-hover="color:#FF4D14">{{ n.label }}<span aria-hidden="true" style="position:absolute;left:0;right:0;bottom:2px;height:2px;background:#FF4D14;transform:scaleX({{ n.line }});transform-origin:left;transition:transform .25s"></span></a>
+          </sc-for>
+        </div>
+        <sc-if value="{{ hasLangs }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:6px">
+            <sc-for list="{{ langItems }}" as="l" hint-placeholder-count="2">
+              <a href="{{ l.href }}" onClick="{{ l.go }}" hreflang="{{ l.hl }}" aria-current="{{ l.current }}" style="display:flex;align-items:center;gap:6px;color:{{ l.color }};text-decoration:none" style-hover="color:#FF4D14"><span aria-hidden="true" style="display:{{ l.sep }};color:var(--rule)">/</span>{{ l.code }}</a>
+            </sc-for>
+          </div>
+        </sc-if>
+        <button type="button" onClick="{{ toggleTheme }}" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;margin:0 -6px;padding:0;border:0;border-radius:4px;background:transparent;color:var(--muted);cursor:pointer" style-hover="color:var(--ink);background:var(--hatch)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:var(--show-light)"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:var(--show-dark)"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button>
+        <a href="{{ ctaHref }}" style="display:flex;align-items:center;gap:10px;padding:9px 14px;border:1px solid var(--ink);color:var(--ink);border-radius:4px;font-weight:600;text-decoration:none;white-space:nowrap" style-hover="background:#FF4D14;border-color:#FF4D14">{{ ctaLabel }}<span aria-hidden="true">→</span></a>
       </nav>
+    </sc-if>
+    <sc-if value="{{ isNarrow }}" hint-placeholder-val="{{ false }}">
+      <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpenStr }}" aria-label="{{ menuLabel }}" style="width:44px;height:44px;margin-right:-10px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px">
+        <span style="display:block;width:22px;height:2px;background:var(--ink);transition:transform .2s;transform:{{ bTop }}"></span>
+        <span style="display:block;width:22px;height:2px;background:#FF4D14;opacity:{{ bMidOp }}"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--ink);transition:transform .2s;transform:{{ bBot }}"></span>
+      </button>
+    </sc-if>
+  </div>
+  <div style="height:2px;background:#FF4D14"></div>
+  <sc-if value="{{ mobileOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:-1;background:var(--paper);padding:88px clamp(20px,5vw,64px) 28px;display:flex;flex-direction:column;gap:28px;overflow-y:auto">
+      <nav aria-label="{{ navLabel }}" style="display:flex;flex-direction:column">
+        <div style="padding:16px 0;border-bottom:1px solid var(--hair);display:flex;flex-direction:column;gap:16px">
+          <a href="{{ svc.href }}" onClick="{{ closeMenu }}" aria-current="{{ svc.current }}" style="display:flex;align-items:baseline;gap:16px;color:var(--ink);text-decoration:none;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:32px;font-weight:600;letter-spacing:-0.02em;line-height:1.1"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:400;letter-spacing:0.08em;color:{{ svc.numColor }}">01</span>{{ svc.label }}</a>
+          <div style="display:flex;flex-direction:column;gap:14px;padding-left:36px">
+            <sc-for list="{{ svcGroups }}" as="g" hint-placeholder-count="2">
+              <div style="display:flex;flex-direction:column">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);padding-bottom:2px">{{ g.label }}</div>
+                <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+                  <a href="{{ it.href }}" onClick="{{ it.go }}" aria-current="{{ it.current }}" style="display:flex;align-items:center;min-height:44px;color:{{ it.mColor }};text-decoration:none;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;line-height:1.3">{{ it.name }}</a>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="3">
+          <a href="{{ n.href }}" onClick="{{ n.go }}" aria-current="{{ n.current }}" style="display:flex;align-items:baseline;gap:16px;padding:16px 0;border-bottom:1px solid var(--hair);color:var(--ink);text-decoration:none;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:32px;font-weight:600;letter-spacing:-0.02em;line-height:1.1"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:400;letter-spacing:0.08em;color:{{ n.numColor }}">{{ n.num }}</span>{{ n.label }}</a>
+        </sc-for>
+      </nav>
+      <sc-if value="{{ hasLangs }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.08em">
+          <sc-for list="{{ langItems }}" as="l" hint-placeholder-count="2">
+            <a href="{{ l.href }}" onClick="{{ l.go }}" hreflang="{{ l.hl }}" aria-current="{{ l.current }}" style="display:flex;align-items:center;gap:10px;min-height:44px;color:{{ l.color }};text-decoration:none"><span aria-hidden="true" style="display:{{ l.sep }};color:var(--rule)">/</span>{{ l.code }}</a>
+          </sc-for>
+        </div>
+      </sc-if>
+      <button type="button" onClick="{{ toggleTheme }}" style="display:flex;align-items:center;gap:12px;min-height:44px;padding:0;border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.08em;text-transform:uppercase"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:var(--show-light)"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:var(--show-dark)"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg><span>{{ themeLabel }}</span></button>
+      <a href="{{ ctaHref }}" onClick="{{ closeMenu }}" style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;min-height:56px;padding:0 20px;background:#FF4D14;color:var(--ink);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;text-decoration:none">{{ ctaLabel }}<span aria-hidden="true">→</span></a>
     </div>
-  </header>
+  </sc-if>
+</header>
 
   <section data-screen-label="Proiect">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,7vw,96px) clamp(20px,5vw,64px) clamp(32px,4vw,56px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
       <div style="flex:0 0 160px">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">00</span> / <span data-en="Case study">Studiu de caz</span></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:var(--ink)">00</span> / <span data-en="Case study">Studiu de caz</span></div>
       </div>
       <div style="flex:1 1 560px;min-width:0">
-        <div style="display:flex;flex-wrap:wrap;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span>Vue</span><span>·</span><span>pgvector</span><span>·</span><span>2026</span></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span>Vue</span><span>·</span><span>pgvector</span><span>·</span><span>2026</span></div>
         <h1 data-en="Twelve thousand contracts, searchable in one sentence" style="margin:20px 0 0;font-size:clamp(30px,5vw,56px);line-height:1.05;letter-spacing:-0.025em;font-weight:600;max-width:22ch;text-wrap:pretty">Douăsprezece mii de contracte, căutabile într-o propoziție</h1>
-        <p data-en="Semantic search over an archive of contracts, with answers that cite the paragraph they came from." style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:60ch;color:#6B6862;font-size:clamp(16px,1.4vw,18px)">Căutare semantică într-o arhivă de contracte, cu răspunsuri care citează paragraful din care provin.</p>
+        <p data-en="Semantic search over an archive of contracts, with answers that cite the paragraph they came from." style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:60ch;color:var(--muted);font-size:clamp(16px,1.4vw,18px)">Căutare semantică într-o arhivă de contracte, cu răspunsuri care citează paragraful din care provin.</p>
       </div>
     </div>
     <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px) clamp(32px,4vw,56px)">
-      <div style="border:1px solid #E2DED6;border-radius:4px;aspect-ratio:16/9;background-image:url(assets/codepedia-mark-watermark.svg),repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px">
-        <span data-en="[ main screenshot — 1600 × 900 ]" style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">[ captură principală — 1600 × 900 ]</span>
+      <div style="border:1px solid var(--hair);border-radius:4px;aspect-ratio:16/9;background-image:url(assets/codepedia-mark-watermark.svg),repeating-linear-gradient(45deg,var(--hatch) 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px">
+        <span data-en="[ main screenshot — 1600 × 900 ]" style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">[ captură principală — 1600 × 900 ]</span>
       </div>
     </div>
   </section>
 
-  <section data-screen-label="Date" style="border-top:1px solid #E2DED6">
+  <section data-screen-label="Date" style="border-top:1px solid var(--hair)">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,5vw,72px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
       <div style="flex:0 0 160px">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">01</span> / <span data-en="Facts">Date</span></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:var(--ink)">01</span> / <span data-en="Facts">Date</span></div>
       </div>
       <div style="flex:1 1 560px;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
-        <div style="border:1px solid #E2DED6;border-radius:4px;padding:20px">
-          <div data-en="Client" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Client</div>
+        <div style="border:1px solid var(--hair);border-radius:4px;padding:20px">
+          <div data-en="Client" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">Client</div>
           <div data-en="Legal department, Moldova" style="margin-top:8px;font-size:16px;font-weight:500">Departament juridic, Moldova</div>
         </div>
-        <div style="border:1px solid #E2DED6;border-radius:4px;padding:20px">
-          <div data-en="Duration" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Durată</div>
+        <div style="border:1px solid var(--hair);border-radius:4px;padding:20px">
+          <div data-en="Duration" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">Durată</div>
           <div data-en="7 weeks to production" style="margin-top:8px;font-size:16px;font-weight:500">7 săptămâni până în producție</div>
         </div>
-        <div style="border:1px solid #E2DED6;border-radius:4px;padding:20px">
-          <div data-en="Team" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Echipă</div>
+        <div style="border:1px solid var(--hair);border-radius:4px;padding:20px">
+          <div data-en="Team" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">Echipă</div>
           <div data-en="2 people, no subcontractors" style="margin-top:8px;font-size:16px;font-weight:500">2 oameni, fără subcontractori</div>
         </div>
-        <div style="border:1px solid #E2DED6;border-radius:4px;padding:20px">
-          <div data-en="Users" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Utilizatori</div>
+        <div style="border:1px solid var(--hair);border-radius:4px;padding:20px">
+          <div data-en="Users" style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">Utilizatori</div>
           <div data-en="12,000 contracts indexed" style="margin-top:8px;font-size:16px;font-weight:500">12.000 de contracte indexate</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section data-screen-label="Context" style="border-top:1px solid #E2DED6">
+  <section data-screen-label="Context" style="border-top:1px solid var(--hair)">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
       <div style="flex:0 0 160px">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">02</span> / <span data-en="Context">Context</span></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:var(--ink)">02</span> / <span data-en="Context">Context</span></div>
       </div>
       <div style="flex:1 1 560px;min-width:0">
         <h2 data-en="The answer existed, but only three people knew where" style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:26ch">Răspunsul exista, dar doar trei oameni știau unde</h2>
-        <p data-en="Contracts were stored as scanned PDFs across a decade of folders. Answering a question about a penalty clause meant a lawyer opening files one by one, sometimes for an hour. Full-text search returned nothing, because the scans had no text layer." style="margin:24px 0 0;max-width:64ch;color:#6B6862;font-size:17px">Contractele erau păstrate ca PDF-uri scanate, în foldere adunate peste zece ani. Un răspuns despre o clauză de penalitate însemna un jurist care deschide fișier după fișier, uneori o oră. Căutarea în text nu returna nimic, pentru că scanările nu aveau strat de text.</p>
-        <p data-en="An earlier chatbot experiment had been dropped: it answered confidently and could not be checked." style="margin:20px 0 0;max-width:64ch;color:#6B6862;font-size:17px">Un experiment anterior cu un chatbot fusese abandonat: răspundea sigur pe el și nu putea fi verificat.</p>
+        <p data-en="Contracts were stored as scanned PDFs across a decade of folders. Answering a question about a penalty clause meant a lawyer opening files one by one, sometimes for an hour. Full-text search returned nothing, because the scans had no text layer." style="margin:24px 0 0;max-width:64ch;color:var(--muted);font-size:17px">Contractele erau păstrate ca PDF-uri scanate, în foldere adunate peste zece ani. Un răspuns despre o clauză de penalitate însemna un jurist care deschide fișier după fișier, uneori o oră. Căutarea în text nu returna nimic, pentru că scanările nu aveau strat de text.</p>
+        <p data-en="An earlier chatbot experiment had been dropped: it answered confidently and could not be checked." style="margin:20px 0 0;max-width:64ch;color:var(--muted);font-size:17px">Un experiment anterior cu un chatbot fusese abandonat: răspundea sigur pe el și nu putea fi verificat.</p>
       </div>
     </div>
   </section>
 
-  <section data-screen-label="Soluție" style="border-top:1px solid #E2DED6">
+  <section data-screen-label="Soluție" style="border-top:1px solid var(--hair)">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
       <div style="flex:0 0 160px">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">03</span> / <span data-en="Solution">Soluție</span></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:var(--ink)">03</span> / <span data-en="Solution">Soluție</span></div>
       </div>
       <div style="flex:1 1 560px;min-width:0">
         <h2 data-en="No answer without a source" style="margin:0;font-size:clamp(24px,3vw,34px);line-height:1.15;letter-spacing:-0.02em;font-weight:500;max-width:26ch">Niciun răspuns fără sursă</h2>
         <div style="margin-top:clamp(24px,3vw,36px);display:flex;flex-direction:column">
-          <div style="border-top:1px solid #E2DED6;padding:20px 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
-            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">01</div>
+          <div style="border-top:1px solid var(--hair);padding:20px 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:var(--muted)">01</div>
             <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
               <h3 data-en="Text extraction and OCR" style="flex:0 0 200px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Extragere de text și OCR</h3>
-              <p data-en="Every scan passed through OCR, split into paragraphs and stored with page and position, so any passage can be pointed back to." style="flex:1 1 280px;margin:0;color:#6B6862;font-size:16px;max-width:58ch">Fiecare scanare a trecut prin OCR, împărțită pe paragrafe și stocată cu pagină și poziție, ca orice pasaj să poată fi indicat exact.</p>
+              <p data-en="Every scan passed through OCR, split into paragraphs and stored with page and position, so any passage can be pointed back to." style="flex:1 1 280px;margin:0;color:var(--muted);font-size:16px;max-width:58ch">Fiecare scanare a trecut prin OCR, împărțită pe paragrafe și stocată cu pagină și poziție, ca orice pasaj să poată fi indicat exact.</p>
             </div>
           </div>
-          <div style="border-top:1px solid #E2DED6;padding:20px 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
-            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">02</div>
+          <div style="border-top:1px solid var(--hair);padding:20px 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:var(--muted)">02</div>
             <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
               <h3 data-en="Search with citations" style="flex:0 0 200px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Căutare cu citate</h3>
-              <p data-en="Embeddings in pgvector, answers assembled only from retrieved paragraphs. Each sentence links to the contract and page it came from." style="flex:1 1 280px;margin:0;color:#6B6862;font-size:16px;max-width:58ch">Embeddings în pgvector, răspunsuri construite numai din paragrafele găsite. Fiecare frază duce la contractul și pagina din care provine.</p>
+              <p data-en="Embeddings in pgvector, answers assembled only from retrieved paragraphs. Each sentence links to the contract and page it came from." style="flex:1 1 280px;margin:0;color:var(--muted);font-size:16px;max-width:58ch">Embeddings în pgvector, răspunsuri construite numai din paragrafele găsite. Fiecare frază duce la contractul și pagina din care provine.</p>
             </div>
           </div>
-          <div style="border-top:1px solid #E2DED6;padding:20px 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
-            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">03</div>
+          <div style="border-top:1px solid var(--hair);padding:20px 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:var(--muted)">03</div>
             <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
               <h3 data-en="Cost control" style="flex:0 0 200px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Control al costului</h3>
-              <p data-en="A hard cap per query and a monthly ceiling. Repeated questions are served from cache instead of the model." style="flex:1 1 280px;margin:0;color:#6B6862;font-size:16px;max-width:58ch">Limită fixă pe interogare și plafon lunar. Întrebările repetate sunt servite din cache, nu de model.</p>
+              <p data-en="A hard cap per query and a monthly ceiling. Repeated questions are served from cache instead of the model." style="flex:1 1 280px;margin:0;color:var(--muted);font-size:16px;max-width:58ch">Limită fixă pe interogare și plafon lunar. Întrebările repetate sunt servite din cache, nu de model.</p>
             </div>
           </div>
-          <div style="border-top:1px solid #E2DED6;border-bottom:1px solid #E2DED6;padding:20px 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
-            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#6B6862">04</div>
+          <div style="border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);padding:20px 0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
+            <div style="flex:0 0 80px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:var(--muted)">04</div>
             <div style="flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px)">
               <h3 data-en="Evaluation before launch" style="flex:0 0 200px;margin:0;font-size:19px;font-weight:500;letter-spacing:-0.02em">Evaluare înainte de lansare</h3>
-              <p data-en="A set of 200 real questions with lawyer-verified answers, run on every change to the system." style="flex:1 1 280px;margin:0;color:#6B6862;font-size:16px;max-width:58ch">Un set de 200 de întrebări reale cu răspunsuri verificate de juriști, rulat la fiecare modificare a sistemului.</p>
+              <p data-en="A set of 200 real questions with lawyer-verified answers, run on every change to the system." style="flex:1 1 280px;margin:0;color:var(--muted);font-size:16px;max-width:58ch">Un set de 200 de întrebări reale cu răspunsuri verificate de juriști, rulat la fiecare modificare a sistemului.</p>
             </div>
           </div>
         </div>
         <div style="margin-top:clamp(24px,3vw,36px);display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
-          <div style="border:1px solid #E2DED6;border-radius:4px;aspect-ratio:4/3;background-image:url(assets/codepedia-mark-watermark.svg),repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px">
-            <span data-en="[ search screen ]" style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">[ ecran de căutare ]</span>
+          <div style="border:1px solid var(--hair);border-radius:4px;aspect-ratio:4/3;background-image:url(assets/codepedia-mark-watermark.svg),repeating-linear-gradient(45deg,var(--hatch) 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px">
+            <span data-en="[ search screen ]" style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">[ ecran de căutare ]</span>
           </div>
-          <div style="border:1px solid #E2DED6;border-radius:4px;aspect-ratio:4/3;background-image:url(assets/codepedia-mark-watermark.svg),repeating-linear-gradient(45deg,#F1EEE7 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px">
-            <span data-en="[ answer with citations ]" style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">[ răspuns cu citate ]</span>
+          <div style="border:1px solid var(--hair);border-radius:4px;aspect-ratio:4/3;background-image:url(assets/codepedia-mark-watermark.svg),repeating-linear-gradient(45deg,var(--hatch) 0 1px,transparent 1px 7px);background-repeat:no-repeat,repeat;background-position:center 44%,0 0;background-size:56px auto,auto;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px">
+            <span data-en="[ answer with citations ]" style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">[ răspuns cu citate ]</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section data-screen-label="Rezultat" style="background:#0B0B0B;color:#FAF8F4">
+  <section data-screen-label="Rezultat" style="background:var(--inv-bg);color:var(--inv-fg)">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,104px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
       <div style="flex:0 0 160px">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880"><span style="color:#0B0B0B">04</span> / <span data-en="Result">Rezultat</span></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880"><span style="color:var(--ink)">04</span> / <span data-en="Result">Rezultat</span></div>
       </div>
       <div style="flex:1 1 560px;min-width:0">
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:clamp(20px,3vw,40px)">
@@ -170,30 +266,78 @@
     </div>
   </section>
 
-  <section data-screen-label="Contact" style="border-top:1px solid #E2DED6">
+  <section data-screen-label="Contact" style="border-top:1px solid var(--hair)">
     <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
       <div style="flex:0 0 160px">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#0B0B0B">05</span> / <span data-en="Next">Următorul pas</span></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:var(--ink)">05</span> / <span data-en="Next">Următorul pas</span></div>
       </div>
       <div style="flex:1 1 560px;min-width:0">
         <h2 data-en="Is your archive impossible to search?" style="margin:0;font-size:clamp(26px,3.4vw,40px);line-height:1.1;letter-spacing:-0.025em;font-weight:600;max-width:22ch">Arhiva ta este imposibil de căutat?</h2>
         <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:clamp(20px,2.5vw,32px)">
-          <a href="mailto:contact@codepedia.md" style="display:inline-block;background:#FF4D14;color:#FAF8F4;border-radius:4px;padding:14px 22px;font-size:15px;font-weight:500;text-decoration:none" style-hover="background:#0B0B0B;color:#FAF8F4;text-decoration:none">contact@codepedia.md</a>
-          <a href="Codepedia.dc.html#proiecte" data-en="Other projects" style="display:inline-block;border:1px solid #0B0B0B;color:#0B0B0B;border-radius:4px;padding:13px 22px;font-size:15px;font-weight:500;text-decoration:none" style-hover="border-color:#6B6862;color:#0B0B0B;text-decoration:none">Alte proiecte</a>
+          <a href="mailto:contact@codepedia.md" style="display:inline-block;background:#FF4D14;color:var(--paper);border-radius:4px;padding:14px 22px;font-size:15px;font-weight:500;text-decoration:none" style-hover="background:var(--inv-bg);color:var(--inv-fg);text-decoration:none">contact@codepedia.md</a>
+          <a href="Codepedia.dc.html#proiecte" data-en="Other projects" style="display:inline-block;border:1px solid var(--ink);color:var(--ink);border-radius:4px;padding:13px 22px;font-size:15px;font-weight:500;text-decoration:none" style-hover="border-color:var(--muted);color:var(--ink);text-decoration:none">Alte proiecte</a>
         </div>
       </div>
     </div>
   </section>
 
-  <footer style="border-top:1px solid #E2DED6">
-    <div style="max-width:1280px;margin:0 auto;padding:24px clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
-      <span style="display:flex;align-items:center;gap:8px"><img src="assets/codepedia-mark.svg" alt="" width="19" height="12" style="display:block;height:12px;width:auto;opacity:0.5" />Codepedia SRL · Chișinău, Moldova</span>
-      <span>© 2026</span>
-    </div>
-  </footer>
+  <dc-import name="Site Footer" lang="{{ navLang }}" home="{{ navHome }}" hint-size="100%,420px"></dc-import>
+<dc-import name="Contact Modal" lang="{{ navLang }}" hint-size="0px,0px"></dc-import>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
+const NAV_PROJ = {"website":[{"name":"Startica","sub":"grădiniță în Chișinău","metric":"","img":"https://startica.md/media/filer_public_thumbnails/filer_public/20/a7/20a767a2-71dc-4a4f-af3b-2a1b5a632053/grupa-2.jpeg__880x605_crop_subsampling-2_upscale.webp","href":"Studiu de caz.dc.html?p=startica-site"},{"name":"Aurelia Badiur","sub":"consultant oenolog","metric":"","img":"https://aureliabadiur.com/images/hero.jpg","href":"Studiu de caz.dc.html?p=aurelia-badiur"}],"aplicatie-web":[{"name":"Startica","sub":"aplicație desktop","metric":"","img":"assets/proiecte/startica-app-dashboard-crop.png","href":"Studiu de caz.dc.html?p=startica-app"},{"name":"Bloom Florist","sub":"gestiune florărie","metric":"","img":"assets/proiecte/bloom-panou-1600.png","href":"Studiu de caz.dc.html?p=bloom"},{"name":"Trucker HQ","sub":"dispatch auto","metric":"","img":"assets/proiecte/truckerhq-acasa-1600.png","href":"Studiu de caz.dc.html?p=truckerhq"},{"name":"SwissCars","sub":"auto din Elveția","metric":"","img":"https://krltqxdhxiguxwookqgg.supabase.co/storage/v1/object/public/car-images/cars/ae25eba6-b9ae-4b21-9a3b-85b025e69e21.jpg","href":"Studiu de caz.dc.html?p=swisscars"}]};
+const NAV_INTRO = {"website":"O pagină de prezentare modernă care-ți validează ideea și atrage primii clienți.","aplicatie-web":"Aplicația ta, din design în cod de producție, pe Postgres și Nuxt sau Next.","wordpress":"Site WordPress rapid, securizat și ușor de menținut, pe infrastructura modernă cu cache și CDN global.","shopify":"Magazin Shopify optimizat pentru conversie, cu design custom și integrări cu logistica și analitică reală.","automatizare-ai":"Sisteme AI custom integrate în fluxul tău de lucru, care reduc zeci de ore manuale pe lună și reduc costurile operaționale.","granturi":"Ai câștigat un grant european sau ODA și trebuie să livrezi o aplicație la termen? Construim partea tehnică a proiectului și pregătim documentele de care ai nevoie la raportare."};
+const NAV_INTRO_EN = {"website":"A modern presentation site that validates your idea and brings in the first clients.","aplicatie-web":"Your app, from design to production code, on Postgres and Nuxt or Next.","wordpress":"A fast, secure WordPress site that is easy to maintain, on modern infrastructure with caching and a global CDN.","shopify":"A Shopify store built for conversion, with custom design and integrations for logistics and real analytics.","automatizare-ai":"Custom AI systems built into your workflow that remove dozens of manual hours a month and lower operating costs.","granturi":"Won an EU or ODA grant and need to deliver an app on time? We build the technical side of the project and prepare the documents you need for reporting."};
+const NAV_SVC = [['website','Website','Website'],['aplicatie-web','Aplicație web','Web app'],['wordpress','WordPress','WordPress'],['shopify','Shopify','Shopify'],['automatizare-ai','Automatizare cu AI','AI automation'],['granturi','Proiecte finanțate prin granturi','Grant-funded projects']];
+const NAV_GROUPS = [{ ro: 'Site-uri', en: 'Websites', slugs: ['website', 'wordpress', 'shopify'] }, { ro: 'Aplicații și AI', en: 'Apps and AI', slugs: ['aplicatie-web', 'automatizare-ai', 'granturi'] }];
+function navVals(c, o) {
+  const { wide = true, menuOpen = false, scrolled = false, svcOpen = false } = c.state;
+  const open = !wide && menuOpen, en = o.lang === 'en', H = o.home;
+  const close = () => { document.body.style.overflow = ''; c.setState({ menuOpen: false, svcOpen: false }); };
+  const selSlug = c.state.svcSel || o.svcSlug || 'website';
+  const L = en ? ['Services', 'Work', 'Process', 'Blog'] : ['Servicii', 'Proiecte', 'Proces', 'Blog'];
+  const st = on => ({ current: on ? 'page' : 'false', color: on ? 'var(--ink)' : 'var(--muted)', line: on ? 1 : 0, numColor: on ? '#FF4D14' : 'var(--muted)' });
+  const items = [[L[1], H + '#proiecte', 'proiecte'], [L[2], H + '#proces', 'proces'], [L[3], 'Codepedia Blog v2.dc.html' + (en ? '?lang=en' : ''), 'blog']].map(([label, href, id], i) => ({ label, href, num: String(i + 2).padStart(2, '0'), ...st(o.active === id),
+    go: e => { if (id === 'blog' && o.blogGo) { e.preventDefault(); o.blogGo(); } close(); } }));
+  const cs = h => en ? h.replace('Studiu de caz.dc.html', 'Case Study.dc.html') : h;
+  const svcRow = ([slug, ro, enName]) => { const hov = slug === selSlug, cur = slug === o.svcSlug; return { name: en ? enName : ro, href: 'Codepedia Servicii.dc.html?s=' + slug, current: cur ? 'page' : 'false', color: hov ? 'var(--ink)' : 'var(--muted)', bar: hov ? '#FF4D14' : 'transparent', weight: hov ? 600 : 400, mColor: cur ? '#FF4D14' : 'var(--ink)', pick: () => c.setState({ svcSel: slug, projHover: 0 }), go: close }; };
+  const row = NAV_SVC.find(r => r[0] === selSlug), nm = en ? row[2] : row[1];
+  const pr = (NAV_PROJ[selSlug] || []).slice(0, 4), hi = Math.min(c.state.projHover || 0, Math.max(pr.length - 1, 0));
+  return {
+    themeLabel: (document.documentElement.dataset.theme === 'dark') ? (en ? 'Light theme' : 'Temă luminoasă') : (en ? 'Dark theme' : 'Temă întunecată'),
+    toggleTheme: () => { const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = t; try { localStorage.setItem('codepedia:theme', t); } catch (e) {} c.forceUpdate(); },
+    navLang: en ? 'en' : 'ro', navHome: H,
+    isWide: wide, isNarrow: !wide, mobileOpen: open, menuOpenStr: String(open),
+    hdrH: scrolled ? '52px' : '64px', hdrShadow: scrolled ? '0 10px 24px -18px rgba(11,11,11,0.35)' : 'none',
+    bTop: open ? 'translateY(7px) rotate(45deg)' : 'none', bBot: open ? 'translateY(-7px) rotate(-45deg)' : 'none', bMidOp: open ? 0 : 1,
+    toggleMenu: () => { const n = !c.state.menuOpen; document.body.style.overflow = n ? 'hidden' : ''; c.setState({ menuOpen: n }); },
+    closeMenu: close, logoHref: H || '#top',
+    navLabel: en ? 'Main navigation' : 'Navigare principală', menuLabel: en ? 'Menu' : 'Meniu',
+    ctaLabel: en ? 'Discuss a project' : 'Discută un proiect', ctaHref: H + '#contact',
+    hasLangs: o.langs.length > 0,
+    langItems: o.langs.map((l, i) => ({ code: l.code, href: l.href || '#', hl: l.code.toLowerCase(), current: l.on ? 'true' : 'false', color: l.on ? 'var(--ink)' : 'var(--muted)', sep: i ? 'inline' : 'none',
+      go: e => { if (!l.href) { e.preventDefault(); if (l.go) l.go(); } close(); } })),
+    svc: { label: L[0], href: 'Codepedia Servicii.dc.html', ...st(o.active === 'servicii') },
+    svcOpenStr: String(svcOpen), svcVis: svcOpen ? 'visible' : 'hidden', svcOp: svcOpen ? 1 : 0, svcShift: svcOpen ? 'none' : 'translateY(-6px)', svcCaret: svcOpen ? 'rotate(180deg)' : 'none',
+    svcEnter: () => { clearTimeout(c._svcT); if (!c.state.svcOpen) c.setState({ svcOpen: true }); },
+    svcLeave: () => { clearTimeout(c._svcT); c._svcT = setTimeout(() => c.setState({ svcOpen: false }), 220); },
+    svcClick: e => { if (!c.state.svcOpen) { e.preventDefault(); c.setState({ svcOpen: true }); } },
+    svcGroups: NAV_GROUPS.map(g => ({ label: en ? g.en : g.ro, items: g.slugs.map(s => svcRow(NAV_SVC.find(r => r[0] === s))) })),
+    sel: { kicker: pr.length ? (en ? 'Projects · ' : 'Proiecte · ') + nm : nm, hasProj: pr.length > 0, noProj: !pr.length, intro: (en ? NAV_INTRO_EN : NAV_INTRO)[selSlug] || '',
+      href: 'Codepedia Servicii.dc.html?s=' + selSlug, serviceLink: en ? 'About the service' : 'Despre serviciu',
+      projects: pr.map((p, k) => ({ ...p, href: cs(p.href), bg: k === hi ? 'var(--hatch)' : 'transparent', metricColor: k === hi ? '#FF4D14' : 'var(--muted)', hover: () => c.setState({ projHover: k }) })),
+      hasCur: !!pr[hi], cur: pr[hi] ? { ...pr[hi], href: cs(pr[hi].href) } : { name: '', img: '', href: '#', sub: '' } },
+    allHref: H + '#proiecte', allLabel: en ? 'See all projects' : 'Vezi toate proiectele',
+    navItems: items,
+  };
+}
+function navWatch(c, extra) {
+  const f = () => { const w = window.innerWidth >= 900, y = window.scrollY; const st = { wide: w, scrolled: y > 8, ...(extra ? extra(y) : {}) }; if (w && c.state.menuOpen) { st.menuOpen = false; document.body.style.overflow = ''; } c.setState(st); };
+  c._navF = f; window.addEventListener('scroll', f, { passive: true }); window.addEventListener('resize', f); f();
+}
+function navUnwatch(c) { window.removeEventListener('scroll', c._navF); window.removeEventListener('resize', c._navF); clearTimeout(c._svcT); document.body.style.overflow = ''; }
+
 class Component extends DCLogic {
   constructor(props) {
     super(props);
@@ -202,7 +346,8 @@ class Component extends DCLogic {
     this.state = { lang: saved === 'en' ? 'en' : 'ro' };
     this.rootRef = React.createRef();
   }
-  componentDidMount() { this.applyLang(); }
+  componentDidMount() { navWatch(this); this.applyLang(); }
+  componentWillUnmount() { navUnwatch(this); }
   componentDidUpdate() { this.applyLang(); }
   applyLang() {
     const root = this.rootRef.current;
@@ -219,12 +364,14 @@ class Component extends DCLogic {
     this.setState({ lang: lang });
     try { window.localStorage.setItem('codepedia:lang', lang); } catch (e) {}
   }
-  renderVals() {
+  _nav(r) { const en = this.state.lang === 'en'; return navVals(this, { lang: this.state.lang, home: en ? 'Codepedia EN.dc.html' : 'Codepedia.dc.html', active: 'proiecte', langs: [{ code: 'RO', on: !en, go: r.pickRo }, { code: 'EN', on: en, go: r.pickEn }] }); }
+  renderVals() { const r = this._rv(); return { ...r, ...this._nav(r) }; }
+  _rv() {
     const en = this.state.lang === 'en';
     return {
       rootRef: this.rootRef,
-      roColor: en ? '#6B6862' : '#0B0B0B',
-      enColor: en ? '#0B0B0B' : '#6B6862',
+      roColor: en ? 'var(--muted)' : 'var(--ink)',
+      enColor: en ? 'var(--ink)' : 'var(--muted)',
       pickRo: () => this.setLang('ro'),
       pickEn: () => this.setLang('en')
     };
