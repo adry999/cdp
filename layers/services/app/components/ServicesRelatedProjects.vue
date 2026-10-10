@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Service } from '#layers/services/domain/service'
 import { mapProjectCard, usePublishedProjects } from '#layers/projects'
+import { projectsForService } from '#layers/services/domain/relatedProjects'
 
 const props = defineProps<{ service: Service }>()
 const { t } = useI18n()
@@ -9,8 +10,7 @@ const siteLocale = useSiteLocale()
 const { projects: rows } = await usePublishedProjects()
 
 const list = computed(() =>
-  (rows.value ?? [])
-    .filter((row) => row.service_tag === props.service.slug)
+  projectsForService(rows.value ?? [], props.service.slug)
     .map((row) => mapProjectCard(row, siteLocale.value)),
 )
 </script>
