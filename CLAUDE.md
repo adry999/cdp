@@ -65,7 +65,7 @@ bibliotecă de iconuri (designul nu folosește iconuri).
    locale + asset-urile de brand în `public/` și setul complet de favicon generat din
    `codepedia-favicon-square-filled.svg`. Verifică: `/` și `/en` randează un layout gol cu header și footer corecte.
 2. Componentele de layout din lista de mai sus, cu date hardcodate din prototip.
-3. Homepage completă, toate cele 8 secțiuni, RO și EN, meniu mobil sub 820px.
+3. Homepage completă, toate cele 8 secțiuni, RO și EN, meniu mobil sub 900px.
    La final trebuie să fie indistinguibilă de `design/Codepedia.dc.html`.
 4. Șablonul de studiu de caz + cele trei proiecte, tot cu date hardcodate.
    Referință: `design/Proiect SaaS Logistica.dc.html`.
