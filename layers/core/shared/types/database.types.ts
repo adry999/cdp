@@ -65,6 +65,35 @@ export type Database = {
         }
         Relationships: []
       }
+      home_settings: {
+        Row: {
+          hero_variant: string | null
+          id: number
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          hero_variant?: string | null
+          id?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          hero_variant?: string | null
+          id?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "home_settings_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lead_rate_limits: {
         Row: {
           hits: number
