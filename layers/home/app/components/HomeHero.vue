@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { parseHeroPreview, resolveHeroVariant, type HeroChoice } from '#layers/home/domain/heroVariant'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
+const route = useRoute()
+const configVariant = resolveHeroVariant(config.public.heroBgVariant as string | undefined)
+// `?hero=` previews are applied after mount only: `/` is cached, so SSR output must not depend on the query.
+const previewChoice = ref<HeroChoice>()
 const heroVariant = computed(() => {
-  const v = (config.public.heroBgVariant as string) || 'dot-matrix'
-  if (v === 'none' || v === 'false' || v === 'disabled') return null
-  if (v === 'constellation' || v === 'light-orbs' || v === 'dot-matrix') return v
-  return 'dot-matrix'
+  if (previewChoice.value) return previewChoice.value === 'none' ? null : previewChoice.value
+  return configVariant
+})
+onMounted(() => {
+  previewChoice.value = parseHeroPreview(route.query.hero)
 })
 // The rotating part of the h1. First entry is rendered verbatim on the server and
 // is the animation's starting point on the client, so the h1 always carries real
