@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { SERVICE_TAG_IDS, isServiceTagId } from './service-tag'
+import { SERVICE_TAG_IDS, SERVICE_TAG_LABELS_RO, isServiceTagId } from './service-tag'
 
 describe('isServiceTagId', () => {
   it('accepts every known service tag', () => {
@@ -13,5 +13,11 @@ describe('isServiceTagId', () => {
     expect(isServiceTagId('')).toBe(false)
     expect(isServiceTagId(null)).toBe(false)
     expect(isServiceTagId(2)).toBe(false)
+  })
+})
+
+describe('SERVICE_TAG_LABELS_RO', () => {
+  it('labels every service', () => {
+    expect(Object.keys(SERVICE_TAG_LABELS_RO).sort()).toEqual([...SERVICE_TAG_IDS].sort())
   })
 })
