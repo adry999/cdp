@@ -24,6 +24,8 @@ case studies), `layers/content` (stage copy) and `layers/qualifier` (the qualifi
 - `SERVICE_LINKS`, `ServiceLink` — slug, `routeSlug`, name and `qualifierStage` of
   each service, without the page copy, so the footer and the homepage timeline
   can link to `/servicii/[slug]` without loading `SERVICES`.
+- `SERVICE_NAV_INTRO` — one-line RO/EN summary per service for the header dropdown (shown when a service has no
+  projects to list).
 - `SERVICES_EN_PENDING_PATHS` — RO paths whose EN copy is still Romanian;
   composed by the root `app/utils/enPendingTranslation.ts`.
 
