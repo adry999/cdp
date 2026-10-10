@@ -7,6 +7,8 @@ const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const { openSettings } = useCookieConsent()
 const settings = useSiteSettings()
+const { grantsEnabled } = useRuntimeConfig().public
+const serviceLinks = SERVICE_LINKS.filter((s) => s.slug !== 'granturi' || grantsEnabled)
 
 const legalLine = computed(() => settings.value.footerLine)
 const copyrightLine = computed(() => `© ${settings.value.copyrightYear}`)
@@ -19,7 +21,7 @@ const copyrightLine = computed(() => `© ${settings.value.copyrightYear}`)
       class="container-site flex flex-wrap gap-x-6 gap-y-3 border-b border-hairline py-5 eyebrow-sm text-muted"
     >
       <NuxtLink
-        v-for="service in SERVICE_LINKS.filter(s => s.slug !== 'granturi' || useRuntimeConfig().public.grantsEnabled)"
+        v-for="service in serviceLinks"
         :key="service.slug"
         :to="localePath({ name: 'servicii-slug', params: { slug: service.routeSlug[locale] } })"
         class="hover:text-ink"

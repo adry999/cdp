@@ -3,7 +3,7 @@ import { useServiceStages } from '#layers/content'
 
 const { t } = useI18n()
 const localePath = useLocalePath()
-const stages = await useServiceStages()
+const stages = useServiceStages()
 
 </script>
 
@@ -18,7 +18,7 @@ const stages = await useServiceStages()
           class="group w-[85vw] max-w-[320px] shrink-0 snap-center lg:w-[calc(33.333%-1.25rem)] lg:max-w-[360px] lg:shrink-0 flex flex-col rounded border border-hairline bg-paper p-6 text-ink transition-all duration-500 hover:-translate-y-1 hover:border-signal hover:shadow-lg"
         >
           <div class="flex items-center justify-between gap-2">
-            <span class="font-mono text-xs tracking-[0.08em] text-signal">{{ String(i + 1).padStart(2, '0') }}</span>
+            <span class="font-mono text-xs tracking-[0.08em] text-signal-text">{{ String(i + 1).padStart(2, '0') }}</span>
             <span class="eyebrow-sm text-muted transition-colors duration-500 group-hover:text-ink">
               {{ stage.timing }}
             </span>
@@ -26,7 +26,7 @@ const stages = await useServiceStages()
           <div class="mt-5 flex h-14 w-14 items-center justify-center rounded-xl bg-signal/10 text-signal transition-all duration-500 group-hover:-translate-y-1 group-hover:bg-signal/20 group-hover:shadow-sm">
             <CoreStageIcon :stage="stage.id" class="h-7 w-7" />
           </div>
-          <h2 class="m-0 mt-5 min-h-[2.6em] font-mono text-sm font-medium uppercase leading-[1.3] tracking-[0.04em] transition-colors duration-500 group-hover:text-signal">
+          <h2 class="m-0 mt-5 min-h-[2.6em] font-mono text-sm font-medium uppercase leading-[1.3] tracking-[0.04em] transition-colors duration-500 group-hover:text-signal-text">
             {{ stage.name }}
           </h2>
           <div v-if="stage.pricing" class="mt-5 text-[10px] font-medium uppercase tracking-[0.06em] text-muted">
@@ -41,7 +41,7 @@ const stages = await useServiceStages()
               <button
                 type="button"
                 class="inline-flex h-5 w-5 cursor-default items-center justify-center rounded-full border border-rule/70 text-[11px] font-mono font-medium text-muted transition-colors hover:border-ink hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-signal"
-                aria-label="Info"
+                :aria-label="t('pricing.infoLabel')"
               >
                 i
               </button>
@@ -58,7 +58,7 @@ const stages = await useServiceStages()
             class="m-0 mt-5 flex flex-1 list-none flex-col gap-2 border-t border-hairline p-0 pt-4"
           >
             <li v-for="badge in stage.badges" :key="badge" class="flex gap-2 text-sm leading-[1.4]">
-              <span class="text-signal" aria-hidden="true">+</span>{{ badge }}
+              <span class="text-signal-text" aria-hidden="true">+</span>{{ badge }}
             </li>
           </ul>
           <div class="mt-6">

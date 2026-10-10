@@ -58,7 +58,7 @@ export default defineNuxtConfig({
   // Git worktrees for parallel branches live in .worktrees/; keep them out of scanning and the dev watcher.
   ignore: ['.worktrees/**'],
 
-  modules: ['@nuxtjs/i18n', '@nuxt/image', '@nuxt/fonts', '@nuxtjs/supabase', '@nuxt/content', '@nuxt/eslint', '@nuxt/icon'],
+  modules: ['@nuxtjs/i18n', '@nuxt/image', '@nuxt/fonts', '@nuxtjs/supabase', '@nuxt/content', '@nuxt/eslint'],
 
   // Node's built-in SQLite instead of the better-sqlite3 native addon — no compiled binary to build or ship.
   content: {
@@ -163,11 +163,6 @@ export default defineNuxtConfig({
 
   alias: {
     '#supabase-browser-plugin': fileURLToPath(new URL(`./node_modules/${SUPABASE_BROWSER_PLUGIN}`, import.meta.url)),
-    '/components/site/QualifierModal.vue': fileURLToPath(new URL('./layers/qualifier/app/components/QualifierModal.vue', import.meta.url)),
-    '/components/site/QualifierOptionCard.vue': fileURLToPath(new URL('./layers/qualifier/app/components/QualifierOptionCard.vue', import.meta.url)),
-    '/components/site/QualifierStepBudget.vue': fileURLToPath(new URL('./layers/qualifier/app/components/QualifierStepBudget.vue', import.meta.url)),
-    '/components/site/QualifierStepContact.vue': fileURLToPath(new URL('./layers/qualifier/app/components/QualifierStepContact.vue', import.meta.url)),
-    '/components/site/QualifierStepStage.vue': fileURLToPath(new URL('./layers/qualifier/app/components/QualifierStepStage.vue', import.meta.url)),
   },
 
   hooks: {

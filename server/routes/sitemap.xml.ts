@@ -8,7 +8,7 @@ import { CONTENT_SITEMAP_PAGES } from '#layers/content/server'
 import { LEADS_SITEMAP_PAGES } from '#layers/leads/server'
 import { listNewsSitemapPages } from '#layers/news/server'
 import { listProjectSitemapPages, PROJECTS_INDEX_PAGE } from '#layers/projects/server'
-import { SERVICE_SITEMAP_PAGES, SERVICES_INDEX_PAGE } from '#layers/services/server'
+import { listServiceSitemapPages, SERVICES_INDEX_PAGE } from '#layers/services/server'
 
 // The home page has no layer of its own with a server side, so the root owns it.
 const HOME_PAGE: SitemapPage = { ro: '/', en: '/en' }
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
     SERVICES_INDEX_PAGE,
     ...LEADS_SITEMAP_PAGES,
     ...CONTENT_SITEMAP_PAGES,
-    ...SERVICE_SITEMAP_PAGES,
+    ...listServiceSitemapPages(event),
   ]
 
   setResponseHeader(event, 'content-type', 'application/xml; charset=utf-8')

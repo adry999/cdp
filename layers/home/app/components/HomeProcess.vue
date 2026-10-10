@@ -15,7 +15,7 @@ function onKeydown(event: KeyboardEvent) {
   activeId.value = ids[next]!
   nextTick(() => document.getElementById(`process-tab-${ids[next]}`)?.focus())
 }
-const { el: processEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: false })
+const { el: processEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: true })
 </script>
 
 <template>

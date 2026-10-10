@@ -13,18 +13,18 @@ const i18nList = useI18nList()
 const localePath = useLocalePath()
 const nuxtApp = useNuxtApp()
 const { isQualifierEnabled } = useQualifierAvailability()
-const stages = await useServiceStages()
+const stages = useServiceStages()
+const { grantsEnabled } = useRuntimeConfig().public
 
 const active = ref(0)
 const activeStage = computed(() => stages.value[active.value]!)
-// Removed relatedServicesFor since buttons were cleaned up
 // The grants block links to the service page it summarises.
 const grantsService = SERVICE_LINKS.find((service) => service.slug === 'granturi')
 const grantsHref = computed(() =>
   grantsService ? localePath({ name: 'servicii-slug', params: { slug: grantsService.routeSlug[locale.value] } }) : undefined,
 )
 const grantSteps = computed(() => i18nList('home.services.grants.steps'))
-const { el: timelineEl, isVisible: drawn, hasMounted: mounted } = useReveal({ once: false, threshold: 0.3 })
+const { el: timelineEl, isVisible: drawn, hasMounted: mounted } = useReveal({ once: true, threshold: 0.3 })
 
 const nodeEls = ref<HTMLButtonElement[]>([])
 
@@ -136,15 +136,15 @@ function startAt(id: StageId) {
 
           <div class="mt-6 flex flex-col gap-4">
             <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
-              <div class="eyebrow mb-2 text-muted transition-colors duration-500 group-hover:text-signal">{{ t('home.services.whereYouAreLabel') }}</div>
+              <div class="eyebrow mb-2 text-muted transition-colors duration-500 group-hover:text-signal-text">{{ t('home.services.whereYouAreLabel') }}</div>
               <p class="m-0 max-w-[58ch] text-base text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whereYouAre }}</p>
             </div>
             <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
-              <div class="eyebrow mb-2 text-muted transition-colors duration-500 group-hover:text-signal">{{ t('home.services.whyUsLabel') }}</div>
+              <div class="eyebrow mb-2 text-muted transition-colors duration-500 group-hover:text-signal-text">{{ t('home.services.whyUsLabel') }}</div>
               <p class="m-0 max-w-[58ch] text-base text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whyUs }}</p>
             </div>
             <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
-              <div class="eyebrow mb-2 text-muted transition-colors duration-500 group-hover:text-signal">{{ t('home.services.whatYouGetLabel') }}</div>
+              <div class="eyebrow mb-2 text-muted transition-colors duration-500 group-hover:text-signal-text">{{ t('home.services.whatYouGetLabel') }}</div>
               <p class="m-0 max-w-[58ch] text-base text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whatYouGet }}</p>
             </div>
           </div>
@@ -164,12 +164,12 @@ function startAt(id: StageId) {
 
     <p class="mb-0 mt-5 eyebrow text-muted">
       * {{ t('home.services.note') }}
-      <NuxtLink :to="`${localePath('index')}#contact`" class="text-signal hover:underline">
+      <NuxtLink :to="`${localePath('index')}#contact`" class="text-signal-text hover:underline">
         {{ t('home.services.notSureLink') }}
       </NuxtLink>
     </p>
 
-    <div v-if="useRuntimeConfig().public.grantsEnabled" class="mt-[clamp(32px,4vw,48px)] flex flex-col gap-4 rounded border border-hairline bg-hatch p-[clamp(20px,2.5vw,28px)]">
+    <div v-if="grantsEnabled" class="mt-[clamp(32px,4vw,48px)] flex flex-col gap-4 rounded border border-hairline bg-hatch p-[clamp(20px,2.5vw,28px)]">
       <span class="eyebrow text-muted">
         <span aria-hidden="true" class="text-signal">●</span> {{ t('home.services.grants.kicker') }}
       </span>

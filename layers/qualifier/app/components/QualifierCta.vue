@@ -4,7 +4,7 @@ import { useQualifierAvailability } from '#layers/qualifier/state/useQualifierAv
 
 const props = withDefaults(
   defineProps<{
-    variant?: 'ink' | 'signal' | 'outline' | 'ghost'
+    variant?: 'ink' | 'signal' | 'outline'
     stage?: StageId
     fallbackHref?: string
   }>(),
