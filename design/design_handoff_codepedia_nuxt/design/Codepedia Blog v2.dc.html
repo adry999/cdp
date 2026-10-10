@@ -11,11 +11,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script>try{var t=localStorage.getItem("codepedia:theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}catch(e){}</script>
 <style>
-  body { margin: 0; background: #FAF8F4; color: #0B0B0B; font-family: 'Inter Tight', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.6; letter-spacing: -0.004em; -webkit-font-smoothing: antialiased; }
+  :root { --paper:#FAF8F4; --ink:#0B0B0B; --muted:#6B6862; --hair:#E2DED6; --hatch:#F1EEE7; --panel:#F5F2EC; --rule:#C9C4BA; --inv-bg:#0B0B0B; --inv-fg:#FAF8F4; --show-light:block; --show-dark:none; --logo-filter:none; color-scheme: light; }
+  :root[data-theme="dark"] { --paper:#0F0F0E; --ink:#F2EFE9; --muted:#9C978E; --hair:#2B2A27; --hatch:#1B1A18; --panel:#161615; --rule:#4A4741; --inv-bg:#1A1918; --inv-fg:#F2EFE9; --show-light:none; --show-dark:block; --logo-filter:invert(1) brightness(0.95); color-scheme: dark; }
+  body { transition: background-color .2s, color .2s; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Inter Tight', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.6; letter-spacing: -0.004em; -webkit-font-smoothing: antialiased; }
   * { box-sizing: border-box; }
-  ::selection { background: #FF4D14; color: #FAF8F4; }
-  a { color: #0B0B0B; text-decoration: none; }
+  ::selection { background: #FF4D14; color: var(--paper); }
+  a { color: var(--ink); text-decoration: none; }
   a:hover { color: #FF4D14; }
   html { scroll-behavior: smooth; }
   summary::-webkit-details-marker { display: none; }
@@ -24,21 +28,112 @@
 
 <div style="display:flex;flex-direction:column;min-height:100vh">
 
-<header data-screen-label="Header" style="position:sticky;top:0;z-index:20;background:#FAF8F4">
-  <div style="max-width:1280px;margin:0 auto;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 clamp(20px,5vw,64px)">
-    <a href="Codepedia.dc.html" style="display:flex;align-items:center"><img src="assets/codepedia-wordmark.svg" alt="CODEPEDIA" style="display:block;height:18px;width:auto" /></a>
-    <nav style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(14px,2vw,28px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
-      <a href="Codepedia Servicii.dc.html" style="color:#6B6862" style-hover="color:#FF4D14">{{ t.nav1 }}</a>
-      <a href="Codepedia.dc.html#proiecte" style="color:#6B6862" style-hover="color:#FF4D14">{{ t.nav2 }}</a>
-      <button type="button" onClick="{{ goList }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#0B0B0B">Blog</button>
-      <a href="Codepedia.dc.html#contact" style="color:#6B6862" style-hover="color:#FF4D14">Contact</a>
-      <div style="display:flex;border:1px solid #E2DED6;border-radius:4px;overflow:hidden">
-        <button type="button" onClick="{{ setRo }}" style="border:0;padding:6px 10px;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;background:{{ roBg }};color:{{ roFg }}">RO</button>
-        <button type="button" onClick="{{ setEn }}" style="border:0;padding:6px 10px;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;background:{{ enBg }};color:{{ enFg }}">EN</button>
-      </div>
-    </nav>
+<header data-screen-label="Header" style="position:sticky;top:0;z-index:30;background:var(--paper);box-shadow:{{ hdrShadow }};transition:box-shadow .2s">
+  <div style="max-width:1280px;margin:0 auto;min-height:52px;height:{{ hdrH }};transition:height .2s;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 clamp(20px,5vw,64px)">
+    <a href="{{ logoHref }}" style="display:flex;align-items:center"><img src="assets/codepedia-wordmark.svg" alt="CODEPEDIA" style="display:block;height:18px;width:auto;filter:var(--logo-filter)" /></a>
+    <sc-if value="{{ isWide }}" hint-placeholder-val="{{ true }}">
+      <nav aria-label="{{ navLabel }}" style="display:flex;align-items:center;gap:clamp(18px,2.4vw,32px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">
+        <div style="display:flex;align-items:center;gap:clamp(16px,2.2vw,28px)">
+          <div onMouseEnter="{{ svcEnter }}" onMouseLeave="{{ svcLeave }}">
+            <a href="{{ svc.href }}" onClick="{{ svcClick }}" aria-current="{{ svc.current }}" aria-haspopup="true" aria-expanded="{{ svcOpenStr }}" style="position:relative;display:flex;align-items:center;gap:6px;padding:8px 0;color:{{ svc.color }};text-decoration:none" style-hover="color:#FF4D14">{{ svc.label }}<span aria-hidden="true" style="display:inline-block;font-size:9px;transition:transform .2s;transform:{{ svcCaret }}">▾</span><span aria-hidden="true" style="position:absolute;left:0;right:0;bottom:2px;height:2px;background:#FF4D14;transform:scaleX({{ svc.line }});transform-origin:left;transition:transform .25s"></span></a>
+            <div style="position:absolute;top:100%;left:0;right:0;pointer-events:none;visibility:{{ svcVis }};opacity:{{ svcOp }};transform:{{ svcShift }};transition:opacity .15s,transform .15s,visibility .15s">
+              <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px);display:flex;justify-content:flex-end">
+                <div style="pointer-events:auto;width:min(860px,100%);display:grid;grid-template-columns:230px minmax(0,1fr);background:var(--paper);border:1px solid var(--hair);border-top:0;border-radius:0 0 4px 4px;box-shadow:0 28px 48px -30px rgba(11,11,11,0.45);overflow:hidden;text-transform:none;letter-spacing:0">
+                  <div style="display:flex;flex-direction:column;gap:20px;padding:22px 0;background:var(--panel);border-right:1px solid var(--hair)">
+                    <sc-for list="{{ svcGroups }}" as="g" hint-placeholder-count="2">
+                      <div style="display:flex;flex-direction:column">
+                        <div style="padding:0 20px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">{{ g.label }}</div>
+                        <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+                          <a href="{{ it.href }}" onMouseEnter="{{ it.pick }}" onFocus="{{ it.pick }}" aria-current="{{ it.current }}" style="display:block;padding:9px 20px 9px 18px;border-left:2px solid {{ it.bar }};color:{{ it.color }};font-weight:{{ it.weight }};text-decoration:none;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.3" style-hover="color:var(--ink)">{{ it.name }}</a>
+                        </sc-for>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="padding:22px 24px;display:flex;flex-direction:column;gap:16px;min-width:0">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">{{ sel.kicker }}</div>
+                    <sc-if value="{{ sel.noProj }}" hint-placeholder-val="{{ false }}">
+                      <p style="margin:0;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;line-height:1.5;color:var(--ink);text-wrap:pretty;max-width:46ch">{{ sel.intro }}</p>
+                    </sc-if>
+                    <sc-if value="{{ sel.hasProj }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:20px;align-items:start">
+                        <div style="display:flex;flex-direction:column;gap:2px">
+                          <sc-for list="{{ sel.projects }}" as="p" hint-placeholder-count="4">
+                            <a href="{{ p.href }}" onMouseEnter="{{ p.hover }}" onFocus="{{ p.hover }}" style="display:flex;flex-direction:column;gap:2px;padding:9px 10px;border-radius:3px;background:{{ p.bg }};color:var(--ink);text-decoration:none">
+                              <span style="font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;line-height:1.25">{{ p.name }}</span>
+                              <span style="font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.3;color:var(--muted)">{{ p.sub }}</span>
+                              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.04em;color:{{ p.metricColor }}">{{ p.metric }}</span>
+                            </a>
+                          </sc-for>
+                        </div>
+                        <sc-if value="{{ sel.hasCur }}" hint-placeholder-val="{{ false }}">
+                          <a href="{{ sel.cur.href }}" style="display:block;aspect-ratio:16/10;border-radius:3px;overflow:hidden;background:var(--hatch);border:1px solid var(--hair)"><div role="img" aria-label="{{ sel.cur.name }}" style="width:100%;height:100%;background-image:url({{ sel.cur.img }});background-size:cover;background-position:top left"></div></a>
+                        </sc-if>
+                      </div>
+                    </sc-if>
+                    <div style="margin-top:auto;padding-top:14px;border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em">
+                      <a href="{{ sel.href }}" style="color:var(--ink);text-decoration:none" style-hover="color:#FF4D14">{{ sel.serviceLink }} →</a>
+                      <a href="{{ allHref }}" style="color:var(--ink);text-decoration:none" style-hover="color:#FF4D14">{{ allLabel }} →</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="3">
+            <a href="{{ n.href }}" onClick="{{ n.go }}" aria-current="{{ n.current }}" style="position:relative;display:block;padding:8px 0;color:{{ n.color }};text-decoration:none" style-hover="color:#FF4D14">{{ n.label }}<span aria-hidden="true" style="position:absolute;left:0;right:0;bottom:2px;height:2px;background:#FF4D14;transform:scaleX({{ n.line }});transform-origin:left;transition:transform .25s"></span></a>
+          </sc-for>
+        </div>
+        <sc-if value="{{ hasLangs }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:6px">
+            <sc-for list="{{ langItems }}" as="l" hint-placeholder-count="2">
+              <a href="{{ l.href }}" onClick="{{ l.go }}" hreflang="{{ l.hl }}" aria-current="{{ l.current }}" style="display:flex;align-items:center;gap:6px;color:{{ l.color }};text-decoration:none" style-hover="color:#FF4D14"><span aria-hidden="true" style="display:{{ l.sep }};color:var(--rule)">/</span>{{ l.code }}</a>
+            </sc-for>
+          </div>
+        </sc-if>
+        <button type="button" onClick="{{ toggleTheme }}" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;margin:0 -6px;padding:0;border:0;border-radius:4px;background:transparent;color:var(--muted);cursor:pointer" style-hover="color:var(--ink);background:var(--hatch)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:var(--show-light)"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:var(--show-dark)"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button>
+        <a href="{{ ctaHref }}" style="display:flex;align-items:center;gap:10px;padding:9px 14px;border:1px solid var(--ink);color:var(--ink);border-radius:4px;font-weight:600;text-decoration:none;white-space:nowrap" style-hover="background:#FF4D14;border-color:#FF4D14">{{ ctaLabel }}<span aria-hidden="true">→</span></a>
+      </nav>
+    </sc-if>
+    <sc-if value="{{ isNarrow }}" hint-placeholder-val="{{ false }}">
+      <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpenStr }}" aria-label="{{ menuLabel }}" style="width:44px;height:44px;margin-right:-10px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px">
+        <span style="display:block;width:22px;height:2px;background:var(--ink);transition:transform .2s;transform:{{ bTop }}"></span>
+        <span style="display:block;width:22px;height:2px;background:#FF4D14;opacity:{{ bMidOp }}"></span>
+        <span style="display:block;width:22px;height:2px;background:var(--ink);transition:transform .2s;transform:{{ bBot }}"></span>
+      </button>
+    </sc-if>
   </div>
-  <div style="height:2px;background:#FF4D14"></div>
+  <div style="height:2px;background:{{ lineBg }}"><div style="height:2px;width:{{ progW }};background:#FF4D14"></div></div>
+  <sc-if value="{{ mobileOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:-1;background:var(--paper);padding:88px clamp(20px,5vw,64px) 28px;display:flex;flex-direction:column;gap:28px;overflow-y:auto">
+      <nav aria-label="{{ navLabel }}" style="display:flex;flex-direction:column">
+        <div style="padding:16px 0;border-bottom:1px solid var(--hair);display:flex;flex-direction:column;gap:16px">
+          <a href="{{ svc.href }}" onClick="{{ closeMenu }}" aria-current="{{ svc.current }}" style="display:flex;align-items:baseline;gap:16px;color:var(--ink);text-decoration:none;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:32px;font-weight:600;letter-spacing:-0.02em;line-height:1.1"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:400;letter-spacing:0.08em;color:{{ svc.numColor }}">01</span>{{ svc.label }}</a>
+          <div style="display:flex;flex-direction:column;gap:14px;padding-left:36px">
+            <sc-for list="{{ svcGroups }}" as="g" hint-placeholder-count="2">
+              <div style="display:flex;flex-direction:column">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);padding-bottom:2px">{{ g.label }}</div>
+                <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+                  <a href="{{ it.href }}" onClick="{{ it.go }}" aria-current="{{ it.current }}" style="display:flex;align-items:center;min-height:44px;color:{{ it.mColor }};text-decoration:none;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:17px;line-height:1.3">{{ it.name }}</a>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="3">
+          <a href="{{ n.href }}" onClick="{{ n.go }}" aria-current="{{ n.current }}" style="display:flex;align-items:baseline;gap:16px;padding:16px 0;border-bottom:1px solid var(--hair);color:var(--ink);text-decoration:none;font-family:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:32px;font-weight:600;letter-spacing:-0.02em;line-height:1.1"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:400;letter-spacing:0.08em;color:{{ n.numColor }}">{{ n.num }}</span>{{ n.label }}</a>
+        </sc-for>
+      </nav>
+      <sc-if value="{{ hasLangs }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.08em">
+          <sc-for list="{{ langItems }}" as="l" hint-placeholder-count="2">
+            <a href="{{ l.href }}" onClick="{{ l.go }}" hreflang="{{ l.hl }}" aria-current="{{ l.current }}" style="display:flex;align-items:center;gap:10px;min-height:44px;color:{{ l.color }};text-decoration:none"><span aria-hidden="true" style="display:{{ l.sep }};color:var(--rule)">/</span>{{ l.code }}</a>
+          </sc-for>
+        </div>
+      </sc-if>
+      <button type="button" onClick="{{ toggleTheme }}" style="display:flex;align-items:center;gap:12px;min-height:44px;padding:0;border:0;background:transparent;color:var(--ink);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.08em;text-transform:uppercase"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:var(--show-light)"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:var(--show-dark)"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg><span>{{ themeLabel }}</span></button>
+      <a href="{{ ctaHref }}" onClick="{{ closeMenu }}" style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;min-height:56px;padding:0 20px;background:#FF4D14;color:var(--ink);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;text-decoration:none">{{ ctaLabel }}<span aria-hidden="true">→</span></a>
+    </div>
+  </sc-if>
 </header>
 
 <main style="flex:1">
@@ -46,13 +141,13 @@
 <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
   <section data-screen-label="Blog · 00">
     <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(48px,8vw,112px) clamp(20px,5vw,64px) clamp(32px,4vw,56px)">
-      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">00</span> / Blog</div>
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">00</span> / Blog</div>
       <div style="flex:1 1 560px;min-width:0">
         <h1 style="margin:0;max-width:18ch;font-size:clamp(34px,6vw,64px);font-weight:600;line-height:1.04;letter-spacing:-0.025em;text-wrap:pretty">{{ t.h1 }}</h1>
-        <p style="margin:clamp(20px,2.6vw,28px) 0 0;max-width:58ch;font-size:clamp(16px,1.4vw,18px);color:#6B6862;text-wrap:pretty">{{ t.lead }}</p>
+        <p style="margin:clamp(20px,2.6vw,28px) 0 0;max-width:58ch;font-size:clamp(16px,1.4vw,18px);color:var(--muted);text-wrap:pretty">{{ t.lead }}</p>
         <div style="margin-top:clamp(28px,3.5vw,40px);display:flex;flex-wrap:wrap;gap:8px">
           <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
-            <button type="button" onClick="{{ c.pick }}" style="display:flex;align-items:center;gap:8px;min-height:40px;padding:8px 14px;border:1px solid {{ c.bd }};border-radius:999px;background:{{ c.bg }};color:{{ c.fg }};cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em" style-hover="border-color:#0B0B0B">
+            <button type="button" onClick="{{ c.pick }}" style="display:flex;align-items:center;gap:8px;min-height:40px;padding:8px 14px;border:1px solid {{ c.bd }};border-radius:999px;background:{{ c.bg }};color:{{ c.fg }};cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em" style-hover="border-color:var(--ink)">
               <span>{{ c.label }}</span><span style="opacity:0.6">{{ c.count }}</span>
             </button>
           </sc-for>
@@ -62,18 +157,18 @@
   </section>
 
   <sc-if value="{{ hasFeatured }}" hint-placeholder-val="{{ true }}">
-    <section data-screen-label="Blog · Recomandat" style="border-top:1px solid #E2DED6">
+    <section data-screen-label="Blog · Recomandat" style="border-top:1px solid var(--hair)">
       <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(40px,5vw,72px) clamp(20px,5vw,64px)">
-        <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">01</span> / {{ t.latest }}</div>
-        <a href="{{ featured.href }}" onClick="{{ featured.open }}" style="flex:1 1 560px;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(20px,3vw,40px);color:#0B0B0B" style-hover="color:#0B0B0B">
-          <div style="aspect-ratio:16/10;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:clamp(20px,2.5vw,32px);display:flex;flex-direction:column;justify-content:space-between">
+        <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">01</span> / {{ t.latest }}</div>
+        <a href="{{ featured.href }}" onClick="{{ featured.open }}" style="flex:1 1 560px;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(20px,3vw,40px);color:var(--ink)" style-hover="color:var(--ink)">
+          <div style="aspect-ratio:16/10;border-radius:4px;background:var(--inv-bg);color:var(--inv-fg);padding:clamp(20px,2.5vw,32px);display:flex;flex-direction:column;justify-content:space-between">
             <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">{{ featured.catLabel }}</span>
             <span style="font-size:clamp(22px,2.6vw,32px);font-weight:600;line-height:1.1;letter-spacing:-0.02em;max-width:16ch;text-wrap:pretty">{{ featured.keyword }}</span>
           </div>
           <div style="display:flex;flex-direction:column;justify-content:center">
-            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ featured.date }} · {{ featured.read }}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">{{ featured.date }} · {{ featured.read }}</div>
             <h2 style="margin:12px 0 12px;font-size:clamp(24px,3vw,34px);font-weight:600;line-height:1.12;letter-spacing:-0.02em;text-wrap:pretty">{{ featured.title }}</h2>
-            <p style="margin:0;max-width:52ch;color:#6B6862;font-size:17px;text-wrap:pretty">{{ featured.description }}</p>
+            <p style="margin:0;max-width:52ch;color:var(--muted);font-size:17px;text-wrap:pretty">{{ featured.description }}</p>
             <span style="margin-top:20px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px">{{ t.read }} →</span>
           </div>
         </a>
@@ -81,24 +176,24 @@
     </section>
   </sc-if>
 
-  <section data-screen-label="Blog · Articole" style="border-top:1px solid #E2DED6">
+  <section data-screen-label="Blog · Articole" style="border-top:1px solid var(--hair)">
     <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(40px,5vw,72px) clamp(20px,5vw,64px) clamp(56px,7vw,104px)">
-      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">02</span> / {{ t.all }}</div>
+      <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">02</span> / {{ t.all }}</div>
       <div style="flex:1 1 560px;min-width:0">
         <sc-if value="{{ hasRest }}" hint-placeholder-val="{{ true }}">
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:clamp(16px,2vw,24px)">
             <sc-for list="{{ rest }}" as="p" hint-placeholder-count="2">
-              <a href="{{ p.href }}" onClick="{{ p.open }}" style="display:flex;flex-direction:column;color:#0B0B0B;border-top:1px solid #0B0B0B;padding-top:16px" style-hover="color:#0B0B0B;border-top-color:#FF4D14">
-                <div style="display:flex;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">{{ p.catLabel }}</span><span>{{ p.read }}</span></div>
+              <a href="{{ p.href }}" onClick="{{ p.open }}" style="display:flex;flex-direction:column;color:var(--ink);border-top:1px solid var(--ink);padding-top:16px" style-hover="color:var(--ink);border-top-color:#FF4D14">
+                <div style="display:flex;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">{{ p.catLabel }}</span><span>{{ p.read }}</span></div>
                 <h3 style="margin:12px 0 8px;font-size:21px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;text-wrap:pretty">{{ p.title }}</h3>
-                <p style="margin:0;font-size:16px;color:#6B6862;text-wrap:pretty">{{ p.description }}</p>
+                <p style="margin:0;font-size:16px;color:var(--muted);text-wrap:pretty">{{ p.description }}</p>
                 <div style="margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">{{ p.date }}</div>
               </a>
             </sc-for>
           </div>
         </sc-if>
         <sc-if value="{{ noRest }}" hint-placeholder-val="{{ false }}">
-          <p style="margin:0;font-size:16px;color:#6B6862">{{ t.empty }}</p>
+          <p style="margin:0;font-size:16px;color:var(--muted)">{{ t.empty }}</p>
         </sc-if>
       </div>
     </div>
@@ -109,16 +204,16 @@
   <article>
     <section data-screen-label="Articol · 00">
       <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(40px,7vw,96px) clamp(20px,5vw,64px) clamp(32px,4vw,48px)">
-        <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
-          <button type="button" onClick="{{ goList }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862" style-hover="color:#FF4D14">← Blog</button>
+        <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">
+          <button type="button" onClick="{{ goList }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:var(--muted)" style-hover="color:#FF4D14">← Blog</button>
         </div>
         <div style="flex:1 1 560px;min-width:0">
           <nav aria-label="Breadcrumb" style="display:flex;flex-wrap:wrap;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#8D8880">
             <span>CODEPEDIA</span><span>/</span><button type="button" onClick="{{ goList }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#8D8880" style-hover="color:#FF4D14">Blog</button><span>/</span><button type="button" onClick="{{ post.pickCat }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#FF4D14">{{ post.catLabel }}</button>
           </nav>
           <h1 style="margin:20px 0 0;max-width:24ch;font-size:clamp(30px,4.8vw,52px);font-weight:600;line-height:1.06;letter-spacing:-0.025em;text-wrap:pretty">{{ post.title }}</h1>
-          <p style="margin:20px 0 0;max-width:60ch;font-size:clamp(16px,1.4vw,19px);color:#6B6862;text-wrap:pretty">{{ post.description }}</p>
-          <div style="margin-top:28px;padding-top:16px;border-top:1px solid #E2DED6;display:flex;flex-wrap:wrap;gap:8px 28px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
+          <p style="margin:20px 0 0;max-width:60ch;font-size:clamp(16px,1.4vw,19px);color:var(--muted);text-wrap:pretty">{{ post.description }}</p>
+          <div style="margin-top:28px;padding-top:16px;border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;gap:8px 28px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">
             <span>{{ post.author }}</span>
             <span>{{ t.published }} {{ post.date }}</span>
             <sc-if value="{{ post.showUpdated }}" hint-placeholder-val="{{ false }}"><span>{{ t.updated }} {{ post.updatedFmt }}</span></sc-if>
@@ -128,14 +223,14 @@
       </div>
     </section>
 
-    <section data-screen-label="Articol · 01" style="border-top:1px solid #E2DED6">
+    <section data-screen-label="Articol · 01" style="border-top:1px solid var(--hair)">
       <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(40px,5vw,72px) clamp(20px,5vw,64px) clamp(56px,7vw,96px)">
         <aside style="flex:0 0 160px">
           <sc-if value="{{ showToc }}" hint-placeholder-val="{{ true }}">
             <div style="position:sticky;top:96px;display:flex;flex-direction:column;gap:10px">
-              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ t.toc }}</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">{{ t.toc }}</div>
               <sc-for list="{{ toc }}" as="h" hint-placeholder-count="5">
-                <a href="#{{ h.id }}" style="font-size:13px;line-height:1.35;color:#6B6862;text-wrap:pretty" style-hover="color:#FF4D14">{{ h.text }}</a>
+                <a href="#{{ h.id }}" style="font-size:13px;line-height:1.35;color:var(--muted);text-wrap:pretty" style-hover="color:#FF4D14">{{ h.text }}</a>
               </sc-for>
             </div>
           </sc-if>
@@ -143,8 +238,8 @@
         <div style="flex:1 1 560px;min-width:0;max-width:70ch;line-height:1.7">
           <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="8">
             <sc-if value="{{ b.isCallout }}" hint-placeholder-val="{{ false }}">
-              <div style="margin:0 0 2rem;padding:clamp(18px,2.2vw,24px);border:1px solid #0B0B0B;border-radius:4px;background:#F1EEE7;font-size:17px;line-height:1.6">
-                <sc-for list="{{ b.segs }}" as="s"><sc-if value="{{ s.isText }}"><span>{{ s.t }}</span></sc-if><sc-if value="{{ s.isBold }}"><strong style="font-weight:600">{{ s.t }}</strong></sc-if><sc-if value="{{ s.isLink }}"><a href="{{ s.href }}" style="text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px">{{ s.t }}</a></sc-if><sc-if value="{{ s.isCode }}"><code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;background:#E2DED6;padding:0.1em 0.35em;border-radius:3px">{{ s.t }}</code></sc-if></sc-for>
+              <div style="margin:0 0 2rem;padding:clamp(18px,2.2vw,24px);border:1px solid var(--ink);border-radius:4px;background:var(--hatch);font-size:17px;line-height:1.6">
+                <sc-for list="{{ b.segs }}" as="s"><sc-if value="{{ s.isText }}"><span>{{ s.t }}</span></sc-if><sc-if value="{{ s.isBold }}"><strong style="font-weight:600">{{ s.t }}</strong></sc-if><sc-if value="{{ s.isLink }}"><a href="{{ s.href }}" style="text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px">{{ s.t }}</a></sc-if><sc-if value="{{ s.isCode }}"><code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;background:var(--hair);padding:0.1em 0.35em;border-radius:3px">{{ s.t }}</code></sc-if></sc-for>
               </div>
             </sc-if>
             <sc-if value="{{ b.isH2 }}" hint-placeholder-val="{{ false }}">
@@ -154,34 +249,34 @@
               <h3 style="margin:2rem 0 0.5rem;font-size:19px;font-weight:600;letter-spacing:-0.01em;line-height:1.3">{{ b.text }}</h3>
             </sc-if>
             <sc-if value="{{ b.isP }}" hint-placeholder-val="{{ true }}">
-              <p style="margin:0 0 1.25rem;text-wrap:pretty"><sc-for list="{{ b.segs }}" as="s"><sc-if value="{{ s.isText }}"><span>{{ s.t }}</span></sc-if><sc-if value="{{ s.isBold }}"><strong style="font-weight:600">{{ s.t }}</strong></sc-if><sc-if value="{{ s.isLink }}"><a href="{{ s.href }}" style="text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px">{{ s.t }}</a></sc-if><sc-if value="{{ s.isCode }}"><code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;background:#F1EEE7;padding:0.1em 0.35em;border-radius:3px">{{ s.t }}</code></sc-if></sc-for></p>
+              <p style="margin:0 0 1.25rem;text-wrap:pretty"><sc-for list="{{ b.segs }}" as="s"><sc-if value="{{ s.isText }}"><span>{{ s.t }}</span></sc-if><sc-if value="{{ s.isBold }}"><strong style="font-weight:600">{{ s.t }}</strong></sc-if><sc-if value="{{ s.isLink }}"><a href="{{ s.href }}" style="text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px">{{ s.t }}</a></sc-if><sc-if value="{{ s.isCode }}"><code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;background:var(--hatch);padding:0.1em 0.35em;border-radius:3px">{{ s.t }}</code></sc-if></sc-for></p>
             </sc-if>
             <sc-if value="{{ b.isList }}" hint-placeholder-val="{{ false }}">
-              <div style="margin:0 0 1.5rem;display:flex;flex-direction:column;border-top:1px solid #E2DED6">
+              <div style="margin:0 0 1.5rem;display:flex;flex-direction:column;border-top:1px solid var(--hair)">
                 <sc-for list="{{ b.items }}" as="it">
-                  <div style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid #E2DED6">
+                  <div style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--hair)">
                     <span style="flex:0 0 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;color:#FF4D14">{{ it.mark }}</span>
-                    <span style="flex:1;min-width:0;text-wrap:pretty"><sc-for list="{{ it.segs }}" as="s"><sc-if value="{{ s.isText }}"><span>{{ s.t }}</span></sc-if><sc-if value="{{ s.isBold }}"><strong style="font-weight:600">{{ s.t }}</strong></sc-if><sc-if value="{{ s.isLink }}"><a href="{{ s.href }}" style="text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px">{{ s.t }}</a></sc-if><sc-if value="{{ s.isCode }}"><code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;background:#F1EEE7;padding:0.1em 0.35em;border-radius:3px">{{ s.t }}</code></sc-if></sc-for></span>
+                    <span style="flex:1;min-width:0;text-wrap:pretty"><sc-for list="{{ it.segs }}" as="s"><sc-if value="{{ s.isText }}"><span>{{ s.t }}</span></sc-if><sc-if value="{{ s.isBold }}"><strong style="font-weight:600">{{ s.t }}</strong></sc-if><sc-if value="{{ s.isLink }}"><a href="{{ s.href }}" style="text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px">{{ s.t }}</a></sc-if><sc-if value="{{ s.isCode }}"><code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;background:var(--hatch);padding:0.1em 0.35em;border-radius:3px">{{ s.t }}</code></sc-if></sc-for></span>
                   </div>
                 </sc-for>
               </div>
             </sc-if>
             <sc-if value="{{ b.isTable }}" hint-placeholder-val="{{ false }}">
-              <div style="margin:0 0 1.75rem;overflow-x:auto;border:1px solid #E2DED6;border-radius:4px">
+              <div style="margin:0 0 1.75rem;overflow-x:auto;border:1px solid var(--hair);border-radius:4px">
                 <table style="width:100%;border-collapse:collapse;font-size:15px;line-height:1.45">
-                  <thead><tr><sc-for list="{{ b.head }}" as="h"><th style="padding:10px 14px;border-bottom:1px solid #E2DED6;text-align:left;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:400;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862;background:#F1EEE7;white-space:nowrap">{{ h }}</th></sc-for></tr></thead>
+                  <thead><tr><sc-for list="{{ b.head }}" as="h"><th style="padding:10px 14px;border-bottom:1px solid var(--hair);text-align:left;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:400;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);background:var(--hatch);white-space:nowrap">{{ h }}</th></sc-for></tr></thead>
                   <tbody>
                     <sc-for list="{{ b.rows }}" as="r">
-                      <tr><sc-for list="{{ r.cells }}" as="c"><td style="padding:10px 14px;border-bottom:1px solid #E2DED6;vertical-align:top;min-width:120px"><sc-for list="{{ c.segs }}" as="s"><sc-if value="{{ s.isText }}"><span>{{ s.t }}</span></sc-if><sc-if value="{{ s.isBold }}"><strong style="font-weight:600">{{ s.t }}</strong></sc-if><sc-if value="{{ s.isLink }}"><a href="{{ s.href }}" style="text-decoration:underline;text-decoration-color:#FF4D14">{{ s.t }}</a></sc-if><sc-if value="{{ s.isCode }}"><code style="font-family:'JetBrains Mono',monospace;font-size:0.88em">{{ s.t }}</code></sc-if></sc-for></td></sc-for></tr>
+                      <tr><sc-for list="{{ r.cells }}" as="c"><td style="padding:10px 14px;border-bottom:1px solid var(--hair);vertical-align:top;min-width:120px"><sc-for list="{{ c.segs }}" as="s"><sc-if value="{{ s.isText }}"><span>{{ s.t }}</span></sc-if><sc-if value="{{ s.isBold }}"><strong style="font-weight:600">{{ s.t }}</strong></sc-if><sc-if value="{{ s.isLink }}"><a href="{{ s.href }}" style="text-decoration:underline;text-decoration-color:#FF4D14">{{ s.t }}</a></sc-if><sc-if value="{{ s.isCode }}"><code style="font-family:'JetBrains Mono',monospace;font-size:0.88em">{{ s.t }}</code></sc-if></sc-for></td></sc-for></tr>
                     </sc-for>
                   </tbody>
                 </table>
               </div>
             </sc-if>
             <sc-if value="{{ b.isFaq }}" hint-placeholder-val="{{ false }}">
-              <div style="margin:0 0 2rem;border-top:1px solid #0B0B0B">
+              <div style="margin:0 0 2rem;border-top:1px solid var(--ink)">
                 <sc-for list="{{ b.faq }}" as="f">
-                  <details style="border-bottom:1px solid #E2DED6">
+                  <details style="border-bottom:1px solid var(--hair)">
                     <summary style="list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 0;min-height:44px;font-size:18px;font-weight:500;letter-spacing:-0.01em">{{ f.q }}<span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:16px;color:#FF4D14">+</span></summary>
                     <p style="margin:0 0 18px;color:#3A3834;text-wrap:pretty">{{ f.a }}</p>
                   </details>
@@ -189,10 +284,10 @@
               </div>
             </sc-if>
             <sc-if value="{{ b.isCta }}" hint-placeholder-val="{{ false }}">
-              <div style="margin:3rem 0 0;padding:clamp(24px,3vw,36px);border-radius:4px;background:#0B0B0B;color:#FAF8F4;display:flex;flex-direction:column;gap:20px">
+              <div style="margin:3rem 0 0;padding:clamp(24px,3vw,36px);border-radius:4px;background:var(--inv-bg);color:var(--inv-fg);display:flex;flex-direction:column;gap:20px">
                 <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#FF4D14">{{ t.next }}</span>
                 <p style="margin:0;font-size:clamp(19px,2vw,23px);line-height:1.35;letter-spacing:-0.01em;text-wrap:pretty">{{ b.ctaText }}</p>
-                <a href="{{ b.ctaHref }}" style="align-self:flex-start;display:flex;align-items:center;min-height:44px;padding:0 20px;border-radius:4px;background:#FF4D14;color:#0B0B0B;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em" style-hover="background:#FAF8F4;color:#0B0B0B">{{ b.ctaLabel }} →</a>
+                <a href="{{ b.ctaHref }}" style="align-self:flex-start;display:flex;align-items:center;min-height:44px;padding:0 20px;border-radius:4px;background:#FF4D14;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em" style-hover="background:var(--paper);color:var(--ink)">{{ b.ctaLabel }} →</a>
               </div>
             </sc-if>
           </sc-for>
@@ -201,15 +296,15 @@
     </section>
 
     <sc-if value="{{ hasRelated }}" hint-placeholder-val="{{ true }}">
-      <section data-screen-label="Articol · 02" style="border-top:1px solid #E2DED6">
+      <section data-screen-label="Articol · 02" style="border-top:1px solid var(--hair)">
         <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px);padding:clamp(40px,5vw,72px) clamp(20px,5vw,64px) clamp(56px,7vw,96px)">
-          <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">02</span> / {{ t.related }}</div>
+          <div style="flex:0 0 160px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">02</span> / {{ t.related }}</div>
           <div style="flex:1 1 560px;min-width:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:clamp(16px,2vw,24px)">
             <sc-for list="{{ related }}" as="p" hint-placeholder-count="2">
-              <a href="{{ p.href }}" onClick="{{ p.open }}" style="display:flex;flex-direction:column;color:#0B0B0B;border-top:1px solid #0B0B0B;padding-top:16px" style-hover="color:#0B0B0B;border-top-color:#FF4D14">
-                <div style="display:flex;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span style="color:#FF4D14">{{ p.catLabel }}</span><span>{{ p.read }}</span></div>
+              <a href="{{ p.href }}" onClick="{{ p.open }}" style="display:flex;flex-direction:column;color:var(--ink);border-top:1px solid var(--ink);padding-top:16px" style-hover="color:var(--ink);border-top-color:#FF4D14">
+                <div style="display:flex;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)"><span style="color:#FF4D14">{{ p.catLabel }}</span><span>{{ p.read }}</span></div>
                 <h3 style="margin:12px 0 8px;font-size:21px;font-weight:500;letter-spacing:-0.02em;line-height:1.25;text-wrap:pretty">{{ p.title }}</h3>
-                <p style="margin:0;font-size:16px;color:#6B6862;text-wrap:pretty">{{ p.description }}</p>
+                <p style="margin:0;font-size:16px;color:var(--muted);text-wrap:pretty">{{ p.description }}</p>
               </a>
             </sc-for>
           </div>
@@ -221,13 +316,8 @@
 
 </main>
 
-<footer data-screen-label="Footer" style="border-top:1px solid #E2DED6">
-  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;padding:24px clamp(20px,5vw,64px);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
-    <span style="display:flex;align-items:center;gap:8px"><img src="assets/codepedia-mark.svg" alt="" style="display:block;height:12px;width:auto;opacity:0.5" />CODEPEDIA SRL · Chișinău, Moldova</span>
-    <span>{{ t.foot }}</span>
-    <span>© 2026</span>
-  </div>
-</footer>
+<dc-import name="Site Footer" lang="{{ navLang }}" home="{{ navHome }}" hint-size="100%,420px"></dc-import>
+<dc-import name="Contact Modal" lang="{{ navLang }}" hint-size="0px,0px"></dc-import>
 
 <dc-import name="SEO Panel" page="{{ seoKey }}" hint-size="100%,560px"></dc-import>
 
@@ -325,16 +415,78 @@ function parseMd(src, lang) {
   }
   return { ...fm, blocks, toc: blocks.filter(b => b.isH2).map(b => ({ id: b.id, text: b.text })) };
 }
+
+const NAV_PROJ = {"website":[{"name":"Startica","sub":"grădiniță în Chișinău","metric":"","img":"https://startica.md/media/filer_public_thumbnails/filer_public/20/a7/20a767a2-71dc-4a4f-af3b-2a1b5a632053/grupa-2.jpeg__880x605_crop_subsampling-2_upscale.webp","href":"Studiu de caz.dc.html?p=startica-site"},{"name":"Aurelia Badiur","sub":"consultant oenolog","metric":"","img":"https://aureliabadiur.com/images/hero.jpg","href":"Studiu de caz.dc.html?p=aurelia-badiur"}],"aplicatie-web":[{"name":"Startica","sub":"aplicație desktop","metric":"","img":"assets/proiecte/startica-app-dashboard-crop.png","href":"Studiu de caz.dc.html?p=startica-app"},{"name":"Bloom Florist","sub":"gestiune florărie","metric":"","img":"assets/proiecte/bloom-panou-1600.png","href":"Studiu de caz.dc.html?p=bloom"},{"name":"Trucker HQ","sub":"dispatch auto","metric":"","img":"assets/proiecte/truckerhq-acasa-1600.png","href":"Studiu de caz.dc.html?p=truckerhq"},{"name":"SwissCars","sub":"auto din Elveția","metric":"","img":"https://krltqxdhxiguxwookqgg.supabase.co/storage/v1/object/public/car-images/cars/ae25eba6-b9ae-4b21-9a3b-85b025e69e21.jpg","href":"Studiu de caz.dc.html?p=swisscars"}]};
+const NAV_INTRO = {"website":"O pagină de prezentare modernă care-ți validează ideea și atrage primii clienți.","aplicatie-web":"Aplicația ta, din design în cod de producție, pe Postgres și Nuxt sau Next.","wordpress":"Site WordPress rapid, securizat și ușor de menținut, pe infrastructura modernă cu cache și CDN global.","shopify":"Magazin Shopify optimizat pentru conversie, cu design custom și integrări cu logistica și analitică reală.","automatizare-ai":"Sisteme AI custom integrate în fluxul tău de lucru, care reduc zeci de ore manuale pe lună și reduc costurile operaționale.","granturi":"Ai câștigat un grant european sau ODA și trebuie să livrezi o aplicație la termen? Construim partea tehnică a proiectului și pregătim documentele de care ai nevoie la raportare."};
+const NAV_INTRO_EN = {"website":"A modern presentation site that validates your idea and brings in the first clients.","aplicatie-web":"Your app, from design to production code, on Postgres and Nuxt or Next.","wordpress":"A fast, secure WordPress site that is easy to maintain, on modern infrastructure with caching and a global CDN.","shopify":"A Shopify store built for conversion, with custom design and integrations for logistics and real analytics.","automatizare-ai":"Custom AI systems built into your workflow that remove dozens of manual hours a month and lower operating costs.","granturi":"Won an EU or ODA grant and need to deliver an app on time? We build the technical side of the project and prepare the documents you need for reporting."};
+const NAV_SVC = [['website','Website','Website'],['aplicatie-web','Aplicație web','Web app'],['wordpress','WordPress','WordPress'],['shopify','Shopify','Shopify'],['automatizare-ai','Automatizare cu AI','AI automation'],['granturi','Proiecte finanțate prin granturi','Grant-funded projects']];
+const NAV_GROUPS = [{ ro: 'Site-uri', en: 'Websites', slugs: ['website', 'wordpress', 'shopify'] }, { ro: 'Aplicații și AI', en: 'Apps and AI', slugs: ['aplicatie-web', 'automatizare-ai', 'granturi'] }];
+function navVals(c, o) {
+  const { wide = true, menuOpen = false, scrolled = false, svcOpen = false } = c.state;
+  const open = !wide && menuOpen, en = o.lang === 'en', H = o.home;
+  const close = () => { document.body.style.overflow = ''; c.setState({ menuOpen: false, svcOpen: false }); };
+  const selSlug = c.state.svcSel || o.svcSlug || 'website';
+  const L = en ? ['Services', 'Work', 'Process', 'Blog'] : ['Servicii', 'Proiecte', 'Proces', 'Blog'];
+  const st = on => ({ current: on ? 'page' : 'false', color: on ? 'var(--ink)' : 'var(--muted)', line: on ? 1 : 0, numColor: on ? '#FF4D14' : 'var(--muted)' });
+  const items = [[L[1], H + '#proiecte', 'proiecte'], [L[2], H + '#proces', 'proces'], [L[3], 'Codepedia Blog v2.dc.html' + (en ? '?lang=en' : ''), 'blog']].map(([label, href, id], i) => ({ label, href, num: String(i + 2).padStart(2, '0'), ...st(o.active === id),
+    go: e => { if (id === 'blog' && o.blogGo) { e.preventDefault(); o.blogGo(); } close(); } }));
+  const cs = h => en ? h.replace('Studiu de caz.dc.html', 'Case Study.dc.html') : h;
+  const svcRow = ([slug, ro, enName]) => { const hov = slug === selSlug, cur = slug === o.svcSlug; return { name: en ? enName : ro, href: 'Codepedia Servicii.dc.html?s=' + slug, current: cur ? 'page' : 'false', color: hov ? 'var(--ink)' : 'var(--muted)', bar: hov ? '#FF4D14' : 'transparent', weight: hov ? 600 : 400, mColor: cur ? '#FF4D14' : 'var(--ink)', pick: () => c.setState({ svcSel: slug, projHover: 0 }), go: close }; };
+  const row = NAV_SVC.find(r => r[0] === selSlug), nm = en ? row[2] : row[1];
+  const pr = (NAV_PROJ[selSlug] || []).slice(0, 4), hi = Math.min(c.state.projHover || 0, Math.max(pr.length - 1, 0));
+  return {
+    themeLabel: (document.documentElement.dataset.theme === 'dark') ? (en ? 'Light theme' : 'Temă luminoasă') : (en ? 'Dark theme' : 'Temă întunecată'),
+    toggleTheme: () => { const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = t; try { localStorage.setItem('codepedia:theme', t); } catch (e) {} c.forceUpdate(); },
+    navLang: en ? 'en' : 'ro', navHome: H,
+    isWide: wide, isNarrow: !wide, mobileOpen: open, menuOpenStr: String(open),
+    hdrH: scrolled ? '52px' : '64px', hdrShadow: scrolled ? '0 10px 24px -18px rgba(11,11,11,0.35)' : 'none',
+    bTop: open ? 'translateY(7px) rotate(45deg)' : 'none', bBot: open ? 'translateY(-7px) rotate(-45deg)' : 'none', bMidOp: open ? 0 : 1,
+    toggleMenu: () => { const n = !c.state.menuOpen; document.body.style.overflow = n ? 'hidden' : ''; c.setState({ menuOpen: n }); },
+    closeMenu: close, logoHref: H || '#top',
+    navLabel: en ? 'Main navigation' : 'Navigare principală', menuLabel: en ? 'Menu' : 'Meniu',
+    ctaLabel: en ? 'Discuss a project' : 'Discută un proiect', ctaHref: H + '#contact',
+    hasLangs: o.langs.length > 0,
+    langItems: o.langs.map((l, i) => ({ code: l.code, href: l.href || '#', hl: l.code.toLowerCase(), current: l.on ? 'true' : 'false', color: l.on ? 'var(--ink)' : 'var(--muted)', sep: i ? 'inline' : 'none',
+      go: e => { if (!l.href) { e.preventDefault(); if (l.go) l.go(); } close(); } })),
+    svc: { label: L[0], href: 'Codepedia Servicii.dc.html', ...st(o.active === 'servicii') },
+    svcOpenStr: String(svcOpen), svcVis: svcOpen ? 'visible' : 'hidden', svcOp: svcOpen ? 1 : 0, svcShift: svcOpen ? 'none' : 'translateY(-6px)', svcCaret: svcOpen ? 'rotate(180deg)' : 'none',
+    svcEnter: () => { clearTimeout(c._svcT); if (!c.state.svcOpen) c.setState({ svcOpen: true }); },
+    svcLeave: () => { clearTimeout(c._svcT); c._svcT = setTimeout(() => c.setState({ svcOpen: false }), 220); },
+    svcClick: e => { if (!c.state.svcOpen) { e.preventDefault(); c.setState({ svcOpen: true }); } },
+    svcGroups: NAV_GROUPS.map(g => ({ label: en ? g.en : g.ro, items: g.slugs.map(s => svcRow(NAV_SVC.find(r => r[0] === s))) })),
+    sel: { kicker: pr.length ? (en ? 'Projects · ' : 'Proiecte · ') + nm : nm, hasProj: pr.length > 0, noProj: !pr.length, intro: (en ? NAV_INTRO_EN : NAV_INTRO)[selSlug] || '',
+      href: 'Codepedia Servicii.dc.html?s=' + selSlug, serviceLink: en ? 'About the service' : 'Despre serviciu',
+      projects: pr.map((p, k) => ({ ...p, href: cs(p.href), bg: k === hi ? 'var(--hatch)' : 'transparent', metricColor: k === hi ? '#FF4D14' : 'var(--muted)', hover: () => c.setState({ projHover: k }) })),
+      hasCur: !!pr[hi], cur: pr[hi] ? { ...pr[hi], href: cs(pr[hi].href) } : { name: '', img: '', href: '#', sub: '' } },
+    allHref: H + '#proiecte', allLabel: en ? 'See all projects' : 'Vezi toate proiectele',
+    navItems: items,
+  };
+}
+function navWatch(c, extra) {
+  const f = () => { const w = window.innerWidth >= 900, y = window.scrollY; const st = { wide: w, scrolled: y > 8, ...(extra ? extra(y) : {}) }; if (w && c.state.menuOpen) { st.menuOpen = false; document.body.style.overflow = ''; } c.setState(st); };
+  c._navF = f; window.addEventListener('scroll', f, { passive: true }); window.addEventListener('resize', f); f();
+}
+function navUnwatch(c) { window.removeEventListener('scroll', c._navF); window.removeEventListener('resize', c._navF); clearTimeout(c._svcT); document.body.style.overflow = ''; }
+
 class Component extends DCLogic {
   state = { lang: null, post: null, cat: 'all', data: { ro: [], en: [] } };
   componentDidMount() {
+    navWatch(this, y => { const h = document.documentElement.scrollHeight - window.innerHeight; return { prog: h > 0 ? Math.min(1, y / h) : 0 }; });
     let lang = null, post = null;
     try { const q = new URLSearchParams(window.location.search); lang = q.get('lang'); post = q.get('post'); } catch (e) {}
     this.setState({ lang: lang === 'en' || lang === 'ro' ? lang : null, post });
     ['ro', 'en'].forEach(lg => Promise.all(FILES[lg].map(s => fetch('content/blog/' + lg + '/' + s + '.md').then(r => r.ok ? r.text() : '').then(t => t ? parseMd(t, lg) : null).catch(() => null)))
       .then(arr => this.setState(st => ({ data: { ...st.data, [lg]: arr.filter(Boolean).sort((a, b) => (b.date || '').localeCompare(a.date || '')) } }))));
   }
-  renderVals() {
+  componentWillUnmount() { navUnwatch(this); }
+  _nav(r) {
+    const lang = this.state.lang || this.props.lang || 'ro', art = !!this.state.post;
+    return { ...navVals(this, { lang, home: lang === 'en' ? 'Codepedia EN.dc.html' : 'Codepedia.dc.html', active: 'blog', blogGo: () => { this.setState({ post: null }); window.scrollTo(0, 0); },
+      langs: [{ code: 'RO', on: lang === 'ro', go: r.setRo }, { code: 'EN', on: lang === 'en', go: r.setEn }] }),
+      lineBg: art ? 'var(--hair)' : '#FF4D14', progW: art ? Math.round((this.state.prog || 0) * 100) + '%' : '100%' };
+  }
+  renderVals() { const r = this._rv(); return { ...r, ...this._nav(r) }; }
+  _rv() {
     const lang = this.state.lang || this.props.lang || 'ro';
     const t = T[lang]; const C = CATS[lang];
     const fmt = d => { if (!d) return ''; const [y, m, dd] = d.split('-').map(Number); return lang === 'ro' ? dd + ' ' + t.months[m - 1] + ' ' + y : t.months[m - 1] + ' ' + dd + ', ' + y; };
@@ -344,7 +496,7 @@ class Component extends DCLogic {
     const cur = this.state.post ? posts.find(p => p.slug === this.state.post) : null;
     const cat = this.state.cat;
     const counts = {}; posts.forEach(p => { counts[p.category] = (counts[p.category] || 0) + 1; });
-    const chip = (key, label, count) => { const on = cat === key; return { label, count, bg: on ? '#0B0B0B' : 'transparent', fg: on ? '#FAF8F4' : '#0B0B0B', bd: on ? '#0B0B0B' : '#E2DED6', pick: () => this.setState({ cat: key }) }; };
+    const chip = (key, label, count) => { const on = cat === key; return { label, count, bg: on ? 'var(--ink)' : 'transparent', fg: on ? 'var(--paper)' : 'var(--ink)', bd: on ? 'var(--ink)' : 'var(--hair)', pick: () => this.setState({ cat: key }) }; };
     const cats = [chip('all', t.all, posts.length), ...Object.keys(C).filter(k => counts[k]).map(k => chip(k, C[k], counts[k]))];
     const filtered = posts.filter(p => cat === 'all' || p.category === cat).map(card);
     const featured = cat === 'all' ? filtered[0] : null;
@@ -359,8 +511,8 @@ class Component extends DCLogic {
     const on = lg => lg === lang;
     return {
       t, seoKey: cur ? 'blog/post' : 'blog',
-      roBg: on('ro') ? '#0B0B0B' : 'transparent', roFg: on('ro') ? '#FAF8F4' : '#6B6862',
-      enBg: on('en') ? '#0B0B0B' : 'transparent', enFg: on('en') ? '#FAF8F4' : '#6B6862',
+      roBg: on('ro') ? 'var(--ink)' : 'transparent', roFg: on('ro') ? 'var(--paper)' : 'var(--muted)',
+      enBg: on('en') ? 'var(--ink)' : 'transparent', enFg: on('en') ? 'var(--paper)' : 'var(--muted)',
       setRo: switchLang('ro'), setEn: switchLang('en'),
       isList: !cur, isPost: !!cur,
       goList: () => { this.setState({ post: null }); top(); },

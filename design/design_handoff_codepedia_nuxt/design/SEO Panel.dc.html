@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<section data-screen-label="SEO" style="max-width:1280px;margin:0 auto;padding:clamp(24px,3vw,40px) clamp(20px,5vw,64px) clamp(40px,5vw,64px);box-sizing:border-box;width:100%">
+  <div style="background:#141414;border-radius:12px;overflow:hidden;color:#E8E5DF">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid #2A2A2A">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px">
+        <span style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;color:#FAF8F4">SEO · ce se generează pentru această pagină</span>
+        <div style="display:flex;gap:4px;padding:3px;background:#0B0B0B;border-radius:6px">
+          <sc-for list="{{ modes }}" as="m" hint-placeholder-count="2">
+            <button onClick="{{ m.select }}" disabled="{{ m.disabled }}" style="border:0;border-radius:4px;padding:6px 10px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;background:{{ m.bg }};color:{{ m.color }}">{{ m.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#8D8880">vizibil doar în machetă · {{ source }}</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))">
+      <div style="display:flex;flex-direction:column;gap:16px;padding:16px 20px 20px">
+        <div style="background:#FFFFFF;border-radius:8px;padding:14px 16px 16px;font-family:Arial,sans-serif">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#F1F3F4;flex:none"><img src="assets/codepedia-mark.svg" alt="" style="display:block;height:12px;width:auto" /></span>
+            <span style="display:flex;flex-direction:column;min-width:0">
+              <span style="font-size:14px;color:#202124;line-height:20px">CODEPEDIA</span>
+              <span style="font-size:12px;color:#4D5156;line-height:18px;overflow-wrap:anywhere">{{ crumb }}</span>
+            </span>
+          </div>
+          <div style="margin-top:6px;font-size:20px;line-height:26px;color:#1A0DAB">{{ serpTitle }}</div>
+          <div style="margin-top:4px;font-size:14px;line-height:22px;color:#4D5156">{{ serpDesc }}</div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em">
+          <span style="color:{{ titleColor }}">Title {{ titleLen }}/60</span>
+          <span style="color:{{ descColor }}">Description {{ descLen }}/160</span>
+          <span style="color:#8D8880">{{ robots }}</span>
+        </div>
+        <sc-if value="{{ hasNotes }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #2A2A2A;padding-top:14px">
+            <sc-for list="{{ notes }}" as="n" hint-placeholder-count="2">
+              <div style="display:flex;gap:10px;font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.5;color:#C9C5BE;text-wrap:pretty"><span style="flex:none;font-family:'JetBrains Mono',monospace;color:{{ n.color }}">{{ n.mark }}</span><span>{{ n.text }}</span></div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <pre style="margin:0;padding:16px 20px 20px;max-height:460px;overflow:auto;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.6;color:#FFB08F;white-space:pre-wrap;word-break:break-all;border-left:1px solid #2A2A2A">{{ code }}</pre>
+    </div>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:620},&quot;page&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;home&quot;,&quot;servicii/website&quot;,&quot;servicii/aplicatie-web&quot;,&quot;servicii/wordpress&quot;,&quot;servicii/shopify&quot;,&quot;servicii/automatizare-ai&quot;,&quot;servicii/granturi&quot;,&quot;servicii&quot;,&quot;preturi&quot;,&quot;despre&quot;,&quot;contact&quot;,&quot;blog&quot;,&quot;blog/post&quot;,&quot;privacy&quot;,&quot;404&quot;,&quot;500&quot;],&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const SITE = 'https://codepedia.md';
+const SUFFIX = ' · CODEPEDIA';
+const LD_OPEN = '<scr' + 'ipt type="application/ld+json">';
+const LD_CLOSE = '</scr' + 'ipt>';
+const ORG = { '@type': 'Organization', name: 'CODEPEDIA', url: SITE };
+const svc = (slug, en, name, intro, pt, pd) => ({
+  path: '/servicii/' + slug, en: en ? '/en/services/' + en : null, src: 'servicii/[slug].vue · services.ts',
+  now: { t: name, d: intro, ld: { '@type': 'Service', name, description: intro, url: SITE + '/servicii/' + slug, provider: ORG } },
+  pro: { t: pt, d: pd, ld: { '@type': 'Service', name, serviceType: name, description: pd, url: SITE + '/servicii/' + slug, areaServed: ['MD', 'RO', 'EU'], provider: ORG } },
+  crumbs: [['Servicii', '/servicii'], [name, '/servicii/' + slug]],
+});
+const PAGES = {
+  home: { path: '/', en: '/en', src: 'home/pages/index.vue · ro.json seo.home',
+    now: { t: 'Dezvoltare web full-stack, Chișinău', d: 'Aplicații web construite corect, de la schema bazei de date până la deployment. Studio full-stack cu sediul în Chișinău, pentru clienți din toată lumea.' },
+    pro: { t: 'Dezvoltare web full-stack, Chișinău', d: 'Aplicații web și site-uri construite corect, de la schema bazei de date la deployment. Studio full-stack din Chișinău, pentru clienți din toată lumea.', ld: { '@type': 'WebSite', name: 'CODEPEDIA', url: SITE, inLanguage: ['ro', 'en'] } },
+    notes: ['Organization JSON-LD vine din app.vue pe toate paginile publice; aici apare doar ce adaugă pagina.'] },
+  'servicii/website': svc('website', 'website', 'Website', 'O pagină de prezentare modernă care-ți validează ideea și atrage primii clienți. De la concept la lansare în zile, nu săptămâni.',
+    'Creare site de prezentare, live în 2–3 zile', 'Site de prezentare modern, rapid pe mobil, cu SEO și formular conectat la email sau Telegram. De la brief la lansare în 2–3 zile.'),
+  'servicii/aplicatie-web': svc('aplicatie-web', 'web-app', 'Aplicație web', 'Aplicația ta, din design în cod de producție, pe Postgres și Nuxt sau Next.',
+    'Dezvoltare aplicații web pe Nuxt și Next.js', 'Aplicația ta, din design în cod de producție: PostgreSQL, API sigur, teste automate și deploy continuu. Versiune live la fiecare două săptămâni.'),
+  'servicii/wordpress': svc('wordpress', 'wordpress', 'WordPress', 'Site WordPress rapid, securizat și ușor de menținut, pe infrastructura modernă cu cache și CDN global.',
+    'Site WordPress custom, rapid și securizat', 'Temă WordPress custom din Figma, fără plugin-uri inutile, pe hosting cu cache și CDN. Backup zilnic, SSL și instruire pentru editarea conținutului.'),
+  'servicii/shopify': svc('shopify', 'shopify', 'Shopify', 'Magazin Shopify optimizat pentru conversie, cu design custom și integrări cu logistica și analitică reală.',
+    'Magazin online Shopify cu temă custom', 'Magazin Shopify optimizat pentru conversie: temă custom, plăți, livrare, analytics și email marketing integrate. Lansare și instruire pe admin.'),
+  'servicii/automatizare-ai': svc('automatizare-ai', 'ai-automation', 'Automatizare cu AI', 'Sisteme AI custom integrate în fluxul tău de lucru, care reduc zeci de ore manuale pe lună și reduc costurile operaționale.',
+    'Automatizare cu AI pentru procese de business', 'Agenți AI pe datele tale, integrați cu email, CRM și Google Sheets. Reducem orele de muncă manuală și monitorizăm rezultatul 30 de zile.'),
+  'servicii/granturi': { ...svc('granturi', null, 'Proiecte finanțate prin granturi', 'Ai câștigat un grant european sau ODA și trebuie să livrezi o aplicație la termen? Construim partea tehnică a proiectului și pregătim documentele de care ai nevoie la raportare.',
+    'Dezvoltare IT pentru proiecte cu grant', 'Construim aplicația din proiectul finanțat prin grant european sau ODA, pe etapele din contract, cu documentele cerute la raportare și audit.'),
+    notes: ['Pagina e doar în română: fără hreflang en, x-default = RO.', 'Serviciul nu există încă în services.ts — „Acum în repo” arată ce ar genera codul actual cu intro-ul ca descriere.'] },
+  servicii: { path: '/servicii', en: '/en/services', src: 'pagină nouă', now: null, crumbs: [['Servicii', '/servicii']],
+    pro: { t: 'Servicii de dezvoltare web și aplicații', d: 'Site-uri de prezentare, aplicații web, WordPress, Shopify și automatizări cu AI. Alege etapa în care ești și vezi ce livrăm, în cât timp.', ld: { '@type': 'CollectionPage', name: 'Servicii', url: SITE + '/servicii' } } },
+  preturi: { path: '/preturi', en: '/en/pricing', src: 'pagină nouă', now: null, crumbs: [['Prețuri', '/preturi']],
+    pro: { t: 'Prețuri pentru site-uri și aplicații web', d: 'Cât costă un site de prezentare, o aplicație web sau o automatizare cu AI. Prețuri de pornire și termene pe fiecare etapă, fără costuri ascunse.', ld: { '@type': 'WebPage', name: 'Prețuri', url: SITE + '/preturi' } } },
+  despre: { path: '/despre', en: '/en/about', src: 'pagină nouă', now: null, crumbs: [['Despre', '/despre']],
+    pro: { t: 'Despre noi: studio full-stack din Chișinău', d: 'Studio boutique cu ingineri seniori și acces direct. Codul și infrastructura sunt ale tale din prima zi, cu estimări fixe și cost asumat.', ld: { '@type': 'AboutPage', name: 'Despre CODEPEDIA', url: SITE + '/despre' } } },
+  contact: { path: '/contact', en: '/en/contact', src: 'pagină nouă', now: null, crumbs: [['Contact', '/contact']],
+    pro: { t: 'Contact: spune-ne ce trebuie construit', d: 'Scrie-ne despre proiectul tău și primești răspuns în 24 de ore, cu pașii următori și o estimare. Studio full-stack din Chișinău.', ld: { '@type': 'ContactPage', name: 'Contact', url: SITE + '/contact' } } },
+  blog: { path: '/blog', en: '/en/blog', src: 'blog/pages/blog/index.vue · ro.json blog.seo', crumbs: [['Blog', '/blog']],
+    now: { t: 'Blog', d: 'Note tehnice și studii de caz scurte din munca CODEPEDIA: dezvoltare web, automatizare, arhitectură.', ld: { '@type': 'Blog', name: 'Blog', publisher: { '@type': 'Organization', name: 'CODEPEDIA' } } },
+    pro: { t: 'Blog: dezvoltare web, automatizare, arhitectură', d: 'Note tehnice și studii de caz scurte din munca CODEPEDIA: dezvoltare web, automatizare, arhitectură.', ld: { '@type': 'Blog', name: 'Blog CODEPEDIA', url: SITE + '/blog', publisher: ORG } },
+    notes: ['Descrierea RO e tradusă din en.json — verifică textul exact din ro.json (blog.seo.description).'] },
+  'blog/post': { path: '/blog/ce-verificam-intr-un-audit-de-cod', en: '/en/blog/what-we-check-in-a-code-audit', src: 'blog/pages/blog/[slug].vue · front matter', crumbs: [['Blog', '/blog'], ['Audit de cod', '']], og: 'article',
+    now: { t: 'Ce verificăm într-un audit de cod', d: '[Rezumat de 1–2 rânduri al articolului, din front matter: description.]', ld: { '@type': 'BlogPosting', headline: 'Ce verificăm într-un audit de cod', inLanguage: 'ro', datePublished: '2026-10-01', author: { '@type': 'Organization', name: 'CODEPEDIA' } } },
+    pro: { t: 'Ce verificăm într-un audit de cod', d: '[Rezumat de 1–2 rânduri al articolului, din front matter: description.]', ld: { '@type': 'BlogPosting', headline: 'Ce verificăm într-un audit de cod', inLanguage: 'ro', datePublished: '2026-10-01', dateModified: '2026-10-01', author: ORG, publisher: { ...ORG, logo: { '@type': 'ImageObject', url: SITE + '/brand/codepedia-mark.svg' } } } },
+    notes: ['Articol demo. Fiecare articol are nevoie de description de 70–160 caractere în front matter.'] },
+  privacy: { path: '/confidentialitate', en: '/en/privacy', src: 'consent/pages/confidentialitate.vue', crumbs: [['Confidențialitate', '/confidentialitate']],
+    now: { t: 'Politica de confidențialitate', d: 'Politica de confidențialitate CODEPEDIA: ce date colectăm, cum le folosim și cum poți controla cookie-urile.' },
+    pro: { t: 'Politica de confidențialitate', d: 'Politica de confidențialitate CODEPEDIA: ce date colectăm, cum le folosim și cum poți controla cookie-urile.' } },
+  '404': { path: '/pagina-inexistenta', en: null, src: 'app/error.vue', robots: 'noindex, follow', canonical: false,
+    now: { t: 'Pagina nu a fost găsită', d: '' }, pro: { t: 'Pagina nu a fost găsită', d: '' },
+    notes: ['Nu apare în Google: serverul trebuie să răspundă cu status 404 (nu 200) și noindex.'] },
+  '500': { path: '/', en: null, src: 'app/error.vue', robots: 'noindex, follow', canonical: false,
+    now: { t: 'Eroare de server', d: '' }, pro: { t: 'Eroare de server', d: '' },
+    notes: ['Nu apare în Google: status 500 + noindex.'] },
+};
+const cut = (s, n) => s.length > n ? s.slice(0, n - 1).trimEnd() + ' …' : s;
+const esc = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+class Component extends DCLogic {
+  state = { mode: 'pro' };
+  renderVals() {
+    const p = PAGES[this.props.page] || PAGES.home;
+    const mode = this.state.mode === 'now' && p.now ? 'now' : 'pro';
+    const v = p[mode];
+    const title = v.t + SUFFIX;
+    const desc = v.d || '';
+    const url = SITE + p.path;
+    const robots = p.robots || 'index, follow';
+    const L = [`<title>${title}</title>`];
+    if (desc) L.push(`<meta name="description" content="${esc(desc)}">`);
+    L.push(`<meta name="robots" content="${robots}">`);
+    if (p.canonical !== false) {
+      L.push(`<link rel="canonical" href="${url}">`);
+      L.push(`<link rel="alternate" hreflang="ro" href="${url}">`);
+      if (p.en) L.push(`<link rel="alternate" hreflang="en" href="${SITE + p.en}">`);
+      L.push(`<link rel="alternate" hreflang="x-default" href="${url}">`);
+      L.push(`<meta property="og:type" content="${p.og || 'website'}">`);
+      L.push(`<meta property="og:title" content="${esc(title)}">`);
+      if (desc) L.push(`<meta property="og:description" content="${esc(desc)}">`);
+      L.push(`<meta property="og:url" content="${url}">`);
+      L.push(`<meta property="og:image" content="${SITE}/og-image.png">`);
+      L.push(`<meta property="og:locale" content="ro_MD">`);
+      L.push(`<meta name="twitter:card" content="summary_large_image">`);
+      const lds = [];
+      if (v.ld) lds.push({ '@context': 'https://schema.org', ...v.ld });
+      if (mode === 'pro' && p.crumbs) lds.push({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [['Acasă', '/'], ...p.crumbs].map(([name, path], k) => ({ '@type': 'ListItem', position: k + 1, name, ...(path ? { item: SITE + path } : {}) })) });
+      lds.forEach(ld => L.push(LD_OPEN, JSON.stringify(ld, null, 1), LD_CLOSE));
+    }
+    const notes = [];
+    if (!p.now) notes.push({ mark: '+', color: '#FF4D14', text: 'Pagina nu există încă în repo. Valorile sunt cele propuse pentru implementare.' });
+    if (title.length > 60) notes.push({ mark: '!', color: '#FF6B6B', text: `Title-ul are ${title.length} caractere; Google îl taie după ~60.` });
+    if (desc.length > 160) notes.push({ mark: '!', color: '#FF6B6B', text: `Description are ${desc.length} caractere; Google o taie după ~160.` });
+    if (desc && desc.length < 70) notes.push({ mark: '!', color: '#FFB547', text: 'Description scurtă: Google poate genera singur un fragment din pagină.' });
+    if (mode === 'now' && v.t.split(' ').length <= 2 && p.canonical !== false) notes.push({ mark: '!', color: '#FFB547', text: 'Title-ul e doar numele paginii, fără cuvintele pe care le caută clienții.' });
+    if (mode === 'pro' && p.now) notes.push({ mark: '·', color: '#8D8880', text: 'Propus adaugă BreadcrumbList' + (v.ld && v.ld.areaServed ? ' și areaServed în Service.' : '.') });
+    (p.notes || []).forEach(text => notes.push({ mark: '·', color: '#8D8880', text }));
+    const opt = (m, label) => {
+      const off = m === 'now' && !p.now;
+      return { label, disabled: off, select: () => this.setState({ mode: m }), bg: mode === m ? '#FAF8F4' : 'transparent', color: mode === m ? '#0B0B0B' : (off ? '#4A4844' : '#C9C5BE') };
+    };
+    return {
+      modes: [opt('now', 'Acum în repo'), opt('pro', 'Propus')],
+      source: p.src,
+      crumb: ['codepedia.md', ...p.path.split('/').filter(Boolean)].join(' › '),
+      serpTitle: cut(title, 60),
+      serpDesc: desc ? cut(desc, 160) : 'Fără descriere: pagina nu se indexează.',
+      titleLen: title.length, descLen: desc.length,
+      titleColor: title.length > 60 ? '#FF6B6B' : '#8D8880',
+      descColor: desc.length > 160 || (desc && desc.length < 70) ? '#FF6B6B' : '#8D8880',
+      robots: robots.toUpperCase(),
+      notes, hasNotes: notes.length > 0,
+      code: L.join('\n'),
+    };
+  }
+}
+</script>
+</body>
+</html>

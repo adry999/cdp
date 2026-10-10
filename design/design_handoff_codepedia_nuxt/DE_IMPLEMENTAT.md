@@ -33,6 +33,16 @@ Sync 2026-10-06: secțiunile 1, 1b, 2 și 3 sunt implementate în repo. Rămân 
 - [x] `AdminSidebar.vue`: badge `useNewLeadsCount`
 - [x] `AdminTopbar.vue`: prop `back`
 
+## 5. Meniu v2 (sursa: `MENIU.md`) — de implementat (sync 2026-10-09: nimic încă în repo)
+- [ ] `siteNav.ts`: o singură listă pe toate paginile; Prețuri, Despre, Noutăți doar în footer
+- [ ] `SiteHeader.vue`: Servicii ▾ · Proiecte · Proces · Blog · RO / EN · CTA „Discută un proiect”; breakpoint 821 → 900px
+- [ ] Dropdown servicii: 2 grupe, max 4 proiecte per serviciu, captură 16:10 la hover
+- [ ] Header micșorat la scroll (64→52px) + umbră; bară de progres pe articolele de blog
+- [ ] Meniu mobil full-screen sub 900px, CTA plin portocaliu
+- [ ] Date proiecte în meniu din DB (`service_tag`, coloane `_en`, coperta din Storage). EN și imaginile sunt deja în DB
+- [ ] Migrare `nav_services text[]` pentru proiecte afișate la mai multe servicii (WordPress, Shopify)
+- [ ] Exemple WordPress / Shopify: de confirmat Asfactorum la WordPress; Shopify nu are proiecte
+
 ## 4. Date reale (TODO.md din repo)
 - [ ] `priceFrom` pentru toate 6 serviciile; `[ X ] EUR` pe homepage și `/preturi`; confirmat vs FAQ „6.000 EUR”
 - [ ] Perioada de retenție (`privacyPolicy.ts`)
