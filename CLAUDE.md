@@ -105,6 +105,15 @@ implementare) în `docs/superpowers/specs/` și `docs/superpowers/plans/`:
   `NUXT_PUBLIC_GA_ID` / `NUXT_PUBLIC_META_PIXEL_ID` — fără ID-uri setate,
   sistemul e complet inert.
 
+## Livrarea de design din 2026-10-10
+
+Prototipurile din `design/design_handoff_codepedia_nuxt/design/` sunt versiunea
+2026-10-10. Lucrul rămas e împărțit în `BRANCHES.md` din același folder
+(12 branch-uri, câte un PR, cu ordinea de merge); meniul are specificația în
+`MENIU.md`. Branch-ul `copyright` (PR #23) e deja în `main`, deci branch-ul 4
+(`feat/hero-interactive`) se reduce la ce lipsește din hero. Unde `MENIU.md`
+și `BRANCHES.md` diferă (metrici sub proiectele din meniu), câștigă `BRANCHES.md`.
+
 ## Ce lipsește
 
 `TODO.md` listează datele reale care încă nu există (prețuri, cifre de rezultat,
