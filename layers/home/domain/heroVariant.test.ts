@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isHeroVariant, parseHeroPreview, resolveHeroVariant } from './heroVariant'
+import { chooseHeroVariant, isHeroChoice, isHeroVariant, parseHeroPreview, resolveHeroVariant } from './heroVariant'
 
 describe('isHeroVariant', () => {
   it('accepts the three variants', () => {
@@ -41,5 +41,37 @@ describe('resolveHeroVariant', () => {
   })
   it('passes valid variants through', () => {
     expect(resolveHeroVariant('light-orbs')).toBe('light-orbs')
+  })
+})
+
+describe('isHeroChoice', () => {
+  it('accepts variants and none only', () => {
+    expect(isHeroChoice('none')).toBe(true)
+    expect(isHeroChoice('light-orbs')).toBe(true)
+    expect(isHeroChoice('false')).toBe(false)
+    expect(isHeroChoice(null)).toBe(false)
+  })
+})
+
+describe('chooseHeroVariant', () => {
+  it('prefers the preview over stored and env', () => {
+    expect(chooseHeroVariant({ preview: 'light-orbs', stored: 'constellation', env: 'none' })).toBe('light-orbs')
+  })
+  it('lets a none preview turn the background off', () => {
+    expect(chooseHeroVariant({ preview: 'none', stored: 'constellation', env: 'light-orbs' })).toBeNull()
+  })
+  it('uses the stored choice over env when there is no preview', () => {
+    expect(chooseHeroVariant({ stored: 'constellation', env: 'light-orbs' })).toBe('constellation')
+  })
+  it('turns off on stored none', () => {
+    expect(chooseHeroVariant({ stored: 'none', env: 'light-orbs' })).toBeNull()
+  })
+  it('falls back to env when stored is null', () => {
+    expect(chooseHeroVariant({ stored: null, env: 'light-orbs' })).toBe('light-orbs')
+    expect(chooseHeroVariant({ stored: null, env: 'none' })).toBeNull()
+  })
+  it('falls back to dot-matrix when env is missing or unknown', () => {
+    expect(chooseHeroVariant({ stored: null, env: undefined })).toBe('dot-matrix')
+    expect(chooseHeroVariant({ stored: null, env: 'garbage' })).toBe('dot-matrix')
   })
 })
