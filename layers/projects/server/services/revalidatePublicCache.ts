@@ -27,6 +27,8 @@ export async function revalidatePublicCache(deps: RevalidateDependencies): Promi
     '/en',
     '/proiecte',
     '/en/work',
+    // The header menu's data; every SWR page embeds it, so it refreshes first.
+    '/api/projects/nav',
     ...projects.flatMap(({ ro, en }) => {
       const urls = caseStudyPaths(ro, en)
       return [urls.ro, urls.en]

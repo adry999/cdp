@@ -32,15 +32,16 @@ describe('revalidatePublicCache', () => {
     expect(fetched).toEqual([])
   })
 
-  it('fetches the home pages, the index pages and every project path in both locales with the token', async () => {
+  it('fetches the home pages, the index pages, the menu data and every project path in both locales with the token', async () => {
     const { deps, fetched, clearedCount } = buildDeps()
     const result = await revalidatePublicCache(deps)
-    expect(result).toEqual({ method: 'isr-bypass', revalidated: 8, failed: 0 })
+    expect(result).toEqual({ method: 'isr-bypass', revalidated: 9, failed: 0 })
     expect(fetched.map((f) => f.url)).toEqual([
       'https://site.test/',
       'https://site.test/en',
       'https://site.test/proiecte',
       'https://site.test/en/work',
+      'https://site.test/api/projects/nav',
       'https://site.test/proiecte/unu',
       'https://site.test/en/work/one',
       'https://site.test/proiecte/doi',
@@ -57,6 +58,6 @@ describe('revalidatePublicCache', () => {
         if (url.endsWith('/en/work')) throw new Error('boom')
       },
     })
-    expect(await revalidatePublicCache(deps)).toEqual({ method: 'isr-bypass', revalidated: 7, failed: 1 })
+    expect(await revalidatePublicCache(deps)).toEqual({ method: 'isr-bypass', revalidated: 8, failed: 1 })
   })
 })
