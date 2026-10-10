@@ -139,6 +139,7 @@ layers/<modul>/
 ### Design system
 
 - Tokenii (culori, `--spacing-gutter`, `--spacing-section-gap`, `--breakpoint-nav`) și utilitarele de temă stau în `app/assets/css/main.css`. Utilitare: `media-placeholder`, `eyebrow`, `eyebrow-sm`, `heading-section`, `heading-display`, `heading-card`, `container-site`, `grid-fit-<px>`, `grid-fit-safe-<px>`. Textul mic portocaliu pe fundal deschis folosește `text-signal-text` (`#C2370A`, AA); `text-signal` rămâne pentru accente și fundaluri închise.
+- Tokenii au valori light și dark: `:root[data-theme="dark"]` în `main.css` le suprascrie, iar `data-theme` e setat înainte de randare de scriptul inline din `nuxt.config.ts`. Componentele nu hardcodează culori; suprafețele care rămân închise în ambele teme (secțiuni `inverted`, tooltip-uri, lightbox) folosesc `bg-inverse text-on-inverse`; variantul `dark:` urmează atributul. Logo-urile se comută cu `dark:hidden` / `hidden dark:block`.
 - Icon-urile sunt doar componente SVG inline proprii (ex. `CoreStageIcon`, `text-signal` pe `bg-signal/10`); fără biblioteci sau pachete de iconuri (CLAUDE.md).
 - Primitivele stau în `layers/core/app/components/ui/` (`SiteSection`, `PageHero`, `SectionLabel`, `RowList`, `RowListItem`, `FaqList`, `FactCard`, `TableRow`, `TechChip`, `ToggleChip`, `TextLink`, `MediaFrame`, `AppButton`, `CoreHoneypotField`) și în `components/admin/`.
 - Fără secțiune, hero, listă sau chip scrise de mână: se folosește primitiva. Un tipar nou care se repetă (3+ locuri) devine primitivă sau utilitar, denumit după rol sau mărime, niciodată după pagină.
@@ -204,3 +205,4 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-10-09: Modulul `news` (noutăți externe: rezumat propriu + sursă, în `news_items`) poate importa `blog` (categoriile și data) — are ciclu de viață și admin propriu, deci modul nou.
 - 2026-10-09: Proiectul folosește structura container + main: repo-ul în `main\`, worktree-uri ca foldere-frate `wt-<branch>\`, temporare în `.tmp\` — skill-ul container-layout.
 - 2026-10-11: Fundalul hero-ului de pe homepage se alege din admin (tabel home_settings, un rând); variabila de mediu rămâne valoarea implicită — decizia utilizatorului, excepție de la „setările stau în cod”.
+- 2026-10-11: Tema întunecată: tokenii din main.css au valori light/dark pe data-theme, setat înainte de randare de un script inline; alegerea în localStorage (codepedia:theme), implicit prefers-color-scheme — BRANCHES.md §3.
