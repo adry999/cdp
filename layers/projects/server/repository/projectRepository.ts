@@ -2,7 +2,7 @@ import type { H3Event } from 'h3'
 import { serverSupabaseClient } from '#supabase/server'
 import type { Database } from '#layers/core/shared/types/database.types'
 import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
-import { PROJECT_CARD_SELECT, PROJECT_SELECT } from '#layers/projects/domain/projectSelect'
+import { NAV_PROJECT_SELECT, PROJECT_CARD_SELECT, PROJECT_SELECT } from '#layers/projects/domain/projectSelect'
 
 export interface PublishedProjectSlugs {
   ro: string
@@ -21,6 +21,19 @@ export function createProjectRepository(event: H3Event) {
         .order('sort_order')
 
       if (error) logAndThrow('GET /api/projects', error)
+      return data
+    },
+
+    async listPublishedNavRows() {
+      const client = await serverSupabaseClient<Database>(event)
+      const { data, error } = await client
+        .from('projects')
+        .select(NAV_PROJECT_SELECT)
+        .not('published_at', 'is', null)
+        .not('service_tag', 'is', null)
+        .order('sort_order')
+
+      if (error) logAndThrow('GET /api/projects/nav', error)
       return data
     },
 
