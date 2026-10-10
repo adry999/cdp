@@ -42,7 +42,7 @@ const navItems = computed<HeaderNavItem[]>(() =>
 // Homepage: scrolls to the contact section. Elsewhere: opens the contact dialog (or the qualifier).
 const cta = useContactCta()
 const ctaClass =
-  'flex cursor-pointer items-center gap-2.5 whitespace-nowrap rounded border border-ink px-3.5 py-[9px] font-semibold text-ink transition-colors hover:border-signal hover:bg-signal hover:text-paper'
+  'flex cursor-pointer items-center gap-2.5 whitespace-nowrap [font:inherit] uppercase tracking-[inherit] rounded border border-ink px-3.5 py-[9px] font-semibold text-ink transition-colors hover:border-signal hover:bg-signal hover:text-paper'
 
 const header = ref<HTMLElement | null>(null)
 const menuToggle = ref<HTMLButtonElement | null>(null)
