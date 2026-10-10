@@ -40,7 +40,7 @@ Un modul = un Nuxt layer în `layers/<nume>/`. Nuxt îl înregistrează automat,
 | `blog` | `/blog`, `/blog/[slug]`, `GET /api/blog*`, constructorul RSS, paginile de blog pentru sitemap; articole Markdown în `content/` | `core` |
 | `news` | `/noutati`, `/noutati/[slug]`, `GET /api/news*`, `POST /api/admin/news/preview`, paginile admin de noutăți (tabel `news_items`) | `core`, `#layers/blog` (categorii, `formatPostDate`) |
 | `projects` | studii de caz publice, `GET /api/projects*`, paginile admin de proiecte, redirect-uri de slug, repository și servicii server (revalidarea cache-ului) | `core`, `#layers/qualifier` (doar `useQualifierAvailability` și `QualifierCta`), `#layers/content` (doar `useSiteSettings`) |
-| `home` | ruta `/` și secțiunile `Home*` | `core`, `#layers/content`, `#layers/projects`, `#layers/qualifier` (doar `useQualifierAvailability` și `QualifierCta`), `#layers/leads` (doar `LeadsContactForm`), `#layers/services` (doar `SERVICE_LINKS`) |
+| `home` | ruta `/` și secțiunile `Home*`, `/admin/hero` (fundalul hero-ului, tabel `home_settings`), `GET /api/home/settings` | `core`, `#layers/content`, `#layers/projects`, `#layers/qualifier` (doar `useQualifierAvailability` și `QualifierCta`), `#layers/leads` (doar `LeadsContactForm`), `#layers/services` (doar `SERVICE_LINKS`) |
 | `services` | indexul `/servicii` și cele 6 pagini `/servicii/[slug]`, fără admin, fără tabel — conținut manual în `data/services.ts` | `core`, `#layers/projects` (studii de caz legate), `#layers/qualifier` (doar `useQualifierAvailability` și `QualifierCta`), `#layers/content` (doar `useServiceStages`) |
 
 ### Unde intră un feature nou
@@ -203,3 +203,4 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-10-07: Componentele SVG inline proprii (ex. `CoreStageIcon`) sunt permise; bibliotecile și pachetele de iconuri nu — etapele de servicii cer distincție vizuală, iar o dependență nouă nu e justificată — CLAUDE.md.
 - 2026-10-09: Modulul `news` (noutăți externe: rezumat propriu + sursă, în `news_items`) poate importa `blog` (categoriile și data) — are ciclu de viață și admin propriu, deci modul nou.
 - 2026-10-09: Proiectul folosește structura container + main: repo-ul în `main\`, worktree-uri ca foldere-frate `wt-<branch>\`, temporare în `.tmp\` — skill-ul container-layout.
+- 2026-10-11: Fundalul hero-ului de pe homepage se alege din admin (tabel home_settings, un rând); variabila de mediu rămâne valoarea implicită — decizia utilizatorului, excepție de la „setările stau în cod”.
