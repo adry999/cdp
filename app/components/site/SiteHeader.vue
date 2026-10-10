@@ -1,19 +1,56 @@
 <script setup lang="ts">
+import { useNavProjects } from '#layers/projects'
+import { SERVICE_LINKS, SERVICE_NAV_INTRO } from '#layers/services'
+
 const { locale, t } = useI18n()
 const localePath = useLocalePath()
-const { setLocaleOverride } = useLocaleOverride()
 const route = useRoute()
 const getRouteBaseName = useRouteBaseName()
+const { grantsEnabled } = useRuntimeConfig().public
+const { navProjects } = useNavProjects()
 
-const menuOpen = ref(false)
+const lang = computed<'ro' | 'en'>(() => (locale.value === 'en' ? 'en' : 'ro'))
+const baseName = computed(() => {
+  const name = getRouteBaseName(route)
+  return typeof name === 'string' ? name : undefined
+})
+const activeId = computed(() => activeNavId(baseName.value))
+
+const serviceGroups = computed<NavServiceGroup[]>(() => {
+  const links = SERVICE_LINKS.filter((service) => service.slug !== 'granturi' || grantsEnabled)
+  return groupServiceLinks(links).map((group) => ({
+    label: t(group.labelKey),
+    services: group.links.map((link) => ({
+      slug: link.slug,
+      name: pick(link.name.ro, link.name.en, lang.value),
+      intro: pick(SERVICE_NAV_INTRO[link.slug].ro, SERVICE_NAV_INTRO[link.slug].en, lang.value),
+      to: localePath({ name: 'servicii-slug', params: { slug: link.routeSlug[lang.value] } }),
+    })),
+  }))
+})
+const currentSlug = computed(() => currentServiceSlug(SERVICE_LINKS, baseName.value, route.params.slug, lang.value))
+
+const navItems = computed<HeaderNavItem[]>(() =>
+  SITE_NAV_LINKS.map((link) => ({
+    id: link.id,
+    label: t(link.label),
+    to: link.hash ? { path: localePath(link.routeName), hash: link.hash } : localePath(link.routeName),
+    active: activeId.value === link.id,
+  })),
+)
+
+// On the homepage the contact form is a section; everywhere else it is the /contact page.
+const ctaIsAnchor = computed(() => baseName.value === 'index')
+const ctaTo = computed(() => (ctaIsAnchor.value ? `${localePath('index')}#contact` : localePath('contact')))
+const ctaClass =
+  'flex items-center gap-2.5 whitespace-nowrap rounded border border-ink px-3.5 py-[9px] font-semibold text-ink transition-colors hover:border-signal hover:bg-signal hover:text-paper'
+
+const header = ref<HTMLElement | null>(null)
 const menuToggle = ref<HTMLButtonElement | null>(null)
+const menuOpen = ref(false)
+const scrolled = ref(false)
 const mobileMenuId = 'site-mobile-menu'
-
-const navLinks = computed(() => (getRouteBaseName(route) === 'index' ? HOME_NAV_LINKS : PAGE_NAV_LINKS))
-
-function navLinkKey(link: SiteNavLink): string {
-  return link.kind === 'hash' ? link.hash : link.routeName
-}
+const { trapTab } = useFocusTrap(header)
 
 function closeMenu({ returnFocus = false } = {}) {
   if (!menuOpen.value) return
@@ -21,36 +58,54 @@ function closeMenu({ returnFocus = false } = {}) {
   if (returnFocus) menuToggle.value?.focus()
 }
 
-function toggleMenu() {
-  if (menuOpen.value) {
-    closeMenu({ returnFocus: true })
-  } else {
-    menuOpen.value = true
-  }
-}
-
-function onMenuKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape' && menuOpen.value) {
+function onKeydown(event: KeyboardEvent) {
+  if (!menuOpen.value) return
+  if (event.key === 'Escape') {
     event.preventDefault()
     closeMenu({ returnFocus: true })
+  } else {
+    trapTab(event)
   }
 }
 
 watch(() => route.fullPath, () => closeMenu())
+watch(menuOpen, (open) => {
+  document.body.style.overflow = open ? 'hidden' : ''
+})
 
 onMounted(() => {
-  const mq = window.matchMedia('(min-width: 821px)')
-  const close = () => {
-    if (mq.matches) menuOpen.value = false
+  const onScroll = () => {
+    scrolled.value = window.scrollY > 8
   }
-  mq.addEventListener('change', close)
-  onUnmounted(() => mq.removeEventListener('change', close))
+  onScroll()
+  window.addEventListener('scroll', onScroll, { passive: true })
+
+  // Same width as the `nav:` variant (--breakpoint-nav in main.css).
+  const wide = window.matchMedia('(min-width: 56.25rem)')
+  const onWide = () => {
+    if (wide.matches) closeMenu()
+  }
+  wide.addEventListener('change', onWide)
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('scroll', onScroll)
+    wide.removeEventListener('change', onWide)
+    document.body.style.overflow = ''
+  })
 })
 </script>
 
 <template>
-  <header class="sticky top-0 z-20 bg-paper" @keydown="onMenuKeydown">
-    <div class="container-site flex min-h-16 items-center justify-between gap-6">
+  <header
+    ref="header"
+    class="sticky top-0 z-30 bg-paper transition-shadow duration-200 motion-reduce:transition-none"
+    :class="scrolled && 'shadow-header'"
+    @keydown="onKeydown"
+  >
+    <div
+      class="container-site flex items-center justify-between gap-6 transition-[height] duration-200 motion-reduce:transition-none"
+      :class="scrolled ? 'h-[52px]' : 'h-16'"
+    >
       <NuxtLink :to="localePath('index')" class="flex items-center">
         <img
           src="/brand/codepedia-wordmark.svg"
@@ -61,103 +116,84 @@ onMounted(() => {
         >
       </NuxtLink>
 
-      <nav :aria-label="t('nav.main')" class="flex items-center gap-[clamp(14px,2vw,28px)] eyebrow">
-        <div class="hidden items-center gap-[clamp(14px,2vw,28px)] nav:flex">
-          <template v-for="link in navLinks" :key="navLinkKey(link)">
-            <a v-if="link.kind === 'hash'" :href="`${localePath('index')}${link.hash}`" class="text-muted hover:text-signal-text">
-              {{ t(link.label) }}
-            </a>
-            <NuxtLink v-else :to="localePath({ name: link.routeName })" class="text-muted hover:text-signal-text">
-              {{ t(link.label) }}
-            </NuxtLink>
-          </template>
+      <nav :aria-label="t('nav.main')" class="hidden items-center gap-[clamp(18px,2.4vw,32px)] eyebrow nav:flex">
+        <div class="flex items-center gap-[clamp(16px,2.2vw,28px)]">
+          <SiteHeaderServicesMenu
+            :groups="serviceGroups"
+            :projects-by-service="navProjects"
+            :active="activeId === 'services'"
+            :current-slug="currentSlug"
+            :services-to="localePath('servicii')"
+            :all-projects-to="localePath('proiecte')"
+          />
+          <NuxtLink
+            v-for="item in navItems"
+            :key="item.id"
+            :to="item.to"
+            class="relative block py-2 hover:text-signal-text"
+            :class="item.active ? 'text-ink' : 'text-muted'"
+            :aria-current="item.active ? 'page' : undefined"
+          >
+            {{ item.label }}
+            <span
+              aria-hidden="true"
+              class="absolute inset-x-0 bottom-0.5 h-0.5 origin-left bg-signal transition-transform duration-[250ms] motion-reduce:transition-none"
+              :class="item.active ? 'scale-x-100' : 'scale-x-0'"
+            />
+          </NuxtLink>
         </div>
 
-        <NuxtLink
-          :to="localePath({ name: 'contact' })"
-          class="hidden h-[clamp(32px,4vw,40px)] items-center justify-center rounded bg-signal px-[clamp(16px,2vw,24px)] text-paper transition-opacity hover:opacity-90 nav:flex"
-        >
+        <SiteHeaderLocaleSwitch />
+
+        <!-- A plain anchor on the homepage: a router link to the page you are on would be marked aria-current. -->
+        <a v-if="ctaIsAnchor" :href="ctaTo" :class="ctaClass">
           {{ t('nav.letsTalk') }}
+          <span aria-hidden="true">→</span>
+        </a>
+        <NuxtLink v-else :to="ctaTo" :class="ctaClass">
+          {{ t('nav.letsTalk') }}
+          <span aria-hidden="true">→</span>
         </NuxtLink>
-
-        <span class="flex items-center gap-1.5">
-          <!-- SwitchLocalePathLink, not NuxtLink + switchLocalePath(): the header
-               renders before the page sets its localized slug, and only this
-               component's href is rewritten after the page renders on the server. -->
-          <SwitchLocalePathLink
-            locale="ro"
-            hreflang="ro"
-            lang="ro"
-            class="no-underline hover:no-underline"
-            :class="locale === 'ro' ? 'text-ink hover:text-ink' : 'text-muted hover:text-muted'"
-            :aria-current="locale === 'ro' ? 'true' : undefined"
-            @click="setLocaleOverride('ro')"
-          >
-            RO
-          </SwitchLocalePathLink>
-          <span class="text-hairline">|</span>
-          <SwitchLocalePathLink
-            locale="en"
-            hreflang="en"
-            lang="en"
-            class="no-underline hover:no-underline"
-            :class="locale === 'en' ? 'text-ink hover:text-ink' : 'text-muted hover:text-muted'"
-            :aria-current="locale === 'en' ? 'true' : undefined"
-            @click="setLocaleOverride('en')"
-          >
-            EN
-          </SwitchLocalePathLink>
-        </span>
-
-        <button
-          ref="menuToggle"
-          type="button"
-          class="flex h-11 w-11 cursor-pointer flex-col justify-center gap-[5px] rounded border border-hairline bg-transparent px-[11px] nav:hidden"
-          :aria-label="t('nav.menu')"
-          :aria-expanded="menuOpen"
-          :aria-controls="mobileMenuId"
-          @click="toggleMenu"
-        >
-          <span class="block h-px bg-ink" />
-          <span class="block h-px" :class="menuOpen ? 'bg-signal' : 'bg-ink'" />
-          <span class="block h-px bg-ink" />
-        </button>
       </nav>
+
+      <button
+        ref="menuToggle"
+        type="button"
+        class="-mr-2.5 flex h-11 w-11 cursor-pointer flex-col items-center justify-center gap-[5px] border-0 bg-transparent nav:hidden"
+        :aria-label="t('nav.menu')"
+        :aria-expanded="menuOpen"
+        :aria-controls="mobileMenuId"
+        @click="menuOpen = !menuOpen"
+      >
+        <span
+          class="block h-0.5 w-[22px] bg-ink transition-transform duration-200 motion-reduce:transition-none"
+          :class="menuOpen && 'translate-y-[7px] rotate-45'"
+        />
+        <span class="block h-0.5 w-[22px] bg-signal transition-opacity duration-200 motion-reduce:transition-none" :class="menuOpen && 'opacity-0'" />
+        <span
+          class="block h-0.5 w-[22px] bg-ink transition-transform duration-200 motion-reduce:transition-none"
+          :class="menuOpen && '-translate-y-[7px] -rotate-45'"
+        />
+      </button>
     </div>
 
-    <div
+    <!-- Reading progress on blog articles will drive the inner bar's width (feat/blog-v2). -->
+    <div class="h-0.5 w-full overflow-hidden">
+      <div class="h-full w-full origin-left bg-signal" />
+    </div>
+
+    <SiteHeaderMobilePanel
       v-if="menuOpen"
       :id="mobileMenuId"
-      class="flex flex-col border-t border-hairline px-gutter pb-5 pt-2 eyebrow nav:hidden"
-    >
-      <template v-for="link in navLinks" :key="navLinkKey(link)">
-        <a
-          v-if="link.kind === 'hash'"
-          :href="`${localePath('index')}${link.hash}`"
-          class="border-b border-hairline py-4 text-ink"
-          @click="closeMenu()"
-        >
-          {{ t(link.label) }}
-        </a>
-        <NuxtLink
-          v-else
-          :to="localePath({ name: link.routeName })"
-          class="border-b border-hairline py-4 text-ink"
-          @click="closeMenu()"
-        >
-          {{ t(link.label) }}
-        </NuxtLink>
-      </template>
-
-      <NuxtLink
-        :to="localePath({ name: 'contact' })"
-        class="mt-6 flex h-12 w-full items-center justify-center rounded bg-signal text-paper transition-opacity hover:opacity-90"
-        @click="closeMenu()"
-      >
-        {{ t('nav.letsTalk') }}
-      </NuxtLink>
-    </div>
-
-    <div class="h-[2px] bg-signal" />
+      class="nav:hidden"
+      :groups="serviceGroups"
+      :links="navItems"
+      :services-to="localePath('servicii')"
+      :services-active="activeId === 'services'"
+      :current-slug="currentSlug"
+      :cta-to="ctaTo"
+      :cta-is-anchor="ctaIsAnchor"
+      @close="closeMenu()"
+    />
   </header>
 </template>
