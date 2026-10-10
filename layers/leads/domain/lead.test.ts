@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { StageId } from '#layers/core/shared/types/service-stage'
+import type { ServiceTagId } from '#layers/core/shared/types/service-tag'
 import { buildContactSubmission } from '#layers/leads/test-support/buildContactSubmission'
 import {
   LEAD_BUDGET_KEYS,
@@ -7,6 +8,7 @@ import {
   LEAD_FIELD_LIMITS,
   isLeadStatus,
   leadBudgetLabel,
+  leadServiceLabel,
   leadStageLabel,
   leadStatusLabel,
   toLeadRecord,
@@ -45,6 +47,16 @@ describe('validateContactSubmission', () => {
   it('rejects an unknown stage', () => {
     const stage = 'Z' as unknown as StageId
     expect(validateContactSubmission(buildContactSubmission({ stage }))).toEqual({ stage: 'invalid_stage' })
+  })
+
+  it('accepts a known service and a missing one', () => {
+    expect(validateContactSubmission(buildContactSubmission({ service: 'web-app' }))).toEqual({})
+    expect(validateContactSubmission(buildContactSubmission({ service: undefined }))).toEqual({})
+  })
+
+  it('rejects an unknown service', () => {
+    const service = 'seo' as unknown as ServiceTagId
+    expect(validateContactSubmission(buildContactSubmission({ service }))).toEqual({ service: 'invalid_service' })
   })
 
   it('rejects a malformed email', () => {
@@ -139,5 +151,25 @@ describe('leadStageLabel', () => {
 
   it('passes an unknown stored value through unchanged', () => {
     expect(leadStageLabel('legacy')).toBe('legacy')
+  })
+})
+
+describe('toLeadRecord service', () => {
+  it('keeps a known service and stores a missing one as null', () => {
+    expect(toLeadRecord(buildContactSubmission({ service: 'shopify' }), null).service).toBe('shopify')
+    expect(toLeadRecord(buildContactSubmission(), null).service).toBeNull()
+  })
+
+  it('drops an unknown service instead of storing it', () => {
+    const service = 'seo' as unknown as ServiceTagId
+    expect(toLeadRecord(buildContactSubmission({ service }), null).service).toBeNull()
+  })
+})
+
+describe('leadServiceLabel', () => {
+  it('uses the Romanian service name, a dash when empty, and the raw value when unknown', () => {
+    expect(leadServiceLabel('ai-automation')).toBe('Automatizare cu AI')
+    expect(leadServiceLabel(null)).toBe('—')
+    expect(leadServiceLabel('seo')).toBe('seo')
   })
 })

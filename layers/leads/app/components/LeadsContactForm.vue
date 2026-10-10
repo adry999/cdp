@@ -1,18 +1,23 @@
 <script setup lang="ts">
 import { STAGE_ORDER, type StageId } from '#layers/core/shared/types/service-stage'
-import { stageForServiceParam } from '#layers/core/shared/utils/serviceStage'
+import { SERVICE_TAG_IDS, type ServiceTagId } from '#layers/core/shared/types/service-tag'
+import { stageForServiceParam, stageForServiceTag } from '#layers/core/shared/utils/serviceStage'
 import { LEAD_BUDGET_KEYS, type ContactFieldErrors } from '#layers/leads/domain/lead'
 import { useLeadSubmission } from '#layers/leads/state/useLeadSubmission'
 
-// `modal`: the dialog's compact layout (no "how did you hear" field, name and email side by side);
-// `stage` pre-selects a stage chip, ahead of the `?serviciu=` / `?service=` link parameter.
-const props = withDefaults(defineProps<{ variant?: 'page' | 'modal'; stage?: StageId }>(), {
+// `modal`: the dialog's compact layout (no "how did you hear" field, name and email side by side) with
+// service chips instead of stage chips; `service` pre-selects one. The submission then carries that
+// service and its qualifier stage. `page` keeps the stage chips, pre-selected from the
+// `?serviciu=` / `?service=` link parameter.
+const props = withDefaults(defineProps<{ variant?: 'page' | 'modal'; service?: ServiceTagId }>(), {
   variant: 'page',
-  stage: undefined,
+  service: undefined,
 })
 const isModal = computed(() => props.variant === 'modal')
 
 const { t, locale } = useI18n()
+const { grantsEnabled } = useRuntimeConfig().public
+const serviceOptions = SERVICE_TAG_IDS.filter((id) => id !== 'granturi' || grantsEnabled)
 const route = useRoute()
 const localePath = useLocalePath()
 const { status, fieldErrors, submit } = useLeadSubmission()
@@ -24,7 +29,8 @@ const form = reactive({
   message: '',
   budget: '',
   // Blog CTAs link to /contact?serviciu=<slug> (RO) or ?service=<slug> (EN); unknown values are ignored.
-  stage: props.stage ?? stageForServiceParam(route.query.serviciu ?? route.query.service),
+  stage: stageForServiceParam(route.query.serviciu ?? route.query.service),
+  service: props.service,
   source: '',
   website: '', // honeypot
 })
@@ -33,6 +39,7 @@ const ERROR_MESSAGE_KEYS = {
   required: 'home.contact.form.errorRequired',
   invalid_email: 'home.contact.form.errorEmail',
   invalid_stage: 'home.contact.form.error',
+  invalid_service: 'home.contact.form.error',
 } as const
 
 function fieldError(field: keyof ContactFieldErrors): string | undefined {
@@ -63,8 +70,17 @@ function captureUtm(): Record<string, string> | undefined {
   return entries.length ? Object.fromEntries(entries) : undefined
 }
 
+// Single-select, optional, like the stage chips.
+function toggleService(service: ServiceTagId | undefined) {
+  form.service = form.service === service ? undefined : service
+}
+
 function handleSubmit() {
-  return submit({ ...form, lang: locale.value, page: route.fullPath, utm: captureUtm() })
+  const { stage, service, ...fields } = form
+  const choice = isModal.value
+    ? { service, stage: service ? stageForServiceTag(service) : undefined }
+    : { stage }
+  return submit({ ...fields, ...choice, lang: locale.value, page: route.fullPath, utm: captureUtm() })
 }
 
 const successHeading = ref<HTMLElement | null>(null)
@@ -139,7 +155,27 @@ watch(status, (value) => {
       >
     </div>
 
-    <div role="group" aria-labelledby="lead-stage-label">
+    <div v-if="isModal" role="group" aria-labelledby="lead-service-label">
+      <div id="lead-service-label" class="eyebrow text-muted">
+        {{ t('home.contact.form.service') }}
+      </div>
+      <div class="mt-2 flex flex-wrap gap-1.5">
+        <ToggleChip
+          v-for="option in serviceOptions"
+          :key="option"
+          size="form"
+          :pressed="form.service === option"
+          @click="toggleService(option)"
+        >
+          {{ t(`home.contact.form.serviceOptions.${option}`) }}
+        </ToggleChip>
+        <ToggleChip size="form" :pressed="form.service === undefined" @click="form.service = undefined">
+          {{ t('home.contact.form.serviceOptions.unsure') }}
+        </ToggleChip>
+      </div>
+    </div>
+
+    <div v-else role="group" aria-labelledby="lead-stage-label">
       <div id="lead-stage-label" class="eyebrow text-muted">
         {{ t('home.contact.form.stage') }}
       </div>

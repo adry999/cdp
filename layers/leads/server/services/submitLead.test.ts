@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import type { StageId } from '#layers/core/shared/types/service-stage'
+import type { ServiceTagId } from '#layers/core/shared/types/service-tag'
 import type { LeadRecord } from '#layers/leads/domain/lead'
 import { buildContactSubmission } from '#layers/leads/test-support/buildContactSubmission'
 import { submitLead, type SubmitLeadDependencies } from './submitLead'
@@ -85,6 +86,26 @@ describe('submitLead', () => {
     expect(deps.notify).toHaveBeenCalledWith(
       expect.objectContaining({
         lines: expect.arrayContaining(['Etapă: Scalare']),
+      }),
+    )
+  })
+
+  it('rejects an unknown service before checking the rate limit', async () => {
+    const { deps } = buildDeps()
+    const service = 'seo' as unknown as ServiceTagId
+    const result = await submitLead(buildContactSubmission({ service }), null, deps)
+    expect(result).toEqual({ outcome: 'invalid', errors: { service: 'invalid_service' } })
+    expect(deps.checkRateLimit).not.toHaveBeenCalled()
+    expect(deps.repository.insertLead).not.toHaveBeenCalled()
+  })
+
+  it('saves the service and names it in the notification', async () => {
+    const { deps, savedRecords } = buildDeps()
+    await submitLead(buildContactSubmission({ service: 'web-app', stage: 'A' }), null, deps)
+    expect(savedRecords[0]?.service).toBe('web-app')
+    expect(deps.notify).toHaveBeenCalledWith(
+      expect.objectContaining({
+        lines: expect.arrayContaining(['Serviciu: Aplicație web', 'Etapă: Design → cod']),
       }),
     )
   })

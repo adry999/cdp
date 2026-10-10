@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LEAD_STATUSES, leadBudgetLabel, leadStageLabel, leadStatusLabel } from '#layers/leads/domain/lead'
+import { LEAD_STATUSES, leadBudgetLabel, leadServiceLabel, leadStageLabel, leadStatusLabel } from '#layers/leads/domain/lead'
 import { useLeadsAdminDetail } from '#layers/leads/state/useLeadsAdminDetail'
 
 definePageMeta({ layout: 'admin', i18n: false })
@@ -49,6 +49,10 @@ const NOTES_STATE_LABELS = {
             <div>
               <div class="eyebrow text-muted">Buget</div>
               <div class="mt-1 text-[15px]">{{ leadBudgetLabel(lead.budget) }}</div>
+            </div>
+            <div>
+              <div class="eyebrow text-muted">Serviciu</div>
+              <div class="mt-1 text-[15px]">{{ leadServiceLabel(lead.service) }}</div>
             </div>
             <div>
               <div class="eyebrow text-muted">Etapă</div>
