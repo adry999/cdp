@@ -19,10 +19,7 @@ if (!doc) {
 }
 
 // Slugs differ per locale: point the language switcher and hreflang at the counterpart post.
-const setI18nParams = useSetI18nParams()
-setI18nParams(
-  locale.value === 'en' ? { en: { slug }, ro: { slug: doc.alt } } : { ro: { slug }, en: { slug: doc.alt } },
-)
+useSetLocalizedSlugs(locale.value === 'en' ? { en: slug, ro: doc.alt } : { ro: slug, en: doc.alt })
 
 const siteUrl = useSiteUrl()
 const primarySiteUrl = useSiteUrl('en')

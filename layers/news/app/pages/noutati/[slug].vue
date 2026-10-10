@@ -29,8 +29,7 @@ if (item.value.slug !== slug) {
 }
 
 // Slugs differ per locale: point the language switch and hreflang at the counterpart.
-const setI18nParams = useSetI18nParams()
-setI18nParams({ ro: { slug: raw.slug_ro }, en: { slug: raw.slug_en?.trim() ? raw.slug_en : raw.slug_ro } })
+useSetLocalizedSlugs({ ro: raw.slug_ro, en: raw.slug_en?.trim() ? raw.slug_en : raw.slug_ro })
 
 const siteUrl = useSiteUrl()
 const primarySiteUrl = useSiteUrl('en')
