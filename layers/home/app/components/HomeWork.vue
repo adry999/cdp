@@ -13,7 +13,7 @@ const allRows = computed(() => rows.value ?? [])
 const list = computed(() => selectHomeProjects(allRows.value).map((row) => mapProjectCard(row, siteLocale.value)))
 const ndaNote = computed(() => settings.value.ndaNote)
 const hasMore = computed(() => allRows.value.length > list.value.length)
-const { el: gridEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: false })
+const { el: gridEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: true })
 </script>
 
 <template>

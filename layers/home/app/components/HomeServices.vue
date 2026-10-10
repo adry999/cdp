@@ -24,7 +24,7 @@ const grantsHref = computed(() =>
   grantsService ? localePath({ name: 'servicii-slug', params: { slug: grantsService.routeSlug[locale.value] } }) : undefined,
 )
 const grantSteps = computed(() => i18nList('home.services.grants.steps'))
-const { el: timelineEl, isVisible: drawn, hasMounted: mounted } = useReveal({ once: false, threshold: 0.3 })
+const { el: timelineEl, isVisible: drawn, hasMounted: mounted } = useReveal({ once: true, threshold: 0.3 })
 
 const nodeEls = ref<HTMLButtonElement[]>([])
 

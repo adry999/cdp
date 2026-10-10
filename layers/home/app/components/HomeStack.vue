@@ -16,7 +16,7 @@ const cards = computed(() =>
   }),
 )
 
-const { el: sectionEl, isVisible: drawn, hasMounted: mounted } = useReveal({ once: false })
+const { el: sectionEl, isVisible: drawn, hasMounted: mounted } = useReveal({ once: true })
 </script>
 
 <template>
