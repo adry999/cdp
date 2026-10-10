@@ -689,6 +689,10 @@
       }
     }
   },
+  "contactModal": {
+    "close": "Close",
+    "done": "Close"
+  },
   "contactPage": {
     "steps": [
       "Written reply within 1 working day",

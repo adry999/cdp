@@ -689,6 +689,10 @@
       }
     }
   },
+  "contactModal": {
+    "close": "Închide",
+    "done": "Închide"
+  },
   "contactPage": {
     "steps": [
       "Răspuns scris în 1 zi lucrătoare",
