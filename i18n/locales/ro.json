@@ -29,6 +29,8 @@
   "footer": {
     "tagline": "Dezvoltare web full-stack · Site-uri, aplicații web, WordPress, Shopify",
     "cookieSettings": "Setări cookie-uri",
+    "studioLabel": "Studio",
+    "allPosts": "Toate articolele",
     "navLabel": "Navigare footer",
     "privacy": "Confidențialitate"
   },

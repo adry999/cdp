@@ -29,6 +29,8 @@
   "footer": {
     "tagline": "Full-stack web development · Websites, web apps, WordPress, Shopify",
     "cookieSettings": "Cookie settings",
+    "studioLabel": "Studio",
+    "allPosts": "All articles",
     "navLabel": "Footer navigation",
     "privacy": "Privacy"
   },
