@@ -6,18 +6,26 @@ defineProps<{
   last: boolean
   reorderable: boolean
   dragging: boolean
-  confirming: boolean
+  canMoveUp: boolean
+  canMoveDown: boolean
   busy: boolean
 }>()
 
 defineEmits<{
   dragStart: []
   drop: []
+  moveUp: []
+  moveDown: []
+  toggleFeatured: []
+  publish: []
+  unpublish: []
   askDelete: []
-  cancelDelete: []
-  confirmDelete: []
   duplicate: []
 }>()
+
+const ACTION = 'cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-ink disabled:cursor-not-allowed disabled:opacity-60'
+const ARROW =
+  'flex size-5 cursor-pointer items-center justify-center rounded border border-hairline bg-transparent p-0 text-muted hover:border-ink hover:text-ink disabled:cursor-not-allowed disabled:opacity-30'
 </script>
 
 <template>
@@ -29,7 +37,17 @@ defineEmits<{
     @dragover.prevent
     @drop="$emit('drop')"
   >
-    <span v-if="reorderable" aria-hidden="true" class="flex-none font-mono text-xs text-muted">⠿</span>
+    <div v-if="reorderable" class="flex flex-none items-center gap-1.5">
+      <span aria-hidden="true" class="font-mono text-xs text-muted">⠿</span>
+      <div class="flex flex-col gap-0.5">
+        <button type="button" :class="ARROW" :disabled="!canMoveUp || busy" :aria-label="`Mută ${project.card_title_ro} mai sus`" @click="$emit('moveUp')">
+          <svg viewBox="0 0 10 10" class="size-2.5" aria-hidden="true"><path d="M2 6.5 5 3.5l3 3" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
+        </button>
+        <button type="button" :class="ARROW" :disabled="!canMoveDown || busy" :aria-label="`Mută ${project.card_title_ro} mai jos`" @click="$emit('moveDown')">
+          <svg viewBox="0 0 10 10" class="size-2.5" aria-hidden="true"><path d="M2 3.5 5 6.5l3-3" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
+        </button>
+      </div>
+    </div>
     <img
       v-if="project.cover_path"
       :src="project.cover_path"
@@ -39,53 +57,46 @@ defineEmits<{
     <div v-else class="h-[30px] w-12 flex-none rounded border border-hairline media-placeholder [--placeholder-mark:20px]" />
     <div class="min-w-0 flex-[2_1_200px] text-[15px]">
       {{ project.card_title_ro }}
-      <span v-if="project.featured" title="Afișat pe homepage" class="ml-1 text-signal" aria-hidden="true">●</span>
-      <span v-if="project.featured" class="sr-only">Afișat pe homepage</span>
+      <button
+        type="button"
+        class="ml-1 cursor-pointer border-0 bg-transparent p-0 align-middle leading-none"
+        :class="project.featured ? 'text-signal' : 'text-hairline hover:text-muted'"
+        :aria-pressed="project.featured"
+        :disabled="busy"
+        :title="project.featured ? 'Afișat pe homepage' : 'Nu apare pe homepage'"
+        @click="$emit('toggleFeatured')"
+      >
+        <span aria-hidden="true">●</span>
+        <span class="sr-only">Afișat pe homepage</span>
+      </button>
+      <div v-if="!project.published_at && project.screens_demo" class="eyebrow-sm mt-1 text-signal-text">
+        Doar capturi pe date demo
+      </div>
     </div>
     <div class="flex flex-[1_1_160px] flex-wrap gap-1.5">
       <TechChip v-for="tech in project.tech" :key="tech" :label="tech" />
     </div>
-    <div
-      class="flex-[0_0_90px] eyebrow"
-      :class="project.published_at ? 'text-signal-text' : 'text-muted'"
-    >
+    <div class="flex-[0_0_90px] eyebrow" :class="project.published_at ? 'text-signal-text' : 'text-muted'">
       {{ project.published_at ? 'Publicat' : 'Draft' }}
     </div>
     <div class="flex-[0_0_100px] eyebrow text-muted">
       {{ project.published_at ? new Date(project.published_at).toLocaleDateString('ro-RO') : '—' }}
     </div>
-    <div class="flex flex-[0_0_180px] justify-end gap-3 eyebrow">
-      <template v-if="confirming">
-        <button
-          type="button"
-          class="cursor-pointer border-0 bg-transparent p-0 text-signal-text"
-          :disabled="busy"
-          @click="$emit('confirmDelete')"
-        >
-          {{ busy ? 'Șterge…' : 'Sigur? Șterge' }}
-        </button>
-        <button type="button" class="cursor-pointer border-0 bg-transparent p-0 text-muted" @click="$emit('cancelDelete')">
-          Anulează
-        </button>
-      </template>
-      <template v-else>
-        <NuxtLink :to="`/admin/projects/${project.slug_ro}`" class="text-muted hover:text-ink">Editează</NuxtLink>
-        <button
-          type="button"
-          class="cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-ink"
-          :disabled="busy"
-          @click="$emit('duplicate')"
-        >
-          Duplică
-        </button>
-        <button
-          type="button"
-          class="cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-signal-text"
-          @click="$emit('askDelete')"
-        >
-          Șterge
-        </button>
-      </template>
+    <div class="flex flex-[0_0_260px] flex-wrap justify-end gap-x-3 gap-y-1 eyebrow">
+      <button v-if="!project.published_at" type="button" :class="ACTION" class="text-ink" :disabled="busy" @click="$emit('publish')">
+        Publică
+      </button>
+      <button v-else type="button" :class="ACTION" :disabled="busy" @click="$emit('unpublish')">Retrage</button>
+      <NuxtLink :to="`/admin/projects/${project.slug_ro}`" class="text-muted hover:text-ink">Editează</NuxtLink>
+      <button type="button" :class="ACTION" :disabled="busy" @click="$emit('duplicate')">Duplică</button>
+      <button
+        type="button"
+        class="cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-signal-text disabled:opacity-60"
+        :disabled="busy"
+        @click="$emit('askDelete')"
+      >
+        Șterge
+      </button>
     </div>
   </div>
 </template>
