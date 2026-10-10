@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { useServiceStages } from '#layers/content'
 
-
 const { t } = useI18n()
-const stages = await useServiceStages()
+const stages = useServiceStages()
 
-// Removed servicesFor since links were cleaned up
 </script>
 
 <template>
@@ -29,15 +27,15 @@ const stages = await useServiceStages()
       </div>
       <div class="mt-6 grid grid-fit-safe-280 gap-6">
         <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
-          <div class="eyebrow text-muted transition-colors duration-500 group-hover:text-signal">{{ t('home.services.whereYouAreLabel') }}</div>
+          <div class="eyebrow text-muted transition-colors duration-500 group-hover:text-signal-text">{{ t('home.services.whereYouAreLabel') }}</div>
           <p class="m-0 mt-2.5 text-base text-pretty text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whereYouAre }}</p>
         </div>
         <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
-          <div class="eyebrow text-muted transition-colors duration-500 group-hover:text-signal">{{ t('home.services.whyUsLabel') }}</div>
+          <div class="eyebrow text-muted transition-colors duration-500 group-hover:text-signal-text">{{ t('home.services.whyUsLabel') }}</div>
           <p class="m-0 mt-2.5 text-base text-pretty text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whyUs }}</p>
         </div>
         <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
-          <div class="eyebrow text-muted transition-colors duration-500 group-hover:text-signal">{{ t('home.services.whatYouGetLabel') }}</div>
+          <div class="eyebrow text-muted transition-colors duration-500 group-hover:text-signal-text">{{ t('home.services.whatYouGetLabel') }}</div>
           <p class="m-0 mt-2.5 text-base text-pretty text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whatYouGet }}</p>
         </div>
       </div>
