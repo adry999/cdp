@@ -21,7 +21,7 @@ public API of `layers/qualifier`.
 - `usePublishedProjects()` — `{ projects }`, the published card rows behind the shared
   `'projects'` async-data key (`GET /api/projects` via `data/projectsRepository.ts`).
 - `useNavProjects()` — `{ navProjects }`, published projects grouped by `ServiceTagId` (at most four each) for the
-  header dropdown, behind the `'nav-projects'` async-data key. A failed fetch degrades to no projects.
+  header dropdown; a project sits under every service in its `nav_services`, not under `service_tag`, behind the `'nav-projects'` async-data key. A failed fetch degrades to no projects.
 - `MappedNavProject` — the nav dropdown item (title, subtitle, cover, slug).
 - `MappedProject`, `MappedProjectCard`, `ProjectRow`, `ProjectCardRow`,
   `ProjectFactRow`, `ProjectStackRow`, `ProjectStatRow`, `ProjectImageRow` —
@@ -54,16 +54,17 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
 - `GET /api/projects` — `server/api/`, published projects only, via
   `domain/projectSelect.ts`'s `PROJECT_CARD_SELECT` (card columns only — kept
   light for every list consumer). `GET /api/projects/[slug]` uses the full
-  `PROJECT_SELECT`. `GET /api/projects/nav` returns `NavProjectRow[]` (name, kind, cover, slugs, tag; published only,
-  featured first, at most four per service), via `server/services/listNavProjects.ts`.
+  `PROJECT_SELECT`. `GET /api/projects/nav` returns `NavProjectRow[]` (name, kind, cover, slugs, `nav_services`; published only,
+  featured first, at most four per service; each row keeps only the services where it made the cut), via `server/services/listNavProjects.ts`.
 - `POST /api/admin/revalidate` — `server/api/admin/`, admin-only
   (`requireAdmin` from `core`: Supabase session + `app_users` row, 401/403
   otherwise). The strategy lives in `server/services/revalidatePublicCache.ts`
   (dependencies injected, tested with fakes): if `VERCEL_ISR_BYPASS_TOKEN` is
-  set, re-requests every published project URL with `x-prerender-revalidate`
-  to force Vercel's edge ISR cache for those routes to refresh (Nitro's own
+  set, re-requests the index pages and every published project URL with `x-prerender-revalidate`
+  to force Vercel's edge ISR cache for those routes (and `/api/projects/nav`, the header menu's data) to refresh (Nitro's own
   `useStorage('cache')` is not what serves them on the `vercel` preset);
   otherwise it clears Nitro's storage cache directly.
+  Known limit: prerendered `/blog/**` pages bake the menu data at build time, so they pick up a published project only on the next deploy.
 - `server/middleware/project-redirects.ts` — serves the 301/302 rows
   `save_project()` writes to `redirects` when a published slug changes.
 - `/proiecte/[slug]`, `/en/work/[slug]` (route name `proiecte-slug`) —
@@ -92,6 +93,7 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
   and tightens the heading's top margin — what `ServicesRelatedProjects` uses.
 - `ProjectsAdminRow` — one row of the admin list (drag handle, thumbnail, inline
   delete confirmation); stateless, emits the actions.
+- `ProjectsEditorIdentity` also holds the "Apare în meniu la" checkboxes (`nav_services`, saved by `save_project`).
 - `ProjectsEditorSection` plus `ProjectsEditorIdentity`, `Images`, `Facts`,
   `Narrative` (one text section, used four times), `Stack`, `Results`, `Publish` —
   the sections of the admin editor; each takes the `ProjectForm` through `v-model`.
