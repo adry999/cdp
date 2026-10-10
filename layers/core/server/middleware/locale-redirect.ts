@@ -1,7 +1,7 @@
 import { LOCALE_COOKIE_NAME, isCrawler, resolveLocale } from '#layers/core/shared/utils/resolveLocale'
 
 export default defineEventHandler((event) => {
-  const { pathname } = getRequestURL(event)
+  const { pathname, search } = getRequestURL(event)
   if (pathname !== '/' && pathname !== '/en') return
 
   const userAgent = getHeader(event, 'user-agent')
@@ -20,6 +20,6 @@ export default defineEventHandler((event) => {
     // served to everyone behind that cache until it expires.
     setResponseHeader(event, 'Cache-Control', 'private, no-store')
     setResponseHeader(event, 'Vary', 'Cookie, X-Vercel-IP-Country')
-    return sendRedirect(event, target === 'en' ? '/en' : '/', 302)
+    return sendRedirect(event, `${target === 'en' ? '/en' : '/'}${search}`, 302)
   }
 })
