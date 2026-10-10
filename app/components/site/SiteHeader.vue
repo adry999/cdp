@@ -117,7 +117,14 @@ onMounted(() => {
           alt="CODEPEDIA"
           width="183"
           height="18"
-          class="block h-[18px] w-auto"
+          class="block h-[18px] w-auto dark:hidden"
+        >
+        <img
+          src="/brand/codepedia-wordmark-on-dark.svg"
+          alt="CODEPEDIA"
+          width="183"
+          height="18"
+          class="hidden h-[18px] w-auto dark:block"
         >
       </NuxtLink>
 
@@ -149,6 +156,8 @@ onMounted(() => {
         </div>
 
         <SiteHeaderLocaleSwitch />
+
+        <CoreThemeToggle class="-mx-1.5" />
 
         <!-- A plain anchor on the homepage: a router link to the page you are on would be marked aria-current. -->
         <a v-if="cta.kind.value === 'anchor'" :href="cta.to.value" :class="ctaClass">

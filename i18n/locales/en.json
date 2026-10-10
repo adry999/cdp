@@ -26,6 +26,10 @@
     "menu": "Menu",
     "skipToContent": "Skip to content"
   },
+  "theme": {
+    "dark": "Dark theme",
+    "light": "Light theme"
+  },
   "footer": {
     "tagline": "Full-stack web development · Websites, web apps, WordPress, Shopify",
     "cookieSettings": "Cookie settings",

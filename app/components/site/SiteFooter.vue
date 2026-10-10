@@ -66,7 +66,8 @@ const ctaClass =
     >
       <div class="flex min-w-0 flex-col gap-[18px]">
         <NuxtLink :to="localePath('index')" class="flex w-fit">
-          <img src="/brand/codepedia-wordmark.svg" alt="CODEPEDIA" width="163" height="16" class="block h-4 w-auto">
+          <img src="/brand/codepedia-wordmark.svg" alt="CODEPEDIA" width="163" height="16" class="block h-4 w-auto dark:hidden">
+          <img src="/brand/codepedia-wordmark-on-dark.svg" alt="CODEPEDIA" width="163" height="16" class="hidden h-4 w-auto dark:block">
         </NuxtLink>
         <p class="m-0 max-w-[30ch] text-[15px] leading-normal text-muted text-pretty">{{ t('footer.tagline') }}</p>
 
@@ -144,7 +145,14 @@ const ctaClass =
             alt=""
             width="19"
             height="12"
-            class="block h-3 w-auto opacity-50"
+            class="block h-3 w-auto opacity-50 dark:hidden"
+          >
+          <img
+            src="/brand/codepedia-mark-inverse.svg"
+            alt=""
+            width="19"
+            height="12"
+            class="hidden h-3 w-auto opacity-50 dark:block"
           >
           {{ legalLine }}
         </span>

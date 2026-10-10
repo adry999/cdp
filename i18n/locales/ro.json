@@ -26,6 +26,10 @@
     "menu": "Meniu",
     "skipToContent": "Sari la conținut"
   },
+  "theme": {
+    "dark": "Temă întunecată",
+    "light": "Temă luminoasă"
+  },
   "footer": {
     "tagline": "Dezvoltare web full-stack · Site-uri, aplicații web, WordPress, Shopify",
     "cookieSettings": "Setări cookie-uri",
