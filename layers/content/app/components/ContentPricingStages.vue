@@ -47,10 +47,10 @@ const stages = useServiceStages()
               </button>
               <span
                 role="tooltip"
-                class="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 w-[min(300px,85vw)] -translate-x-1/2 rounded border border-hairline bg-ink p-3 text-[13px] font-normal leading-relaxed text-paper shadow-lg opacity-0 transition-opacity duration-150 group-hover/tooltip:pointer-events-auto group-hover/tooltip:opacity-100 group-focus-within/tooltip:pointer-events-auto group-focus-within/tooltip:opacity-100 tracking-normal"
+                class="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 w-[min(300px,85vw)] -translate-x-1/2 rounded border border-hairline bg-inverse p-3 text-[13px] font-normal leading-relaxed text-on-inverse shadow-lg opacity-0 transition-opacity duration-150 group-hover/tooltip:pointer-events-auto group-hover/tooltip:opacity-100 group-focus-within/tooltip:pointer-events-auto group-focus-within/tooltip:opacity-100 tracking-normal"
               >
                 {{ stage.pricingTooltip }}
-                <span class="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-ink" aria-hidden="true" />
+                <span class="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-inverse" aria-hidden="true" />
               </span>
             </span>
           </div>

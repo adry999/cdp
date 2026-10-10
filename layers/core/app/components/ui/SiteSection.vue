@@ -33,7 +33,7 @@ const showTopBorder = computed(() => props.topBorder && !props.inverted)
     :id="sectionId"
     class="relative overflow-hidden scroll-mt-16"
     :class="[
-      inverted ? 'bg-ink text-paper' : undefined,
+      inverted ? 'bg-inverse text-on-inverse' : undefined,
       showTopBorder ? 'border-t border-hairline' : undefined,
     ]"
   >

@@ -15,7 +15,7 @@ const displayDate = computed(() => formatPostDate(props.post.date, siteLocale.va
     :to="localePath({ name: 'blog-slug', params: { slug: blogSlug(post.path) } })"
     class="grid grid-fit-safe-320 gap-[clamp(20px,3vw,40px)] text-ink no-underline hover:text-ink hover:no-underline"
   >
-    <div class="flex aspect-[16/10] flex-col justify-between rounded bg-ink p-[clamp(20px,2.5vw,32px)] text-paper">
+    <div class="flex aspect-[16/10] flex-col justify-between rounded bg-inverse p-[clamp(20px,2.5vw,32px)] text-on-inverse">
       <span class="eyebrow text-signal">{{ categoryName }}</span>
       <span class="max-w-[16ch] text-[clamp(22px,2.6vw,32px)] font-semibold leading-[1.1] tracking-[-0.02em] text-pretty">{{
         post.keyword

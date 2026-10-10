@@ -59,7 +59,7 @@ onBeforeUnmount(() => {
     <Transition name="q-modal">
       <div
         v-if="isOpen"
-        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-ink/60 px-4 py-[max(24px,6vh)]"
+        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-inverse/60 px-4 py-[max(24px,6vh)]"
         @click.self="close"
       >
         <div

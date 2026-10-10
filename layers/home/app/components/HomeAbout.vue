@@ -19,7 +19,7 @@ const { el: gridEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: 
       <article
         v-for="(pillar, i) in pillars"
         :key="pillar.id"
-        class="group flex flex-col rounded border border-white/20 bg-paper/[0.03] p-[clamp(20px,2.5vw,26px)] transition-all duration-300 hover:-translate-y-1 hover:border-signal/50 hover:bg-paper/[0.06] hover:shadow-lg hover:shadow-signal/10"
+        class="group flex flex-col rounded border border-hairline-ink bg-on-inverse/[0.03] p-[clamp(20px,2.5vw,26px)] transition-all duration-300 hover:-translate-y-1 hover:border-signal/50 hover:bg-on-inverse/[0.06] hover:shadow-lg hover:shadow-signal/10"
         :class="[
           hasMounted && !isVisible ? 'opacity-0 translate-y-6' : 'opacity-100',
           hasMounted && isVisible ? 'duration-700 ease-out' : 'duration-300'
@@ -27,10 +27,10 @@ const { el: gridEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: 
         :style="{ transitionDelay: hasMounted && isVisible ? `${i * 120}ms` : '0ms' }"
       >
         <span class="font-mono text-xs tracking-[0.14em] text-signal">{{ pillar.index }}</span>
-        <h3 class="mt-4 text-lg font-medium leading-snug tracking-[-0.02em] transition-colors duration-300 group-hover:text-paper">
+        <h3 class="mt-4 text-lg font-medium leading-snug tracking-[-0.02em] transition-colors duration-300 group-hover:text-on-inverse">
           {{ pillar.title }}
         </h3>
-        <p class="mb-0 mt-3 text-[15px] leading-relaxed text-body-ink transition-colors duration-300 group-hover:text-paper/90">
+        <p class="mb-0 mt-3 text-[15px] leading-relaxed text-body-ink transition-colors duration-300 group-hover:text-on-inverse/90">
           {{ pillar.body }}
         </p>
       </article>

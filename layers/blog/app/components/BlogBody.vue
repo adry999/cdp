@@ -94,7 +94,7 @@ function marker(ordered: boolean, index: number): string {
 
       <div
         v-else-if="block.type === 'cta'"
-        class="mt-12 flex flex-col gap-5 rounded bg-ink p-[clamp(24px,3vw,36px)] text-paper"
+        class="mt-12 flex flex-col gap-5 rounded bg-inverse p-[clamp(24px,3vw,36px)] text-on-inverse"
       >
         <span class="eyebrow-sm text-signal">{{ t('blog.next') }}</span>
         <p class="m-0 text-[clamp(19px,2vw,23px)] leading-[1.35] tracking-[-0.01em] text-pretty">{{ block.text }}</p>

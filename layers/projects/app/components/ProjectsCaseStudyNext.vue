@@ -36,7 +36,7 @@ const otherProjects = computed(() =>
         <li v-for="other in otherProjects" :key="other.slug">
           <NuxtLink
             :to="localePath({ name: 'proiecte-slug', params: { slug: other.slug } })"
-            class="flex flex-wrap justify-between gap-x-6 gap-y-2 border-t border-hairline-ink py-4 text-paper no-underline hover:text-signal"
+            class="flex flex-wrap justify-between gap-x-6 gap-y-2 border-t border-hairline-ink py-4 text-on-inverse no-underline hover:text-signal"
           >
             <span class="text-lg font-medium tracking-[-0.01em]">{{ other.title }}</span>
             <span v-if="other.kind" class="eyebrow text-muted-ink">{{ other.kind }} →</span>

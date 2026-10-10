@@ -82,16 +82,16 @@ onBeforeUnmount(detach)
       role="dialog"
       aria-modal="true"
       :aria-label="t('caseStudy.lightbox.label')"
-      class="fixed inset-0 z-[100] flex flex-col gap-4 bg-ink/95 p-[clamp(12px,3vw,32px)]"
+      class="fixed inset-0 z-[100] flex flex-col gap-4 bg-inverse/95 p-[clamp(12px,3vw,32px)]"
       @click.self="emit('close')"
     >
-      <div class="flex items-center justify-between text-paper eyebrow" @click.self="emit('close')">
+      <div class="flex items-center justify-between text-on-inverse eyebrow" @click.self="emit('close')">
         <span aria-live="polite">{{ t('caseStudy.lightbox.counter', { current: (index ?? 0) + 1, total: shots.length }) }}</span>
         <button
           ref="closeButton"
           type="button"
           :aria-label="t('caseStudy.lightbox.close')"
-          class="min-h-11 min-w-11 cursor-pointer rounded border border-paper/30 bg-transparent px-3 eyebrow text-paper hover:border-paper"
+          class="min-h-11 min-w-11 cursor-pointer rounded border border-on-inverse/30 bg-transparent px-3 eyebrow text-on-inverse hover:border-on-inverse"
           @click="emit('close')"
         >
           {{ t('caseStudy.lightbox.closeButton') }}
@@ -101,7 +101,7 @@ onBeforeUnmount(detach)
         <button
           type="button"
           :aria-label="t('caseStudy.lightbox.prev')"
-          class="h-12 w-12 flex-none cursor-pointer rounded border border-paper/30 bg-transparent text-lg text-paper hover:border-paper"
+          class="h-12 w-12 flex-none cursor-pointer rounded border border-on-inverse/30 bg-transparent text-lg text-on-inverse hover:border-on-inverse"
           @click="step(-1)"
         >
           ←
@@ -120,7 +120,7 @@ onBeforeUnmount(detach)
         <button
           type="button"
           :aria-label="t('caseStudy.lightbox.next')"
-          class="h-12 w-12 flex-none cursor-pointer rounded border border-paper/30 bg-transparent text-lg text-paper hover:border-paper"
+          class="h-12 w-12 flex-none cursor-pointer rounded border border-on-inverse/30 bg-transparent text-lg text-on-inverse hover:border-on-inverse"
           @click="step(1)"
         >
           →
