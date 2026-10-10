@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import { localeRedirectRoutes } from './layers/core/shared/utils/localeRedirectRoutes'
+import { THEME_INIT_SCRIPT } from './layers/core/shared/utils/theme'
 
 // Every real build, including Vercel, must supply these. Skipped in dev and in
 // `nuxt prepare` (the postinstall step), where hosts may not expose secrets yet.
@@ -267,6 +268,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       titleTemplate: '%s | CODEPEDIA',
+      // Sets data-theme before first paint (no flash). Covered by the existing 'unsafe-inline' in script-src.
+      script: [{ innerHTML: THEME_INIT_SCRIPT, tagPosition: 'head', tagPriority: 'critical' }],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', sizes: '48x48' },
