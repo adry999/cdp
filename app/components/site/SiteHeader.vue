@@ -39,11 +39,10 @@ const navItems = computed<HeaderNavItem[]>(() =>
   })),
 )
 
-// On the homepage the contact form is a section; everywhere else it is the /contact page.
-const ctaIsAnchor = computed(() => baseName.value === 'index')
-const ctaTo = computed(() => (ctaIsAnchor.value ? `${localePath('index')}#contact` : localePath('contact')))
+// Homepage: scrolls to the contact section. Elsewhere: opens the contact dialog (or the qualifier).
+const cta = useContactCta()
 const ctaClass =
-  'flex items-center gap-2.5 whitespace-nowrap rounded border border-ink px-3.5 py-[9px] font-semibold text-ink transition-colors hover:border-signal hover:bg-signal hover:text-paper'
+  'flex cursor-pointer items-center gap-2.5 whitespace-nowrap rounded border border-ink px-3.5 py-[9px] font-semibold text-ink transition-colors hover:border-signal hover:bg-signal hover:text-paper'
 
 const header = ref<HTMLElement | null>(null)
 const menuToggle = ref<HTMLButtonElement | null>(null)
@@ -66,6 +65,12 @@ function onKeydown(event: KeyboardEvent) {
   } else {
     trapTab(event)
   }
+}
+
+// The panel's button disappears with the panel, so focus goes back to the menu toggle on close.
+function onMobileContact() {
+  closeMenu()
+  cta.activate(menuToggle.value)
 }
 
 watch(() => route.fullPath, () => closeMenu())
@@ -146,14 +151,18 @@ onMounted(() => {
         <SiteHeaderLocaleSwitch />
 
         <!-- A plain anchor on the homepage: a router link to the page you are on would be marked aria-current. -->
-        <a v-if="ctaIsAnchor" :href="ctaTo" :class="ctaClass">
+        <a v-if="cta.kind.value === 'anchor'" :href="cta.to.value" :class="ctaClass">
           {{ t('nav.letsTalk') }}
           <span aria-hidden="true">→</span>
         </a>
-        <NuxtLink v-else :to="ctaTo" :class="ctaClass">
+        <NuxtLink v-else-if="cta.kind.value === 'link'" :to="cta.to.value" :class="ctaClass">
           {{ t('nav.letsTalk') }}
           <span aria-hidden="true">→</span>
         </NuxtLink>
+        <button v-else type="button" :class="ctaClass" aria-haspopup="dialog" @click="cta.activate($event.currentTarget as HTMLElement)">
+          {{ t('nav.letsTalk') }}
+          <span aria-hidden="true">→</span>
+        </button>
       </nav>
 
       <button
@@ -191,9 +200,10 @@ onMounted(() => {
       :services-to="localePath('servicii')"
       :services-active="activeId === 'services'"
       :current-slug="currentSlug"
-      :cta-to="ctaTo"
-      :cta-is-anchor="ctaIsAnchor"
+      :cta-kind="cta.kind.value"
+      :cta-to="cta.to.value"
       @close="closeMenu()"
+      @contact="onMobileContact"
     />
   </header>
 </template>

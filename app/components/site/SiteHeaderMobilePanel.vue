@@ -6,19 +6,19 @@ defineProps<{
   servicesTo: string
   servicesActive: boolean
   currentSlug: string | null
+  /** See useContactCta: a homepage anchor, a link to /contact, or a button that opens the dialog. */
+  ctaKind: ContactCtaKind
   ctaTo: string
-  /** Homepage: a plain anchor to the contact section, so the router does not mark it as the current page. */
-  ctaIsAnchor: boolean
 }>()
 
-const emit = defineEmits<{ close: [] }>()
+const emit = defineEmits<{ close: []; contact: [] }>()
 const { t } = useI18n()
 
 const rowClass =
   'flex items-baseline gap-4 text-[32px] font-semibold leading-[1.1] tracking-[-0.02em] text-ink no-underline hover:text-ink'
 
 const ctaClass =
-  'mt-auto flex min-h-14 items-center justify-between rounded bg-signal px-5 eyebrow font-semibold text-paper no-underline hover:text-paper hover:opacity-90'
+  'mt-auto flex min-h-14 w-full cursor-pointer border-0 items-center justify-between rounded bg-signal px-5 eyebrow font-semibold text-paper no-underline hover:text-paper hover:opacity-90'
 
 function number(index: number): string {
   return String(index).padStart(2, '0')
@@ -75,13 +75,17 @@ function number(index: number): string {
 
     <SiteHeaderLocaleSwitch class="eyebrow gap-2.5 text-sm" />
 
-    <a v-if="ctaIsAnchor" :href="ctaTo" :class="ctaClass" @click="emit('close')">
+    <a v-if="ctaKind === 'anchor'" :href="ctaTo" :class="ctaClass" @click="emit('close')">
       {{ t('nav.letsTalk') }}
       <span aria-hidden="true">→</span>
     </a>
-    <NuxtLink v-else :to="ctaTo" :class="ctaClass" @click="emit('close')">
+    <NuxtLink v-else-if="ctaKind === 'link'" :to="ctaTo" :class="ctaClass" @click="emit('close')">
       {{ t('nav.letsTalk') }}
       <span aria-hidden="true">→</span>
     </NuxtLink>
+    <button v-else type="button" :class="ctaClass" aria-haspopup="dialog" @click="emit('contact')">
+      {{ t('nav.letsTalk') }}
+      <span aria-hidden="true">→</span>
+    </button>
   </div>
 </template>
