@@ -150,9 +150,9 @@ Designul nu are versiune EN pentru câmpul „Etapa”; EN tradus în cod (2026-
 
 Designul nu are versiune EN; EN tradus în cod (2026-10-09) (excepție: cele 3 întrebări au EN din `layers/content/data/faqs.ts`).
 
-- [x] EN de tradus: `i18n/locales/en.json` — `pricing.seo.*`, `pricing.sectionLabel`, `pricing.title`, `pricing.intro`, `pricing.stages.*.pricePrefix` și `.time`
+- [x] EN de tradus: `i18n/locales/en.json` — `pricing.seo.*`, `pricing.sectionLabel`, `pricing.title`, `pricing.intro`
 - [x] EN de tradus: `pricing.included.*`, `pricing.afterLaunch.*` (titlu, 2 abonamente, nota despre garanție)
-- [ ] Prețuri reale: cele 5 carduri de etapă și abonamentele Mentenanță / Dezvoltare continuă (designul are 300 / 2.000 EUR, marcate demo). Până atunci prețul nu apare; se afișează când există cheia `pricing.stages.<id>.price` / `pricing.afterLaunch.plans.<id>.price` în ambele locale. Întrebarea „Cât costă un proiect?” (`pricing.faq.items[0]`) nu mai conține o cifră; `layers/content/data/faqs.ts` spune deja „de la 6.000 EUR" — de confirmat că cifrele coincid
+- [ ] Prețuri reale: cele 5 carduri de etapă și abonamentele Mentenanță / Dezvoltare continuă (designul are 300 / 2.000 EUR, marcate demo). Până atunci cardurile arată doar modelul de colaborare (`home.services.stages.<id>.pricing`, fără sume) și durata (`.timing`); nicio sumă nu apare în i18n pentru etape. Abonamentele afișează `pricing.afterLaunch.plans.<id>.price` (text descriptiv, fără cifre). Întrebarea „Cât costă un proiect?” (`pricing.faq.items[0]`) nu mai conține o cifră; `layers/content/data/faqs.ts` spune deja „de la 6.000 EUR" — de confirmat că cifrele coincid
 
 ## Pagina /despre — EN de tradus
 

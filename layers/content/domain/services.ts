@@ -10,9 +10,12 @@ export interface ServiceStage extends ServiceStageDef {
   priceTime: string
   whereYouAre: string
   whatYouGet: string
+  whyUs: string
   badges: string[]
   cta: string
-  pricingTooltip?: string
+  pricing: string
+  timing: string
+  pricingTooltip: string
 }
 
 export const SERVICE_STAGE_DEFS: readonly ServiceStageDef[] = STAGE_ORDER.map((id) => ({ id }))

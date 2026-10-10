@@ -95,7 +95,6 @@
       "stages": {
         "E": {
           "name": "EXPRESS PAGE",
-          "priceTime": "Under 1,000 EUR · 2–3 days",
           "whereYouAre": "You need a modern, fast page to validate an idea, win your first customers or replace an outdated site.",
           "whatYouGet": "A fast-loading 1–3 page landing site, mobile-optimised, wired straight to Telegram or a form so enquiries reach you from day one.",
           "badges": [
@@ -106,13 +105,12 @@
           ],
           "cta": "Launch my page",
           "whyUs": "DIY builders save money now but cost you credibility. A pro page loads faster and actually converts your traffic.",
-          "pricing": "Fixed Price (€400–€600)",
+          "pricing": "Fixed Price",
           "timing": "2–3 days",
           "pricingTooltip": "You pay a fixed amount defined in the contract for a strictly defined scope (Express Page)."
         },
         "B": {
           "name": "CONCEPT TO SPEC",
-          "priceTime": "From 1,000 EUR · ~1 week",
           "whereYouAre": "You have a product or business idea, but it's still theoretical and you need full clarity before investing in development.",
           "whatYouGet": "A complete execution plan: from user flows and a visual prototype to a clear technical spec, ready to hand to a dev team.",
           "badges": [
@@ -122,13 +120,12 @@
           ],
           "cta": "Map out my concept",
           "whyUs": "Skipping the spec phase usually means scope creep later. We align business logic with tech reality before writing any code.",
-          "pricing": "Paid Discovery (from €1,000)",
+          "pricing": "Paid Discovery",
           "timing": "~1 week",
           "pricingTooltip": "A fixed-price technical audit to map out requirements, architecture, and exact roadmap before any build."
         },
         "A": {
           "name": "DESIGN TO CODE",
-          "priceTime": "From 2,000 EUR · 3–6 weeks",
           "whereYouAre": "Your design is ready in Figma, or your visual assets are prepared, and you want a technical team to turn them into well-built production code.",
           "whatYouGet": "Your Figma screens built as a working app: front end, Postgres database and the API integrations it needs.",
           "badges": [
@@ -145,7 +142,6 @@
         },
         "C": {
           "name": "SCALE & EXTEND",
-          "priceTime": "From 2,000 EUR · 4–8 weeks",
           "whereYouAre": "You have a live product but need engineering capacity to ship new modules, clear performance bottlenecks or increase delivery speed.",
           "whatYouGet": "New feature development, code refactoring, database tuning and an architecture ready to scale — with zero downtime.",
           "badges": [
@@ -162,7 +158,6 @@
         },
         "D": {
           "name": "AI PROCESS AUTOMATION",
-          "priceTime": "From 5,000 EUR · 6–12 weeks",
           "whereYouAre": "Your team loses dozens of hours on repetitive tasks, manual data processing or fragmented workflows that slow your growth.",
           "whatYouGet": "LLM steps wired into the tools you already use (n8n, Make or custom code), plus a dashboard where your team reviews every automated action.",
           "badges": [
@@ -661,7 +656,8 @@
         }
       ]
     },
-    "engagementModel": "Engagement Model"
+    "engagementModel": "Engagement Model",
+    "infoLabel": "Details about the engagement model"
   },
   "about": {
     "seo": {
