@@ -4,9 +4,13 @@ withDefaults(defineProps<{ variant?: 'icon' | 'row' }>(), { variant: 'icon' })
 const { t } = useI18n()
 const { theme, toggleTheme } = useTheme()
 
-// What the button will do, so the label names the target theme. Server and first client render
-// both read 'light'; the plugin syncs the real theme after hydration.
-const label = computed(() => (theme.value === 'dark' ? t('theme.light') : t('theme.dark')))
+// What the button will do, so the label names the target theme. Until this component has
+// hydrated it assumes light, like the server render, so attributes never mismatch.
+const mounted = ref(false)
+onMounted(() => {
+  mounted.value = true
+})
+const label = computed(() => (mounted.value && theme.value === 'dark' ? t('theme.light') : t('theme.dark')))
 </script>
 
 <template>
