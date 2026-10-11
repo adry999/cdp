@@ -15,10 +15,10 @@ const emit = defineEmits<{ close: []; contact: [] }>()
 const { t } = useI18n()
 
 const rowClass =
-  'flex items-baseline gap-4 text-[32px] font-semibold leading-[1.1] tracking-[-0.02em] text-ink no-underline hover:text-ink'
+  'flex min-h-11 items-baseline gap-4 text-[32px] font-semibold leading-[1.1] tracking-[-0.02em] text-ink no-underline hover:text-ink'
 
 const ctaClass =
-  'mt-auto flex min-h-14 w-full cursor-pointer border-0 items-center justify-between rounded bg-signal px-5 eyebrow text-[13px] font-semibold text-ink no-underline hover:text-ink hover:opacity-90'
+  'sticky bottom-0 mt-auto flex min-h-14 w-full cursor-pointer border-0 items-center justify-between rounded bg-signal px-5 eyebrow text-[13px] font-semibold text-ink no-underline hover:text-ink hover:opacity-90'
 
 function number(index: number): string {
   return String(index).padStart(2, '0')
@@ -73,9 +73,11 @@ function number(index: number): string {
       </NuxtLink>
     </nav>
 
-    <SiteHeaderLocaleSwitch class="eyebrow gap-2.5 text-sm" />
-
-    <CoreThemeToggle variant="row" class="border-b border-hairline" />
+    <!-- One row, so the bottom CTA never has to cover the theme switch on short screens. -->
+    <div class="flex items-center justify-between gap-4 border-b border-hairline">
+      <SiteHeaderLocaleSwitch class="eyebrow gap-2.5 text-sm" />
+      <CoreThemeToggle variant="row" />
+    </div>
 
     <a v-if="ctaKind === 'anchor'" :href="ctaTo" :class="ctaClass" @click="emit('close')">
       {{ t('nav.letsTalk') }}

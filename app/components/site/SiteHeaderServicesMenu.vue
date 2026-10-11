@@ -94,10 +94,16 @@ function onClickCapture(event: MouseEvent) {
   openMenu()
 }
 
-function onKeydown(event: KeyboardEvent) {
+// On the document, not the wrapper: a menu opened by hover has no focus inside it, and Escape must still close it.
+// Focus goes back to the trigger only when it was inside the menu.
+function onDocumentKeydown(event: KeyboardEvent) {
   if (event.key !== 'Escape' || !open.value) return
   event.preventDefault()
-  closeMenu({ returnFocus: true })
+  closeMenu({ returnFocus: focusInside() })
+}
+
+function focusInside(): boolean {
+  return document.activeElement instanceof Node && Boolean(root.value?.contains(document.activeElement))
 }
 
 function onFocusOut(event: FocusEvent) {
@@ -105,16 +111,30 @@ function onFocusOut(event: FocusEvent) {
   if (next instanceof Node && !root.value?.contains(next)) closeMenu()
 }
 
+// A click outside closes the menu. If focus was inside it and the click lands on nothing focusable,
+// the browser would drop focus on <body>; it goes back to the trigger instead.
 function onDocumentPointerDown(event: PointerEvent) {
-  if (open.value && event.target instanceof Node && !root.value?.contains(event.target)) closeMenu()
+  if (!open.value || !(event.target instanceof Node) || root.value?.contains(event.target)) return
+  const hadFocus = focusInside()
+  closeMenu()
+  if (!hadFocus) return
+  requestAnimationFrame(() => {
+    if (document.activeElement && document.activeElement !== document.body) return
+    const link = triggerLink.value?.$el as HTMLElement | undefined
+    link?.focus({ preventScroll: true })
+  })
 }
 
 watch(() => route.fullPath, () => closeMenu())
 
-onMounted(() => document.addEventListener('pointerdown', onDocumentPointerDown))
+onMounted(() => {
+  document.addEventListener('pointerdown', onDocumentPointerDown)
+  document.addEventListener('keydown', onDocumentKeydown)
+})
 onBeforeUnmount(() => {
   clearTimeout(closeTimer)
   document.removeEventListener('pointerdown', onDocumentPointerDown)
+  document.removeEventListener('keydown', onDocumentKeydown)
 })
 </script>
 
@@ -123,14 +143,13 @@ onBeforeUnmount(() => {
     ref="root"
     @pointerenter="onPointerEnter"
     @pointerleave="onPointerLeave"
-    @keydown="onKeydown"
     @click.capture="onClickCapture"
     @focusout="onFocusOut"
   >
     <NuxtLink
       ref="triggerLink"
       :to="servicesTo"
-      class="relative flex items-center gap-1.5 py-2 hover:text-signal-text"
+      class="group relative flex items-center gap-1.5 py-2 hover:text-signal-text"
       :class="active ? 'text-ink' : 'text-muted'"
       :aria-current="active ? 'page' : undefined"
       aria-haspopup="true"
@@ -145,7 +164,7 @@ onBeforeUnmount(() => {
       <span
         aria-hidden="true"
         class="absolute inset-x-0 bottom-0.5 h-0.5 origin-left bg-signal transition-transform duration-[250ms] motion-reduce:transition-none"
-        :class="active ? 'scale-x-100' : 'scale-x-0'"
+        :class="active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"
       />
     </NuxtLink>
 
@@ -212,9 +231,9 @@ onBeforeUnmount(() => {
             </div>
             <p v-else class="m-0 max-w-[46ch] text-[17px] leading-normal text-ink text-pretty">{{ selected.intro }}</p>
 
-            <div class="mt-auto flex flex-wrap justify-between gap-3 border-t border-hairline pt-3.5 eyebrow-sm">
-              <NuxtLink :to="selected.to" class="text-ink hover:text-signal-text">{{ t('nav.aboutService') }} →</NuxtLink>
-              <NuxtLink :to="allProjectsTo" class="text-ink hover:text-signal-text">{{ t('nav.allProjects') }} →</NuxtLink>
+            <div class="mt-auto flex flex-wrap justify-between gap-3 border-t border-hairline pt-2 eyebrow-sm">
+              <NuxtLink :to="selected.to" class="inline-flex min-h-8 items-center text-ink underline-offset-4 hover:text-signal-text hover:underline">{{ t('nav.aboutService') }} →</NuxtLink>
+              <NuxtLink :to="allProjectsTo" class="inline-flex min-h-8 items-center text-ink underline-offset-4 hover:text-signal-text hover:underline">{{ t('nav.allProjects') }} →</NuxtLink>
             </div>
           </div>
         </div>

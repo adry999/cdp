@@ -14,6 +14,7 @@ Repo: `adry999/cdp` · bază: `main` · design de referință: `design/*.dc.html
 5. Nu inventa date: fără cifre, citate, prețuri sau nume de clienți neconfirmate. Ce lipsește rămâne ascuns sau apare marcat în `TODO.md`.
 6. Fiecare PR: texte RO + EN în `i18n/locales/*.json`, `npm run build`, `vitest`, `playwright` trec; capturi desktop + 390px în descriere.
 7. Commit-uri mici, mesaje în engleză, `feat(scope): …`.
+8. **Legile UI/UX din `UX_LAWS.md` sunt obligatorii.** Fiecare PR are în descriere „UX laws: OK” sau excepțiile, cu motiv.
 
 ---
 

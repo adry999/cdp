@@ -113,7 +113,7 @@ onMounted(() => {
       class="container-site flex items-center justify-between gap-6 transition-[height] duration-200 motion-reduce:transition-none"
       :class="scrolled ? 'h-[52px]' : 'h-16'"
     >
-      <NuxtLink :to="localePath('index')" class="flex items-center">
+      <NuxtLink :to="localePath('index')" class="flex min-h-11 items-center">
         <img
           src="/brand/codepedia-wordmark.svg"
           alt="CODEPEDIA"
@@ -144,7 +144,7 @@ onMounted(() => {
             v-for="item in navItems"
             :key="item.id"
             :to="item.to"
-            class="relative block py-2 hover:text-signal-text"
+            class="group relative block py-2 hover:text-signal-text"
             :class="item.active ? 'text-ink' : 'text-muted'"
             :aria-current="item.active ? 'page' : undefined"
           >
@@ -152,7 +152,7 @@ onMounted(() => {
             <span
               aria-hidden="true"
               class="absolute inset-x-0 bottom-0.5 h-0.5 origin-left bg-signal transition-transform duration-[250ms] motion-reduce:transition-none"
-              :class="item.active ? 'scale-x-100' : 'scale-x-0'"
+              :class="item.active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"
             />
           </NuxtLink>
         </div>
