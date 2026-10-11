@@ -40,9 +40,8 @@ export async function useProjectsAdminList() {
   )
 
   async function reorder(from: number, to: number) {
-    if (!projects.value) return
+    if (!projects.value || reorderStatus.value === 'pending') return
     const next = moveItem(projects.value, from, to)
-    const previous = projects.value
     projects.value = next
 
     reorderStatus.value = 'pending'
@@ -50,8 +49,15 @@ export async function useProjectsAdminList() {
       await repository.reorder(next.map((project) => project.slug_ro))
     } catch (caught) {
       console.warn('[admin] project reorder failed', caught)
-      projects.value = previous
+      // Some rows may already have been written, so show what the DB actually holds instead of
+      // rolling back to a snapshot that may no longer be true.
       reorderStatus.value = 'error'
+      await refresh()
+      try {
+        await revalidatePublicCache()
+      } catch (revalidateError) {
+        console.warn('[admin] cache revalidation after failed reorder failed', revalidateError)
+      }
       return
     }
     reorderStatus.value = 'success'

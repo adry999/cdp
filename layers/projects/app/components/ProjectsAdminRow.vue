@@ -9,6 +9,8 @@ defineProps<{
   canMoveUp: boolean
   canMoveDown: boolean
   busy: boolean
+  // A reorder is being saved; moving again would interleave writes.
+  locked: boolean
 }>()
 
 defineEmits<{
@@ -30,9 +32,9 @@ const ARROW =
 
 <template>
   <div
-    :draggable="reorderable"
+    :draggable="reorderable && !locked"
     class="flex flex-wrap items-center gap-4 border-t border-hairline py-3"
-    :class="[{ 'border-b': last }, reorderable ? 'cursor-grab' : undefined, dragging ? 'opacity-40' : undefined]"
+    :class="[{ 'border-b': last }, reorderable && !locked ? 'cursor-grab' : undefined, dragging ? 'opacity-40' : undefined]"
     @dragstart="$emit('dragStart')"
     @dragover.prevent
     @drop="$emit('drop')"
@@ -40,10 +42,10 @@ const ARROW =
     <div v-if="reorderable" class="flex flex-none items-center gap-1.5">
       <span aria-hidden="true" class="font-mono text-xs text-muted">⠿</span>
       <div class="flex flex-col gap-0.5">
-        <button type="button" :class="ARROW" :disabled="!canMoveUp || busy" :aria-label="`Mută ${project.card_title_ro} mai sus`" @click="$emit('moveUp')">
+        <button type="button" :class="ARROW" :disabled="!canMoveUp || busy || locked" :aria-label="`Mută ${project.card_title_ro} mai sus`" @click="$emit('moveUp')">
           <svg viewBox="0 0 10 10" class="size-2.5" aria-hidden="true"><path d="M2 6.5 5 3.5l3 3" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
         </button>
-        <button type="button" :class="ARROW" :disabled="!canMoveDown || busy" :aria-label="`Mută ${project.card_title_ro} mai jos`" @click="$emit('moveDown')">
+        <button type="button" :class="ARROW" :disabled="!canMoveDown || busy || locked" :aria-label="`Mută ${project.card_title_ro} mai jos`" @click="$emit('moveDown')">
           <svg viewBox="0 0 10 10" class="size-2.5" aria-hidden="true"><path d="M2 3.5 5 6.5l3-3" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
         </button>
       </div>
