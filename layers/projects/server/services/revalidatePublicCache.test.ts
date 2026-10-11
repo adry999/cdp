@@ -37,11 +37,11 @@ describe('revalidatePublicCache', () => {
     const result = await revalidatePublicCache(deps)
     expect(result).toEqual({ method: 'isr-bypass', revalidated: 9, failed: 0 })
     expect(fetched.map((f) => f.url)).toEqual([
+      'https://site.test/api/projects/nav',
       'https://site.test/',
       'https://site.test/en',
       'https://site.test/proiecte',
       'https://site.test/en/work',
-      'https://site.test/api/projects/nav',
       'https://site.test/proiecte/unu',
       'https://site.test/en/work/one',
       'https://site.test/proiecte/doi',
@@ -59,5 +59,38 @@ describe('revalidatePublicCache', () => {
       },
     })
     expect(await revalidatePublicCache(deps)).toEqual({ method: 'isr-bypass', revalidated: 8, failed: 1 })
+  })
+
+  it('counts a failed menu fetch and still revalidates the pages', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const { deps, fetched } = buildDeps({
+      fetchPath: async (url) => {
+        if (url.endsWith('/api/projects/nav')) throw new Error('boom')
+      },
+    })
+    expect(await revalidatePublicCache(deps)).toEqual({ method: 'isr-bypass', revalidated: 8, failed: 1 })
+    expect(fetched).toEqual([])
+  })
+
+  it('finishes the menu fetch before any page fetch starts', async () => {
+    const events: string[] = []
+    let releaseNav: () => void = () => {}
+    const navGate = new Promise<void>((resolve) => {
+      releaseNav = resolve
+    })
+    const { deps } = buildDeps({
+      fetchPath: async (url) => {
+        events.push(`start ${url}`)
+        if (url.endsWith('/api/projects/nav')) await navGate
+        events.push(`end ${url}`)
+      },
+    })
+    const pending = revalidatePublicCache(deps)
+    await new Promise((resolve) => setTimeout(resolve, 0))
+    expect(events).toEqual(['start https://site.test/api/projects/nav'])
+    releaseNav()
+    await pending
+    expect(events[1]).toBe('end https://site.test/api/projects/nav')
+    expect(events[2]).toBe('start https://site.test/')
   })
 })

@@ -22,22 +22,33 @@ export async function revalidatePublicCache(deps: RevalidateDependencies): Promi
   }
 
   const projects = await deps.listProjectSlugs()
-  const paths = [
+  // The header menu's data is embedded by every SWR page, so it is revalidated (and awaited)
+  // before the pages that would otherwise re-render with the stale payload.
+  const navPath = '/api/projects/nav'
+  const pagePaths = [
     '/',
     '/en',
     '/proiecte',
     '/en/work',
-    // The header menu's data; every SWR page embeds it, so it refreshes first.
-    '/api/projects/nav',
     ...projects.flatMap(({ ro, en }) => {
       const urls = caseStudyPaths(ro, en)
       return [urls.ro, urls.en]
     }),
   ]
 
-  const results = await Promise.allSettled(paths.map((path) => deps.fetchPath(`${deps.siteUrl}${path}`, bypassToken)))
-  const failed = results.filter((r) => r.status === 'rejected').length
-  if (failed) console.warn('[admin] ISR revalidate: some paths failed', failed, 'of', paths.length)
+  const fetchPath = (path: string) => deps.fetchPath(`${deps.siteUrl}${path}`, bypassToken)
+  const total = pagePaths.length + 1
 
-  return { method: 'isr-bypass', revalidated: paths.length - failed, failed }
+  let failed = 0
+  try {
+    await fetchPath(navPath)
+  } catch {
+    failed += 1
+  }
+
+  const results = await Promise.allSettled(pagePaths.map(fetchPath))
+  failed += results.filter((r) => r.status === 'rejected').length
+  if (failed) console.warn('[admin] ISR revalidate: some paths failed', failed, 'of', total)
+
+  return { method: 'isr-bypass', revalidated: total - failed, failed }
 }
