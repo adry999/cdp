@@ -1,5 +1,5 @@
 import type { StageId } from '#layers/core/shared/types/service-stage'
-import { stageForServiceParam } from '#layers/core/shared/utils/serviceStage'
+import { serviceTagForParam, stageForServiceParam } from '#layers/core/shared/utils/serviceStage'
 import { useContactModal } from '#layers/leads'
 import { useQualifierAvailability } from '#layers/qualifier'
 
@@ -34,8 +34,10 @@ export function useContactCta() {
   const to = computed(() => (kind.value === 'anchor' ? `${localePath('index')}#contact` : localePath('contact')))
 
   // On a service page the service the visitor is reading is the one to pre-select.
+  const isServicePage = computed(() => baseName.value === 'servicii-slug')
+  const service = computed(() => (isServicePage.value ? serviceTagForParam(route.params.slug) : undefined))
   const stage = computed<StageId | undefined>(() =>
-    baseName.value === 'servicii-slug' ? stageForServiceParam(route.params.slug) : undefined,
+    isServicePage.value ? stageForServiceParam(route.params.slug) : undefined,
   )
 
   /** Opens the dialog. `returnFocusTo` is where focus goes on close when the trigger is about to disappear. */
@@ -43,7 +45,7 @@ export function useContactCta() {
     if (isQualifierEnabled.value) {
       nuxtApp.callHook('qualifier:open', { stage: stage.value })
     } else {
-      contactModal.open({ stage: stage.value, returnFocusTo })
+      contactModal.open({ service: service.value, returnFocusTo })
     }
   }
 

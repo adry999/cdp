@@ -1,4 +1,5 @@
 import type { Json } from '#layers/core/shared/types/database.types'
+import { isServiceTagId, type ServiceTagId } from '#layers/core/shared/types/service-tag'
 import { usableGallery, type ProjectImageInput } from '#layers/projects/domain/projectPayload'
 import type { AdminProjectRow } from '#layers/projects/domain/projectSelect'
 import {
@@ -72,6 +73,8 @@ export interface ProjectForm {
   tech: string[]
   techInput: string
   serviceTag: string | null
+  /** Services whose header dropdown lists the project (`projects.nav_services`). */
+  navServices: ServiceTagId[]
   kind: Bilingual
   tags: Bilingual
   links: LinkForm[]
@@ -148,6 +151,7 @@ export function toProjectForm(row: AdminProjectRow | null): ProjectForm {
     tech: [...(row?.tech ?? [])],
     techInput: '',
     serviceTag: row?.service_tag ?? null,
+    navServices: (row?.nav_services ?? []).filter(isServiceTagId),
     kind: bilingual(row?.kind_ro ?? null, row?.kind_en ?? null),
     tags: { ro: (row?.tags_ro ?? []).join(', '), en: (row?.tags_en ?? []).join(', ') },
     links: toLinks(row?.links).map((link) => ({
@@ -245,6 +249,7 @@ export function toSavePayload(form: ProjectForm, projectId: string | null): Save
     year: form.year ? Number(form.year) : null,
     tech: form.tech,
     service_tag: form.serviceTag || null,
+    nav_services: form.navServices,
     featured: form.featured,
     cover_path: form.coverPath,
     cover_alt_ro: form.coverAlt.ro || null,

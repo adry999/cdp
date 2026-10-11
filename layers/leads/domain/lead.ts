@@ -1,4 +1,5 @@
 import { isStageId, type StageId } from '#layers/core/shared/types/service-stage'
+import { SERVICE_TAG_LABELS_RO, isServiceTagId, type ServiceTagId } from '#layers/core/shared/types/service-tag'
 import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
 
 // Single source of the budget keys; select options and labels derive from it.
@@ -35,6 +36,11 @@ const LEAD_STAGE_LABELS: Record<StageId, string> = {
 export function leadStageLabel(value: string | null): string {
   if (!value) return '—'
   return isStageId(value) ? LEAD_STAGE_LABELS[value] : value
+}
+
+export function leadServiceLabel(value: string | null): string {
+  if (!value) return '—'
+  return isServiceTagId(value) ? SERVICE_TAG_LABELS_RO[value] : value
 }
 
 export const LEAD_STATUSES = ['nou', 'in_discutie', 'castigat', 'refuzat'] as const
@@ -79,6 +85,7 @@ export interface ContactSubmission {
   message?: string
   budget?: string
   stage?: StageId
+  service?: ServiceTagId
   source?: string
   lang?: string
   page?: string
@@ -93,6 +100,7 @@ export interface LeadRecord {
   message: string
   budget: string | null
   stage?: StageId | null
+  service?: ServiceTagId | null
   source: string | null
   lang: 'ro' | 'en'
   page: string | null
@@ -105,6 +113,7 @@ export interface ContactFieldErrors {
   email?: 'required' | 'invalid_email'
   message?: 'required'
   stage?: 'invalid_stage'
+  service?: 'invalid_service'
 }
 
 export function validateContactSubmission(input: ContactSubmission): ContactFieldErrors {
@@ -115,6 +124,7 @@ export function validateContactSubmission(input: ContactSubmission): ContactFiel
   else if (!EMAIL_PATTERN.test(email)) errors.email = 'invalid_email'
   if (!clipText(input.message, LEAD_FIELD_LIMITS.message)) errors.message = 'required'
   if (input.stage !== undefined && !isStageId(input.stage)) errors.stage = 'invalid_stage'
+  if (input.service !== undefined && !isServiceTagId(input.service)) errors.service = 'invalid_service'
   return errors
 }
 
@@ -134,6 +144,7 @@ export function toLeadRecord(input: ContactSubmission, referrer: string | null):
     message: clipText(input.message, LEAD_FIELD_LIMITS.message),
     budget: clipText(input.budget, LEAD_FIELD_LIMITS.budget) || null,
     stage: isStageId(input.stage) ? input.stage : null,
+    service: isServiceTagId(input.service) ? input.service : null,
     source: clipText(input.source, LEAD_FIELD_LIMITS.source) || null,
     lang: input.lang === 'en' ? 'en' : 'ro',
     page: clipText(input.page, LEAD_FIELD_LIMITS.page) || null,

@@ -87,6 +87,14 @@ describe('validateProjectPayload', () => {
     expect(validateProjectPayload(nullTag)).toEqual([])
   })
 
+  it('validates the menu services: known ones pass, unknown ones fail, missing passes', () => {
+    expect(validateProjectPayload(base({ navServices: ['website', 'wordpress'] }))).toEqual([])
+    expect(validateProjectPayload(base({ navServices: [] }))).toEqual([])
+    expect(validateProjectPayload(base())).toEqual([])
+    const issues = validateProjectPayload(base({ navServices: ['website', 'seo'] }))
+    expect(issues.map((i) => i.field)).toEqual(['navServices'])
+  })
+
   it('accepts only http(s) links, flagging the offending row by index', () => {
     expect(validateProjectPayload(base({ links: [] }))).toEqual([])
     expect(validateProjectPayload(base({ links: [{ url: '' }] }))).toEqual([])

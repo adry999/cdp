@@ -1,8 +1,8 @@
-import type { StageId } from '#layers/core/shared/types/service-stage'
+import type { ServiceTagId } from '#layers/core/shared/types/service-tag'
 
 export interface ContactModalRequest {
-  /** Stage chip to pre-select (the service of the page the visitor is on). */
-  stage?: StageId
+  /** Service chip to pre-select (the service of the page the visitor is on). */
+  service?: ServiceTagId
   /** Where focus goes on close; defaults to the element focused when the dialog opens. */
   returnFocusTo?: HTMLElement | null
 }
@@ -10,11 +10,11 @@ export interface ContactModalRequest {
 // One dialog is mounted in the default layout; every trigger opens it through this state.
 export function useContactModal() {
   const isOpen = useState('leads:contact-modal', () => false)
-  const stage = useState<StageId | undefined>('leads:contact-modal-stage', () => undefined)
+  const service = useState<ServiceTagId | undefined>('leads:contact-modal-service', () => undefined)
   const returnFocusTo = useState<HTMLElement | null>('leads:contact-modal-return', () => null)
 
   function open(request: ContactModalRequest = {}) {
-    stage.value = request.stage
+    service.value = request.service
     returnFocusTo.value = request.returnFocusTo ?? (import.meta.client ? (document.activeElement as HTMLElement | null) : null)
     isOpen.value = true
   }
@@ -23,5 +23,5 @@ export function useContactModal() {
     isOpen.value = false
   }
 
-  return { isOpen, stage, returnFocusTo, open, close }
+  return { isOpen, service, returnFocusTo, open, close }
 }

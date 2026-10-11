@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useContactModal } from '#layers/leads/state/useContactModal'
 
-const { isOpen, stage, returnFocusTo, close } = useContactModal()
+const { isOpen, service, returnFocusTo, close } = useContactModal()
 const { t } = useI18n()
 const i18nList = useI18nList()
 const steps = computed(() => i18nList('contactPage.steps'))
@@ -94,7 +94,7 @@ onBeforeUnmount(() => {
               <p class="m-0 text-base text-muted text-pretty">{{ t('home.contact.lead') }}</p>
             </div>
 
-            <LeadsContactForm variant="modal" :stage="stage">
+            <LeadsContactForm variant="modal" :service="service">
               <template #success>
                 <div role="status" class="flex flex-col gap-5 border-t border-hairline pt-6">
                   <div class="flex items-center gap-3">

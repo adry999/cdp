@@ -7,7 +7,7 @@ test.beforeEach(async ({ context }) => {
 
 const SERVICE_PAGE = '/servicii/aplicatie-web'
 
-test('header CTA on a service page sends a lead with that service preselected', async ({ page }) => {
+test('header CTA on a service page sends a lead with that service and its stage', async ({ page }) => {
   let body: Record<string, unknown> | undefined
   await page.route('**/api/leads', async (route) => {
     body = route.request().postDataJSON()
@@ -21,7 +21,8 @@ test('header CTA on a service page sends a lead with that service preselected', 
   const dialog = page.getByRole('dialog', { name: 'Spune-ne problema. O rezolvăm împreună.' })
   await expect(dialog).toBeVisible()
   await expect(dialog.locator('#lead-name')).toBeFocused()
-  await expect(dialog.getByRole('button', { name: 'Design → cod', pressed: true })).toBeVisible()
+  await expect(dialog.getByRole('button', { name: 'Aplicație web', pressed: true })).toBeVisible()
+  await expect(dialog.getByRole('button', { name: 'Design → cod' })).toHaveCount(0)
 
   await dialog.locator('#lead-name').fill('Ana Popescu')
   await dialog.locator('#lead-email').fill('ana@example.com')
@@ -32,6 +33,7 @@ test('header CTA on a service page sends a lead with that service preselected', 
   expect(body).toMatchObject({
     name: 'Ana Popescu',
     email: 'ana@example.com',
+    service: 'web-app',
     stage: 'A',
     lang: 'ro',
     page: SERVICE_PAGE,
