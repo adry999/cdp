@@ -2,6 +2,9 @@
 import { mapProjectCard, selectHomeProjects, usePublishedProjects } from '#layers/projects'
 import { useSiteSettings } from '#layers/content'
 
+// The design shows a short three-tag line under each cover.
+const HOME_TECH_TAGS = 3
+
 const { t } = useI18n()
 const siteLocale = useSiteLocale()
 const localePath = useLocalePath()
@@ -10,7 +13,11 @@ const { projects: rows } = await usePublishedProjects()
 const settings = useSiteSettings()
 
 const allRows = computed(() => rows.value ?? [])
-const list = computed(() => selectHomeProjects(allRows.value).map((row) => mapProjectCard(row, siteLocale.value)))
+const list = computed(() =>
+  selectHomeProjects(allRows.value)
+    .map((row) => mapProjectCard(row, siteLocale.value))
+    .map((card) => ({ ...card, tech: card.tech.slice(0, HOME_TECH_TAGS) })),
+)
 const ndaNote = computed(() => settings.value.ndaNote)
 const hasMore = computed(() => allRows.value.length > list.value.length)
 const { el: gridEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: true })
@@ -22,7 +29,7 @@ const { el: gridEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: 
       {{ t('home.work.title') }}
     </h2>
     <p class="mb-0 mt-4 max-w-[60ch] text-base text-muted">{{ t('home.work.intro') }}</p>
-    <div ref="gridEl" class="mt-[clamp(28px,3vw,40px)] grid grid-fit-280 gap-4">
+    <div ref="gridEl" class="mt-[clamp(28px,3vw,40px)] grid grid-fit-safe-340 gap-4">
       <ProjectsCard 
         v-for="(project, i) in list" 
         :key="project.slug" 

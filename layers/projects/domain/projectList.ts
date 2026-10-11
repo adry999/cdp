@@ -1,13 +1,13 @@
 import { SERVICE_TAG_IDS, isServiceTagId, type ServiceTagId } from '#layers/core/shared/types/service-tag'
 import type { ProjectCardRow } from './mapProject'
 
-// Homepage fallback count when nothing is featured.
-const HOME_FALLBACK_COUNT = 3
+const HOME_PROJECT_COUNT = 6
 
-/** Featured rows, or the first few when none are featured. Expects rows pre-sorted. */
+/** Featured rows first, then the rest in their given order, up to six. Expects rows pre-sorted. */
 export function selectHomeProjects<T extends Pick<ProjectCardRow, 'featured'>>(rows: readonly T[]): T[] {
   const featured = rows.filter((row) => row.featured)
-  return featured.length ? featured : rows.slice(0, HOME_FALLBACK_COUNT)
+  const others = rows.filter((row) => !row.featured)
+  return [...featured, ...others].slice(0, HOME_PROJECT_COUNT)
 }
 
 export function availableTags(rows: readonly Pick<ProjectCardRow, 'service_tag'>[]): ServiceTagId[] {

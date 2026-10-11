@@ -65,6 +65,35 @@ export type Database = {
         }
         Relationships: []
       }
+      home_settings: {
+        Row: {
+          hero_variant: string | null
+          id: number
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          hero_variant?: string | null
+          id?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          hero_variant?: string | null
+          id?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "home_settings_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "app_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lead_rate_limits: {
         Row: {
           hits: number
@@ -97,6 +126,7 @@ export type Database = {
           notes: string | null
           page: string | null
           referrer: string | null
+          service: string | null
           source: string | null
           stage: string | null
           status: string
@@ -115,6 +145,7 @@ export type Database = {
           notes?: string | null
           page?: string | null
           referrer?: string | null
+          service?: string | null
           source?: string | null
           stage?: string | null
           status?: string
@@ -133,6 +164,7 @@ export type Database = {
           notes?: string | null
           page?: string | null
           referrer?: string | null
+          service?: string | null
           source?: string | null
           stage?: string | null
           status?: string
@@ -449,6 +481,7 @@ export type Database = {
           live_url: string | null
           live_url_label_en: string | null
           live_url_label_ro: string | null
+          nav_services: string[]
           next_title_en: string | null
           next_title_ro: string | null
           obstacles_body_en: string | null
@@ -528,6 +561,7 @@ export type Database = {
           live_url?: string | null
           live_url_label_en?: string | null
           live_url_label_ro?: string | null
+          nav_services?: string[]
           next_title_en?: string | null
           next_title_ro?: string | null
           obstacles_body_en?: string | null
@@ -606,6 +640,7 @@ export type Database = {
           live_url?: string | null
           live_url_label_en?: string | null
           live_url_label_ro?: string | null
+          nav_services?: string[]
           next_title_en?: string | null
           next_title_ro?: string | null
           obstacles_body_en?: string | null

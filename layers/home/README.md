@@ -2,12 +2,30 @@
 
 The homepage: route `/` (and `/en`), composed from the content and projects
 layers plus the qualifier flag. Nothing outside this layer imports from it —
-there is no `index.ts`.
+there is no `index.ts` and no `server/index.ts`.
 
 ## Route
 
 - `/`, `/en` — `app/pages/index.vue` (this layer), `app/layouts/default.vue`
   (root). Sets the page's SEO meta and renders the sections below in order.
+
+- `/admin/hero` — `app/pages/admin/hero.vue`: picks the hero background
+  (`dot-matrix`, `constellation`, `light-orbs`, `none`, or "Implicit" = null).
+  Writes through `data/homeSettingsAdminRepository.ts`, then POSTs
+  `/api/admin/revalidate` by URL (not an import from `projects`).
+
+## Hero background
+
+Precedence (`chooseHeroVariant`): `?hero=` preview (client-only, after mount) ->
+`home_settings.hero_variant` when not null -> `NUXT_PUBLIC_HERO_BG_VARIANT` ->
+`dot-matrix`. The table has a single row (`id = 1`); public select, admin update.
+
+## Server
+
+- `GET /api/home/settings` -> `{ heroVariant: HeroChoice | null }`
+  (`server/api/home/settings.get.ts`, `server/repository/homeSettingsRepository.ts`).
+  `HomeHero` fetches it during SSR (key `home:settings`); if the read fails the hero
+  falls back to the env variable.
 
 ## Sections (render order)
 

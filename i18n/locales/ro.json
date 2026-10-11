@@ -26,6 +26,10 @@
     "menu": "Meniu",
     "skipToContent": "Sari la conținut"
   },
+  "theme": {
+    "dark": "Temă întunecată",
+    "light": "Temă luminoasă"
+  },
   "footer": {
     "tagline": "Dezvoltare web full-stack · Site-uri, aplicații web, WordPress, Shopify",
     "cookieSettings": "Setări cookie-uri",
@@ -343,6 +347,16 @@
           "D": "AI",
           "unsure": "Nu știu"
         },
+        "service": "Serviciu",
+        "serviceOptions": {
+          "website": "Website",
+          "web-app": "Aplicație web",
+          "wordpress": "WordPress",
+          "shopify": "Shopify",
+          "ai-automation": "Automatizare cu AI",
+          "granturi": "Proiecte finanțate prin granturi",
+          "unsure": "Nu știu"
+        },
         "message": "Descrierea problemei",
         "budget": "Buget",
         "budgetPlaceholder": "Alege un interval",
@@ -370,7 +384,6 @@
     }
   },
   "caseStudy": {
-    "back": "← Toate proiectele",
     "otherProjects": "Alte proiecte",
     "sections": {
       "hero": "Studiu de caz",
@@ -379,10 +392,14 @@
       "situation": { "label": "Situație", "heading": "Problema de business" },
       "task": { "label": "Sarcină" },
       "action": { "label": "Acțiune", "heading": "Soluția oferită" },
+      "midway": { "label": "Pe parcurs", "heading": "Ce am descoperit la mijlocul proiectului" },
       "result": { "label": "Rezultat", "heading": "Ce a câștigat clientul" },
       "feedback": { "label": "Feedback", "heading": "Ce spune clientul" },
       "gallery": { "label": "Galerie", "heading": "Cum arată" }
     },
+    "band": { "situation": "Situație: problema de business", "task": "Sarcină: obiectiv și constrângeri", "action": "Acțiune: business și tehnic", "result": "Rezultat: câștig și economii" },
+    "incident": { "found": "Descoperirea", "risk": "Riscul", "action": "Ce am făcut" },
+    "otherObstacles": "Alte obstacole și ajustări",
     "cost": "Cât costa problema",
     "constraints": "Constrângeri",
     "business": "Business",
@@ -536,6 +553,9 @@
     "features": {
       "heading": "Ce include"
     },
+    "projects": {
+      "label": "Proiecte"
+    },
     "hero": {
       "audienceLabel": "Pentru"
     },
@@ -596,6 +616,10 @@
     "min": "min",
     "back": "Blog",
     "breadcrumb": "Breadcrumb",
+    "more": "Mai departe",
+    "service": "Serviciul",
+    "caseStudy": "Studiu de caz",
+    "caseStudyLink": "Vezi proiectul",
     "categories": "Categorii",
     "category": {
       "seoTitle": "{name} · Blog",

@@ -75,6 +75,8 @@ function number(index: number): string {
 
     <SiteHeaderLocaleSwitch class="eyebrow gap-2.5 text-sm" />
 
+    <CoreThemeToggle variant="row" class="border-b border-hairline" />
+
     <a v-if="ctaKind === 'anchor'" :href="ctaTo" :class="ctaClass" @click="emit('close')">
       {{ t('nav.letsTalk') }}
       <span aria-hidden="true">→</span>

@@ -66,6 +66,13 @@ describe('toSavePayload', () => {
     expect(payload.sort_order).toBeNull()
   })
 
+  it('sends the menu services, defaulting to none for a new project', () => {
+    expect(toSavePayload(toProjectForm(null), null).nav_services).toEqual([])
+    const form = toProjectForm(buildAdminProjectRow({ nav_services: ['website', 'wordpress', 'bogus'] }))
+    expect(form.navServices).toEqual(['website', 'wordpress'])
+    expect(toSavePayload(form, 'id-1').nav_services).toEqual(['website', 'wordpress'])
+  })
+
   it('omits unnamed stack items and blank gallery slots', () => {
     const form = toProjectForm(null)
     form.stack = [

@@ -18,12 +18,12 @@ const showUpdated = computed(() => props.post.updated !== props.post.date)
 
 <template>
   <article>
-    <SiteSection padding="heroCompact" :top-border="false">
+    <SiteSection padding="article" :top-border="false">
       <template #background>
         <CoreInteractiveBackground variant="dot-matrix" />
       </template>
       <template #label>
-        <NuxtLink :to="localePath('blog')" class="eyebrow text-muted no-underline hover:text-signal-text hover:no-underline">
+        <NuxtLink :to="localePath('blog')" class="eyebrow block leading-[1.6] text-muted no-underline hover:text-signal-text hover:no-underline">
           ← {{ t('blog.back') }}
         </NuxtLink>
       </template>
@@ -45,7 +45,7 @@ const showUpdated = computed(() => props.post.updated !== props.post.date)
       </div>
     </SiteSection>
 
-    <SiteSection padding="sm">
+    <SiteSection padding="articleBody">
       <template #label>
         <nav v-if="post.toc.length" :aria-label="t('blog.toc')" class="sticky top-24 flex flex-col gap-2.5">
           <div class="eyebrow-sm text-muted">{{ t('blog.toc') }}</div>
@@ -61,6 +61,7 @@ const showUpdated = computed(() => props.post.updated !== props.post.date)
         </nav>
       </template>
       <BlogBody :blocks="post.blocks" :post-slug="blogSlug(post.path)" :service="post.service" />
+      <BlogPostLinks class="max-w-[70ch]" :post="post" />
     </SiteSection>
 
     <BlogRelated :posts="post.related" />

@@ -48,6 +48,8 @@ const header = ref<HTMLElement | null>(null)
 const menuToggle = ref<HTMLButtonElement | null>(null)
 const menuOpen = ref(false)
 const scrolled = ref(false)
+const isArticle = computed(() => baseName.value === 'blog-slug')
+const readProgress = useReadingProgress(isArticle)
 const mobileMenuId = 'site-mobile-menu'
 const { trapTab } = useFocusTrap(header)
 
@@ -117,7 +119,14 @@ onMounted(() => {
           alt="CODEPEDIA"
           width="183"
           height="18"
-          class="block h-[18px] w-auto"
+          class="block h-[18px] w-auto dark:hidden"
+        >
+        <img
+          src="/brand/codepedia-wordmark-on-dark.svg"
+          alt="CODEPEDIA"
+          width="183"
+          height="18"
+          class="hidden h-[18px] w-auto dark:block"
         >
       </NuxtLink>
 
@@ -149,6 +158,8 @@ onMounted(() => {
         </div>
 
         <SiteHeaderLocaleSwitch />
+
+        <CoreThemeToggle class="-mx-1.5" />
 
         <!-- A plain anchor on the homepage: a router link to the page you are on would be marked aria-current. -->
         <a v-if="cta.kind.value === 'anchor'" :href="cta.to.value" :class="ctaClass">
@@ -186,9 +197,12 @@ onMounted(() => {
       </button>
     </div>
 
-    <!-- Reading progress on blog articles will drive the inner bar's width (feat/blog-v2). -->
-    <div class="h-0.5 w-full overflow-hidden">
-      <div class="h-full w-full origin-left bg-signal" />
+    <!-- Decorative: full width as the brand line, a reading-progress bar on blog articles. -->
+    <div aria-hidden="true" class="h-0.5 w-full overflow-hidden" :class="isArticle && 'bg-hairline'">
+      <div
+        class="h-full w-full origin-left bg-signal"
+        :style="isArticle ? { transform: `scaleX(${readProgress})` } : undefined"
+      />
     </div>
 
     <SiteHeaderMobilePanel

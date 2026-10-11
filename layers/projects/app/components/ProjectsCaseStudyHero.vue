@@ -4,7 +4,6 @@ import type { MappedProject } from '#layers/projects/domain/mapProject'
 const props = defineProps<{ project: MappedProject }>()
 const emit = defineEmits<{ openGallery: [] }>()
 const { t } = useI18n()
-const localePath = useLocalePath()
 
 // Falls back to tech + year until a project has its own tags.
 const chips = computed(() => {
@@ -17,13 +16,10 @@ const shotCount = computed(() => props.project.caseStudy.shots.length)
 
 <template>
   <div>
-    <SiteSection number="00" :label="t('caseStudy.sections.hero')" padding="heroCompact" :top-border="false">
+    <SiteSection number="00" :label="t('caseStudy.sections.hero')" padding="caseHero" :top-border="false">
       <template #background>
         <CoreInteractiveBackground variant="dot-matrix" />
       </template>
-      <NuxtLink :to="localePath('proiecte')" class="mb-5 inline-block eyebrow text-muted no-underline hover:text-ink">
-        {{ t('caseStudy.back') }}
-      </NuxtLink>
       <div class="flex flex-wrap gap-x-4 gap-y-2 eyebrow-sm text-muted">
         <span v-for="chip in chips" :key="chip">{{ chip }}</span>
       </div>

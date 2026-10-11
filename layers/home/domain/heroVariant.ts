@@ -24,3 +24,21 @@ export function resolveHeroVariant(value: string | undefined): HeroVariant | nul
   if (DISABLED_ALIASES.includes(v)) return null
   return isHeroVariant(v) ? v : DEFAULT_HERO_VARIANT
 }
+
+export function isHeroChoice(value: unknown): value is HeroChoice {
+  return value === 'none' || isHeroVariant(value)
+}
+
+/**
+ * Homepage precedence: `?hero=` preview, then the admin's stored choice, then the env var.
+ * Returns the variant to render, or `null` for no background.
+ */
+export function chooseHeroVariant(sources: {
+  preview?: HeroChoice
+  stored: HeroChoice | null
+  env: string | undefined
+}): HeroVariant | null {
+  const choice = sources.preview ?? sources.stored
+  if (choice === undefined || choice === null) return resolveHeroVariant(sources.env)
+  return choice === 'none' ? null : choice
+}

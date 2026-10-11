@@ -1,5 +1,6 @@
 import {
   leadBudgetLabel,
+  leadServiceLabel,
   leadStageLabel,
   toLeadRecord,
   validateContactSubmission,
@@ -50,6 +51,7 @@ export async function submitLead(
         `Email: ${record.email}`,
         `Companie: ${record.company ?? '—'}`,
         `Buget: ${leadBudgetLabel(record.budget)}`,
+        ...(record.service ? [`Serviciu: ${leadServiceLabel(record.service)}`] : []),
         ...(record.stage ? [`Etapă: ${leadStageLabel(record.stage)}`] : []),
         '',
         record.message,

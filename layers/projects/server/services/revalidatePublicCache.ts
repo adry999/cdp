@@ -22,7 +22,10 @@ export async function revalidatePublicCache(deps: RevalidateDependencies): Promi
   }
 
   const projects = await deps.listProjectSlugs()
-  const paths = [
+  // Data endpoints embedded in SWR pages (the header menu on every page, the hero settings on
+  // the homepage) are revalidated and awaited first, so the pages do not re-render with stale payloads.
+  const dataPaths = ['/api/projects/nav', '/api/home/settings']
+  const pagePaths = [
     '/',
     '/en',
     '/proiecte',
@@ -33,9 +36,13 @@ export async function revalidatePublicCache(deps: RevalidateDependencies): Promi
     }),
   ]
 
-  const results = await Promise.allSettled(paths.map((path) => deps.fetchPath(`${deps.siteUrl}${path}`, bypassToken)))
-  const failed = results.filter((r) => r.status === 'rejected').length
-  if (failed) console.warn('[admin] ISR revalidate: some paths failed', failed, 'of', paths.length)
+  const fetchPath = (path: string) => deps.fetchPath(`${deps.siteUrl}${path}`, bypassToken)
+  const total = dataPaths.length + pagePaths.length
 
-  return { method: 'isr-bypass', revalidated: paths.length - failed, failed }
+  const dataResults = await Promise.allSettled(dataPaths.map(fetchPath))
+  const pageResults = await Promise.allSettled(pagePaths.map(fetchPath))
+  const failed = [...dataResults, ...pageResults].filter((r) => r.status === 'rejected').length
+  if (failed) console.warn('[admin] ISR revalidate: some paths failed', failed, 'of', total)
+
+  return { method: 'isr-bypass', revalidated: total - failed, failed }
 }

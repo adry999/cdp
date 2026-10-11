@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import { localeRedirectRoutes } from './layers/core/shared/utils/localeRedirectRoutes'
+import { THEME_INIT_SCRIPT } from './layers/core/shared/utils/theme'
 
 // Every real build, including Vercel, must supply these. Skipped in dev and in
 // `nuxt prepare` (the postinstall step), where hosts may not expose secrets yet.
@@ -121,6 +122,13 @@ export default defineNuxtConfig({
     '/en/services': { swr: 300 },
     '/servicii/**': { swr: 300 },
     '/en/services/**': { swr: 300 },
+    // A service reached by its canonical id or the other locale's slug lands on the right page.
+    '/servicii/web-app': { redirect: { to: '/servicii/aplicatie-web', statusCode: 301 } },
+    '/servicii/ai-automation': { redirect: { to: '/servicii/automatizare-ai', statusCode: 301 } },
+    '/servicii/grants': { redirect: { to: '/servicii/granturi', statusCode: 301 } },
+    '/en/services/aplicatie-web': { redirect: { to: '/en/services/web-app', statusCode: 301 } },
+    '/en/services/automatizare-ai': { redirect: { to: '/en/services/ai-automation', statusCode: 301 } },
+    '/en/services/granturi': { redirect: { to: '/en/services/grants', statusCode: 301 } },
     // Content lives in the repo, so it only changes with a deploy, which clears the cache.
     '/despre': { swr: 3600 },
     '/en/about': { swr: 3600 },
@@ -131,6 +139,7 @@ export default defineNuxtConfig({
     '/confidentialitate': { swr: 3600 },
     '/en/privacy': { swr: 3600 },
     '/api/projects': { swr: 60 },
+    '/api/home/settings': { swr: 60 },
     '/api/projects/**': { swr: 300 },
     '/api/news': { swr: 60 },
     '/api/news/**': { swr: 300 },
@@ -267,6 +276,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       titleTemplate: '%s · CODEPEDIA',
+      // Sets data-theme before first paint (no flash). Covered by the existing 'unsafe-inline' in script-src.
+      script: [{ innerHTML: THEME_INIT_SCRIPT, tagPosition: 'head', tagPriority: 'critical' }],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', sizes: '48x48' },

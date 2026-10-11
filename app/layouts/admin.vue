@@ -8,8 +8,8 @@ useSeoMeta({ robots: 'noindex, nofollow' })
 <template>
   <div class="flex min-h-screen">
     <AdminSidebar />
-    <div class="flex min-w-0 flex-1 flex-col">
+    <main tabindex="-1" class="flex min-w-0 flex-1 flex-col outline-none">
       <slot />
-    </div>
+    </main>
   </div>
 </template>

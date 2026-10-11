@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { groupNavProjects, mapNavProject, selectNavProjects } from './navProjects'
+import { groupNavProjects, mapNavProject, navServicesOf, selectNavProjects } from './navProjects'
 import type { NavProjectRow } from './projectSelect'
 
 function navRow(overrides: Partial<NavProjectRow> = {}): NavProjectRow {
@@ -13,7 +13,7 @@ function navRow(overrides: Partial<NavProjectRow> = {}): NavProjectRow {
     cover_path: null,
     cover_alt_ro: null,
     cover_alt_en: null,
-    service_tag: 'website',
+    nav_services: ['website'],
     featured: false,
     sort_order: 0,
     ...overrides,
@@ -33,15 +33,34 @@ describe('selectNavProjects', () => {
   it('caps each service at four projects independently', () => {
     const rows = [
       ...Array.from({ length: 6 }, (_, i) => navRow({ slug_ro: `w${i}`, sort_order: i })),
-      ...Array.from({ length: 2 }, (_, i) => navRow({ slug_ro: `a${i}`, sort_order: 10 + i, service_tag: 'web-app' })),
+      ...Array.from({ length: 2 }, (_, i) => navRow({ slug_ro: `a${i}`, sort_order: 10 + i, nav_services: ['web-app'] })),
     ]
     const selected = selectNavProjects(rows)
-    expect(selected.filter((r) => r.service_tag === 'website').map((r) => r.slug_ro)).toEqual(['w0', 'w1', 'w2', 'w3'])
-    expect(selected.filter((r) => r.service_tag === 'web-app')).toHaveLength(2)
+    expect(selected.filter((r) => r.nav_services.includes('website')).map((r) => r.slug_ro)).toEqual(['w0', 'w1', 'w2', 'w3'])
+    expect(selected.filter((r) => r.nav_services.includes('web-app'))).toHaveLength(2)
   })
 
-  it('drops rows without a known service tag', () => {
-    const rows = [navRow({ service_tag: null }), navRow({ service_tag: 'seo' }), navRow({ service_tag: 'shopify' })]
+  it('lists a project under every service it names', () => {
+    const rows = [navRow({ slug_ro: 'both', nav_services: ['website', 'wordpress'] })]
+    expect(selectNavProjects(rows)).toEqual([expect.objectContaining({ slug_ro: 'both', nav_services: ['website', 'wordpress'] })])
+  })
+
+  it('keeps a project only under the services where it made the cut', () => {
+    const rows = [
+      ...Array.from({ length: 4 }, (_, i) => navRow({ slug_ro: `w${i}`, sort_order: i })),
+      navRow({ slug_ro: 'late', sort_order: 9, nav_services: ['website', 'wordpress'] }),
+    ]
+    const late = selectNavProjects(rows).find((r) => r.slug_ro === 'late')
+    expect(late?.nav_services).toEqual(['wordpress'])
+  })
+
+  it('does not count a service twice for the same project', () => {
+    const rows = [navRow({ slug_ro: 'dup', nav_services: ['website', 'website'] })]
+    expect(selectNavProjects(rows)[0]?.nav_services).toEqual(['website'])
+  })
+
+  it('drops rows with no known service', () => {
+    const rows = [navRow({ nav_services: [] }), navRow({ nav_services: ['seo'] }), navRow({ nav_services: ['shopify'] })]
     expect(selectNavProjects(rows)).toHaveLength(1)
   })
 
@@ -59,11 +78,11 @@ describe('mapNavProject', () => {
     kind_ro: 'Aplicație',
     kind_en: 'App',
     cover_path: 'https://example.test/c.png',
-    service_tag: 'web-app',
+    nav_services: ['web-app'],
   })
 
   it('maps Romanian fields', () => {
-    expect(mapNavProject(row, 'ro')).toMatchObject({ slug: 'bloom', title: 'Titlu RO', subtitle: 'Aplicație', serviceTag: 'web-app' })
+    expect(mapNavProject(row, 'ro')).toMatchObject({ slug: 'bloom', title: 'Titlu RO', subtitle: 'Aplicație', navServices: ['web-app'] })
   })
 
   it('maps English fields and slug', () => {
@@ -83,12 +102,20 @@ describe('groupNavProjects', () => {
   it('groups by service tag, keeping order', () => {
     const mapped = [
       mapNavProject(navRow({ slug_ro: 'a' }), 'ro'),
-      mapNavProject(navRow({ slug_ro: 'b', service_tag: 'web-app' }), 'ro'),
+      mapNavProject(navRow({ slug_ro: 'b', nav_services: ['web-app'] }), 'ro'),
       mapNavProject(navRow({ slug_ro: 'c' }), 'ro'),
+      mapNavProject(navRow({ slug_ro: 'd', nav_services: ['website', 'wordpress'] }), 'ro'),
     ]
     const groups = groupNavProjects(mapped)
-    expect(groups.website?.map((p) => p.slug)).toEqual(['a', 'c'])
+    expect(groups.website?.map((p) => p.slug)).toEqual(['a', 'c', 'd'])
+    expect(groups.wordpress?.map((p) => p.slug)).toEqual(['d'])
     expect(groups['web-app']?.map((p) => p.slug)).toEqual(['b'])
     expect(groups.shopify).toBeUndefined()
+  })
+})
+
+describe('navServicesOf', () => {
+  it('keeps known services, deduplicated, in stored order', () => {
+    expect(navServicesOf({ nav_services: ['shopify', 'seo', 'website', 'shopify'] })).toEqual(['shopify', 'website'])
   })
 })

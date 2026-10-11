@@ -20,7 +20,8 @@ function isActive(to: string) {
   <aside class="flex w-60 flex-none flex-col border-r border-hairline bg-paper">
     <div class="flex h-16 items-center border-b border-hairline px-5">
       <NuxtLink to="/" aria-label="CODEPEDIA" class="flex items-center">
-        <img src="/brand/codepedia-mark.svg" alt="" width="32" height="20" class="block h-5 w-auto" >
+        <img src="/brand/codepedia-mark.svg" alt="" width="32" height="20" class="block h-5 w-auto dark:hidden" >
+        <img src="/brand/codepedia-mark-inverse.svg" alt="" width="32" height="20" class="hidden h-5 w-auto dark:block" >
       </NuxtLink>
     </div>
     <nav class="flex flex-col py-3">

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonLd'
 import { fetchProject } from '#layers/projects/data/projectsRepository'
+import { caseStudySections } from '#layers/projects/domain/caseStudySections'
 import { mapProject } from '#layers/projects/domain/mapProject'
 
 const route = useRoute()
@@ -26,22 +27,9 @@ const project = computed(() => mapProject(projectRow, siteLocale.value))
 
 const caseStudy = computed(() => project.value.caseStudy)
 const star = computed(() => caseStudy.value.star)
-// The Action grid shows the screenshots without the hero, which already sits at the top.
-const galleryImages = computed(() => caseStudy.value.shots.filter((shot) => shot.path !== caseStudy.value.heroPath))
-
 // Each section shows only what exists; a section with nothing in it is left out (numbers stay fixed).
-const hasSituation = computed(() => caseStudy.value.problemParagraphs.length > 0 || star.value.cost.length > 0)
-const hasTask = computed(() => !!star.value.goal || star.value.constraints.length > 0)
-const hasAction = computed(
-  () =>
-    caseStudy.value.solutionParagraphs.length > 0 ||
-    star.value.biz.length > 0 ||
-    caseStudy.value.stack.length > 0 ||
-    galleryImages.value.length > 0,
-)
-const hasResult = computed(
-  () => caseStudy.value.resultParagraphs.length > 0 || star.value.gains.length > 0 || star.value.savings.length > 0,
-)
+const sections = computed(() => caseStudySections(caseStudy.value))
+const galleryImages = computed(() => sections.value.actionShots)
 
 const lightboxIndex = ref<number | null>(null)
 function openLightbox(index: number) {
@@ -93,9 +81,10 @@ useJsonLd(
   <div>
     <ProjectsCaseStudyHero :project="project" @open-gallery="openLightbox(0)" />
     <ProjectsCaseStudyFacts :project="project" />
+    <ProjectsCaseStudyBand :sections="sections" />
 
     <ProjectsCaseStudySection
-      v-if="hasSituation"
+      v-if="sections.situation"
       number="01"
       :label="t('caseStudy.sections.situation.label')"
       :heading="t('caseStudy.sections.situation.heading')"
@@ -113,7 +102,7 @@ useJsonLd(
       </div>
     </ProjectsCaseStudySection>
 
-    <ProjectsCaseStudySection v-if="hasTask" number="02" :label="t('caseStudy.sections.task.label')">
+    <ProjectsCaseStudySection v-if="sections.task" number="02" :label="t('caseStudy.sections.task.label')">
       <h2 v-if="star.goal" class="m-0 max-w-[28ch] heading-section text-pretty">{{ star.goal }}</h2>
       <template v-if="star.constraints.length">
         <div class="eyebrow text-muted" :class="star.goal ? 'mt-[clamp(24px,3vw,36px)]' : undefined">
@@ -126,14 +115,14 @@ useJsonLd(
             class="flex flex-wrap gap-x-[clamp(16px,3vw,40px)] gap-y-1.5 border-t border-hairline py-4"
           >
             <span class="flex-[0_0_180px] eyebrow text-muted">{{ constraint.k }}</span>
-            <span class="min-w-0 flex-[1_1_280px] text-base">{{ constraint.v }}</span>
+            <span class="min-w-0 flex-[1_1_280px] text-[16px]">{{ constraint.v }}</span>
           </li>
         </ul>
       </template>
     </ProjectsCaseStudySection>
 
     <ProjectsCaseStudySection
-      v-if="hasAction"
+      v-if="sections.action"
       number="03"
       :label="t('caseStudy.sections.action.label')"
       :heading="t('caseStudy.sections.action.heading')"
@@ -152,7 +141,7 @@ useJsonLd(
         <div v-if="star.biz.length">
           <div class="eyebrow text-muted"><span class="text-signal-text">A1</span> · {{ t('caseStudy.business') }}</div>
           <ul class="m-0 mt-3 list-none border-b border-hairline p-0">
-            <li v-for="item in star.biz" :key="item" class="border-t border-hairline py-4 text-base text-pretty">
+            <li v-for="item in star.biz" :key="item" class="border-t border-hairline py-4 text-[16px] text-pretty">
               {{ item }}
             </li>
           </ul>
@@ -161,8 +150,8 @@ useJsonLd(
           <div class="eyebrow text-muted"><span class="text-signal-text">A2</span> · {{ t('caseStudy.tech') }}</div>
           <ul class="m-0 mt-3 list-none border-b border-hairline p-0">
             <li v-for="item in caseStudy.stack" :key="item.name" class="flex flex-col gap-1 border-t border-hairline py-4">
-              <span class="font-mono text-sm font-medium">{{ item.name }}</span>
-              <span class="text-base text-muted">{{ item.role }}</span>
+              <span class="font-mono text-[14px] font-medium">{{ item.name }}</span>
+              <span class="text-[16px] text-muted">{{ item.role }}</span>
             </li>
           </ul>
         </div>
@@ -181,10 +170,56 @@ useJsonLd(
       </template>
     </ProjectsCaseStudySection>
 
+    <ProjectsCaseStudySection
+      v-if="sections.midway"
+      number="04"
+      :label="t('caseStudy.sections.midway.label')"
+      :heading="t('caseStudy.sections.midway.heading')"
+    >
+      <template v-if="star.incident">
+        <div class="mt-[clamp(24px,3vw,36px)] overflow-hidden rounded border border-ink">
+          <div v-if="star.incident.found || star.incident.risk || star.incident.action" class="flex flex-col gap-5 p-[clamp(20px,2.5vw,28px)]">
+            <div v-if="star.incident.found" class="flex flex-wrap gap-x-[clamp(16px,3vw,32px)] gap-y-1.5">
+              <div class="flex-[0_0_160px] eyebrow text-muted">{{ t('caseStudy.incident.found') }}</div>
+              <div class="min-w-0 flex-[1_1_300px] text-[17px] text-pretty">{{ star.incident.found }}</div>
+            </div>
+            <div v-if="star.incident.risk" class="flex flex-wrap gap-x-[clamp(16px,3vw,32px)] gap-y-1.5">
+              <div class="flex-[0_0_160px] eyebrow text-signal-text">{{ t('caseStudy.incident.risk') }}</div>
+              <div class="min-w-0 flex-[1_1_300px] text-[17px] text-pretty">{{ star.incident.risk }}</div>
+            </div>
+            <div v-if="star.incident.action" class="flex flex-wrap gap-x-[clamp(16px,3vw,32px)] gap-y-1.5">
+              <div class="flex-[0_0_160px] eyebrow text-muted">{{ t('caseStudy.incident.action') }}</div>
+              <div class="min-w-0 flex-[1_1_300px] text-[17px] text-pretty">{{ star.incident.action }}</div>
+            </div>
+          </div>
+          <div
+            v-if="star.incident.outcome.length"
+            class="grid grid-fit-safe-180 gap-4 bg-ink p-[clamp(20px,2.5vw,28px)] text-paper"
+          >
+            <div v-for="(figure, i) in star.incident.outcome" :key="`${i}-${figure.k}`">
+              <div class="text-[clamp(30px,3.6vw,44px)] font-semibold leading-none tracking-[-0.03em]">{{ figure.v }}</div>
+              <div class="mt-2 eyebrow text-muted-ink">{{ figure.k }}</div>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-if="caseStudy.obstacleParagraphs.length">
+        <div class="mt-[clamp(32px,4vw,48px)] eyebrow text-muted">
+          {{ t('caseStudy.otherObstacles') }}
+        </div>
+        <p
+          v-for="paragraph in caseStudy.obstacleParagraphs"
+          :key="paragraph"
+          class="mt-5 max-w-[64ch] text-[17px] text-muted text-pretty"
+        >
+          {{ paragraph }}
+        </p>
+      </template>
+    </ProjectsCaseStudySection>
 
     <ProjectsCaseStudySection
-      v-if="hasResult"
-      number="04"
+      v-if="sections.result"
+      number="05"
       :label="t('caseStudy.sections.result.label')"
       :heading="t('caseStudy.sections.result.heading')"
     >
@@ -210,20 +245,20 @@ useJsonLd(
     </ProjectsCaseStudySection>
 
     <ProjectsCaseStudySection
-      v-if="caseStudy.quote"
-      number="05"
+      v-if="sections.feedback"
+      number="06"
       :label="t('caseStudy.sections.feedback.label')"
       :heading="t('caseStudy.sections.feedback.heading')"
     >
       <blockquote class="m-0 mt-6 max-w-[34ch] text-[clamp(20px,2.4vw,28px)] font-medium leading-[1.35] tracking-[-0.02em]">
         {{ t('caseStudy.quote', { text: caseStudy.quote }) }}
       </blockquote>
-      <div class="mt-4 eyebrow text-muted">{{ caseStudy.attribution }}</div>
+      <div v-if="caseStudy.attribution" class="mt-4 eyebrow text-muted">{{ caseStudy.attribution }}</div>
     </ProjectsCaseStudySection>
 
     <ProjectsCaseStudyGallery :project="project" @open="openLightbox" />
 
-    <BlogLinked number="07" :case-slug="projectRow.slug_ro" />
+    <BlogLinked number="08" :case-slug="projectRow.slug_ro" />
 
     <ProjectsCaseStudyNext :project="project" />
 

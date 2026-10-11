@@ -39,6 +39,7 @@ export interface ProjectPayloadInput {
   lead: { ro: string; en: string }
   contextBody: { ro: string; en: string }
   serviceTag: string | null
+  navServices?: string[]
   links?: { url: string; note?: { ro: string; en: string } }[]
   gallery: ProjectImageInput[]
 }
@@ -86,6 +87,10 @@ export function validateProjectPayload(input: ProjectPayloadInput): ValidationIs
 
   if (input.serviceTag && !isServiceTagId(input.serviceTag)) {
     issues.push({ field: 'serviceTag', message: 'Serviciu invalid.' })
+  }
+
+  if (input.navServices?.some((tag) => !isServiceTagId(tag))) {
+    issues.push({ field: 'navServices', message: 'Serviciu invalid în „Apare în meniu la”.' })
   }
 
   input.links?.forEach((link, i) => {

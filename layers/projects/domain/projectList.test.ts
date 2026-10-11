@@ -4,17 +4,19 @@ import { availableTags, selectHomeProjects } from './projectList'
 const row = (featured: boolean, service_tag: string | null = null) => ({ featured, service_tag })
 
 describe('selectHomeProjects', () => {
-  it('returns only the featured rows, keeping their order', () => {
+  it('puts featured rows first, then fills with the rest in order', () => {
     const rows = [row(false), row(true), row(false), row(true)]
-    expect(selectHomeProjects(rows)).toEqual([rows[1], rows[3]])
+    expect(selectHomeProjects(rows)).toEqual([rows[1], rows[3], rows[0], rows[2]])
   })
 
-  it('falls back to the first three rows when nothing is featured', () => {
-    const rows = [row(false), row(false), row(false), row(false)]
-    expect(selectHomeProjects(rows)).toEqual(rows.slice(0, 3))
+  it('caps the list at six rows', () => {
+    const rows = Array.from({ length: 9 }, (_, i) => row(i === 8))
+    const out = selectHomeProjects(rows)
+    expect(out).toHaveLength(6)
+    expect(out[0]).toBe(rows[8])
   })
 
-  it('returns everything when fewer than three rows exist and none is featured', () => {
+  it('returns everything when fewer than six rows exist', () => {
     const rows = [row(false), row(false)]
     expect(selectHomeProjects(rows)).toEqual(rows)
   })

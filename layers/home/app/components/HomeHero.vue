@@ -1,17 +1,24 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { parseHeroPreview, resolveHeroVariant, type HeroChoice } from '#layers/home/domain/heroVariant'
+import { chooseHeroVariant, parseHeroPreview, type HeroChoice } from '#layers/home/domain/heroVariant'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
 const route = useRoute()
-const configVariant = resolveHeroVariant(config.public.heroBgVariant as string | undefined)
+// The admin's choice is read on the server, so the cached `/` carries it. If the read fails the hero falls back to the env variable.
+const { data: settings } = await useFetch<{ heroVariant: HeroChoice | null }>('/api/home/settings', {
+  key: 'home:settings',
+  default: () => ({ heroVariant: null }),
+})
 // `?hero=` previews are applied after mount only: `/` is cached, so SSR output must not depend on the query.
 const previewChoice = ref<HeroChoice>()
-const heroVariant = computed(() => {
-  if (previewChoice.value) return previewChoice.value === 'none' ? null : previewChoice.value
-  return configVariant
-})
+const heroVariant = computed(() =>
+  chooseHeroVariant({
+    preview: previewChoice.value,
+    stored: settings.value?.heroVariant ?? null,
+    env: config.public.heroBgVariant as string | undefined,
+  }),
+)
 onMounted(() => {
   previewChoice.value = parseHeroPreview(route.query.hero)
 })
@@ -107,10 +114,10 @@ if (import.meta.client && phrases.length > 1) {
                 </button>
                 <span
                   role="tooltip"
-                  class="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 w-[min(300px,85vw)] -translate-x-1/2 rounded border border-hairline bg-ink p-3 text-xs font-normal leading-relaxed text-paper shadow-lg opacity-0 transition-opacity duration-150 group-hover/tooltip:pointer-events-auto group-hover/tooltip:opacity-100 group-focus-within/tooltip:pointer-events-auto group-focus-within/tooltip:opacity-100"
+                  class="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 w-[min(300px,85vw)] -translate-x-1/2 rounded border border-hairline bg-inverse p-3 text-xs font-normal leading-relaxed text-on-inverse shadow-lg opacity-0 transition-opacity duration-150 group-hover/tooltip:pointer-events-auto group-hover/tooltip:opacity-100 group-focus-within/tooltip:pointer-events-auto group-focus-within/tooltip:opacity-100"
                 >
                   {{ t('home.hero.facts.itParkTooltip') }}
-                  <span class="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-ink" aria-hidden="true" />
+                  <span class="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-inverse" aria-hidden="true" />
                 </span>
               </span>
             </div>

@@ -5,6 +5,9 @@
  * Design tokens — single source of truth (see README.md "Design Tokens").
  * Default Tailwind palette is disabled: only these colors exist.
  */
+/* `dark:` follows the data-theme attribute set by the inline head script, not the media query. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 @theme {
   --color-*: initial;
   --color-paper: #FAF8F4;
@@ -19,11 +22,21 @@
   --color-hairline-ink: rgba(250, 248, 244, 0.18);
   --color-rule: #C9C4BA;
   --color-panel: #F5F2EC;
+  /* Surfaces that stay dark in both themes (inverted sections, tooltips, footer-like blocks). */
+  --color-inverse: #0B0B0B;
+  --color-on-inverse: #FAF8F4;
+  /* Backdrop behind dialogs; stays near-black in both themes so it always dims the page. */
+  --color-scrim: #0B0B0B;
 
   --font-sans: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --text-lead: clamp(16px, 1.4vw, 18px);
+
+  /* The design inherits the body's 1.6 everywhere; Tailwind's per-size line-heights would override it. */
+  --text-xs--line-height: 1.6;
+  --text-sm--line-height: 1.6;
+  --text-base--line-height: 1.6;
 
   --shadow-modal: 0 24px 80px -20px rgba(11, 11, 11, 0.45);
   --shadow-header: 0 10px 24px -18px rgba(11, 11, 11, 0.35);
@@ -39,9 +52,37 @@
   --spacing-section-gap: clamp(24px, 4vw, 48px);
 }
 
+/*
+ * Dark theme: same token names, other values. `data-theme` is set on <html> by the inline
+ * script in nuxt.config.ts before first paint. Utilities read var(--color-*), so overriding
+ * the variables here re-themes every bg-/text-/border- class, opacity modifiers included.
+ */
+:root {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --placeholder-watermark: url(/brand/codepedia-mark-watermark-on-dark.svg);
+  --color-paper: #0F0F0E;
+  --color-ink: #F2EFE9;
+  --color-signal-text: #FF4D14;
+  --color-muted: #9C978E;
+  --color-hairline: #2B2A27;
+  --color-hatch: #1B1A18;
+  --color-muted-ink: #9C978E;
+  --color-body-ink: #B4AFA6;
+  --color-hairline-ink: rgba(242, 239, 233, 0.18);
+  --color-rule: #4A4741;
+  --color-panel: #161514;
+  --color-inverse: #1A1918;
+  --color-on-inverse: #F2EFE9;
+  --shadow-modal: 0 24px 80px -20px rgba(0, 0, 0, 0.7);
+}
+
 @utility media-placeholder {
   background-image:
-    url(/brand/codepedia-mark-watermark.svg),
+    var(--placeholder-watermark, url(/brand/codepedia-mark-watermark.svg)),
     repeating-linear-gradient(45deg, var(--color-hatch) 0 1px, transparent 1px 7px);
   background-repeat: no-repeat, repeat;
   background-position:
@@ -113,6 +154,7 @@
   }
 
   body {
+    transition: background-color 0.2s, color 0.2s;
     background: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-sans);
