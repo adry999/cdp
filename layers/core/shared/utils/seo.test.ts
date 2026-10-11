@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { clampDescription, withBrand } from './seo'
+import { TITLE_SUFFIX, clampDescription, withBrand } from './seo'
 
 describe('withBrand', () => {
   it('appends the middle-dot suffix with the brand in capitals', () => {
@@ -8,6 +8,16 @@ describe('withBrand', () => {
 
   it('does not suffix a title twice', () => {
     expect(withBrand('Blog · CODEPEDIA')).toBe('Blog · CODEPEDIA')
+  })
+
+  it('keeps the suffix when the result is exactly 60 characters', () => {
+    const title = 'a'.repeat(60 - TITLE_SUFFIX.length)
+    expect(withBrand(title)).toBe(`${title}${TITLE_SUFFIX}`)
+  })
+
+  it('drops the suffix when it would push the title past 60 characters', () => {
+    const title = 'AI automation for small business: 9 processes to start with'
+    expect(withBrand(title)).toBe(title)
   })
 })
 

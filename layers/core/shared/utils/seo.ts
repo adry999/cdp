@@ -7,9 +7,18 @@ export const TITLE_SUFFIX = ` · ${BRAND}`
 /** Longest meta description Google shows before cutting it. */
 export const MAX_DESCRIPTION_LENGTH = 160
 
-/** `<title>` text for a page title; used for og:title, which `titleTemplate` does not cover. */
+/** Longest `<title>` Google shows before cutting it. */
+export const MAX_TITLE_LENGTH = 60
+
+/**
+ * `<title>` text for a page title, also used for og:title. The suffix is
+ * dropped when it would push the title past `MAX_TITLE_LENGTH`, so a long
+ * title (a blog post) keeps its own words visible in search results.
+ */
 export function withBrand(title: string): string {
-  return title.endsWith(TITLE_SUFFIX) ? title : `${title}${TITLE_SUFFIX}`
+  if (title.endsWith(TITLE_SUFFIX)) return title
+  const branded = `${title}${TITLE_SUFFIX}`
+  return branded.length <= MAX_TITLE_LENGTH ? branded : title
 }
 
 /** Cuts a description to `max` characters at a word boundary, ending in an ellipsis; shorter text is returned as is. */
