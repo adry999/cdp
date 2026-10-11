@@ -30,7 +30,7 @@ const { el: sectionEl, isVisible: drawn, hasMounted: mounted } = useReveal({ onc
       <article
         v-for="(card, i) in cards"
         :key="card.id"
-        class="group @container flex flex-col rounded border bg-paper p-[clamp(20px,2.5vw,28px)] transition-all hover:-translate-y-1 hover:border-signal/30 hover:shadow-lg hover:shadow-signal/5"
+        class="group @container flex flex-col rounded border bg-paper p-[clamp(20px,2.5vw,28px)] transition-all hover:-translate-y-1 hover:border-signal/30 hover:shadow-lg hover:shadow-signal/5 motion-reduce:hover:translate-y-0"
         :class="[
           mounted && !drawn ? 'opacity-0 translate-y-6' : 'opacity-100',
           mounted && drawn ? 'duration-700 ease-out' : 'duration-300',
