@@ -267,7 +267,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      titleTemplate: '%s | CODEPEDIA',
+      titleTemplate: '%s · CODEPEDIA',
       // Sets data-theme before first paint (no flash). Covered by the existing 'unsafe-inline' in script-src.
       script: [{ innerHTML: THEME_INIT_SCRIPT, tagPosition: 'head', tagPriority: 'critical' }],
       link: [

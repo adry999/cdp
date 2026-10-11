@@ -71,6 +71,16 @@ export function studioGraph(input: StudioGraphInput) {
   }
 }
 
+export function webSite(siteUrl: string, inLanguage: readonly string[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'CODEPEDIA',
+    url: siteUrl,
+    inLanguage: [...inLanguage],
+  }
+}
+
 export interface FaqEntry {
   question: string
   answer: string

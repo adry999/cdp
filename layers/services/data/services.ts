@@ -6,7 +6,11 @@ type ServicePageCopy = Omit<Service, 'routeSlug' | 'name' | 'qualifierStage'>
 const SERVICE_COPY: readonly ServicePageCopy[] = [
   {
     slug: 'website',
-    seoTitle: { ro: 'Creare site de prezentare în Chișinău', en: 'Website and landing page development' },
+    seoTitle: { ro: 'Creare site de prezentare, live în 2–3 zile', en: 'Business website development, live in 2–3 days' },
+    seoDescription: {
+      ro: 'Site de prezentare modern, rapid pe mobil, cu SEO și formular conectat la email sau Telegram. De la brief la lansare în 2–3 zile.',
+      en: 'Modern business website, fast on mobile, with SEO and a form connected to email or Telegram. From brief to launch in 2–3 days.',
+    },
     intro: {
       ro: 'O pagină de prezentare modernă care-ți validează ideea și atrage primii clienți. De la concept la lansare în zile, nu săptămâni.',
       en: 'A modern landing page that validates your idea and attracts early customers. From concept to launch in days, not weeks.',
@@ -56,10 +60,10 @@ const SERVICE_COPY: readonly ServicePageCopy[] = [
   },
   {
     slug: 'web-app',
-    seoTitle: { ro: 'Dezvoltare aplicații web la comandă', en: 'Custom web application development' },
+    seoTitle: { ro: 'Dezvoltare aplicații web pe Nuxt și Next.js', en: 'Web application development on Nuxt and Next.js' },
     seoDescription: {
-      ro: 'Aplicația ta, din design în cod de producție, pe Postgres și Nuxt sau Next. Arhitectură curată, testată și ușor de extins.',
-      en: "Your app, from design to production code, on Postgres and Nuxt or Next. Clean, tested architecture that's easy to extend.",
+      ro: 'Aplicația ta, din design în cod de producție: PostgreSQL, API sigur, teste automate și deploy continuu. Versiune live la fiecare două săptămâni.',
+      en: 'Your app, from design to production code: PostgreSQL, a secure API, automated tests and continuous deployment. A live version every two weeks.',
     },
     intro: {
       ro: 'Aplicația ta, din design în cod de producție, pe Postgres și Nuxt sau Next.',
@@ -110,7 +114,11 @@ const SERVICE_COPY: readonly ServicePageCopy[] = [
   },
   {
     slug: 'wordpress',
-    seoTitle: { ro: 'Site WordPress rapid și sigur', en: 'Fast, secure WordPress websites' },
+    seoTitle: { ro: 'Site WordPress custom, rapid și securizat', en: 'Custom WordPress website, fast and secure' },
+    seoDescription: {
+      ro: 'Temă WordPress custom din Figma, fără plugin-uri inutile, pe hosting cu cache și CDN. Backup zilnic, SSL și instruire pentru editarea conținutului.',
+      en: 'Custom WordPress theme built from Figma, no needless plugins, on hosting with cache and CDN. Daily backups, SSL and training on editing content.',
+    },
     intro: {
       ro: 'Site WordPress rapid, securizat și ușor de menținut, pe infrastructura modernă cu cache și CDN global.',
       en: 'Fast, secure and easy-to-maintain WordPress site on modern infrastructure with caching and global CDN.',
@@ -160,7 +168,11 @@ const SERVICE_COPY: readonly ServicePageCopy[] = [
   },
   {
     slug: 'shopify',
-    seoTitle: { ro: 'Magazin online pe Shopify, la comandă', en: 'Custom Shopify store development' },
+    seoTitle: { ro: 'Magazin online Shopify cu temă custom', en: 'Online store on Shopify with a custom theme' },
+    seoDescription: {
+      ro: 'Magazin Shopify optimizat pentru conversie: temă custom, plăți, livrare, analytics și email marketing integrate. Lansare și instruire pe admin.',
+      en: 'Shopify store optimized for conversion: custom theme, payments, shipping, analytics and email marketing integrated. Launch and admin training.',
+    },
     intro: {
       ro: 'Magazin Shopify optimizat pentru conversie, cu design custom și integrări cu logistica și analitică reală.',
       en: 'Conversion-optimized Shopify store with custom design and real integrations for shipping and analytics.',
@@ -210,7 +222,11 @@ const SERVICE_COPY: readonly ServicePageCopy[] = [
   },
   {
     slug: 'ai-automation',
-    seoTitle: { ro: 'Automatizare cu AI pentru afaceri', en: 'AI automation for businesses' },
+    seoTitle: { ro: 'Automatizare cu AI pentru procese de business', en: 'AI automation for business processes' },
+    seoDescription: {
+      ro: 'Agenți AI pe datele tale, integrați cu email, CRM și Google Sheets. Reducem orele de muncă manuală și monitorizăm rezultatul 30 de zile.',
+      en: 'AI agents on your data, integrated with email, CRM and Google Sheets. We cut manual hours and monitor the result for 30 days.',
+    },
     intro: {
       ro: 'Sisteme AI custom integrate în fluxul tău de lucru, care reduc zeci de ore manuale pe lună și reduc costurile operaționale.',
       en: 'Custom AI systems built into your workflow that cut dozens of manual hours per month and slash operational costs.',
@@ -260,7 +276,11 @@ const SERVICE_COPY: readonly ServicePageCopy[] = [
   },
   {
     slug: 'granturi',
-    seoTitle: { ro: 'Aplicații web pentru proiecte cu grant', en: 'Web applications for grant-funded projects' },
+    seoTitle: { ro: 'Dezvoltare IT pentru proiecte cu grant', en: 'IT development for grant-funded projects' },
+    seoDescription: {
+      ro: 'Construim aplicația din proiectul finanțat prin grant european sau ODA, pe etapele din contract, cu documentele cerute la raportare și audit.',
+      en: 'We build the application of your European or ODA grant project, on the contract stages, with the documents required for reporting and audit.',
+    },
     intro: {
       ro: 'Ai câștigat un grant european sau ODA și trebuie să livrezi o aplicație la termen? Construim partea tehnică a proiectului și pregătim documentele de care ai nevoie la raportare.',
       en: 'Won a European or ODA grant and need to deliver an application on time? We build the technical side of the project and prepare the documents you need for reporting.',

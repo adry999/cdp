@@ -118,12 +118,13 @@ describe('articleGraph', () => {
 
 describe('blogIndexGraph', () => {
   it('lists posts in order with absolute URLs', () => {
-    const [blog, list] = blogIndexGraph({
+    const [blog, list, crumbs] = blogIndexGraph({
       locale: 'en',
       origin: 'https://codepedia.studio',
       primaryOrigin: 'https://codepedia.studio',
       name: 'Blog',
       description: 'd',
+      labels: { home: 'CODEPEDIA', blog: 'Blog' },
       posts: [
         { slug: 'a', title: 'A' },
         { slug: 'b', title: 'B' },
@@ -135,6 +136,13 @@ describe('blogIndexGraph', () => {
       itemListElement: [
         { position: 1, url: 'https://codepedia.studio/en/blog/a' },
         { position: 2, url: 'https://codepedia.studio/en/blog/b' },
+      ],
+    })
+    expect(crumbs).toMatchObject({
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { position: 1, name: 'CODEPEDIA', item: 'https://codepedia.studio/en' },
+        { position: 2, name: 'Blog', item: 'https://codepedia.studio/en/blog' },
       ],
     })
   })

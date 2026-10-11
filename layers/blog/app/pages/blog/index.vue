@@ -27,6 +27,7 @@ useJsonLd(() =>
     primaryOrigin,
     name: t('blog.seo.title'),
     description: t('blog.seo.description'),
+    labels: { home: 'CODEPEDIA', blog: t('nav.blog') },
     posts: (posts.value ?? []).map((post) => ({ slug: blogSlug(post.path), title: post.title })),
   }),
 )

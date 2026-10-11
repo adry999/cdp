@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { LocalizedText } from '#layers/core/shared/types/localizedText'
 import { SERVICE_TAG_IDS } from '#layers/core/shared/types/service-tag'
 import { STAGE_IDS } from '#layers/core/shared/types/service-stage'
+import { MAX_DESCRIPTION_LENGTH, TITLE_SUFFIX } from '#layers/core/shared/utils/seo'
 import { SERVICES } from './services'
 
 function allLocalizedTexts(): LocalizedText[] {
@@ -69,6 +70,16 @@ describe('services data', () => {
   it('has at least 3 process steps per service', () => {
     for (const service of SERVICES) {
       expect(service.process.length).toBeGreaterThanOrEqual(3)
+    }
+  })
+
+  it('keeps every SEO title and description within the search-result limits', () => {
+    for (const service of SERVICES) {
+      for (const locale of ['ro', 'en'] as const) {
+        expect(service.seoTitle[locale].length + TITLE_SUFFIX.length, `${service.slug} ${locale} title`).toBeLessThanOrEqual(60)
+        const description = (service.seoDescription ?? service.intro)[locale]
+        expect(description.length, `${service.slug} ${locale} description`).toBeLessThanOrEqual(MAX_DESCRIPTION_LENGTH)
+      }
     }
   })
 })

@@ -10,9 +10,10 @@ const steps = computed(() => i18nList('contactPage.steps'))
 // The work email is never rendered into the markup (same rule as the homepage #contact
 // section): visitors reach us through the form below.
 usePageSeo({
-  title: () => t('home.contact.title'),
-  description: () => t('home.contact.lead'),
+  title: () => t('home.contact.seo.title'),
+  description: () => t('home.contact.seo.description'),
 })
+useBreadcrumbLd(() => t('nav.contact'))
 </script>
 
 <template>

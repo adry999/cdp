@@ -11,6 +11,7 @@ usePageSeo({
   title: () => content.value.title,
   description: () => t('privacy.seo.description'),
 })
+useBreadcrumbLd(() => content.value.title)
 </script>
 
 <template>
