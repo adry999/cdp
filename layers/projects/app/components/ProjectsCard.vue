@@ -23,7 +23,7 @@ const target = computed(() => localePath({ name: 'proiecte-slug', params: { slug
         sizes="xs:100vw sm:45vw lg:380px"
       />
     </NuxtLink>
-    <div v-if="showTech" class="mt-4 flex gap-2 eyebrow-sm text-muted">
+    <div v-if="showTech" class="mt-4 flex flex-wrap gap-x-2 gap-y-1 eyebrow-sm text-muted">
       <template v-for="(tech, i) in project.tech" :key="tech">
         <span>{{ tech }}</span>
         <span v-if="i < project.tech.length - 1">·</span>

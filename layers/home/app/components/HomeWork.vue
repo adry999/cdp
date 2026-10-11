@@ -22,7 +22,7 @@ const { el: gridEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: 
       {{ t('home.work.title') }}
     </h2>
     <p class="mb-0 mt-4 max-w-[60ch] text-base text-muted">{{ t('home.work.intro') }}</p>
-    <div ref="gridEl" class="mt-[clamp(28px,3vw,40px)] grid grid-fit-280 gap-4">
+    <div ref="gridEl" class="mt-[clamp(28px,3vw,40px)] grid grid-fit-safe-340 gap-4">
       <ProjectsCard 
         v-for="(project, i) in list" 
         :key="project.slug" 
