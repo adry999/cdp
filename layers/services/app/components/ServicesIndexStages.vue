@@ -17,10 +17,10 @@ const stages = useServiceStages()
         {{ String(i + 1).padStart(2, '0') }}
       </span>
     </template>
-    <article>
+    <article class="group">
       <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
         <h2 class="m-0 flex items-center gap-3 font-mono text-[clamp(18px,2.2vw,22px)] font-medium uppercase leading-tight tracking-[0.04em]">
-          <CoreStageIcon :stage="stage.id" class="text-signal w-6 h-6" />
+          <CoreStageIcon :stage="stage.id" class="h-6 w-6 text-muted transition-colors duration-300 group-hover:text-signal" />
           {{ stage.name }}
         </h2>
         <span class="eyebrow text-muted">{{ stage.priceTime }}</span>

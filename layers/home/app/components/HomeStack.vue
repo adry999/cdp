@@ -39,7 +39,7 @@ const { el: sectionEl, isVisible: drawn, hasMounted: mounted } = useReveal({ onc
         :style="{ transitionDelay: mounted && drawn ? `${i * 120}ms` : '0ms' }"
       >
         <header class="flex items-center gap-3">
-          <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded border border-hairline text-signal">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded border border-hairline text-muted transition-colors duration-300 group-hover:border-signal/40 group-hover:text-signal">
             <Icon :name="card.icon" class="h-[18px] w-[18px]" aria-hidden="true" />
           </span>
           <h3 class="m-0 font-mono text-xs font-medium uppercase tracking-[0.08em] text-muted">

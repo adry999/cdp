@@ -130,11 +130,11 @@ function startAt(id: StageId) {
           role="tabpanel"
           :aria-labelledby="`svc-tab-${stage.id}`"
           :tabindex="stage.id === activeStage.id ? 0 : -1"
-          class="rounded border border-hairline p-[clamp(20px,2.5vw,28px)]"
+          class="group rounded border border-hairline p-[clamp(20px,2.5vw,28px)]"
         >
           <div class="flex flex-wrap items-baseline justify-between gap-3">
             <h3 class="m-0 flex items-center gap-3 font-mono text-[clamp(18px,2.2vw,22px)] font-medium uppercase leading-tight tracking-[0.04em] text-ink">
-              <CoreStageIcon :stage="stage.id" class="text-signal w-5 h-5" />
+              <CoreStageIcon :stage="stage.id" class="h-5 w-5 text-muted transition-colors duration-300 group-hover:text-signal" />
               {{ stage.name }}
             </h3>
             <span class="eyebrow text-muted">{{ stage.priceTime }}</span>
