@@ -28,8 +28,12 @@ lucru nu e specificat, întreabă înainte de a improviza.
 - **Vitest** pentru logica de formatare/validare, **Playwright** pentru un smoke test
   pe fiecare rută publică
 
-Fără alte dependențe fără să întrebi. Fără bibliotecă de componente UI. Fără
-bibliotecă de iconuri (designul nu folosește iconuri).
+Fără alte dependențe fără să întrebi. Fără bibliotecă de componente UI.
+Iconuri: `@nuxt/icon`, doar cu colecțiile instalate local (`@iconify-json/logos`,
+`lucide`, `simple-icons`), incluse în build — fără cereri la API-ul Iconify. Se
+folosesc pentru logo-urile tehnologiilor (`TechChip`, harta din
+`layers/core/shared/utils/techIcons.ts`) și iconuri UI. Marca CODEPEDIA rămâne
+exclusiv din `assets/` (vezi `docs/IDENTITY.md`).
 
 ## Convenții
 
