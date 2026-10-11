@@ -124,7 +124,7 @@ export function createProjectsAdminRepository(client: SupabaseClient) {
       if (error) throw failure('Nu s-a putut schimba afișarea pe homepage.', error)
     },
 
-    // Publishing keeps an existing published_at; unpublishing clears it and, like save_project(),
+    // Publishing sets published_at to now; unpublishing clears it and, like save_project(),
     // drops the redirects that would otherwise chain into a 404.
     async setPublished(project: { slug_ro: string; slug_en: string | null }, published: boolean) {
       const { error } = await client
@@ -133,10 +133,11 @@ export function createProjectsAdminRepository(client: SupabaseClient) {
         .eq('slug_ro', project.slug_ro)
       if (error) throw failure(published ? 'Proiectul nu a putut fi publicat.' : 'Proiectul nu a putut fi retras.', error)
       if (published) return
-      await client
+      const { error: redirectsError } = await client
         .from('redirects')
         .delete()
         .or(`to_path.eq./proiecte/${project.slug_ro},to_path.eq./en/work/${project.slug_en ?? project.slug_ro}`)
+      if (redirectsError) throw failure('Proiectul a fost retras, dar redirect-urile nu au putut fi șterse.', redirectsError)
     },
 
     async remove(slug: string) {
