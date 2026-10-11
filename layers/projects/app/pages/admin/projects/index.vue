@@ -61,7 +61,8 @@ const drag = useDragReorder(list.reorder)
           :can-move-up="i > 0"
           :can-move-down="i < filtered.length - 1"
           :busy="busy === project.slug_ro"
-          @drag-start="canReorder && drag.start(i)"
+          :locked="reorderStatus === 'pending'"
+          @drag-start="canReorder && reorderStatus !== 'pending' && drag.start(i)"
           @drop="drag.drop(i)"
           @move-up="list.move(i, 'up')"
           @move-down="list.move(i, 'down')"
@@ -84,7 +85,13 @@ const drag = useDragReorder(list.reorder)
       @cancel="publishing = null"
     />
 
-    <AdminDialog v-if="deletingProject" open title="Ștergi proiectul?" @close="deleting = null">
+    <AdminDialog
+      v-if="deletingProject"
+      open
+      title="Ștergi proiectul?"
+      :busy="busy === deletingProject.slug_ro"
+      @close="deleting = null"
+    >
       <p class="m-0 text-[15px]">
         <strong class="font-medium">{{ deletingProject.card_title_ro }}</strong> și imaginile lui vor fi
         șterse definitiv. Acțiunea nu poate fi anulată.

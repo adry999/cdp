@@ -7,7 +7,7 @@ defineEmits<{ confirm: []; cancel: [] }>()
 </script>
 
 <template>
-  <AdminDialog open :title="`Publică: ${title}`" @close="$emit('cancel')">
+  <AdminDialog open :title="`Publică: ${title}`" :busy="busy" @close="$emit('cancel')">
     <ul class="m-0 flex list-none flex-col gap-3 p-0">
       <li v-for="item in checklist.items" :key="item.id" class="flex gap-3">
         <input

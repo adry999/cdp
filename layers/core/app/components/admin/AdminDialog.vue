@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useFocusTrap } from '#layers/core/app/composables/useFocusTrap'
 
-const props = defineProps<{ open: boolean; title: string }>()
+const props = defineProps<{ open: boolean; title: string; busy?: boolean }>()
 const emit = defineEmits<{ close: [] }>()
 
 const titleId = useId()
@@ -9,10 +9,15 @@ const panel = ref<HTMLElement | null>(null)
 const { focusFirst, trapTab } = useFocusTrap(panel)
 let previouslyFocused: HTMLElement | null = null
 
+// An in-flight action must finish before the dialog can be dismissed.
+function requestClose() {
+  if (!props.busy) emit('close')
+}
+
 function onKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape') {
     event.preventDefault()
-    emit('close')
+    requestClose()
     return
   }
   trapTab(event)
@@ -33,7 +38,9 @@ watch(
 )
 
 function restoreFocus() {
-  previouslyFocused?.focus()
+  // The trigger can be gone by now (e.g. a deleted row); fall back to the page's main region.
+  const target = previouslyFocused?.isConnected ? previouslyFocused : document.querySelector<HTMLElement>('main')
+  target?.focus()
   previouslyFocused = null
 }
 
@@ -46,7 +53,7 @@ onBeforeUnmount(restoreFocus)
     <div
       v-if="open"
       class="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4"
-      @click.self="emit('close')"
+      @click.self="requestClose"
       @keydown="onKeydown"
     >
       <div
