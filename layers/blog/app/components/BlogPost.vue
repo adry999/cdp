@@ -5,7 +5,6 @@ const props = defineProps<{ post: BlogPostDoc }>()
 const { t } = useI18n()
 const siteLocale = useSiteLocale()
 const localePath = useLocalePath()
-const track = useTrackEvent()
 
 const category = computed(() => CATEGORIES[props.post.category])
 const categoryTo = computed(() =>
@@ -47,19 +46,10 @@ const showUpdated = computed(() => props.post.updated !== props.post.date)
 
     <SiteSection padding="articleBody">
       <template #label>
-        <nav v-if="post.toc.length" :aria-label="t('blog.toc')" class="sticky top-24 flex flex-col gap-2.5">
-          <div class="eyebrow-sm text-muted">{{ t('blog.toc') }}</div>
-          <a
-            v-for="item in post.toc"
-            :key="item.id"
-            :href="`#${item.id}`"
-            class="text-[13px] leading-[1.35] text-muted no-underline text-pretty hover:text-signal-text hover:no-underline"
-            @click="track('blog_toc_click', { post_slug: blogSlug(post.path), anchor_id: item.id })"
-          >
-            {{ item.text }}
-          </a>
-        </nav>
+        <!-- Below the nav breakpoint the label column wraps to 160px, so the TOC moves above the body. -->
+        <BlogToc v-if="post.toc.length" :post="post" class="sticky top-24 hidden! nav:flex!" />
       </template>
+      <BlogToc v-if="post.toc.length" :post="post" class="mb-8 border-b border-hairline pb-6 nav:hidden!" />
       <BlogBody :blocks="post.blocks" :post-slug="blogSlug(post.path)" :service="post.service" />
       <BlogPostLinks class="max-w-[70ch]" :post="post" />
     </SiteSection>
