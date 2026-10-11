@@ -35,6 +35,10 @@ const lightboxIndex = ref<number | null>(null)
 function openLightbox(index: number) {
   lightboxIndex.value = index
 }
+// Action shots are a subset of the lightbox's shots, so they open at their place in the full list.
+function shotIndex(path: string): number {
+  return caseStudy.value.shots.findIndex((shot) => shot.path === path)
+}
 
 // The language switch and hreflang alternates only know the current route params; slugs can differ per locale.
 useSetLocalizedSlugs({ ro: projectRow.slug_ro, en: projectRow.slug_en ?? projectRow.slug_ro })
@@ -158,14 +162,22 @@ useJsonLd(
       </div>
       <template v-if="galleryImages.length">
         <div class="mt-[clamp(28px,3.5vw,44px)] grid grid-fit-safe-260 gap-4">
-          <MediaFrame
+          <button
             v-for="image in galleryImages"
             :key="image.path"
-            ratio="16/10"
-            :src="image.path"
-            :alt="image.alt"
-            sizes="xs:100vw sm:100vw md:50vw xl:640px"
-          />
+            type="button"
+            :aria-label="t('caseStudy.lightbox.openImage', { n: shotIndex(image.path) + 1 })"
+            class="block w-full cursor-zoom-in rounded p-0"
+            @click="openLightbox(shotIndex(image.path))"
+          >
+            <MediaFrame
+              ratio="16/10"
+              :src="image.path"
+              alt=""
+              sizes="xs:100vw sm:100vw md:50vw xl:640px"
+              class="transition-colors duration-[120ms] hover:border-ink"
+            />
+          </button>
         </div>
       </template>
     </ProjectsCaseStudySection>
