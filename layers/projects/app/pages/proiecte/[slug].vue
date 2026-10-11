@@ -115,7 +115,7 @@ useJsonLd(
             class="flex flex-wrap gap-x-[clamp(16px,3vw,40px)] gap-y-1.5 border-t border-hairline py-4"
           >
             <span class="flex-[0_0_180px] eyebrow text-muted">{{ constraint.k }}</span>
-            <span class="min-w-0 flex-[1_1_280px] text-base">{{ constraint.v }}</span>
+            <span class="min-w-0 flex-[1_1_280px] text-[16px]">{{ constraint.v }}</span>
           </li>
         </ul>
       </template>
@@ -141,7 +141,7 @@ useJsonLd(
         <div v-if="star.biz.length">
           <div class="eyebrow text-muted"><span class="text-signal-text">A1</span> · {{ t('caseStudy.business') }}</div>
           <ul class="m-0 mt-3 list-none border-b border-hairline p-0">
-            <li v-for="item in star.biz" :key="item" class="border-t border-hairline py-4 text-base text-pretty">
+            <li v-for="item in star.biz" :key="item" class="border-t border-hairline py-4 text-[16px] text-pretty">
               {{ item }}
             </li>
           </ul>
@@ -150,8 +150,8 @@ useJsonLd(
           <div class="eyebrow text-muted"><span class="text-signal-text">A2</span> · {{ t('caseStudy.tech') }}</div>
           <ul class="m-0 mt-3 list-none border-b border-hairline p-0">
             <li v-for="item in caseStudy.stack" :key="item.name" class="flex flex-col gap-1 border-t border-hairline py-4">
-              <span class="font-mono text-sm font-medium">{{ item.name }}</span>
-              <span class="text-base text-muted">{{ item.role }}</span>
+              <span class="font-mono text-[14px] font-medium">{{ item.name }}</span>
+              <span class="text-[16px] text-muted">{{ item.role }}</span>
             </li>
           </ul>
         </div>
