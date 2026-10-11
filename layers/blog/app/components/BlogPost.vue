@@ -23,7 +23,7 @@ const showUpdated = computed(() => props.post.updated !== props.post.date)
         <CoreInteractiveBackground variant="dot-matrix" />
       </template>
       <template #label>
-        <NuxtLink :to="localePath('blog')" class="eyebrow text-muted no-underline hover:text-signal-text hover:no-underline">
+        <NuxtLink :to="localePath('blog')" class="eyebrow block leading-[1.6] text-muted no-underline hover:text-signal-text hover:no-underline">
           ← {{ t('blog.back') }}
         </NuxtLink>
       </template>
@@ -61,6 +61,7 @@ const showUpdated = computed(() => props.post.updated !== props.post.date)
         </nav>
       </template>
       <BlogBody :blocks="post.blocks" :post-slug="blogSlug(post.path)" :service="post.service" />
+      <BlogPostLinks class="max-w-[70ch]" :post="post" />
     </SiteSection>
 
     <BlogRelated :posts="post.related" />
