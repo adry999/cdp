@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonLd'
 import { SERVICES } from '#layers/services/data/services'
+import { serviceJsonLd } from '#layers/services/domain/seo'
 import type { Service } from '#layers/services/domain/service'
 
 const route = useRoute()
@@ -25,26 +25,31 @@ usePageSeo({
   description: () => pick(seoDescription.ro, seoDescription.en, locale.value),
 })
 
-useJsonLd(
-  () => ({
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: pick(service.name.ro, service.name.en, locale.value),
+const jsonLd = computed(() => {
+  const name = pick(service.name.ro, service.name.en, locale.value)
+  const url = `${siteUrl}${route.path}`
+  return serviceJsonLd({
+    name,
     description: pick(service.intro.ro, service.intro.en, locale.value),
-    url: `${siteUrl}${route.path}`,
-    provider: organizationRef(primarySiteUrl),
-  }),
-  () =>
-    breadcrumbList([
+    url,
+    primaryOrigin: primarySiteUrl,
+    crumbs: [
       { name: 'CODEPEDIA', url: `${siteUrl}${localePath('/')}` },
       { name: t('nav.services'), url: `${siteUrl}${localePath({ name: 'servicii' })}` },
-      { name: pick(service.name.ro, service.name.en, locale.value), url: `${siteUrl}${route.path}` },
-    ]),
+      { name, url },
+    ],
+  })
+})
+
+useJsonLd(
+  () => jsonLd.value.service,
+  () => jsonLd.value.breadcrumbs,
 )
 </script>
 
 <template>
   <div>
+    <ServicesSwitcher />
     <ServicesHero :service="service" />
     <ServicesFeatures :service="service" />
     <ServicesProcess :service="service" />

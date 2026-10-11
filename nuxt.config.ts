@@ -122,6 +122,13 @@ export default defineNuxtConfig({
     '/en/services': { swr: 300 },
     '/servicii/**': { swr: 300 },
     '/en/services/**': { swr: 300 },
+    // A service reached by its canonical id or the other locale's slug lands on the right page.
+    '/servicii/web-app': { redirect: { to: '/servicii/aplicatie-web', statusCode: 301 } },
+    '/servicii/ai-automation': { redirect: { to: '/servicii/automatizare-ai', statusCode: 301 } },
+    '/servicii/grants': { redirect: { to: '/servicii/granturi', statusCode: 301 } },
+    '/en/services/aplicatie-web': { redirect: { to: '/en/services/web-app', statusCode: 301 } },
+    '/en/services/automatizare-ai': { redirect: { to: '/en/services/ai-automation', statusCode: 301 } },
+    '/en/services/granturi': { redirect: { to: '/en/services/grants', statusCode: 301 } },
     // Content lives in the repo, so it only changes with a deploy, which clears the cache.
     '/despre': { swr: 3600 },
     '/en/about': { swr: 3600 },

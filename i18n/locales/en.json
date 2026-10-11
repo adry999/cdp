@@ -550,6 +550,9 @@
     "features": {
       "heading": "What's included"
     },
+    "projects": {
+      "label": "Projects"
+    },
     "hero": {
       "audienceLabel": "For"
     },
