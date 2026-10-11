@@ -221,6 +221,7 @@ watch(status, (value) => {
         type="submit"
         :variant="isModal ? 'signal' : 'ink'"
         class="w-fit text-center"
+        :class="isModal && 'leading-[17px]'"
         :disabled="status === 'pending'"
       >
         {{ status === 'pending' ? t('home.contact.form.submitting') : t('home.contact.form.submit') }}
