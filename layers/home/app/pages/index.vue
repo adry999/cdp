@@ -21,7 +21,7 @@ useJsonLd(() => webSite(siteUrls[locale.value], ['ro', 'en']))
     <HomeServices />
     <HomeWork />
     <HomeStack />
-    <!-- <HomeProcess /> -->
+    <HomeProcess />
     <HomeAbout />
     <HomeFaq />
     <HomeContact />

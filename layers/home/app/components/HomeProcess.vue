@@ -19,7 +19,7 @@ const { el: processEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, onc
 </script>
 
 <template>
-  <SiteSection number="03" :label="t('home.process.sectionLabel')" section-id="proces">
+  <SiteSection number="04" :label="t('home.process.sectionLabel')" section-id="proces">
     <h2 class="m-0 max-w-[28ch] heading-section">
       {{ t('home.process.title') }}
     </h2>
