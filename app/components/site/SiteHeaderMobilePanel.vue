@@ -73,9 +73,11 @@ function number(index: number): string {
       </NuxtLink>
     </nav>
 
-    <SiteHeaderLocaleSwitch class="eyebrow gap-2.5 text-sm" />
-
-    <CoreThemeToggle variant="row" class="border-b border-hairline" />
+    <!-- One row, so the bottom CTA never has to cover the theme switch on short screens. -->
+    <div class="flex items-center justify-between gap-4 border-b border-hairline">
+      <SiteHeaderLocaleSwitch class="eyebrow gap-2.5 text-sm" />
+      <CoreThemeToggle variant="row" />
+    </div>
 
     <a v-if="ctaKind === 'anchor'" :href="ctaTo" :class="ctaClass" @click="emit('close')">
       {{ t('nav.letsTalk') }}
