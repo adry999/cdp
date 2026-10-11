@@ -52,7 +52,7 @@ onBeforeUnmount(restoreFocus)
   <Teleport to="body">
     <div
       v-if="open"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-scrim/40 p-4"
       @click.self="requestClose"
       @keydown="onKeydown"
     >
