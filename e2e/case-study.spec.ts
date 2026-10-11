@@ -36,14 +36,14 @@ test('published case studies have no empty sections or placeholders', async ({ p
           // heading's next sibling when the parent is only a wrapper.
           const rest = (container?.textContent ?? '').replace(own, '').trim()
           const next = heading.nextElementSibling?.textContent?.trim() ?? ''
-          const media = container?.querySelector('img, picture, button, a, ul, li') !== null
+          const media = container?.querySelector('img, picture, figure, ul, li') !== null
           if (!own) empty.push('<empty heading>')
           else if (!rest && !next && !media) empty.push(`heading without content: ${own}`)
         }
         for (const section of main.querySelectorAll('section')) {
           const label = section.querySelector('[class*="eyebrow"]')?.textContent?.trim() ?? ''
           const text = (section.textContent ?? '').replace(label, '').trim()
-          const hasMedia = section.querySelector('img, picture, button, a') !== null
+          const hasMedia = section.querySelector('img, picture, figure, ul, li') !== null
           if (!text && !hasMedia) empty.push(`empty section: ${label || section.id || '(unnamed)'}`)
         }
         return { empty, text: (main as HTMLElement).innerText }
