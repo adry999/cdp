@@ -89,11 +89,6 @@ const ctaClass =
 
         <dl class="m-0 flex flex-col gap-1.5 eyebrow-sm text-muted">
           <div>
-            <dt class="inline">{{ t('home.contact.facts.hours') }}:</dt>
-            {{ ' ' }}
-            <dd class="m-0 inline">{{ settings.hours }}</dd>
-          </div>
-          <div>
             <dt class="inline">{{ t('home.contact.facts.responseTime') }}:</dt>
             {{ ' ' }}
             <dd class="m-0 inline">{{ settings.responseTime }}</dd>

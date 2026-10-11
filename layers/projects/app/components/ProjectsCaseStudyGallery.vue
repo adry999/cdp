@@ -30,7 +30,7 @@ const caseStudy = computed(() => props.project.caseStudy)
           :src="shot.path"
           alt=""
           sizes="xs:100vw sm:100vw md:50vw xl:300px"
-          class="rounded-none! border-0!"
+          class="rounded-none! border-0! object-left-top!"
         />
       </button>
     </div>

@@ -22,7 +22,6 @@ const showForm = ref(false)
 
     <div class="mt-[clamp(28px,3vw,44px)] grid max-w-[560px] grid-fit-180 gap-4">
       <FactCard :label="t('home.contact.facts.responseTime')" :value="settings.responseTime" />
-      <FactCard :label="t('home.contact.facts.hours')" :value="settings.hours" />
     </div>
 
     <template v-if="isQualifierEnabled">

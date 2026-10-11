@@ -29,7 +29,7 @@ const stages = useServiceStages()
           <h2 class="m-0 mt-5 min-h-[2.6em] font-mono text-sm font-medium uppercase leading-[1.3] tracking-[0.04em] transition-colors duration-500 group-hover:text-signal-text">
             {{ stage.name }}
           </h2>
-          <div v-if="stage.pricing" class="mt-5 text-[10px] font-medium uppercase tracking-[0.06em] text-muted">
+          <div v-if="stage.pricing" class="mt-5 text-[11px] font-medium uppercase tracking-[0.06em] text-muted">
             {{ t('pricing.engagementModel') }}
           </div>
           <div
@@ -40,7 +40,7 @@ const stages = useServiceStages()
             <span class="group/tooltip relative inline-flex items-center">
               <button
                 type="button"
-                class="inline-flex h-5 w-5 cursor-default items-center justify-center rounded-full border border-rule/70 text-[11px] font-mono font-medium text-muted transition-colors hover:border-ink hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-signal"
+                class="relative inline-flex h-5 w-5 cursor-default items-center before:absolute before:-inset-3 before:content-[''] justify-center rounded-full border border-rule/70 text-[11px] font-mono font-medium text-muted transition-colors hover:border-ink hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-signal"
                 :aria-label="t('pricing.infoLabel')"
               >
                 i

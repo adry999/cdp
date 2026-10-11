@@ -62,7 +62,7 @@ function marker(ordered: boolean, index: number): string {
                 v-for="(cell, k) in block.head"
                 :key="k"
                 scope="col"
-                class="whitespace-nowrap border-b border-hairline bg-hatch px-3.5 py-2.5 text-left eyebrow-sm font-normal text-muted"
+                class="border-b border-hairline bg-hatch sm:whitespace-nowrap px-3.5 py-2.5 text-left eyebrow-sm font-normal text-muted"
               >
                 <BlogInline :nodes="cell" />
               </th>
@@ -70,7 +70,7 @@ function marker(ordered: boolean, index: number): string {
           </thead>
           <tbody>
             <tr v-for="(row, r) in block.rows" :key="r">
-              <td v-for="(cell, k) in row" :key="k" class="min-w-[120px] border-b border-hairline px-3.5 py-2.5 align-top">
+              <td v-for="(cell, k) in row" :key="k" class="min-w-[96px] border-b border-hairline px-3.5 sm:min-w-[120px] py-2.5 align-top">
                 <BlogInline :nodes="cell" />
               </td>
             </tr>

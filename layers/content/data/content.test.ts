@@ -9,7 +9,6 @@ import { SITE_SETTINGS } from './siteSettings'
 function localizedTexts(): LocalizedText[] {
   return [
     ...FAQS.flatMap((faq) => [faq.question, faq.answer]),
-    SITE_SETTINGS.hours,
     SITE_SETTINGS.responseTime,
     SITE_SETTINGS.ndaNote,
     SITE_SETTINGS.footerLine,

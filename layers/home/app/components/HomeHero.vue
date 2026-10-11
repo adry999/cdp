@@ -27,6 +27,8 @@ onMounted(() => {
 // text for SEO and no-JS.
 const phrases = useI18nList()('home.hero.titlePhrases')
 const typed = ref(phrases[0] ?? '')
+// Each word is kept whole so narrow screens never split "page-uri" or "Site-uri" at the hyphen.
+const typedWords = computed(() => typed.value.split(' '))
 
 if (import.meta.client && phrases.length > 1) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -83,10 +85,13 @@ if (import.meta.client && phrases.length > 1) {
       >
         <span class="grid min-h-[2.1em] items-end">
           <span class="font-mono font-medium tracking-normal"
-            >{{ typed }}<span class="hero-caret bg-signal" aria-hidden="true"
-          /></span>
+            ><template v-for="(word, i) in typedWords" :key="i"
+              >{{ i > 0 ? ' ' : '' }}<span class="whitespace-nowrap"
+                >{{ word }}<span v-if="i === typedWords.length - 1" class="hero-caret bg-signal" aria-hidden="true" /></span
+            ></template
+          ></span>
         </span>
-        <span class="block">{{ t('home.hero.titleSuffix') }}</span>
+        <span class="block max-sm:mt-[0.12em]">{{ t('home.hero.titleSuffix') }}</span>
       </div>
       <p class="mt-[clamp(20px,2.4vw,28px)] max-w-[58ch] text-[clamp(17px,1.6vw,20px)] leading-[1.45] text-muted text-pretty">
         {{ t('home.hero.lead') }}
@@ -107,7 +112,7 @@ if (import.meta.client && phrases.length > 1) {
               <span class="group/tooltip relative inline-flex items-center">
                 <button
                   type="button"
-                  class="inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded-full border border-rule/70 text-[10px] font-mono font-medium text-muted transition-colors hover:border-ink hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-signal"
+                  class="relative inline-flex h-4 w-4 cursor-pointer items-center before:absolute before:-inset-3.5 before:content-[''] justify-center rounded-full border border-rule/70 text-[10px] font-mono font-medium text-muted transition-colors hover:border-ink hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-signal"
                   :aria-label="t('home.hero.facts.itParkTooltipAria')"
                 >
                   i
