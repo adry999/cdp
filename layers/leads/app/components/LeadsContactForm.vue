@@ -102,7 +102,7 @@ watch(status, (value) => {
   >
     <CoreHoneypotField v-model="form.website" />
 
-    <div :class="isModal && 'grid grid-fit-safe-220 gap-4'">
+    <div :class="isModal ? 'grid grid-fit-safe-220 gap-4' : 'flex flex-col gap-6'">
       <div>
         <label class="block eyebrow text-muted" for="lead-name">
           {{ t('home.contact.form.name') }}
