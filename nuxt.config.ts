@@ -67,7 +67,7 @@ export default defineNuxtConfig({
   icon: {
     mode: 'svg',
     fallbackToApi: false,
-    serverBundle: { collections: ['logos', 'lucide', 'simple-icons'] },
+    serverBundle: { collections: ['lucide', 'simple-icons'] },
     clientBundle: { icons: [...new Set(Object.values(TECH_ICONS))], scan: false },
   },
 
