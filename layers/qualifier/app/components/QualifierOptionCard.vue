@@ -30,7 +30,18 @@ const emit = defineEmits<{ select: [value: string] }>()
       @change="emit('select', value)"
     >
 
-    <span v-if="number" class="shrink-0 pt-0.5 font-mono text-[11px] tabular-nums text-muted">{{ number }}</span>
+    <span v-if="$slots.icon || number" class="flex shrink-0 flex-col items-center gap-1.5 pt-0.5">
+      <span
+        v-if="$slots.icon"
+        :class="[
+          'flex h-8 w-8 items-center justify-center rounded border transition-colors duration-[120ms]',
+          selected ? 'border-signal text-signal' : 'border-hairline text-muted',
+        ]"
+      >
+        <slot name="icon" />
+      </span>
+      <span v-if="number" class="font-mono text-[11px] tabular-nums text-muted">{{ number }}</span>
+    </span>
 
     <span class="flex min-w-0 flex-col gap-1">
       <span

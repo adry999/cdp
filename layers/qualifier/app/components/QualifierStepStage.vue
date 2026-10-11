@@ -35,7 +35,11 @@ const cards = computed(() =>
           :hint="card.hint"
           :meta="card.meta"
           @select="emit('update:modelValue', $event as StageId)"
-        />
+        >
+          <template #icon>
+            <CoreStageIcon :stage="card.id" class="h-4 w-4" />
+          </template>
+        </QualifierOptionCard>
       </div>
     </fieldset>
 

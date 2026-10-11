@@ -13,7 +13,7 @@ const target = computed(() => localePath({ name: 'proiecte-slug', params: { slug
 </script>
 
 <template>
-  <div class="rounded border border-hairline bg-paper p-[clamp(18px,2vw,22px)]">
+  <div class="rounded border border-hairline bg-paper p-[clamp(18px,2vw,22px)] transition-all duration-300 hover:-translate-y-1 hover:border-signal/30 hover:shadow-lg hover:shadow-signal/5 motion-reduce:hover:translate-y-0">
     <NuxtLink :to="target" tabindex="-1" aria-hidden="true" class="block transition-opacity duration-[120ms] hover:opacity-90">
       <MediaFrame
         ratio="16/10"

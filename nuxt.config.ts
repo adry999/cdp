@@ -2,6 +2,7 @@ import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import { localeRedirectRoutes } from './layers/core/shared/utils/localeRedirectRoutes'
 import { TECH_ICONS } from './layers/core/shared/utils/techIcons'
+import { STACK_GROUP_ICONS } from './layers/content/domain/stack'
 import { THEME_INIT_SCRIPT } from './layers/core/shared/utils/theme'
 
 // Every real build, including Vercel, must supply these. Skipped in dev and in
@@ -68,7 +69,7 @@ export default defineNuxtConfig({
     mode: 'svg',
     fallbackToApi: false,
     serverBundle: { collections: ['lucide', 'simple-icons'] },
-    clientBundle: { icons: [...new Set(Object.values(TECH_ICONS))], scan: false },
+    clientBundle: { icons: [...new Set([...Object.values(TECH_ICONS), ...Object.values(STACK_GROUP_ICONS)])], scan: false },
   },
 
   // Node's built-in SQLite instead of the better-sqlite3 native addon — no compiled binary to build or ship.

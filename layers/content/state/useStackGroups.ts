@@ -1,4 +1,4 @@
-import { STACK_GROUP_IDS, type StackGroup } from '#layers/content/domain/stack'
+import { STACK_GROUP_ICONS, STACK_GROUP_IDS, type StackGroup } from '#layers/content/domain/stack'
 
 export function useStackGroups() {
   const { t } = useI18n()
@@ -10,6 +10,7 @@ export function useStackGroups() {
       name: t(`home.stack.groups.${id}.name`),
       benefit: t(`home.stack.groups.${id}.benefit`),
       tags: i18nList(`home.stack.groups.${id}.tags`),
+      icon: STACK_GROUP_ICONS[id],
     })),
   )
 }
