@@ -57,12 +57,34 @@ export type AdminProjectRow = Omit<
   project_images: Pick<Tables['project_images']['Row'], 'path' | 'alt_ro' | 'alt_en' | 'aspect' | 'sort_order'>[]
 }
 
-export const ADMIN_PROJECT_LIST_SELECT = 'slug_ro, card_title_ro, tech, cover_path, published_at, featured, sort_order' as const
+export const ADMIN_PROJECT_LIST_SELECT = `
+  slug_ro, slug_en, card_title_ro, title_ro, summary_ro, lead_ro, context_body_ro,
+  tech, cover_path, published_at, featured, sort_order, live_url, screens_demo, quote_ro, win_value_ro,
+  project_images(path), project_stats(value)
+` as const
 
 export type AdminProjectListRow = Pick<
   Tables['projects']['Row'],
-  'slug_ro' | 'card_title_ro' | 'tech' | 'cover_path' | 'published_at' | 'featured' | 'sort_order'
->
+  | 'slug_ro'
+  | 'slug_en'
+  | 'card_title_ro'
+  | 'title_ro'
+  | 'summary_ro'
+  | 'lead_ro'
+  | 'context_body_ro'
+  | 'tech'
+  | 'cover_path'
+  | 'published_at'
+  | 'featured'
+  | 'sort_order'
+  | 'live_url'
+  | 'screens_demo'
+  | 'quote_ro'
+  | 'win_value_ro'
+> & {
+  project_images: Pick<Tables['project_images']['Row'], 'path'>[]
+  project_stats: Pick<Tables['project_stats']['Row'], 'value'>[]
+}
 
 // Header dropdown: only what the menu shows (name, subtitle, cover, link). Kept apart from the
 // card select so the sitewide payload stays small.
