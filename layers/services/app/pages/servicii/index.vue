@@ -3,8 +3,9 @@ const { t } = useI18n()
 
 usePageSeo({
   title: () => t('services.index.seo.title'),
-  description: () => t('services.index.intro'),
+  description: () => t('services.index.seo.description'),
 })
+useBreadcrumbLd(() => t('nav.services'))
 </script>
 
 <template>

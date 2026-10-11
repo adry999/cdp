@@ -7,9 +7,10 @@ const pillars = useAboutPillars()
 const FACT_IDS = ['based', 'markets', 'languages'] as const
 
 usePageSeo({
-  title: () => t('home.about.title'),
+  title: () => t('about.seo.title'),
   description: () => t('about.seo.description'),
 })
+useBreadcrumbLd(() => t('nav.about'))
 </script>
 
 <template>

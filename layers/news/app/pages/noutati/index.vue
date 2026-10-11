@@ -15,6 +15,7 @@ usePageSeo({
   title: () => t('news.seo.title'),
   description: () => t('news.seo.description'),
 })
+useBreadcrumbLd(() => t('nav.news'))
 
 // An empty index is thin content; it becomes indexable with the first item.
 useSeoMeta({ robots: () => (items.value.length ? undefined : 'noindex, follow') })

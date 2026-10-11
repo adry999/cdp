@@ -38,6 +38,7 @@ usePageSeo({
   title: () => t('projects.seo.title'),
   description: () => t('projects.seo.description'),
 })
+useBreadcrumbLd(() => t('nav.work'))
 </script>
 
 <template>
