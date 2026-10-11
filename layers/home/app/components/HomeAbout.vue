@@ -19,7 +19,7 @@ const { el: gridEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: 
       <article
         v-for="(pillar, i) in pillars"
         :key="pillar.id"
-        class="group flex flex-col rounded border border-white/20 bg-paper/[0.03] p-[clamp(20px,2.5vw,26px)] transition-all duration-300 hover:-translate-y-1 hover:border-signal/50 hover:bg-paper/[0.06] hover:shadow-lg hover:shadow-signal/10"
+        class="group flex flex-col rounded border border-hairline-ink bg-paper/[0.03] p-[clamp(20px,2.5vw,26px)] transition-all duration-300 hover:border-muted-ink"
         :class="[
           hasMounted && !isVisible ? 'opacity-0 translate-y-6' : 'opacity-100',
           hasMounted && isVisible ? 'duration-700 ease-out' : 'duration-300'
