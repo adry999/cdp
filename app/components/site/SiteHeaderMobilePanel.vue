@@ -15,10 +15,10 @@ const emit = defineEmits<{ close: []; contact: [] }>()
 const { t } = useI18n()
 
 const rowClass =
-  'flex items-baseline gap-4 text-[32px] font-semibold leading-[1.1] tracking-[-0.02em] text-ink no-underline hover:text-ink'
+  'flex min-h-11 items-baseline gap-4 text-[32px] font-semibold leading-[1.1] tracking-[-0.02em] text-ink no-underline hover:text-ink'
 
 const ctaClass =
-  'mt-auto flex min-h-14 w-full cursor-pointer border-0 items-center justify-between rounded bg-signal px-5 eyebrow text-[13px] font-semibold text-ink no-underline hover:text-ink hover:opacity-90'
+  'sticky bottom-0 mt-auto flex min-h-14 w-full cursor-pointer border-0 items-center justify-between rounded bg-signal px-5 eyebrow text-[13px] font-semibold text-ink no-underline hover:text-ink hover:opacity-90'
 
 function number(index: number): string {
   return String(index).padStart(2, '0')

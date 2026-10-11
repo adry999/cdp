@@ -8,7 +8,7 @@ const route = useRoute()
 const slugs = useLocalizedSlugs()
 
 const LANGS = ['ro', 'en'] as const
-const linkClass = 'flex min-h-11 items-center no-underline hover:no-underline nav:min-h-0'
+const linkClass = 'flex min-h-11 min-w-11 items-center justify-center no-underline hover:no-underline nav:min-h-8 nav:min-w-8'
 
 // A page whose slug differs per locale sets it while it renders, after this header: the server
 // cannot know it here and the client's first render would disagree with the server HTML. The
