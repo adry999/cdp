@@ -4,7 +4,7 @@ import { useProjectsEditor } from '#layers/projects/state/useProjectsEditor'
 definePageMeta({ layout: 'admin', i18n: false })
 
 const slug = String(useRoute().params.slug)
-const { form, isNew, saveStatus, saveError, save } = await useProjectsEditor(slug)
+const { form, isNew, menuPreview, saveStatus, saveError, save } = await useProjectsEditor(slug)
 
 const saveLabel = computed(() => {
   if (saveStatus.value === 'pending') return 'Se salvează…'
@@ -33,7 +33,10 @@ const saveLabel = computed(() => {
 
     <div class="flex-1 overflow-y-auto px-6 py-6">
       <div class="flex max-w-[880px] flex-col gap-8">
-        <ProjectsEditorIdentity v-model="form" />
+        <div class="grid grid-fit-safe-340 items-start gap-6">
+          <ProjectsEditorIdentity v-model="form" />
+          <ProjectsEditorMenuPreview :groups="menuPreview" :published="form.published" />
+        </div>
         <ProjectsEditorImages v-model="form" />
         <ProjectsEditorFacts v-model="form" />
         <ProjectsEditorNarrative v-model="form.contextBody" title="Situație (secțiunea 01)" required />

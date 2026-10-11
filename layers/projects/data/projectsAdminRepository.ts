@@ -3,6 +3,8 @@ import type { Database, Json } from '#layers/core/shared/types/database.types'
 import {
   ADMIN_PROJECT_LIST_SELECT,
   ADMIN_PROJECT_SELECT,
+  MENU_PREVIEW_SELECT,
+  type MenuPreviewRow,
   type AdminProjectListRow,
   type AdminProjectRow,
 } from '#layers/projects/domain/projectSelect'
@@ -90,6 +92,12 @@ export function createProjectsAdminRepository(client: SupabaseClient) {
     async list(): Promise<AdminProjectListRow[]> {
       const { data, error } = await client.from('projects').select(ADMIN_PROJECT_LIST_SELECT).order('sort_order')
       if (error) throw failure('Proiectele nu au putut fi încărcate.', error)
+      return data
+    },
+
+    async listForMenuPreview(): Promise<MenuPreviewRow[]> {
+      const { data, error } = await client.from('projects').select(MENU_PREVIEW_SELECT)
+      if (error) throw failure('Previzualizarea meniului nu a putut fi încărcată.', error)
       return data
     },
 
