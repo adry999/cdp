@@ -7,7 +7,7 @@ const { el: gridEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: 
 </script>
 
 <template>
-  <SiteSection number="05" :label="t('home.about.sectionLabel')" inverted padding="xl">
+  <SiteSection number="05" section-id="despre" :label="t('home.about.sectionLabel')" inverted padding="xl">
     <h2 class="m-0 max-w-[24ch] heading-display">
       {{ t('home.about.title') }}
     </h2>
