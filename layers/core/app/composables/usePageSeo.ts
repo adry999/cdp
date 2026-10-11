@@ -1,4 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
+import { clampDescription, withBrand } from '#layers/core/shared/utils/seo'
 
 interface PageSeo {
   title: MaybeRefOrGetter<string>
@@ -15,9 +16,9 @@ export function usePageSeo({ title, description, ogTitle, image, type = 'website
 
   useSeoMeta({
     title: () => toValue(title),
-    description: () => toValue(description),
-    ogTitle: () => toValue(ogTitle ?? title),
-    ogDescription: () => toValue(description),
+    description: () => clampDescription(toValue(description)),
+    ogTitle: () => withBrand(toValue(ogTitle ?? title)),
+    ogDescription: () => clampDescription(toValue(description)),
     ogImage: () => toValue(image) ?? defaultImage,
     ogType: type,
     twitterCard: 'summary_large_image',
