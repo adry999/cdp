@@ -91,7 +91,7 @@ if (import.meta.client && phrases.length > 1) {
             ></template
           ></span>
         </span>
-        <span class="mt-[0.12em] block">{{ t('home.hero.titleSuffix') }}</span>
+        <span class="block max-sm:mt-[0.12em]">{{ t('home.hero.titleSuffix') }}</span>
       </div>
       <p class="mt-[clamp(20px,2.4vw,28px)] max-w-[58ch] text-[clamp(17px,1.6vw,20px)] leading-[1.45] text-muted text-pretty">
         {{ t('home.hero.lead') }}
