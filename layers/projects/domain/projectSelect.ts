@@ -62,3 +62,24 @@ export type AdminProjectListRow = Pick<
   Tables['projects']['Row'],
   'slug_ro' | 'card_title_ro' | 'tech' | 'cover_path' | 'published_at' | 'featured' | 'sort_order'
 >
+
+// Header dropdown: only what the menu shows (name, subtitle, cover, link). Kept apart from the
+// card select so the sitewide payload stays small.
+export const NAV_PROJECT_SELECT =
+  'slug_ro, slug_en, card_title_ro, card_title_en, kind_ro, kind_en, cover_path, cover_alt_ro, cover_alt_en, service_tag, featured, sort_order' as const
+
+export type NavProjectRow = Pick<
+  Tables['projects']['Row'],
+  | 'slug_ro'
+  | 'slug_en'
+  | 'card_title_ro'
+  | 'card_title_en'
+  | 'kind_ro'
+  | 'kind_en'
+  | 'cover_path'
+  | 'cover_alt_ro'
+  | 'cover_alt_en'
+  | 'service_tag'
+  | 'featured'
+  | 'sort_order'
+>

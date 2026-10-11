@@ -49,8 +49,7 @@ function openLightbox(index: number) {
 }
 
 // The language switch and hreflang alternates only know the current route params; slugs can differ per locale.
-const setI18nParams = useSetI18nParams()
-setI18nParams({ ro: { slug: projectRow.slug_ro }, en: { slug: projectRow.slug_en ?? projectRow.slug_ro } })
+useSetLocalizedSlugs({ ro: projectRow.slug_ro, en: projectRow.slug_en ?? projectRow.slug_ro })
 
 const siteUrl = useSiteUrl()
 const primarySiteUrl = useSiteUrl('en')

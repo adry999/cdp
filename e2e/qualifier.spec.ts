@@ -172,3 +172,12 @@ test('POST /api/contact is not found while the qualifier flag is off', async ({ 
   const response = await request.post('http://localhost:3012/api/contact', { data: {} })
   expect(response.status()).toBe(404)
 })
+
+test('header CTA on a service page opens the dialog with that service stage preselected', async ({ page }) => {
+  await page.goto('/servicii/aplicatie-web')
+  await dismissConsentBanner(page)
+  await page.locator('header').getByRole('button', { name: /Discută un proiect/ }).click()
+  const dialog = page.getByRole('dialog', { name: DIALOG_NAME })
+  await expect(dialog).toBeVisible()
+  await expect(dialog.locator('input[name="qualifier-stage"][value="A"]')).toBeChecked()
+})

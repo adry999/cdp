@@ -6,6 +6,7 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 
 - `useLeadSubmission()` → `{ status: AsyncStatus, fieldErrors, error: AppError | null, submit(submission) }`.
 - `useNewLeadsCount()` → `{ count: Ref<number | null> }` — active leads with `status = 'nou'` (head-only count, refetched on route change; `null` on error). Used by the admin sidebar badge.
+- `useContactModal()` → `{ isOpen, stage, returnFocusTo, open({ stage?, returnFocusTo? }), close }` — state of the contact dialog. `open` pre-selects a stage chip and remembers where focus returns on close (default: the element focused at that moment). The root `useContactCta` composable (`app/composables/`) decides what a "Discută un proiect" button does: scroll to `#contact` on the homepage, link to `/contact` on that page, open the qualifier when `NUXT_PUBLIC_QUALIFIER_ENABLED` is on, otherwise this dialog.
 - `ContactSubmission`, `ContactFieldErrors` — domain types for a compatible submission.
 - `LEADS_EN_PENDING_PATHS` — RO paths whose EN copy is still Romanian (`/contact`); composed by the root `app/utils/enPendingTranslation.ts`.
 
@@ -24,7 +25,8 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 
 ## Components
 
-- `LeadsContactForm` — inline contact form; pre-selects the stage chip from `?serviciu=<ro slug>` / `?service=<en slug>` (core's `stageForServiceParam`; unknown values ignored, never overrides a picked stage); maps domain error codes to `home.contact.form.*` i18n keys.
+- `LeadsContactModal` — the dialog (teleported to `body`, mounted once in the default layout when the qualifier is off): focus moves to the first field, Tab is trapped (core `useFocusTrap`), Escape and a click on the backdrop close it, the page scroll is locked, focus returns to the trigger. Wraps `LeadsContactForm variant="modal"` and replaces its success message with the next-steps list. Chips pre-select the stage of the service page it was opened from.
+- `LeadsContactForm` — props `variant` (`'page'` default, `'modal'`: no "how did you hear" field, name and email side by side) and `stage` (pre-selected chip); a `#success` slot replaces the confirmation. Inline contact form; pre-selects the stage chip from `?serviciu=<ro slug>` / `?service=<en slug>` (core's `stageForServiceParam`; unknown values ignored, never overrides a picked stage); maps domain error codes to `home.contact.form.*` i18n keys.
 
 ## Depends on
 

@@ -6,6 +6,10 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const { consent, showBanner, acceptAll, rejectAll, savePreferences } = useCookieConsent()
 
+// Prototype size: 44px high; AppButton's own padding and the inherited line-height make it 52.
+const outlineButtonClass = 'px-[18px]! py-[11px]! leading-5'
+const inkButtonClass = 'px-[19px]! py-3! leading-5'
+
 const customizing = ref(false)
 const draft = reactive({ analytics: false, marketing: false })
 
@@ -51,11 +55,11 @@ watch(bannerRef, (el) => {
         </p>
 
         <div v-if="!customizing" class="flex flex-wrap items-center gap-3">
-          <AppButton variant="outline" type="button" @click="openCustomize">{{
+          <AppButton variant="outline" type="button" :class="outlineButtonClass" @click="openCustomize">{{
             t('cookieBanner.customize')
           }}</AppButton>
-          <AppButton variant="outline" type="button" @click="rejectAll">{{ t('cookieBanner.rejectAll') }}</AppButton>
-          <AppButton variant="outline" type="button" @click="acceptAll">{{ t('cookieBanner.acceptAll') }}</AppButton>
+          <AppButton variant="outline" type="button" :class="outlineButtonClass" @click="rejectAll">{{ t('cookieBanner.rejectAll') }}</AppButton>
+          <AppButton variant="outline" type="button" :class="outlineButtonClass" @click="acceptAll">{{ t('cookieBanner.acceptAll') }}</AppButton>
         </div>
 
         <div v-else class="flex flex-wrap items-center gap-4">
@@ -67,9 +71,9 @@ watch(bannerRef, (el) => {
             <input v-model="draft.marketing" type="checkbox" >
             {{ t('cookieBanner.marketingLabel') }}
           </label>
-          <AppButton variant="outline" type="button" @click="customizing = false">{{ t('cookieBanner.back') }}</AppButton>
-          <AppButton variant="outline" type="button" @click="rejectAll">{{ t('cookieBanner.rejectAll') }}</AppButton>
-          <AppButton variant="ink" type="button" @click="save">{{ t('cookieBanner.save') }}</AppButton>
+          <AppButton variant="outline" type="button" :class="outlineButtonClass" @click="customizing = false">{{ t('cookieBanner.back') }}</AppButton>
+          <AppButton variant="outline" type="button" :class="outlineButtonClass" @click="rejectAll">{{ t('cookieBanner.rejectAll') }}</AppButton>
+          <AppButton variant="ink" type="button" :class="inkButtonClass" @click="save">{{ t('cookieBanner.save') }}</AppButton>
         </div>
       </div>
     </div>

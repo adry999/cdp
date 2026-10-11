@@ -20,6 +20,9 @@ public API of `layers/qualifier`.
   canonical order; drives the `/proiecte` filter chips.
 - `usePublishedProjects()` — `{ projects }`, the published card rows behind the shared
   `'projects'` async-data key (`GET /api/projects` via `data/projectsRepository.ts`).
+- `useNavProjects()` — `{ navProjects }`, published projects grouped by `ServiceTagId` (at most four each) for the
+  header dropdown, behind the `'nav-projects'` async-data key. A failed fetch degrades to no projects.
+- `MappedNavProject` — the nav dropdown item (title, subtitle, cover, slug).
 - `MappedProject`, `MappedProjectCard`, `ProjectRow`, `ProjectCardRow`,
   `ProjectFactRow`, `ProjectStackRow`, `ProjectStatRow`, `ProjectImageRow` —
   domain types. `ProjectRow` extends `ProjectCardRow`.
@@ -51,7 +54,8 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
 - `GET /api/projects` — `server/api/`, published projects only, via
   `domain/projectSelect.ts`'s `PROJECT_CARD_SELECT` (card columns only — kept
   light for every list consumer). `GET /api/projects/[slug]` uses the full
-  `PROJECT_SELECT`.
+  `PROJECT_SELECT`. `GET /api/projects/nav` returns `NavProjectRow[]` (name, kind, cover, slugs, tag; published only,
+  featured first, at most four per service), via `server/services/listNavProjects.ts`.
 - `POST /api/admin/revalidate` — `server/api/admin/`, admin-only
   (`requireAdmin` from `core`: Supabase session + `app_users` row, 401/403
   otherwise). The strategy lives in `server/services/revalidatePublicCache.ts`

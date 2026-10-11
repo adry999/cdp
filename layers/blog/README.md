@@ -45,6 +45,10 @@ only.
 - `domain/category.ts` — category codes, localized URL slugs and names, guards.
   `CATEGORIES`, `CATEGORY_CODES`, `isCategoryCode` are re-exported from `index.ts` (used by `layers/news`).
 
+## Components
+
+- `BlogLatestPosts` — renderless; fetches the newest published posts (`GET /api/blog?limit=`) and passes them to the default slot as `{ posts }` (`path`, `title`, `category` name, `to`). Used by the site footer.
+
 ## Public API (server) — `server/index.ts`
 
 - `buildBlogRss(event, locale)` — the RSS 2.0 document for one locale's
