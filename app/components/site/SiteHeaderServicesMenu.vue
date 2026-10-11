@@ -157,7 +157,7 @@ onBeforeUnmount(() => {
         <div
           class="pointer-events-auto grid w-[min(860px,100%)] grid-cols-[230px_minmax(0,1fr)] overflow-hidden rounded-b border border-t-0 border-hairline bg-paper font-sans text-base normal-case tracking-normal shadow-dropdown"
         >
-          <div class="flex flex-col gap-5 border-r border-hairline bg-hatch py-[22px]">
+          <div class="flex flex-col gap-5 border-r border-hairline bg-panel py-[22px]">
             <div v-for="group in groups" :key="group.label" class="flex flex-col">
               <div class="px-5 pb-2 eyebrow-sm text-muted">{{ group.label }}</div>
               <NuxtLink
@@ -167,7 +167,7 @@ onBeforeUnmount(() => {
                 class="block border-l-2 py-[9px] pl-[18px] pr-5 text-[15px] leading-[1.3] hover:text-ink"
                 :class="
                   selected?.slug === service.slug
-                    ? 'border-signal bg-paper font-semibold text-ink'
+                    ? 'border-signal bg-transparent font-semibold text-ink'
                     : 'border-transparent text-muted'
                 "
                 :aria-current="service.slug === currentSlug ? 'page' : undefined"
@@ -206,6 +206,7 @@ onBeforeUnmount(() => {
                   :src="activeProject.coverPath ?? undefined"
                   :alt="activeProject.coverAlt"
                   sizes="xs:400px lg:400px"
+                  class="rounded-[3px]! bg-hatch object-left-top"
                 />
               </NuxtLink>
             </div>

@@ -17,16 +17,17 @@
   --color-muted-ink: #8D8880;
   --color-body-ink: #B4AFA6;
   --color-hairline-ink: rgba(250, 248, 244, 0.18);
-  --color-rule: #C9C3B8;
+  --color-rule: #C9C4BA;
+  --color-panel: #F5F2EC;
 
   --font-sans: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --text-lead: clamp(16px, 1.4vw, 18px);
 
-  --shadow-modal: 0 24px 80px -20px rgba(11, 11, 11, 0.35);
-  --shadow-header: 0 1px 0 var(--color-hairline), 0 6px 18px rgba(11, 11, 11, 0.06);
-  --shadow-dropdown: 0 12px 32px rgba(11, 11, 11, 0.1);
+  --shadow-modal: 0 24px 80px -20px rgba(11, 11, 11, 0.45);
+  --shadow-header: 0 10px 24px -18px rgba(11, 11, 11, 0.35);
+  --shadow-dropdown: 0 28px 48px -30px rgba(11, 11, 11, 0.45);
 
   --container-site: 1280px;
 
@@ -50,7 +51,7 @@
 }
 
 @utility eyebrow {
-  @apply font-mono text-xs uppercase tracking-[0.08em];
+  @apply font-mono text-[12px] uppercase tracking-[0.08em];
 }
 
 @utility eyebrow-sm {
