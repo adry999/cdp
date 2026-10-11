@@ -170,9 +170,13 @@ useJsonLd(
       </template>
     </ProjectsCaseStudySection>
 
-    <ProjectsCaseStudySection v-if="sections.midway" number="04" :label="t('caseStudy.sections.midway.label')">
+    <ProjectsCaseStudySection
+      v-if="sections.midway"
+      number="04"
+      :label="t('caseStudy.sections.midway.label')"
+      :heading="t('caseStudy.sections.midway.heading')"
+    >
       <template v-if="star.incident">
-        <h2 class="m-0 max-w-[28ch] heading-section text-pretty">{{ t('caseStudy.sections.midway.heading') }}</h2>
         <div class="mt-[clamp(24px,3vw,36px)] overflow-hidden rounded border border-ink">
           <div v-if="star.incident.found || star.incident.risk || star.incident.action" class="flex flex-col gap-5 p-[clamp(20px,2.5vw,28px)]">
             <div v-if="star.incident.found" class="flex flex-wrap gap-x-[clamp(16px,3vw,32px)] gap-y-1.5">
@@ -200,7 +204,7 @@ useJsonLd(
         </div>
       </template>
       <template v-if="caseStudy.obstacleParagraphs.length">
-        <div class="eyebrow text-muted" :class="star.incident ? 'mt-[clamp(32px,4vw,48px)]' : undefined">
+        <div class="mt-[clamp(32px,4vw,48px)] eyebrow text-muted">
           {{ t('caseStudy.otherObstacles') }}
         </div>
         <p
