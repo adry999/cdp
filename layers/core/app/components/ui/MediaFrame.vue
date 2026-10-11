@@ -40,7 +40,7 @@ const intrinsicSize = computed(() => {
     :loading="priority ? 'eager' : 'lazy'"
     :fetchpriority="priority ? 'high' : undefined"
     :preload="priority ? { fetchPriority: 'high' } : undefined"
-    :class="[aspectClass, 'block w-full rounded border border-hairline object-cover']"
+    :class="[aspectClass, 'block w-full rounded border border-hairline object-cover object-top']"
   />
   <div
     v-else

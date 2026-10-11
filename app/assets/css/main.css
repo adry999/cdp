@@ -33,6 +33,11 @@
 
   --text-lead: clamp(16px, 1.4vw, 18px);
 
+  /* The design inherits the body's 1.6 everywhere; Tailwind's per-size line-heights would override it. */
+  --text-xs--line-height: 1.6;
+  --text-sm--line-height: 1.6;
+  --text-base--line-height: 1.6;
+
   --shadow-modal: 0 24px 80px -20px rgba(11, 11, 11, 0.45);
   --shadow-header: 0 10px 24px -18px rgba(11, 11, 11, 0.35);
   --shadow-dropdown: 0 28px 48px -30px rgba(11, 11, 11, 0.45);
