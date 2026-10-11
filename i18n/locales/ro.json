@@ -536,6 +536,9 @@
     "features": {
       "heading": "Ce include"
     },
+    "projects": {
+      "label": "Proiecte"
+    },
     "hero": {
       "audienceLabel": "Pentru"
     },
