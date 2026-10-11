@@ -24,6 +24,12 @@ const grantsHref = computed(() =>
   grantsService ? localePath({ name: 'servicii-slug', params: { slug: grantsService.routeSlug[locale.value] } }) : undefined,
 )
 const grantSteps = computed(() => i18nList('home.services.grants.steps'))
+// The contact form on the homepage preselects the grants stage from this link parameter.
+const grantsContact = computed(() => ({
+  path: localePath('index'),
+  query: { [locale.value === 'ro' ? 'serviciu' : 'service']: grantsService?.routeSlug[locale.value] },
+  hash: '#contact',
+}))
 const { el: timelineEl, isVisible: drawn, hasMounted: mounted } = useReveal({ once: true, threshold: 0.3 })
 
 const nodeEls = ref<HTMLButtonElement[]>([])
@@ -169,24 +175,31 @@ function startAt(id: StageId) {
       </NuxtLink>
     </p>
 
-    <div v-if="grantsEnabled" class="mt-[clamp(32px,4vw,48px)] flex flex-col gap-4 rounded border border-hairline bg-hatch p-[clamp(20px,2.5vw,28px)]">
-      <span class="eyebrow text-muted">
-        <span aria-hidden="true" class="text-signal">●</span> {{ t('home.services.grants.kicker') }}
+    <div
+      v-if="grantsEnabled"
+      class="mt-[clamp(32px,4vw,48px)] flex flex-col gap-4 rounded border border-accent-border bg-accent-surface p-[clamp(20px,2.5vw,28px)]"
+    >
+      <span class="eyebrow text-signal-text">
+        <span aria-hidden="true">●</span> {{ t('home.services.grants.kicker') }}
       </span>
       <h3 class="m-0 max-w-[30ch] text-[clamp(20px,2.4vw,26px)] font-medium leading-[1.2] tracking-[-0.02em] text-pretty">
         {{ t('home.services.grants.title') }}
       </h3>
       <p class="m-0 max-w-[62ch] text-base text-muted text-pretty">{{ t('home.services.grants.body') }}</p>
-      <ul class="m-0 flex list-none flex-wrap gap-2 p-0">
-        <li v-for="(step, i) in grantSteps" :key="i">
-          <TechChip class="bg-paper">{{ String(i + 1).padStart(2, '0') }} {{ step }}</TechChip>
+      <ol class="m-0 flex list-none flex-wrap gap-2 p-0">
+        <li
+          v-for="(step, i) in grantSteps"
+          :key="i"
+          class="rounded border border-accent-border bg-paper px-[9px] py-[5px] eyebrow text-ink"
+        >
+          <span class="text-signal-text">{{ String(i + 1).padStart(2, '0') }}</span> {{ step }}
         </li>
-      </ul>
+      </ol>
       <div class="mt-1 flex flex-wrap items-center gap-5">
-        <AppButton variant="ink" :href="grantsHref">{{ t('home.services.grants.cta') }}</AppButton>
+        <AppButton variant="signal" :href="grantsHref">{{ t('home.services.grants.cta') }}</AppButton>
         <NuxtLink
-          :to="`${localePath('index')}#contact`"
-          class="eyebrow text-muted hover:text-signal-text"
+          :to="grantsContact"
+          class="eyebrow text-ink underline decoration-signal underline-offset-4 hover:text-signal-text"
         >
           {{ t('home.services.grants.contact') }}
         </NuxtLink>

@@ -27,6 +27,9 @@
   --color-on-inverse: #FAF8F4;
   /* Backdrop behind dialogs; stays near-black in both themes so it always dims the page. */
   --color-scrim: #0B0B0B;
+  /* Highlighted block (grants): a warm surface with a translucent signal border. */
+  --color-accent-surface: #F1EEE7;
+  --color-accent-border: rgba(255, 77, 20, 0.3);
 
   --font-sans: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -74,8 +77,10 @@
   --color-body-ink: #B4AFA6;
   --color-hairline-ink: rgba(242, 239, 233, 0.18);
   --color-rule: #4A4741;
-  --color-panel: #161514;
+  --color-panel: #161615;
   --color-inverse: #1A1918;
+  --color-accent-surface: #1F1813;
+  --color-accent-border: rgba(255, 77, 20, 0.38);
   --color-on-inverse: #F2EFE9;
   --shadow-modal: 0 24px 80px -20px rgba(0, 0, 0, 0.7);
 }
