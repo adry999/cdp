@@ -1,16 +1,21 @@
 <script setup lang="ts">
 // Default slot renders below the intro.
-defineProps<{
-  number: string
-  label: string
-  title: string
-  intro: string
-}>()
+// `plain` drops the dot-matrix background (service pages follow the flat prototype hero).
+withDefaults(
+  defineProps<{
+    number: string
+    label: string
+    title: string
+    intro: string
+    plain?: boolean
+  }>(),
+  { plain: false },
+)
 </script>
 
 <template>
   <SiteSection section-id="top" :number="number" :label="label" padding="hero" :top-border="false">
-    <template #background>
+    <template v-if="!plain" #background>
       <CoreInteractiveBackground variant="dot-matrix" />
     </template>
     <h1
