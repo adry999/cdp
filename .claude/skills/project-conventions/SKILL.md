@@ -119,7 +119,7 @@ layers/<modul>/
 
 - Textul de interfață în `i18n/locales/{ro,en}.json`; proiectele și solicitările vin din Supabase, restul conținutului stă în fișiere tipate din `layers/content/data/` și din module.
 - Tokenii de design doar în tema Tailwind (`app/assets/css/main.css`); fără culori hardcodate.
-- Fără bibliotecă de componente UI sau de iconuri.
+- Fără bibliotecă de componente UI. Iconuri prin `@nuxt/icon`, doar din colecțiile locale `@iconify-json/*` (vezi mai jos).
 
 ### Git
 
@@ -140,7 +140,7 @@ layers/<modul>/
 
 - Tokenii (culori, `--spacing-gutter`, `--spacing-section-gap`, `--breakpoint-nav`) și utilitarele de temă stau în `app/assets/css/main.css`. Utilitare: `media-placeholder`, `eyebrow`, `eyebrow-sm`, `heading-section`, `heading-display`, `heading-card`, `container-site`, `grid-fit-<px>`, `grid-fit-safe-<px>`. Textul mic portocaliu pe fundal deschis folosește `text-signal-text` (`#C2370A`, AA); `text-signal` rămâne pentru accente și fundaluri închise.
 - Tokenii au valori light și dark: `:root[data-theme="dark"]` în `main.css` le suprascrie, iar `data-theme` e setat înainte de randare de scriptul inline din `nuxt.config.ts`. Componentele nu hardcodează culori; suprafețele care rămân închise în ambele teme (secțiuni `inverted`, tooltip-uri, lightbox) folosesc `bg-inverse text-on-inverse`; variantul `dark:` urmează atributul. Logo-urile se comută cu `dark:hidden` / `hidden dark:block`.
-- Icon-urile sunt doar componente SVG inline proprii (ex. `CoreStageIcon`, `text-signal` pe `bg-signal/10`); fără biblioteci sau pachete de iconuri (CLAUDE.md).
+- Iconuri: `<Icon name="colecție:nume">` din `@nuxt/icon`, cu colecțiile instalate local (`logos`, `lucide`, `simple-icons`) și incluse în bundle-ul client (`icon.clientBundle` din `nuxt.config.ts`); `fallbackToApi: false`, deci nicio cerere la Iconify. Un icon nou intră în `clientBundle` (logo-urile tehnologiilor: `TECH_ICONS` din `layers/core/shared/utils/techIcons.ts`). Mărcile negre (Next.js, Vercel, OpenAI) folosesc varianta `simple-icons`, în `currentColor`, ca să se vadă și în tema întunecată. Componentele SVG proprii (ex. `CoreStageIcon`) rămân valabile.
 - Primitivele stau în `layers/core/app/components/ui/` (`SiteSection`, `PageHero`, `SectionLabel`, `RowList`, `RowListItem`, `FaqList`, `FactCard`, `TableRow`, `TechChip`, `ToggleChip`, `TextLink`, `MediaFrame`, `AppButton`, `CoreHoneypotField`) și în `components/admin/`.
 - Fără secțiune, hero, listă sau chip scrise de mână: se folosește primitiva. Un tipar nou care se repetă (3+ locuri) devine primitivă sau utilitar, denumit după rol sau mărime, niciodată după pagină.
 
@@ -201,7 +201,8 @@ Doar decizii care schimbă sau extind regulile de mai sus. Un caz deja acoperit 
 - 2026-10-06: Titlul, descrierea, OG și JSON-LD ale paginilor trec prin `usePageSeo` și `useJsonLd` din `core`, nu prin `useSeoMeta` / `useHead` directe (rămân directe doar `robots` și layout-urile) — audit 2026-10-06.
 - 2026-10-06: `requireAdmin` stă în `core` și citește id-ul utilizatorului din `sub`-ul claim-urilor JWT, apoi verifică `app_users` cu clientul service-role — audit 2026-10-06.
 - 2026-10-06: Textul mic portocaliu pe fundal deschis folosește tokenul signal-text (#C2370A, AA); signal rămâne pentru accente și fundaluri închise — audit Lighthouse.
-- 2026-10-07: Componentele SVG inline proprii (ex. `CoreStageIcon`) sunt permise; bibliotecile și pachetele de iconuri nu — etapele de servicii cer distincție vizuală, iar o dependență nouă nu e justificată — CLAUDE.md.
+- 2026-10-07: Componentele SVG inline proprii (ex. `CoreStageIcon`) sunt permise — etapele de servicii cer distincție vizuală.
+- 2026-10-11: `@nuxt/icon` revine (scos în #34), cu colecții locale și bundle client, pentru logo-urile tehnologiilor adăugate de Gheorghe pe `copyright` — decizia utilizatorului; înlocuiește interdicția de biblioteci de iconuri din 2026-10-07.
 - 2026-10-09: Modulul `news` (noutăți externe: rezumat propriu + sursă, în `news_items`) poate importa `blog` (categoriile și data) — are ciclu de viață și admin propriu, deci modul nou.
 - 2026-10-09: Proiectul folosește structura container + main: repo-ul în `main\`, worktree-uri ca foldere-frate `wt-<branch>\`, temporare în `.tmp\` — skill-ul container-layout.
 - 2026-10-11: Fundalul hero-ului de pe homepage se alege din admin (tabel home_settings, un rând); variabila de mediu rămâne valoarea implicită — decizia utilizatorului, excepție de la „setările stau în cod”.
