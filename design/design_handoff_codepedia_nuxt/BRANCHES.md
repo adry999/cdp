@@ -2,6 +2,9 @@
 
 Repo: `adry999/cdp` · bază: `main` · design de referință: `design/*.dc.html` (deschide în browser, cu `support.js` alături).
 
+## Pasul 0 — audit înainte de orice branch
+`main` are deja o parte din aceste feature-uri (SiteHeader*, CoreThemeToggle, LeadsContactModal, navProjects/nav_services, admin/hero, leads.service). Pentru fiecare branch de mai jos: compară designul cu codul din `main`, notează în descrierea PR-ului ce există deja și implementează **doar diferențele**. Dacă nu e nimic de făcut, sari branch-ul și spune asta.
+
 ## Reguli generale (pentru fiecare branch)
 
 1. **Un feature = un branch = un PR.** Fiecare branch pornește din `main` actualizat. Nu combina feature-uri. Nu face merge între branch-urile de feature.
@@ -17,7 +20,8 @@ Repo: `adry999/cdp` · bază: `main` · design de referință: `design/*.dc.html
 ## 1. `feat/nav-v2` — meniul principal
 **Design:** `design/Codepedia.dc.html` (header), specificația completă în `MENIU.md`
 **Fișiere:** `app/utils/siteNav.ts`, `app/components/site/SiteHeader.vue`, `layers/services/data/serviceLinks.ts`
-- Același meniu pe toate paginile: Servicii ▾ · Proiecte · Proces · Blog · RO/EN · CTA „Discută un proiect”. Prețuri, Despre și Noutăți apar doar în footer.
+- Același meniu pe toate paginile: Servicii ▾ · Proiecte · Proces · Blog, apoi în dreapta, în ordinea importanței de la stânga la dreapta: **CTA → RO/EN → temă (lună/soare)**. Prețuri, Despre și Noutăți apar doar în footer.
+- Pe mobil (meniul full-screen): limba și tema sus, CTA portocaliu plin jos.
 - Dropdown-ul Servicii are 2 grupe și maxim 4 proiecte per serviciu, cu captură 16:10 la hover. **Fără metrici** sub proiecte.
 - Header-ul se micșorează la scroll (64→52px) și primește umbră. Bară de progres pe articolele de blog.
 - Sub 900px: hamburger, meniu full-screen, CTA portocaliu plin.
@@ -25,8 +29,8 @@ Repo: `adry999/cdp` · bază: `main` · design de referință: `design/*.dc.html
 
 ## 2. `feat/nav-projects-from-db` — proiectele din dropdown vin din DB
 **Depinde de:** `feat/nav-v2`
-- Proiectele vin din `projects` (`service_tag`, `card_title_*`, coperta din `project-media`), doar cele cu `published_at` setat.
-- Migrare `nav_services text[]` pentru proiectele afișate la mai multe servicii.
+- **Există deja în `main`** (`20261011070744_projects_nav_services.sql`, `navProjects.ts`, `GET /api/projects/nav`). Verifică doar că header-ul îl folosește peste tot.
+- Regula: doar proiecte publicate, `featured` primele, apoi `sort_order`, maxim 4 per serviciu; un proiect poate apărea la mai multe servicii (`nav_services`).
 **Gata când:** o ciornă (ex. Mees 68) nu apare în meniu; publicarea ei din admin o face să apară fără deploy.
 
 ## 3. `feat/theme-dark` — temă întunecată
@@ -84,6 +88,8 @@ Repo: `adry999/cdp` · bază: `main` · design de referință: `design/*.dc.html
 - Filtre: toate / draft / publicate. Cele 5 ciorne apar cu status Draft: Mees 68, AS Factorum, FC Scânteia, Fleet Digital Twin, Kindergarten app.
 - Pe ciornă, un checklist înainte de „Publică”: capturi încărcate, nume client + acord, link live, cifre și citat (opționale). Kindergarten app: avertisment „doar capturi pe date demo”.
 - Reordonare drag & drop, flag `featured` (homepage), duplicare, ștergere cu confirmare.
+- Editor (`view=project`): „Serviciu” + „Apare în meniu la” (există în `ProjectsEditorIdentity.vue`). De adăugat: panoul **Previzualizare meniu** din design, care arată live proiectele per serviciu (aceeași logică ca `selectNavProjects`).
+- Admin Hero (`view=hero`) și coloana Serviciu în Solicitări există deja; doar compară cu designul.
 **Gata când:** publicarea unei ciorne o face să apară pe /proiecte și în meniu, fără deploy.
 
 ## 11. `feat/seo-brand` — SEO și numele brandului

@@ -45,11 +45,14 @@
   <div style="display:flex;flex-direction:column;flex:1;min-width:0">
     <div style="display:flex;flex:none;align-items:center;justify-content:space-between;gap:16px;height:64px;border-bottom:1px solid #E2DED6;padding:0 24px">
       <div style="display:flex;align-items:center;gap:12px;min-width:0">
-        <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}"><button onClick="{{ backToLeads }}" style="border:0;background:transparent;padding:0;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862" style-hover="color:#0B0B0B">← Solicitări</button></sc-if>
+        <sc-if value="{{ isEditor }}" hint-placeholder-val="{{ false }}"><button onClick="{{ backToProjects }}" style="flex:none;white-space:nowrap;border:0;background:transparent;padding:0;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862" style-hover="color:#0B0B0B">← Proiecte</button></sc-if>
+        <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}"><button onClick="{{ backToLeads }}" style="flex:none;white-space:nowrap;border:0;background:transparent;padding:0;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862" style-hover="color:#0B0B0B">← Solicitări</button></sc-if>
         <h1 style="margin:0;font-size:18px;font-weight:500;letter-spacing:-0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ title }}</h1>
       </div>
       <div style="display:flex;align-items:center;gap:16px">
         <sc-if value="{{ isProjects }}" hint-placeholder-val="{{ true }}"><button style="border:0;cursor:pointer;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:10px 16px;font-family:inherit;font-size:14px;font-weight:500" style-hover="background:#FF4D14">Proiect nou</button></sc-if>
+        <sc-if value="{{ isEditor }}" hint-placeholder-val="{{ false }}"><button onClick="{{ edSave }}" disabled="{{ edClean }}" style="border:0;cursor:pointer;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:10px 16px;font-family:inherit;font-size:14px;font-weight:500;opacity:{{ edBtnOpacity }}">{{ edBtnLabel }}</button></sc-if>
+        <sc-if value="{{ isHero }}" hint-placeholder-val="{{ false }}"><button onClick="{{ heroSave }}" disabled="{{ heroClean }}" style="border:0;cursor:pointer;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:10px 16px;font-family:inherit;font-size:14px;font-weight:500;opacity:{{ heroBtnOpacity }}">{{ heroBtnLabel }}</button></sc-if>
         <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}"><a href="mailto:{{ lead.email }}" style="border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:10px 16px;font-size:14px;font-weight:500" style-hover="background:#FF4D14;color:#FAF8F4">Răspunde</a></sc-if>
         <div style="display:flex;align-items:center;gap:12px;border-left:1px solid #E2DED6;padding-left:16px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">
           <span>admin@codepedia.md</span>
@@ -88,7 +91,7 @@
                   <button onClick="{{ p.cancel }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862">Anulează</button>
                 </sc-if>
                 <sc-if value="{{ p.idle }}" hint-placeholder-val="{{ true }}">
-                  <button style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862" style-hover="color:#0B0B0B">Editează</button>
+                  <button onClick="{{ p.edit }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862" style-hover="color:#0B0B0B">Editează</button>
                   <button onClick="{{ p.duplicate }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862" style-hover="color:#0B0B0B">Duplică</button>
                   <button onClick="{{ p.ask }}" style="border:0;background:transparent;padding:0;cursor:pointer;font:inherit;text-transform:inherit;letter-spacing:inherit;color:#6B6862" style-hover="color:#FF4D14">Șterge</button>
                 </sc-if>
@@ -110,11 +113,103 @@
               <div style="min-width:0;flex:1 1 180px;font-size:15px;color:#6B6862">{{ l.email }}</div>
               <div style="min-width:0;flex:1 1 140px;font-size:15px;color:#6B6862">{{ l.company }}</div>
               <div style="flex:0 0 140px;font-size:15px;color:#6B6862">{{ l.budget }}</div>
+              <div style="flex:0 0 140px;font-size:15px;color:#6B6862">{{ l.serviceLabel }}</div>
               <div style="min-width:0;flex:2 1 200px;font-size:15px;color:#6B6862;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.message }}</div>
               <div style="flex:0 0 100px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:{{ l.statusColor }}">{{ l.status }}</div>
             </button>
           </sc-for>
         </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isEditor }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Admin · Editor proiect" style="flex:1;overflow-y:auto;padding:24px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px;align-items:start;max-width:1120px">
+          <section style="border:1px solid #E2DED6;border-radius:4px;padding:24px">
+            <h2 style="margin:0;font-size:16px;font-weight:500;letter-spacing:-0.01em">Identitate</h2>
+            <div style="margin-top:16px;display:flex;flex-direction:column;gap:16px">
+              <div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Titlu card (homepage)</div>
+                <div style="margin-top:8px;border:1px solid #E2DED6;border-radius:4px;padding:10px 12px;font-size:15px;background:#FAF8F4">{{ ed.title }}</div>
+              </div>
+              <div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Tip proiect</div>
+                <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px">
+                  <sc-for list="{{ ed.tech }}" as="t" hint-placeholder-count="2">
+                    <span style="border:1px solid #E2DED6;border-radius:4px;padding:3px 7px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">{{ t }}</span>
+                  </sc-for>
+                </div>
+              </div>
+              <div>
+                <label for="ed-service" style="display:block;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Serviciu</label>
+                <select id="ed-service" value="{{ ed.serviceValue }}" onChange="{{ edSetService }}" style="margin-top:8px;width:100%;border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:10px 12px;font-family:inherit;font-size:15px;outline:none" style-focus="border-color:#0B0B0B">
+                  <option value="">—</option>
+                  <sc-for list="{{ svcOptions }}" as="s" hint-placeholder-count="6"><option value="{{ s.id }}">{{ s.id }}</option></sc-for>
+                </select>
+                <p style="margin:6px 0 0;font-size:13px;color:#6B6862">Studiile de caz asociate pe pagina serviciului.</p>
+              </div>
+              <fieldset style="margin:0;min-width:0;border:0;padding:0">
+                <legend style="padding:0;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Apare în meniu la</legend>
+                <div style="margin-top:8px;display:flex;flex-wrap:wrap;column-gap:24px;row-gap:8px">
+                  <sc-for list="{{ ed.navChecks }}" as="c" hint-placeholder-count="6">
+                    <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer">
+                      <input type="checkbox" checked="{{ c.checked }}" onChange="{{ c.toggle }}" style="accent-color:#FF4D14"></input>{{ c.label }}
+                    </label>
+                  </sc-for>
+                </div>
+                <p style="margin:8px 0 0;font-size:12px;color:#6B6862">Meniul „Servicii” afișează maximum 4 proiecte publicate per serviciu, cele de pe homepage primele.</p>
+              </fieldset>
+            </div>
+          </section>
+          <section style="border:1px solid #E2DED6;border-radius:4px;padding:24px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">
+              <h2 style="margin:0;font-size:16px;font-weight:500;letter-spacing:-0.01em">Previzualizare meniu</h2>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Max. 4 / serviciu</span>
+            </div>
+            <sc-if value="{{ ed.isDraft }}" hint-placeholder-val="{{ false }}"><p style="margin:8px 0 0;font-size:13px;color:#C23A0B">Proiectul e ciornă: apare în meniu doar după publicare.</p></sc-if>
+            <div style="margin-top:12px;display:flex;flex-direction:column">
+              <sc-for list="{{ menuPreview }}" as="g" hint-placeholder-count="6">
+                <div style="border-top:1px solid #E2DED6;padding:12px 0">
+                  <div style="display:flex;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862"><span>{{ g.label }}</span><span>{{ g.count }}</span></div>
+                  <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px">
+                    <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2">
+                      <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:{{ it.color }}">
+                        <img src="{{ it.img }}" alt="" style="flex:none;width:32px;height:20px;border:1px solid #E2DED6;border-radius:3px;object-fit:cover"></img>
+                        <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.title }}</span>
+                        <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#C23A0B">{{ it.mark }}</span>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{ g.empty }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#6B6862">Niciun proiect: serviciul apare fără proiecte.</div></sc-if>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isHero }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Admin · Hero" style="flex:1;overflow-y:auto;padding:24px">
+        <p style="margin:0 0 8px;max-width:640px;font-size:15px;color:#6B6862;text-wrap:pretty">Alege fundalul din hero-ul paginii principale. Modificarea ajunge la vizitatori în câteva minute (cache); previzualizările de mai jos o arată imediat. „Implicit” folosește variabila de mediu <code>NUXT_PUBLIC_HERO_BG_VARIANT</code> (acum: dot-matrix).</p>
+        <sc-if value="{{ heroSaved }}" hint-placeholder-val="{{ false }}"><p role="status" style="margin:0 0 16px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#C23A0B">Salvat.</p></sc-if>
+        <fieldset style="margin:16px 0 0;padding:0;border:0;display:flex;flex-direction:column;border-bottom:1px solid #E2DED6">
+          <legend style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Fundal hero</legend>
+          <sc-for list="{{ heroOptions }}" as="o" hint-placeholder-count="5">
+            <label style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;border-top:1px solid #E2DED6;padding:12px 0;cursor:pointer">
+              <input type="radio" name="hero-variant" checked="{{ o.checked }}" onChange="{{ o.select }}" style="accent-color:#FF4D14"></input>
+              <div style="min-width:0;flex:2 1 260px">
+                <div style="font-size:15px;color:#0B0B0B">{{ o.label }}</div>
+                <div style="font-size:15px;color:#6B6862">{{ o.description }}</div>
+              </div>
+              <div style="flex:0 0 90px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#C23A0B">{{ o.active }}</div>
+              <div style="flex:0 0 140px;display:flex;justify-content:flex-end;gap:16px;font-size:15px">
+                <a href="Codepedia.dc.html" target="_blank" rel="noopener" style="color:#0B0B0B">RO</a>
+                <a href="Codepedia EN.dc.html" target="_blank" rel="noopener" style="color:#0B0B0B">EN</a>
+              </div>
+            </label>
+          </sc-for>
+        </fieldset>
       </div>
     </sc-if>
 
@@ -127,6 +222,7 @@
               <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Email</div><div style="margin-top:4px;font-size:15px">{{ lead.email }}</div></div>
               <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Companie</div><div style="margin-top:4px;font-size:15px">{{ lead.company }}</div></div>
               <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Buget</div><div style="margin-top:4px;font-size:15px">{{ lead.budget }}</div></div>
+              <div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Serviciu</div><div style="margin-top:4px;font-size:15px">{{ lead.serviceLabel }}</div></div>
             </div>
             <div style="margin-top:16px;border-top:1px solid #E2DED6;padding-top:16px">
               <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#6B6862">Mesaj</div>
@@ -162,34 +258,86 @@
 </div>
 </sc-if>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;view&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;login&quot;,&quot;projects&quot;,&quot;leads&quot;,&quot;lead&quot;],&quot;default&quot;:&quot;projects&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;view&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;login&quot;,&quot;projects&quot;,&quot;project&quot;,&quot;hero&quot;,&quot;leads&quot;,&quot;lead&quot;],&quot;default&quot;:&quot;projects&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
 const NOIMG = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="30"><rect width="48" height="30" fill="#F1EEE7"/><path d="M0 30L48 0" stroke="#C9C3B8"/></svg>');
 const PROJECTS = [
-  { title: 'Startica, evidența unei grădinițe cu două filiale', img: 'assets/proiecte/startica-app-dashboard-crop.png', tech: ['Desktop', 'Windows', 'Offline'], pub: '2026-09-20', featured: true },
-  { title: 'Startica, grădiniță în Chișinău', img: 'https://startica.md/media/filer_public_thumbnails/filer_public/20/a7/20a767a2-71dc-4a4f-af3b-2a1b5a632053/grupa-2.jpeg__880x605_crop_subsampling-2_upscale.webp', tech: ['Site', 'RO/EN/RU'], pub: '2026-09-18', featured: true },
-  { title: 'Aurelia Badiur, consultant oenolog', img: 'https://aureliabadiur.com/images/hero.jpg', tech: ['Site', 'RO/EN'], pub: '2026-09-15', featured: true },
-  { title: 'EnglishMinds, școală de engleză', img: 'assets/proiecte/englishminds-class.jpg', tech: ['Brand', 'Site'], pub: '2026-09-12', featured: true },
-  { title: 'SwissCars, auto din Elveția', img: 'https://krltqxdhxiguxwookqgg.supabase.co/storage/v1/object/public/car-images/cars/ae25eba6-b9ae-4b21-9a3b-85b025e69e21.jpg', tech: ['Aplicație web', 'Stoc', 'Admin'], pub: '2026-09-10', featured: true },
-  { title: 'Bloom Florist, gestiune florărie', img: 'assets/proiecte/bloom-panou-1600.png', tech: ['Nuxt', 'Supabase'], pub: '2026-09-29', featured: true },
-  { title: 'Trucker HQ, dispatch auto', img: 'assets/proiecte/truckerhq-acasa-1600.png', tech: ['Platformă web', 'EN/RU'], pub: '2026-09-08', featured: false },
-  { title: 'Mees 68, hartă interactivă a clădirii', img: NOIMG, tech: ['Aplicație web', 'Imobiliare'], pub: null, featured: false },
-  { title: 'AS Factorum: site de business industrial', img: NOIMG, tech: ['Site static', 'SEO'], pub: null, featured: false },
-  { title: 'Site pentru clubul FC Scânteia', img: NOIMG, tech: ['Site', 'Galerie foto'], pub: null, featured: false },
-  { title: 'Geamăn digital pentru o flotă de camioane', img: NOIMG, tech: ['Aplicație web', 'Telemetrie'], pub: null, featured: false },
-  { title: 'Kindergarten app, administrare modulară pentru grădinițe', img: NOIMG, tech: ['SaaS', 'Roluri', 'GDPR'], pub: null, featured: false },
+  { title: 'Startica, evidența unei grădinițe cu două filiale', svc: 'web-app', nav: ['web-app'], img: 'assets/proiecte/startica-app-dashboard-crop.png', tech: ['Desktop', 'Windows', 'Offline'], pub: '2026-09-20', featured: true },
+  { title: 'Startica, grădiniță în Chișinău', svc: 'website', nav: ['website'], img: 'https://startica.md/media/filer_public_thumbnails/filer_public/20/a7/20a767a2-71dc-4a4f-af3b-2a1b5a632053/grupa-2.jpeg__880x605_crop_subsampling-2_upscale.webp', tech: ['Site', 'RO/EN/RU'], pub: '2026-09-18', featured: true },
+  { title: 'Aurelia Badiur, consultant oenolog', svc: 'website', nav: ['website'], img: 'https://aureliabadiur.com/images/hero.jpg', tech: ['Site', 'RO/EN'], pub: '2026-09-15', featured: true },
+  { title: 'EnglishMinds, școală de engleză', svc: null, nav: [], img: 'assets/proiecte/englishminds-class.jpg', tech: ['Brand', 'Site'], pub: '2026-09-12', featured: true },
+  { title: 'SwissCars, auto din Elveția', svc: 'web-app', nav: ['web-app'], img: 'https://krltqxdhxiguxwookqgg.supabase.co/storage/v1/object/public/car-images/cars/ae25eba6-b9ae-4b21-9a3b-85b025e69e21.jpg', tech: ['Aplicație web', 'Stoc', 'Admin'], pub: '2026-09-10', featured: true },
+  { title: 'Bloom Florist, gestiune florărie', svc: 'web-app', nav: ['web-app'], img: 'assets/proiecte/bloom-panou-1600.png', tech: ['Nuxt', 'Supabase'], pub: '2026-09-29', featured: true },
+  { title: 'Trucker HQ, dispatch auto', svc: 'web-app', nav: ['web-app'], img: 'assets/proiecte/truckerhq-acasa-1600.png', tech: ['Platformă web', 'EN/RU'], pub: '2026-09-08', featured: false },
+  { title: 'Mees 68, hartă interactivă a clădirii', svc: 'web-app', nav: ['web-app'], img: NOIMG, tech: ['Aplicație web', 'Imobiliare'], pub: null, featured: false },
+  { title: 'AS Factorum: site de business industrial', svc: 'website', nav: ['website'], img: NOIMG, tech: ['Site static', 'SEO'], pub: null, featured: false },
+  { title: 'Site pentru clubul FC Scânteia', svc: 'website', nav: ['website'], img: NOIMG, tech: ['Site', 'Galerie foto'], pub: null, featured: false },
+  { title: 'Geamăn digital pentru o flotă de camioane', svc: 'web-app', nav: ['web-app'], img: NOIMG, tech: ['Aplicație web', 'Telemetrie'], pub: null, featured: false },
+  { title: 'Kindergarten app, administrare modulară pentru grădinițe', svc: 'web-app', nav: ['web-app'], img: NOIMG, tech: ['SaaS', 'Roluri', 'GDPR'], pub: null, featured: false },
 ];
 const LEADS = [
-  { date: '2026-10-01', name: 'Ion Rusu', email: 'ion@exemplu.md', company: 'Agro Nord SRL', budget: '2.000 – 5.000 EUR', status: 'nou', message: 'Avem designul în Figma pentru o platformă de comenzi B2B. Căutăm echipă pentru frontend și baza de date.', source: 'Google', page: '/servicii/aplicatie-web', referrer: 'https://www.google.com/', utm: 'utm_source=google · utm_medium=cpc', lang: 'ro' },
-  { date: '2026-09-30', name: 'Anna Keller', email: 'anna@keller.de', company: 'Keller Logistik', budget: 'peste 5.000 EUR', status: 'in_discutie', message: 'We want to automate invoice processing with an LLM step and a review dashboard.', source: 'LinkedIn', page: '/en', referrer: 'https://www.linkedin.com/', utm: '—', lang: 'en' },
-  { date: '2026-09-28', name: 'Maria Ceban', email: 'maria@studio.md', company: '—', budget: 'sub 1.000 EUR', status: 'castigat', message: 'Landing page pentru un studio de yoga, cu formular de programare pe Telegram.', source: 'Recomandare', page: '/', referrer: '—', utm: '—', lang: 'ro' },
-  { date: '2026-09-25', name: 'Victor Lungu', email: 'victor@shop.ro', company: 'Lungu Shop', budget: '1.000 – 2.000 EUR', status: 'refuzat', message: 'Migrare magazin WooCommerce pe Shopify, cu import produse.', source: 'Instagram', page: '/servicii/shopify', referrer: 'https://l.instagram.com/', utm: 'utm_source=instagram', lang: 'ro' },
-  { date: '2026-09-22', name: 'Elena Popa', email: 'elena@clinic.md', company: 'Clinica Vita', budget: 'Nu știu încă', status: 'nou', message: 'Avem un site vechi și vrem o aplicație de programări pentru pacienți.', source: '—', page: '/contact', referrer: '—', utm: '—', lang: 'ro' },
+  { date: '2026-10-01', name: 'Ion Rusu', email: 'ion@exemplu.md', company: 'Agro Nord SRL', budget: '2.000 – 5.000 EUR', service: 'web-app', status: 'nou', message: 'Avem designul în Figma pentru o platformă de comenzi B2B. Căutăm echipă pentru frontend și baza de date.', source: 'Google', page: '/servicii/aplicatie-web', referrer: 'https://www.google.com/', utm: 'utm_source=google · utm_medium=cpc', lang: 'ro' },
+  { date: '2026-09-30', name: 'Anna Keller', email: 'anna@keller.de', company: 'Keller Logistik', budget: 'peste 5.000 EUR', service: 'ai-automation', status: 'in_discutie', message: 'We want to automate invoice processing with an LLM step and a review dashboard.', source: 'LinkedIn', page: '/en', referrer: 'https://www.linkedin.com/', utm: '—', lang: 'en' },
+  { date: '2026-09-28', name: 'Maria Ceban', email: 'maria@studio.md', company: '—', budget: 'sub 1.000 EUR', service: 'website', status: 'castigat', message: 'Landing page pentru un studio de yoga, cu formular de programare pe Telegram.', source: 'Recomandare', page: '/', referrer: '—', utm: '—', lang: 'ro' },
+  { date: '2026-09-25', name: 'Victor Lungu', email: 'victor@shop.ro', company: 'Lungu Shop', budget: '1.000 – 2.000 EUR', service: 'shopify', status: 'refuzat', message: 'Migrare magazin WooCommerce pe Shopify, cu import produse.', source: 'Instagram', page: '/servicii/shopify', referrer: 'https://l.instagram.com/', utm: 'utm_source=instagram', lang: 'ro' },
+  { date: '2026-09-22', name: 'Elena Popa', email: 'elena@clinic.md', company: 'Clinica Vita', budget: 'Nu știu încă', service: null, status: 'nou', message: 'Avem un site vechi și vrem o aplicație de programări pentru pacienți.', source: '—', page: '/contact', referrer: '—', utm: '—', lang: 'ro' },
+];
+const SVC = { website: 'Website', 'web-app': 'Aplicație web', wordpress: 'WordPress', shopify: 'Shopify', 'ai-automation': 'Automatizare cu AI', granturi: 'Proiecte finanțate prin granturi' };
+const SVC_IDS = Object.keys(SVC);
+const NAV_MAX = 4;
+// mirrors selectNavProjects(): featured first, then sort order, capped per service; published only
+function navGroups(list) {
+  const counts = {}; const groups = Object.fromEntries(SVC_IDS.map(id => [id, []]));
+  list.map((p, i) => ({ p, i })).filter(x => x.p.pub).sort((a, b) => Number(b.p.featured) - Number(a.p.featured) || a.i - b.i)
+    .forEach(({ p }) => [...new Set(p.nav)].forEach(tag => { if (!groups[tag]) return; if ((counts[tag] || 0) >= NAV_MAX) return; counts[tag] = (counts[tag] || 0) + 1; groups[tag].push(p); }));
+  return groups;
+}
+const HERO_OPTS = [
+  { id: 'dot-matrix', label: 'dot-matrix', description: 'Grilă de puncte care se curbează în jurul cursorului, cu strălucire portocalie.' },
+  { id: 'constellation', label: 'constellation', description: 'Particule în derivă care se unesc prin linii portocalii lângă cursor.' },
+  { id: 'light-orbs', label: 'light-orbs', description: 'Sfere luminoase moi care urmăresc cursorul.' },
+  { id: 'none', label: 'none', description: 'Fără fundal interactiv.' },
+  { id: null, label: 'Implicit (din variabila de mediu: dot-matrix)', description: 'Folosește valoarea din NUXT_PUBLIC_HERO_BG_VARIANT.' },
 ];
 const ST = { nou: 'Nou', in_discutie: 'În discuție', castigat: 'Câștigat', refuzat: 'Refuzat' };
 const ST_COLOR = { nou: '#FF4D14', in_discutie: '#0B0B0B', castigat: '#0B0B0B', refuzat: '#6B6862' };
 const fmt = d => d ? new Date(d).toLocaleDateString('ro-RO') : '—';
 class Component extends DCLogic {
-  state = { view: null, filter: 'toate', confirm: null, projects: PROJECTS, leadIdx: 0, statuses: LEADS.map(l => l.status), archived: [], notes: 'idle' };
+  state = { view: null, filter: 'toate', confirm: null, projects: PROJECTS, leadIdx: 0, statuses: LEADS.map(l => l.status), archived: [], notes: 'idle', heroStored: null, heroSel: null, heroStatus: 'idle', editKey: null, edDraft: null, edStatus: 'idle' };
+  editProject() {
+    const { projects, editKey } = this.state;
+    return projects.find(p => p.title === editKey) || projects[0];
+  }
+  editorVals() {
+    const P = this.editProject();
+    const d = this.state.edDraft || { svc: P.svc, nav: [...P.nav] };
+    const status = this.state.edStatus;
+    const dirty = d.svc !== P.svc || d.nav.join() !== P.nav.join();
+    const setD = o => this.setState({ edDraft: { ...d, ...o }, edStatus: 'idle' });
+    const preview = this.state.projects.map(p => p.title === P.title ? { ...p, nav: d.nav } : p);
+    const groups = navGroups(preview);
+    return {
+      ed: { title: P.title, tech: P.tech, isDraft: !P.pub, serviceValue: d.svc || '',
+        navChecks: SVC_IDS.map(id => ({ label: SVC[id], checked: d.nav.includes(id), toggle: () => setD({ nav: d.nav.includes(id) ? d.nav.filter(x => x !== id) : SVC_IDS.filter(x => x === id || d.nav.includes(x)) }) })) },
+      svcOptions: SVC_IDS.map(id => ({ id })),
+      edSetService: e => setD({ svc: e.target.value || null }),
+      menuPreview: SVC_IDS.map(id => ({ label: SVC[id], count: groups[id].length + ' / ' + NAV_MAX, empty: groups[id].length === 0,
+        items: groups[id].map(p => ({ title: p.title, img: p.img, mark: p.title === P.title ? 'acesta' : p.featured ? '●' : '', color: p.title === P.title ? '#0B0B0B' : '#6B6862' })) })),
+      edClean: !dirty || status === 'pending', edBtnOpacity: !dirty || status === 'pending' ? 0.4 : 1,
+      edBtnLabel: status === 'pending' ? 'Se salvează…' : status === 'success' && !dirty ? 'Salvat' : 'Salvează',
+      edSave: () => { this.setState({ edStatus: 'pending' }); setTimeout(() => this.setState(s => ({ edStatus: 'success', projects: s.projects.map(p => p.title === P.title ? { ...p, svc: d.svc, nav: [...d.nav] } : p) })), 600); },
+    };
+  }
+  heroVals() {
+    const { heroStored, heroSel, heroStatus } = this.state;
+    const dirty = heroSel !== heroStored;
+    return {
+      heroOptions: HERO_OPTS.map(o => ({ ...o, checked: heroSel === o.id, active: o.id === heroStored ? 'Activ' : '', select: () => this.setState({ heroSel: o.id, heroStatus: 'idle' }) })),
+      heroClean: !dirty || heroStatus === 'pending', heroBtnOpacity: !dirty || heroStatus === 'pending' ? 0.4 : 1,
+      heroBtnLabel: heroStatus === 'pending' ? 'Se salvează…' : 'Salvează',
+      heroSaved: heroStatus === 'success' && !dirty,
+      heroSave: () => { this.setState({ heroStatus: 'pending' }); setTimeout(() => this.setState(s => ({ heroStored: s.heroSel, heroStatus: 'success' })), 600); },
+    };
+  }
   renderVals() {
     const view = this.state.view ?? this.props.view ?? 'projects';
     const set = o => this.setState(o);
@@ -199,11 +347,11 @@ class Component extends DCLogic {
     const newCount = statuses.filter(s => s === 'nou').length;
     return {
       isLogin: view === 'login', isApp: view !== 'login',
-      isProjects: view === 'projects', isLeads: view === 'leads', isDetail: view === 'lead',
+      isProjects: view === 'projects', isLeads: view === 'leads', isDetail: view === 'lead', isHero: view === 'hero', isEditor: view === 'project',
       login: () => set({ view: 'projects' }), logout: () => set({ view: 'login' }),
-      title: view === 'projects' ? 'Proiecte' : view === 'leads' ? 'Solicitări' : L.name,
-      nav: [['projects', 'Proiecte', ''], ['leads', 'Solicitări', newCount ? String(newCount) : '']].map(([id, label, badge]) => {
-        const on = view === id || (id === 'leads' && view === 'lead');
+      title: view === 'projects' ? 'Proiecte' : view === 'leads' ? 'Solicitări' : view === 'hero' ? 'Hero' : view === 'project' ? this.editProject().title : L.name,
+      nav: [['projects', 'Proiecte', ''], ['hero', 'Hero', ''], ['leads', 'Solicitări', newCount ? String(newCount) : '']].map(([id, label, badge]) => {
+        const on = view === id || (id === 'leads' && view === 'lead') || (id === 'projects' && view === 'project');
         return { label, badge, go: () => set({ view: id }), border: on ? '#FF4D14' : 'transparent', color: on ? '#0B0B0B' : '#6B6862' };
       }),
       filters: ['toate', 'draft', 'publicate'].map(f => ({ label: f, select: () => set({ filter: f }), bg: f === filter ? '#0B0B0B' : 'transparent', color: f === filter ? '#FAF8F4' : '#6B6862', border: f === filter ? '#0B0B0B' : '#E2DED6' })),
@@ -214,16 +362,19 @@ class Component extends DCLogic {
         const key = p.title;
         return { ...p, gripOpacity: filter === 'toate' ? 1 : 0, status: p.pub ? 'Publicat' : 'Draft', statusColor: p.pub ? '#FF4D14' : '#6B6862', date: fmt(p.pub),
           confirming: confirm === key, idle: confirm !== key,
-          ask: () => set({ confirm: key }), cancel: () => set({ confirm: null }),
+          ask: () => set({ confirm: key }), edit: () => set({ view: 'project', editKey: key, edDraft: { svc: p.svc, nav: [...p.nav] }, edStatus: 'idle' }), cancel: () => set({ confirm: null }),
           remove: () => set({ confirm: null, projects: projects.filter(x => x.title !== key) }),
           duplicate: () => { const i = projects.indexOf(p); const c = { ...p, title: p.title + ' (copie)', pub: null, featured: false }; set({ projects: [...projects.slice(0, i + 1), c, ...projects.slice(i + 1)] }); } };
       }),
-      leads: LEADS.map((l, i) => ({ ...l, date: fmt(l.date), status: ST[statuses[i]], statusColor: ST_COLOR[statuses[i]], opacity: archived.includes(i) ? 0.4 : 1, open: () => set({ view: 'lead', leadIdx: i, notes: 'idle' }) })),
+      leads: LEADS.map((l, i) => ({ ...l, serviceLabel: SVC[l.service] || 'Nu știu', date: fmt(l.date), status: ST[statuses[i]], statusColor: ST_COLOR[statuses[i]], opacity: archived.includes(i) ? 0.4 : 1, open: () => set({ view: 'lead', leadIdx: i, notes: 'idle' }) })),
       backToLeads: () => set({ view: 'leads' }),
-      lead: { ...L, meta: [{ k: 'Cum a aflat', v: L.source }, { k: 'Pagină', v: L.page }, { k: 'Referrer', v: L.referrer }, { k: 'UTM', v: L.utm }, { k: 'Limbă', v: L.lang }, { k: 'Dată', v: new Date(L.date).toLocaleString('ro-RO') }] },
+      lead: { ...L, serviceLabel: SVC[L.service] || 'Nu știu', meta: [{ k: 'Cum a aflat', v: L.source }, { k: 'Pagină', v: L.page }, { k: 'Referrer', v: L.referrer }, { k: 'UTM', v: L.utm }, { k: 'Limbă', v: L.lang }, { k: 'Dată', v: new Date(L.date).toLocaleString('ro-RO') }] },
       statusBtns: Object.keys(ST).map(k => { const on = statuses[leadIdx] === k; return { label: ST[k], bg: on ? '#0B0B0B' : 'transparent', color: on ? '#FAF8F4' : '#6B6862', border: on ? '#0B0B0B' : '#E2DED6', select: () => set({ statuses: statuses.map((s, i) => i === leadIdx ? k : s) }) }; }),
       saveNotes: () => { set({ notes: 'pending' }); setTimeout(() => this.setState({ notes: 'idle' }), 700); },
       notesLabel: this.state.notes === 'pending' ? 'Se salvează…' : 'Salvat automat la ieșirea din câmp',
+      ...this.heroVals(),
+      ...this.editorVals(),
+      backToProjects: () => set({ view: 'projects' }),
       archive: () => set({ archived: [...archived, leadIdx], view: 'leads' }),
     };
   }
