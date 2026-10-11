@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { breadcrumbList, faqPage, organizationRef, studioGraph } from './jsonLd'
+import { breadcrumbList, faqPage, organizationRef, studioGraph, webSite } from './jsonLd'
 
 describe('breadcrumbList', () => {
   it('numbers the items from 1 in order', () => {
@@ -25,6 +25,18 @@ describe('organizationRef', () => {
       '@type': 'Organization',
       name: 'CODEPEDIA',
       url: 'https://codepedia.md',
+    })
+  })
+})
+
+describe('webSite', () => {
+  it('names CODEPEDIA with the site url and both languages', () => {
+    expect(webSite('https://codepedia.md', ['ro', 'en'])).toEqual({
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'CODEPEDIA',
+      url: 'https://codepedia.md',
+      inLanguage: ['ro', 'en'],
     })
   })
 })

@@ -18,17 +18,12 @@ describe('toSitemapUrls', () => {
     const alt = [
       { hreflang: 'ro', href: `${base}/proiecte` },
       { hreflang: 'en', href: `${base}/en/work` },
-      { hreflang: 'x-default', href: `${base}/en/work` },
+      { hreflang: 'x-default', href: `${base}/proiecte` },
     ]
     expect(urls).toEqual([
       { loc: `${base}/proiecte`, lastmod: '2026-01-02', alt },
       { loc: `${base}/en/work`, lastmod: '2026-01-02', alt },
     ])
-  })
-
-  it('points x-default at the RO URL when the page asks for it', () => {
-    const [ro] = toSitemapUrls(single, [{ ro: '/blog', en: '/en/blog', xDefault: 'ro' }])
-    expect(ro?.alt).toContainEqual({ hreflang: 'x-default', href: `${base}/blog` })
   })
 
   it('lists only the RO URL, with no alternates, while the EN copy is pending', () => {
@@ -67,7 +62,7 @@ describe('renderSitemap', () => {
     const xml = renderSitemap(toSitemapUrls(single, [{ ro: '/', en: '/en' }]))
     expect(xml).toContain(`<loc>${base}/</loc>\n    <xhtml:link rel="alternate" hreflang="ro" href="${base}/" />`)
     expect(xml).not.toContain('<lastmod>')
-    expect(xml).toContain(`hreflang="x-default" href="${base}/en" />`)
+    expect(xml).toContain(`hreflang="x-default" href="${base}/" />`)
   })
 
   it('renders lastmod and escapes XML special characters', () => {

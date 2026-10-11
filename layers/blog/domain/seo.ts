@@ -111,9 +111,10 @@ export interface IndexGraphInput {
   name: string
   description: string
   posts: readonly ListedPost[]
+  labels: { home: string; blog: string }
 }
 
-/** `Blog` plus an `ItemList` of its posts, for `/blog` (SEO_SPEC §4). */
+/** `Blog`, an `ItemList` of its posts and a `BreadcrumbList`, for `/blog` (SEO_SPEC §4). */
 export function blogIndexGraph(input: IndexGraphInput) {
   const paths = blogPaths(input.locale)
   const url = `${input.origin}${paths.index}`
@@ -137,6 +138,12 @@ export function blogIndexGraph(input: IndexGraphInput) {
           name: post.title,
         })),
       },
+      stripContext(
+        breadcrumbList([
+          { name: input.labels.home, url: `${input.origin}${input.locale === 'en' ? '/en' : '/'}` },
+          { name: input.labels.blog, url },
+        ]),
+      ),
     ],
   }
 }

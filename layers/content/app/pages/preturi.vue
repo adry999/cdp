@@ -4,6 +4,7 @@ usePageSeo({
   title: () => t('pricing.seo.title'),
   description: () => t('pricing.seo.description'),
 })
+useBreadcrumbLd(() => t('nav.pricing'))
 </script>
 
 <template>

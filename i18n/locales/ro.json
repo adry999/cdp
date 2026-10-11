@@ -2,7 +2,7 @@
   "seo": {
     "home": {
       "title": "Dezvoltare web full-stack, Chișinău",
-      "description": "Aplicații web construite corect, de la schema bazei de date până la deployment. Studio full-stack cu sediul în Chișinău, pentru clienți din toată lumea."
+      "description": "Aplicații web și site-uri construite corect, de la schema bazei de date la deployment. Studio full-stack din Chișinău, pentru clienți din toată lumea."
     }
   },
   "nav": {
@@ -322,6 +322,10 @@
       "sectionLabel": "Întrebări"
     },
     "contact": {
+      "seo": {
+        "title": "Contact: spune-ne ce trebuie construit",
+        "description": "Scrie-ne despre proiectul tău și primești răspuns într-o zi lucrătoare, cu pașii următori și o estimare. Studio full-stack din Chișinău."
+      },
       "sectionLabel": "Contact",
       "title": "Spune-ne problema. O rezolvăm împreună.",
       "lead": "O descriere scurtă a problemei este suficientă. Primești un răspuns scris într-o zi lucrătoare, cu o părere sinceră despre dacă suntem studioul potrivit.",
@@ -537,7 +541,8 @@
     },
     "index": {
       "seo": {
-        "title": "Servicii de dezvoltare web în Chișinău"
+        "title": "Servicii de dezvoltare web și aplicații",
+        "description": "Site-uri de prezentare, aplicații web, WordPress, Shopify și automatizări cu AI. Alege etapa în care ești și vezi ce livrăm, în cât timp."
       },
       "title": "Cinci etape. Pornim de unde ești acum.",
       "intro": "De la o pagină rapidă până la inginerie AI la comandă. Fiecare etapă are preț fix, termen asumat și 30 de zile de remedieri după lansare.",
@@ -571,7 +576,7 @@
   },
   "blog": {
     "seo": {
-      "title": "Blog",
+      "title": "Blog: dezvoltare web, automatizare, arhitectură",
       "description": "Prețuri, comparații și ghiduri pentru firmele care pregătesc un site sau o aplicație. Scrise din proiectele CODEPEDIA."
     },
     "hero": {
@@ -608,8 +613,8 @@
   "pricing": {
     "sectionLabel": "Prețuri",
     "seo": {
-      "title": "Echipa ta tehnică, la abonament.",
-      "description": "Fără costuri ascunse. În loc de pachete rigide, lucrăm prin sprinturi agile sau abonamente lunare, devenind partenerul tău tehnic pe termen lung."
+      "title": "Prețuri pentru site-uri și aplicații web",
+      "description": "Cum lucrăm: o analiză tehnică la început, apoi abonament lunar sau sprinturi dedicate. Codul rămâne în conturile tale, fără costuri ascunse."
     },
     "title": "Echipa ta tehnică, la abonament.",
     "intro": "Fiecare afacere are cerințe unice. În loc de estimări oarbe și bugete depășite, facem o analiză tehnică (diagnostic), apoi devenim echipa ta tehnică printr-un parteneriat pe termen lung.",
@@ -669,7 +674,8 @@
   },
   "about": {
     "seo": {
-      "description": "Studio boutique din Chișinău: puține proiecte în paralel, ingineri seniori și discuții directe cu cel care îți construiește produsul."
+      "title": "Despre noi: studio full-stack din Chișinău",
+      "description": "Studio boutique cu ingineri seniori și acces direct. Codul și infrastructura sunt ale tale din prima zi, cu estimări fixe și cost asumat."
     },
     "principlesLabel": "Cum lucrăm",
     "team": {

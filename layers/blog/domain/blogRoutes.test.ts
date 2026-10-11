@@ -9,12 +9,12 @@ describe('blogSitemapPages', () => {
   const pages = blogSitemapPages(roPosts, enPosts)
 
   it('lists the index and posts paired by alt, with x-default RO', () => {
-    expect(pages).toContainEqual({ ro: '/blog', en: '/en/blog', xDefault: 'ro' })
-    expect(pages).toContainEqual({ ro: '/blog/a', en: '/en/blog/a-en', lastmod: '2027-01-01', xDefault: 'ro' })
+    expect(pages).toContainEqual({ ro: '/blog', en: '/en/blog' })
+    expect(pages).toContainEqual({ ro: '/blog/a', en: '/en/blog/a-en', lastmod: '2027-01-01' })
   })
 
   it('lists only indexable categories', () => {
-    expect(pages).toContainEqual({ ro: '/blog/categorie/preturi', en: '/en/blog/category/pricing', xDefault: 'ro' })
+    expect(pages).toContainEqual({ ro: '/blog/categorie/preturi', en: '/en/blog/category/pricing' })
     expect(pages.some((page) => page.ro.includes('automatizare-ai'))).toBe(false)
   })
 

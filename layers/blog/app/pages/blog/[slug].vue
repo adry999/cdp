@@ -25,9 +25,6 @@ const siteUrl = useSiteUrl()
 const primarySiteUrl = useSiteUrl('en')
 const image = doc.cover ? `${siteUrl}${doc.cover}` : `${siteUrl}${ogImagePath(siteLocale.value, slug)}`
 
-// SEO_SPEC §3: blog article titles read "{title} | CODEPEDIA" (the site-wide template is "· CODEPEDIA").
-useHead({ titleTemplate: '%s | CODEPEDIA' })
-
 usePageSeo({
   title: () => doc.title,
   description: () => doc.description,
