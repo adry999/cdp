@@ -82,7 +82,7 @@ onBeforeUnmount(detach)
       role="dialog"
       aria-modal="true"
       :aria-label="t('caseStudy.lightbox.label')"
-      class="fixed inset-0 z-[100] flex flex-col gap-4 bg-inverse/95 p-[clamp(12px,3vw,32px)]"
+      class="fixed inset-0 z-[100] flex flex-col gap-4 bg-scrim/95 p-[clamp(12px,3vw,32px)]"
       @click.self="emit('close')"
     >
       <div class="flex items-center justify-between text-on-inverse eyebrow" @click.self="emit('close')">

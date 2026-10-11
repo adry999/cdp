@@ -25,6 +25,8 @@
   /* Surfaces that stay dark in both themes (inverted sections, tooltips, footer-like blocks). */
   --color-inverse: #0B0B0B;
   --color-on-inverse: #FAF8F4;
+  /* Backdrop behind dialogs; stays near-black in both themes so it always dims the page. */
+  --color-scrim: #0B0B0B;
 
   --font-sans: "Inter Tight", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
