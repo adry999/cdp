@@ -2,7 +2,7 @@
   "seo": {
     "home": {
       "title": "Full-stack web development, Chișinău",
-      "description": "Web applications built properly, from database schema to deployment. Full-stack studio based in Chișinău, working with clients internationally."
+      "description": "Web apps and websites built properly, from database schema to deployment. Full-stack studio in Chișinău, working with clients worldwide."
     }
   },
   "nav": {
@@ -314,6 +314,10 @@
       "sectionLabel": "Questions"
     },
     "contact": {
+      "seo": {
+        "title": "Contact: tell us what needs building",
+        "description": "Tell us about your project and get a reply within 24 hours, with next steps and an estimate. Full-stack studio in Chișinău."
+      },
       "sectionLabel": "Contact",
       "title": "Tell us your problem. Let's solve it together.",
       "lead": "A short description of the problem is enough. You get a written answer within one working day, with an honest opinion on whether we are the right studio for it.",
@@ -529,7 +533,8 @@
     },
     "index": {
       "seo": {
-        "title": "Web development services in Chișinău"
+        "title": "Web development and application services",
+        "description": "Websites, web apps, WordPress, Shopify and AI automation. Pick the stage you are at and see what we deliver and how fast."
       },
       "title": "Five stages. We start where you are now.",
       "intro": "From a quick page to custom AI engineering. Every stage has a fixed price, a committed timeline and 30 days of fixes after launch.",
@@ -563,7 +568,7 @@
   },
   "blog": {
     "seo": {
-      "title": "Blog",
+      "title": "Blog: web development, automation, architecture",
       "description": "Pricing, comparisons and guides for businesses planning a website or a web app. Written from CODEPEDIA projects."
     },
     "hero": {
@@ -600,8 +605,8 @@
   "pricing": {
     "sectionLabel": "Pricing",
     "seo": {
-      "title": "Your tech team on subscription.",
-      "description": "No hidden costs. Instead of rigid packages, we work in agile sprints or monthly retainers, becoming your long-term technical partner."
+      "title": "Pricing for websites and web apps",
+      "description": "What a business website, a web app or an AI automation costs. Starting prices and timelines for each stage, no hidden costs."
     },
     "title": "Your tech team on subscription.",
     "intro": "Every business has unique requirements. Instead of blind estimates and blown budgets, we perform a technical diagnostic, then become your engineering team through a long-term partnership.",
@@ -661,7 +666,8 @@
   },
   "about": {
     "seo": {
-      "description": "We run a few projects at a time so each gets the hours it needs. You talk directly to the engineer building your product."
+      "title": "About us: a full-stack studio in Chișinău",
+      "description": "Boutique studio with senior engineers and direct access. Code and infrastructure are yours from day one, with fixed estimates and committed cost."
     },
     "principlesLabel": "How we work",
     "team": {
