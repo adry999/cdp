@@ -8,9 +8,8 @@ export function toLastmod(value: string): string {
   return new Date(value).toISOString().slice(0, 10)
 }
 
-/** Each URL sits on its locale's official domain. x-default points at the EN
- * URL on the primary domain, unless the page sets `xDefault: 'ro'` (the blog). A page whose EN copy is still Romanian lists only
- * its RO URL, with no EN alternate. */
+/** Each URL sits on its locale's official domain. x-default points at the RO URL, as on the
+ * pages themselves. A page whose EN copy is still Romanian lists only its RO URL, with no EN alternate. */
 export function toSitemapUrls(origins: SiteOrigins, pages: readonly SitemapPage[]): SitemapUrl[] {
   return pages.flatMap((page) => {
     const ro = `${origins.ro}${page.ro}`
@@ -21,7 +20,7 @@ export function toSitemapUrls(origins: SiteOrigins, pages: readonly SitemapPage[
     const alt = [
       { hreflang: 'ro', href: ro },
       { hreflang: 'en', href: en },
-      { hreflang: 'x-default', href: page.xDefault === 'ro' ? ro : en },
+      { hreflang: 'x-default', href: ro },
     ]
     return [
       { loc: ro, lastmod: page.lastmod, alt },

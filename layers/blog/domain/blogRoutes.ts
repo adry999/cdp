@@ -8,7 +8,6 @@ interface BlogSitemapPage {
   ro: string
   en: string
   lastmod?: string
-  xDefault: 'ro'
 }
 
 /** A published post as the sitemap and the prerenderer need it. */
@@ -37,17 +36,15 @@ export function blogSitemapPages(roPosts: readonly RoutePost[], enPosts: readonl
   const counts = countByCategory(pairs)
 
   return [
-    ...(pairs.length ? [{ ro: ro.index, en: en.index, xDefault: 'ro' as const }] : []),
+    ...(pairs.length ? [{ ro: ro.index, en: en.index }] : []),
     ...CATEGORY_CODES.filter((code) => isCategoryIndexable(counts.get(code) ?? 0)).map((code) => ({
       ro: ro.category(code),
       en: en.category(code),
-      xDefault: 'ro' as const,
     })),
     ...pairs.map((post) => ({
       ro: ro.post(post.slug),
       en: en.post(post.alt),
       lastmod: post.updated,
-      xDefault: 'ro' as const,
     })),
   ]
 }

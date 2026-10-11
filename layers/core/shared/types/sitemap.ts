@@ -5,8 +5,6 @@ export interface SitemapPage {
   lastmod?: string
   /** The EN copy is still Romanian: the sitemap lists the RO URL only. */
   enPending?: boolean
-  /** Locale the x-default alternate points at; EN unless the page says otherwise. */
-  xDefault?: 'ro' | 'en'
 }
 
 export interface SitemapUrl {
