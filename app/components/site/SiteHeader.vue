@@ -157,10 +157,6 @@ onMounted(() => {
           </NuxtLink>
         </div>
 
-        <SiteHeaderLocaleSwitch />
-
-        <CoreThemeToggle class="-mx-1.5" />
-
         <!-- A plain anchor on the homepage: a router link to the page you are on would be marked aria-current. -->
         <a v-if="cta.kind.value === 'anchor'" :href="cta.to.value" :class="ctaClass">
           {{ t('nav.letsTalk') }}
@@ -174,6 +170,10 @@ onMounted(() => {
           {{ t('nav.letsTalk') }}
           <span aria-hidden="true">→</span>
         </button>
+
+        <SiteHeaderLocaleSwitch />
+
+        <CoreThemeToggle class="-mx-1.5" />
       </nav>
 
       <button
