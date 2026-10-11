@@ -61,7 +61,7 @@ onBeforeUnmount(() => {
     <Transition name="contact-modal">
       <div
         v-if="isOpen"
-        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-ink/55 px-3 py-[clamp(12px,4vh,48px)]"
+        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-inverse/55 px-3 py-[clamp(12px,4vh,48px)]"
         @mousedown.self="close"
       >
         <div
