@@ -24,7 +24,7 @@ const displayDate = computed(() => formatPostDate(props.post.date, siteLocale.va
     <div class="flex flex-col justify-center">
       <div class="eyebrow-sm text-muted">{{ displayDate }} · {{ post.readingTime }} {{ t('blog.min') }}</div>
       <h2 class="my-3 text-[clamp(24px,3vw,34px)] font-semibold leading-[1.12] tracking-[-0.02em] text-pretty">{{ post.title }}</h2>
-      <p class="m-0 max-w-[52ch] text-[17px] text-muted text-pretty">{{ post.description }}</p>
+      <p class="m-0 max-w-[52ch] text-[17px] leading-[1.6] text-muted text-pretty">{{ post.description }}</p>
       <span class="mt-5 eyebrow underline decoration-signal underline-offset-[3px]">{{ t('blog.read') }} →</span>
     </div>
   </NuxtLink>

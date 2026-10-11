@@ -21,7 +21,7 @@ const gridLabel = computed(() =>
     <SiteSection v-if="featured" number="01" :label="t('blog.latest')" padding="sm">
       <BlogFeatured :post="featured" />
     </SiteSection>
-    <SiteSection :number="featured ? '02' : '01'" :label="gridLabel" padding="sm">
+    <SiteSection :number="featured ? '02' : '01'" :label="gridLabel" padding="listEnd">
       <h2 class="sr-only">{{ gridLabel }}</h2>
       <div v-if="rest.length" class="grid grid-cols-[repeat(auto-fill,minmax(min(100%,280px),1fr))] gap-[clamp(16px,2vw,24px)]">
         <BlogCard v-for="post in rest" :key="post.path" :post="post" />

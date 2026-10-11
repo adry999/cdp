@@ -8,13 +8,14 @@ withDefaults(
     title: string
     intro: string
     plain?: boolean
+    padding?: 'hero' | 'heroBlog'
   }>(),
-  { plain: false },
+  { plain: false, padding: 'hero' },
 )
 </script>
 
 <template>
-  <SiteSection section-id="top" :number="number" :label="label" padding="hero" :top-border="false">
+  <SiteSection section-id="top" :number="number" :label="label" :padding="padding" :top-border="false">
     <template v-if="!plain" #background>
       <CoreInteractiveBackground variant="dot-matrix" />
     </template>

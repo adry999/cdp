@@ -20,7 +20,7 @@ const displayDate = computed(() => formatPostDate(props.post.date, siteLocale.va
       <span>{{ post.readingTime }} {{ t('blog.min') }}</span>
     </div>
     <h3 class="mb-2 mt-3 text-[21px] font-medium leading-[1.25] tracking-[-0.02em] text-pretty">{{ post.title }}</h3>
-    <p class="m-0 text-base text-muted text-pretty">{{ post.description }}</p>
+    <p class="m-0 text-base leading-[1.6] text-muted text-pretty">{{ post.description }}</p>
     <div v-if="showDate" class="mt-3.5 eyebrow-sm text-muted">{{ displayDate }}</div>
   </NuxtLink>
 </template>

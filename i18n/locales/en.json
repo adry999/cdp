@@ -616,6 +616,10 @@
     "min": "min",
     "back": "Blog",
     "breadcrumb": "Breadcrumb",
+    "more": "Keep going",
+    "service": "Service",
+    "caseStudy": "Case study",
+    "caseStudyLink": "See the project",
     "categories": "Categories",
     "category": {
       "seoTitle": "{name} · Blog",

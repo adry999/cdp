@@ -10,6 +10,10 @@ const PADDING_CLASSES = {
   hero: 'pt-[clamp(48px,8vw,120px)] pb-[clamp(40px,5vw,72px)]',
   heroCompact: 'pt-[clamp(36px,5.5vw,84px)] pb-[clamp(24px,3.2vw,44px)]',
   caseHero: 'pt-[clamp(40px,7vw,96px)] pb-[clamp(32px,4vw,56px)]',
+  heroBlog: 'pt-[clamp(48px,8vw,112px)] pb-[clamp(32px,4vw,56px)]',
+  article: 'pt-[clamp(40px,7vw,96px)] pb-[clamp(32px,4vw,48px)]',
+  articleBody: 'pt-[clamp(40px,5vw,72px)] pb-[clamp(56px,7vw,96px)]',
+  listEnd: 'pt-[clamp(40px,5vw,72px)] pb-[clamp(56px,7vw,104px)]',
 } as const
 
 type Padding = keyof typeof PADDING_CLASSES
