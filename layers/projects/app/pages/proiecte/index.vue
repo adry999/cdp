@@ -57,7 +57,7 @@ useBreadcrumbLd(() => t('nav.work'))
           class="grid grid-fit-280 gap-4"
           :class="tags.length >= 2 ? 'mt-[clamp(20px,2vw,28px)]' : ''"
         >
-          <ProjectsCard v-for="project in filteredCards" :key="project.slug" :project="project" />
+          <ProjectsCard v-for="(project, i) in filteredCards" :key="project.slug" :project="project" :priority="i === 0" />
         </div>
         <p v-if="ndaNote" class="mb-0 mt-5 eyebrow text-muted">
           {{ ndaNote }}

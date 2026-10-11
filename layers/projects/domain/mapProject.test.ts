@@ -236,13 +236,13 @@ describe('mapProject', () => {
     expect(mapProject({ ...baseRow, screens_demo: true }, 'ro').caseStudy.screensDemo).toBe(true)
   })
 
-  it('wraps the cover thumbnail label in brackets, falling back to the title when no alt text is set', () => {
-    expect(mapProject(baseRow, 'ro').thumbnailLabel).toBe('[ Card RO ]')
+  it('falls back to the card title for the cover alt text when none is set', () => {
+    expect(mapProject(baseRow, 'ro').coverAlt).toBe('Card RO')
   })
 
-  it('prefers the explicit alt text over the title fallback for the thumbnail label', () => {
+  it('prefers the explicit cover alt text over the title fallback', () => {
     const row = { ...baseRow, cover_alt_ro: 'Captură de ecran' }
-    expect(mapProject(row, 'ro').thumbnailLabel).toBe('[ Captură de ecran ]')
+    expect(mapProject(row, 'ro').coverAlt).toBe('Captură de ecran')
   })
 })
 

@@ -2,10 +2,14 @@
 import type { MappedProjectCard } from '#layers/projects/domain/mapProject'
 
 // `showTech` off drops the tech line and enlarges the heading's top margin.
+// `priority` loads the cover eagerly; set it only on the card that is the page's LCP.
 // Only the image, the title and the "case study" link navigate; the rest of the card is inert.
 // The image link is aria-hidden and out of the tab order so keyboard and screen-reader users
 // meet one link per target, not three.
-const props = withDefaults(defineProps<{ project: MappedProjectCard; showTech?: boolean }>(), { showTech: true })
+const props = withDefaults(defineProps<{ project: MappedProjectCard; showTech?: boolean; priority?: boolean }>(), {
+  showTech: true,
+  priority: false,
+})
 
 const { t } = useI18n()
 const localePath = useLocalePath()
@@ -19,8 +23,8 @@ const target = computed(() => localePath({ name: 'proiecte-slug', params: { slug
         ratio="16/10"
         :src="project.coverPath ?? undefined"
         :alt="project.coverAlt"
-        :label="project.thumbnailLabel"
         sizes="xs:100vw sm:45vw lg:380px"
+        :priority="priority"
       />
     </NuxtLink>
     <p v-if="showTech" class="m-0 mt-4 eyebrow-sm text-muted">{{ project.tech.join(' · ') }}</p>

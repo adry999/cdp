@@ -118,8 +118,6 @@ export function mapProjectCard(row: ProjectCardRow, locale: Locale) {
     tech: row.tech,
     title: pick(row.card_title_ro, row.card_title_en, locale),
     text: pick(row.summary_ro, row.summary_en, locale),
-    // *Label captions the placeholder frame; *Alt is the real <img alt> text.
-    thumbnailLabel: `[ ${pick(row.cover_alt_ro ?? row.card_title_ro, row.cover_alt_en, locale)} ]`,
     coverAlt: pick(row.cover_alt_ro ?? row.card_title_ro, row.cover_alt_en, locale),
     coverPath: row.cover_path,
     serviceTag: isServiceTagId(row.service_tag) ? row.service_tag : null,
@@ -148,7 +146,6 @@ export function mapProject(row: ProjectRow, locale: Locale) {
       year: row.year != null ? String(row.year) : '',
       heroTitle: pick(row.title_ro, row.title_en, locale),
       heroLead: pick(row.lead_ro, row.lead_en, locale),
-      mainScreenshotLabel: `[ ${pick(row.hero_alt_ro ?? row.title_ro, row.hero_alt_en, locale)} ]`,
       heroAlt: pick(row.hero_alt_ro ?? row.title_ro, row.hero_alt_en, locale),
       heroPath: row.hero_path,
       facts: [...row.project_facts]
