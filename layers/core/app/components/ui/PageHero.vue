@@ -1,15 +1,19 @@
 <script setup lang="ts">
 // Default slot renders below the intro.
-defineProps<{
-  number: string
-  label: string
-  title: string
-  intro: string
-}>()
+withDefaults(
+  defineProps<{
+    number: string
+    label: string
+    title: string
+    intro: string
+    padding?: 'hero' | 'heroBlog'
+  }>(),
+  { padding: 'hero' },
+)
 </script>
 
 <template>
-  <SiteSection section-id="top" :number="number" :label="label" padding="hero" :top-border="false">
+  <SiteSection section-id="top" :number="number" :label="label" :padding="padding" :top-border="false">
     <template #background>
       <CoreInteractiveBackground variant="dot-matrix" />
     </template>

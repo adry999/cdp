@@ -18,7 +18,7 @@ const showUpdated = computed(() => props.post.updated !== props.post.date)
 
 <template>
   <article>
-    <SiteSection padding="heroCompact" :top-border="false">
+    <SiteSection padding="article" :top-border="false">
       <template #background>
         <CoreInteractiveBackground variant="dot-matrix" />
       </template>
@@ -45,7 +45,7 @@ const showUpdated = computed(() => props.post.updated !== props.post.date)
       </div>
     </SiteSection>
 
-    <SiteSection padding="sm">
+    <SiteSection padding="articleBody">
       <template #label>
         <nav v-if="post.toc.length" :aria-label="t('blog.toc')" class="sticky top-24 flex flex-col gap-2.5">
           <div class="eyebrow-sm text-muted">{{ t('blog.toc') }}</div>

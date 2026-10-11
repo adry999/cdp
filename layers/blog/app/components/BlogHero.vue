@@ -13,7 +13,7 @@ const chipOff = 'border-hairline text-ink'
 </script>
 
 <template>
-  <PageHero number="00" :label="t('nav.blog')" :title="t('blog.hero.title')" :intro="t('blog.hero.intro')">
+  <PageHero padding="heroBlog" number="00" :label="t('nav.blog')" :title="t('blog.hero.title')" :intro="t('blog.hero.intro')">
     <nav v-if="posts.length" :aria-label="t('blog.categories')" class="mt-[clamp(28px,3.5vw,40px)] flex flex-wrap gap-2">
       <NuxtLink
         :to="localePath('blog')"
