@@ -9,6 +9,6 @@ export const SITE_SETTINGS: SiteSettings = {
     ro: 'Unele proiecte sunt sub NDA. Referințe detaliate la discuția de diagnostic.',
     en: 'Some projects are under NDA. Detailed references available on the diagnostic call.',
   },
-  footerLine: { ro: 'Codepedia SRL · Chișinău, Moldova', en: 'Codepedia SRL · Chișinău, Moldova' },
+  footerLine: { ro: 'Codepedia SRL', en: 'Codepedia SRL' },
   copyrightYear: 2026,
 }
