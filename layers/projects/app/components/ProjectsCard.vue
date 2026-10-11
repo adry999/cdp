@@ -23,7 +23,6 @@ const target = computed(() => localePath({ name: 'proiecte-slug', params: { slug
         ratio="16/10"
         :src="project.coverPath ?? undefined"
         :alt="project.coverAlt"
-        :label="project.thumbnailLabel"
         sizes="xs:100vw sm:45vw lg:380px"
         :priority="priority"
       />
