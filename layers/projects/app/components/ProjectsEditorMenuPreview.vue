@@ -17,9 +17,9 @@ defineProps<{ groups: MenuPreviewGroup[]; published: boolean }>()
     </p>
     <div class="mt-4">
       <div v-for="group in groups" :key="group.service" class="border-t border-hairline py-3">
-        <div class="flex items-center justify-between gap-4">
-          <div class="text-sm">{{ SERVICE_TAG_LABELS_RO[group.service] }}</div>
-          <div class="eyebrow text-muted">{{ group.items.length }} / {{ NAV_PROJECTS_PER_SERVICE }}</div>
+        <div class="flex justify-between gap-3 eyebrow text-muted">
+          <span>{{ SERVICE_TAG_LABELS_RO[group.service] }}</span>
+          <span>{{ group.items.length }} / {{ NAV_PROJECTS_PER_SERVICE }}</span>
         </div>
         <ul v-if="group.items.length" class="m-0 mt-2 flex list-none flex-col gap-2 p-0">
           <li v-for="item in group.items" :key="item.slug" class="flex items-center gap-3">
