@@ -14,6 +14,7 @@ const body = computed(() => (isNotFound.value ? t('error.notFoundBody') : t('err
 useHead({ htmlAttrs: { lang: () => localeProperties.value.language } })
 useSeoMeta({
   title: () => title.value.replace(/\.$/, ''),
+  robots: 'noindex, follow',
 })
 
 function goHome() {
