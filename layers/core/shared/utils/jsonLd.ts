@@ -22,6 +22,16 @@ export function organizationRef(siteUrl: string) {
   return { '@type': 'Organization', name: 'CODEPEDIA', url: siteUrl }
 }
 
+export function webSite(siteUrl: string, inLanguage: readonly string[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'CODEPEDIA',
+    url: siteUrl,
+    inLanguage: [...inLanguage],
+  }
+}
+
 export interface FaqEntry {
   question: string
   answer: string
