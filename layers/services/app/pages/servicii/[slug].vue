@@ -49,6 +49,7 @@ useJsonLd(
 
 <template>
   <div>
+    <ServicesSwitcher />
     <ServicesHero :service="service" />
     <ServicesFeatures :service="service" />
     <ServicesProcess :service="service" />
