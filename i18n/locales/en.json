@@ -316,7 +316,7 @@
     "contact": {
       "seo": {
         "title": "Contact: tell us what needs building",
-        "description": "Tell us about your project and get a reply within 24 hours, with next steps and an estimate. Full-stack studio in Chișinău."
+        "description": "Tell us about your project and get a reply within one working day, with next steps and an estimate. Full-stack studio in Chișinău."
       },
       "sectionLabel": "Contact",
       "title": "Tell us your problem. Let's solve it together.",
@@ -606,7 +606,7 @@
     "sectionLabel": "Pricing",
     "seo": {
       "title": "Pricing for websites and web apps",
-      "description": "What a business website, a web app or an AI automation costs. Starting prices and timelines for each stage, no hidden costs."
+      "description": "How we work: a technical diagnostic first, then a monthly subscription or dedicated sprints. The code stays in your accounts, no hidden costs."
     },
     "title": "Your tech team on subscription.",
     "intro": "Every business has unique requirements. Instead of blind estimates and blown budgets, we perform a technical diagnostic, then become your engineering team through a long-term partnership.",
