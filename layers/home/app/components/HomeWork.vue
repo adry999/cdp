@@ -2,6 +2,9 @@
 import { mapProjectCard, selectHomeProjects, usePublishedProjects } from '#layers/projects'
 import { useSiteSettings } from '#layers/content'
 
+// The design shows a short three-tag line under each cover.
+const HOME_TECH_TAGS = 3
+
 const { t } = useI18n()
 const siteLocale = useSiteLocale()
 const localePath = useLocalePath()
@@ -10,7 +13,11 @@ const { projects: rows } = await usePublishedProjects()
 const settings = useSiteSettings()
 
 const allRows = computed(() => rows.value ?? [])
-const list = computed(() => selectHomeProjects(allRows.value).map((row) => mapProjectCard(row, siteLocale.value)))
+const list = computed(() =>
+  selectHomeProjects(allRows.value)
+    .map((row) => mapProjectCard(row, siteLocale.value))
+    .map((card) => ({ ...card, tech: card.tech.slice(0, HOME_TECH_TAGS) })),
+)
 const ndaNote = computed(() => settings.value.ndaNote)
 const hasMore = computed(() => allRows.value.length > list.value.length)
 const { el: gridEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, once: true })
