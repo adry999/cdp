@@ -106,3 +106,11 @@ export type NavProjectRow = Pick<
   | 'featured'
   | 'sort_order'
 >
+
+// Admin menu preview: what the header dropdown selects, plus published_at (drafts are excluded).
+export const MENU_PREVIEW_SELECT = 'slug_ro, card_title_ro, cover_path, featured, sort_order, nav_services, published_at' as const
+
+export type MenuPreviewRow = Pick<
+  Tables['projects']['Row'],
+  'slug_ro' | 'card_title_ro' | 'cover_path' | 'featured' | 'sort_order' | 'nav_services' | 'published_at'
+>
