@@ -23,7 +23,7 @@ const stages = useServiceStages()
               {{ stage.timing }}
             </span>
           </div>
-          <div class="mt-5 flex h-14 w-14 items-center justify-center rounded-xl bg-signal/10 text-signal transition-all duration-500 group-hover:-translate-y-1 group-hover:bg-signal/20 group-hover:shadow-sm">
+          <div class="mt-5 flex h-14 w-14 items-center justify-center rounded-xl bg-hatch text-muted transition-all duration-500 group-hover:-translate-y-1 group-hover:bg-signal/10 group-hover:text-signal group-hover:shadow-sm">
             <CoreStageIcon :stage="stage.id" class="h-7 w-7" />
           </div>
           <h2 class="m-0 mt-5 min-h-[2.6em] font-mono text-sm font-medium uppercase leading-[1.3] tracking-[0.04em] transition-colors duration-500 group-hover:text-signal-text">
