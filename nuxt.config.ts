@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import { localeRedirectRoutes } from './layers/core/shared/utils/localeRedirectRoutes'
+import { TECH_ICONS } from './layers/core/shared/utils/techIcons'
 import { THEME_INIT_SCRIPT } from './layers/core/shared/utils/theme'
 
 // Every real build, including Vercel, must supply these. Skipped in dev and in
@@ -59,7 +60,16 @@ export default defineNuxtConfig({
   // Git worktrees for parallel branches live in .worktrees/; keep them out of scanning and the dev watcher.
   ignore: ['.worktrees/**'],
 
-  modules: ['@nuxtjs/i18n', '@nuxt/image', '@nuxt/fonts', '@nuxtjs/supabase', '@nuxt/content', '@nuxt/eslint'],
+  modules: ['@nuxtjs/i18n', '@nuxt/image', '@nuxt/fonts', '@nuxtjs/supabase', '@nuxt/content', '@nuxt/eslint', '@nuxt/icon'],
+
+  // Icons come only from the locally installed @iconify-json collections and are bundled into the
+  // client: no runtime request to the Iconify API (CSP connect-src stays 'self').
+  icon: {
+    mode: 'svg',
+    fallbackToApi: false,
+    serverBundle: { collections: ['logos', 'lucide', 'simple-icons'] },
+    clientBundle: { icons: [...new Set(Object.values(TECH_ICONS))], scan: false },
+  },
 
   // Node's built-in SQLite instead of the better-sqlite3 native addon — no compiled binary to build or ship.
   content: {
