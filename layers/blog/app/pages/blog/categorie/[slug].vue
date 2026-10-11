@@ -12,8 +12,7 @@ if (!category) {
 }
 
 // Slugs differ per locale: point the language switcher and hreflang at the same category.
-const setI18nParams = useSetI18nParams()
-setI18nParams({ ro: { slug: CATEGORIES[category].slug.ro }, en: { slug: CATEGORIES[category].slug.en } })
+useSetLocalizedSlugs(CATEGORIES[category].slug)
 
 const { data: posts } = await useAsyncData<BlogPostSummary[]>(`blog-posts-${locale.value}`, () =>
   $fetch('/api/blog', { query: { locale: locale.value } }),

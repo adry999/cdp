@@ -16,13 +16,21 @@
     "about": "About",
     "main": "Main navigation",
     "contact": "Contact",
-    "letsTalk": "Let's talk",
+    "letsTalk": "Discuss a project",
+    "projects": "Work",
+    "groupSites": "Websites",
+    "groupApps": "Apps and AI",
+    "projectsKicker": "Projects · {service}",
+    "aboutService": "About the service",
+    "allProjects": "See all projects",
     "menu": "Menu",
     "skipToContent": "Skip to content"
   },
   "footer": {
     "tagline": "Full-stack web development · Websites, web apps, WordPress, Shopify",
     "cookieSettings": "Cookie settings",
+    "studioLabel": "Studio",
+    "allPosts": "All articles",
     "navLabel": "Footer navigation",
     "privacy": "Privacy"
   },
@@ -682,6 +690,10 @@
         "value": "Romanian · English · Russian"
       }
     }
+  },
+  "contactModal": {
+    "close": "Close",
+    "done": "Close"
   },
   "contactPage": {
     "steps": [

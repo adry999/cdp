@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { breadcrumbList, faqPage, organizationRef } from './jsonLd'
+import { breadcrumbList, faqPage, organizationRef, studioGraph } from './jsonLd'
 
 describe('breadcrumbList', () => {
   it('numbers the items from 1 in order', () => {
@@ -42,5 +42,37 @@ describe('faqPage', () => {
         },
       ],
     })
+  })
+})
+
+describe('studioGraph', () => {
+  const graph = studioGraph({
+    origin: 'https://codepedia.md',
+    logoUrl: 'https://codepedia.md/icon-512.png',
+    email: 'contact@codepedia.md',
+    locality: 'Chișinău',
+    country: 'MD',
+    areaServed: ['MD', 'RO'],
+    languages: ['ro', 'en'],
+    serviceNames: ['Website', 'Web app'],
+  })
+  const [organization, business] = graph['@graph']
+
+  it('declares one Organization and one business that points back to it', () => {
+    expect(graph['@graph'].map((node) => node['@type'])).toEqual(['Organization', 'ProfessionalService'])
+    expect(organization?.['@id']).toBe('https://codepedia.md/#org')
+    expect(business).toMatchObject({ '@id': 'https://codepedia.md/#business', parentOrganization: { '@id': 'https://codepedia.md/#org' } })
+  })
+
+  it('lists each service as an offer and publishes no street address, phone or geo', () => {
+    expect(business).toMatchObject({
+      makesOffer: [
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Website' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Web app' } },
+      ],
+      address: { '@type': 'PostalAddress', addressLocality: 'Chișinău', addressCountry: 'MD' },
+    })
+    const text = JSON.stringify(graph)
+    expect(text).not.toMatch(/streetAddress|telephone|geo|openingHours/)
   })
 })

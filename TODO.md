@@ -6,6 +6,18 @@ rămâne vizibil ca placeholder.
 ## Contact
 
 - [ ] Confirmare că `contact@codepedia.md` este adresa corectă
+- [ ] Număr de telefon real: nu apare în footer și nici în JSON-LD (`telephone`) până există
+- [ ] Adresa poștală completă (stradă, cod poștal): JSON-LD publică doar Chișinău / MD,
+      fără `streetAddress` și fără `geo`
+- [ ] Program structurat (zile și ore) pentru `openingHoursSpecification`: în
+      `siteSettings.hours` e doar text liber, deci nu se publică în JSON-LD
+- [ ] Denumirea juridică exactă: `legalName` lipsește din JSON-LD până se confirmă „Codepedia SRL"
+- [ ] Articolele recomandate din footer sunt ultimele 3 din blog; dacă se vrea o selecție
+      fixă (ex. cele despre prețuri, ca în prototip), blogul are nevoie de un câmp `featured`
+- [ ] Modalul de contact salvează „serviciul" ca etapă (`stage`: Express / Concept / …),
+      singura valoare pe care o stochează tabelul `leads`; prototipul arată chip-uri cu
+      serviciile (Website, WordPress, Shopify …). Pentru ele e nevoie de o coloană `service`
+      (migrare + `leads.post.ts` + admin); până atunci serviciul se vede în `page`
 
 ## Domenii multiple
 

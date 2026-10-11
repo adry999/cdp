@@ -14,8 +14,7 @@ if (!service || (service.slug === 'granturi' && !useRuntimeConfig().public.grant
 }
 
 // Slugs differ per locale; without this the language switcher and hreflang alternates 404.
-const setI18nParams = useSetI18nParams()
-setI18nParams({ ro: { slug: service.routeSlug.ro }, en: { slug: service.routeSlug.en } })
+useSetLocalizedSlugs(service.routeSlug)
 
 const siteUrl = useSiteUrl()
 const primarySiteUrl = useSiteUrl('en')

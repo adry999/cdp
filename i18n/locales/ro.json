@@ -14,15 +14,23 @@
     "news": "Noutăți",
     "pricing": "Prețuri",
     "about": "Despre",
-    "main": "Navigație principală",
+    "main": "Navigare principală",
     "contact": "Contact",
-    "letsTalk": "Hai să vorbim",
+    "letsTalk": "Discută un proiect",
+    "projects": "Proiecte",
+    "groupSites": "Site-uri",
+    "groupApps": "Aplicații și AI",
+    "projectsKicker": "Proiecte · {service}",
+    "aboutService": "Despre serviciu",
+    "allProjects": "Vezi toate proiectele",
     "menu": "Meniu",
     "skipToContent": "Sari la conținut"
   },
   "footer": {
     "tagline": "Dezvoltare web full-stack · Site-uri, aplicații web, WordPress, Shopify",
     "cookieSettings": "Setări cookie-uri",
+    "studioLabel": "Studio",
+    "allPosts": "Toate articolele",
     "navLabel": "Navigare footer",
     "privacy": "Confidențialitate"
   },
@@ -682,6 +690,10 @@
         "value": "Română · Engleză · Rusă"
       }
     }
+  },
+  "contactModal": {
+    "close": "Închide",
+    "done": "Închide"
   },
   "contactPage": {
     "steps": [

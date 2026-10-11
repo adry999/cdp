@@ -22,7 +22,7 @@ function goHome() {
 </script>
 
 <template>
-  <NuxtLayout name="default">
+  <NuxtLayout name="minimal">
     <SiteSection :number="String(error?.status ?? 500)" :label="t('error.sectionLabel')" padding="2xl" :top-border="false">
       <h1
         class="m-0 max-w-[20ch] text-[clamp(34px,6vw,64px)] font-semibold leading-[1.04] tracking-[-0.025em] text-pretty"
