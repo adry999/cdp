@@ -384,7 +384,6 @@
     }
   },
   "caseStudy": {
-    "back": "← All work",
     "otherProjects": "Other projects",
     "sections": {
       "hero": "Case study",
@@ -393,10 +392,14 @@
       "situation": { "label": "Situation", "heading": "The business problem" },
       "task": { "label": "Task" },
       "action": { "label": "Action", "heading": "The solution" },
+      "midway": { "label": "Midway", "heading": "What we found midway through" },
       "result": { "label": "Result", "heading": "What the client gained" },
       "feedback": { "label": "Feedback", "heading": "What the client says" },
       "gallery": { "label": "Gallery", "heading": "What it looks like" }
     },
+    "band": { "situation": "Situation: the business problem", "task": "Task: goal and constraints", "action": "Action: business and tech", "result": "Result: gains and savings" },
+    "incident": { "found": "The finding", "risk": "The risk", "action": "What we did" },
+    "otherObstacles": "Other obstacles and adjustments",
     "cost": "What the problem cost",
     "constraints": "Constraints",
     "business": "Business",

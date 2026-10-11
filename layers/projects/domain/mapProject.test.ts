@@ -100,9 +100,32 @@ describe('mapProject', () => {
     expect(mapProject(row, 'ro').caseStudy.attribution).toBe('Ion Popescu')
   })
 
-  it('falls back to a bracketed placeholder when no attribution data exists', () => {
-    expect(mapProject(baseRow, 'ro').caseStudy.attribution).toBe('[ Nume ], [ funcție ], [ companie ]')
-    expect(mapProject(baseRow, 'en').caseStudy.attribution).toBe('[ Name ], [ role ], [ company ]')
+  it('has an empty attribution (no placeholder text) when no attribution data exists', () => {
+    expect(mapProject(baseRow, 'ro').caseStudy.attribution).toBe('')
+    expect(mapProject(baseRow, 'en').caseStudy.attribution).toBe('')
+  })
+
+  it('joins obstacles then changes paragraphs, falling back to RO per column', () => {
+    const row = {
+      ...baseRow,
+      obstacles_body_ro: 'Obstacol 1.\n\nObstacol 2.',
+      obstacles_body_en: 'Obstacle 1.',
+      changes_body_ro: 'Schimbare.',
+      changes_body_en: null,
+    }
+    expect(mapProject(row, 'ro').caseStudy.obstacleParagraphs).toEqual(['Obstacol 1.', 'Obstacol 2.', 'Schimbare.'])
+    expect(mapProject(row, 'en').caseStudy.obstacleParagraphs).toEqual(['Obstacle 1.', 'Schimbare.'])
+    expect(mapProject(baseRow, 'ro').caseStudy.obstacleParagraphs).toEqual([])
+  })
+
+  it('maps the incident, null when empty, EN falling back to RO', () => {
+    expect(mapProject(baseRow, 'en').caseStudy.star.incident).toBeNull()
+    const row = {
+      ...baseRow,
+      star_incident_ro: { found: 'Am găsit', risk: 'Risc', action: 'Fapt', outcome: [{ v: '3', k: 'zile' }] },
+      star_incident_en: { found: ' ', risk: '', action: '', outcome: [] },
+    }
+    expect(mapProject(row, 'en').caseStudy.star.incident?.found).toBe('Am găsit')
   })
 
   it('sorts facts by sort_order regardless of input order', () => {

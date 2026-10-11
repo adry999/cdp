@@ -384,7 +384,6 @@
     }
   },
   "caseStudy": {
-    "back": "← Toate proiectele",
     "otherProjects": "Alte proiecte",
     "sections": {
       "hero": "Studiu de caz",
@@ -393,10 +392,14 @@
       "situation": { "label": "Situație", "heading": "Problema de business" },
       "task": { "label": "Sarcină" },
       "action": { "label": "Acțiune", "heading": "Soluția oferită" },
+      "midway": { "label": "Pe parcurs", "heading": "Ce am descoperit la mijlocul proiectului" },
       "result": { "label": "Rezultat", "heading": "Ce a câștigat clientul" },
       "feedback": { "label": "Feedback", "heading": "Ce spune clientul" },
       "gallery": { "label": "Galerie", "heading": "Cum arată" }
     },
+    "band": { "situation": "Situație: problema de business", "task": "Sarcină: obiectiv și constrângeri", "action": "Acțiune: business și tehnic", "result": "Rezultat: câștig și economii" },
+    "incident": { "found": "Descoperirea", "risk": "Riscul", "action": "Ce am făcut" },
+    "otherObstacles": "Alte obstacole și ajustări",
     "cost": "Cât costa problema",
     "constraints": "Constrângeri",
     "business": "Business",

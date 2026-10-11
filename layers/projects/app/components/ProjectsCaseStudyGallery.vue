@@ -12,7 +12,7 @@ const caseStudy = computed(() => props.project.caseStudy)
   <ProjectsCaseStudySection
     v-if="caseStudy.shots.length"
     section-id="galerie"
-    number="06"
+    number="07"
     :label="t('caseStudy.sections.gallery.label')"
     :heading="t('caseStudy.sections.gallery.heading')"
   >

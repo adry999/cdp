@@ -9,6 +9,7 @@ const PADDING_CLASSES = {
   '2xl': 'py-[clamp(64px,10vw,140px)]',
   hero: 'pt-[clamp(48px,8vw,120px)] pb-[clamp(40px,5vw,72px)]',
   heroCompact: 'pt-[clamp(36px,5.5vw,84px)] pb-[clamp(24px,3.2vw,44px)]',
+  caseHero: 'pt-[clamp(40px,7vw,96px)] pb-[clamp(32px,4vw,56px)]',
 } as const
 
 type Padding = keyof typeof PADDING_CLASSES

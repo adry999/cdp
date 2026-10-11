@@ -1,7 +1,7 @@
 import type { Json } from '#layers/core/shared/types/database.types'
 import { pick } from '#layers/core/shared/utils/pick'
 import { isServiceTagId } from '#layers/core/shared/types/service-tag'
-import { pickJson, toConstraints, toFigures, toLinks, toStrings } from '#layers/projects/domain/star'
+import { pickJson, toConstraints, toFigures, toIncident, toLinks, toStrings } from '#layers/projects/domain/star'
 
 export interface ProjectFactRow {
   label_ro: string
@@ -136,14 +136,10 @@ export function mapProject(row: ProjectRow, locale: Locale) {
     .filter((img) => !!img.path?.trim())
     .sort((a, b) => a.sort_order - b.sort_order)
 
-  const attribution =
-    row.quote_author || row.quote_role_ro || row.quote_company
-      ? [row.quote_author, pick(row.quote_role_ro ?? '', row.quote_role_en, locale), row.quote_company]
-          .filter(Boolean)
-          .join(', ')
-      : locale === 'en'
-        ? '[ Name ], [ role ], [ company ]'
-        : '[ Nume ], [ funcție ], [ companie ]'
+  // Empty when the row carries no attribution: the page omits the line rather than showing a placeholder.
+  const attribution = [row.quote_author, pick(row.quote_role_ro ?? '', row.quote_role_en, locale), row.quote_company]
+    .filter(Boolean)
+    .join(', ')
 
   return {
     ...mapProjectCard(row, locale),
@@ -171,6 +167,7 @@ export function mapProject(row: ProjectRow, locale: Locale) {
         biz: pickJson(row.star_biz_ro, row.star_biz_en, locale, toStrings),
         gains: pickJson(row.star_gains_ro, row.star_gains_en, locale, toFigures),
         savings: pickJson(row.star_savings_ro, row.star_savings_en, locale, toFigures),
+        incident: pickJson(row.star_incident_ro, row.star_incident_en, locale, toIncident),
       },
       // Every real screenshot once, hero first, for the 06 grid and the lightbox.
       shots: [
@@ -182,6 +179,11 @@ export function mapProject(row: ProjectRow, locale: Locale) {
       stack: [...row.project_stack]
         .sort((a, b) => a.sort_order - b.sort_order)
         .map((s) => ({ name: s.name, role: pick(s.role_ro, s.role_en, locale) })),
+      // Other obstacles, then mid-project changes: one muted list under the incident card.
+      obstacleParagraphs: [
+        ...paragraphs(row.obstacles_body_ro, row.obstacles_body_en, locale),
+        ...paragraphs(row.changes_body_ro, row.changes_body_en, locale),
+      ],
       resultParagraphs: paragraphs(row.result_body_ro, row.result_body_en, locale),
       screensDemo: row.screens_demo,
       quote: pick(row.quote_ro ?? '', row.quote_en, locale),

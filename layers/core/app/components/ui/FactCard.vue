@@ -8,7 +8,7 @@ defineProps<{
 <template>
   <div class="rounded border border-hairline bg-paper p-5">
     <div class="eyebrow text-muted">{{ label }}</div>
-    <div class="mt-2 text-base font-medium">
+    <div class="mt-2 text-[16px] font-medium">
       <slot>{{ value }}</slot>
     </div>
   </div>
