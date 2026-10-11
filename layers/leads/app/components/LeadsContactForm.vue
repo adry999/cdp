@@ -79,8 +79,8 @@ watch(status, (value) => {
 <template>
   <form
     v-if="status !== 'success'"
-    class="flex flex-col gap-4"
-    :class="!isModal && 'mt-[clamp(28px,3vw,40px)] max-w-[560px]'"
+    class="flex flex-col"
+    :class="isModal ? 'gap-4' : 'mt-[clamp(28px,3vw,40px)] max-w-[560px] gap-6'"
     novalidate
     @submit.prevent="handleSubmit"
   >
@@ -143,7 +143,7 @@ watch(status, (value) => {
       <div id="lead-stage-label" class="eyebrow text-muted">
         {{ t('home.contact.form.stage') }}
       </div>
-      <div class="mt-2 flex flex-wrap gap-1.5">
+      <div class="mt-3 flex flex-wrap gap-1.5">
         <ToggleChip
           v-for="option in STAGE_ORDER"
           :key="option"
