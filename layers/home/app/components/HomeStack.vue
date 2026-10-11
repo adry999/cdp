@@ -30,7 +30,7 @@ const { el: sectionEl, isVisible: drawn, hasMounted: mounted } = useReveal({ onc
       <article
         v-for="(card, i) in cards"
         :key="card.id"
-        class="group flex flex-col rounded border bg-paper p-[clamp(20px,2.5vw,28px)] transition-all hover:-translate-y-1 hover:border-signal/30 hover:shadow-lg hover:shadow-signal/5"
+        class="group @container flex flex-col rounded border bg-paper p-[clamp(20px,2.5vw,28px)] transition-all hover:-translate-y-1 hover:border-signal/30 hover:shadow-lg hover:shadow-signal/5"
         :class="[
           mounted && !drawn ? 'opacity-0 translate-y-6' : 'opacity-100',
           mounted && drawn ? 'duration-700 ease-out' : 'duration-300',
@@ -48,11 +48,13 @@ const { el: sectionEl, isVisible: drawn, hasMounted: mounted } = useReveal({ onc
           <span v-if="card.lead" class="font-medium text-ink">{{ card.lead }}. </span>{{ card.body }}
         </p>
 
-        <div class="mt-5 flex flex-wrap gap-2">
+        <!-- Equal columns keep the logos aligned and avoid a lone chip on the last row. -->
+        <div class="mt-5 grid grid-cols-1 gap-2 @min-[17rem]:grid-cols-2">
           <TechChip
             v-for="tag in card.tags"
             :key="tag"
             :label="tag"
+            class="min-w-0"
           />
         </div>
       </article>

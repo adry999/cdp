@@ -3,7 +3,7 @@ import { TECH_ICONS, techIcon } from './techIcons'
 
 describe('techIcon', () => {
   it('returns the logo for a known technology', () => {
-    expect(techIcon('Nuxt')).toBe('logos:nuxt-icon')
+    expect(techIcon('Nuxt')).toBe('simple-icons:nuxt')
   })
 
   it('returns nothing for an unknown label or no label', () => {
@@ -13,7 +13,7 @@ describe('techIcon', () => {
 
   it('uses only the locally installed collections', () => {
     for (const name of Object.values(TECH_ICONS)) {
-      expect(name).toMatch(/^(logos|lucide|simple-icons):[a-z0-9-]+$/)
+      expect(name).toMatch(/^(lucide|simple-icons):[a-z0-9-]+$/)
     }
   })
 })
