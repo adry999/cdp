@@ -132,6 +132,7 @@ export default defineNuxtConfig({
     '/confidentialitate': { swr: 3600 },
     '/en/privacy': { swr: 3600 },
     '/api/projects': { swr: 60 },
+    '/api/home/settings': { swr: 60 },
     '/api/projects/**': { swr: 300 },
     '/api/news': { swr: 60 },
     '/api/news/**': { swr: 300 },

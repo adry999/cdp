@@ -27,6 +27,7 @@ export async function revalidatePublicCache(deps: RevalidateDependencies): Promi
     '/en',
     '/proiecte',
     '/en/work',
+    '/api/home/settings',
     ...projects.flatMap(({ ro, en }) => {
       const urls = caseStudyPaths(ro, en)
       return [urls.ro, urls.en]
