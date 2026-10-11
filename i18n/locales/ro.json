@@ -596,6 +596,10 @@
     "min": "min",
     "back": "Blog",
     "breadcrumb": "Breadcrumb",
+    "more": "Mai departe",
+    "service": "Serviciul",
+    "caseStudy": "Studiu de caz",
+    "caseStudyLink": "Vezi proiectul",
     "categories": "Categorii",
     "category": {
       "seoTitle": "{name} · Blog",
