@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { MappedProject } from '#layers/projects/domain/mapProject'
 
-const props = defineProps<{ project: MappedProject }>()
+const props = defineProps<{ project: MappedProject; number: string }>()
 const emit = defineEmits<{ open: [index: number] }>()
 const { t } = useI18n()
 
@@ -12,7 +12,7 @@ const caseStudy = computed(() => props.project.caseStudy)
   <ProjectsCaseStudySection
     v-if="caseStudy.shots.length"
     section-id="galerie"
-    number="07"
+    :number="number"
     :label="t('caseStudy.sections.gallery.label')"
     :heading="t('caseStudy.sections.gallery.heading')"
   >
