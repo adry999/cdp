@@ -27,7 +27,7 @@ const target = computed(() => localePath({ name: 'proiecte-slug', params: { slug
         :priority="priority"
       />
     </NuxtLink>
-    <p v-if="showTech" class="m-0 mt-4 eyebrow-sm text-muted">{{ project.tech.join(' · ') }}</p>
+    <p v-if="showTech" class="m-0 mt-4 eyebrow-sm text-muted">{{ project.label.join(' · ') }}</p>
     <h3 class="mb-2 heading-card" :class="showTech ? 'mt-2.5' : 'mt-4'">
       <NuxtLink
         :to="target"

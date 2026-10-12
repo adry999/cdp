@@ -39,6 +39,8 @@ export interface ProjectCardRow {
   summary_en: string | null
   kind_ro: string | null
   kind_en: string | null
+  tags_ro: string[]
+  tags_en: string[]
   tech: string[]
   service_tag: string | null
   featured: boolean
@@ -61,8 +63,6 @@ export interface ProjectRow extends ProjectCardRow {
   hero_path: string | null
   hero_alt_ro: string | null
   hero_alt_en: string | null
-  tags_ro: string[]
-  tags_en: string[]
   links: Json
   screens_demo: boolean
   context_body_ro: string | null
@@ -109,12 +109,27 @@ function paragraphs(ro: string | null, en: string | null, locale: Locale): strin
     .filter((p) => p.trim())
 }
 
+const CARD_LABEL_MAX = 3
+
+// The mono line above a card title: the project kind plus short tags, at most three. Case-study
+// tags repeat the kind and end with the year, so both are dropped; without tags it falls back to tech.
+function cardLabel(kind: string, tags: readonly string[], tech: readonly string[]): string[] {
+  const clean = (list: readonly string[]) =>
+    list
+      .map((item) => item.trim())
+      .filter((item) => item && item.toLowerCase() !== kind.toLowerCase() && !/^\d{4}$/.test(item))
+  const extras = clean(tags)
+  return [kind, ...(extras.length ? extras : clean(tech))].filter(Boolean).slice(0, CARD_LABEL_MAX)
+}
+
 export function mapProjectCard(row: ProjectCardRow, locale: Locale) {
   const winValue = pick(row.win_value_ro?.trim() ?? '', row.win_value_en?.trim(), locale)
   const winLabel = pick(row.win_label_ro?.trim() ?? '', row.win_label_en?.trim(), locale)
+  const kind = pick(row.kind_ro ?? '', row.kind_en, locale)
   return {
     slug: (locale === 'en' && row.slug_en) || row.slug_ro,
-    kind: pick(row.kind_ro ?? '', row.kind_en, locale),
+    kind,
+    label: cardLabel(kind, locale === 'en' ? row.tags_en : row.tags_ro, row.tech),
     tech: row.tech,
     title: pick(row.card_title_ro, row.card_title_en, locale),
     text: pick(row.summary_ro, row.summary_en, locale),
