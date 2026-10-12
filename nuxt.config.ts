@@ -34,6 +34,21 @@ const SUPABASE_BROWSER_PLUGIN = '@nuxtjs/supabase/dist/runtime/plugins/supabase.
 
 const STATIC_ASSET_CACHE = 'public, max-age=86400, stale-while-revalidate=604800'
 
+// Client chunk grouping (vite.$client below). Module ids are absolute paths, so the project root
+// anchors the match: `node_modules/nuxt/dist/app/**` must not count as app code.
+const projectRoot = fileURLToPath(new URL('./', import.meta.url)).replace(/\\/g, '/')
+const isProjectModule = (id: string) => {
+  const path = id.replace(/\\/g, '/')
+  return path.startsWith(projectRoot) && !path.includes('/node_modules/') && /^(layers|app)\//.test(path.slice(projectRoot.length))
+}
+// Admin code lives under admin/ directories, in the admin layouts and layer `admin.ts` entries, in
+// Admin*/*Editor components and in modules with "Admin" in their name (leadsAdminRepository,
+// useLeadsAdminList…) plus the few named here. Anything that matches stays out of `common`.
+const isAdminModule = (id: string) =>
+  /\/admin\/|\/admin(-auth)?\.vue$|\/admin\.ts$|Admin|Editor|adminProjectList|projectForm|newsForm|useNewLeadsCount/.test(
+    id.replace(/\\/g, '/'),
+  )
+
 // Production guarantees this via assertEnv above; in dev a missing value just skips the host-scoped CSP/image entries below.
 const supabaseHost = process.env.NUXT_PUBLIC_SUPABASE_URL
   ? new URL(process.env.NUXT_PUBLIC_SUPABASE_URL).hostname
@@ -227,10 +242,15 @@ export default defineNuxtConfig({
       // A module upgrade that moves the plugin must fail the build, not silently ship it again.
       if (app.plugins.length === before) throw new Error(`${SUPABASE_BROWSER_PLUGIN} not found — update nuxt.config.ts`)
     },
-    // Otherwise every public page still prefetches the now-lazy supabase-js chunks.
+    // Otherwise every public page still prefetches the now-lazy supabase-js chunks and the admin
+    // layouts with their imports (Nuxt lists the imports of a lazy layout even when the layout itself
+    // is not prefetched). Keys are source paths or chunk names, so the same admin convention applies.
     'build:manifest'(manifest) {
       for (const [key, chunk] of Object.entries(manifest)) {
-        if (key.includes('supabase')) chunk.prefetch = false
+        const ids = [key, chunk.file ?? '']
+        if (ids.some((id) => /supabase/i.test(id) || /^(_nuxt\/)?_?admin(-auth)?-/.test(id) || isAdminModule(id))) {
+          chunk.prefetch = false
+        }
       }
     },
   },
@@ -255,6 +275,9 @@ export default defineNuxtConfig({
       build: {
         rolldownOptions: {
           output: {
+            // Nuxt names production chunks `[hash].js`; keeping the name lets the build:manifest hook
+            // above recognise the supabase and admin chunks it must not prefetch.
+            chunkFileNames: '_nuxt/[name]-[hash].js',
             // Rolldown's automatic splitting left ~135 client chunks, 89 of them under 2 KB (shared
             // utilities split out on their own), so every page preloaded ~50–65 modules. Shared app
             // modules are collected into one `common` chunk instead. supabase-js and the admin-only
@@ -262,11 +285,14 @@ export default defineNuxtConfig({
             codeSplitting: {
               groups: [
                 { name: 'supabase', test: /node_modules[/\\]@supabase[/\\]/, priority: 20 },
+                // No `vendor` group: the build dir is node_modules/.cache/nuxt/.nuxt, so a node_modules
+                // test captures the #build virtual modules and, through their dependencies, the whole app,
+                // and @nuxtjs/supabase's composables would statically pull supabase-js into every page.
                 // Shared modules of the public site only: anything admin-related (editors, admin pages and
                 // components, their state and data) stays out, so public pages never download it.
                 {
                   name: 'common',
-                  test: /[/\\](layers|app)[/\\](?!.*(?:[/\\]admin[/\\]|Admin|Editor|adminProjectList|projectForm|newsForm))/,
+                  test: (id: string) => isProjectModule(id) && !isAdminModule(id),
                   minShareCount: 2,
                   minSize: 10000,
                   priority: 5,
