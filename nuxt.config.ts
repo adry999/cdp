@@ -189,6 +189,7 @@ export default defineNuxtConfig({
       w800: 800,
       w960: 960,
       w1600: 1600,
+      w1200: 1200,
       w1920: 1920,
     },
     // Project images live in Supabase Storage under unique paths, so a day of caching saves re-optimizing them.

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonLd'
+import { OG_PROJECT_SIZE, absoluteUrl } from '#layers/core/shared/utils/seo'
 import { fetchProject } from '#layers/projects/data/projectsRepository'
 import { caseStudySections } from '#layers/projects/domain/caseStudySections'
 import { mapProject } from '#layers/projects/domain/mapProject'
@@ -50,12 +51,21 @@ useSetLocalizedSlugs({ ro: projectRow.slug_ro, en: projectRow.slug_en ?? project
 const siteUrl = useSiteUrl()
 const primarySiteUrl = useSiteUrl('en')
 
+// Social platforms want about 1200 wide; the stored screenshot is 1600 and ~160 KB, so share the optimized rendition.
+const img = useImage()
+const ogImage = computed(() => {
+  const path = caseStudy.value.heroPath
+  return path ? absoluteUrl(siteUrl, img(path, { width: 1200 })) : null
+})
+
 usePageSeo({
   // The card title fits a search result; the hero title is a full sentence that gets cut off.
   title: () => project.value.title,
   description: () => caseStudy.value.heroLead,
   ogTitle: () => caseStudy.value.heroTitle,
-  image: () => caseStudy.value.heroPath,
+  image: () => ogImage.value,
+  imageSize: OG_PROJECT_SIZE,
+  imageAlt: () => caseStudy.value.heroAlt,
   type: 'article',
 })
 
