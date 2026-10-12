@@ -39,6 +39,7 @@
     "privacy": "Privacy"
   },
   "cookieBanner": {
+    "label": "Cookie consent",
     "message": "We use cookies necessary for the site to work. With your consent, we also use analytics and marketing cookies.",
     "policyLinkText": "Details in the privacy policy",
     "acceptAll": "Accept all",

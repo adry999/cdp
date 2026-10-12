@@ -39,6 +39,7 @@
     "privacy": "Confidențialitate"
   },
   "cookieBanner": {
+    "label": "Consimțământ cookie-uri",
     "message": "Folosim cookie-uri necesare pentru funcționarea site-ului. Cu acordul tău, folosim și cookie-uri de analiză și marketing.",
     "policyLinkText": "Detalii în politica de confidențialitate",
     "acceptAll": "Acceptă tot",
