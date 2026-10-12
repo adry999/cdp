@@ -86,6 +86,9 @@ onMounted(() => {
 
   let animId: number | null = null
   let isVisible = true
+  // The loop waits until the page has loaded and gone idle, so it never competes with the first
+  // paint (the hero text is the LCP element); a pointer move starts it earlier.
+  let idleReady = false
   let width = 0
   let height = 0
   let dpr = 1
@@ -241,6 +244,7 @@ onMounted(() => {
 
       // Resume loop if it was asleep
       if (animId === null && isVisible && !prefersReduced) {
+        idleReady = true
         lastTime = performance.now()
         animId = requestAnimationFrame(loop)
       }
@@ -279,7 +283,7 @@ onMounted(() => {
     (entries) => {
       const entry = entries[0]
       isVisible = entry?.isIntersecting ?? true
-      if (isVisible && animId === null && !prefersReduced) {
+      if (idleReady && isVisible && animId === null && !prefersReduced) {
         lastTime = performance.now()
         animId = requestAnimationFrame(loop)
       }
@@ -294,7 +298,7 @@ onMounted(() => {
         cancelAnimationFrame(animId)
         animId = null
       }
-    } else if (isVisible && animId === null && !prefersReduced) {
+    } else if (idleReady && isVisible && animId === null && !prefersReduced) {
       lastTime = performance.now()
       animId = requestAnimationFrame(loop)
     }
@@ -649,7 +653,28 @@ onMounted(() => {
       renderLightOrbs(ctx, 0, 0.016)
     }
   } else {
-    animId = requestAnimationFrame(loop)
+    // A static first frame now; the animation itself starts once the page is idle.
+    drawFrame(ctx, performance.now(), 0.016)
+    let idleHandle: number | undefined
+    const startWhenIdle = () => {
+      const start = () => {
+        idleReady = true
+        if (isVisible && animId === null) {
+          lastTime = performance.now()
+          animId = requestAnimationFrame(loop)
+        }
+      }
+      if (typeof window.requestIdleCallback === 'function') idleHandle = window.requestIdleCallback(start, { timeout: 2000 })
+      else idleHandle = window.setTimeout(start, 200)
+    }
+    if (document.readyState === 'complete') startWhenIdle()
+    else window.addEventListener('load', startWhenIdle, { once: true })
+    onBeforeUnmount(() => {
+      window.removeEventListener('load', startWhenIdle)
+      if (idleHandle === undefined) return
+      if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idleHandle)
+      else window.clearTimeout(idleHandle)
+    })
   }
 
   // Theme switches: re-read the tokens; the reduced-motion frame is static, so redraw it.
