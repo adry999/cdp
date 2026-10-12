@@ -44,7 +44,7 @@ const { el: processEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, onc
         :class="[
           track.id === activeId
             ? track.tone === 'signal'
-              ? 'bg-signal text-paper'
+              ? 'bg-signal text-ink'
               : 'bg-ink text-paper'
             : 'text-muted hover:text-ink',
         ]"
