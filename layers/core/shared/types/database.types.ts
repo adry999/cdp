@@ -486,7 +486,6 @@ export type Database = {
           next_title_ro: string | null
           obstacles_body_en: string | null
           obstacles_body_ro: string | null
-          preview_token: string
           published_at: string | null
           quote_author: string | null
           quote_company: string | null
@@ -566,7 +565,6 @@ export type Database = {
           next_title_ro?: string | null
           obstacles_body_en?: string | null
           obstacles_body_ro?: string | null
-          preview_token?: string
           published_at?: string | null
           quote_author?: string | null
           quote_company?: string | null
@@ -645,7 +643,6 @@ export type Database = {
           next_title_ro?: string | null
           obstacles_body_en?: string | null
           obstacles_body_ro?: string | null
-          preview_token?: string
           published_at?: string | null
           quote_author?: string | null
           quote_company?: string | null
@@ -920,10 +917,10 @@ export type Database = {
       check_lead_rate_limit: {
         Args: { p_ip: string; p_max: number; p_window_seconds: number }
         Returns: boolean
-      reorder_projects: { Args: { slugs: string[] }; Returns: undefined }
       }
       is_admin: { Args: never; Returns: boolean }
       project_links_valid: { Args: { p_links: Json }; Returns: boolean }
+      reorder_projects: { Args: { slugs: string[] }; Returns: undefined }
       save_project: { Args: { payload: Json }; Returns: Json }
     }
     Enums: {

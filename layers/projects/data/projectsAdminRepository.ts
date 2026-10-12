@@ -196,7 +196,7 @@ export function createProjectsAdminRepository(client: SupabaseClient) {
       if (loadError) throw failure('Proiectul nu a putut fi încărcat.', loadError)
 
       const newSlug = await freeCopySlug(slug)
-      const { id, created_at, updated_at, preview_token, cover_path, hero_path, ...rest } = project
+      const { id, created_at, updated_at, cover_path, hero_path, ...rest } = project
       const [newCover, newHero] = await Promise.all([
         copyMedia(cover_path, `${newSlug}/cover`),
         copyMedia(hero_path, `${newSlug}/hero`),
