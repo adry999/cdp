@@ -1,0 +1,20 @@
+<script setup lang="ts">
+import { useQualifierAvailability } from '#layers/qualifier'
+
+const { t } = useI18n()
+const { isQualifierEnabled } = useQualifierAvailability()
+</script>
+
+<template>
+  <div class="flex min-h-screen flex-col">
+    <a href="#main-content" class="skip-link">{{ t('nav.skipToContent') }}</a>
+    <SiteHeader />
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+    <SiteFooterMinimal />
+    <ConsentBanner />
+    <QualifierModalHost v-if="isQualifierEnabled" />
+    <LeadsContactModalHost v-else />
+  </div>
+</template>
