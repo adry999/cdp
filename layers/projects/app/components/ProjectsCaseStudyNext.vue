@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { withArrow } from '#layers/core/shared/utils/text'
 import { mapProjectCard, type MappedProject } from '#layers/projects/domain/mapProject'
 import { usePublishedProjects } from '#layers/projects/state/usePublishedProjects'
 
@@ -39,7 +40,7 @@ const otherProjects = computed(() =>
             class="flex flex-wrap justify-between gap-x-6 gap-y-2 border-t border-hairline-ink py-4 text-on-inverse no-underline hover:text-signal"
           >
             <span class="text-[18px] font-medium tracking-[-0.01em]">{{ other.title }}</span>
-            <span v-if="other.kind" class="eyebrow text-muted-ink">{{ other.kind }} →</span>
+            <span v-if="other.kind" class="eyebrow text-muted-ink">{{ withArrow(other.kind) }}</span>
           </NuxtLink>
         </li>
       </ul>
