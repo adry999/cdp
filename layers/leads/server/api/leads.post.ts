@@ -5,7 +5,12 @@ import { LEAD_RATE_LIMIT, notifyTeam } from '#layers/leads/server/services/leadN
 import { submitLead } from '#layers/leads/server/services/submitLead'
 
 export default defineEventHandler(async (event) => {
-  const submission = (await readBody<ContactSubmission | undefined>(event)) ?? {}
+  // Anything but a JSON object is a malformed request, not a form with every field missing.
+  const body: unknown = (await readBody(event)) ?? {}
+  if (typeof body !== 'object' || body === null || Array.isArray(body)) {
+    throw createError({ statusCode: 400, statusMessage: 'Invalid submission' })
+  }
+  const submission = body as ContactSubmission
 
   const result = await submitLead(submission, getHeader(event, 'referer') ?? null, {
     repository: createLeadRepository(event),

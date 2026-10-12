@@ -13,6 +13,10 @@ describe('clipText', () => {
   it('returns an empty string for a missing value', () => {
     expect(clipText(undefined, 10)).toBe('')
   })
+
+  it.each([123, null, true, ['a'], { text: 'a' }])('returns an empty string for the non-text value %j', (value) => {
+    expect(clipText(value, 10)).toBe('')
+  })
 })
 
 describe('EMAIL_PATTERN', () => {

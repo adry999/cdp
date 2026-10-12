@@ -8,7 +8,12 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, statusMessage: 'Not found' })
   }
 
-  const submission = (await readBody<RawQualificationSubmission | undefined>(event)) ?? {}
+  // Anything but a JSON object is a malformed request, not a form with every field missing.
+  const body: unknown = (await readBody(event)) ?? {}
+  if (typeof body !== 'object' || body === null || Array.isArray(body)) {
+    throw createError({ statusCode: 400, statusMessage: 'Invalid submission' })
+  }
+  const submission = body as RawQualificationSubmission
 
   const result = await submitQualification(submission, {
     repository: createLeadRepository(event),
