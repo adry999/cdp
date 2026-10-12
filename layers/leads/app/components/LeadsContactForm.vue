@@ -242,7 +242,7 @@ watch(status, (value) => {
       >
     </div>
 
-    <p v-if="status === 'error'" role="alert" aria-live="polite" class="flex items-center gap-1.5 font-mono text-xs text-ink">
+    <p v-if="status === 'error'" role="alert" class="flex items-center gap-1.5 font-mono text-xs text-ink">
       <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ t('home.contact.form.error') }}
     </p>
 
@@ -259,7 +259,7 @@ watch(status, (value) => {
         :variant="isModal ? 'signal' : 'ink'"
         class="w-fit text-center"
         :class="isModal && 'leading-[17px]'"
-        :disabled="status === 'pending'"
+        :aria-disabled="status === 'pending' ? 'true' : undefined"
       >
         {{ status === 'pending' ? t('home.contact.form.submitting') : t('home.contact.form.submit') }}
       </AppButton>

@@ -8,17 +8,8 @@ const steps = computed(() => i18nList('contactPage.steps'))
 const route = useRoute()
 
 const panel = ref<HTMLElement | null>(null)
-const { trapTab } = useFocusTrap(panel)
+const { bind, unbind } = useDialogKeys(panel, close)
 let restoreOverflow = ''
-
-function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
-    event.preventDefault()
-    close()
-    return
-  }
-  trapTab(event)
-}
 
 // The confirmation takes focus so a screen reader announces it.
 function focusStatus(element: unknown) {
@@ -30,12 +21,14 @@ function focusFirstField() {
 }
 
 function release() {
+  unbind()
   document.documentElement.style.overflow = restoreOverflow
   returnFocusTo.value?.focus()
   returnFocusTo.value = null
 }
 
 function capture() {
+  bind()
   restoreOverflow = document.documentElement.style.overflow
   document.documentElement.style.overflow = 'hidden'
   nextTick(focusFirstField)
@@ -77,7 +70,6 @@ onBeforeUnmount(() => {
           aria-modal="true"
           aria-labelledby="contact-modal-title"
           class="relative w-full max-w-[620px] rounded border border-hairline bg-paper text-ink shadow-modal"
-          @keydown="onKeydown"
         >
           <div aria-hidden="true" class="h-0.5 rounded-t bg-signal" />
           <button
