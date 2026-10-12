@@ -62,6 +62,9 @@ exclusiv din `assets/` (vezi `docs/IDENTITY.md`).
   Cheia `service_role` nu ajunge niciodată în client.
 - Fără `any`. Tipurile de DB generate cu `supabase gen types typescript`.
 - Commit-uri mici, mesaje în engleză, imperativ.
+- Fiecare PR nou adaugă un rând în `docs/PR_HISTORY.md` (număr, tip, ce face,
+  o linie, în română), în același PR, la sfârșitul listei. PR-urile închise
+  fără merge se marchează `CLOSED`.
 
 ## Ordinea de lucru
 

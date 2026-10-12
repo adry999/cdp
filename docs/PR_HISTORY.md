@@ -1,8 +1,8 @@
 # Istoric PR-uri
 
 Rezumat al fiecărui pull request din repo, în ordine crescătoare. Generat pe
-2026-10-12 din `gh pr list --state all`. 64 PR-uri: 55 merged, 8 closed
-(înlocuite de #45), 1 open (#62).
+2026-10-12 din `gh pr list --state all`, apoi întreținut manual: fiecare PR nou
+primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenții”).
 
 ## Migrare pe layere (septembrie 2026)
 
@@ -76,3 +76,5 @@ Rezumat al fiecărui pull request din repo, în ordine crescătoare. Generat pe
 - **#62** OPEN: `AGENTS.md` unic pentru toate tool-urile AI (așteaptă fișierele lui Gheorghe).
 - **#63** debug: log erori prerender pe Vercel (hook-uri scoase apoi în #64).
 - **#64** perf fonturi: doar fețe Latin upright, preload.
+- **#65** docs: acest fișier, `docs/PR_HISTORY.md`.
+- **#66** perf: animația fundalului hero pornește după `load` + `requestIdleCallback` (un cadru static la mount, pointer move o pornește imediat).
