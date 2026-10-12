@@ -35,16 +35,17 @@ function release() {
   returnFocusTo.value = null
 }
 
-watch(isOpen, (open) => {
+// Immediate: the host mounts this lazily, often already open.
+watch(isOpen, (open, wasOpen) => {
   if (!import.meta.client) return
   if (open) {
     restoreOverflow = document.documentElement.style.overflow
     document.documentElement.style.overflow = 'hidden'
     nextTick(focusFirstField)
-  } else {
+  } else if (wasOpen) {
     release()
   }
-})
+}, { immediate: true })
 
 // A link followed from inside the dialog (privacy policy) leaves the page it was opened on.
 watch(() => route.fullPath, () => {
@@ -58,7 +59,7 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport to="body">
-    <Transition name="contact-modal">
+    <Transition name="contact-modal" appear>
       <div
         v-if="isOpen"
         class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-scrim/55 px-3 py-[clamp(12px,4vh,48px)]"

@@ -53,9 +53,10 @@ export function useQualifierFlow() {
     }
   }
 
+  // Immediate: the modal is mounted lazily, usually when it is already open.
   watch(isOpen, (open) => {
     if (open) reset()
-  })
+  }, { immediate: true })
 
   return { step, direction, stage, budget, status, error, goNext, goBack, submit, close }
 }

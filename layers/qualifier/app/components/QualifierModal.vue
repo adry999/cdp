@@ -33,19 +33,20 @@ function onKeydown(event: KeyboardEvent) {
   trapTab(event)
 }
 
-watch(isOpen, (open) => {
+// Immediate: the host mounts this lazily, often already open.
+watch(isOpen, (open, wasOpen) => {
   if (!import.meta.client) return
   if (open) {
     previouslyFocused = document.activeElement as HTMLElement | null
     restoreOverflow = document.documentElement.style.overflow
     document.documentElement.style.overflow = 'hidden'
     nextTick(focusFirst)
-  } else {
+  } else if (wasOpen) {
     document.documentElement.style.overflow = restoreOverflow
     previouslyFocused?.focus()
     previouslyFocused = null
   }
-})
+}, { immediate: true })
 
 onBeforeUnmount(() => {
   if (import.meta.client && isOpen.value) {
@@ -56,7 +57,7 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport to="body">
-    <Transition name="q-modal">
+    <Transition name="q-modal" appear>
       <div
         v-if="isOpen"
         class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-scrim/60 px-4 py-[max(24px,6vh)]"
