@@ -102,7 +102,7 @@ if (import.meta.client && phrases.length > 1) {
       </div>
     </SiteSection>
     <div class="container-site pb-[clamp(36px,4.5vw,56px)]">
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div class="grid grid-fit-safe-320 gap-4">
         <FactCard :label="t('home.hero.facts.location')">
           <div>
             <div>{{ t('home.hero.facts.locationValue') }}</div>
@@ -130,7 +130,7 @@ if (import.meta.client && phrases.length > 1) {
         </FactCard>
         <FactCard :label="t('home.hero.facts.markets')" :value="t('home.hero.facts.marketsValue')" />
         <FactCard
-          class="md:col-span-2"
+          class="col-span-full"
           :label="t('home.hero.facts.stack')"
           :value="t('home.hero.facts.stackValue')"
         />
