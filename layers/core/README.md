@@ -38,7 +38,7 @@ Theme tokens and theme utilities are not here: they live in the root `app/assets
 
 ## UI primitives — `app/components/ui/`
 
-`SiteSection`, `PageHero`, `SectionLabel`, `RowList`, `RowListItem`, `FaqList`, `FactCard`, `TableRow`, `TechChip`, `ToggleChip`, `TextLink`, `MediaFrame`, `AppButton`, `CoreHoneypotField`. Registered without a path prefix.
+`SiteSection`, `PageHero`, `SectionLabel`, `RowList`, `RowListItem`, `FaqList`, `FactCard`, `TechChip`, `ToggleChip`, `TextLink`, `MediaFrame`, `AppButton`, `CoreHoneypotField`. Registered without a path prefix.
 
 ## Admin primitives — `app/components/admin/`
 

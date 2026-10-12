@@ -48,7 +48,7 @@ exclusiv din `assets/` (vezi `docs/IDENTITY.md`).
 - Componente în `app/components/`, grupate: `site/`, `admin/`, `ui/`.
   Componentele de layout care se repetă în toate secțiunile:
   `SiteSection.vue` (container + coloana de etichetă de 160px + slot),
-  `SectionLabel.vue`, `FactCard.vue`, `TableRow.vue`, `TechChip.vue`,
+  `SectionLabel.vue`, `FactCard.vue`, `TechChip.vue`,
   `MediaFrame.vue` (cu placeholder hașurat ca fallback), `AppButton.vue`
   (variante `ink` / `signal` / `outline`).
 - Textul din interfață (nu conținutul din DB) în `i18n/locales/ro.json` și `en.json`.
