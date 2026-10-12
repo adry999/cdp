@@ -1,4 +1,4 @@
-export { mapNews, newsPaths, newsSlug, sortNews, sourceHost } from './domain/news'
+export { mapNews, newsPaths, newsSlug } from './domain/news'
 export { NEWS_INDEX_PAGE } from './domain/sitemap'
 export { newsArticleSchema } from './domain/seo'
 export type { NewsView } from './domain/news'

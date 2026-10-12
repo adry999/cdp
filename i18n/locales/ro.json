@@ -8,7 +8,6 @@
   "nav": {
     "chooseService": "Alege serviciul",
     "services": "Servicii",
-    "stack": "Tech Stack",
     "process": "Proces",
     "work": "Portofoliu",
     "blog": "Blog",
@@ -36,7 +35,6 @@
     "cookieSettings": "Setări cookie-uri",
     "studioLabel": "Studio",
     "allPosts": "Toate articolele",
-    "navLabel": "Navigare footer",
     "privacy": "Confidențialitate"
   },
   "cookieBanner": {
