@@ -2,6 +2,7 @@
 import { useCookieConsent } from '#layers/consent'
 import { useSiteSettings } from '#layers/content'
 import { SERVICE_LINKS } from '#layers/services'
+import { visibleServices } from '#layers/core/shared/utils/visibleServices'
 import { studioGraph } from '#layers/core/shared/utils/jsonLd'
 
 const { t, locale } = useI18n()
@@ -11,7 +12,7 @@ const { openSettings } = useCookieConsent()
 const settings = useSiteSettings()
 const cta = useContactCta()
 const { grantsEnabled } = useRuntimeConfig().public
-const serviceLinks = SERVICE_LINKS.filter((s) => s.slug !== 'granturi' || grantsEnabled)
+const serviceLinks = visibleServices(SERVICE_LINKS, grantsEnabled)
 
 const services = computed(() =>
   serviceLinks.map((service) => ({
