@@ -79,3 +79,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#65** docs: acest fișier, `docs/PR_HISTORY.md`.
 - **#66** perf: animația fundalului hero pornește după `load` + `requestIdleCallback` (un cadru static la mount, pointer move o pornește imediat).
 - **#67** docs: rândurile #65/#66 în istoric; regula „un rând în `PR_HISTORY.md` per PR” în `CLAUDE.md` și `AGENTS.md`.
+- **#69** fix(a11y): inel de focus vizibil pe câmpurile și chip-urile formularelor de contact (audit A1, P0) + `autocomplete="name"`.
