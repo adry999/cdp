@@ -12,7 +12,7 @@ const props = withDefaults(
 )
 
 const base =
-  'inline-block cursor-pointer rounded text-[15px] font-medium no-underline transition-colors duration-[120ms] ease-out hover:no-underline disabled:cursor-not-allowed disabled:opacity-60'
+  'inline-block cursor-pointer rounded text-[15px] font-medium no-underline transition-colors duration-[120ms] ease-out hover:no-underline disabled:cursor-not-allowed disabled:opacity-60 aria-disabled:cursor-not-allowed aria-disabled:opacity-60'
 
 const variantClass = computed(() => {
   if (props.variant === 'outline') {

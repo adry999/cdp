@@ -75,12 +75,21 @@ function toggleService(service: ServiceTagId | undefined) {
   form.service = form.service === service ? undefined : service
 }
 
-function handleSubmit() {
+const FIELD_ORDER = ['name', 'email', 'message'] as const
+
+async function handleSubmit() {
   const { stage, service, ...fields } = form
   const choice = isModal.value
     ? { service, stage: service ? stageForServiceTag(service) : undefined }
     : { stage }
-  return submit({ ...fields, ...choice, lang: locale.value, page: route.fullPath, utm: captureUtm() })
+  await submit({ ...fields, ...choice, lang: locale.value, page: route.fullPath, utm: captureUtm() })
+  // A rejected submit leaves focus on the button; moving it to the first invalid field puts
+  // the error in front of a screen-reader user (their message is linked by aria-describedby).
+  const invalid = FIELD_ORDER.find((field) => fieldErrors.value[field])
+  if (invalid) {
+    await nextTick()
+    document.getElementById(`lead-${invalid}`)?.focus()
+  }
 }
 
 const successHeading = ref<HTMLElement | null>(null)
@@ -243,7 +252,7 @@ watch(status, (value) => {
       >
     </div>
 
-    <p v-if="status === 'error'" role="alert" aria-live="polite" class="flex items-center gap-1.5 font-mono text-xs text-ink">
+    <p v-if="status === 'error'" role="alert" class="flex items-center gap-1.5 font-mono text-xs text-ink">
       <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ t('home.contact.form.error') }}
     </p>
 
@@ -260,7 +269,7 @@ watch(status, (value) => {
         :variant="isModal ? 'signal' : 'ink'"
         class="w-fit text-center"
         :class="isModal && 'leading-[17px]'"
-        :disabled="status === 'pending'"
+        :aria-disabled="status === 'pending' ? 'true' : undefined"
       >
         {{ status === 'pending' ? t('home.contact.form.submitting') : t('home.contact.form.submit') }}
       </AppButton>

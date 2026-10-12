@@ -15,7 +15,7 @@ const links = computed(() =>
 </script>
 
 <template>
-  <nav :aria-label="t('nav.services')" class="border-b border-hairline bg-hatch">
+  <nav :aria-label="t('nav.chooseService')" class="border-b border-hairline bg-hatch">
     <div class="container-site flex flex-wrap items-center gap-x-1.5 gap-y-3.5 py-2.5 nav:gap-y-1.5">
       <NuxtLink :to="localePath({ name: 'servicii' })" class="tap-y mr-2 eyebrow-sm text-muted hover:text-signal-text">
         /{{ t('nav.services') }}/

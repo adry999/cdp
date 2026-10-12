@@ -112,12 +112,18 @@ function paragraphs(ro: string | null, en: string | null, locale: Locale): strin
 const CARD_LABEL_MAX = 3
 
 // The mono line above a card title: the project kind plus short tags, at most three. Case-study
-// tags repeat the kind and end with the year, so both are dropped; without tags it falls back to tech.
+// tags repeat the kind (or a part of it) and end with the year, so both are dropped; without tags it falls back to tech.
 function cardLabel(kind: string, tags: readonly string[], tech: readonly string[]): string[] {
+  // "Aplicație desktop" repeats the kind "Aplicație desktop pentru Windows"; a bare "A" does not.
+  const kindLower = kind.toLowerCase()
+  const repeatsKind = (item: string) => {
+    const lower = item.toLowerCase()
+    return lower === kindLower || kindLower.startsWith(`${lower} `)
+  }
   const clean = (list: readonly string[]) =>
     list
       .map((item) => item.trim())
-      .filter((item) => item && item.toLowerCase() !== kind.toLowerCase() && !/^\d{4}$/.test(item))
+      .filter((item) => item && !repeatsKind(item) && !/^\d{4}$/.test(item))
   const extras = clean(tags)
   return [kind, ...(extras.length ? extras : clean(tech))].filter(Boolean).slice(0, CARD_LABEL_MAX)
 }

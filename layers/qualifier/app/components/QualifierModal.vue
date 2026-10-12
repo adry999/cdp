@@ -9,7 +9,7 @@ const { step, direction, stage, budget, status, goNext, goBack, submit, close } 
 const { t } = useI18n()
 
 const panel = ref<HTMLElement | null>(null)
-const { focusFirst, trapTab } = useFocusTrap(panel)
+const { focusFirst, bind, unbind } = useDialogKeys(panel, close)
 let previouslyFocused: HTMLElement | null = null
 let restoreOverflow = ''
 
@@ -24,16 +24,8 @@ watch(status, (value) => {
   }
 })
 
-function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
-    event.preventDefault()
-    close()
-    return
-  }
-  trapTab(event)
-}
-
 function capture() {
+  bind()
   previouslyFocused = document.activeElement as HTMLElement | null
   restoreOverflow = document.documentElement.style.overflow
   document.documentElement.style.overflow = 'hidden'
@@ -45,6 +37,7 @@ watch(isOpen, (open) => {
   if (open) {
     capture()
   } else {
+    unbind()
     document.documentElement.style.overflow = restoreOverflow
     previouslyFocused?.focus()
     previouslyFocused = null
@@ -78,7 +71,6 @@ onBeforeUnmount(() => {
           aria-modal="true"
           aria-labelledby="qualifier-title"
           class="relative w-full max-w-[560px] rounded-lg border border-hairline bg-paper p-[clamp(20px,4vw,36px)] shadow-modal"
-          @keydown="onKeydown"
         >
           <div class="flex items-start justify-between gap-4">
             <div>

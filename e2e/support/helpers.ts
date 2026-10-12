@@ -17,7 +17,7 @@ export async function pinLocale(context: BrowserContext, locale: 'ro' | 'en' = '
   await context.addCookies([{ name: 'codepedia_locale', value: locale, domain: 'localhost', path: '/' }])
 }
 
-// ConsentBanner takes focus when it mounts and would steal it mid-interaction.
+// The banner covers the bottom of the page and would intercept clicks there.
 export async function dismissConsentBanner(page: Page) {
   await page.getByRole('button', { name: 'Doar necesare' }).click()
 }
