@@ -45,7 +45,6 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
   every `projects` / `redirects` query (published cards, case study by slug,
   slug list, redirect lookup), through the session client; failures go through
   `logAndThrow`. Handlers and middleware call it, never Supabase directly.
-- `server/services/revalidatePublicCache.ts` — cache revalidation use case.
 - `domain/caseStudyPaths.ts` — `caseStudyPaths(slugRo, slugEn)`, the public
   `/proiecte/..` and `/en/work/..` paths.
 
@@ -56,15 +55,12 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
   light for every list consumer). `GET /api/projects/[slug]` uses the full
   `PROJECT_SELECT`. `GET /api/projects/nav` returns `NavProjectRow[]` (name, kind, cover, slugs, `nav_services`; published only,
   featured first, at most four per service; each row keeps only the services where it made the cut), via `server/services/listNavProjects.ts`.
-- `POST /api/admin/revalidate` — `server/api/admin/`, admin-only
-  (`requireAdmin` from `core`: Supabase session + `app_users` row, 401/403
-  otherwise). The strategy lives in `server/services/revalidatePublicCache.ts`
-  (dependencies injected, tested with fakes): if `VERCEL_ISR_BYPASS_TOKEN` is
-  set, re-requests the index pages and every published project URL with `x-prerender-revalidate`
-  to force Vercel's edge ISR cache for those routes (and `/api/projects/nav`, the header menu's data) to refresh (Nitro's own
-  `useStorage('cache')` is not what serves them on the `vercel` preset);
-  otherwise it clears Nitro's storage cache directly.
-  Known limit: prerendered `/blog/**` pages bake the menu data at build time, so they pick up a published project only on the next deploy.
+- `listCaseStudyPages(event)` (`server/index.ts`) — every published case
+  study's paths in both locales, for the sitemap and for the root's
+  `POST /api/admin/revalidate` (`server/api/admin/revalidate.post.ts`, strategy
+  in `core`'s `server/utils/revalidatePublicCache.ts`). Prerendered `/blog/**`
+  pages are not cached, so there the header menu is fetched on the client
+  (`state/useNavProjects.ts`).
 - `server/middleware/project-redirects.ts` — serves the 301/302 rows
   `save_project()` writes to `redirects` when a published slug changes.
 - `/proiecte/[slug]`, `/en/work/[slug]` (route name `proiecte-slug`) —
@@ -129,8 +125,6 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
 - `state/usePublishedProjects.ts`, `state/useProjectsAdminList.ts`,
   `state/useProjectsEditor.ts` — see above.
 - `test-support/buildAdminProjectRow.ts` — fixture factory for `AdminProjectRow`.
-- `state/useRevalidatePublicCache.ts` — best-effort `POST /api/admin/revalidate`
-  after an admin write.
 
 ## Depends on
 

@@ -14,6 +14,7 @@ import {
 
 export async function useNewsEditor(idOrSlug: string) {
   const repository = createNewsAdminRepository(useSupabaseClient<Database>())
+  const revalidatePublicCache = useRevalidatePublicCache()
   const isNew = idOrSlug === 'nou'
 
   const { data: loaded } = await useAsyncData(`admin-news-${idOrSlug}`, async () => (isNew ? null : await repository.get(idOrSlug)))
@@ -51,6 +52,7 @@ export async function useNewsEditor(idOrSlug: string) {
       form.value.publishedAt = row.published_at
       saveStatus.value = 'success'
       markSaved()
+      await revalidatePublicCache()
       if (isNew || saved.slug_ro !== idOrSlug) await navigateTo(`/admin/news/${saved.slug_ro}`)
     } catch (caught) {
       saveStatus.value = 'error'
@@ -86,6 +88,7 @@ export async function useNewsEditor(idOrSlug: string) {
       return
     }
     markSaved()
+    await revalidatePublicCache()
     await navigateTo('/admin/news')
   }
 

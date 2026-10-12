@@ -28,12 +28,13 @@ Theme tokens and theme utilities are not here: they live in the root `app/assets
 
 - `requireAdmin(event)` — Supabase session (user id from the JWT `sub`) plus an `app_users` row; throws 401 / 403. Pure core in `checkAdmin`.
 - `logAndThrow`, `checkRateLimit`, `sendMail`, `notifyBestEffort`, `getSiteUrl`.
-- `sitemap.ts` — `toSitemapUrls`, `renderSitemap`, `toLastmod`.
+- `sitemap.ts` — `toSitemapUrls`, `renderSitemap`, `toLastmod`, `HOME_PAGE`.
+- `revalidatePublicCache.ts` — the ISR revalidation strategy (dependencies injected): with `VERCEL_ISR_BYPASS_TOKEN`, re-requests every cached data path and SWR page with `x-prerender-revalidate` and the page's locale cookie (so the language redirect on `/` and `/en` leaves the request alone); otherwise clears Nitro's storage cache. The root's `server/api/admin/revalidate.post.ts` composes the page list from the layers.
 - `server/middleware/locale-redirect.ts` — language redirect on `/` and `/en`.
 
 ## Composables
 
-`usePageSeo`, `useJsonLd`, `useSiteUrl`, `useSiteLocale`, `useI18nList`, `useLocaleOverride`, `useFocusTrap`, `useDragReorder`, `useUnsavedChangesGuard`.
+`usePageSeo`, `useJsonLd`, `useSiteUrl`, `useSiteLocale`, `useI18nList`, `useLocaleOverride`, `useFocusTrap`, `useDragReorder`, `useUnsavedChangesGuard`, `useRevalidatePublicCache` (best-effort `POST /api/admin/revalidate` after an admin write).
 
 ## UI primitives — `app/components/ui/`
 

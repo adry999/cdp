@@ -2,6 +2,9 @@ import type { SitemapPage, SitemapUrl } from '#layers/core/shared/types/sitemap'
 import { escapeXml } from '#layers/core/shared/utils/escapeXml'
 import type { SiteOrigins } from '#layers/core/shared/utils/siteOrigins'
 
+/** The home page has no layer with a server side, so the root routes (sitemap, revalidation) take it from here. */
+export const HOME_PAGE: SitemapPage = { ro: '/', en: '/en' }
+
 /** Postgres timestamptz -> sitemap <lastmod> date (YYYY-MM-DD). Real dates
  * only — static pages with no underlying record are never given one. */
 export function toLastmod(value: string): string {

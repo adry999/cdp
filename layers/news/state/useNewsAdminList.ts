@@ -7,6 +7,7 @@ export type NewsAdminFilter = 'toate' | 'draft' | 'publicate'
 
 export async function useNewsAdminList() {
   const repository = createNewsAdminRepository(useSupabaseClient<Database>())
+  const revalidatePublicCache = useRevalidatePublicCache()
   const { data: items, refresh } = await useAsyncData('admin-news', () => repository.list())
 
   const filter = ref<NewsAdminFilter>('toate')
@@ -27,6 +28,7 @@ export async function useNewsAdminList() {
     try {
       await repository.remove(id)
       pendingDelete.value = null
+      await revalidatePublicCache()
       await refresh()
     } catch (caught) {
       actionError.value = toAppError(caught)
