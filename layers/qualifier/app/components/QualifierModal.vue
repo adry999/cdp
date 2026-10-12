@@ -9,9 +9,7 @@ const { step, direction, stage, budget, status, goNext, goBack, submit, close } 
 const { t } = useI18n()
 
 const panel = ref<HTMLElement | null>(null)
-const { focusFirst, bind, unbind } = useDialogKeys(panel, close)
-let previouslyFocused: HTMLElement | null = null
-let restoreOverflow = ''
+useModalLock(panel, isOpen, close)
 
 const transitionName = computed(() => (direction.value === 1 ? 'q-fwd' : 'q-back'))
 const viewKey = computed(() => (status.value === 'success' ? 'success' : `step-${step.value}`))
@@ -21,38 +19,6 @@ const successHeading = ref<HTMLElement | null>(null)
 watch(status, (value) => {
   if (value === 'success') {
     nextTick(() => successHeading.value?.focus())
-  }
-})
-
-function capture() {
-  bind()
-  previouslyFocused = document.activeElement as HTMLElement | null
-  restoreOverflow = document.documentElement.style.overflow
-  document.documentElement.style.overflow = 'hidden'
-  nextTick(focusFirst)
-}
-
-watch(isOpen, (open) => {
-  if (!import.meta.client) return
-  if (open) {
-    capture()
-  } else {
-    unbind()
-    document.documentElement.style.overflow = restoreOverflow
-    previouslyFocused?.focus()
-    previouslyFocused = null
-  }
-})
-
-// The host mounts this lazily, usually already open. onMounted waits until the dialog is in the
-// document (the layout's Suspense holds it off-page before that), so focus can land.
-onMounted(() => {
-  if (isOpen.value) capture()
-})
-
-onBeforeUnmount(() => {
-  if (import.meta.client && isOpen.value) {
-    document.documentElement.style.overflow = restoreOverflow
   }
 })
 </script>
