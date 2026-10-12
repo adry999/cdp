@@ -6,7 +6,11 @@ import type { LeadStatus } from '#layers/leads/domain/lead'
 
 export async function useLeadsAdminDetail(leadId: string) {
   const repository = createLeadsAdminRepository(useSupabaseClient())
-  const { data: lead, refresh } = await useAsyncData(`admin-lead-${leadId}`, () => repository.get(leadId))
+  const { data: lead, refresh, status: loadStatus, error } = await useAsyncData(`admin-lead-${leadId}`, () =>
+    repository.get(leadId),
+  )
+  // A failed load is not a missing lead: the page shows the error instead of a blank screen.
+  const loadError = computed(() => (error.value ? toAppError(error.value) : null))
 
   const notesState = ref<AsyncStatus>('idle')
   const actionError = ref<AppError | null>(null)
@@ -45,5 +49,5 @@ export async function useLeadsAdminDetail(leadId: string) {
     }
   }
 
-  return { lead, notesState, actionError, updateStatus, saveNotes, archive, remove }
+  return { lead, loadStatus, loadError, notesState, actionError, updateStatus, saveNotes, archive, remove }
 }

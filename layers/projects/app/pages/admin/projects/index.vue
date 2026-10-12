@@ -5,7 +5,7 @@ import { useProjectsAdminList } from '#layers/projects/state/useProjectsAdminLis
 definePageMeta({ layout: 'admin', i18n: false })
 
 const list = await useProjectsAdminList()
-const { filter, filtered, counts, canReorder, featuredCount, reorderStatus, busy, notice } = list
+const { filter, filtered, counts, canReorder, featuredCount, reorderStatus, busy, notice, loadError } = list
 const { deleting, deletingProject, publishing, publishingProject, consentConfirmed, checklist } = list
 
 const drag = useDragReorder(list.reorder)
@@ -47,7 +47,10 @@ const drag = useDragReorder(list.reorder)
         {{ notice.text }}
       </p>
 
-      <div v-if="!filtered.length" class="rounded border border-hairline p-8 text-center text-muted">
+      <p v-if="loadError" role="alert" class="rounded border border-signal-text p-8 text-center text-signal-text">
+        Lista de proiecte nu a putut fi încărcată — reîncarcă pagina. ({{ loadError.message }})
+      </p>
+      <div v-else-if="!filtered.length" class="rounded border border-hairline p-8 text-center text-muted">
         Niciun proiect.
       </div>
       <div v-else class="flex flex-col">
