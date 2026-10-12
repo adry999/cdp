@@ -68,11 +68,7 @@ describe('currentServiceSlug', () => {
 })
 
 describe('SITE_NAV_LINKS', () => {
-  it('lists projects, process and blog, once each', () => {
-    expect(SITE_NAV_LINKS.map((l) => l.id)).toEqual(['work', 'process', 'blog'])
-  })
-
-  it('points process at the home section anchor', () => {
-    expect(SITE_NAV_LINKS.find((l) => l.id === 'process')).toMatchObject({ routeName: 'index', hash: '#proces' })
+  it('lists projects and blog, once each', () => {
+    expect(SITE_NAV_LINKS.map((l) => l.id)).toEqual(['work', 'blog'])
   })
 })

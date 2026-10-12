@@ -34,20 +34,18 @@ Precedence (`chooseHeroVariant`): `?hero=` preview (client-only, after mount) ->
 2. `HomeServices` — services timeline (`useServiceStages()`), CTA into the
    qualifier at a given stage.
 3. `HomeStack` — capability grid (`useStackGroups()`).
-4. `HomeProcess` — Fast-Track / Deep-Build pipeline toggle
-   (`useProcessTracks()`).
-5. `HomeWork` — the featured case studies (`selectHomeProjects`, or the first
+4. `HomeWork` — the featured case studies (`selectHomeProjects`, or the first
    three if none are featured), links to `/proiecte/[slug]`; an "All
    projects" link to `/proiecte` appears when more are published than shown.
-6. `HomeAbout` — positioning statement and the three agency pillars
+5. `HomeAbout` — positioning statement and the three agency pillars
    (`useAboutPillars()`).
-7. `HomeFaq` — FAQ list (`useFaqs()`); renders nothing if empty.
-8. `HomeContact` — contact facts, qualifier CTA, `LeadsContactForm` as
+6. `HomeFaq` — FAQ list (`useFaqs()`); renders nothing if empty.
+7. `HomeContact` — contact facts, qualifier CTA, `LeadsContactForm` as
    fallback or opt-in inline form.
 
 ## Components
 
-- `HomeHero`, `HomeServices`, `HomeStack`, `HomeProcess`, `HomeWork`,
+- `HomeHero`, `HomeServices`, `HomeStack`, `HomeWork`,
   `HomeAbout`, `HomeFaq`, `HomeContact` — the sections above, each
   `SiteSection`-framed (the hero too, without a top border).
 
@@ -58,7 +56,7 @@ Precedence (`chooseHeroVariant`): `?hero=` preview (client-only, after mount) ->
   `useSiteLocale`, `pick`, `StageId`, the `qualifier:open` hook contract
   (`HomeServices` calls it directly).
 - `layers/content` — `useFaqs`, `useSiteSettings`, `useServiceStages`,
-  `useStackGroups`, `useProcessTracks`, `useAboutPillars`, `ProcessTrackId`.
+  `useStackGroups`, `useAboutPillars`.
 - `layers/projects` — `usePublishedProjects`, `mapProjectCard`,
   `selectHomeProjects`, `ProjectsCard`, in `HomeWork`.
 - `layers/qualifier` — `QualifierCta` (`HomeHero`, `HomeContact`),
