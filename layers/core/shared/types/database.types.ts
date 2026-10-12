@@ -920,6 +920,7 @@ export type Database = {
       check_lead_rate_limit: {
         Args: { p_ip: string; p_max: number; p_window_seconds: number }
         Returns: boolean
+      reorder_projects: { Args: { slugs: string[] }; Returns: undefined }
       }
       is_admin: { Args: never; Returns: boolean }
       project_links_valid: { Args: { p_links: Json }; Returns: boolean }
