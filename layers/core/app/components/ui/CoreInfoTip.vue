@@ -1,5 +1,6 @@
 <script setup lang="ts">
-// Round "i" button with a hover/focus tooltip. The tooltip describes the button and
+// Round "i" button with a hover/focus tooltip. The ::before grows the hit area to 44px (inset is measured
+// from the padding box, inside the 1px border). The tooltip describes the button and
 // closes with Escape (WCAG 1.4.13); it returns on the next hover or focus.
 withDefaults(
   defineProps<{
@@ -44,7 +45,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onEscape))
       :aria-label="label"
       :aria-describedby="id"
       class="relative inline-flex items-center justify-center rounded-full border border-rule/70 font-mono font-medium text-muted transition-colors before:absolute before:content-[''] hover:border-ink hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-signal"
-      :class="size === 'sm' ? 'h-4 w-4 cursor-pointer text-[10px] before:-inset-3.5' : 'h-5 w-5 cursor-default text-[11px] before:-inset-3'"
+      :class="size === 'sm' ? 'h-4 w-4 cursor-pointer text-[10px] before:-inset-[15px]' : 'h-5 w-5 cursor-default text-[11px] before:-inset-[13px]'"
     >
       i
     </button>
