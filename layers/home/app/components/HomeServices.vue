@@ -170,7 +170,7 @@ function startAt(id: StageId) {
 
     <p class="mb-0 mt-5 eyebrow text-muted">
       * {{ t('home.services.note') }}
-      <NuxtLink :to="`${localePath('index')}#contact`" class="text-signal-text hover:underline">
+      <NuxtLink :to="`${localePath('index')}#contact`" class="text-ink underline decoration-signal underline-offset-[3px] hover:text-signal-text">
         {{ t('home.services.notSureLink') }}
       </NuxtLink>
     </p>
