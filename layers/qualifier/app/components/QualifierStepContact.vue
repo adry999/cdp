@@ -45,8 +45,14 @@ function goBack() {
   if (!props.submitting) emit('back')
 }
 
-function handleSubmit() {
-  if (props.submitting || !validate()) return
+async function handleSubmit() {
+  if (props.submitting) return
+  if (!validate()) {
+    // Focus stays on the button otherwise; the first invalid field announces its error.
+    await nextTick()
+    document.getElementById(fieldErrors.name ? 'qual-name' : 'qual-email')?.focus()
+    return
+  }
   emit('submit', { ...form })
 }
 </script>

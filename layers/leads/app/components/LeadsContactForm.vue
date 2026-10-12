@@ -75,12 +75,21 @@ function toggleService(service: ServiceTagId | undefined) {
   form.service = form.service === service ? undefined : service
 }
 
-function handleSubmit() {
+const FIELD_ORDER = ['name', 'email', 'message'] as const
+
+async function handleSubmit() {
   const { stage, service, ...fields } = form
   const choice = isModal.value
     ? { service, stage: service ? stageForServiceTag(service) : undefined }
     : { stage }
-  return submit({ ...fields, ...choice, lang: locale.value, page: route.fullPath, utm: captureUtm() })
+  await submit({ ...fields, ...choice, lang: locale.value, page: route.fullPath, utm: captureUtm() })
+  // A rejected submit leaves focus on the button; moving it to the first invalid field puts
+  // the error in front of a screen-reader user (their message is linked by aria-describedby).
+  const invalid = FIELD_ORDER.find((field) => fieldErrors.value[field])
+  if (invalid) {
+    await nextTick()
+    document.getElementById(`lead-${invalid}`)?.focus()
+  }
 }
 
 const successHeading = ref<HTMLElement | null>(null)
