@@ -30,6 +30,10 @@ const star = computed(() => caseStudy.value.star)
 // Each section shows only what exists; a section with nothing in it is left out (numbers stay fixed).
 const sections = computed(() => caseStudySections(caseStudy.value))
 const galleryImages = computed(() => sections.value.actionShots)
+// A lone screenshot fills the whole content column (about 944px at desktop); several share it as tiles of at most a third.
+// Widths are the ones in image.screens, so 1x and 2x are both served as listed.
+const actionShotSizesFull = '320:400px 480:640px 640:800px 768:960px 1024:1280px 1280:960px'
+const actionShotSizesTile = '320:400px 480:480px'
 
 const lightboxIndex = ref<number | null>(null)
 function openLightbox(index: number) {
@@ -174,11 +178,12 @@ useJsonLd(
               ratio="16/10"
               :src="image.path"
               alt=""
-              sizes="xs:100vw sm:100vw md:50vw xl:640px"
+              :sizes="galleryImages.length === 1 ? actionShotSizesFull : actionShotSizesTile"
               class="transition-colors duration-[120ms] hover:border-ink"
             />
           </button>
         </div>
+        <p v-if="caseStudy.screensDemo" class="m-0 mt-3 eyebrow-sm text-muted">{{ t('caseStudy.screensDemo') }}</p>
       </template>
     </ProjectsCaseStudySection>
 

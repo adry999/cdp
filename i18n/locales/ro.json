@@ -399,6 +399,7 @@
     "band": { "situation": "Situație: problema de business", "task": "Sarcină: obiectiv și constrângeri", "action": "Acțiune: business și tehnic", "result": "Rezultat: câștig și economii" },
     "incident": { "found": "Descoperirea", "risk": "Riscul", "action": "Ce am făcut" },
     "otherObstacles": "Alte obstacole și ajustări",
+    "screensDemo": "Ecrane cu date demonstrative",
     "cost": "Cât costa problema",
     "constraints": "Constrângeri",
     "business": "Business",
