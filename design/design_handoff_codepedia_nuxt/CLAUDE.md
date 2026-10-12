@@ -1,3 +1,5 @@
+> **Istoric.** Livrarea designerului (2026-10-10), păstrată ca referință. Regulile curente ale proiectului sunt în `/AGENTS.md`; unde acest fișier diferă (de exemplu la iconuri), câștigă `AGENTS.md`.
+
 # CLAUDE.md — Codepedia (site public + admin)
 
 Copiază acest fișier în rădăcina repo-ului Nuxt nou.
