@@ -81,3 +81,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#67** docs: rândurile #65/#66 în istoric; regula „un rând în `PR_HISTORY.md` per PR” în `CLAUDE.md` și `AGENTS.md`.
 - **#69** fix(a11y): inel de focus vizibil pe câmpurile și chip-urile formularelor de contact (audit A1, P0) + `autocomplete="name"`.
 - **#76** fix(design): grila de fapte din hero pe 3 coloane, numerotare fără goluri în studiul de caz, chip-uri pastilă și inputuri 46px în modal, icon temă muted (audit design 5, 6, 8, 11, 13).
+- **#77** fix(a11y): zone de atingere de 44px pe mobil / 32px pe desktop prin pseudo-element, tooltip „i” cu Escape și `aria-describedby` (audit mobil 3–5, U3, A6, A11).
