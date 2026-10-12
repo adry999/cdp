@@ -32,6 +32,8 @@ const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 // loaded on /admin only, by layers/core/app/middleware/admin-session.global.ts.
 const SUPABASE_BROWSER_PLUGIN = '@nuxtjs/supabase/dist/runtime/plugins/supabase.client'
 
+const STATIC_ASSET_CACHE = 'public, max-age=86400, stale-while-revalidate=604800'
+
 // Production guarantees this via assertEnv above; in dev a missing value just skips the host-scoped CSP/image entries below.
 const supabaseHost = process.env.NUXT_PUBLIC_SUPABASE_URL
   ? new URL(process.env.NUXT_PUBLIC_SUPABASE_URL).hostname
@@ -154,6 +156,17 @@ export default defineNuxtConfig({
     '/api/projects/**': { swr: 300 },
     '/api/news': { swr: 60 },
     '/api/news/**': { swr: 300 },
+    // Static assets from public/ keep their names across deploys (no content hash), so no `immutable`:
+    // a day fresh, then a week of stale-while-revalidate instead of the platform default of revalidating every time.
+    '/brand/**': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
+    '/og/**': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
+    '/og-image.png': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
+    '/favicon.svg': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
+    '/favicon.ico': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
+    '/icon-192.png': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
+    '/icon-512.png': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
+    '/icon-maskable-512.png': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
+    '/apple-touch-icon.png': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
     '/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
     '/api/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
 
@@ -184,6 +197,7 @@ export default defineNuxtConfig({
       lg: 1024,
       xl: 1280,
       '2xl': 1536,
+      w320: 320,
       w400: 400,
       w480: 480,
       w800: 800,
