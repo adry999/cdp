@@ -33,18 +33,28 @@ function onKeydown(event: KeyboardEvent) {
   trapTab(event)
 }
 
+function capture() {
+  previouslyFocused = document.activeElement as HTMLElement | null
+  restoreOverflow = document.documentElement.style.overflow
+  document.documentElement.style.overflow = 'hidden'
+  nextTick(focusFirst)
+}
+
 watch(isOpen, (open) => {
   if (!import.meta.client) return
   if (open) {
-    previouslyFocused = document.activeElement as HTMLElement | null
-    restoreOverflow = document.documentElement.style.overflow
-    document.documentElement.style.overflow = 'hidden'
-    nextTick(focusFirst)
+    capture()
   } else {
     document.documentElement.style.overflow = restoreOverflow
     previouslyFocused?.focus()
     previouslyFocused = null
   }
+})
+
+// The host mounts this lazily, usually already open. onMounted waits until the dialog is in the
+// document (the layout's Suspense holds it off-page before that), so focus can land.
+onMounted(() => {
+  if (isOpen.value) capture()
 })
 
 onBeforeUnmount(() => {
@@ -56,7 +66,7 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport to="body">
-    <Transition name="q-modal">
+    <Transition name="q-modal" appear>
       <div
         v-if="isOpen"
         class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-scrim/60 px-4 py-[max(24px,6vh)]"

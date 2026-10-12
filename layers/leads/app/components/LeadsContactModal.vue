@@ -35,15 +35,22 @@ function release() {
   returnFocusTo.value = null
 }
 
+function capture() {
+  restoreOverflow = document.documentElement.style.overflow
+  document.documentElement.style.overflow = 'hidden'
+  nextTick(focusFirstField)
+}
+
 watch(isOpen, (open) => {
   if (!import.meta.client) return
-  if (open) {
-    restoreOverflow = document.documentElement.style.overflow
-    document.documentElement.style.overflow = 'hidden'
-    nextTick(focusFirstField)
-  } else {
-    release()
-  }
+  if (open) capture()
+  else release()
+})
+
+// The host mounts this lazily, usually already open. onMounted waits until the dialog is in the
+// document (the layout's Suspense holds it off-page before that), so focus can land.
+onMounted(() => {
+  if (isOpen.value) capture()
 })
 
 // A link followed from inside the dialog (privacy policy) leaves the page it was opened on.
@@ -58,7 +65,7 @@ onBeforeUnmount(() => {
 
 <template>
   <Teleport to="body">
-    <Transition name="contact-modal">
+    <Transition name="contact-modal" appear>
       <div
         v-if="isOpen"
         class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-scrim/55 px-3 py-[clamp(12px,4vh,48px)]"

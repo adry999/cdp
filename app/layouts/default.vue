@@ -14,7 +14,7 @@ const { isQualifierEnabled } = useQualifierAvailability()
     </main>
     <SiteFooter />
     <ConsentBanner />
-    <QualifierModal v-if="isQualifierEnabled" />
-    <LeadsContactModal v-else />
+    <QualifierModalHost v-if="isQualifierEnabled" />
+    <LeadsContactModalHost v-else />
   </div>
 </template>
