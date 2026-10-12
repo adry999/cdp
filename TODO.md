@@ -94,13 +94,20 @@ EnglishMinds, SwissCars), pentru fiecare:
 - [ ] SwissCars: pe site-ul live apar încă mesajele „Telefon lipsește” și
       „Adresa lipsește” — de verificat cu clientul
 
-Ciorne (Mees 68, Asfactorum, FC Scânteia, Fleet Digital Twin, Kindergarten app),
-de publicat din admin după:
+Mees 68, Asfactorum, FC Scânteia, Fleet Digital Twin și Kindergarten app au fost
+publicate pe 2026-10-12, la cererea titularului, fără capturi: coperta și ecranele
+apar ca rame hașurate, fără text. De completat din admin:
 
 - [ ] capturi de ecran (Kindergarten app: doar pe date demo, repo-ul are date
       reale ale copiilor)
-- [ ] numele clientului și acordul de a fi numit, linkul live
+- [ ] acordul scris al clienților de a fi numiți (Mees 68, Asfactorum,
+      FC Scânteia apar cu numele în titlu), linkul live
 - [ ] cifrele și citatul, ca mai sus
+
+Ciornele vechi `asistent-documente`, `portal-clienti`, `saas-logistica` (date
+de exemplu din seed-ul inițial) rămân nepublicate; ștergerea din bază așteaptă
+confirmarea explicită a titularului. `saas-logistica` are și o copertă orfană în
+storage (`project-media/saas-logistica/cover/`).
 
 ## EN de tradus — indexare
 
