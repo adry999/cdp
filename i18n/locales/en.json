@@ -6,6 +6,7 @@
     }
   },
   "nav": {
+    "chooseService": "Choose a service",
     "services": "Services",
     "stack": "Tech Stack",
     "process": "Process",
