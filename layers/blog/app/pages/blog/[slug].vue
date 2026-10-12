@@ -9,14 +9,19 @@ const slug = route.params.slug as string
 
 // The route 404s on a missing slug: `useAsyncData` turns the handler's 404
 // into `error.value` and leaves `post.value` null, which the check below
-// converts back into a rendered 404 page.
-const { data: post } = await useAsyncData<BlogPostDoc | null>(`blog-post-${locale.value}-${slug}`, () =>
+// converts back into a rendered 404 page. Any other failure is a 500, never a false 404.
+const { data: post, error } = await useAsyncData<BlogPostDoc | null>(`blog-post-${locale.value}-${slug}`, () =>
   $fetch(`/api/blog/${encodeURIComponent(slug)}`, { query: { locale: locale.value } }),
 )
 
 const doc = post.value
 if (!doc) {
-  throw createError({ statusCode: 404, statusMessage: 'Post not found' })
+  const notFound = !error.value || error.value.statusCode === 404
+  throw createError({
+    statusCode: notFound ? 404 : 500,
+    statusMessage: notFound ? 'Post not found' : 'Blog unavailable',
+    fatal: true,
+  })
 }
 
 // Slugs differ per locale: point the language switcher and hreflang at the counterpart post.

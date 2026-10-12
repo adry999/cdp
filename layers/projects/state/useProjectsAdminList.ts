@@ -1,6 +1,7 @@
 import type { AsyncStatus } from '#layers/core/shared/types/async'
 import type { Database } from '#layers/core/shared/types/database.types'
 import { moveItem } from '#layers/core/shared/utils/moveItem'
+import { toAppError } from '#layers/core/shared/utils/toAppError'
 import { createProjectsAdminRepository } from '#layers/projects/data/projectsAdminRepository'
 import {
   evaluateChecklist,
@@ -16,7 +17,9 @@ export type { ProjectsAdminFilter }
 export async function useProjectsAdminList() {
   const repository = createProjectsAdminRepository(useSupabaseClient<Database>())
   const revalidatePublicCache = useRevalidatePublicCache()
-  const { data: projects, refresh } = await useAsyncData('admin-projects', () => repository.list())
+  const { data: projects, refresh, status: loadStatus, error } = await useAsyncData('admin-projects', () => repository.list())
+  // A failed load is not an empty list: the page shows the error instead of "Niciun proiect".
+  const loadError = computed(() => (error.value ? toAppError(error.value) : null))
 
   const filter = ref<ProjectsAdminFilter>('toate')
   const filtered = computed(() => filterProjects(projects.value ?? [], filter.value))
@@ -143,6 +146,8 @@ export async function useProjectsAdminList() {
     publishing,
     consentConfirmed,
     checklist,
+    loadStatus,
+    loadError,
     busy,
     notice,
     reorder,

@@ -10,11 +10,19 @@ const { t, locale } = useI18n()
 const siteLocale = useSiteLocale()
 const localePath = useLocalePath()
 
-const { data: row } = await useAsyncData(`project-${route.params.slug}`, () => fetchProject(String(route.params.slug)))
+const { data: row, error } = await useAsyncData(`project-${route.params.slug}`, () =>
+  fetchProject(String(route.params.slug)),
+)
 
 const projectRow = row.value
 if (!projectRow) {
-  throw createError({ statusCode: 404, statusMessage: 'Project not found' })
+  // Only a missing slug is a 404; a failing API must not become a cached "not found" for a real project.
+  const notFound = !error.value || error.value.statusCode === 404
+  throw createError({
+    statusCode: notFound ? 404 : 500,
+    statusMessage: notFound ? 'Project not found' : 'Project unavailable',
+    fatal: true,
+  })
 }
 
 // The API resolves slugs from both locales' columns; redirect to the canonical one so each locale has one indexable URL.
