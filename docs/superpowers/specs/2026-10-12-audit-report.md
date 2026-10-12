@@ -432,3 +432,12 @@ Excepții:
 | P0 | 1 | 0 |
 | P1 | 3 | 2 |
 | P2 | 4 | 8 |
+
+---
+
+## Addendum (2026-10-12, după fix-uri)
+
+- **PERF-1 reclasificat: nu e cauzat de site.** Trace-urile Lighthouse (local și live) arată pagina gata la ~0,4 s și firul principal inactiv; Chrome headless din Lighthouse desenează primul frame abia la 0,8–1,7 s, chiar cu tot JS-ul și toate fonturile blocate. Același tipar pe nuxt.com (FCP observat ~2,5 s), tailwindcss.com (~2,3 s), vuejs.org (~1,5 s). În Playwright și pe ecran desktop site-ul pictează la ~0,4 s. Fără modificare de cod. De confirmat pe PageSpeed Insights (serverele Google) când cota permite. Pârghia reală rămasă: PERF-3, chunk-urile mici (~70 fișiere de 1–2 KB).
+- **D16 (nou):** dropdown-ul Servicii afișează titlul studiului de caz, nu numele clientului + subtitlu scurt (design 9), pentru că DB nu are un astfel de câmp; `quote_company` e compania din testimonial, adesea goală. Cere un câmp nou (ex. `nav_title_ro/en` sau `client_name` + `nav_subtitle_ro/en`) și date din admin. Până atunci rămâne titlul.
+- **Rezolvate în PR-ul de fix-uri (combinat):** A1, A2, A3, A4, A5, A6, A8, A9, A10, A11; design 3, 5, 6, 7, 8, 11, 13; mobil 1, 2, 3, 4, 5; U3; cod 1–16, 19, 27, 28, 32; PERF-4, PERF-5; SEO-2. Parțial: mobil 1 (câmpurile au fundal, canvasul rămâne pe toată pagina `/contact`).
+- **Rămase la owner:** brandul „Codepedia” din textul STAR (3 pagini, din admin), `NUXT_PUBLIC_NOINDEX=true` și `SUPABASE_SERVICE_ROLE_KEY` pe mediul Preview din Vercel, deciziile D1–D16.
