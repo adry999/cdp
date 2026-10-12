@@ -96,13 +96,6 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    // TEMP debug: surface why blog prerender returns 500 on Vercel only.
-    prerender: { failOnError: false },
-    hooks: {
-      'prerender:route'(route) {
-        if (route.error) console.error('[prerender-debug]', route.route, route.error, String(route.contents ?? '').slice(0, 1500))
-      },
-    },
     compressPublicAssets: { gzip: true, brotli: true },
     // On the `vercel` preset, routeRules with `swr`/`isr` become separate Vercel Prerender Functions served
     // straight from the edge — this token lets revalidate.post.ts force one to bypass and refresh.
@@ -285,9 +278,11 @@ export default defineNuxtConfig({
 
   fonts: {
     provider: 'google',
+    // Only the faces the site renders: upright, Latin + Latin Extended (ă â î ș ț). Preloading them lets the
+    // fonts download alongside the CSS instead of after it, which moves the text LCP forward on mobile.
     families: [
-      { name: 'Inter Tight', weights: [400, 500, 600] },
-      { name: 'JetBrains Mono', weights: [400, 500] },
+      { name: 'Inter Tight', weights: [400, 500, 600], styles: ['normal'], subsets: ['latin', 'latin-ext'], preload: true },
+      { name: 'JetBrains Mono', weights: [400, 500], styles: ['normal'], subsets: ['latin', 'latin-ext'], preload: true },
     ],
   },
 
