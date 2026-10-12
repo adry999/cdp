@@ -47,6 +47,9 @@ schimbă din proprie inițiativă, chiar dacă un document mai vechi spune altce
 - Totul prin branch + PR spre `main`. CI rulează `lint`, `typecheck`, `vitest` și
   Playwright; un PR cu CI roșu nu intră în `main`.
 - Commit-uri mici, Conventional Commits, în engleză, la imperativ.
+- Fiecare PR nou adaugă un rând în `docs/PR_HISTORY.md` (număr, tip, ce face, o linie,
+  în română), în același PR, la sfârșitul listei. PR-urile închise fără merge se
+  marchează `CLOSED`.
 - Textele de interfață întotdeauna în RO și EN (`i18n/locales/ro.json` și `en.json`).
 
 ## Comenzi
