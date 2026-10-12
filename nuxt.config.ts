@@ -251,6 +251,32 @@ export default defineNuxtConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    $client: {
+      build: {
+        rolldownOptions: {
+          output: {
+            // Rolldown's automatic splitting left ~135 client chunks, 89 of them under 2 KB (shared
+            // utilities split out on their own), so every page preloaded ~50–65 modules. Shared app
+            // modules are collected into one `common` chunk instead. supabase-js and the admin-only
+            // modules keep their own chunks, so public pages never load them (see PR #21).
+            codeSplitting: {
+              groups: [
+                { name: 'supabase', test: /node_modules[/\\]@supabase[/\\]/, priority: 20 },
+                // Shared modules of the public site only: anything admin-related (editors, admin pages and
+                // components, their state and data) stays out, so public pages never download it.
+                {
+                  name: 'common',
+                  test: /[/\\](layers|app)[/\\](?!.*(?:[/\\]admin[/\\]|Admin|Editor|adminProjectList|projectForm|newsForm))/,
+                  minShareCount: 2,
+                  minSize: 10000,
+                  priority: 5,
+                },
+              ],
+            },
+          },
+        },
+      },
+    },
   },
 
   i18n: {
