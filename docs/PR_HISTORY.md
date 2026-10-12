@@ -79,3 +79,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#65** docs: acest fișier, `docs/PR_HISTORY.md`.
 - **#66** perf: animația fundalului hero pornește după `load` + `requestIdleCallback` (un cadru static la mount, pointer move o pornește imediat).
 - **#67** docs: rândurile #65/#66 în istoric; regula „un rând în `PR_HISTORY.md` per PR” în `CLAUDE.md` și `AGENTS.md`.
+- **#71** fix: erorile de încărcare devin 500/400, nu 404 cacheabil, listă goală sau 403 silențios; `clipText` acceptă non-string; admin arată eroarea (audit cod 1, 4, 5, 15, 16, 27, 28).
