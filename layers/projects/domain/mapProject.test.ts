@@ -275,6 +275,11 @@ describe('mapProjectCard', () => {
     expect(mapProjectCard(row, 'ro').label).toEqual(['Aplicație web', 'A', 'B'])
   })
 
+  it('drops tags that are a leading part of a longer kind', () => {
+    const row = { ...baseRow, kind_ro: 'Aplicație desktop pentru Windows', tags_ro: ['Aplicație desktop', 'Plăți EUR/MDL', 'Offline'] }
+    expect(mapProjectCard(row, 'ro').label).toEqual(['Aplicație desktop pentru Windows', 'Plăți EUR/MDL', 'Offline'])
+  })
+
   it('drops tags that repeat the kind or are only a year', () => {
     const row = { ...baseRow, tags_ro: ['Aplicație web', 'Gestiune internă', '2026'] }
     expect(mapProjectCard(row, 'ro').label).toEqual(['Aplicație web', 'Gestiune internă'])
