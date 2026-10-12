@@ -11,6 +11,8 @@ describe('checkCronAuth', () => {
     expect(checkCronAuth('s3cret', undefined)).toBe('unauthorized')
     expect(checkCronAuth('s3cret', 'Bearer other')).toBe('unauthorized')
     expect(checkCronAuth('s3cret', 's3cret')).toBe('unauthorized')
+    expect(checkCronAuth('s3cret', 'Bearer s3creX')).toBe('unauthorized')
+    expect(checkCronAuth('s3cret', 'Bearer s3cret-longer')).toBe('unauthorized')
   })
 
   it('accepts the matching bearer token', () => {

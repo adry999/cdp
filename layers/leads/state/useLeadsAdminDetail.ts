@@ -43,8 +43,9 @@ export async function useLeadsAdminDetail(leadId: string) {
     try {
       await repository.updateNotes(leadId, notes)
       notesState.value = 'success'
-    } catch {
+    } catch (caught) {
       // The notes line itself shows the failure, next to the field it concerns.
+      console.warn('[leads] saving notes failed', caught)
       notesState.value = 'error'
     }
   }

@@ -182,6 +182,7 @@ export default defineNuxtConfig({
     '/icon-512.png': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
     '/icon-maskable-512.png': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
     '/apple-touch-icon.png': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
+    '/admin': { redirect: { to: '/admin/projects', statusCode: 302 } },
     '/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
     '/api/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
 
