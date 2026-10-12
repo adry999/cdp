@@ -435,31 +435,31 @@
         "A": {
           "title": "I have Figma files or design assets ready.",
           "hint": "Full build in Next.js or Nuxt — components, database, API wiring.",
-          "budget": "From 2,000 EUR",
+          "budget": "Retainer",
           "timeline": "3–6 weeks"
         },
         "B": {
           "title": "I have a product or business idea, but it's still theoretical and I need full clarity before investing in development.",
           "hint": "The full execution plan: from user flows and a visual prototype to a clear technical spec, ready to hand to a dev team.",
-          "budget": "From 1,000 EUR",
+          "budget": "From €1,000",
           "timeline": "~1 week"
         },
         "C": {
           "title": "I have a live product that needs more dev power or speed.",
           "hint": "Codebase cleanup, database tuning, performance and integrations.",
-          "budget": "From 2,000 EUR",
-          "timeline": "4–8 weeks"
+          "budget": "Retainer",
+          "timeline": "Ongoing"
         },
         "D": {
           "title": "I need custom-built AI tools or workflow automation.",
           "hint": "LLM pipelines, n8n / Make workflows, internal dashboards.",
-          "budget": "From 5,000 EUR",
+          "budget": "Retainer",
           "timeline": "6–12 weeks"
         },
         "E": {
           "title": "I need a modern, fast page to validate an idea, win my first customers or replace an outdated site.",
           "hint": "A fast-loading 1–3 page landing site, mobile-optimised, wired straight to Telegram or a form to capture enquiries from day one.",
-          "budget": "Under 1,000 EUR",
+          "budget": "€400⁠–⁠€600",
           "timeline": "2–3 days"
         }
       }
