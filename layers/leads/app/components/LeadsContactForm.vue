@@ -110,11 +110,12 @@ watch(status, (value) => {
         <input
           id="lead-name"
           v-model="form.name"
+          autocomplete="name"
           type="text"
           required
           :aria-invalid="fieldError('name') ? 'true' : undefined"
           :aria-describedby="fieldError('name') ? 'lead-name-error' : undefined"
-          class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
         <p v-if="fieldError('name')" id="lead-name-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
           <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('name') }}
@@ -133,7 +134,7 @@ watch(status, (value) => {
           autocomplete="email"
           :aria-invalid="fieldError('email') ? 'true' : undefined"
           :aria-describedby="fieldError('email') ? 'lead-email-error' : undefined"
-          class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
         <p v-if="fieldError('email')" id="lead-email-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
           <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('email') }}
@@ -151,7 +152,7 @@ watch(status, (value) => {
         v-model="form.company"
         type="text"
         autocomplete="organization"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
     </div>
 
@@ -206,7 +207,7 @@ watch(status, (value) => {
         required
         :aria-invalid="fieldError('message') ? 'true' : undefined"
         :aria-describedby="fieldError('message') ? 'lead-message-error' : undefined"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       />
       <p v-if="fieldError('message')" id="lead-message-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
         <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('message') }}
@@ -220,7 +221,7 @@ watch(status, (value) => {
       <select
         id="lead-budget"
         v-model="form.budget"
-        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
         <option value="">{{ t('home.contact.form.budgetPlaceholder') }}</option>
         <option v-for="key in LEAD_BUDGET_KEYS" :key="key" :value="key">
@@ -237,7 +238,7 @@ watch(status, (value) => {
         id="lead-source"
         v-model="form.source"
         type="text"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
     </div>
 

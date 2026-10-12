@@ -9,7 +9,7 @@ withDefaults(
 
 const SIZE_CLASSES = {
   default: 'px-[9px] py-[5px] text-xs tracking-[0.08em]',
-  form: 'cursor-pointer px-2.5 py-[7px] text-[11px] tracking-[0.06em] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink',
+  form: 'cursor-pointer px-2.5 py-[7px] text-[11px] tracking-[0.06em] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink',
   admin: 'cursor-pointer px-3 py-1.5 text-xs tracking-[0.08em]',
 } as const
 
