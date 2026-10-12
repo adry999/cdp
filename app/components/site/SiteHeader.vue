@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useNavProjects } from '#layers/projects'
 import { SERVICE_LINKS, SERVICE_NAV_INTRO } from '#layers/services'
+import { visibleServices } from '#layers/core/shared/utils/visibleServices'
 
 const { locale, t } = useI18n()
 const localePath = useLocalePath()
@@ -17,7 +18,7 @@ const baseName = computed(() => {
 const activeId = computed(() => activeNavId(baseName.value))
 
 const serviceGroups = computed<NavServiceGroup[]>(() => {
-  const links = SERVICE_LINKS.filter((service) => service.slug !== 'granturi' || grantsEnabled)
+  const links = visibleServices(SERVICE_LINKS, grantsEnabled)
   return groupServiceLinks(links).map((group) => ({
     label: t(group.labelKey),
     services: group.links.map((link) => ({

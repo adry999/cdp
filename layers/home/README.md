@@ -53,7 +53,7 @@ Precedence (`chooseHeroVariant`): `?hero=` preview (client-only, after mount) ->
 
 ## Depends on
 
-- `layers/core` — `SiteSection`, `FactCard`, `TableRow`, `TechChip`,
+- `layers/core` — `SiteSection`, `FactCard`, `TechChip`,
   `AppButton`, `TextLink`, `FaqList`, `usePageSeo`, `useI18nList`,
   `useSiteLocale`, `pick`, `StageId`, the `qualifier:open` hook contract
   (`HomeServices` calls it directly).

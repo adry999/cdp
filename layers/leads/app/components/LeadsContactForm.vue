@@ -2,6 +2,7 @@
 import { STAGE_ORDER, type StageId } from '#layers/core/shared/types/service-stage'
 import { SERVICE_TAG_IDS, type ServiceTagId } from '#layers/core/shared/types/service-tag'
 import { stageForServiceParam, stageForServiceTag } from '#layers/core/shared/utils/serviceStage'
+import { visibleServices } from '#layers/core/shared/utils/visibleServices'
 import { LEAD_BUDGET_KEYS, type ContactFieldErrors } from '#layers/leads/domain/lead'
 import { useLeadSubmission } from '#layers/leads/state/useLeadSubmission'
 
@@ -17,7 +18,7 @@ const isModal = computed(() => props.variant === 'modal')
 
 const { t, locale } = useI18n()
 const { grantsEnabled } = useRuntimeConfig().public
-const serviceOptions = SERVICE_TAG_IDS.filter((id) => id !== 'granturi' || grantsEnabled)
+const serviceOptions = visibleServices(SERVICE_TAG_IDS, grantsEnabled)
 const route = useRoute()
 const localePath = useLocalePath()
 const { status, fieldErrors, submit } = useLeadSubmission()

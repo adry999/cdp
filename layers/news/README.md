@@ -27,7 +27,7 @@ there is no multi-table transaction to protect, and RLS is the whole access rule
 - `mapNews(row, locale)` — `NewsRow` to `NewsView`; English falls back to
   Romanian per field, and `translated` is false when the English title or
   summary is missing.
-- `newsSlug`, `newsPaths(slugRo, slugEn)`, `sortNews`, `sourceHost`.
+- `newsSlug`, `newsPaths(slugRo, slugEn)`.
 - `newsArticleSchema(input)` — the `NewsArticle` JSON-LD: CODEPEDIA is author
   and publisher (`organizationRef`), the original is `isBasedOn` and `citation`.
 - `NEWS_INDEX_PAGE`, `NewsView`, `NewsRow`.

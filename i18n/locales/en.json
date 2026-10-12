@@ -8,7 +8,6 @@
   "nav": {
     "chooseService": "Choose a service",
     "services": "Services",
-    "stack": "Tech Stack",
     "process": "Process",
     "work": "Portfolio",
     "blog": "Blog",
@@ -36,7 +35,6 @@
     "cookieSettings": "Cookie settings",
     "studioLabel": "Studio",
     "allPosts": "All articles",
-    "navLabel": "Footer navigation",
     "privacy": "Privacy"
   },
   "cookieBanner": {
