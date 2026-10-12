@@ -6,9 +6,11 @@ const siteLocale = useSiteLocale()
 const origin = useSiteUrl()
 const primaryOrigin = useSiteUrl('en')
 
-const { data: posts } = await useAsyncData<BlogPostSummary[]>(`blog-posts-${locale.value}`, () =>
+const { data: posts, error } = await useAsyncData<BlogPostSummary[]>(`blog-posts-${locale.value}`, () =>
   $fetch('/api/blog', { query: { locale: locale.value } }),
 )
+// A failing content query is not an empty blog: fail the (prerendered) page instead of shipping it empty and noindex.
+if (error.value) throw createError({ statusCode: 500, statusMessage: 'Blog unavailable', fatal: true })
 
 usePageSeo({
   title: () => t('blog.seo.title'),

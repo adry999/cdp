@@ -4,7 +4,7 @@ import { useLeadsAdminList } from '#layers/leads/state/useLeadsAdminList'
 
 definePageMeta({ layout: 'admin', i18n: false })
 
-const { leads } = await useLeadsAdminList()
+const { leads, loadError } = await useLeadsAdminList()
 
 const STATUS_CLASS: Record<string, string> = {
   nou: 'text-signal-text',
@@ -19,7 +19,10 @@ const STATUS_CLASS: Record<string, string> = {
     <AdminTopbar title="Solicitări" />
 
     <div class="flex-1 overflow-y-auto px-6 py-6">
-      <div v-if="!leads?.length" class="rounded border border-hairline p-8 text-center text-muted">
+      <p v-if="loadError" role="alert" class="rounded border border-signal-text p-8 text-center text-signal-text">
+        Solicitările nu au putut fi încărcate — reîncarcă pagina. ({{ loadError.message }})
+      </p>
+      <div v-else-if="!leads?.length" class="rounded border border-hairline p-8 text-center text-muted">
         Nicio solicitare încă.
       </div>
       <div v-else class="flex flex-col">

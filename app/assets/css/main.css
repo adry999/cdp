@@ -96,6 +96,40 @@
   background-size: var(--placeholder-mark, 56px) auto, auto;
 }
 
+/* Invisible hit area: grows the touch target to 44px tall below the nav breakpoint and 32px above it,
+   without changing the layout. Needs the element to be positioned, which the utility sets. */
+@utility tap-y {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    height: 100%;
+    min-height: 44px;
+    transform: translateY(-50%);
+  }
+  @media (min-width: 56.25rem) {
+    &::before {
+      min-height: 32px;
+    }
+  }
+}
+
+/* Same idea for links inside running text, where WCAG 2.5.8 asks for 24px. */
+@utility tap-y-inline {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    height: 100%;
+    min-height: 24px;
+    transform: translateY(-50%);
+  }
+}
+
 @utility eyebrow {
   @apply font-mono text-[12px] uppercase tracking-[0.08em];
 }

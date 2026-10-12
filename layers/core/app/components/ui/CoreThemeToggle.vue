@@ -16,8 +16,8 @@ const label = computed(() => (mounted.value && theme.value === 'dark' ? t('theme
 <template>
   <button
     type="button"
-    class="flex cursor-pointer items-center justify-center border-0 bg-transparent p-0 text-ink hover:text-signal-text"
-    :class="variant === 'icon' ? 'h-9 w-9 rounded' : 'min-h-11 justify-start gap-3 py-3 text-left'"
+    class="flex cursor-pointer items-center justify-center border-0 bg-transparent p-0"
+    :class="variant === 'icon' ? 'h-9 w-9 rounded text-muted transition-colors hover:bg-hatch hover:text-ink' : 'text-ink hover:text-signal-text min-h-11 justify-start gap-3 py-3 text-left'"
     :aria-label="label"
     :title="variant === 'icon' ? label : undefined"
     @click="toggleTheme"

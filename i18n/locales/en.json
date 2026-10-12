@@ -345,7 +345,7 @@
           "A": "Design → Code",
           "C": "Scale",
           "D": "AI",
-          "unsure": "Not sure"
+          "unsure": "Not sure yet"
         },
         "service": "Service",
         "serviceOptions": {
@@ -355,9 +355,10 @@
           "shopify": "Shopify",
           "ai-automation": "AI automation",
           "granturi": "Grant-funded projects",
-          "unsure": "Not sure"
+          "unsure": "Not sure yet"
         },
         "message": "Describe the problem",
+        "messageHint": "What are we building, for whom, and by when?",
         "budget": "Budget",
         "budgetPlaceholder": "Choose a range",
         "budgetOptions": {
@@ -399,6 +400,7 @@
     "band": { "situation": "Situation: the business problem", "task": "Task: goal and constraints", "action": "Action: business and tech", "result": "Result: gains and savings" },
     "incident": { "found": "The finding", "risk": "The risk", "action": "What we did" },
     "otherObstacles": "Other obstacles and adjustments",
+    "screensDemo": "Screens with demo data",
     "cost": "What the problem cost",
     "constraints": "Constraints",
     "business": "Business",

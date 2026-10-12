@@ -36,3 +36,19 @@ export function caseStudySections(caseStudy: CaseStudy): CaseStudySectionFlags {
     actionShots,
   }
 }
+
+export type NumberedSection = 'situation' | 'task' | 'action' | 'midway' | 'result' | 'feedback' | 'gallery' | 'blog'
+
+const SECTION_ORDER: readonly NumberedSection[] = [
+  'situation', 'task', 'action', 'midway', 'result', 'feedback', 'gallery', 'blog',
+]
+
+/** Sequential labels ("01", "02", ...) for the sections that are shown, in page order. Hidden sections get an empty string. */
+export function numberSections(visible: Record<NumberedSection, boolean>): Record<NumberedSection, string> {
+  const numbers = Object.fromEntries(SECTION_ORDER.map((key) => [key, ''])) as Record<NumberedSection, string>
+  let next = 1
+  for (const key of SECTION_ORDER) {
+    if (visible[key]) numbers[key] = String(next++).padStart(2, '0')
+  }
+  return numbers
+}

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonLd'
+import { OG_PROJECT_SIZE, absoluteUrl } from '#layers/core/shared/utils/seo'
 import { fetchProject } from '#layers/projects/data/projectsRepository'
-import { caseStudySections } from '#layers/projects/domain/caseStudySections'
+import { caseStudySections, numberSections } from '#layers/projects/domain/caseStudySections'
 import { mapProject } from '#layers/projects/domain/mapProject'
 
 const route = useRoute()
@@ -9,11 +10,19 @@ const { t, locale } = useI18n()
 const siteLocale = useSiteLocale()
 const localePath = useLocalePath()
 
-const { data: row } = await useAsyncData(`project-${route.params.slug}`, () => fetchProject(String(route.params.slug)))
+const { data: row, error } = await useAsyncData(`project-${route.params.slug}`, () =>
+  fetchProject(String(route.params.slug)),
+)
 
 const projectRow = row.value
 if (!projectRow) {
-  throw createError({ statusCode: 404, statusMessage: 'Project not found' })
+  // Only a missing slug is a 404; a failing API must not become a cached "not found" for a real project.
+  const notFound = !error.value || error.value.statusCode === 404
+  throw createError({
+    statusCode: notFound ? 404 : 500,
+    statusMessage: notFound ? 'Project not found' : 'Project unavailable',
+    fatal: true,
+  })
 }
 
 // The API resolves slugs from both locales' columns; redirect to the canonical one so each locale has one indexable URL.
@@ -29,7 +38,14 @@ const caseStudy = computed(() => project.value.caseStudy)
 const star = computed(() => caseStudy.value.star)
 // Each section shows only what exists; a section with nothing in it is left out (numbers stay fixed).
 const sections = computed(() => caseStudySections(caseStudy.value))
+const numbers = computed(() =>
+  numberSections({ ...sections.value, gallery: caseStudy.value.shots.length > 0, blog: true }),
+)
 const galleryImages = computed(() => sections.value.actionShots)
+// A lone screenshot fills the whole content column (about 944px at desktop); several share it as tiles of at most a third.
+// Widths are the ones in image.screens, so 1x and 2x are both served as listed.
+const actionShotSizesFull = '320:400px 480:640px 640:800px 768:960px 1024:1280px 1280:960px'
+const actionShotSizesTile = '320:400px 480:480px 640:400px'
 
 const lightboxIndex = ref<number | null>(null)
 function openLightbox(index: number) {
@@ -46,12 +62,21 @@ useSetLocalizedSlugs({ ro: projectRow.slug_ro, en: projectRow.slug_en ?? project
 const siteUrl = useSiteUrl()
 const primarySiteUrl = useSiteUrl('en')
 
+// Social platforms want about 1200 wide; the stored screenshot is 1600 and ~160 KB, so share the optimized rendition.
+const img = useImage()
+const ogImage = computed(() => {
+  const path = caseStudy.value.heroPath
+  return path ? absoluteUrl(siteUrl, img(path, { width: 1200 })) : null
+})
+
 usePageSeo({
   // The card title fits a search result; the hero title is a full sentence that gets cut off.
   title: () => project.value.title,
   description: () => caseStudy.value.heroLead,
   ogTitle: () => caseStudy.value.heroTitle,
-  image: () => caseStudy.value.heroPath,
+  image: () => ogImage.value,
+  imageSize: OG_PROJECT_SIZE,
+  imageAlt: () => caseStudy.value.heroAlt,
   type: 'article',
 })
 
@@ -89,7 +114,7 @@ useJsonLd(
 
     <ProjectsCaseStudySection
       v-if="sections.situation"
-      number="01"
+      :number="numbers.situation"
       :label="t('caseStudy.sections.situation.label')"
       :heading="t('caseStudy.sections.situation.heading')"
     >
@@ -106,7 +131,7 @@ useJsonLd(
       </div>
     </ProjectsCaseStudySection>
 
-    <ProjectsCaseStudySection v-if="sections.task" number="02" :label="t('caseStudy.sections.task.label')">
+    <ProjectsCaseStudySection v-if="sections.task" :number="numbers.task" :label="t('caseStudy.sections.task.label')">
       <h2 v-if="star.goal" class="m-0 max-w-[28ch] heading-section text-pretty">{{ star.goal }}</h2>
       <template v-if="star.constraints.length">
         <div class="eyebrow text-muted" :class="star.goal ? 'mt-[clamp(24px,3vw,36px)]' : undefined">
@@ -127,7 +152,7 @@ useJsonLd(
 
     <ProjectsCaseStudySection
       v-if="sections.action"
-      number="03"
+      :number="numbers.action"
       :label="t('caseStudy.sections.action.label')"
       :heading="t('caseStudy.sections.action.heading')"
     >
@@ -174,17 +199,18 @@ useJsonLd(
               ratio="16/10"
               :src="image.path"
               alt=""
-              sizes="xs:100vw sm:100vw md:50vw xl:640px"
+              :sizes="galleryImages.length === 1 ? actionShotSizesFull : actionShotSizesTile"
               class="transition-colors duration-[120ms] hover:border-ink"
             />
           </button>
         </div>
+        <p v-if="caseStudy.screensDemo" class="m-0 mt-3 eyebrow-sm text-muted">{{ t('caseStudy.screensDemo') }}</p>
       </template>
     </ProjectsCaseStudySection>
 
     <ProjectsCaseStudySection
       v-if="sections.midway"
-      number="04"
+      :number="numbers.midway"
       :label="t('caseStudy.sections.midway.label')"
       :heading="t('caseStudy.sections.midway.heading')"
     >
@@ -231,7 +257,7 @@ useJsonLd(
 
     <ProjectsCaseStudySection
       v-if="sections.result"
-      number="05"
+      :number="numbers.result"
       :label="t('caseStudy.sections.result.label')"
       :heading="t('caseStudy.sections.result.heading')"
     >
@@ -258,7 +284,7 @@ useJsonLd(
 
     <ProjectsCaseStudySection
       v-if="sections.feedback"
-      number="06"
+      :number="numbers.feedback"
       :label="t('caseStudy.sections.feedback.label')"
       :heading="t('caseStudy.sections.feedback.heading')"
     >
@@ -268,9 +294,9 @@ useJsonLd(
       <div v-if="caseStudy.attribution" class="mt-4 eyebrow text-muted">{{ caseStudy.attribution }}</div>
     </ProjectsCaseStudySection>
 
-    <ProjectsCaseStudyGallery :project="project" @open="openLightbox" />
+    <ProjectsCaseStudyGallery :project="project" :number="numbers.gallery" @open="openLightbox" />
 
-    <BlogLinked number="08" :case-slug="projectRow.slug_ro" />
+    <BlogLinked :number="numbers.blog" :case-slug="projectRow.slug_ro" />
 
     <ProjectsCaseStudyNext :project="project" />
 

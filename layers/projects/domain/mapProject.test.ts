@@ -259,6 +259,32 @@ describe('mapProjectCard', () => {
     expect(mapProjectCard({ ...baseRow, kind_ro: null, kind_en: null }, 'ro').kind).toBe('')
   })
 
+  it('builds the label from the localized kind and tags', () => {
+    const row = { ...baseRow, tags_ro: ['Nuxt', 'Supabase'], tags_en: ['Nuxt', 'Supabase DB'] }
+    expect(mapProjectCard(row, 'ro').label).toEqual(['Aplicație web', 'Nuxt', 'Supabase'])
+    expect(mapProjectCard(row, 'en').label).toEqual(['Web app', 'Nuxt', 'Supabase DB'])
+  })
+
+  it('falls back to tech when the locale has no tags', () => {
+    const row = { ...baseRow, tags_ro: ['Nuxt'], tags_en: [] }
+    expect(mapProjectCard(row, 'en').label).toEqual(['Web app', 'Nuxt', 'Supabase'])
+  })
+
+  it('caps the label at three items', () => {
+    const row = { ...baseRow, tags_ro: ['A', 'B', 'C', 'D'] }
+    expect(mapProjectCard(row, 'ro').label).toEqual(['Aplicație web', 'A', 'B'])
+  })
+
+  it('drops tags that repeat the kind or are only a year', () => {
+    const row = { ...baseRow, tags_ro: ['Aplicație web', 'Gestiune internă', '2026'] }
+    expect(mapProjectCard(row, 'ro').label).toEqual(['Aplicație web', 'Gestiune internă'])
+  })
+
+  it('omits an empty kind from the label', () => {
+    const row = { ...baseRow, kind_ro: null, tags_ro: ['Nuxt'] }
+    expect(mapProjectCard(row, 'ro').label).toEqual(['Nuxt'])
+  })
+
   it('maps a known service_tag to serviceTag', () => {
     expect(mapProjectCard({ ...baseRow, service_tag: 'web-app' }, 'ro').serviceTag).toBe('web-app')
   })

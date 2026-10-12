@@ -1,6 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import { buildAdminProjectRow } from '#layers/projects/test-support/buildAdminProjectRow'
-import { DEFAULT_FACTS, replacedMediaUrls, toProjectForm, toSavePayload } from './projectForm'
+import { evaluateChecklist } from './adminProjectList'
+import {
+  DEFAULT_FACTS,
+  checklistInputFromForm,
+  formMediaUrls,
+  replacedMediaUrls,
+  rowMediaUrls,
+  toProjectForm,
+  toSavePayload,
+} from './projectForm'
 
 describe('toProjectForm', () => {
   it('starts a new project with the default facts and the current year', () => {
@@ -175,10 +184,65 @@ describe('replacedMediaUrls', () => {
     const form = toProjectForm(row)
     form.coverPath = 'cover-new'
     form.gallery = []
-    expect(replacedMediaUrls(row, form)).toEqual(['cover-old', 'g1'])
+    expect(rowMediaUrls(row)).toEqual(['cover-old', 'hero', 'g1'])
+    expect(replacedMediaUrls(rowMediaUrls(row), form)).toEqual(['cover-old', 'g1'])
   })
 
   it('is empty for a new project', () => {
-    expect(replacedMediaUrls(null, toProjectForm(null))).toEqual([])
+    expect(rowMediaUrls(null)).toEqual([])
+    expect(replacedMediaUrls(rowMediaUrls(null), toProjectForm(null))).toEqual([])
+  })
+
+  it('compares against the last saved form, so a second replacement cleans the intermediate file', () => {
+    const form = toProjectForm(buildAdminProjectRow({ cover_path: 'a' }))
+    form.coverPath = 'b'
+    const afterFirstSave = formMediaUrls(form)
+    form.coverPath = 'c'
+    expect(replacedMediaUrls(afterFirstSave, form)).toEqual(['b'])
+  })
+})
+
+describe('checklistInputFromForm', () => {
+  it('maps the form fields the publish checklist reads', () => {
+    const form = toProjectForm(null)
+    form.title.ro = 'Titlu'
+    form.cardTitle.ro = 'Card'
+    form.summary.ro = 'Sumar'
+    form.lead.ro = 'Lead'
+    form.contextBody.ro = 'Problema'
+    form.coverPath = 'cover'
+    form.gallery = [{ path: 'g1', altRo: '', altEn: '', aspect: '16/10' }]
+    form.links = [
+      { kind: 'figma', url: 'https://figma.com/x', note: { ro: '', en: '' } },
+      { kind: 'live', url: ' https://example.md ', note: { ro: '', en: '' } },
+    ]
+    form.stats = [{ value: '48%', label: { ro: 'mai rapid', en: 'faster' } }]
+    form.winValue.ro = '−35%'
+    form.quote.ro = 'Citat'
+    form.screensDemo = true
+
+    expect(checklistInputFromForm(form)).toEqual({
+      title_ro: 'Titlu',
+      card_title_ro: 'Card',
+      summary_ro: 'Sumar',
+      lead_ro: 'Lead',
+      context_body_ro: 'Problema',
+      cover_path: 'cover',
+      live_url: 'https://example.md',
+      win_value_ro: '−35%',
+      quote_ro: 'Citat',
+      screens_demo: true,
+      project_images: [{ path: 'g1' }],
+      project_stats: [{ value: '48%' }],
+    })
+    expect(evaluateChecklist(checklistInputFromForm(form), true).canPublish).toBe(true)
+  })
+
+  it('has no live url without a live link, so the checklist blocks publishing', () => {
+    const form = toProjectForm(null)
+    form.links = [{ kind: 'preview', url: 'https://preview.example', note: { ro: '', en: '' } }]
+    const input = checklistInputFromForm(form)
+    expect(input.live_url).toBeNull()
+    expect(evaluateChecklist(input, true).canPublish).toBe(false)
   })
 })

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { MappedProject } from '#layers/projects/domain/mapProject'
 
-const props = defineProps<{ project: MappedProject }>()
+const props = defineProps<{ project: MappedProject; number: string }>()
 const emit = defineEmits<{ open: [index: number] }>()
 const { t } = useI18n()
 
@@ -12,7 +12,7 @@ const caseStudy = computed(() => props.project.caseStudy)
   <ProjectsCaseStudySection
     v-if="caseStudy.shots.length"
     section-id="galerie"
-    number="07"
+    :number="number"
     :label="t('caseStudy.sections.gallery.label')"
     :heading="t('caseStudy.sections.gallery.heading')"
   >
@@ -29,11 +29,12 @@ const caseStudy = computed(() => props.project.caseStudy)
           ratio="16/10"
           :src="shot.path"
           alt=""
-          sizes="xs:100vw sm:100vw md:50vw xl:300px"
+          sizes="320:400px 480:480px 640:400px"
           class="rounded-none! border-0! object-left-top!"
         />
       </button>
     </div>
+    <p v-if="caseStudy.screensDemo" class="m-0 mt-3 eyebrow-sm text-muted">{{ t('caseStudy.screensDemo') }}</p>
     <div v-if="caseStudy.links.length" class="mt-[clamp(24px,3vw,32px)] flex flex-wrap gap-[10px]">
       <a
         v-for="(link, i) in caseStudy.links"

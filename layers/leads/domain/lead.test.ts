@@ -39,6 +39,11 @@ describe('validateContactSubmission', () => {
     expect(validateContactSubmission({})).toEqual({ name: 'required', email: 'required', message: 'required' })
   })
 
+  it('treats a non-text field from hand-made JSON as missing instead of crashing', () => {
+    const raw = { ...buildContactSubmission(), name: 123, message: ['x'] } as unknown as Parameters<typeof validateContactSubmission>[0]
+    expect(validateContactSubmission(raw)).toEqual({ name: 'required', message: 'required' })
+  })
+
   it('accepts a known stage and a missing one', () => {
     expect(validateContactSubmission(buildContactSubmission({ stage: 'B' }))).toEqual({})
     expect(validateContactSubmission(buildContactSubmission({ stage: undefined }))).toEqual({})

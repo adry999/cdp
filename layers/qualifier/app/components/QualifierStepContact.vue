@@ -70,11 +70,12 @@ function handleSubmit() {
       <input
         id="qual-name"
         v-model="form.name"
+        autocomplete="name"
         type="text"
         required
         :aria-invalid="fieldErrors.name ? 'true' : undefined"
         :aria-describedby="fieldErrors.name ? 'qual-name-error' : undefined"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
       <p v-if="fieldErrors.name" id="qual-name-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
         <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldErrors.name }}
@@ -93,7 +94,7 @@ function handleSubmit() {
         autocomplete="email"
         :aria-invalid="fieldErrors.email ? 'true' : undefined"
         :aria-describedby="fieldErrors.email ? 'qual-email-error' : undefined"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
       <p v-if="fieldErrors.email" id="qual-email-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
         <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldErrors.email }}
@@ -108,7 +109,7 @@ function handleSubmit() {
         id="qual-handle"
         v-model="form.handle"
         type="text"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
     </div>
 
@@ -120,7 +121,7 @@ function handleSubmit() {
         id="qual-notes"
         v-model="form.notes"
         rows="3"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       />
     </div>
 
