@@ -1,6 +1,6 @@
 import type { RouteLocationRaw } from 'vue-router'
 
-export type SiteNavId = 'services' | 'work' | 'process' | 'blog'
+export type SiteNavId = 'services' | 'work' | 'blog'
 
 /** A header link that is not the services dropdown. `hash` lands on a section of the target page. */
 export interface SiteNavLink {
@@ -13,7 +13,6 @@ export interface SiteNavLink {
 // The same on every page; the services dropdown comes first (see SiteHeaderServicesMenu).
 export const SITE_NAV_LINKS: readonly SiteNavLink[] = [
   { id: 'work', routeName: 'proiecte', label: 'nav.projects' },
-  { id: 'process', routeName: 'index', hash: '#proces', label: 'nav.process' },
   { id: 'blog', routeName: 'blog', label: 'nav.blog' },
 ]
 
@@ -21,7 +20,7 @@ function isRouteOrChild(baseName: string, route: string): boolean {
   return baseName === route || baseName.startsWith(`${route}-`)
 }
 
-/** Which header item marks the current page. `process` is a section anchor, never a page. */
+/** Which header item marks the current page. */
 export function activeNavId(routeBaseName: string | undefined): SiteNavId | null {
   if (!routeBaseName) return null
   if (isRouteOrChild(routeBaseName, 'servicii')) return 'services'

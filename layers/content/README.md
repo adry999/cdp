@@ -2,7 +2,7 @@
 
 Homepage content with no flow of its own: FAQ and site settings, edited directly
 in these files (not from a database), plus the services timeline, stack grid,
-process tracks and about pillars — each joining structural defs here with
+and about pillars — each joining structural defs here with
 `home.*` copy in `i18n/locales/{ro,en}.json`. Independent — depends only on
 `layers/core`.
 
@@ -13,10 +13,10 @@ process tracks and about pillars — each joining structural defs here with
 - **Site settings** — `data/siteSettings.ts`. Edit the `SITE_SETTINGS` object;
   both `ro` and `en` are required for every localized field. Only the fields
   the public site actually reads are modelled — see `domain/siteSettings.ts`.
-- **Services / stack / process / about** — order and tone live in
-  `domain/{services,stack,process,about}.ts`; all copy lives in
+- **Services / stack / about** — order and tone live in
+  `domain/{services,stack,about}.ts`; all copy lives in
   `i18n/locales/{ro,en}.json` under `home.services`, `home.stack`,
-  `home.process`, `home.about`.
+  `home.about`.
 
 `data/content.test.ts` fails if a localized field is missing one language, if
 `FAQS` is empty, if `contactEmail` isn't a valid address, or if
@@ -33,12 +33,10 @@ the public site.
 - `useSiteSettings()` → `ComputedRef<{ contactEmail, hours, responseTime,
   ndaNote, footerLine, copyrightYear }>`, localized fields resolved to the
   active locale.
-- `useServiceStages()`, `useStackGroups()`, `useProcessTracks()`,
-  `useAboutPillars()` — join the structural defs in `domain/` with their
+- `useServiceStages()`, `useStackGroups()`, `useAboutPillars()` — join the structural defs in `domain/` with their
   `home.*` i18n copy.
 - `Faq`, `LocalizedText`, `SiteSettings`, `ServiceStageDef`, `ServiceStage`,
-  `StackGroupId`, `StackGroup`, `ProcessTrackId`, `ProcessTrackTone`,
-  `ProcessTrackDef`, `ProcessStep`, `ProcessTrack`, `AboutPillarId`,
+  `StackGroupId`, `StackGroup`, `AboutPillarId`,
   `AboutPillar` — domain types.
 - `CONTENT_EN_PENDING_PATHS` — RO paths of this layer's pages whose EN copy is
   still Romanian; composed by the root `app/utils/enPendingTranslation.ts`.
@@ -73,7 +71,7 @@ Route names `preturi` and `despre` are mapped to localized paths in `nuxt.config
 - `layers/home/app/components/HomeContact.vue`, `HomeWork.vue`,
   `app/components/site/SiteFooter.vue` — `useSiteSettings()`.
 - `layers/home/app/components/HomeServices.vue`, `HomeStack.vue`,
-  `HomeProcess.vue`, `HomeAbout.vue` — the structural composables.
+  `HomeAbout.vue` — the structural composables.
 - `layers/leads/app/pages/contact.vue`,
   `layers/consent/app/pages/confidentialitate.vue`,
   `layers/projects/app/pages/proiecte/index.vue` — `useSiteSettings()`.

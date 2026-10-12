@@ -23,7 +23,6 @@ const services = computed(() =>
 
 const studioLinks = computed(() => [
   { id: 'work', label: t('nav.projects'), to: localePath('proiecte') },
-  { id: 'process', label: t('nav.process'), to: { path: localePath('index'), hash: '#proces' } },
   { id: 'pricing', label: t('nav.pricing'), to: localePath('preturi') },
   { id: 'about', label: t('nav.about'), to: localePath('despre') },
   { id: 'blog', label: t('nav.blog'), to: localePath('blog') },

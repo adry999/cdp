@@ -98,7 +98,7 @@ if (import.meta.client && phrases.length > 1) {
       </p>
       <div class="mt-[clamp(24px,2.8vw,36px)] flex flex-wrap gap-3">
         <QualifierCta variant="signal" fallback-href="#contact">{{ t('home.hero.ctaPrimary') }}</QualifierCta>
-        <AppButton href="#proces" variant="outline">{{ t('home.hero.ctaSecondary') }}</AppButton>
+        <AppButton href="#despre" variant="outline">{{ t('home.hero.ctaSecondary') }}</AppButton>
       </div>
     </SiteSection>
     <div class="container-site pb-[clamp(36px,4.5vw,56px)]">
