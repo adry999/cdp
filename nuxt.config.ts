@@ -173,6 +173,26 @@ export default defineNuxtConfig({
     // vercel provider avoids bundling sharp, whose native binary built on Windows can't load in Vercel's Linux functions.
     provider: process.env.VERCEL ? 'vercel' : 'ipx',
     domains: supabaseHost ? [supabaseHost] : [],
+    // The vercel provider defaults to q=100, which more than doubles the bytes of a UI screenshot for no visible gain.
+    quality: 75,
+    // The vercel provider only serves these exact widths (they become `images.sizes` in the build output) and rounds
+    // any other request up. The `sizes` attributes in the components pick slot widths whose 1x and 2x are in this set,
+    // so each srcset descriptor is a width Vercel really serves. The wNNN keys only carry a width.
+    screens: {
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      '2xl': 1536,
+      w400: 400,
+      w480: 480,
+      w800: 800,
+      w960: 960,
+      w1600: 1600,
+      w1920: 1920,
+    },
+    // Project images live in Supabase Storage under unique paths, so a day of caching saves re-optimizing them.
+    ...(process.env.VERCEL ? { vercel: { minimumCacheTTL: 86400 } } : {}),
   },
 
   supabase: {

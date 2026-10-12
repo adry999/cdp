@@ -29,7 +29,7 @@ const caseStudy = computed(() => props.project.caseStudy)
           ratio="16/10"
           :src="shot.path"
           alt=""
-          sizes="xs:100vw sm:100vw md:50vw xl:300px"
+          sizes="320:480px"
           class="rounded-none! border-0! object-left-top!"
         />
       </button>
