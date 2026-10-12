@@ -250,7 +250,7 @@ watch(status, (value) => {
     <div class="flex flex-col gap-4" :class="isModal && 'sm:flex-row sm:flex-wrap sm:items-center sm:justify-between'">
       <p class="m-0 text-xs text-muted" :class="isModal && 'max-w-[34ch]'">
         {{ t('home.contact.form.privacyNotice') }}
-        <NuxtLink :to="localePath('confidentialitate')" class="text-ink underline">{{
+        <NuxtLink :to="localePath('confidentialitate')" class="tap-y-inline text-ink underline">{{
           t('home.contact.form.privacyNoticeLink')
         }}</NuxtLink>
       </p>

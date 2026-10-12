@@ -31,7 +31,7 @@ const target = computed(() => localePath({ name: 'proiecte-slug', params: { slug
     <h3 class="mb-2 heading-card" :class="showTech ? 'mt-2.5' : 'mt-4'">
       <NuxtLink
         :to="target"
-        class="text-inherit no-underline transition-colors duration-[120ms] hover:text-signal-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
+        class="tap-y text-inherit no-underline transition-colors duration-[120ms] hover:text-signal-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
       >
         {{ project.title }}
       </NuxtLink>

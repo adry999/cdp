@@ -13,7 +13,7 @@ const track = useTrackEvent()
       v-for="item in post.toc"
       :key="item.id"
       :href="`#${item.id}`"
-      class="text-[13px] leading-[1.35] text-muted no-underline text-pretty hover:text-signal-text hover:no-underline"
+      class="tap-y text-[13px] leading-[1.35] text-muted no-underline text-pretty hover:text-signal-text hover:no-underline"
       @click="track('blog_toc_click', { post_slug: blogSlug(post.path), anchor_id: item.id })"
     >
       {{ item.text }}

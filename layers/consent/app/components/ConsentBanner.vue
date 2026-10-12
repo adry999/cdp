@@ -49,7 +49,7 @@ watch(bannerRef, (el) => {
       <div class="mx-auto flex max-w-site flex-wrap items-center justify-between gap-3 sm:gap-4">
         <p id="cookie-banner-message" class="max-w-[60ch] text-sm text-muted">
           {{ t('cookieBanner.message') }}
-          <NuxtLink :to="localePath('confidentialitate')" class="text-ink underline">{{
+          <NuxtLink :to="localePath('confidentialitate')" class="tap-y-inline text-ink underline">{{
             t('cookieBanner.policyLinkText')
           }}</NuxtLink>
         </p>
