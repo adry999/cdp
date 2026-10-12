@@ -280,6 +280,19 @@ describe('mapProjectCard', () => {
     expect(mapProjectCard(row, 'ro').label).toEqual(['Aplicație desktop pentru Windows', 'Plăți EUR/MDL', 'Offline'])
   })
 
+  it('drops tags that repeat the kind before a comma', () => {
+    const row = { ...baseRow, kind_ro: 'Site de business, brand și marketing', tags_ro: ['Site de business', 'Test de nivel'] }
+    expect(mapProjectCard(row, 'ro').label).toEqual(['Site de business, brand și marketing', 'Test de nivel'])
+  })
+
+  it('keeps tags that only start a hyphenated or decomposed word of the kind', () => {
+    const hyphen = { ...baseRow, kind_ro: 'Web-app pentru logistică', tags_ro: ['Web', 'Offline'] }
+    expect(mapProjectCard(hyphen, 'ro').label).toEqual(['Web-app pentru logistică', 'Web', 'Offline'])
+    // "ă" typed as "a" + U+0306: the tag "Platforma" is not a repeat of "Platformă de rezervări".
+    const decomposed = { ...baseRow, kind_ro: 'Platformă de rezervări', tags_ro: ['Platforma', 'Offline'] }
+    expect(mapProjectCard(decomposed, 'ro').label).toEqual(['Platformă de rezervări', 'Platforma', 'Offline'])
+  })
+
   it('drops tags that repeat the kind or are only a year', () => {
     const row = { ...baseRow, tags_ro: ['Aplicație web', 'Gestiune internă', '2026'] }
     expect(mapProjectCard(row, 'ro').label).toEqual(['Aplicație web', 'Gestiune internă'])

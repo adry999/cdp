@@ -118,7 +118,10 @@ function cardLabel(kind: string, tags: readonly string[], tech: readonly string[
   const kindLower = kind.toLowerCase()
   const repeatsKind = (item: string) => {
     const lower = item.toLowerCase()
-    return lower === kindLower || kindLower.startsWith(`${lower} `)
+    if (lower === kindLower) return true
+    // The kind may continue with a space or clause punctuation: "Site de business, brand și marketing".
+    // A hyphen or a combining mark continues the word ("Web-app", decomposed diacritics), so no repeat.
+    return kindLower.startsWith(lower) && /^[\s,;:.]/.test(kindLower.slice(lower.length))
   }
   const clean = (list: readonly string[]) =>
     list

@@ -82,3 +82,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#68–#78** CLOSED: raportul de audit și cele 10 PR-uri de fix pe arie, unite în #79.
 - **#79** fix: toate fix-urile auditului 2026-10-12 într-un singur PR (a11y, design, mobil, cache, erori, admin, imagini) + raportul cu addendum.
 - **#80** fix(a11y): recuperează #75 (modal, banner cookie non-modal, dropdown disclosure), lipsit din #79, și curăță tagurile de pe carduri care repetă începutul tipului.
+- **#81** perf(build): module partajate într-un singur chunk client (135 → 68 chunk-uri, 52 → 6 preload-uri pe `/blog`, supabase-js și codul de admin în chunk-uri separate, neprefetch-uite); intrarea `#layers/<layer>/admin` pentru codul de admin al unui layer (`layers/leads/admin.ts`); taguri de card care repetă tipul înainte de virgulă, nu și de cratimă (audit PERF-3).

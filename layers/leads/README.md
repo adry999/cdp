@@ -5,10 +5,13 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 ## Public API (client) — `index.ts`
 
 - `useLeadSubmission()` → `{ status: AsyncStatus, fieldErrors, error: AppError | null, submit(submission) }`.
-- `useNewLeadsCount()` → `{ count: Ref<number | null> }` — active leads with `status = 'nou'` (head-only count, refetched on route change; `null` on error). Used by the admin sidebar badge.
 - `useContactModal()` → `{ isOpen, service, returnFocusTo, open({ service?, returnFocusTo? }), close }` — state of the contact dialog. `open` pre-selects a service chip and remembers where focus returns on close (default: the element focused at that moment). The root `useContactCta` composable (`app/composables/`) decides what a "Discută un proiect" button does: scroll to `#contact` on the homepage, link to `/contact` on that page, open the qualifier when `NUXT_PUBLIC_QUALIFIER_ENABLED` is on, otherwise this dialog.
 - `ContactSubmission`, `ContactFieldErrors` — domain types for a compatible submission.
 - `LEADS_EN_PENDING_PATHS` — RO paths whose EN copy is still Romanian (`/contact`); composed by the root `app/utils/enPendingTranslation.ts`.
+
+## Admin API (client) — `admin.ts`
+
+- `useNewLeadsCount()` → `{ count: Ref<number | null> }` — active leads with `status = 'nou'` (head-only count, refetched on route change; `null` on error). Used by the admin sidebar badge. Lives outside `index.ts` so the public barrel never drags the admin repository (and supabase-js) into the public client chunks.
 
 ## Public API (server) — `server/index.ts`
 
