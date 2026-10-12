@@ -34,7 +34,7 @@ const galleryImages = computed(() => sections.value.actionShots)
 // A lone screenshot fills the whole content column (about 944px at desktop); several share it as tiles of at most a third.
 // Widths are the ones in image.screens, so 1x and 2x are both served as listed.
 const actionShotSizesFull = '320:400px 480:640px 640:800px 768:960px 1024:1280px 1280:960px'
-const actionShotSizesTile = '320:400px 480:480px'
+const actionShotSizesTile = '320:400px 480:480px 640:400px'
 
 const lightboxIndex = ref<number | null>(null)
 function openLightbox(index: number) {

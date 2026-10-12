@@ -23,7 +23,7 @@ const target = computed(() => localePath({ name: 'proiecte-slug', params: { slug
         ratio="16/10"
         :src="project.coverPath ?? undefined"
         :alt="project.coverAlt"
-        sizes="320:400px 480:640px 640:480px 1024:400px"
+        sizes="320:400px 480:640px 640:400px 1280:320px"
         :priority="priority"
       />
     </NuxtLink>
