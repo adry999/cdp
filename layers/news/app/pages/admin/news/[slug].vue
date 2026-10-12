@@ -22,7 +22,9 @@ const saveLabel = computed(() => {
         <span v-if="saveStatus !== 'idle'" aria-live="polite" class="eyebrow" :class="saveStatus === 'error' ? 'text-signal-text' : 'text-muted'">
           {{ saveLabel }}
         </span>
-        <AppButton variant="ink" @click="save">Salvează</AppButton>
+        <AppButton variant="ink" :disabled="saveStatus === 'pending'" @click="save">
+          {{ saveStatus === 'pending' ? 'Se salvează…' : 'Salvează' }}
+        </AppButton>
       </template>
     </AdminTopbar>
 

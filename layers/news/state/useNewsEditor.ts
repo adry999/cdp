@@ -35,6 +35,7 @@ export async function useNewsEditor(idOrSlug: string) {
   const warnings = computed(() => issues.value.filter((issue) => issue.severity === 'warning'))
 
   async function save() {
+    if (saveStatus.value === 'pending') return
     saveError.value = null
     const blocking = blockingIssues(issues.value)
     if (blocking.length) {
@@ -70,7 +71,10 @@ export async function useNewsEditor(idOrSlug: string) {
     }
     prefillStatus.value = 'pending'
     try {
-      form.value = applyPreview(form.value, await repository.previewSource(url))
+      const preview = await repository.previewSource(url)
+      // Filled into the existing form object, read after the request: the unsaved-changes guard
+      // watches that object, and whatever the admin typed meanwhile is kept.
+      Object.assign(form.value, applyPreview(form.value, preview))
       prefillStatus.value = 'success'
     } catch (caught) {
       prefillStatus.value = 'error'

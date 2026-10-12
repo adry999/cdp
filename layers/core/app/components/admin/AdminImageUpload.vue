@@ -6,12 +6,22 @@ const props = defineProps<{
   pathPrefix: string
   bucket: string
 }>()
-const emit = defineEmits<{ 'update:modelValue': [string] }>()
+// `uploading` lets the parent block its save while a file is in flight.
+const emit = defineEmits<{ 'update:modelValue': [string]; uploading: [boolean] }>()
 
 const supabase = useSupabaseClient()
 const fileInput = ref<HTMLInputElement>()
 const uploading = ref(false)
 const error = ref('')
+
+function setUploading(value: boolean) {
+  uploading.value = value
+  emit('uploading', value)
+}
+// An unmounted instance (a removed gallery slot) must not leave the parent's counter stuck.
+onBeforeUnmount(() => {
+  if (uploading.value) emit('uploading', false)
+})
 
 const MAX_BYTES = 8 * 1024 * 1024
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
@@ -38,7 +48,7 @@ async function onFileChange(e: Event) {
     return
   }
 
-  uploading.value = true
+  setUploading(true)
 
   const ext = file.name.split('.').pop() || 'jpg'
   const path = `${props.pathPrefix}/${Date.now()}.${ext}`
@@ -49,7 +59,7 @@ async function onFileChange(e: Event) {
 
   if (uploadError) {
     error.value = 'Upload eșuat: ' + uploadError.message
-    uploading.value = false
+    setUploading(false)
     return
   }
 
@@ -58,7 +68,7 @@ async function onFileChange(e: Event) {
   // replaced files after a successful save.
   const { data } = supabase.storage.from(props.bucket).getPublicUrl(path)
   emit('update:modelValue', data.publicUrl)
-  uploading.value = false
+  setUploading(false)
   if (fileInput.value) fileInput.value.value = ''
 }
 </script>

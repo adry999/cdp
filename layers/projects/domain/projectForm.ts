@@ -1,5 +1,6 @@
 import type { Json } from '#layers/core/shared/types/database.types'
 import { isServiceTagId, type ServiceTagId } from '#layers/core/shared/types/service-tag'
+import type { ChecklistInput } from '#layers/projects/domain/adminProjectList'
 import { usableGallery, type ProjectImageInput } from '#layers/projects/domain/projectPayload'
 import type { AdminProjectRow } from '#layers/projects/domain/projectSelect'
 import {
@@ -332,10 +333,44 @@ export function toSavePayload(form: ProjectForm, projectId: string | null): Save
   }
 }
 
-/** Media URLs the loaded project referenced that the edited form no longer does. */
-export function replacedMediaUrls(row: AdminProjectRow | null, form: ProjectForm): string[] {
+/** Media URLs a form references; the snapshot kept after each save for the next cleanup. */
+export function formMediaUrls(form: ProjectForm): string[] {
+  return [form.coverPath, form.heroPath, ...form.gallery.map((img) => img.path)].filter(
+    (url): url is string => !!url,
+  )
+}
+
+export function rowMediaUrls(row: AdminProjectRow | null): string[] {
   if (!row) return []
-  const before = [row.cover_path, row.hero_path, ...row.project_images.map((img) => img.path)]
-  const after = new Set([form.coverPath, form.heroPath, ...form.gallery.map((img) => img.path)])
-  return before.filter((url): url is string => !!url && !after.has(url))
+  return [row.cover_path, row.hero_path, ...row.project_images.map((img) => img.path)].filter(
+    (url): url is string => !!url,
+  )
+}
+
+/** URLs of `before` (the last saved state) that the edited form no longer references. */
+export function replacedMediaUrls(before: readonly string[], form: ProjectForm): string[] {
+  const after = new Set(formMediaUrls(form))
+  return before.filter((url) => !after.has(url))
+}
+
+/**
+ * The publish checklist reads the form, not the saved row, so publishing from the editor
+ * judges what is about to be saved. The live URL is the first 'live' link, as save_project() derives it.
+ */
+export function checklistInputFromForm(form: ProjectForm): ChecklistInput {
+  const live = form.links.find((link) => link.kind === 'live' && link.url.trim())
+  return {
+    title_ro: form.title.ro,
+    card_title_ro: form.cardTitle.ro,
+    summary_ro: form.summary.ro,
+    lead_ro: form.lead.ro,
+    context_body_ro: form.contextBody.ro,
+    cover_path: form.coverPath,
+    live_url: live?.url.trim() ?? null,
+    win_value_ro: form.winValue.ro,
+    quote_ro: form.quote.ro,
+    screens_demo: form.screensDemo,
+    project_images: form.gallery.map((img) => ({ path: img.path })),
+    project_stats: form.stats.map((stat) => ({ value: stat.value })),
+  }
 }
