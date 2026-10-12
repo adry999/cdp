@@ -115,7 +115,7 @@ watch(status, (value) => {
           required
           :aria-invalid="fieldError('name') ? 'true' : undefined"
           :aria-describedby="fieldError('name') ? 'lead-name-error' : undefined"
-          class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
         <p v-if="fieldError('name')" id="lead-name-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
           <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('name') }}
@@ -134,7 +134,7 @@ watch(status, (value) => {
           autocomplete="email"
           :aria-invalid="fieldError('email') ? 'true' : undefined"
           :aria-describedby="fieldError('email') ? 'lead-email-error' : undefined"
-          class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
         <p v-if="fieldError('email')" id="lead-email-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
           <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('email') }}
@@ -152,7 +152,7 @@ watch(status, (value) => {
         v-model="form.company"
         type="text"
         autocomplete="organization"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
     </div>
 
@@ -160,17 +160,17 @@ watch(status, (value) => {
       <div id="lead-service-label" class="eyebrow text-muted">
         {{ t('home.contact.form.service') }}
       </div>
-      <div class="mt-2 flex flex-wrap gap-1.5">
+      <div class="mt-2 flex flex-wrap gap-2">
         <ToggleChip
           v-for="option in serviceOptions"
           :key="option"
-          size="form"
+          size="pill"
           :pressed="form.service === option"
           @click="toggleService(option)"
         >
           {{ t(`home.contact.form.serviceOptions.${option}`) }}
         </ToggleChip>
-        <ToggleChip size="form" :pressed="form.service === undefined" @click="form.service = undefined">
+        <ToggleChip size="pill" :pressed="form.service === undefined" @click="form.service = undefined">
           {{ t('home.contact.form.serviceOptions.unsure') }}
         </ToggleChip>
       </div>
@@ -180,17 +180,17 @@ watch(status, (value) => {
       <div id="lead-stage-label" class="eyebrow text-muted">
         {{ t('home.contact.form.stage') }}
       </div>
-      <div class="mt-3 flex flex-wrap gap-1.5">
+      <div class="mt-3 flex flex-wrap gap-2">
         <ToggleChip
           v-for="option in STAGE_ORDER"
           :key="option"
-          size="form"
+          size="pill"
           :pressed="form.stage === option"
           @click="toggleStage(option)"
         >
           {{ t(`home.contact.form.stageOptions.${option}`) }}
         </ToggleChip>
-        <ToggleChip size="form" :pressed="form.stage === undefined" @click="form.stage = undefined">
+        <ToggleChip size="pill" :pressed="form.stage === undefined" @click="form.stage = undefined">
           {{ t('home.contact.form.stageOptions.unsure') }}
         </ToggleChip>
       </div>
@@ -205,9 +205,10 @@ watch(status, (value) => {
         v-model="form.message"
         rows="4"
         required
+        :placeholder="t('home.contact.form.messageHint')"
         :aria-invalid="fieldError('message') ? 'true' : undefined"
         :aria-describedby="fieldError('message') ? 'lead-message-error' : undefined"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base leading-normal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       />
       <p v-if="fieldError('message')" id="lead-message-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
         <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('message') }}
@@ -221,7 +222,7 @@ watch(status, (value) => {
       <select
         id="lead-budget"
         v-model="form.budget"
-        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
         <option value="">{{ t('home.contact.form.budgetPlaceholder') }}</option>
         <option v-for="key in LEAD_BUDGET_KEYS" :key="key" :value="key">
@@ -238,7 +239,7 @@ watch(status, (value) => {
         id="lead-source"
         v-model="form.source"
         type="text"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
     </div>
 

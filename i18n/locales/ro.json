@@ -345,7 +345,7 @@
           "A": "Design → cod",
           "C": "Scalare",
           "D": "AI",
-          "unsure": "Nu știu"
+          "unsure": "Nu știu încă"
         },
         "service": "Serviciu",
         "serviceOptions": {
@@ -355,9 +355,10 @@
           "shopify": "Shopify",
           "ai-automation": "Automatizare cu AI",
           "granturi": "Proiecte finanțate prin granturi",
-          "unsure": "Nu știu"
+          "unsure": "Nu știu încă"
         },
         "message": "Descrierea problemei",
+        "messageHint": "Ce construim, pentru cine și până când?",
         "budget": "Buget",
         "budgetPlaceholder": "Alege un interval",
         "budgetOptions": {
