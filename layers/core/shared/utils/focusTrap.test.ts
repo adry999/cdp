@@ -20,6 +20,10 @@ describe('focusTrapTarget', () => {
     expect(focusTrapTarget(ITEMS, 'page-link', true, false)).toBe('submit')
   })
 
+  it('sends Tab from outside the container to the first element', () => {
+    expect(focusTrapTarget(ITEMS, null, false, false)).toBe('close')
+  })
+
   it('leaves Tab between inner elements to the browser', () => {
     expect(focusTrapTarget(ITEMS, 'option', false, true)).toBeNull()
     expect(focusTrapTarget(ITEMS, 'option', true, true)).toBeNull()

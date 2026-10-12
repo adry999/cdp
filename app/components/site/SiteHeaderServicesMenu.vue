@@ -22,6 +22,7 @@ const HOVER_BLOCK_MS = 600
 
 const root = ref<HTMLElement | null>(null)
 const triggerLink = ref<ComponentPublicInstance | null>(null)
+const panelId = useId()
 const open = ref(false)
 // Cover images are only rendered once the menu has been opened, so closed menus cost no image requests.
 const everOpened = ref(false)
@@ -152,8 +153,8 @@ onBeforeUnmount(() => {
       class="group relative flex items-center gap-1.5 py-2 hover:text-signal-text"
       :class="active ? 'text-ink' : 'text-muted'"
       :aria-current="active ? 'page' : undefined"
-      aria-haspopup="true"
       :aria-expanded="open"
+      :aria-controls="panelId"
     >
       {{ t('nav.services') }}
       <span
@@ -169,6 +170,7 @@ onBeforeUnmount(() => {
     </NuxtLink>
 
     <div
+      :id="panelId"
       class="pointer-events-none absolute inset-x-0 top-full transition-[opacity,transform,visibility] duration-150 motion-reduce:transition-none"
       :class="open ? 'visible translate-y-0 opacity-100' : 'invisible -translate-y-1.5 opacity-0'"
     >
