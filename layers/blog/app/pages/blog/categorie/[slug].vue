@@ -14,9 +14,11 @@ if (!category) {
 // Slugs differ per locale: point the language switcher and hreflang at the same category.
 useSetLocalizedSlugs(CATEGORIES[category].slug)
 
-const { data: posts } = await useAsyncData<BlogPostSummary[]>(`blog-posts-${locale.value}`, () =>
+const { data: posts, error } = await useAsyncData<BlogPostSummary[]>(`blog-posts-${locale.value}`, () =>
   $fetch('/api/blog', { query: { locale: locale.value } }),
 )
+// A failing content query is not an empty category: fail the page rather than answer a false 404.
+if (error.value) throw createError({ statusCode: 500, statusMessage: 'Blog unavailable', fatal: true })
 
 // A category without posts: no empty page to index.
 const postCount = (posts.value ?? []).filter((post) => post.category === category).length
