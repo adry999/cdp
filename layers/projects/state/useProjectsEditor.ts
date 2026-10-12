@@ -6,7 +6,6 @@ import { createProjectsAdminRepository } from '#layers/projects/data/projectsAdm
 import { buildMenuPreview } from '#layers/projects/domain/menuPreview'
 import { replacedMediaUrls, toProjectForm, toSavePayload } from '#layers/projects/domain/projectForm'
 import { validateProjectPayload } from '#layers/projects/domain/projectPayload'
-import { useRevalidatePublicCache } from '#layers/projects/state/useRevalidatePublicCache'
 
 export async function useProjectsEditor(slug: string) {
   const repository = createProjectsAdminRepository(useSupabaseClient<Database>())

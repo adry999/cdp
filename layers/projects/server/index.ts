@@ -12,12 +12,17 @@ export function listPublishedProjectSlugs(event: H3Event): Promise<PublishedProj
   return createProjectRepository(event).listPublishedSlugs()
 }
 
+/** Every published case study's paths in both locales. Throws with the database. */
+export async function listCaseStudyPages(event: H3Event): Promise<SitemapPage[]> {
+  const projects = await listPublishedProjectSlugs(event)
+  return projects.map(({ ro, en, updatedAt }) => ({ ...caseStudyPaths(ro, en), lastmod: toLastmod(updatedAt) }))
+}
+
 /** Published case studies for the sitemap. The sitemap must not fail with the
  * database: without projects it still lists every static page. */
 export async function listProjectSitemapPages(event: H3Event): Promise<SitemapPage[]> {
   try {
-    const projects = await listPublishedProjectSlugs(event)
-    return projects.map(({ ro, en, updatedAt }) => ({ ...caseStudyPaths(ro, en), lastmod: toLastmod(updatedAt) }))
+    return await listCaseStudyPages(event)
   } catch (error) {
     console.warn('[sitemap] project slugs unavailable, listing static pages only', error)
     return []

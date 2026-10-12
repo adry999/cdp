@@ -10,7 +10,6 @@ import {
   neighborIndex,
   type ProjectsAdminFilter,
 } from '#layers/projects/domain/adminProjectList'
-import { useRevalidatePublicCache } from '#layers/projects/state/useRevalidatePublicCache'
 
 export type { ProjectsAdminFilter }
 

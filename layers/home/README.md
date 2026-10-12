@@ -11,8 +11,8 @@ there is no `index.ts` and no `server/index.ts`.
 
 - `/admin/hero` — `app/pages/admin/hero.vue`: picks the hero background
   (`dot-matrix`, `constellation`, `light-orbs`, `none`, or "Implicit" = null).
-  Writes through `data/homeSettingsAdminRepository.ts`, then POSTs
-  `/api/admin/revalidate` by URL (not an import from `projects`).
+  Writes through `data/homeSettingsAdminRepository.ts`, then calls
+  `useRevalidatePublicCache` (`core`).
 
 ## Hero background
 
