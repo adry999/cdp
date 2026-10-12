@@ -35,17 +35,23 @@ function release() {
   returnFocusTo.value = null
 }
 
-// Immediate: the host mounts this lazily, often already open.
-watch(isOpen, (open, wasOpen) => {
+function capture() {
+  restoreOverflow = document.documentElement.style.overflow
+  document.documentElement.style.overflow = 'hidden'
+  nextTick(focusFirstField)
+}
+
+watch(isOpen, (open) => {
   if (!import.meta.client) return
-  if (open) {
-    restoreOverflow = document.documentElement.style.overflow
-    document.documentElement.style.overflow = 'hidden'
-    nextTick(focusFirstField)
-  } else if (wasOpen) {
-    release()
-  }
-}, { immediate: true })
+  if (open) capture()
+  else release()
+})
+
+// The host mounts this lazily, usually already open. onMounted waits until the dialog is in the
+// document (the layout's Suspense holds it off-page before that), so focus can land.
+onMounted(() => {
+  if (isOpen.value) capture()
+})
 
 // A link followed from inside the dialog (privacy policy) leaves the page it was opened on.
 watch(() => route.fullPath, () => {

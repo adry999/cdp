@@ -33,20 +33,29 @@ function onKeydown(event: KeyboardEvent) {
   trapTab(event)
 }
 
-// Immediate: the host mounts this lazily, often already open.
-watch(isOpen, (open, wasOpen) => {
+function capture() {
+  previouslyFocused = document.activeElement as HTMLElement | null
+  restoreOverflow = document.documentElement.style.overflow
+  document.documentElement.style.overflow = 'hidden'
+  nextTick(focusFirst)
+}
+
+watch(isOpen, (open) => {
   if (!import.meta.client) return
   if (open) {
-    previouslyFocused = document.activeElement as HTMLElement | null
-    restoreOverflow = document.documentElement.style.overflow
-    document.documentElement.style.overflow = 'hidden'
-    nextTick(focusFirst)
-  } else if (wasOpen) {
+    capture()
+  } else {
     document.documentElement.style.overflow = restoreOverflow
     previouslyFocused?.focus()
     previouslyFocused = null
   }
-}, { immediate: true })
+})
+
+// The host mounts this lazily, usually already open. onMounted waits until the dialog is in the
+// document (the layout's Suspense holds it off-page before that), so focus can land.
+onMounted(() => {
+  if (isOpen.value) capture()
+})
 
 onBeforeUnmount(() => {
   if (import.meta.client && isOpen.value) {
