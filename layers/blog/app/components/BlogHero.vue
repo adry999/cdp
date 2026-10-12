@@ -7,7 +7,7 @@ const siteLocale = useSiteLocale()
 const localePath = useLocalePath()
 
 const chips = computed(() => categoryChips(props.posts))
-const chipBase = 'flex min-h-10 items-center gap-2 rounded-full border px-3.5 py-2 eyebrow no-underline hover:border-ink hover:no-underline'
+const chipBase = 'flex min-h-11 items-center nav:min-h-10 gap-2 rounded-full border px-3.5 py-2 eyebrow no-underline hover:border-ink hover:no-underline'
 const chipOn = 'border-ink bg-ink text-paper hover:text-paper'
 const chipOff = 'border-hairline text-ink'
 </script>

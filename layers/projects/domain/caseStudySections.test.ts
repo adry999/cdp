@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { caseStudySections } from './caseStudySections'
+import { caseStudySections, numberSections } from './caseStudySections'
 import { mapProject, type ProjectRow } from './mapProject'
 
 function build(overrides: Partial<ProjectRow> = {}, locale: 'ro' | 'en' = 'ro') {
@@ -65,5 +65,19 @@ describe('caseStudySections', () => {
     expect(build({ quote_ro: '   ' }).feedback).toBe(false)
     expect(build({ quote_ro: 'Citat' }, 'en').feedback).toBe(true)
     expect(build({ quote_ro: 'Citat', quote_en: 'Quote' }, 'en').feedback).toBe(true)
+  })
+})
+
+describe('numberSections', () => {
+  const all = { situation: false, task: false, action: false, midway: false, result: false, feedback: false, gallery: false, blog: false }
+
+  it('numbers only the visible sections, in page order, without gaps', () => {
+    expect(numberSections({ ...all, situation: true, action: true, result: true, gallery: true, blog: true })).toEqual({
+      situation: '01', task: '', action: '02', midway: '', result: '03', feedback: '', gallery: '04', blog: '05',
+    })
+  })
+
+  it('leaves every section empty when nothing is visible', () => {
+    expect(Object.values(numberSections(all)).every((n) => n === '')).toBe(true)
   })
 })

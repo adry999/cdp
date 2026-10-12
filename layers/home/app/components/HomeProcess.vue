@@ -40,7 +40,7 @@ const { el: processEl, isVisible, hasMounted } = useReveal({ threshold: 0.1, onc
         :aria-selected="track.id === activeId"
         :aria-controls="`process-panel-${track.id}`"
         :tabindex="track.id === activeId ? 0 : -1"
-        class="rounded px-[clamp(12px,2.5vw,20px)] py-2 eyebrow transition-colors duration-150"
+        class="tap-y rounded px-[clamp(12px,2.5vw,20px)] py-2 eyebrow transition-colors duration-150"
         :class="[
           track.id === activeId
             ? track.tone === 'signal'

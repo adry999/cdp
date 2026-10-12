@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonLd'
 import { fetchProject } from '#layers/projects/data/projectsRepository'
-import { caseStudySections } from '#layers/projects/domain/caseStudySections'
+import { caseStudySections, numberSections } from '#layers/projects/domain/caseStudySections'
 import { mapProject } from '#layers/projects/domain/mapProject'
 
 const route = useRoute()
@@ -29,6 +29,9 @@ const caseStudy = computed(() => project.value.caseStudy)
 const star = computed(() => caseStudy.value.star)
 // Each section shows only what exists; a section with nothing in it is left out (numbers stay fixed).
 const sections = computed(() => caseStudySections(caseStudy.value))
+const numbers = computed(() =>
+  numberSections({ ...sections.value, gallery: caseStudy.value.shots.length > 0, blog: true }),
+)
 const galleryImages = computed(() => sections.value.actionShots)
 
 const lightboxIndex = ref<number | null>(null)
@@ -89,7 +92,7 @@ useJsonLd(
 
     <ProjectsCaseStudySection
       v-if="sections.situation"
-      number="01"
+      :number="numbers.situation"
       :label="t('caseStudy.sections.situation.label')"
       :heading="t('caseStudy.sections.situation.heading')"
     >
@@ -106,7 +109,7 @@ useJsonLd(
       </div>
     </ProjectsCaseStudySection>
 
-    <ProjectsCaseStudySection v-if="sections.task" number="02" :label="t('caseStudy.sections.task.label')">
+    <ProjectsCaseStudySection v-if="sections.task" :number="numbers.task" :label="t('caseStudy.sections.task.label')">
       <h2 v-if="star.goal" class="m-0 max-w-[28ch] heading-section text-pretty">{{ star.goal }}</h2>
       <template v-if="star.constraints.length">
         <div class="eyebrow text-muted" :class="star.goal ? 'mt-[clamp(24px,3vw,36px)]' : undefined">
@@ -127,7 +130,7 @@ useJsonLd(
 
     <ProjectsCaseStudySection
       v-if="sections.action"
-      number="03"
+      :number="numbers.action"
       :label="t('caseStudy.sections.action.label')"
       :heading="t('caseStudy.sections.action.heading')"
     >
@@ -184,7 +187,7 @@ useJsonLd(
 
     <ProjectsCaseStudySection
       v-if="sections.midway"
-      number="04"
+      :number="numbers.midway"
       :label="t('caseStudy.sections.midway.label')"
       :heading="t('caseStudy.sections.midway.heading')"
     >
@@ -231,7 +234,7 @@ useJsonLd(
 
     <ProjectsCaseStudySection
       v-if="sections.result"
-      number="05"
+      :number="numbers.result"
       :label="t('caseStudy.sections.result.label')"
       :heading="t('caseStudy.sections.result.heading')"
     >
@@ -258,7 +261,7 @@ useJsonLd(
 
     <ProjectsCaseStudySection
       v-if="sections.feedback"
-      number="06"
+      :number="numbers.feedback"
       :label="t('caseStudy.sections.feedback.label')"
       :heading="t('caseStudy.sections.feedback.heading')"
     >
@@ -268,9 +271,9 @@ useJsonLd(
       <div v-if="caseStudy.attribution" class="mt-4 eyebrow text-muted">{{ caseStudy.attribution }}</div>
     </ProjectsCaseStudySection>
 
-    <ProjectsCaseStudyGallery :project="project" @open="openLightbox" />
+    <ProjectsCaseStudyGallery :project="project" :number="numbers.gallery" @open="openLightbox" />
 
-    <BlogLinked number="08" :case-slug="projectRow.slug_ro" />
+    <BlogLinked :number="numbers.blog" :case-slug="projectRow.slug_ro" />
 
     <ProjectsCaseStudyNext :project="project" />
 
