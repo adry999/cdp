@@ -78,3 +78,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#64** perf fonturi: doar fețe Latin upright, preload.
 - **#65** docs: acest fișier, `docs/PR_HISTORY.md`.
 - **#66** perf: animația fundalului hero pornește după `load` + `requestIdleCallback` (un cadru static la mount, pointer move o pornește imediat).
+- **#67** docs: rândurile #65/#66 în istoric; regula „un rând în `PR_HISTORY.md` per PR” în `CLAUDE.md` și `AGENTS.md`.
