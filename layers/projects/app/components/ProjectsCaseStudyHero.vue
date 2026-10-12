@@ -59,7 +59,7 @@ const shotCount = computed(() => props.project.caseStudy.shots.length)
         ratio="16/9"
         :src="project.caseStudy.heroPath ?? undefined"
         :alt="project.caseStudy.heroAlt"
-        sizes="xs:100vw md:100vw lg:100vw xl:1216px"
+        sizes="320:400px 480:640px 640:800px 768:960px 1024:1280px"
         priority
       />
     </div>

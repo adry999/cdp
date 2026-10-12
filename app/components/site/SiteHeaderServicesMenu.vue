@@ -224,7 +224,7 @@ onBeforeUnmount(() => {
                   ratio="16/10"
                   :src="activeProject.coverPath ?? undefined"
                   :alt="activeProject.coverAlt"
-                  sizes="xs:400px lg:400px"
+                  sizes="320:400px"
                   class="rounded-[3px]! bg-hatch object-left-top"
                 />
               </NuxtLink>

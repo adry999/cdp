@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonLd'
+import { OG_PROJECT_SIZE, absoluteUrl } from '#layers/core/shared/utils/seo'
 import { fetchProject } from '#layers/projects/data/projectsRepository'
 import { caseStudySections, numberSections } from '#layers/projects/domain/caseStudySections'
 import { mapProject } from '#layers/projects/domain/mapProject'
@@ -33,6 +34,10 @@ const numbers = computed(() =>
   numberSections({ ...sections.value, gallery: caseStudy.value.shots.length > 0, blog: true }),
 )
 const galleryImages = computed(() => sections.value.actionShots)
+// A lone screenshot fills the whole content column (about 944px at desktop); several share it as tiles of at most a third.
+// Widths are the ones in image.screens, so 1x and 2x are both served as listed.
+const actionShotSizesFull = '320:400px 480:640px 640:800px 768:960px 1024:1280px 1280:960px'
+const actionShotSizesTile = '320:400px 480:480px 640:400px'
 
 const lightboxIndex = ref<number | null>(null)
 function openLightbox(index: number) {
@@ -49,12 +54,21 @@ useSetLocalizedSlugs({ ro: projectRow.slug_ro, en: projectRow.slug_en ?? project
 const siteUrl = useSiteUrl()
 const primarySiteUrl = useSiteUrl('en')
 
+// Social platforms want about 1200 wide; the stored screenshot is 1600 and ~160 KB, so share the optimized rendition.
+const img = useImage()
+const ogImage = computed(() => {
+  const path = caseStudy.value.heroPath
+  return path ? absoluteUrl(siteUrl, img(path, { width: 1200 })) : null
+})
+
 usePageSeo({
   // The card title fits a search result; the hero title is a full sentence that gets cut off.
   title: () => project.value.title,
   description: () => caseStudy.value.heroLead,
   ogTitle: () => caseStudy.value.heroTitle,
-  image: () => caseStudy.value.heroPath,
+  image: () => ogImage.value,
+  imageSize: OG_PROJECT_SIZE,
+  imageAlt: () => caseStudy.value.heroAlt,
   type: 'article',
 })
 
@@ -177,11 +191,12 @@ useJsonLd(
               ratio="16/10"
               :src="image.path"
               alt=""
-              sizes="xs:100vw sm:100vw md:50vw xl:640px"
+              :sizes="galleryImages.length === 1 ? actionShotSizesFull : actionShotSizesTile"
               class="transition-colors duration-[120ms] hover:border-ink"
             />
           </button>
         </div>
+        <p v-if="caseStudy.screensDemo" class="m-0 mt-3 eyebrow-sm text-muted">{{ t('caseStudy.screensDemo') }}</p>
       </template>
     </ProjectsCaseStudySection>
 

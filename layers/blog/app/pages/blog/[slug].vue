@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CATEGORIES, articleGraph, ogImagePath, type BlogPostDoc } from '#layers/blog'
+import { OG_DEFAULT_SIZE } from '#layers/core/shared/utils/seo'
 
 const route = useRoute()
 const { t, locale } = useI18n()
@@ -29,6 +30,8 @@ usePageSeo({
   title: () => doc.title,
   description: () => doc.description,
   image: () => image,
+  // Only the generated card is known to be 1200×630; a custom cover could be any size.
+  imageSize: doc.cover ? undefined : OG_DEFAULT_SIZE,
   type: 'article',
   article: {
     publishedTime: doc.date,
