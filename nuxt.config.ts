@@ -96,13 +96,6 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    // TEMP debug: surface why blog prerender returns 500 on Vercel only.
-    prerender: { failOnError: false },
-    hooks: {
-      'prerender:route'(route) {
-        if (route.error) console.error('[prerender-debug]', route.route, route.error, String(route.contents ?? '').slice(0, 1500))
-      },
-    },
     compressPublicAssets: { gzip: true, brotli: true },
     // On the `vercel` preset, routeRules with `swr`/`isr` become separate Vercel Prerender Functions served
     // straight from the edge — this token lets revalidate.post.ts force one to bypass and refresh.
