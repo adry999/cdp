@@ -39,7 +39,6 @@ export type AdminProjectRow = Omit<
   | 'created_at'
   | 'updated_at'
   | 'updated_by'
-  | 'preview_token'
   | 'context_heading_ro'
   | 'context_heading_en'
   | 'solution_heading_ro'

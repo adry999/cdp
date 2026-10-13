@@ -122,28 +122,31 @@ export function createProjectsAdminRepository(client: SupabaseClient) {
       return saved
     },
 
-    // sort_order is a global ordering, so the caller passes the full, unfiltered list.
+    // sort_order is a global ordering, so the caller passes the full, unfiltered list. One RPC,
+    // one transaction: see supabase/migrations/20261012090000_reorder_projects_rpc.sql.
     async reorder(slugs: string[]) {
-      const results = await Promise.all(
-        slugs.map((slug, index) => client.from('projects').update({ sort_order: index }).eq('slug_ro', slug)),
-      )
-      const failed = results.find((result) => result.error)
-      if (failed?.error) throw failure('Ordinea nu s-a salvat.', failed.error)
+      const { error } = await client.rpc('reorder_projects', { slugs })
+      if (error) throw failure('Ordinea nu s-a salvat.', error)
     },
 
     async setFeatured(slug: string, featured: boolean) {
-      const { error } = await client.from('projects').update({ featured }).eq('slug_ro', slug)
+      const { data, error } = await client.from('projects').update({ featured }).eq('slug_ro', slug).select('slug_ro')
       if (error) throw failure('Nu s-a putut schimba afișarea pe homepage.', error)
+      // RLS or a deleted row turns the update into zero rows rather than an error.
+      if (!data.length) throw failure('Nu s-a putut schimba afișarea pe homepage.', null)
     },
 
     // Publishing sets published_at to now; unpublishing clears it and, like save_project(),
     // drops the redirects that would otherwise chain into a 404.
     async setPublished(project: { slug_ro: string; slug_en: string | null }, published: boolean) {
-      const { error } = await client
+      const failureMessage = published ? 'Proiectul nu a putut fi publicat.' : 'Proiectul nu a putut fi retras.'
+      const { data, error } = await client
         .from('projects')
         .update({ published_at: published ? new Date().toISOString() : null })
         .eq('slug_ro', project.slug_ro)
-      if (error) throw failure(published ? 'Proiectul nu a putut fi publicat.' : 'Proiectul nu a putut fi retras.', error)
+        .select('slug_ro')
+      if (error) throw failure(failureMessage, error)
+      if (!data.length) throw failure(failureMessage, null)
       if (published) return
       const { error: redirectsError } = await client
         .from('redirects')
@@ -193,7 +196,7 @@ export function createProjectsAdminRepository(client: SupabaseClient) {
       if (loadError) throw failure('Proiectul nu a putut fi încărcat.', loadError)
 
       const newSlug = await freeCopySlug(slug)
-      const { id, created_at, updated_at, preview_token, cover_path, hero_path, ...rest } = project
+      const { id, created_at, updated_at, cover_path, hero_path, ...rest } = project
       const [newCover, newHero] = await Promise.all([
         copyMedia(cover_path, `${newSlug}/cover`),
         copyMedia(hero_path, `${newSlug}/hero`),
