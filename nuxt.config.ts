@@ -50,28 +50,12 @@ const isAdminModule = (id: string) =>
     id.replace(/\\/g, '/'),
   )
 
-// Production guarantees this via assertEnv above; in dev a missing value just skips the host-scoped CSP/image entries below.
+// Production guarantees this via assertEnv above; in dev a missing value just skips the host-scoped image entry below.
+// The Content-Security-Policy header is set per response by layers/core/server/plugins/csp.ts (inline script hashes).
 const supabaseHost = process.env.NUXT_PUBLIC_SUPABASE_URL
   ? new URL(process.env.NUXT_PUBLIC_SUPABASE_URL).hostname
   : undefined
 
-// 'unsafe-inline' on script-src is required by the inline GA/Meta Pixel loaders in layers/consent/app/plugins/analytics.client.ts.
-const supabaseHostSrc = supabaseHost ? ` https://${supabaseHost}` : ''
-
-// Fonts are self-hosted by @nuxt/fonts, so fonts.googleapis.com/gstatic.com aren't needed in style-src/font-src.
-// GA4/Meta Pixel hosts below are inert until NUXT_PUBLIC_GA_ID/NUXT_PUBLIC_META_PIXEL_ID are set.
-const CSP = [
-  `default-src 'self'`,
-  `script-src 'self' 'unsafe-inline' https://*.googletagmanager.com https://connect.facebook.net`,
-  `style-src 'self' 'unsafe-inline'`,
-  `font-src 'self'`,
-  `img-src 'self' data:${supabaseHostSrc} https://*.google-analytics.com https://*.googletagmanager.com https://www.facebook.com`,
-  `connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.facebook.com${supabaseHostSrc}`,
-  `frame-ancestors 'none'`,
-  `base-uri 'self'`,
-  `form-action 'self'`,
-  `object-src 'none'`,
-].join('; ')
 
 // Localized route paths (RO <-> EN). Also the source of the cross-locale redirects in routeRules.
 const LOCALIZED_PAGES = {
@@ -241,7 +225,6 @@ export default defineNuxtConfig({
 
     '/**': {
       headers: {
-        'Content-Security-Policy': CSP,
         'Strict-Transport-Security': 'max-age=63072000; includeSubDomains',
         'X-Content-Type-Options': 'nosniff',
         'Referrer-Policy': 'strict-origin-when-cross-origin',

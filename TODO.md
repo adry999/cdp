@@ -54,7 +54,7 @@ Așa, `codepedia.md/en/...` funcționează, dar Google indexează doar
 - [x] Aplicat `supabase/migrations/20261006114133_security_hardening.sql` pe producție (2026-10-06)
 - [ ] Supabase Auth: protecție parole compromise, MFA pe contul de admin,
       înregistrare conturi noi oprită
-- [ ] CSP fără `'unsafe-inline'` în `script-src` (nonce/hash, loader Meta Pixel extern)
+- [x] CSP fără `'unsafe-inline'` în `script-src`: hash-uri per răspuns în `layers/core/server/plugins/csp.ts`, loader Meta Pixel în TypeScript (2026-10-13)
 - [ ] Actualizare dependențe: `npm audit fix` (2026-10-06) a ridicat și o versiune majoră și
       a stricat build-ul de producție (500, „Either manifest or precomputed data must be
       provided”), deci a fost anulat. De făcut țintit, pachet cu pachet, cu build + e2e.
