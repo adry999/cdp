@@ -43,7 +43,7 @@ async function onFileChange(e: Event) {
 
   const ext = imageExtension(file.type)
   if (!ext) {
-    error.value = 'Format neacceptat. Folosește JPG, PNG, WebP, AVIF, GIF sau SVG.'
+    error.value = 'Format neacceptat. Folosește JPG, PNG, WebP sau AVIF.'
     input.value = ''
     return
   }

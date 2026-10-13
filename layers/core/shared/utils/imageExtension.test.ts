@@ -6,15 +6,15 @@ describe('imageExtension', () => {
     ['image/jpeg', 'jpg'],
     ['image/png', 'png'],
     ['image/webp', 'webp'],
-    ['image/svg+xml', 'svg'],
     ['image/avif', 'avif'],
-    ['image/gif', 'gif'],
   ])('maps %s to %s', (type, ext) => {
     expect(imageExtension(type)).toBe(ext)
   })
 
   it('rejects types it does not know', () => {
     expect(imageExtension('application/pdf')).toBeNull()
+    expect(imageExtension('image/svg+xml')).toBeNull()
+    expect(imageExtension('image/gif')).toBeNull()
     expect(imageExtension('')).toBeNull()
     expect(imageExtension('constructor')).toBeNull()
   })
