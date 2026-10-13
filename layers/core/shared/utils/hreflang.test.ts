@@ -18,6 +18,11 @@ describe('moveToOrigin', () => {
     expect(moveToOrigin('https://codepedia.studio/en/blog', 'https://codepedia.studio/', 'https://codepedia.md')).toBe('https://codepedia.md/en/blog')
   })
 
+  it('gives the site root its trailing slash', () => {
+    expect(moveToOrigin('https://codepedia.studio', 'https://codepedia.studio', 'https://codepedia.md')).toBe('https://codepedia.md/')
+    expect(moveToOrigin('https://codepedia.studio/', 'https://codepedia.studio', 'https://codepedia.md')).toBe('https://codepedia.md/')
+  })
+
   it('leaves other bases alone', () => {
     expect(moveToOrigin('https://other.example/x', 'https://codepedia.studio', 'https://codepedia.md')).toBe('https://other.example/x')
   })
