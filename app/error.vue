@@ -25,6 +25,8 @@ function goHome() {
 <template>
   <NuxtLayout name="minimal">
     <SiteSection :number="String(error?.status ?? 500)" :label="t('error.sectionLabel')" padding="2xl" :top-border="false">
+      <img src="/brand/codepedia-mark.svg" alt="" width="100" height="64" class="mb-8 block h-16 w-auto dark:hidden">
+      <img src="/brand/codepedia-mark-inverse.svg" alt="" width="100" height="64" class="mb-8 hidden h-16 w-auto dark:block">
       <h1
         class="m-0 max-w-[20ch] text-[clamp(34px,6vw,64px)] font-semibold leading-[1.04] tracking-[-0.025em] text-pretty"
       >

@@ -7,6 +7,7 @@
   },
   "nav": {
     "chooseService": "Choose a service",
+    "servicesToggle": "Open the Services menu",
     "services": "Services",
     "work": "Portfolio",
     "blog": "Blog",
@@ -38,8 +39,8 @@
   },
   "cookieBanner": {
     "label": "Cookie consent",
-    "message": "We use cookies necessary for the site to work. With your consent, we also use analytics and marketing cookies.",
-    "policyLinkText": "Details in the privacy policy",
+    "message": "We use necessary cookies. With your consent, also analytics and marketing cookies.",
+    "policyLinkText": "Privacy policy",
     "acceptAll": "Accept all",
     "rejectAll": "Necessary only",
     "customize": "Customize",
@@ -81,6 +82,7 @@
         "stackValue": "React (Next.js), Vue (Nuxt.js), C# / .NET Core, Node.js, Python (FastAPI), PostgreSQL, Supabase, n8n, LLM pipelines"
       }
     },
+    "servicesToggle": "Open the Services menu",
     "services": {
       "sectionLabel": "Services",
       "title": "Where do you want to start? See each stage.",
@@ -283,15 +285,7 @@
         "name": "Name",
         "email": "Email",
         "company": "Company (optional)",
-        "stage": "Stage",
-        "stageOptions": {
-          "E": "Express",
-          "B": "Concept",
-          "A": "Design → Code",
-          "C": "Scale",
-          "D": "AI",
-          "unsure": "Not sure yet"
-        },
+        "details": "Details",
         "service": "Service",
         "serviceOptions": {
           "website": "Website",
@@ -582,6 +576,7 @@
   },
   "pricing": {
     "sectionLabel": "Pricing",
+    "stagesLabel": "Stages",
     "seo": {
       "title": "Pricing for websites and web apps",
       "description": "How we work: a technical diagnostic first, then a monthly subscription or dedicated sprints. The code stays in your accounts, no hidden costs."

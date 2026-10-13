@@ -67,7 +67,7 @@ watch(() => route.fullPath, () => {
               <template #success>
                 <div role="status" class="flex flex-col gap-5 border-t border-hairline pt-6">
                   <div class="flex items-center gap-3">
-                    <span aria-hidden="true" class="flex h-9 w-9 items-center justify-center rounded-full bg-signal text-lg text-paper">✓</span>
+                    <span aria-hidden="true" class="flex h-9 w-9 items-center justify-center rounded-full bg-signal text-lg text-ink">✓</span>
                     <p :ref="focusStatus" class="m-0 text-lg font-semibold outline-none" tabindex="-1">{{ t('home.contact.form.success') }}</p>
                   </div>
                   <ol class="m-0 flex list-none flex-col border-b border-hairline p-0">

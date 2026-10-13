@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { ComponentPublicInstance } from 'vue'
 import type { MappedNavProject } from '#layers/projects'
 
 const props = defineProps<{
@@ -21,7 +20,7 @@ const CLOSE_DELAY_MS = 220
 const HOVER_BLOCK_MS = 600
 
 const root = ref<HTMLElement | null>(null)
-const triggerLink = ref<ComponentPublicInstance | null>(null)
+const toggleButton = ref<HTMLButtonElement | null>(null)
 const panelId = useId()
 const open = ref(false)
 // Cover images are only rendered once the menu has been opened, so closed menus cost no image requests.
@@ -67,8 +66,7 @@ function closeMenu({ returnFocus = false } = {}) {
   open.value = false
   if (!returnFocus) return
   ignoreHoverUntil = performance.now() + HOVER_BLOCK_MS
-  const link = triggerLink.value?.$el as HTMLElement | undefined
-  link?.focus()
+  toggleButton.value?.focus()
 }
 
 function scheduleClose() {
@@ -85,14 +83,11 @@ function onPointerLeave(event: PointerEvent) {
   if (event.pointerType === 'mouse') scheduleClose()
 }
 
-// First activation opens the menu; once it is open the link goes to /servicii. Handled in the capture
-// phase, on the wrapper, so NuxtLink's own navigation never runs for the opening click.
-function onClickCapture(event: MouseEvent) {
-  const link = triggerLink.value?.$el as HTMLElement | undefined
-  if (open.value || !(event.target instanceof Node) || !link?.contains(event.target)) return
-  event.preventDefault()
-  event.stopPropagation()
-  openMenu()
+// A mouse click lands after hover already opened the panel, so it must not close it; leaving the header does.
+function toggleMenu(event: MouseEvent) {
+  if (event instanceof PointerEvent && event.pointerType === 'mouse') openMenu()
+  else if (open.value) closeMenu()
+  else openMenu()
 }
 
 // On the document, not the wrapper: a menu opened by hover has no focus inside it, and Escape must still close it.
@@ -121,8 +116,7 @@ function onDocumentPointerDown(event: PointerEvent) {
   if (!hadFocus) return
   requestAnimationFrame(() => {
     if (document.activeElement && document.activeElement !== document.body) return
-    const link = triggerLink.value?.$el as HTMLElement | undefined
-    link?.focus({ preventScroll: true })
+    toggleButton.value?.focus({ preventScroll: true })
   })
 }
 
@@ -144,30 +138,35 @@ onBeforeUnmount(() => {
     ref="root"
     @pointerenter="onPointerEnter"
     @pointerleave="onPointerLeave"
-    @click.capture="onClickCapture"
     @focusout="onFocusOut"
   >
-    <NuxtLink
-      ref="triggerLink"
-      :to="servicesTo"
-      class="group relative flex items-center gap-1.5 py-2 hover:text-signal-text"
-      :class="active ? 'text-ink' : 'text-muted'"
-      :aria-current="active ? 'page' : undefined"
-      :aria-expanded="open"
-      :aria-controls="panelId"
-    >
-      {{ t('nav.services') }}
-      <span
-        aria-hidden="true"
-        class="inline-block text-[9px] transition-transform duration-200 motion-reduce:transition-none"
-        :class="open && 'rotate-180'"
-      >▾</span>
-      <span
-        aria-hidden="true"
-        class="absolute inset-x-0 bottom-0.5 h-0.5 origin-left bg-signal transition-transform duration-[250ms] motion-reduce:transition-none"
-        :class="active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"
-      />
-    </NuxtLink>
+    <div class="flex items-center">
+      <NuxtLink
+        :to="servicesTo"
+        class="group relative flex items-center py-2 hover:text-signal-text"
+        :class="active ? 'text-ink' : 'text-muted'"
+        :aria-current="active ? 'page' : undefined"
+      >
+        {{ t('nav.services') }}
+        <span
+          aria-hidden="true"
+          class="absolute inset-x-0 bottom-0.5 h-0.5 origin-left bg-signal transition-transform duration-[250ms] motion-reduce:transition-none"
+          :class="active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"
+        />
+      </NuxtLink>
+      <button
+        ref="toggleButton"
+        type="button"
+        class="inline-flex min-h-8 min-w-8 cursor-pointer items-center justify-center border-0 bg-transparent p-0 text-[9px] hover:text-signal-text"
+        :class="active ? 'text-ink' : 'text-muted'"
+        :aria-label="t('nav.servicesToggle')"
+        :aria-expanded="open"
+        :aria-controls="panelId"
+        @click="toggleMenu"
+      >
+        <span aria-hidden="true" class="inline-block transition-transform duration-200 motion-reduce:transition-none" :class="open && 'rotate-180'">▾</span>
+      </button>
+    </div>
 
     <div
       :id="panelId"

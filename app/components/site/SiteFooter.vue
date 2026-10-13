@@ -57,7 +57,7 @@ const columnLabelClass = 'eyebrow-sm text-muted'
 // Rows grow to 44px on mobile and 32px on desktop; the gap shrinks so the column keeps about the same height.
 const linkClass = 'py-2.5 text-[15px] text-ink no-underline hover:text-signal-text hover:no-underline nav:py-1'
 const ctaClass =
-  'inline-flex w-fit cursor-pointer items-center gap-2.5 rounded border-0 bg-signal px-4 py-[11px] text-[15px] font-medium text-paper no-underline transition-colors hover:bg-ink hover:text-paper hover:no-underline'
+  'inline-flex w-fit cursor-pointer items-center gap-2.5 rounded border-0 bg-signal px-4 py-[11px] text-[15px] font-medium text-ink no-underline transition-colors hover:bg-ink hover:text-paper hover:no-underline'
 </script>
 
 <template>

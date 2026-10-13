@@ -5,8 +5,8 @@ export const FAQS: readonly Faq[] = [
   {
     question: { ro: 'Cât costă un proiect?', en: 'What does a project cost?' },
     answer: {
-      ro: 'Majoritatea proiectelor pornesc de la 6.000 EUR pentru o primă versiune funcțională și continuă pe etape. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră.',
-      en: 'Most projects start at 6,000 EUR for a working first version and move in stages from there. The written assessment after the diagnostic call always contains a number.',
+      ro: 'Lucrăm pe abonament lunar sau pe sprinturi, iar proiectele începute de altcineva pornesc de la un audit plătit. Evaluarea scrisă de după diagnostic conține întotdeauna o cifră, înainte să semnezi ceva.',
+      en: 'We work on a monthly subscription or in sprints, and projects started by someone else begin with a paid audit. The written assessment after the diagnostic call always contains a number, before you sign anything.',
     },
   },
   {

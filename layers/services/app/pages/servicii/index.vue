@@ -10,7 +10,6 @@ useBreadcrumbLd(() => t('nav.services'))
 
 <template>
   <div>
-    <ServicesSwitcher />
     <PageHero plain number="—" :label="t('home.services.sectionLabel')" :title="t('services.index.title')" :intro="t('services.index.intro')" />
     <ServicesIndexStages />
     <ServicesIndexCta />

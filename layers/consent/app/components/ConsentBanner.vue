@@ -30,10 +30,10 @@ function save() {
       v-if="showBanner"
       role="region"
       :aria-label="t('cookieBanner.label')"
-      class="fixed inset-x-0 bottom-0 z-30 border-t border-hairline bg-paper px-gutter py-4 sm:py-5"
+      class="fixed inset-x-0 bottom-0 z-30 border-t border-hairline bg-paper px-gutter py-3 sm:py-5"
     >
-      <div class="mx-auto flex max-w-site flex-wrap items-center justify-between gap-3 sm:gap-4">
-        <p id="cookie-banner-message" class="max-w-[60ch] text-sm text-muted">
+      <div class="mx-auto flex max-w-site flex-wrap items-center justify-between gap-2 sm:gap-4">
+        <p id="cookie-banner-message" class="m-0 max-w-[60ch] text-[13px] leading-snug text-muted sm:text-sm">
           {{ t('cookieBanner.message') }}
           <NuxtLink :to="localePath('confidentialitate')" class="tap-y-inline text-ink underline">{{
             t('cookieBanner.policyLinkText')
@@ -42,11 +42,11 @@ function save() {
 
         <!-- Below sm the three buttons sit in a 2-column grid instead of leaving one alone on a row. -->
         <div v-if="!customizing" class="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap sm:items-center sm:gap-3">
-          <AppButton variant="outline" type="button" class="col-span-2" :class="outlineButtonClass" @click="openCustomize">{{
-            t('cookieBanner.customize')
-          }}</AppButton>
           <AppButton variant="outline" type="button" :class="outlineButtonClass" @click="rejectAll">{{ t('cookieBanner.rejectAll') }}</AppButton>
           <AppButton variant="outline" type="button" :class="outlineButtonClass" @click="acceptAll">{{ t('cookieBanner.acceptAll') }}</AppButton>
+          <AppButton variant="outline" type="button" class="col-span-2 sm:order-first" :class="outlineButtonClass" @click="openCustomize">{{
+            t('cookieBanner.customize')
+          }}</AppButton>
         </div>
 
         <div v-else class="flex flex-wrap items-center gap-4">

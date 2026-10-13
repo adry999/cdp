@@ -46,7 +46,7 @@ const shotCount = computed(() => props.project.caseStudy.shots.length)
         <button
           v-if="shotCount"
           type="button"
-          class="flex min-h-11 cursor-pointer flex-col justify-center gap-0.5 rounded border border-ink bg-ink px-4 py-[10px] text-left font-[inherit] text-paper hover:border-signal hover:bg-signal"
+          class="flex min-h-11 cursor-pointer flex-col justify-center gap-0.5 rounded border border-ink bg-ink px-4 py-[10px] text-left font-[inherit] text-paper hover:border-signal hover:bg-signal hover:text-ink"
           @click="emit('openGallery')"
         >
           <span class="eyebrow">{{ t('caseStudy.galleryButton', { count: shotCount }) }}</span>

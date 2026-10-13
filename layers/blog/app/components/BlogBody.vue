@@ -100,7 +100,7 @@ function marker(ordered: boolean, index: number): string {
         <p class="m-0 text-[clamp(19px,2vw,23px)] leading-[1.35] tracking-[-0.01em] text-pretty">{{ block.text }}</p>
         <NuxtLink
           :to="block.href"
-          class="flex min-h-11 items-center self-start rounded bg-signal px-5 eyebrow text-inverse no-underline hover:bg-paper hover:text-ink hover:no-underline"
+          class="flex min-h-11 items-center self-start rounded bg-signal px-5 eyebrow text-ink no-underline hover:bg-paper hover:text-ink hover:no-underline"
           @click="track('blog_cta_click', { post_slug: postSlug, service })"
         >
           {{ block.label }} →
