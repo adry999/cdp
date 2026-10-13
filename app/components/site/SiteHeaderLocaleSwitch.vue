@@ -32,7 +32,7 @@ function targetFor(lang: (typeof LANGS)[number]): string {
             :to="targetFor(lang)"
             :hreflang="lang"
             :lang="lang"
-            :class="[linkClass, locale === lang ? 'text-ink hover:text-ink' : 'text-muted hover:text-muted']"
+            :class="[linkClass, locale === lang ? 'text-ink hover:text-signal-text' : 'text-muted hover:text-signal-text']"
             :aria-current="locale === lang ? 'true' : undefined"
             @click="setLocaleOverride(lang)"
           >

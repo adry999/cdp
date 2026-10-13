@@ -62,3 +62,28 @@ export function blogPrerenderRoutes(roPosts: readonly RoutePost[], enPosts: read
   return routes
 }
 
+
+/** A post's slug reached under the other locale: `/blog/<en-slug>` -> `/blog/<ro-slug>` and back. */
+export interface PostRedirect {
+  from: string
+  to: string
+}
+
+/**
+ * Permanent redirects for a post requested with its counterpart's slug. Only paired published posts
+ * are covered, and a slug that is also a post of the requested locale is left alone.
+ */
+export function blogCounterpartRedirects(roPosts: readonly RoutePost[], enPosts: readonly RoutePost[]): PostRedirect[] {
+  const ro = blogPaths('ro')
+  const en = blogPaths('en')
+  const roSlugs = new Set(roPosts.map((post) => post.slug))
+  const enSlugs = new Set(enPosts.map((post) => post.slug))
+  const redirects: PostRedirect[] = []
+  for (const post of roPosts) {
+    if (enSlugs.has(post.alt) && !roSlugs.has(post.alt)) redirects.push({ from: ro.post(post.alt), to: ro.post(post.slug) })
+  }
+  for (const post of enPosts) {
+    if (roSlugs.has(post.alt) && !enSlugs.has(post.alt)) redirects.push({ from: en.post(post.alt), to: en.post(post.slug) })
+  }
+  return redirects
+}

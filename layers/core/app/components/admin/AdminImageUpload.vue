@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { createStorageRepository } from '#layers/core/app/data/storageRepository'
+import type { Database } from '#layers/core/shared/types/database.types'
+import { toAppError } from '#layers/core/shared/utils/toAppError'
+import { imageExtension } from '#layers/core/shared/utils/imageExtension'
+
 const props = defineProps<{
   modelValue: string | null
   ratio: '16/9' | '16/10' | '4/3'
@@ -9,7 +14,7 @@ const props = defineProps<{
 // `uploading` lets the parent block its save while a file is in flight.
 const emit = defineEmits<{ 'update:modelValue': [string]; uploading: [boolean] }>()
 
-const supabase = useSupabaseClient()
+const storage = createStorageRepository(useSupabaseClient<Database>())
 const fileInput = ref<HTMLInputElement>()
 const uploading = ref(false)
 const error = ref('')
@@ -24,7 +29,6 @@ onBeforeUnmount(() => {
 })
 
 const MAX_BYTES = 8 * 1024 * 1024
-const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
 
 function openFilePicker() {
   fileInput.value?.click()
@@ -37,7 +41,8 @@ async function onFileChange(e: Event) {
 
   error.value = ''
 
-  if (!ACCEPTED_TYPES.includes(file.type)) {
+  const ext = imageExtension(file.type)
+  if (!ext) {
     error.value = 'Format neacceptat. Folosește JPG, PNG, WebP sau AVIF.'
     input.value = ''
     return
@@ -50,24 +55,18 @@ async function onFileChange(e: Event) {
 
   setUploading(true)
 
-  const ext = file.name.split('.').pop() || 'jpg'
   const path = `${props.pathPrefix}/${Date.now()}.${ext}`
 
-  const { error: uploadError } = await supabase.storage
-    .from(props.bucket)
-    .upload(path, file, { contentType: file.type, upsert: true })
-
-  if (uploadError) {
-    error.value = 'Upload eșuat: ' + uploadError.message
+  try {
+    // Uploading never deletes the file it replaces: the published page keeps
+    // serving that file until the project is saved. The project editor removes
+    // replaced files after a successful save.
+    emit('update:modelValue', await storage.uploadPublic(props.bucket, path, file))
+  } catch (caught) {
+    error.value = 'Upload eșuat: ' + toAppError(caught).message
     setUploading(false)
     return
   }
-
-  // Uploading never deletes the file it replaces: the published page keeps
-  // serving that file until the project is saved. The project editor removes
-  // replaced files after a successful save.
-  const { data } = supabase.storage.from(props.bucket).getPublicUrl(path)
-  emit('update:modelValue', data.publicUrl)
   setUploading(false)
   if (fileInput.value) fileInput.value.value = ''
 }

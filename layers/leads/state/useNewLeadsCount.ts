@@ -6,7 +6,11 @@ export function useNewLeadsCount() {
   const repository = createLeadsAdminRepository(useSupabaseClient())
   const { data: count } = useAsyncData(
     'admin-new-leads-count',
-    () => repository.countNew().catch(() => null),
+    () =>
+      repository.countNew().catch((caught: unknown) => {
+        console.warn('[leads] counting new leads failed', caught)
+        return null
+      }),
     { watch: [() => route.path] },
   )
   return { count }

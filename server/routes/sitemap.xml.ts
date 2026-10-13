@@ -1,5 +1,5 @@
 import { getSiteOrigins } from '#layers/core/server/utils/getSiteUrl'
-import { HOME_PAGE, renderSitemap, sitemapUrlsForOrigin, toSitemapUrls } from '#layers/core/server/utils/sitemap'
+import { HOME_PAGE, renderSitemap, sitemapUrlsForOrigin, toSitemapUrls, withDefaultLastmod } from '#layers/core/server/utils/sitemap'
 import { originForHost } from '#layers/core/shared/utils/siteOrigins'
 import type { SitemapPage } from '#layers/core/shared/types/sitemap'
 import { listBlogSitemapPages } from '#layers/blog/server'
@@ -26,6 +26,6 @@ export default defineEventHandler(async (event) => {
 
   setResponseHeader(event, 'content-type', 'application/xml; charset=utf-8')
   const origins = getSiteOrigins(event)
-  const urls = toSitemapUrls(origins, pages)
+  const urls = toSitemapUrls(origins, withDefaultLastmod(pages, useRuntimeConfig(event).buildDate))
   return renderSitemap(sitemapUrlsForOrigin(urls, originForHost(origins, getRequestHost(event))))
 })

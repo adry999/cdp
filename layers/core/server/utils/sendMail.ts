@@ -8,6 +8,7 @@ export async function sendMail(message: MailMessage): Promise<'sent' | 'skipped'
   if (!resendApiKey) return 'skipped'
   await $fetch('https://api.resend.com/emails', {
     method: 'POST',
+    timeout: 5000,
     headers: { Authorization: `Bearer ${resendApiKey}` },
     body: {
       // Sandbox sender: Resend only allows other senders from a verified domain.

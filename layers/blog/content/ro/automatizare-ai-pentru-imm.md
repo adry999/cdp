@@ -22,7 +22,7 @@ Un program care primește ceva (un email, un PDF, un mesaj), înțelege ce conț
 
 ## 9 procese potrivite pentru început
 
-| # | Proces | Ce face AI-ul | Economie tipică |
+| # | Proces | Ce face AI‑ul | Economie tipică |
 |---|---|---|---|
 | 1 | Întrebări frecvente de la clienți | Propune răspunsul din documentele firmei | Ore pe zi |
 | 2 | Facturi și chitanțe | Extrage furnizor, sumă, dată, TVA | Ore pe săptămână |

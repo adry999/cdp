@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import { localeRedirectRoutes } from './layers/core/shared/utils/localeRedirectRoutes'
+import { crossLocalePageRedirects, redirectRouteRules, trailingSlashRoute } from './layers/core/shared/utils/localeRoutes'
 import { TECH_ICONS } from './layers/core/shared/utils/techIcons'
 import { STACK_GROUP_ICONS } from './layers/content/domain/stack'
 import { THEME_INIT_SCRIPT } from './layers/core/shared/utils/theme'
@@ -72,6 +73,54 @@ const CSP = [
   `object-src 'none'`,
 ].join('; ')
 
+// Localized route paths (RO <-> EN). Also the source of the cross-locale redirects in routeRules.
+const LOCALIZED_PAGES = {
+  proiecte: {
+    ro: '/proiecte',
+    en: '/work',
+  },
+  'proiecte-slug': {
+    ro: '/proiecte/[slug]',
+    en: '/work/[slug]',
+  },
+  noutati: {
+    ro: '/noutati',
+    en: '/news',
+  },
+  'noutati-slug': {
+    ro: '/noutati/[slug]',
+    en: '/news/[slug]',
+  },
+  servicii: {
+    ro: '/servicii',
+    en: '/services',
+  },
+  'servicii-slug': {
+    ro: '/servicii/[slug]',
+    en: '/services/[slug]',
+  },
+  'blog-categorie-slug': {
+    ro: '/blog/categorie/[slug]',
+    en: '/blog/category/[slug]',
+  },
+  contact: {
+    ro: '/contact',
+    en: '/contact',
+  },
+  despre: {
+    ro: '/despre',
+    en: '/about',
+  },
+  preturi: {
+    ro: '/preturi',
+    en: '/pricing',
+  },
+  confidentialitate: {
+    ro: '/confidentialitate',
+    en: '/privacy',
+  },
+} as const
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-08-05',
   devtools: { enabled: true },
@@ -101,6 +150,8 @@ export default defineNuxtConfig({
     // Mirrors nitro.vercel.config.bypassToken below; server/api/admin/revalidate.post.ts sends it back as
     // `x-prerender-revalidate` to force an ISR refresh. Empty off Vercel falls back to a storage cache clear.
     isrBypassToken: process.env.VERCEL_ISR_BYPASS_TOKEN || '',
+    // Sitemap <lastmod> of the static pages (YYYY-MM-DD): they only change with a deploy.
+    buildDate: new Date().toISOString().slice(0, 10),
     public: {
       gaId: process.env.NUXT_PUBLIC_GA_ID || '',
       metaPixelId: process.env.NUXT_PUBLIC_META_PIXEL_ID || '',
@@ -120,7 +171,7 @@ export default defineNuxtConfig({
       config: {
         bypassToken: process.env.VERCEL_ISR_BYPASS_TOKEN || undefined,
         // Run before the ISR cache, so / and /en can be cached and still redirect by language.
-        routes: localeRedirectRoutes(),
+        routes: [trailingSlashRoute(), ...localeRedirectRoutes()],
       },
     },
   },
@@ -157,6 +208,8 @@ export default defineNuxtConfig({
     '/en/services/aplicatie-web': { redirect: { to: '/en/services/web-app', statusCode: 301 } },
     '/en/services/automatizare-ai': { redirect: { to: '/en/services/ai-automation', statusCode: 301 } },
     '/en/services/granturi': { redirect: { to: '/en/services/grants', statusCode: 301 } },
+    // A page reached under the other locale's path (/en/proiecte, /work) lands on the right one. Blog posts: layers/blog/nuxt.config.ts.
+    ...redirectRouteRules(crossLocalePageRedirects(LOCALIZED_PAGES)),
     // Content lives in the repo, so it only changes with a deploy, which clears the cache.
     '/despre': { swr: 3600 },
     '/en/about': { swr: 3600 },
@@ -182,6 +235,7 @@ export default defineNuxtConfig({
     '/icon-512.png': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
     '/icon-maskable-512.png': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
     '/apple-touch-icon.png': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
+    '/admin': { redirect: { to: '/admin/projects', statusCode: 302 } },
     '/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
     '/api/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
 
@@ -315,52 +369,7 @@ export default defineNuxtConfig({
       { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
     ],
     customRoutes: 'config',
-    pages: {
-      proiecte: {
-        ro: '/proiecte',
-        en: '/work',
-      },
-      'proiecte-slug': {
-        ro: '/proiecte/[slug]',
-        en: '/work/[slug]',
-      },
-      noutati: {
-        ro: '/noutati',
-        en: '/news',
-      },
-      'noutati-slug': {
-        ro: '/noutati/[slug]',
-        en: '/news/[slug]',
-      },
-      servicii: {
-        ro: '/servicii',
-        en: '/services',
-      },
-      'servicii-slug': {
-        ro: '/servicii/[slug]',
-        en: '/services/[slug]',
-      },
-      'blog-categorie-slug': {
-        ro: '/blog/categorie/[slug]',
-        en: '/blog/category/[slug]',
-      },
-      contact: {
-        ro: '/contact',
-        en: '/contact',
-      },
-      despre: {
-        ro: '/despre',
-        en: '/about',
-      },
-      preturi: {
-        ro: '/preturi',
-        en: '/pricing',
-      },
-      confidentialitate: {
-        ro: '/confidentialitate',
-        en: '/privacy',
-      },
-    },
+    pages: LOCALIZED_PAGES,
   },
 
   fonts: {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { blogPrerenderRoutes, blogSitemapPages, type RoutePost } from './blogRoutes'
+import { blogCounterpartRedirects, blogPrerenderRoutes, blogSitemapPages, type RoutePost } from './blogRoutes'
 
 const post = (slug: string, alt: string, category: RoutePost['category']): RoutePost => ({ slug, alt, category, updated: '2027-01-01' })
 const roPosts = [post('a', 'a-en', 'COST'), post('b', 'b-en', 'COST'), post('c', 'c-en', 'COST'), post('d', 'd-en', 'AI')]
@@ -41,5 +41,23 @@ describe('blogPrerenderRoutes', () => {
       ]),
     )
     expect(routes.some((route) => route.includes('granturi') || route.includes('grants'))).toBe(false)
+  })
+})
+
+describe('blogCounterpartRedirects', () => {
+  it('sends a post requested with its counterpart slug to the right locale', () => {
+    const redirects = blogCounterpartRedirects([post('cat-costa', 'how-much', 'COST')], [post('how-much', 'cat-costa', 'COST')])
+    expect(redirects).toEqual([
+      { from: '/blog/how-much', to: '/blog/cat-costa' },
+      { from: '/en/blog/cat-costa', to: '/en/blog/how-much' },
+    ])
+  })
+
+  it('leaves a slug alone when it exists in both locales', () => {
+    expect(blogCounterpartRedirects([post('same', 'same', 'COST')], [post('same', 'same', 'COST')])).toEqual([])
+  })
+
+  it('skips a post whose counterpart is not published', () => {
+    expect(blogCounterpartRedirects([post('a', 'a-en', 'COST')], [])).toEqual([])
   })
 })

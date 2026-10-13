@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { SERVICE_LINKS } from '#layers/services/data/serviceLinks'
+import { visibleServices } from '#layers/core/shared/utils/visibleServices'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const { grantsEnabled } = useRuntimeConfig().public
 
 const links = computed(() =>
-  SERVICE_LINKS.filter((service) => service.slug !== 'granturi' || grantsEnabled).map((service) => ({
+  visibleServices(SERVICE_LINKS, grantsEnabled).map((service) => ({
     slug: service.slug,
     label: service.routeSlug[locale.value],
     to: localePath({ name: 'servicii-slug', params: { slug: service.routeSlug[locale.value] } }),

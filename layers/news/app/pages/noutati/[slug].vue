@@ -79,13 +79,13 @@ useJsonLd(
   <article>
     <SiteSection padding="heroCompact" :top-border="false">
       <template #label>
-        <NuxtLink :to="localePath('noutati')" class="eyebrow text-muted no-underline hover:text-signal-text hover:no-underline">
+        <NuxtLink :to="localePath('noutati')" class="eyebrow tap-y block leading-[1.6] text-muted no-underline hover:text-signal-text hover:no-underline">
           ← {{ t('news.back') }}
         </NuxtLink>
       </template>
       <nav :aria-label="t('news.breadcrumb')" class="flex flex-wrap gap-2 eyebrow-sm text-muted">
         <span>CODEPEDIA</span><span aria-hidden="true">/</span>
-        <NuxtLink :to="localePath('noutati')" class="text-muted no-underline hover:text-signal-text hover:no-underline">{{ t('nav.news') }}</NuxtLink>
+        <NuxtLink :to="localePath('noutati')" class="tap-y text-muted no-underline hover:text-signal-text hover:no-underline">{{ t('nav.news') }}</NuxtLink>
         <template v-if="category">
           <span aria-hidden="true">/</span><span class="text-signal-text">{{ category }}</span>
         </template>

@@ -26,6 +26,7 @@ function saveFailure(error: { code?: string; message: string }): AppError {
 /**
  * Plain inserts and updates through the admin's session: RLS (`admin_all_news`) is the whole access rule,
  * and a news item is one row, so unlike `save_project` there is no multi-table write that needs an RPC.
+ * The `redirects` row for a renamed published slug is written by the `news_items_sync_redirects` trigger.
  */
 export function createNewsAdminRepository(client: SupabaseClient) {
   return {

@@ -46,5 +46,12 @@ export function createNewsRepository(event: H3Event) {
       if (error) logAndThrow('listNewsSitemapPages', error)
       return data
     },
+
+    // Errors are ignored on purpose: a failed lookup falls through to the normal route.
+    async findRedirect(fromPath: string) {
+      const client = await serverSupabaseClient<Database>(event)
+      const { data } = await client.from('redirects').select('to_path, status').eq('from_path', fromPath).maybeSingle()
+      return data
+    },
   }
 }

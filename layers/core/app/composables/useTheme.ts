@@ -4,7 +4,7 @@ import { THEME_STORAGE_KEY, isTheme, oppositeTheme, resolveInitialTheme, type Th
 // paint; this state starts as 'light' on server and client alike and syncs from the DOM after
 // hydration (initTheme), so SSR markup never mismatches. Icons switch with CSS, not this state.
 export function useTheme() {
-  const theme = useState<Theme>('theme', () => 'light')
+  const theme = useState<Theme>('core:theme', () => 'light')
 
   function readStored(): string | null {
     try {

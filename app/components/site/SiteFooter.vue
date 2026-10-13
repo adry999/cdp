@@ -2,6 +2,7 @@
 import { useCookieConsent } from '#layers/consent'
 import { useSiteSettings } from '#layers/content'
 import { SERVICE_LINKS } from '#layers/services'
+import { visibleServices } from '#layers/core/shared/utils/visibleServices'
 import { studioGraph } from '#layers/core/shared/utils/jsonLd'
 
 const { t, locale } = useI18n()
@@ -11,7 +12,7 @@ const { openSettings } = useCookieConsent()
 const settings = useSiteSettings()
 const cta = useContactCta()
 const { grantsEnabled } = useRuntimeConfig().public
-const serviceLinks = SERVICE_LINKS.filter((s) => s.slug !== 'granturi' || grantsEnabled)
+const serviceLinks = visibleServices(SERVICE_LINKS, grantsEnabled)
 
 const services = computed(() =>
   serviceLinks.map((service) => ({
@@ -23,7 +24,6 @@ const services = computed(() =>
 
 const studioLinks = computed(() => [
   { id: 'work', label: t('nav.projects'), to: localePath('proiecte') },
-  { id: 'process', label: t('nav.process'), to: { path: localePath('index'), hash: '#proces' } },
   { id: 'pricing', label: t('nav.pricing'), to: localePath('preturi') },
   { id: 'about', label: t('nav.about'), to: localePath('despre') },
   { id: 'blog', label: t('nav.blog'), to: localePath('blog') },
