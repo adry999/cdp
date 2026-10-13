@@ -11,7 +11,7 @@ test.describe('desktop', () => {
   test('Escape closes the services menu opened by hover', async ({ page }) => {
     await page.goto('/servicii/website')
     await dismissConsentBanner(page)
-    const trigger = page.locator('header nav a[aria-expanded][aria-controls]')
+    const trigger = page.locator('header nav button[aria-expanded][aria-controls]')
 
     await trigger.hover()
     await expect(trigger).toHaveAttribute('aria-expanded', 'true')
@@ -22,7 +22,7 @@ test.describe('desktop', () => {
   test('a click outside closes the services menu and returns focus to its trigger', async ({ page }) => {
     await page.goto('/servicii/website')
     await dismissConsentBanner(page)
-    const trigger = page.locator('header nav a[aria-expanded][aria-controls]')
+    const trigger = page.locator('header nav button[aria-expanded][aria-controls]')
 
     await trigger.focus()
     await page.keyboard.press('Enter')
@@ -30,6 +30,21 @@ test.describe('desktop', () => {
     await page.mouse.click(640, 600)
     await expect(trigger).toHaveAttribute('aria-expanded', 'false')
     await expect(trigger).toBeFocused()
+  })
+
+  test('the Services link still navigates while the toggle only opens the panel', async ({ page }) => {
+    await page.goto('/')
+    await dismissConsentBanner(page)
+    const toggle = page.locator('header nav button[aria-expanded][aria-controls]')
+
+    await toggle.click()
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    await expect(page).toHaveURL(/\/$/)
+    await toggle.focus()
+    await page.keyboard.press('Enter')
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    await page.locator('header nav a[href="/servicii"]').first().click()
+    await expect(page).toHaveURL(/\/servicii$/)
   })
 
   test('header targets are at least 32px', async ({ page }) => {
@@ -53,7 +68,7 @@ test.describe('mobile', () => {
   test('the menu CTA stays on screen, at the bottom', async ({ page }) => {
     await page.goto('/')
     await dismissConsentBanner(page)
-    await page.locator('header button[aria-controls]').click()
+    await page.locator('header button[aria-controls="site-mobile-menu"]').click()
 
     const cta = page.locator('#site-mobile-menu').getByText(/Discută un proiect/)
     await expect(cta).toBeVisible()

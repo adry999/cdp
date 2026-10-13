@@ -19,9 +19,9 @@ const variantClass = computed(() => {
     return `${base} border border-ink px-[21px] py-[13px] text-ink hover:border-muted hover:text-ink`
   }
   if (props.variant === 'ink') {
-    return `${base} bg-ink px-[22px] py-[14px] text-paper hover:bg-signal hover:text-paper`
+    return `${base} bg-ink px-[22px] py-[14px] text-paper hover:bg-signal hover:text-ink`
   }
-  return `${base} bg-signal px-[22px] py-[14px] text-paper hover:bg-ink hover:text-paper`
+  return `${base} bg-signal px-[22px] py-[14px] text-ink hover:bg-ink hover:text-paper`
 })
 
 // <script setup> components are closed by default — a parent's template ref

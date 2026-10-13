@@ -7,6 +7,7 @@
   },
   "nav": {
     "chooseService": "Alege serviciul",
+    "servicesToggle": "Deschide meniul Servicii",
     "services": "Servicii",
     "work": "Portofoliu",
     "blog": "Blog",
@@ -38,8 +39,8 @@
   },
   "cookieBanner": {
     "label": "Consimțământ cookie-uri",
-    "message": "Folosim cookie-uri necesare pentru funcționarea site-ului. Cu acordul tău, folosim și cookie-uri de analiză și marketing.",
-    "policyLinkText": "Detalii în politica de confidențialitate",
+    "message": "Folosim cookie-uri necesare. Cu acordul tău, și cookie-uri de analiză și marketing.",
+    "policyLinkText": "Politica de confidențialitate",
     "acceptAll": "Acceptă tot",
     "rejectAll": "Doar necesare",
     "customize": "Personalizează",
@@ -81,6 +82,7 @@
         "stackValue": "React (Next.js), Vue (Nuxt.js), C# / .NET Core, Node.js, Python (FastAPI), PostgreSQL, Supabase, n8n, LLM pipelines"
       }
     },
+    "servicesToggle": "Deschide meniul Servicii",
     "services": {
       "sectionLabel": "Servicii",
       "title": "De unde ai vrea să începem munca? Vezi fiecare etapă.",
@@ -283,15 +285,7 @@
         "name": "Nume",
         "email": "Email",
         "company": "Companie (opțional)",
-        "stage": "Etapa",
-        "stageOptions": {
-          "E": "Express",
-          "B": "Concept",
-          "A": "Design → cod",
-          "C": "Scalare",
-          "D": "AI",
-          "unsure": "Nu știu încă"
-        },
+        "details": "Detalii",
         "service": "Serviciu",
         "serviceOptions": {
           "website": "Website",
@@ -582,6 +576,7 @@
   },
   "pricing": {
     "sectionLabel": "Prețuri",
+    "stagesLabel": "Etape",
     "seo": {
       "title": "Prețuri pentru site-uri și aplicații web",
       "description": "Cum lucrăm: o analiză tehnică la început, apoi abonament lunar sau sprinturi dedicate. Codul rămâne în conturile tale, fără costuri ascunse."

@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { STAGE_ORDER, type StageId } from '#layers/core/shared/types/service-stage'
 import { SERVICE_TAG_IDS, type ServiceTagId } from '#layers/core/shared/types/service-tag'
-import { stageForServiceParam, stageForServiceTag } from '#layers/core/shared/utils/serviceStage'
+import { serviceTagForParam, stageForServiceTag } from '#layers/core/shared/utils/serviceStage'
 import { visibleServices } from '#layers/core/shared/utils/visibleServices'
 import { LEAD_BUDGET_KEYS, type ContactFieldErrors } from '#layers/leads/domain/lead'
 import { useLeadSubmission } from '#layers/leads/state/useLeadSubmission'
 
-// `modal`: the dialog's compact layout (no "how did you hear" field, name and email side by side) with
-// service chips instead of stage chips; `service` pre-selects one. The submission then carries that
-// service and its qualifier stage. `page` keeps the stage chips, pre-selected from the
-// `?serviciu=` / `?service=` link parameter.
+// `modal`: the dialog's compact layout (no "how did you hear" field, name and email side by side).
+// Both variants share one taxonomy, the service chips; `service` (modal) or the `?serviciu=` /
+// `?service=` link parameter (page) pre-selects one. The submission carries that service and its
+// qualifier stage.
 const props = withDefaults(defineProps<{ variant?: 'page' | 'modal'; service?: ServiceTagId }>(), {
   variant: 'page',
   service: undefined,
@@ -30,8 +29,7 @@ const form = reactive({
   message: '',
   budget: '',
   // Blog CTAs link to /contact?serviciu=<slug> (RO) or ?service=<slug> (EN); unknown values are ignored.
-  stage: stageForServiceParam(route.query.serviciu ?? route.query.service),
-  service: props.service,
+  service: props.service ?? serviceTagForParam(route.query.serviciu ?? route.query.service),
   source: '',
   website: '', // honeypot
 })
@@ -48,16 +46,11 @@ function fieldError(field: keyof ContactFieldErrors): string | undefined {
   return code ? t(ERROR_MESSAGE_KEYS[code]) : undefined
 }
 
-// Single-select, optional: picking the active chip again (or "Nu știu") clears it.
-function toggleStage(stage: StageId | undefined) {
-  form.stage = form.stage === stage ? undefined : stage
-}
-
-// Only fills an empty choice: a stage the visitor already picked is never overwritten.
+// Only fills an empty choice: a service the visitor already picked is never overwritten.
 watch(
   () => route.query.serviciu ?? route.query.service,
   (value) => {
-    form.stage ??= stageForServiceParam(value)
+    form.service ??= serviceTagForParam(value)
   },
 )
 
@@ -71,7 +64,7 @@ function captureUtm(): Record<string, string> | undefined {
   return entries.length ? Object.fromEntries(entries) : undefined
 }
 
-// Single-select, optional, like the stage chips.
+// Single-select, optional: picking the active chip again (or "Nu știu") clears it.
 function toggleService(service: ServiceTagId | undefined) {
   form.service = form.service === service ? undefined : service
 }
@@ -79,11 +72,8 @@ function toggleService(service: ServiceTagId | undefined) {
 const FIELD_ORDER = ['name', 'email', 'message'] as const
 
 async function handleSubmit() {
-  const { stage, service, ...fields } = form
-  const choice = isModal.value
-    ? { service, stage: service ? stageForServiceTag(service) : undefined }
-    : { stage }
-  await submit({ ...fields, ...choice, lang: locale.value, page: route.fullPath, utm: captureUtm() })
+  const { service, ...fields } = form
+  await submit({ ...fields, service, stage: service ? stageForServiceTag(service) : undefined, lang: locale.value, page: route.fullPath, utm: captureUtm() })
   // A rejected submit leaves focus on the button; moving it to the first invalid field puts
   // the error in front of a screen-reader user (their message is linked by aria-describedby).
   const invalid = FIELD_ORDER.find((field) => fieldErrors.value[field])
@@ -92,6 +82,8 @@ async function handleSubmit() {
     document.getElementById(`lead-${invalid}`)?.focus()
   }
 }
+
+const detailsOpen = ref(false)
 
 const successHeading = ref<HTMLElement | null>(null)
 
@@ -153,20 +145,7 @@ watch(status, (value) => {
 
     </div>
 
-    <div>
-      <label class="block eyebrow text-muted" for="lead-company">
-        {{ t('home.contact.form.company') }}
-      </label>
-      <input
-        id="lead-company"
-        v-model="form.company"
-        type="text"
-        autocomplete="organization"
-        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
-      >
-    </div>
-
-    <div v-if="isModal" role="group" aria-labelledby="lead-service-label">
+    <div role="group" aria-labelledby="lead-service-label">
       <div id="lead-service-label" class="eyebrow text-muted">
         {{ t('home.contact.form.service') }}
       </div>
@@ -182,26 +161,6 @@ watch(status, (value) => {
         </ToggleChip>
         <ToggleChip size="pill" :pressed="form.service === undefined" @click="form.service = undefined">
           {{ t('home.contact.form.serviceOptions.unsure') }}
-        </ToggleChip>
-      </div>
-    </div>
-
-    <div v-else role="group" aria-labelledby="lead-stage-label">
-      <div id="lead-stage-label" class="eyebrow text-muted">
-        {{ t('home.contact.form.stage') }}
-      </div>
-      <div class="mt-3 flex flex-wrap gap-2">
-        <ToggleChip
-          v-for="option in STAGE_ORDER"
-          :key="option"
-          size="pill"
-          :pressed="form.stage === option"
-          @click="toggleStage(option)"
-        >
-          {{ t(`home.contact.form.stageOptions.${option}`) }}
-        </ToggleChip>
-        <ToggleChip size="pill" :pressed="form.stage === undefined" @click="form.stage = undefined">
-          {{ t('home.contact.form.stageOptions.unsure') }}
         </ToggleChip>
       </div>
     </div>
@@ -225,6 +184,30 @@ watch(status, (value) => {
       </p>
     </div>
 
+    <div>
+      <button
+        type="button"
+        class="tap-y-inline flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-wider text-ink"
+        aria-controls="lead-details"
+        :aria-expanded="detailsOpen ? 'true' : 'false'"
+        @click="detailsOpen = !detailsOpen"
+      >
+        <span aria-hidden="true">{{ detailsOpen ? '−' : '+' }}</span>
+        {{ t('home.contact.form.details') }}
+      </button>
+      <div v-show="detailsOpen" id="lead-details" class="mt-4 flex flex-col gap-4">
+    <div>
+      <label class="block eyebrow text-muted" for="lead-company">
+        {{ t('home.contact.form.company') }}
+      </label>
+      <input
+        id="lead-company"
+        v-model="form.company"
+        type="text"
+        autocomplete="organization"
+        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+      >
+    </div>
     <div>
       <label class="block eyebrow text-muted" for="lead-budget">
         {{ t('home.contact.form.budget') }}
@@ -251,6 +234,8 @@ watch(status, (value) => {
         type="text"
         class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
+    </div>
+      </div>
     </div>
 
     <p v-if="status === 'error'" role="alert" class="flex items-center gap-1.5 font-mono text-xs text-ink">

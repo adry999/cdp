@@ -16,7 +16,7 @@ Design: `Codepedia Blog v2.dc.html` (listă + categorii + articol). Conținut: `
 Coduri categorie în URL: `preturi`, `alegeri-tehnice`, `industrii`, `automatizare-ai`, `granturi`, `proces`, `seo-marketing` (EN: `pricing`, `tech-choices`, `industries`, `ai-automation`, `grants`, `process`, `seo-marketing`). Paginile de categorie fără articole → 404 (nu pagini goale indexate).
 
 ## 3. Meta per articol
-- `<title>`: `{title} | CODEPEDIA`
+- `<title>`: `{title}` (fără sufix `| CODEPEDIA`, vezi nota de la final)
 - `meta description`: `description`
 - `canonical`: URL-ul propriu, absolut
 - `hreflang`: `ro`, `en`, `x-default` (→ RO), folosind `alt`
@@ -57,3 +57,6 @@ Pe listă: `Blog` + `ItemList` cu articolele.
 - `design-status.json`: blog → `de_implementat`
 - Evenimente analytics: `blog_cta_click` (cu slug + service), `blog_toc_click`
 - Search Console: proprietate separată pentru codepedia.md și codepedia.studio
+
+## Notă: titluri de articol fără sufix
+Titlurile articolelor de blog nu poartă intenționat sufixul `| CODEPEDIA` / `· CODEPEDIA` (limita de 60 de caractere se aplică titlului întreg). Nu-l adăuga automat.
