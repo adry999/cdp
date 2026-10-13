@@ -10,9 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # The build never calls Supabase — these just need to be well-formed so
-      # the module can construct a client without throwing. Real e2e still
-      # needs real project secrets (see the note on the e2e job below) and
-      # isn't run here yet.
+      # the module can construct a client without throwing. Real e2e needs the
+      # real project secrets (see the note on the e2e job below).
       NUXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
       NUXT_PUBLIC_SUPABASE_ANON_KEY: placeholder
       SUPABASE_SERVICE_ROLE_KEY: placeholder
@@ -47,7 +46,8 @@ jobs:
   # directly in a step's `if:` — `if: ${{ secrets.X != '' }}` isn't supported the
   # way `if: ${{ env.X != '' }}` is. On a fork, or before these secrets are
   # configured, the env vars are empty and every step here is skipped rather
-  # than failing the job.
+  # than failing the job. The three secrets are configured (2026-10-13), so the
+  # job now runs for real on every PR.
   e2e:
     runs-on: ubuntu-latest
     env:
