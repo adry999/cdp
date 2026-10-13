@@ -1,3 +1,5 @@
+> **Istoric.** Livrarea designerului (2026-10-10), păstrată ca referință. Regulile curente ale proiectului sunt în `/AGENTS.md`; unde acest fișier diferă (de exemplu la iconuri), câștigă `AGENTS.md`.
+
 # Prompt de lipit în Claude Code
 
 Pune folderul `design_handoff_codepedia_nuxt/` în repo la `design/design_handoff_codepedia_nuxt/` (suprascrie), deschide Claude Code în rădăcina repo-ului `adry999/cdp` și lipește:

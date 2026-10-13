@@ -1,0 +1,9 @@
+# Rules and dependencies change only with both developers aware: GitHub requests a review
+# from each owner on any PR touching these paths (see AGENTS.md, "Reguli de lucru în echipă").
+/AGENTS.md          @adry999 @busma-tech
+/CLAUDE.md          @adry999 @busma-tech
+/GEMINI.md          @adry999 @busma-tech
+/.claude/           @adry999 @busma-tech
+/package.json       @adry999 @busma-tech
+/package-lock.json  @adry999 @busma-tech
+/nuxt.config.ts     @adry999 @busma-tech
