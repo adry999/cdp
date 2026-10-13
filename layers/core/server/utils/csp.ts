@@ -48,3 +48,20 @@ export function inlineScriptHashes(html: string): string[] {
   }
   return [...hashes]
 }
+
+const ENTITIES: Record<string, string> = { '&#39;': "'", '&quot;': '"', '&amp;': '&', '&lt;': '<', '&gt;': '>' }
+
+/**
+ * `'unsafe-hashes'` plus the hash of every inline event handler (`onerror="…"`) in the page.
+ * NuxtImg renders `onerror="this.setAttribute('data-error', 1)"` on the server so an image that fails
+ * before hydration is still reported; the hash allows exactly that code and nothing else.
+ * Empty when the page has no handler, so `'unsafe-hashes'` is never listed for nothing.
+ */
+export function inlineHandlerHashes(html: string): string[] {
+  const hashes = new Set<string>()
+  for (const match of html.matchAll(/<[a-z][^>]*?\son[a-z]+="([^"]*)"/gi)) {
+    const code = (match[1] ?? '').replace(/&#39;|&quot;|&amp;|&lt;|&gt;/g, (entity) => ENTITIES[entity] ?? entity)
+    if (code) hashes.add(`'sha256-${createHash('sha256').update(code, 'utf8').digest('base64')}'`)
+  }
+  return hashes.size ? ["'unsafe-hashes'", ...hashes] : []
+}

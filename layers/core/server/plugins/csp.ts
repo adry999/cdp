@@ -1,4 +1,4 @@
-import { buildCsp, inlineScriptHashes } from '#layers/core/server/utils/csp'
+import { buildCsp, inlineHandlerHashes, inlineScriptHashes } from '#layers/core/server/utils/csp'
 
 // The CSP is set here, not in routeRules, because its script-src lists the hash of every inline
 // script of the page (Nuxt's config and import map, the theme script), so 'unsafe-inline' is gone.
@@ -11,7 +11,7 @@ export default defineNitroPlugin((nitroApp) => {
 
   nitroApp.hooks.hook('render:html', (html, { event }) => {
     const markup = [...html.head, ...html.bodyPrepend, ...html.body, ...html.bodyAppend].join('\n')
-    const scriptSources = import.meta.dev ? ["'unsafe-inline'"] : inlineScriptHashes(markup)
+    const scriptSources = import.meta.dev ? ["'unsafe-inline'"] : [...inlineScriptHashes(markup), ...inlineHandlerHashes(markup)]
     if (import.meta.prerender) {
       html.head.unshift(`<meta http-equiv="Content-Security-Policy" content="${buildCsp({ supabaseHost, scriptSources, meta: true })}">`)
     } else {

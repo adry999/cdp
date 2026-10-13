@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
-import { buildCsp, inlineScriptHashes } from './csp'
+import { buildCsp, inlineHandlerHashes, inlineScriptHashes } from './csp'
 
 const sha = (body: string) => `'sha256-${createHash('sha256').update(body, 'utf8').digest('base64')}'`
 
@@ -50,5 +50,16 @@ describe('buildCsp', () => {
     expect(csp).toContain(`script-src 'self' https://*.googletagmanager.com`)
     expect(csp).not.toContain('frame-ancestors')
     expect(csp).toContain(`img-src 'self' data: https://*.google-analytics.com`)
+  })
+})
+
+describe('inlineHandlerHashes', () => {
+  it('hashes the decoded handler code behind unsafe-hashes', () => {
+    const html = `<img src="/a.png" onerror="this.setAttribute(&#39;data-error&#39;, 1)"><img src="/b.png" onerror="this.setAttribute(&#39;data-error&#39;, 1)">`
+    expect(inlineHandlerHashes(html)).toEqual(["'unsafe-hashes'", sha("this.setAttribute('data-error', 1)")])
+  })
+
+  it('lists nothing when the page has no handler', () => {
+    expect(inlineHandlerHashes('<img src="/a.png" alt="on">')).toEqual([])
   })
 })
