@@ -87,14 +87,6 @@ const ctaClass =
         >
           {{ t('nav.letsTalk') }} <span aria-hidden="true">→</span>
         </button>
-
-        <dl class="m-0 flex flex-col gap-1.5 eyebrow-sm text-muted">
-          <div>
-            <dt class="inline">{{ t('home.contact.facts.responseTime') }}:</dt>
-            {{ ' ' }}
-            <dd class="m-0 inline">{{ settings.responseTime }}</dd>
-          </div>
-        </dl>
       </div>
 
       <nav :aria-label="t('nav.services')" class="flex flex-col gap-0 nav:gap-2">
