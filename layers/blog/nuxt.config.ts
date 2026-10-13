@@ -1,5 +1,5 @@
 import { fileURLToPath } from 'node:url'
-import { blogPrerenderRoutes, type RoutePost } from './domain/blogRoutes'
+import { blogCounterpartRedirects, blogPrerenderRoutes, type RoutePost } from './domain/blogRoutes'
 import { isCategoryCode } from './domain/category'
 import { validatePostFrontMatter, type PostLocale, type RawPost } from './domain/frontMatter'
 import { readPosts } from './readPosts'
@@ -20,12 +20,18 @@ function publishedRoutePosts(posts: readonly RawPost[], folder: PostLocale): Rou
 }
 
 const posts = readPosts(contentDir)
+const roPosts = publishedRoutePosts(posts, 'ro')
+const enPosts = publishedRoutePosts(posts, 'en')
 
 export default defineNuxtConfig({
   // `nuxt build` doesn't crawl links, so every blog URL is listed here from the content files (SEO_SPEC §7).
   nitro: {
-    prerender: { routes: blogPrerenderRoutes(publishedRoutePosts(posts, 'ro'), publishedRoutePosts(posts, 'en')) },
+    prerender: { routes: blogPrerenderRoutes(roPosts, enPosts) },
   },
+  // /blog/<en-slug> and /en/blog/<ro-slug> land on the post in the requested locale.
+  routeRules: Object.fromEntries(
+    blogCounterpartRedirects(roPosts, enPosts).map(({ from, to }) => [from, { redirect: { to, statusCode: 301 } }]),
+  ),
   hooks: {
     // Build gate (SEO_SPEC §1): bad front matter fails `nuxt build` / `nuxt dev` start.
     // Skipped for `nuxt prepare` (postinstall), which must never fail on content.
