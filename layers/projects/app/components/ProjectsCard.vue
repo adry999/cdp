@@ -23,15 +23,15 @@ const target = computed(() => localePath({ name: 'proiecte-slug', params: { slug
         ratio="16/10"
         :src="project.coverPath ?? undefined"
         :alt="project.coverAlt"
-        sizes="xs:100vw sm:45vw lg:380px"
+        sizes="320:400px 480:640px 640:400px 1280:320px"
         :priority="priority"
       />
     </NuxtLink>
-    <p v-if="showTech" class="m-0 mt-4 eyebrow-sm text-muted">{{ project.tech.join(' · ') }}</p>
+    <p v-if="showTech" class="m-0 mt-4 eyebrow-sm text-muted">{{ project.label.join(' · ') }}</p>
     <h3 class="mb-2 heading-card" :class="showTech ? 'mt-2.5' : 'mt-4'">
       <NuxtLink
         :to="target"
-        class="text-inherit no-underline transition-colors duration-[120ms] hover:text-signal-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
+        class="tap-y text-inherit no-underline transition-colors duration-[120ms] hover:text-signal-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
       >
         {{ project.title }}
       </NuxtLink>

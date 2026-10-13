@@ -5,8 +5,8 @@ import withNuxt from './.nuxt/eslint.config.mjs'
 const layerDependencies = JSON.parse(readFileSync(new URL('./layers/dependencies.json', import.meta.url), 'utf8'))
 
 const LAYER_PUBLIC_ENTRY = {
-  regex: '^#layers/(?!core/)[^/]+/(?!server$)',
-  message: 'Import a feature layer only through #layers/<layer> or #layers/<layer>/server.',
+  regex: '^#layers/(?!core/)[^/]+/(?!(server|admin)$)',
+  message: 'Import a feature layer only through #layers/<layer>, #layers/<layer>/server or #layers/<layer>/admin.',
 }
 
 const LAYER_FILE_PATH = {
@@ -36,13 +36,13 @@ function layerBoundary(layer, dependencies) {
   const publicOnly = dependencies.filter((dependency) => dependency !== 'core')
   const regex =
     `^#layers/(?!(${fullAccess.join('|')})(/|$))` +
-    (publicOnly.length ? `(?!(${publicOnly.join('|')})(/server)?$)` : '')
+    (publicOnly.length ? `(?!(${publicOnly.join('|')})(/(server|admin))?$)` : '')
   const message =
     layer === 'core'
       ? 'layers/core must not import another layer.'
       : publicOnly.length
         ? `layers/${layer} may import its own files, #layers/core/... and only ${publicOnly
-            .map((dependency) => `#layers/${dependency} or #layers/${dependency}/server`)
+            .map((dependency) => `#layers/${dependency}, #layers/${dependency}/server or #layers/${dependency}/admin`)
             .join(', ')} of ${publicOnly.join(', ')}.`
         : `layers/${layer} may import only its own files and #layers/core/....`
   const patterns = [

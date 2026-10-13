@@ -7,11 +7,11 @@ const props = withDefaults(
     src?: string
     alt?: string
     label?: string
-    /** @nuxt/image syntax: every entry needs a screen key (xs:100vw lg:380px), or the image renders blank. */
+    /** @nuxt/image syntax: every entry needs a screen key, a name from image.screens or a viewport width (320:400px 1024:380px), or it is ignored. */
     sizes?: string
     priority?: boolean
   }>(),
-  { ratio: '16/10', src: undefined, alt: '', label: undefined, sizes: 'xs:100vw md:100vw lg:100vw', priority: false },
+  { ratio: '16/10', src: undefined, alt: '', label: undefined, sizes: '320:400px 480:640px 640:800px 768:960px 1024:1280px', priority: false },
 )
 
 const aspectClass = computed(() => {

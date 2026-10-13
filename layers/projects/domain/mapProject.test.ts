@@ -259,6 +259,50 @@ describe('mapProjectCard', () => {
     expect(mapProjectCard({ ...baseRow, kind_ro: null, kind_en: null }, 'ro').kind).toBe('')
   })
 
+  it('builds the label from the localized kind and tags', () => {
+    const row = { ...baseRow, tags_ro: ['Nuxt', 'Supabase'], tags_en: ['Nuxt', 'Supabase DB'] }
+    expect(mapProjectCard(row, 'ro').label).toEqual(['Aplicație web', 'Nuxt', 'Supabase'])
+    expect(mapProjectCard(row, 'en').label).toEqual(['Web app', 'Nuxt', 'Supabase DB'])
+  })
+
+  it('falls back to tech when the locale has no tags', () => {
+    const row = { ...baseRow, tags_ro: ['Nuxt'], tags_en: [] }
+    expect(mapProjectCard(row, 'en').label).toEqual(['Web app', 'Nuxt', 'Supabase'])
+  })
+
+  it('caps the label at three items', () => {
+    const row = { ...baseRow, tags_ro: ['A', 'B', 'C', 'D'] }
+    expect(mapProjectCard(row, 'ro').label).toEqual(['Aplicație web', 'A', 'B'])
+  })
+
+  it('drops tags that are a leading part of a longer kind', () => {
+    const row = { ...baseRow, kind_ro: 'Aplicație desktop pentru Windows', tags_ro: ['Aplicație desktop', 'Plăți EUR/MDL', 'Offline'] }
+    expect(mapProjectCard(row, 'ro').label).toEqual(['Aplicație desktop pentru Windows', 'Plăți EUR/MDL', 'Offline'])
+  })
+
+  it('drops tags that repeat the kind before a comma', () => {
+    const row = { ...baseRow, kind_ro: 'Site de business, brand și marketing', tags_ro: ['Site de business', 'Test de nivel'] }
+    expect(mapProjectCard(row, 'ro').label).toEqual(['Site de business, brand și marketing', 'Test de nivel'])
+  })
+
+  it('keeps tags that only start a hyphenated or decomposed word of the kind', () => {
+    const hyphen = { ...baseRow, kind_ro: 'Web-app pentru logistică', tags_ro: ['Web', 'Offline'] }
+    expect(mapProjectCard(hyphen, 'ro').label).toEqual(['Web-app pentru logistică', 'Web', 'Offline'])
+    // "ă" typed as "a" + U+0306: the tag "Platforma" is not a repeat of "Platformă de rezervări".
+    const decomposed = { ...baseRow, kind_ro: 'Platformă de rezervări', tags_ro: ['Platforma', 'Offline'] }
+    expect(mapProjectCard(decomposed, 'ro').label).toEqual(['Platformă de rezervări', 'Platforma', 'Offline'])
+  })
+
+  it('drops tags that repeat the kind or are only a year', () => {
+    const row = { ...baseRow, tags_ro: ['Aplicație web', 'Gestiune internă', '2026'] }
+    expect(mapProjectCard(row, 'ro').label).toEqual(['Aplicație web', 'Gestiune internă'])
+  })
+
+  it('omits an empty kind from the label', () => {
+    const row = { ...baseRow, kind_ro: null, tags_ro: ['Nuxt'] }
+    expect(mapProjectCard(row, 'ro').label).toEqual(['Nuxt'])
+  })
+
   it('maps a known service_tag to serviceTag', () => {
     expect(mapProjectCard({ ...baseRow, service_tag: 'web-app' }, 'ro').serviceTag).toBe('web-app')
   })

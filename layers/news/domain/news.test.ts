@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { buildNewsRow } from '#layers/news/test-support/buildNewsRow'
-import { mapNews, newsPaths, newsSlug, sortNews, sourceHost } from './news'
+import { mapNews, newsPaths, newsSlug } from './news'
 
 describe('mapNews', () => {
   it('uses Romanian text for ro', () => {
@@ -33,24 +33,5 @@ describe('newsSlug / newsPaths', () => {
     expect(newsSlug({ slug_ro: 'a', slug_en: null }, 'en')).toBe('a')
     expect(newsPaths('a', null)).toEqual({ ro: '/noutati/a', en: '/en/news/a' })
     expect(newsPaths('a', 'b')).toEqual({ ro: '/noutati/a', en: '/en/news/b' })
-  })
-})
-
-describe('sortNews', () => {
-  it('orders by original date, then by our publish date, undated last', () => {
-    const rows = [
-      buildNewsRow({ slug_ro: 'undated', source_published_on: null, published_at: '2026-10-09T00:00:00Z' }),
-      buildNewsRow({ slug_ro: 'old', source_published_on: '2026-01-01' }),
-      buildNewsRow({ slug_ro: 'new-early', source_published_on: '2026-09-01', published_at: '2026-09-02T00:00:00Z' }),
-      buildNewsRow({ slug_ro: 'new-late', source_published_on: '2026-09-01', published_at: '2026-09-05T00:00:00Z' }),
-    ]
-    expect(sortNews(rows).map((row) => row.slug_ro)).toEqual(['new-late', 'new-early', 'old', 'undated'])
-  })
-})
-
-describe('sourceHost', () => {
-  it('drops www and survives garbage', () => {
-    expect(sourceHost('https://www.example.com/x')).toBe('example.com')
-    expect(sourceHost('nonsense')).toBe('nonsense')
   })
 })

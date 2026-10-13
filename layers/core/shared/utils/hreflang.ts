@@ -1,10 +1,12 @@
 /**
  * Moves `href` from the i18n base URL (NUXT_PUBLIC_SITE_URL, which useLocaleHead builds every URL on)
- * to `origin`. A URL on any other base is returned unchanged.
+ * to `origin`. A URL on any other base is returned unchanged. The site root keeps its slash
+ * (`https://host/`, as in the sitemap); every other path stays slash-less.
  */
 export function moveToOrigin(href: string, fromBase: string, origin: string): string {
   const base = fromBase.replace(/\/$/, '')
-  return href.startsWith(base) ? `${origin}${href.slice(base.length)}` : href
+  if (!href.startsWith(base)) return href
+  return `${origin}${href.slice(base.length) || '/'}`
 }
 
 /**

@@ -32,8 +32,9 @@ export function createLeadsAdminRepository(client: SupabaseClient) {
       return count ?? 0
     },
 
+    // null for an unknown id (the page answers 404); only a real failure throws.
     async get(id: string) {
-      const { data, error } = await client.from('leads').select('*').eq('id', id).single()
+      const { data, error } = await client.from('leads').select('*').eq('id', id).maybeSingle()
       if (error) throw failure('Solicitarea nu a putut fi încărcată.', error)
       return data
     },

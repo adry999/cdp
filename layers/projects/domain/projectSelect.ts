@@ -5,7 +5,7 @@ import type { Database } from '#layers/core/shared/types/database.types'
 // must be selected here too.
 export const PROJECT_CARD_SELECT = `
   slug_ro, slug_en, card_title_ro, card_title_en, summary_ro, summary_en,
-  kind_ro, kind_en, tech, service_tag, featured, cover_path, cover_alt_ro, cover_alt_en,
+  kind_ro, kind_en, tags_ro, tags_en, tech, service_tag, featured, cover_path, cover_alt_ro, cover_alt_en,
   win_value_ro, win_value_en, win_label_ro, win_label_en, sort_order
 `
 
@@ -39,7 +39,6 @@ export type AdminProjectRow = Omit<
   | 'created_at'
   | 'updated_at'
   | 'updated_by'
-  | 'preview_token'
   | 'context_heading_ro'
   | 'context_heading_en'
   | 'solution_heading_ro'

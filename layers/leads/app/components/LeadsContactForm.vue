@@ -2,6 +2,7 @@
 import { STAGE_ORDER, type StageId } from '#layers/core/shared/types/service-stage'
 import { SERVICE_TAG_IDS, type ServiceTagId } from '#layers/core/shared/types/service-tag'
 import { stageForServiceParam, stageForServiceTag } from '#layers/core/shared/utils/serviceStage'
+import { visibleServices } from '#layers/core/shared/utils/visibleServices'
 import { LEAD_BUDGET_KEYS, type ContactFieldErrors } from '#layers/leads/domain/lead'
 import { useLeadSubmission } from '#layers/leads/state/useLeadSubmission'
 
@@ -17,7 +18,7 @@ const isModal = computed(() => props.variant === 'modal')
 
 const { t, locale } = useI18n()
 const { grantsEnabled } = useRuntimeConfig().public
-const serviceOptions = SERVICE_TAG_IDS.filter((id) => id !== 'granturi' || grantsEnabled)
+const serviceOptions = visibleServices(SERVICE_TAG_IDS, grantsEnabled)
 const route = useRoute()
 const localePath = useLocalePath()
 const { status, fieldErrors, submit } = useLeadSubmission()
@@ -75,12 +76,21 @@ function toggleService(service: ServiceTagId | undefined) {
   form.service = form.service === service ? undefined : service
 }
 
-function handleSubmit() {
+const FIELD_ORDER = ['name', 'email', 'message'] as const
+
+async function handleSubmit() {
   const { stage, service, ...fields } = form
   const choice = isModal.value
     ? { service, stage: service ? stageForServiceTag(service) : undefined }
     : { stage }
-  return submit({ ...fields, ...choice, lang: locale.value, page: route.fullPath, utm: captureUtm() })
+  await submit({ ...fields, ...choice, lang: locale.value, page: route.fullPath, utm: captureUtm() })
+  // A rejected submit leaves focus on the button; moving it to the first invalid field puts
+  // the error in front of a screen-reader user (their message is linked by aria-describedby).
+  const invalid = FIELD_ORDER.find((field) => fieldErrors.value[field])
+  if (invalid) {
+    await nextTick()
+    document.getElementById(`lead-${invalid}`)?.focus()
+  }
 }
 
 const successHeading = ref<HTMLElement | null>(null)
@@ -110,11 +120,12 @@ watch(status, (value) => {
         <input
           id="lead-name"
           v-model="form.name"
+          autocomplete="name"
           type="text"
           required
           :aria-invalid="fieldError('name') ? 'true' : undefined"
           :aria-describedby="fieldError('name') ? 'lead-name-error' : undefined"
-          class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
         <p v-if="fieldError('name')" id="lead-name-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
           <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('name') }}
@@ -133,7 +144,7 @@ watch(status, (value) => {
           autocomplete="email"
           :aria-invalid="fieldError('email') ? 'true' : undefined"
           :aria-describedby="fieldError('email') ? 'lead-email-error' : undefined"
-          class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
         <p v-if="fieldError('email')" id="lead-email-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
           <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('email') }}
@@ -151,7 +162,7 @@ watch(status, (value) => {
         v-model="form.company"
         type="text"
         autocomplete="organization"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
     </div>
 
@@ -159,17 +170,17 @@ watch(status, (value) => {
       <div id="lead-service-label" class="eyebrow text-muted">
         {{ t('home.contact.form.service') }}
       </div>
-      <div class="mt-2 flex flex-wrap gap-1.5">
+      <div class="mt-2 flex flex-wrap gap-2">
         <ToggleChip
           v-for="option in serviceOptions"
           :key="option"
-          size="form"
+          size="pill"
           :pressed="form.service === option"
           @click="toggleService(option)"
         >
           {{ t(`home.contact.form.serviceOptions.${option}`) }}
         </ToggleChip>
-        <ToggleChip size="form" :pressed="form.service === undefined" @click="form.service = undefined">
+        <ToggleChip size="pill" :pressed="form.service === undefined" @click="form.service = undefined">
           {{ t('home.contact.form.serviceOptions.unsure') }}
         </ToggleChip>
       </div>
@@ -179,17 +190,17 @@ watch(status, (value) => {
       <div id="lead-stage-label" class="eyebrow text-muted">
         {{ t('home.contact.form.stage') }}
       </div>
-      <div class="mt-3 flex flex-wrap gap-1.5">
+      <div class="mt-3 flex flex-wrap gap-2">
         <ToggleChip
           v-for="option in STAGE_ORDER"
           :key="option"
-          size="form"
+          size="pill"
           :pressed="form.stage === option"
           @click="toggleStage(option)"
         >
           {{ t(`home.contact.form.stageOptions.${option}`) }}
         </ToggleChip>
-        <ToggleChip size="form" :pressed="form.stage === undefined" @click="form.stage = undefined">
+        <ToggleChip size="pill" :pressed="form.stage === undefined" @click="form.stage = undefined">
           {{ t('home.contact.form.stageOptions.unsure') }}
         </ToggleChip>
       </div>
@@ -204,9 +215,10 @@ watch(status, (value) => {
         v-model="form.message"
         rows="4"
         required
+        :placeholder="t('home.contact.form.messageHint')"
         :aria-invalid="fieldError('message') ? 'true' : undefined"
         :aria-describedby="fieldError('message') ? 'lead-message-error' : undefined"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-normal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       />
       <p v-if="fieldError('message')" id="lead-message-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
         <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('message') }}
@@ -220,7 +232,7 @@ watch(status, (value) => {
       <select
         id="lead-budget"
         v-model="form.budget"
-        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
         <option value="">{{ t('home.contact.form.budgetPlaceholder') }}</option>
         <option v-for="key in LEAD_BUDGET_KEYS" :key="key" :value="key">
@@ -237,18 +249,18 @@ watch(status, (value) => {
         id="lead-source"
         v-model="form.source"
         type="text"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
     </div>
 
-    <p v-if="status === 'error'" role="alert" aria-live="polite" class="flex items-center gap-1.5 font-mono text-xs text-ink">
+    <p v-if="status === 'error'" role="alert" class="flex items-center gap-1.5 font-mono text-xs text-ink">
       <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ t('home.contact.form.error') }}
     </p>
 
     <div class="flex flex-col gap-4" :class="isModal && 'sm:flex-row sm:flex-wrap sm:items-center sm:justify-between'">
       <p class="m-0 text-xs text-muted" :class="isModal && 'max-w-[34ch]'">
         {{ t('home.contact.form.privacyNotice') }}
-        <NuxtLink :to="localePath('confidentialitate')" class="text-ink underline">{{
+        <NuxtLink :to="localePath('confidentialitate')" class="tap-y-inline text-ink underline">{{
           t('home.contact.form.privacyNoticeLink')
         }}</NuxtLink>
       </p>
@@ -258,7 +270,7 @@ watch(status, (value) => {
         :variant="isModal ? 'signal' : 'ink'"
         class="w-fit text-center"
         :class="isModal && 'leading-[17px]'"
-        :disabled="status === 'pending'"
+        :aria-disabled="status === 'pending' ? 'true' : undefined"
       >
         {{ status === 'pending' ? t('home.contact.form.submitting') : t('home.contact.form.submit') }}
       </AppButton>

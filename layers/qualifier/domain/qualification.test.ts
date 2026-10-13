@@ -37,6 +37,7 @@ describe('parseQualificationInput', () => {
     ['a malformed email', { email: 'not-an-email' }],
     ['an unknown stage', { stage: 'Z' }],
     ['a contact-form budget key', { budget: 'under1k' }],
+    ['a numeric name from hand-made JSON', { name: 123 as unknown as string }],
   ])('rejects %s', (_, overrides) => {
     expect(parseQualificationInput(buildQualificationSubmission(overrides))).toBeNull()
   })

@@ -47,25 +47,7 @@ export function mapNews(row: NewsRow, locale: Locale): NewsView {
   }
 }
 
-/** Newest original first, then newest on our side; undated originals sink. The API already orders; this keeps the contract testable. */
-export function sortNews<T extends Pick<NewsRow, 'source_published_on' | 'published_at'>>(rows: readonly T[]): T[] {
-  return [...rows].sort((a, b) => {
-    const byOriginal = (b.source_published_on ?? '').localeCompare(a.source_published_on ?? '')
-    if (byOriginal !== 0) return byOriginal
-    return (b.published_at ?? '').localeCompare(a.published_at ?? '')
-  })
-}
-
 /** Public paths of one item in both locales, relative to the site root. */
 export function newsPaths(slugRo: string, slugEn: string | null): { ro: string; en: string } {
   return { ro: `/noutati/${slugRo}`, en: `/en/news/${filled(slugEn) ?? slugRo}` }
-}
-
-/** Host of the source, without `www.`, for display next to a link. */
-export function sourceHost(url: string): string {
-  try {
-    return new URL(url).hostname.replace(/^www\./, '')
-  } catch {
-    return url
-  }
 }

@@ -13,6 +13,7 @@ const envValue = (config.public.heroBgVariant as string | undefined) || 'dot-mat
 const envEffective = resolveHeroVariant(envValue) ?? 'none'
 
 const repository = createHomeSettingsAdminRepository(useSupabaseClient<Database>())
+const revalidatePublicCache = useRevalidatePublicCache()
 
 type Option = { id: HeroChoice | null; label: string; description: string }
 
@@ -54,10 +55,7 @@ async function save() {
     await repository.setHeroVariant(selected.value)
     stored.value = selected.value
     saveStatus.value = 'success'
-    // Best effort, like the projects admin: a failure just waits out the cache TTL. Called by URL, not imported from projects.
-    await $fetch('/api/admin/revalidate', { method: 'POST' }).catch((caught: unknown) =>
-      console.warn('[admin] public cache revalidation failed', caught),
-    )
+    await revalidatePublicCache()
   } catch (caught) {
     error.value = toAppError(caught)
     saveStatus.value = 'error'

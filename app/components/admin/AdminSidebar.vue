@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useNewLeadsCount } from '#layers/leads'
+import { useNewLeadsCount } from '#layers/leads/admin'
 
 const route = useRoute()
 const { count: newLeadsCount } = useNewLeadsCount()

@@ -1,6 +1,7 @@
 import type { AsyncStatus } from '#layers/core/shared/types/async'
 import type { Database } from '#layers/core/shared/types/database.types'
 import { moveItem } from '#layers/core/shared/utils/moveItem'
+import { toAppError } from '#layers/core/shared/utils/toAppError'
 import { createProjectsAdminRepository } from '#layers/projects/data/projectsAdminRepository'
 import {
   evaluateChecklist,
@@ -9,14 +10,15 @@ import {
   neighborIndex,
   type ProjectsAdminFilter,
 } from '#layers/projects/domain/adminProjectList'
-import { useRevalidatePublicCache } from '#layers/projects/state/useRevalidatePublicCache'
 
 export type { ProjectsAdminFilter }
 
 export async function useProjectsAdminList() {
   const repository = createProjectsAdminRepository(useSupabaseClient<Database>())
   const revalidatePublicCache = useRevalidatePublicCache()
-  const { data: projects, refresh } = await useAsyncData('admin-projects', () => repository.list())
+  const { data: projects, refresh, status: loadStatus, error } = await useAsyncData('admin-projects', () => repository.list())
+  // A failed load is not an empty list: the page shows the error instead of "Niciun proiect".
+  const loadError = computed(() => (error.value ? toAppError(error.value) : null))
 
   const filter = ref<ProjectsAdminFilter>('toate')
   const filtered = computed(() => filterProjects(projects.value ?? [], filter.value))
@@ -72,18 +74,21 @@ export async function useProjectsAdminList() {
   async function run(slug: string, action: () => Promise<void>, failure: string): Promise<boolean> {
     busy.value = slug
     notice.value = null
+    let ok = true
     try {
       await action()
     } catch (caught) {
       console.warn('[admin] project action failed', slug, caught)
       notice.value = { tone: 'error', text: failure }
-      return false
+      ok = false
     } finally {
       busy.value = null
     }
+    // Also after a failure: an action can fail halfway (row written, redirects not), so the
+    // list and the public cache must show what the database actually holds.
     await revalidatePublicCache()
     await refresh()
-    return true
+    return ok
   }
 
   async function confirmDelete() {
@@ -143,6 +148,8 @@ export async function useProjectsAdminList() {
     publishing,
     consentConfirmed,
     checklist,
+    loadStatus,
+    loadError,
     busy,
     notice,
     reorder,

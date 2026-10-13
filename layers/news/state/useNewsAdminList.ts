@@ -7,7 +7,10 @@ export type NewsAdminFilter = 'toate' | 'draft' | 'publicate'
 
 export async function useNewsAdminList() {
   const repository = createNewsAdminRepository(useSupabaseClient<Database>())
-  const { data: items, refresh } = await useAsyncData('admin-news', () => repository.list())
+  const revalidatePublicCache = useRevalidatePublicCache()
+  const { data: items, refresh, status: loadStatus, error } = await useAsyncData('admin-news', () => repository.list())
+  // A failed load is not an empty list: the page shows the error instead of "Nicio noutate".
+  const loadError = computed(() => (error.value ? toAppError(error.value) : null))
 
   const filter = ref<NewsAdminFilter>('toate')
   const filtered = computed(() => {
@@ -27,6 +30,7 @@ export async function useNewsAdminList() {
     try {
       await repository.remove(id)
       pendingDelete.value = null
+      await revalidatePublicCache()
       await refresh()
     } catch (caught) {
       actionError.value = toAppError(caught)
@@ -35,5 +39,5 @@ export async function useNewsAdminList() {
     }
   }
 
-  return { filter, filtered, pendingDelete, busy, actionError, confirmDelete }
+  return { filter, filtered, loadStatus, loadError, pendingDelete, busy, actionError, confirmDelete }
 }

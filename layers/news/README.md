@@ -27,7 +27,7 @@ there is no multi-table transaction to protect, and RLS is the whole access rule
 - `mapNews(row, locale)` — `NewsRow` to `NewsView`; English falls back to
   Romanian per field, and `translated` is false when the English title or
   summary is missing.
-- `newsSlug`, `newsPaths(slugRo, slugEn)`, `sortNews`, `sourceHost`.
+- `newsSlug`, `newsPaths(slugRo, slugEn)`.
 - `newsArticleSchema(input)` — the `NewsArticle` JSON-LD: CODEPEDIA is author
   and publisher (`organizationRef`), the original is `isBasedOn` and `citation`.
 - `NEWS_INDEX_PAGE`, `NewsView`, `NewsRow`.
@@ -53,8 +53,10 @@ there is no multi-table transaction to protect, and RLS is the whole access rule
   `noindex`. 404 for an unknown or unpublished slug.
 - `GET /api/news`, `GET /api/news/[slug]` — published rows only, through
   `server/repository/newsRepository.ts` (session client + RLS). Route rules:
-  `swr: 60` / `swr: 300` for the API, `swr: 300` for the pages. Admin edits show
-  up when the cache expires (no revalidation hook: `projects` owns that one).
+  `swr: 60` / `swr: 300` for the API, `swr: 300` for the pages. Admin writes
+  call `useRevalidatePublicCache` (`core`); `listNewsPages(event)` in
+  `server/index.ts` gives the root's revalidation endpoint the index and every
+  published item.
 - `/admin/news`, `/admin/news/[slug]` (`nou` for a new one; the segment is the
   Romanian slug, an id also works) — `admin` layout. List with draft/published
   filter and inline delete confirmation; editor with RO/EN pairs

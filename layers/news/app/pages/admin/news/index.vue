@@ -3,7 +3,7 @@ import { useNewsAdminList } from '#layers/news/state/useNewsAdminList'
 
 definePageMeta({ layout: 'admin', i18n: false })
 
-const { filter, filtered, pendingDelete, busy, actionError, confirmDelete } = await useNewsAdminList()
+const { filter, filtered, loadError, pendingDelete, busy, actionError, confirmDelete } = await useNewsAdminList()
 </script>
 
 <template>
@@ -29,7 +29,10 @@ const { filter, filtered, pendingDelete, busy, actionError, confirmDelete } = aw
 
       <p v-if="actionError" role="alert" class="mb-4 eyebrow text-signal-text">{{ actionError.message }}</p>
 
-      <div v-if="!filtered.length" class="rounded border border-hairline p-8 text-center text-muted">Nicio noutate.</div>
+      <p v-if="loadError" role="alert" class="rounded border border-signal-text p-8 text-center text-signal-text">
+        Lista de noutăți nu a putut fi încărcată — reîncarcă pagina. ({{ loadError.message }})
+      </p>
+      <div v-else-if="!filtered.length" class="rounded border border-hairline p-8 text-center text-muted">Nicio noutate.</div>
       <div v-else class="flex flex-col">
         <NewsAdminRow
           v-for="(item, i) in filtered"

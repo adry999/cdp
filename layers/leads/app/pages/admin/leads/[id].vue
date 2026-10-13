@@ -5,9 +5,13 @@ import { useLeadsAdminDetail } from '#layers/leads/state/useLeadsAdminDetail'
 definePageMeta({ layout: 'admin', i18n: false })
 
 const route = useRoute()
-const { lead, notesState, actionError, updateStatus, saveNotes, archive, remove } = await useLeadsAdminDetail(
-  String(route.params.id),
-)
+const { lead, loadError, notesState, actionError, updateStatus, saveNotes, archive, remove } =
+  await useLeadsAdminDetail(String(route.params.id))
+
+// No row and no error means the id does not exist; a failed load is reported, not shown as "missing".
+if (!lead.value && !loadError.value) {
+  throw createError({ statusCode: 404, statusMessage: 'Lead not found', fatal: true })
+}
 
 const notes = ref(lead.value?.notes ?? '')
 const confirmingRemove = ref(false)
@@ -24,7 +28,7 @@ const NOTES_STATE_LABELS = {
   <div v-if="lead">
     <AdminTopbar :title="lead.name" :back="{ to: '/admin/leads', label: 'Solicitări' }">
       <template #actions>
-        <AppButton :href="`mailto:${lead.email}?subject=${encodeURIComponent('Re: solicitarea ta pe CODEPEDIA')}`" variant="ink">
+        <AppButton :href="`mailto:${encodeURIComponent(lead.email)}?subject=${encodeURIComponent('Re: solicitarea ta pe CODEPEDIA')}`" variant="ink">
           Răspunde
         </AppButton>
       </template>
@@ -153,6 +157,14 @@ const NOTES_STATE_LABELS = {
           </div>
         </div>
       </div>
+    </div>
+  </div>
+  <div v-else>
+    <AdminTopbar title="Solicitare" :back="{ to: '/admin/leads', label: 'Solicitări' }" />
+    <div class="flex-1 px-6 py-6">
+      <p role="alert" class="rounded border border-signal-text p-8 text-center text-signal-text">
+        Solicitarea nu a putut fi încărcată — reîncarcă pagina. ({{ loadError?.message }})
+      </p>
     </div>
   </div>
 </template>

@@ -200,7 +200,7 @@ without an import statement, invisible to review. Rules:
 - Only `layers/core` keeps scanned `composables/` and `shared/utils/`.
 - Components stay auto-registered (templates need them) with a mandatory
   feature prefix: `LeadsContactForm`, `QualifierModal`.
-- Enforcement: `layers/dependencies.json` declares each layer's dependencies. ESLint (`layerBoundary`) allows a layer its own files, any `#layers/core/...` path and only `#layers/<dep>` or `#layers/<dep>/server` of other dependencies. Root code imports layers only through those aliases, never by file path. The Vitest architecture test (`layers/core/tests/architecture.test.ts`) reports components and auto-imported names used across those boundaries.
+- Enforcement: `layers/dependencies.json` declares each layer's dependencies. ESLint (`layerBoundary`) allows a layer its own files, any `#layers/core/...` path and only `#layers/<dep>`, `#layers/<dep>/server` or `#layers/<dep>/admin` (admin-only client entry, kept out of the public barrel so public chunks never pull admin code) of other dependencies. Root code imports layers only through those aliases, never by file path. The Vitest architecture test (`layers/core/tests/architecture.test.ts`) reports components and auto-imported names used across those boundaries.
 
 ### D3 — Aliases
 

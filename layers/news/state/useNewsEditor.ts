@@ -14,6 +14,7 @@ import {
 
 export async function useNewsEditor(idOrSlug: string) {
   const repository = createNewsAdminRepository(useSupabaseClient<Database>())
+  const revalidatePublicCache = useRevalidatePublicCache()
   const isNew = idOrSlug === 'nou'
 
   const { data: loaded } = await useAsyncData(`admin-news-${idOrSlug}`, async () => (isNew ? null : await repository.get(idOrSlug)))
@@ -34,6 +35,7 @@ export async function useNewsEditor(idOrSlug: string) {
   const warnings = computed(() => issues.value.filter((issue) => issue.severity === 'warning'))
 
   async function save() {
+    if (saveStatus.value === 'pending') return
     saveError.value = null
     const blocking = blockingIssues(issues.value)
     if (blocking.length) {
@@ -51,6 +53,7 @@ export async function useNewsEditor(idOrSlug: string) {
       form.value.publishedAt = row.published_at
       saveStatus.value = 'success'
       markSaved()
+      await revalidatePublicCache()
       if (isNew || saved.slug_ro !== idOrSlug) await navigateTo(`/admin/news/${saved.slug_ro}`)
     } catch (caught) {
       saveStatus.value = 'error'
@@ -68,7 +71,10 @@ export async function useNewsEditor(idOrSlug: string) {
     }
     prefillStatus.value = 'pending'
     try {
-      form.value = applyPreview(form.value, await repository.previewSource(url))
+      const preview = await repository.previewSource(url)
+      // Filled into the existing form object, read after the request: the unsaved-changes guard
+      // watches that object, and whatever the admin typed meanwhile is kept.
+      Object.assign(form.value, applyPreview(form.value, preview))
       prefillStatus.value = 'success'
     } catch (caught) {
       prefillStatus.value = 'error'
@@ -86,6 +92,7 @@ export async function useNewsEditor(idOrSlug: string) {
       return
     }
     markSaved()
+    await revalidatePublicCache()
     await navigateTo('/admin/news')
   }
 

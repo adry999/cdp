@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { renderSitemap, sitemapUrlsForOrigin, toLastmod, toSitemapUrls } from './sitemap'
+import { renderSitemap, sitemapUrlsForOrigin, toLastmod, toSitemapUrls, withDefaultLastmod } from './sitemap'
 
 const base = 'https://example.test'
 const single = { ro: base, en: base }
@@ -69,5 +69,14 @@ describe('renderSitemap', () => {
     const xml = renderSitemap([{ loc: `${base}/a?x=1&y=2`, lastmod: '2026-01-02', alt: [] }])
     expect(xml).toContain(`<loc>${base}/a?x=1&amp;y=2</loc>`)
     expect(xml).toContain('<lastmod>2026-01-02</lastmod>')
+  })
+})
+
+describe('withDefaultLastmod', () => {
+  it('dates the pages that have none and keeps real dates', () => {
+    expect(withDefaultLastmod([{ ro: '/', en: '/en' }, { ro: '/a', en: '/en/a', lastmod: '2026-01-02' }], '2026-10-12')).toEqual([
+      { ro: '/', en: '/en', lastmod: '2026-10-12' },
+      { ro: '/a', en: '/en/a', lastmod: '2026-01-02' },
+    ])
   })
 })

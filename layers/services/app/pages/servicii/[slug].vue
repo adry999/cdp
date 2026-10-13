@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { visibleServices } from '#layers/core/shared/utils/visibleServices'
 import { SERVICES } from '#layers/services/data/services'
 import { serviceJsonLd } from '#layers/services/domain/seo'
 import type { Service } from '#layers/services/domain/service'
@@ -9,7 +10,7 @@ const localePath = useLocalePath()
 
 const service: Service | undefined = SERVICES.find((entry) => entry.routeSlug[locale.value] === route.params.slug)
 
-if (!service || (service.slug === 'granturi' && !useRuntimeConfig().public.grantsEnabled)) {
+if (!service || visibleServices([service], useRuntimeConfig().public.grantsEnabled).length === 0) {
   throw createError({ statusCode: 404, statusMessage: 'Service not found' })
 }
 

@@ -87,3 +87,24 @@ test('on the homepage the header CTA scrolls to the contact section instead of o
   await expect(page).toHaveURL(/#contact$/)
   await expect(page.getByRole('dialog')).toHaveCount(0)
 })
+
+test('after a failed submit focus stays in the dialog, Escape closes it and focus returns to the CTA', async ({ page }) => {
+  await page.route('**/api/leads', (route) => route.fulfill({ status: 500, contentType: 'application/json', body: '{}' }))
+
+  await page.goto(SERVICE_PAGE)
+  await dismissConsentBanner(page)
+  const cta = page.locator('header').getByRole('button', { name: /Discută un proiect/ })
+  await cta.click()
+  const dialog = page.getByRole('dialog')
+  await dialog.locator('#lead-name').fill('Ana Popescu')
+  await dialog.locator('#lead-email').fill('ana@example.com')
+  await dialog.locator('#lead-message').fill('Vrem un portal pentru clienți.')
+  await dialog.locator('button[type="submit"]').click()
+
+  await expect(dialog.getByRole('alert')).toBeVisible()
+  await expect(dialog.locator('button[type="submit"]')).toBeFocused()
+
+  await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
+  await expect(cta).toBeFocused()
+})

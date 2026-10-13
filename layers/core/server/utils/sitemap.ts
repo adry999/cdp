@@ -2,10 +2,17 @@ import type { SitemapPage, SitemapUrl } from '#layers/core/shared/types/sitemap'
 import { escapeXml } from '#layers/core/shared/utils/escapeXml'
 import type { SiteOrigins } from '#layers/core/shared/utils/siteOrigins'
 
-/** Postgres timestamptz -> sitemap <lastmod> date (YYYY-MM-DD). Real dates
- * only — static pages with no underlying record are never given one. */
+/** The home page has no layer with a server side, so the root routes (sitemap, revalidation) take it from here. */
+export const HOME_PAGE: SitemapPage = { ro: '/', en: '/en' }
+
+/** Postgres timestamptz -> sitemap <lastmod> date (YYYY-MM-DD). */
 export function toLastmod(value: string): string {
   return new Date(value).toISOString().slice(0, 10)
+}
+
+/** Pages with no date of their own (static pages, indexes) get `fallback`; a page's real date is kept. */
+export function withDefaultLastmod(pages: readonly SitemapPage[], fallback: string): SitemapPage[] {
+  return pages.map((page) => ({ ...page, lastmod: page.lastmod ?? fallback }))
 }
 
 /** Each URL sits on its locale's official domain. x-default points at the RO URL, as on the

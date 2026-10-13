@@ -8,17 +8,6 @@ const steps = computed(() => i18nList('contactPage.steps'))
 const route = useRoute()
 
 const panel = ref<HTMLElement | null>(null)
-const { trapTab } = useFocusTrap(panel)
-let restoreOverflow = ''
-
-function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
-    event.preventDefault()
-    close()
-    return
-  }
-  trapTab(event)
-}
 
 // The confirmation takes focus so a screen reader announces it.
 function focusStatus(element: unknown) {
@@ -29,37 +18,11 @@ function focusFirstField() {
   panel.value?.querySelector<HTMLElement>('#lead-name')?.focus()
 }
 
-function release() {
-  document.documentElement.style.overflow = restoreOverflow
-  returnFocusTo.value?.focus()
-  returnFocusTo.value = null
-}
-
-function capture() {
-  restoreOverflow = document.documentElement.style.overflow
-  document.documentElement.style.overflow = 'hidden'
-  nextTick(focusFirstField)
-}
-
-watch(isOpen, (open) => {
-  if (!import.meta.client) return
-  if (open) capture()
-  else release()
-})
-
-// The host mounts this lazily, usually already open. onMounted waits until the dialog is in the
-// document (the layout's Suspense holds it off-page before that), so focus can land.
-onMounted(() => {
-  if (isOpen.value) capture()
-})
+useModalLock(panel, isOpen, close, { returnFocusTo, focusInitial: focusFirstField })
 
 // A link followed from inside the dialog (privacy policy) leaves the page it was opened on.
 watch(() => route.fullPath, () => {
   if (isOpen.value) close()
-})
-
-onBeforeUnmount(() => {
-  if (import.meta.client && isOpen.value) document.documentElement.style.overflow = restoreOverflow
 })
 </script>
 
@@ -77,7 +40,6 @@ onBeforeUnmount(() => {
           aria-modal="true"
           aria-labelledby="contact-modal-title"
           class="relative w-full max-w-[620px] rounded border border-hairline bg-paper text-ink shadow-modal"
-          @keydown="onKeydown"
         >
           <div aria-hidden="true" class="h-0.5 rounded-t bg-signal" />
           <button

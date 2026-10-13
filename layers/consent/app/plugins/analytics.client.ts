@@ -4,11 +4,44 @@ import { consentSignals } from '#layers/consent/domain/consentSignals'
 import { buildGaInitSequence } from '#layers/consent/domain/gaInit'
 import { useCookieConsent } from '#layers/consent/state/useCookieConsent'
 
+interface MetaPixel {
+  (...args: unknown[]): void
+  callMethod?: (this: MetaPixel, ...args: unknown[]) => void
+  queue: unknown[][]
+  push: MetaPixel
+  loaded: boolean
+  version: string
+}
+
 declare global {
   interface Window {
     dataLayer: unknown[]
     gtag: (...args: unknown[]) => void
+    fbq?: MetaPixel
+    _fbq?: MetaPixel
   }
+}
+
+// The official Pixel snippet, written out instead of injected as an inline <script>: the CSP
+// (layers/core/server/plugins/csp.ts) allows no inline script. Calls queue until fbevents.js,
+// an external script on an allowed host, replaces the stub.
+function installMetaPixel(): MetaPixel {
+  if (window.fbq) return window.fbq
+  const fbq = ((...args: unknown[]) => {
+    if (fbq.callMethod) fbq.callMethod(...args)
+    else fbq.queue.push(args)
+  }) as MetaPixel
+  fbq.queue = []
+  fbq.push = fbq
+  fbq.loaded = true
+  fbq.version = '2.0'
+  window.fbq = fbq
+  window._fbq ??= fbq
+  const script = document.createElement('script')
+  script.async = true
+  script.src = 'https://connect.facebook.net/en_US/fbevents.js'
+  document.head.appendChild(script)
+  return fbq
 }
 
 function clearCookie(name: string) {
@@ -70,17 +103,9 @@ export default defineNuxtPlugin((nuxtApp) => {
   function injectMetaPixelIfConsented() {
     if (!metaPixelId || metaInjected || !hasConsent(consent.value, 'marketing')) return
     metaInjected = true
-    const script = document.createElement('script')
-    script.innerHTML = `
-      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-      document,'script','https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '${metaPixelId}');
-      fbq('track', 'PageView');
-    `
-    document.head.appendChild(script)
+    const fbq = installMetaPixel()
+    fbq('init', metaPixelId)
+    fbq('track', 'PageView')
   }
 
   // The Pixel SDK has no uninstall call either; reload is the only way to guarantee it's gone.

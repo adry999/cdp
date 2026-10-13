@@ -113,7 +113,7 @@ onBeforeUnmount(detach)
             :alt="current.alt"
             :width="1600"
             :height="900"
-            sizes="xs:100vw md:100vw lg:100vw"
+            sizes="320:400px 480:640px 640:800px 768:960px 1024:1280px 1280:1600px"
             class="block h-auto max-h-full w-auto max-w-full rounded border border-hairline-ink object-contain"
           />
         </div>

@@ -98,39 +98,26 @@ if (import.meta.client && phrases.length > 1) {
       </p>
       <div class="mt-[clamp(24px,2.8vw,36px)] flex flex-wrap gap-3">
         <QualifierCta variant="signal" fallback-href="#contact">{{ t('home.hero.ctaPrimary') }}</QualifierCta>
-        <AppButton href="#proces" variant="outline">{{ t('home.hero.ctaSecondary') }}</AppButton>
+        <AppButton href="#despre" variant="outline">{{ t('home.hero.ctaSecondary') }}</AppButton>
       </div>
     </SiteSection>
     <div class="container-site pb-[clamp(36px,4.5vw,56px)]">
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div class="grid grid-fit-safe-320 gap-4">
         <FactCard :label="t('home.hero.facts.location')">
           <div>
             <div>{{ t('home.hero.facts.locationValue') }}</div>
             <div class="mt-1.5 flex items-center gap-1.5 text-xs font-normal text-muted">
               <span class="inline-block h-1.5 w-1.5 rounded-full bg-signal" aria-hidden="true" />
               <span>{{ t('home.hero.facts.itPark') }}</span>
-              <span class="group/tooltip relative inline-flex items-center">
-                <button
-                  type="button"
-                  class="relative inline-flex h-4 w-4 cursor-pointer items-center before:absolute before:-inset-3.5 before:content-[''] justify-center rounded-full border border-rule/70 text-[10px] font-mono font-medium text-muted transition-colors hover:border-ink hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-signal"
-                  :aria-label="t('home.hero.facts.itParkTooltipAria')"
-                >
-                  i
-                </button>
-                <span
-                  role="tooltip"
-                  class="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 w-[min(300px,85vw)] -translate-x-1/2 rounded border border-hairline bg-inverse p-3 text-xs font-normal leading-relaxed text-on-inverse shadow-lg opacity-0 transition-opacity duration-150 group-hover/tooltip:pointer-events-auto group-hover/tooltip:opacity-100 group-focus-within/tooltip:pointer-events-auto group-focus-within/tooltip:opacity-100"
-                >
-                  {{ t('home.hero.facts.itParkTooltip') }}
-                  <span class="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-inverse" aria-hidden="true" />
-                </span>
-              </span>
+              <CoreInfoTip size="sm" :label="t('home.hero.facts.itParkTooltipAria')">
+                {{ t('home.hero.facts.itParkTooltip') }}
+              </CoreInfoTip>
             </div>
           </div>
         </FactCard>
         <FactCard :label="t('home.hero.facts.markets')" :value="t('home.hero.facts.marketsValue')" />
         <FactCard
-          class="md:col-span-2"
+          class="col-span-full"
           :label="t('home.hero.facts.stack')"
           :value="t('home.hero.facts.stackValue')"
         />

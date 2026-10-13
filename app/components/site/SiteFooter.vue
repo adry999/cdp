@@ -2,6 +2,7 @@
 import { useCookieConsent } from '#layers/consent'
 import { useSiteSettings } from '#layers/content'
 import { SERVICE_LINKS } from '#layers/services'
+import { visibleServices } from '#layers/core/shared/utils/visibleServices'
 import { studioGraph } from '#layers/core/shared/utils/jsonLd'
 
 const { t, locale } = useI18n()
@@ -11,7 +12,7 @@ const { openSettings } = useCookieConsent()
 const settings = useSiteSettings()
 const cta = useContactCta()
 const { grantsEnabled } = useRuntimeConfig().public
-const serviceLinks = SERVICE_LINKS.filter((s) => s.slug !== 'granturi' || grantsEnabled)
+const serviceLinks = visibleServices(SERVICE_LINKS, grantsEnabled)
 
 const services = computed(() =>
   serviceLinks.map((service) => ({
@@ -23,7 +24,6 @@ const services = computed(() =>
 
 const studioLinks = computed(() => [
   { id: 'work', label: t('nav.projects'), to: localePath('proiecte') },
-  { id: 'process', label: t('nav.process'), to: { path: localePath('index'), hash: '#proces' } },
   { id: 'pricing', label: t('nav.pricing'), to: localePath('preturi') },
   { id: 'about', label: t('nav.about'), to: localePath('despre') },
   { id: 'blog', label: t('nav.blog'), to: localePath('blog') },
@@ -54,7 +54,8 @@ useJsonLd(() =>
 )
 
 const columnLabelClass = 'eyebrow-sm text-muted'
-const linkClass = 'text-[15px] text-ink no-underline hover:text-signal-text hover:no-underline'
+// Rows grow to 44px on mobile and 32px on desktop; the gap shrinks so the column keeps about the same height.
+const linkClass = 'py-2.5 text-[15px] text-ink no-underline hover:text-signal-text hover:no-underline nav:py-1'
 const ctaClass =
   'inline-flex w-fit cursor-pointer items-center gap-2.5 rounded border-0 bg-signal px-4 py-[11px] text-[15px] font-medium text-paper no-underline transition-colors hover:bg-ink hover:text-paper hover:no-underline'
 </script>
@@ -65,7 +66,7 @@ const ctaClass =
       class="container-site grid grid-fit-safe-200 gap-[clamp(32px,4vw,48px)] pb-[clamp(32px,4vw,48px)] pt-[clamp(48px,6vw,80px)]"
     >
       <div class="flex min-w-0 flex-col gap-[18px]">
-        <NuxtLink :to="localePath('index')" class="flex w-fit">
+        <NuxtLink :to="localePath('index')" class="tap-y flex w-fit">
           <img src="/brand/codepedia-wordmark.svg" alt="CODEPEDIA" width="163" height="16" class="block h-4 w-auto dark:hidden">
           <img src="/brand/codepedia-wordmark-on-dark.svg" alt="CODEPEDIA" width="163" height="16" class="hidden h-4 w-auto dark:block">
         </NuxtLink>
@@ -86,25 +87,17 @@ const ctaClass =
         >
           {{ t('nav.letsTalk') }} <span aria-hidden="true">→</span>
         </button>
-
-        <dl class="m-0 flex flex-col gap-1.5 eyebrow-sm text-muted">
-          <div>
-            <dt class="inline">{{ t('home.contact.facts.responseTime') }}:</dt>
-            {{ ' ' }}
-            <dd class="m-0 inline">{{ settings.responseTime }}</dd>
-          </div>
-        </dl>
       </div>
 
-      <nav :aria-label="t('nav.services')" class="flex flex-col gap-3.5">
-        <span :class="columnLabelClass">{{ t('nav.services') }}</span>
+      <nav :aria-label="t('nav.services')" class="flex flex-col gap-0 nav:gap-2">
+        <span :class="[columnLabelClass, 'mb-1 nav:mb-0.5']">{{ t('nav.services') }}</span>
         <NuxtLink v-for="service in services" :key="service.slug" :to="service.to" :class="linkClass">
           {{ service.name }}
         </NuxtLink>
       </nav>
 
-      <nav :aria-label="t('footer.studioLabel')" class="flex flex-col gap-3.5">
-        <span :class="columnLabelClass">{{ t('footer.studioLabel') }}</span>
+      <nav :aria-label="t('footer.studioLabel')" class="flex flex-col gap-0 nav:gap-2">
+        <span :class="[columnLabelClass, 'mb-1 nav:mb-0.5']">{{ t('footer.studioLabel') }}</span>
         <NuxtLink v-for="link in studioLinks" :key="link.id" :to="link.to" :class="linkClass">
           {{ link.label }}
         </NuxtLink>
@@ -124,7 +117,7 @@ const ctaClass =
           </NuxtLink>
           <NuxtLink
             :to="localePath('blog')"
-            class="eyebrow w-fit text-ink underline decoration-signal underline-offset-[3px] hover:text-ink"
+            class="eyebrow tap-y w-fit text-ink underline decoration-signal underline-offset-[3px] hover:text-ink"
           >
             {{ t('footer.allPosts') }} →
           </NuxtLink>
@@ -156,12 +149,12 @@ const ctaClass =
           {{ t('home.hero.facts.itPark') }}
         </span>
         <div class="flex flex-wrap gap-x-6 gap-y-3">
-          <NuxtLink :to="localePath('confidentialitate')" class="text-muted no-underline hover:text-ink hover:no-underline">
+          <NuxtLink :to="localePath('confidentialitate')" class="tap-y text-muted no-underline hover:text-ink hover:no-underline">
             {{ t('footer.privacy') }}
           </NuxtLink>
           <button
             type="button"
-            class="cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-ink"
+            class="tap-y cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-ink"
             @click="openSettings"
           >
             {{ t('footer.cookieSettings') }}

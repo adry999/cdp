@@ -37,22 +37,9 @@ const stages = useServiceStages()
             class="mt-1 flex items-center gap-2 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] text-ink"
           >
             {{ stage.pricing }}
-            <span class="group/tooltip relative inline-flex items-center">
-              <button
-                type="button"
-                class="relative inline-flex h-5 w-5 cursor-default items-center before:absolute before:-inset-3 before:content-[''] justify-center rounded-full border border-rule/70 text-[11px] font-mono font-medium text-muted transition-colors hover:border-ink hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-signal"
-                :aria-label="t('pricing.infoLabel')"
-              >
-                i
-              </button>
-              <span
-                role="tooltip"
-                class="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 w-[min(300px,85vw)] -translate-x-1/2 rounded border border-hairline bg-inverse p-3 text-[13px] font-normal leading-relaxed text-on-inverse shadow-lg opacity-0 transition-opacity duration-150 group-hover/tooltip:pointer-events-auto group-hover/tooltip:opacity-100 group-focus-within/tooltip:pointer-events-auto group-focus-within/tooltip:opacity-100 tracking-normal"
-              >
-                {{ stage.pricingTooltip }}
-                <span class="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-inverse" aria-hidden="true" />
-              </span>
-            </span>
+            <CoreInfoTip :label="t('pricing.infoLabel')">
+              {{ stage.pricingTooltip }}
+            </CoreInfoTip>
           </div>
           <ul
             class="m-0 mt-5 flex flex-1 list-none flex-col gap-2 border-t border-hairline p-0 pt-4"

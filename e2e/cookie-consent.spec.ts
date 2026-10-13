@@ -36,23 +36,16 @@ test('no analytics scripts load without consent (env vars unset in this environm
   expect(requests.some((url) => url.includes('connect.facebook.net'))).toBe(false)
 })
 
-test('banner moves focus to itself on open and traps Tab inside it', async ({ page }) => {
+test('banner is a non-modal region: it takes no focus and the page behind stays reachable', async ({ page }) => {
   await page.goto('/')
-  const banner = page.getByRole('dialog')
+  const banner = page.getByRole('region', { name: 'Consimțământ cookie-uri' })
   await expect(banner).toBeVisible()
+  await expect(page.getByRole('dialog')).toHaveCount(0)
 
-  // The first focusable element in the dialog, in DOM order, is the policy
-  // link inside the message paragraph — before the three action buttons.
-  await expect(page.getByRole('link', { name: 'Detalii în politica de confidențialitate' })).toBeFocused()
-
-  // Shift+Tab from the first control should wrap to the last, not escape
-  // the dialog onto the page behind it.
-  await page.keyboard.press('Shift+Tab')
-  await expect(page.getByRole('button', { name: 'Acceptă tot' })).toBeFocused()
-
-  // And Tab from the last should wrap back to the first, closing the loop.
+  // Nothing inside the banner holds focus after load, and Tab reaches the skip link first.
+  await expect(banner.locator(':focus')).toHaveCount(0)
   await page.keyboard.press('Tab')
-  await expect(page.getByRole('link', { name: 'Detalii în politica de confidențialitate' })).toBeFocused()
+  await expect(page.getByRole('link', { name: /Sari la conținut/ })).toBeFocused()
 })
 
 test('privacy policy page renders in both locales', async ({ page }) => {

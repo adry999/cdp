@@ -59,11 +59,29 @@ export interface PublishChecklist {
 
 const filled = (value: string | null | undefined) => !!value?.trim()
 
+/** What the checklist reads: a list row has it directly, the editor derives it from the form. */
+export type ChecklistInput = Pick<
+  AdminProjectListRow,
+  | 'title_ro'
+  | 'card_title_ro'
+  | 'summary_ro'
+  | 'lead_ro'
+  | 'context_body_ro'
+  | 'cover_path'
+  | 'live_url'
+  | 'win_value_ro'
+  | 'quote_ro'
+  | 'screens_demo'
+> & {
+  project_images: { path: string | null }[]
+  project_stats: { value: string }[]
+}
+
 /**
  * The pre-publish checklist for a draft. `consentConfirmed` is passed in because no column
  * stores the client's consent: the admin confirms it by hand each time.
  */
-export function evaluateChecklist(row: AdminProjectListRow, consentConfirmed: boolean): PublishChecklist {
+export function evaluateChecklist(row: ChecklistInput, consentConfirmed: boolean): PublishChecklist {
   const items: ChecklistItem[] = [
     {
       id: 'content',

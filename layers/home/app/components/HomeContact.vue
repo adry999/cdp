@@ -12,7 +12,7 @@ const showForm = ref(false)
 </script>
 
 <template>
-  <SiteSection number="07" :label="t('home.contact.sectionLabel')" section-id="contact">
+  <SiteSection number="06" :label="t('home.contact.sectionLabel')" section-id="contact">
     <h2 class="m-0 max-w-[22ch] text-[clamp(28px,4vw,48px)] font-semibold leading-[1.08] tracking-[-0.025em]">
       {{ t('home.contact.title') }}
     </h2>

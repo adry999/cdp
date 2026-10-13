@@ -11,7 +11,7 @@ test.describe('desktop', () => {
   test('Escape closes the services menu opened by hover', async ({ page }) => {
     await page.goto('/servicii/website')
     await dismissConsentBanner(page)
-    const trigger = page.locator('header nav [aria-haspopup="true"]')
+    const trigger = page.locator('header nav a[aria-expanded][aria-controls]')
 
     await trigger.hover()
     await expect(trigger).toHaveAttribute('aria-expanded', 'true')
@@ -22,7 +22,7 @@ test.describe('desktop', () => {
   test('a click outside closes the services menu and returns focus to its trigger', async ({ page }) => {
     await page.goto('/servicii/website')
     await dismissConsentBanner(page)
-    const trigger = page.locator('header nav [aria-haspopup="true"]')
+    const trigger = page.locator('header nav a[aria-expanded][aria-controls]')
 
     await trigger.focus()
     await page.keyboard.press('Enter')

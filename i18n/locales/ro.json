@@ -6,9 +6,8 @@
     }
   },
   "nav": {
+    "chooseService": "Alege serviciul",
     "services": "Servicii",
-    "stack": "Tech Stack",
-    "process": "Proces",
     "work": "Portofoliu",
     "blog": "Blog",
     "news": "Noutăți",
@@ -35,10 +34,10 @@
     "cookieSettings": "Setări cookie-uri",
     "studioLabel": "Studio",
     "allPosts": "Toate articolele",
-    "navLabel": "Navigare footer",
     "privacy": "Confidențialitate"
   },
   "cookieBanner": {
+    "label": "Consimțământ cookie-uri",
     "message": "Folosim cookie-uri necesare pentru funcționarea site-ului. Cu acordul tău, folosim și cookie-uri de analiză și marketing.",
     "policyLinkText": "Detalii în politica de confidențialitate",
     "acceptAll": "Acceptă tot",
@@ -66,7 +65,7 @@
         "API-uri custom",
         "Integrări cu terți"
       ],
-      "titleSuffix": "construite ca să-ți aducă rezultate de durată.",
+      "titleSuffix": "construite ca să‑ți aducă rezultate de durată.",
       "lead": "Construim pentru fondatori și companii în creștere aplicații web rapide, robuste și scalabile — ducându-ți produsul de la concept la o lansare de impact, gata să convertească clienți și să scaleze fără datorie tehnică.",
       "ctaPrimary": "Vezi dacă te putem ajuta",
       "ctaSecondary": "Cum lucrăm",
@@ -239,61 +238,7 @@
       }
     },
     "process": {
-      "sectionLabel": "Proces",
-      "title": "Proces clar, adaptat la amploarea proiectului.",
-      "subtitle": "Fără birocrație inutilă pentru proiecte rapide. Arhitectură riguroasă pentru sisteme complexe.",
-      "trackLabel": "Alege traseul",
-      "disclaimer": "*Garanția acoperă erorile tehnice și conformitatea cu specificația agreată; modificările de design sau funcționalitățile noi reprezintă extinderi de scop.",
-      "tracks": {
-        "fast": {
-          "badge": "Fast-Track",
-          "name": "Express & Design-to-Code",
-          "scope": "2–3 zile – 3 săptămâni",
-          "summary": "Pentru pagini de prezentare, build-uri Express și implementare din Figma. Livrare rapidă, fără pași redundanți.",
-          "steps": [
-            {
-              "title": "Onboarding rapid",
-              "body": "Call de 30 de minute sau aliniere pe brief în aceeași zi. Confirmăm scopul, accesele și livrabilele."
-            },
-            {
-              "title": "Execuție directă",
-              "body": "Începem build-ul imediat sau implementăm fidel designul din Figma. Fără faze intermediare de wireframing."
-            },
-            {
-              "title": "Staging rapid",
-              "body": "Link de preview live în 24–48 de ore. Feedback pe versiunea reală, nu pe un mockup."
-            },
-            {
-              "title": "Lansare + 30 de zile suport",
-              "body": "Handover complet și 30 de zile de remedieri pentru erori tehnice după lansare."
-            }
-          ]
-        },
-        "deep": {
-          "badge": "Deep Build",
-          "name": "Concept-to-Spec, scalare și automatizări AI",
-          "scope": "4–12 săptămâni",
-          "summary": "Pentru aplicații custom, refactorizare și automatizări AI. Arhitectură riguroasă și sprinturi cu demo la fiecare etapă.",
-          "steps": [
-            {
-              "title": "Diagnostic și blueprint",
-              "body": "Discovery de 60 de minute, analiză de riscuri și specificație de scop în 48 de ore."
-            },
-            {
-              "title": "Wireframing și arhitectură",
-              "body": "Modele de date, contracte API și prototipuri interactive înainte de prima linie de cod."
-            },
-            {
-              "title": "Sprinturi de două săptămâni",
-              "body": "Mediu de staging actualizat bi-săptămânal, cu demo-uri de milestone la fiecare iterație."
-            },
-            {
-              "title": "Handover + garanție 30 de zile",
-              "body": "Transfer de repository, documentație, sesiune de handover și 30 de zile de suport."
-            }
-          ]
-        }
-      }
+      "sectionLabel": "Proces"
     },
     "work": {
       "sectionLabel": "Portofoliu",
@@ -331,7 +276,7 @@
         "description": "Scrie-ne despre proiectul tău și primești răspuns într-o zi lucrătoare, cu pașii următori și o estimare. Studio full-stack din Chișinău."
       },
       "sectionLabel": "Contact",
-      "title": "Spune-ne problema. O rezolvăm împreună.",
+      "title": "Spune-ne problema. O rezolvăm împreună.",
       "lead": "O descriere scurtă a problemei este suficientă. Primești un răspuns scris într-o zi lucrătoare, cu o părere sinceră despre dacă suntem studioul potrivit.",
       "preferMessage": "Preferi să scrii un mesaj?",
       "form": {
@@ -345,7 +290,7 @@
           "A": "Design → cod",
           "C": "Scalare",
           "D": "AI",
-          "unsure": "Nu știu"
+          "unsure": "Nu știu încă"
         },
         "service": "Serviciu",
         "serviceOptions": {
@@ -355,9 +300,10 @@
           "shopify": "Shopify",
           "ai-automation": "Automatizare cu AI",
           "granturi": "Proiecte finanțate prin granturi",
-          "unsure": "Nu știu"
+          "unsure": "Nu știu încă"
         },
         "message": "Descrierea problemei",
+        "messageHint": "Ce construim, pentru cine și până când?",
         "budget": "Buget",
         "budgetPlaceholder": "Alege un interval",
         "budgetOptions": {
@@ -399,6 +345,7 @@
     "band": { "situation": "Situație: problema de business", "task": "Sarcină: obiectiv și constrângeri", "action": "Acțiune: business și tehnic", "result": "Rezultat: câștig și economii" },
     "incident": { "found": "Descoperirea", "risk": "Riscul", "action": "Ce am făcut" },
     "otherObstacles": "Alte obstacole și ajustări",
+    "screensDemo": "Ecrane cu date demonstrative",
     "cost": "Cât costa problema",
     "constraints": "Constrângeri",
     "business": "Business",
