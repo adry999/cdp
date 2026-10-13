@@ -24,7 +24,8 @@ function readSources(): SourceFile[] {
 }
 
 describe('architecture', () => {
-  it('keeps every layer inside its declared dependencies', () => {
+  // Walks every source file; under a full parallel run on Windows the walk alone can pass the 5 s default.
+  it('keeps every layer inside its declared dependencies', { timeout: 30_000 }, () => {
     expect(checkArchitecture(readSources(), LAYER_DEPENDENCIES)).toEqual([])
   })
 
