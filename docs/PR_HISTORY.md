@@ -90,3 +90,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#86** chore(deps): `overrides.esbuild` ^0.28.1 — esbuild 0.25.12 (`@intlify/bundle-utils`) și 0.27.7 (`fontless`) înlocuite cu 0.28.1 în lockfile; simple-git 4.0.2 și @simple-git/argv-parser 2.0.1 erau deja în `main`.
 - **#88** chore(deps): `@nuxt/devtools` 3.4.3 în lockfile — nu mai depinde de simple-git 3.36.0 / @simple-git/argv-parser 1.1.1 (CVE-uri critice); lockfile regenerat cu npm 11, fiindcă npm 10.9.2 pica la rezolvarea peer-urilor.
 - **#90** perf(images): `format="webp"` pe `<NuxtImg>` din `MediaFrame` și lightbox — imaginile proiectelor se servesc WebP în loc de PNG/JPG (≈ −25% la screenshot-uri, audit PageSpeed „Improve image delivery”).
+- **#92** docs: runbook de deploy pe Hostinger + Cloudflare în `docs/DEPLOY_HOSTINGER.md`; `AGENTS.md` actualizat (producție pe Hostinger, nu Vercel; geo-IP prin `cf-ipcountry`).
