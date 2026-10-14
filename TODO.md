@@ -49,6 +49,40 @@ Așa, `codepedia.md/en/...` funcționează, dar Google indexează doar
       `NUXT_PUBLIC_SITE_URL_RO=https://codepedia.md`, `CRON_SECRET`
 - [ ] Google Search Console: fiecare domeniu adăugat separat
 
+## Deploy Hostinger (codepedia.md, în spatele Cloudflare)
+
+O singură aplicație Node.js, nu câte una per domeniu: build-ul servește toate
+domeniile, iar limba o aleg middleware-ul `locale-redirect` și variabilele de mediu,
+nu `differentDomains`.
+
+- [ ] hPanel → **Node.js Apps → Import Git repository** (nu secțiunea simplă „Git",
+      care doar copiază fișiere în `public_html` și nu rulează build-ul). Branch: `main`
+- [ ] Node 22.19+ (`engines` din `package.json`); install: `npm ci`; build: `npm run build`;
+      start: `node .output/server/index.mjs`; port din variabila `PORT` dată de Hostinger
+- [ ] Variabile de mediu setate **înainte** de build (build-ul pică intenționat fără
+      ele, vezi `assertEnv` din `nuxt.config.ts`): `NUXT_PUBLIC_SUPABASE_URL`,
+      `NUXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
+      `NUXT_PUBLIC_SITE_URL=https://codepedia.studio`,
+      `NUXT_PUBLIC_SITE_URL_RO=https://codepedia.md`; opționale: `RESEND_API_KEY`,
+      `NUXT_PUBLIC_GA_ID`, `NUXT_PUBLIC_META_PIXEL_ID`, `NUXT_PUBLIC_QUALIFIER_ENABLED`,
+      `NUXT_PUBLIC_GRANTS_ENABLED`, `NUXT_PUBLIC_HERO_BG_VARIANT`. Nu seta
+      `NUXT_PUBLIC_NOINDEX` pe live
+- [ ] Ambele domenii (`codepedia.md`, `codepedia.studio`) atașate aceleiași aplicații;
+      dacă Hostinger nu permite, a doua aplicație cu aceleași variabile (fără
+      `differentDomains`)
+- [ ] Redeploy automat la push pe `main` (webhook-ul Git din hPanel)
+- [x] **Geo-IP:** `locale-redirect.ts` citește `cf-ipcountry` (Cloudflare), cu
+      `x-vercel-ip-country` ca rezervă (2026-10-14). De verificat în Cloudflare:
+      Network → „IP Geolocation" activat (altfel header-ul lipsește)
+- [ ] Cloudflare nu are voie să cache-uiască `/` și `/en` (redirectul e per vizitator;
+      aplicația trimite `private, no-store`, dar o regulă „Cache Everything" o ignoră)
+- [ ] **Cron:** `/api/health` e apelat zilnic de Vercel Cron (`CRON_SECRET`); pe Hostinger
+      nu rulează. Fie cron job în hPanel cu `curl -H "Authorization: Bearer $CRON_SECRET"`,
+      fie un pinger extern, ca Supabase free să nu intre în pauză
+- [ ] `VERCEL_ISR_BYPASS_TOKEN` nu se folosește aici: `revalidate.post.ts` curăță cache-ul Nitro
+- [ ] Cloudflare: reguli de cache (vezi memoria „Hosting"), SSL Full (strict), HTML nu se cache-uiește
+      fără regulă explicită
+
 ## Securitate (audit 2026-10-06)
 
 - [x] Aplicat `supabase/migrations/20261006114133_security_hardening.sql` pe producție (2026-10-06)
