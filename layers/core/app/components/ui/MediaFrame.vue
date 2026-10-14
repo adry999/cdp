@@ -37,6 +37,7 @@ const intrinsicSize = computed(() => {
     :width="intrinsicSize.width"
     :height="intrinsicSize.height"
     :sizes="sizes"
+    format="webp"
     :loading="priority ? 'eager' : 'lazy'"
     :fetchpriority="priority ? 'high' : undefined"
     :preload="priority ? { fetchPriority: 'high' } : undefined"
