@@ -85,7 +85,9 @@ lucru nu e specificat, întreabă înainte de a improviza.
 - **Supabase** — Postgres, Auth, Storage (`@nuxtjs/supabase`)
 - **@nuxt/image** pentru imaginile de proiect; **@nuxt/fonts** cu self-hosting
   pentru Inter Tight și JetBrains Mono
-- **Vercel** pentru deploy, ISR pe paginile publice
+- **Hostinger** (Node.js Apps, din git) în spatele **Cloudflare** pentru producție;
+  Vercel nu se folosește. Pașii, variabilele și regulile Cloudflare:
+  `docs/DEPLOY_HOSTINGER.md`
 - **Vitest** pentru logica de formatare/validare, **Playwright** pentru un smoke test
   pe fiecare rută publică
 
@@ -155,7 +157,8 @@ implementare) în `docs/superpowers/specs/` și `docs/superpowers/plans/`:
 - **Detectare automată a limbii** — `layers/core/server/middleware/locale-redirect.ts`.
   Ordinea: alegerea manuală din switcher (cookie `codepedia_locale`) →
   domeniul (`.studio` → engleză, `.md`/`.ro` → română) → geo-IP (header
-  Vercel `x-vercel-ip-country`, RO/MD → română, altfel engleză) → engleză.
+  Cloudflare `cf-ipcountry`, cu `x-vercel-ip-country` ca rezervă; RO/MD → română,
+  altfel engleză) → engleză.
   Acționează doar pe `/` și `/en` — nu pe pagini adânci.
 - **Domenii multiple** — toate domeniile servesc aceleași căi (RO fără
   prefix, EN sub `/en`), deci cache-ul ISR pe cale rămâne corect. Domeniul
