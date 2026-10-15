@@ -13,11 +13,27 @@ Domenii: `codepedia.studio` (EN, principal) și `codepedia.md` (RO). Ambele serv
 
 1. hPanel → **Node.js Apps → Import Git repository** (nu secțiunea simplă „Git": aceea
    doar copiază fișiere în `public_html`, fără `npm run build`, deci Nuxt nu pornește).
-   Branch: `main`.
+   Branch: **`production`** (nu `main`: ce ajunge pe `main` nu se publică până nu e
+   adus pe `production`).
 2. Node 22.19 sau mai nou (`engines` din `package.json`).
 3. Install `npm ci` · Build `npm run build` · Start `node .output/server/index.mjs`.
    Portul vine din variabila `PORT` dată de Hostinger.
-4. Redeploy automat la push pe `main` (webhook-ul Git din hPanel).
+4. Redeploy automat la push pe `production` (webhook-ul Git din hPanel).
+
+### Cum se publică o versiune
+
+O singură aplicație servește ambele domenii, deci un singur deploy le actualizează pe
+amândouă.
+
+1. Schimbările intră întâi în `main`, prin PR-urile obișnuite (CI verde).
+2. Release: PR de la `main` spre `production`
+   (`gh pr create --base production --head main --title "release: <ce intră>"`), merge
+   după ce CI e verde. Merge commit, ca în PR-urile #87, #89, #93.
+3. Webhook-ul Git redeployează `production`. Dacă nu pornește singur: hPanel → Node.js
+   Apps → aplicația → **Redeploy**.
+4. Verifică ambele domenii (secțiunea 6).
+
+Schimbările doar de documentație nu cer release; ajung pe `production` la următorul.
 
 ### Variabile de mediu (se setează înainte de build)
 
