@@ -52,12 +52,38 @@ de mediu. Nu seta nimic de limbă per domeniu.
 3. SSL/TLS → **Full (strict)**; Hostinger trebuie să aibă certificat valid pe domeniu.
 4. Network → **IP Geolocation: On**. Fără el lipsește header-ul `cf-ipcountry` și pasul
    geo-IP al redirectului de limbă nu se activează.
-5. Reguli de cache:
-   - **Bypass** pentru `/` și `/en`. Redirectul de limbă e per vizitator (aplicația trimite
-     `private, no-store`, dar „Cache Everything" o ignoră).
-   - (amânat) `/_nuxt/` și `/_fonts/`: browser TTL 1 an; `/brand/`, `/_ipx/`, favicon: 1 zi.
-     Fișierele statice le servește LiteSpeed direct de pe disc, fără `Cache-Control`, deci
-     TTL-ul lung vine din Cloudflare sau dintr-un `.htaccess`, nu din `nuxt.config.ts`.
+5. SSL/TLS → Edge Certificates → **Always Use HTTPS: On**. Fără el, `http://` face un
+   redirect în plus (Lighthouse: „Avoid multiple page redirects").
+6. Rules → Redirect Rules: `www.<domeniu>` → `https://<domeniu>$path`, 301, păstrând
+   calea și query-ul. Fără regula asta `www` servește aceeași pagină separat (TTFB ~1,3 s
+   față de ~0,3 s pe apex) și dublează conținutul.
+7. Rules → Cache Rules, (regulile sunt făcute să nu se suprapună; Cloudflare
+   le evaluează pe toate cele care se potrivesc, iar una ulterioară suprascrie una anterioară):
+
+   | # | Dacă (expresie) | Setare |
+   |---|---|---|
+   | 1 | `http.request.uri.path eq "/"` sau `eq "/en"` sau `starts_with "/admin"` sau `starts_with "/api"` | **Bypass cache** |
+   | 2 | `starts_with "/_nuxt/"` sau `starts_with "/_fonts/"` | Eligible for cache · Edge TTL 1 an · **Browser TTL 1 an** |
+   | 3 | `starts_with "/brand/"` sau `starts_with "/_ipx/"` sau `eq "/favicon.ico"` | Eligible for cache · Edge TTL 1 zi · **Browser TTL 1 zi** |
+   | 4 | `not starts_with "/_nuxt/"` și `not starts_with "/_fonts/"` și `not starts_with "/brand/"` și `not starts_with "/_ipx/"` și `not starts_with "/admin"` și `not starts_with "/api"` și `ne "/"` și `ne "/en"` | Eligible for cache · Edge TTL: **Use cache-control header if present** · Browser TTL: **Respect origin** |
+
+   De ce așa:
+   - Regula 1: redirectul de limbă de pe `/` și `/en` e per vizitator (aplicația trimite
+     `private, no-store`, dar „Eligible for cache" ar ignora-o fără Bypass). `/admin` și
+     `/api` nu se cache-uiesc niciodată.
+   - Regula 2: fișierele din `/_nuxt/` și `/_fonts/` au hash în nume, deci 1 an e sigur.
+     Fișierele statice le servește LiteSpeed direct de pe disc, **fără `Cache-Control`**,
+     deci TTL-ul lung vine din Cloudflare (sau dintr-un `.htaccess`), nu din
+     `nuxt.config.ts`. Asta rezolvă „Use efficient cache lifetimes".
+   - Regula 3: numele din `public/` nu au hash, de aceea doar 1 zi și fără `immutable`.
+   - Regula 4: paginile adânci (`/servicii`, `/en/services`, `/proiecte/...`) trimit
+     `s-maxage=300, stale-while-revalidate` și niciun `Set-Cookie`, deci se pot ține la
+     margine 5 minute. Scade TTFB-ul („Document request latency"). După editări din admin,
+     `revalidate.post.ts` curăță cache-ul Nitro, dar **nu** pe cel din Cloudflare: o
+     schimbare apare cel mult după 5 minute, sau după **Purge Cache** manual.
+
+   Verificare: `curl -sI https://<domeniu>/servicii` trebuie să arate
+   `cf-cache-status: HIT` la a doua cerere; `/` rămâne `DYNAMIC` (e corect).
 
 ## 4. Redirectul de limbă
 
