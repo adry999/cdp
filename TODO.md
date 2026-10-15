@@ -56,7 +56,7 @@ domeniile, iar limba o aleg middleware-ul `locale-redirect` și variabilele de m
 nu `differentDomains`.
 
 - [ ] hPanel → **Node.js Apps → Import Git repository** (nu secțiunea simplă „Git",
-      care doar copiază fișiere în `public_html` și nu rulează build-ul). Branch: `main`
+      care doar copiază fișiere în `public_html` și nu rulează build-ul). Branch: `production`
 - [ ] Node 22.19+ (`engines` din `package.json`); install: `npm ci`; build: `npm run build`;
       start: `node .output/server/index.mjs`; port din variabila `PORT` dată de Hostinger
 - [ ] Variabile de mediu setate **înainte** de build (build-ul pică intenționat fără
@@ -70,7 +70,8 @@ nu `differentDomains`.
 - [ ] Ambele domenii (`codepedia.md`, `codepedia.studio`) atașate aceleiași aplicații;
       dacă Hostinger nu permite, a doua aplicație cu aceleași variabile (fără
       `differentDomains`)
-- [ ] Redeploy automat la push pe `main` (webhook-ul Git din hPanel)
+- [ ] Redeploy automat la push pe `production` (webhook-ul Git din hPanel); release = PR
+      `main` → `production`, vezi `docs/DEPLOY_HOSTINGER.md`
 - [x] **Geo-IP:** `locale-redirect.ts` citește `cf-ipcountry` (Cloudflare), cu
       `x-vercel-ip-country` ca rezervă (2026-10-14). De verificat în Cloudflare:
       Network → „IP Geolocation" activat (altfel header-ul lipsește)
