@@ -8,7 +8,8 @@ export default defineEventHandler((event) => {
   if (isCrawler(userAgent)) return
 
   const cookieLocale = getCookie(event, LOCALE_COOKIE_NAME)
-  const geoCountry = getHeader(event, 'x-vercel-ip-country')
+  // Production sits behind Cloudflare (cf-ipcountry); x-vercel-ip-country covers Vercel previews.
+  const geoCountry = getHeader(event, 'cf-ipcountry') ?? getHeader(event, 'x-vercel-ip-country')
   const host = getHeader(event, 'host')
 
   const target = resolveLocale({ cookieLocale, geoCountry, host })
@@ -19,7 +20,7 @@ export default defineEventHandler((event) => {
     // must never store this redirect, or the first visitor's outcome gets
     // served to everyone behind that cache until it expires.
     setResponseHeader(event, 'Cache-Control', 'private, no-store')
-    setResponseHeader(event, 'Vary', 'Cookie, X-Vercel-IP-Country')
+    setResponseHeader(event, 'Vary', 'Cookie, CF-IPCountry, X-Vercel-IP-Country')
     return sendRedirect(event, `${target === 'en' ? '/en' : '/'}${search}`, 302)
   }
 })
