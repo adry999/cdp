@@ -54,18 +54,24 @@ de mediu. Nu seta nimic de limbă per domeniu.
    geo-IP al redirectului de limbă nu se activează.
 5. SSL/TLS → Edge Certificates → **Always Use HTTPS: On**. Fără el, `http://` face un
    redirect în plus (Lighthouse: „Avoid multiple page redirects").
-6. Rules → Redirect Rules: `www.<domeniu>` → `https://<domeniu>$path`, 301, păstrând
-   calea și query-ul. Fără regula asta `www` servește aceeași pagină separat (TTFB ~1,3 s
-   față de ~0,3 s pe apex) și dublează conținutul.
-7. Rules → Cache Rules, (regulile sunt făcute să nu se suprapună; Cloudflare
-   le evaluează pe toate cele care se potrivesc, iar una ulterioară suprascrie una anterioară):
+6. Rules → Redirect Rules: tip Dynamic, expresia `concat("https://<domeniu>", http.request.uri.path)`,
+   301, **Preserve query string** bifat; se aplică doar când `http.host eq "www.<domeniu>"`.
+   Fără regula asta `www` servește aceeași pagină separat (o singură măsurătoare: TTFB
+   ~1,3 s față de ~0,3 s pe apex) și dublează conținutul.
+7. Rules → Cache Rules. Regulile sunt făcute să nu se suprapună; Cloudflare le evaluează
+   pe toate cele care se potrivesc, iar una ulterioară suprascrie una anterioară.
 
    | # | Dacă (expresie) | Setare |
    |---|---|---|
    | 1 | `http.request.uri.path eq "/"` sau `eq "/en"` sau `starts_with "/admin"` sau `starts_with "/api"` | **Bypass cache** |
-   | 2 | `starts_with "/_nuxt/"` sau `starts_with "/_fonts/"` | Eligible for cache · Edge TTL 1 an · **Browser TTL 1 an** |
-   | 3 | `starts_with "/brand/"` sau `starts_with "/_ipx/"` sau `eq "/favicon.ico"` | Eligible for cache · Edge TTL 1 zi · **Browser TTL 1 zi** |
-   | 4 | `not starts_with "/_nuxt/"` și `not starts_with "/_fonts/"` și `not starts_with "/brand/"` și `not starts_with "/_ipx/"` și `not starts_with "/admin"` și `not starts_with "/api"` și `ne "/"` și `ne "/en"` | Eligible for cache · Edge TTL: **Use cache-control header if present** · Browser TTL: **Respect origin** |
+   | 2 | `starts_with "/_nuxt/"` sau `starts_with "/_fonts/"` | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 an · Browser TTL: **Override origin and use this TTL** = 1 an |
+   | 3 | `starts_with "/brand/"` sau `starts_with "/_ipx/"` sau `eq "/favicon.ico"` | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 zi · Browser TTL: **Override origin and use this TTL** = 1 zi |
+   | 4 | `not starts_with "/_nuxt/"` și `not starts_with "/_fonts/"` și `not starts_with "/brand/"` și `not starts_with "/_ipx/"` și `not starts_with "/admin"` și `not starts_with "/api"` și `ne "/"` și `ne "/en"` | Eligible for cache · Edge TTL: **Use cache-control header if present, bypass cache if not** · Browser TTL: **Respect origin** |
+
+   Modurile de TTL contează: LiteSpeed nu trimite `Cache-Control` pe fișierele statice, deci
+   regulile 2 și 3 trebuie să **ignore/suprascrie** originea, altfel nu schimbă nimic. La
+   regula 4 „bypass if not" lasă necache-uite răspunsurile fără header (`/sitemap.xml`,
+   `/robots.txt`, erori), care sunt filtrate pe domeniul cererii.
 
    De ce așa:
    - Regula 1: redirectul de limbă de pe `/` și `/en` e per vizitator (aplicația trimite
