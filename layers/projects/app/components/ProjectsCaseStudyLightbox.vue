@@ -114,6 +114,7 @@ onBeforeUnmount(detach)
             :width="1600"
             :height="900"
             sizes="320:400px 480:640px 640:800px 768:960px 1024:1280px 1280:1600px"
+            format="webp"
             class="block h-auto max-h-full w-auto max-w-full rounded border border-hairline-ink object-contain"
           />
         </div>
