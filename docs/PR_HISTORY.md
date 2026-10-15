@@ -91,3 +91,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#88** chore(deps): `@nuxt/devtools` 3.4.3 în lockfile — nu mai depinde de simple-git 3.36.0 / @simple-git/argv-parser 1.1.1 (CVE-uri critice); lockfile regenerat cu npm 11, fiindcă npm 10.9.2 pica la rezolvarea peer-urilor.
 - **#90** perf(images): `format="webp"` pe `<NuxtImg>` din `MediaFrame` și lightbox — imaginile proiectelor se servesc WebP în loc de PNG/JPG (≈ −25% la screenshot-uri, audit PageSpeed „Improve image delivery”).
 - **#91** fix: geo-IP pentru redirectul de limbă citește `cf-ipcountry` (Cloudflare) cu `x-vercel-ip-country` ca rezervă, pentru producția pe Hostinger; checklist de deploy Hostinger în `TODO.md`.
+- **#92** docs: runbook de deploy pe Hostinger + Cloudflare în `docs/DEPLOY_HOSTINGER.md`; `AGENTS.md` actualizat (producție pe Hostinger, nu Vercel; geo-IP prin `cf-ipcountry`).
