@@ -645,16 +645,24 @@ onMounted(() => {
 
   // Draw static baseline frame if user prefers reduced motion
   if (prefersReduced) {
-    if (props.variant === 'dot-matrix') {
-      renderDotMatrix(ctx, 0)
-    } else if (props.variant === 'constellation') {
-      renderConstellation(ctx, 0)
-    } else if (props.variant === 'light-orbs') {
-      renderLightOrbs(ctx, 0, 0.016)
+    const drawReduced = () => {
+      if (!ctx) return
+      if (props.variant === 'dot-matrix') {
+        renderDotMatrix(ctx, 0)
+      } else if (props.variant === 'constellation') {
+        renderConstellation(ctx, 0)
+      } else if (props.variant === 'light-orbs') {
+        renderLightOrbs(ctx, 0, 0.016)
+      }
+    }
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(drawReduced, { timeout: 2000 })
+    } else {
+      setTimeout(drawReduced, 200)
     }
   } else {
-    // A static first frame now; the animation itself starts once the page is idle.
-    drawFrame(ctx, performance.now(), 0.016)
+    // The canvas waits until the page has loaded and gone idle (or the user moves the pointer),
+    // so it never competes with the hero text paint during hydration, preserving the text LCP.
     let idleHandle: number | undefined
     const startWhenIdle = () => {
       const start = () => {
@@ -662,6 +670,8 @@ onMounted(() => {
         if (isVisible && animId === null) {
           lastTime = performance.now()
           animId = requestAnimationFrame(loop)
+        } else if (isVisible) {
+          drawFrame(ctx, performance.now(), 0.016)
         }
       }
       if (typeof window.requestIdleCallback === 'function') idleHandle = window.requestIdleCallback(start, { timeout: 2000 })
