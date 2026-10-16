@@ -108,6 +108,7 @@ const LOCALIZED_PAGES = {
 export default defineNuxtConfig({
   compatibilityDate: '2026-08-05',
   devtools: { enabled: true },
+  telemetry: false,
   // Git worktrees for parallel branches live in .worktrees/; keep them out of scanning and the dev watcher.
   ignore: ['.worktrees/**'],
 

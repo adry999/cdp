@@ -33,15 +33,17 @@ const typedWords = computed(() => typed.value.split(' '))
 if (import.meta.client && phrases.length > 1) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (!reduced) {
+    const isMobile = window.matchMedia('(max-width: 767px)').matches
     const TYPE_MS = 55
     const DELETE_MS = 28
-    const HOLD_MS = 3500
+    const HOLD_MS = isMobile ? 5500 : 3500
     const GAP_MS = 350
 
     let index = 0
     let char = (phrases[0] ?? '').length
     let deleting = true
     let timer: ReturnType<typeof setTimeout>
+    let idleId: number | undefined
 
     const tick = () => {
       const current = phrases[index] ?? ''
@@ -67,8 +69,22 @@ if (import.meta.client && phrases.length > 1) {
       }
     }
 
-    timer = setTimeout(tick, HOLD_MS)
-    onBeforeUnmount(() => clearTimeout(timer))
+    const startAnimation = () => {
+      timer = setTimeout(tick, HOLD_MS)
+    }
+
+    if (typeof window.requestIdleCallback === 'function') {
+      idleId = window.requestIdleCallback(startAnimation, { timeout: 3000 })
+    } else {
+      timer = setTimeout(startAnimation, 300)
+    }
+
+    onBeforeUnmount(() => {
+      if (idleId !== undefined && typeof window.cancelIdleCallback === 'function') {
+        window.cancelIdleCallback(idleId)
+      }
+      clearTimeout(timer)
+    })
   }
 }
 </script>
