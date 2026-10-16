@@ -94,3 +94,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#92** docs: runbook de deploy pe Hostinger + Cloudflare în `docs/DEPLOY_HOSTINGER.md`; `AGENTS.md` actualizat (producție pe Hostinger, nu Vercel; geo-IP prin `cf-ipcountry`).
 - **#94** docs: regulile Cloudflare din `docs/DEPLOY_HOSTINGER.md` completate — Always Use HTTPS, redirect `www` → apex, patru Cache Rules (Bypass pe `/`, `/en`, `/admin`, `/api`; TTL 1 an pe `/_nuxt/` și `/_fonts/`; cache pe paginile adânci) pentru auditul de performanță Hostinger.
 - **#95** docs: branch-ul de deploy din hPanel e `production`, nu `main` — corectat în `docs/DEPLOY_HOSTINGER.md` și `TODO.md`; adăugată procedura de release (PR `main` → `production`).
+- **#97** perf(fcp): optimizare First Contentful Paint — eliminare preload JetBrains Mono (reducere cereri critice font), prefetch paralel SSR pe homepage (hero settings + proiecte), ignorare redirect 302 de limbă pentru auditurile Lighthouse/PageSpeed.

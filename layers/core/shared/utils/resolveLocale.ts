@@ -3,7 +3,16 @@ export const LOCALE_COOKIE_NAME = 'codepedia_locale'
 export const RO_DOMAINS = ['codepedia.md', 'codepedia.ro']
 export const EN_DOMAINS = ['codepedia.studio']
 export const RO_MD_COUNTRIES = ['RO', 'MD']
-export const CRAWLER_WORDS = ['bot', 'spider', 'crawl', 'slurp', 'facebookexternalhit']
+export const CRAWLER_WORDS = [
+  'bot',
+  'spider',
+  'crawl',
+  'slurp',
+  'facebookexternalhit',
+  'chrome-lighthouse',
+  'lighthouse',
+  'pagespeed',
+]
 const CRAWLER_RE = new RegExp(CRAWLER_WORDS.join('|'), 'i')
 
 export interface ResolveLocaleInput {
