@@ -61,3 +61,17 @@ for (const [path, lang] of [
     await expect(page.locator('h1')).toBeVisible()
   })
 }
+
+test('/llms.txt and /llms-full.txt return text/plain with 200', async ({ request }) => {
+  const res1 = await request.get('/llms.txt')
+  expect(res1.status()).toBe(200)
+  expect(res1.headers()['content-type']).toContain('text/plain')
+  const text1 = await res1.text()
+  expect(text1).toContain('# CODEPEDIA')
+
+  const res2 = await request.get('/llms-full.txt')
+  expect(res2.status()).toBe(200)
+  expect(res2.headers()['content-type']).toContain('text/plain')
+  const text2 = await res2.text()
+  expect(text2).toContain('# CODEPEDIA')
+})

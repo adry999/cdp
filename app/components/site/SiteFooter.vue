@@ -36,20 +36,25 @@ const legalLine = computed(() => `© ${settings.value.copyrightYear} ${settings.
 // The one Organization (and LocalBusiness) of the page, on the official domain of the locale.
 // Only what the site already states: city, markets, languages and services; no street, phone or geo.
 const origin = useSiteUrl()
+const primaryOrigin = useSiteUrl('en')
 const error = useError()
 useJsonLd(() =>
   error.value
     ? null
     : studioGraph({
         origin,
+        primaryOrigin,
         // Raster, square, ≥ 112 px: what Google accepts for an Organization logo.
-        logoUrl: `${origin}/icon-512.png`,
+        logoUrl: `${primaryOrigin}/icon-512.png`,
         email: settings.value.contactEmail,
         locality: 'Chișinău',
         country: 'MD',
         areaServed: ['MD', 'RO', 'EU', 'US', 'CA'],
         languages: ['ro', 'en'],
         serviceNames: services.value.map((service) => service.name),
+        description: t('seo.home.description'),
+        legalName: 'Codepedia SRL',
+        sameAs: ['https://www.linkedin.com/company/codepediastudio'],
       }),
 )
 
