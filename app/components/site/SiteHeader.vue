@@ -206,7 +206,7 @@ onMounted(() => {
       />
     </div>
 
-    <SiteHeaderMobilePanel
+    <LazySiteHeaderMobilePanel
       v-if="menuOpen"
       :id="mobileMenuId"
       class="nav:hidden"

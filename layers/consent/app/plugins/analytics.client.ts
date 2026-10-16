@@ -39,6 +39,7 @@ function installMetaPixel(): MetaPixel {
   window._fbq ??= fbq
   const script = document.createElement('script')
   script.async = true
+  script.defer = true
   script.src = 'https://connect.facebook.net/en_US/fbevents.js'
   document.head.appendChild(script)
   return fbq
@@ -72,6 +73,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     const script = document.createElement('script')
     script.async = true
+    script.defer = true
     script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`
     document.head.appendChild(script)
   }
@@ -124,8 +126,18 @@ export default defineNuxtPlugin((nuxtApp) => {
     if (call) window.gtag(...call)
   })
 
-  injectGaIfConsented()
-  injectMetaPixelIfConsented()
+  const deferInit = (cb: () => void) => {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(cb, { timeout: 3000 })
+    } else {
+      setTimeout(cb, 1000)
+    }
+  }
+
+  deferInit(() => {
+    injectGaIfConsented()
+    injectMetaPixelIfConsented()
+  })
 
   watch(consent, () => {
     injectGaIfConsented()

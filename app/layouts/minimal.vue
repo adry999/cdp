@@ -13,8 +13,8 @@ const { isQualifierEnabled } = useQualifierAvailability()
       <slot />
     </main>
     <SiteFooterMinimal />
-    <ConsentBanner />
-    <QualifierModalHost v-if="isQualifierEnabled" />
-    <LeadsContactModalHost v-else />
+    <LazyConsentBanner />
+    <LazyQualifierModalHost v-if="isQualifierEnabled" />
+    <LazyLeadsContactModalHost v-else />
   </div>
 </template>
