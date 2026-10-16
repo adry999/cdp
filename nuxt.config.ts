@@ -324,9 +324,16 @@ export default defineNuxtConfig({
             codeSplitting: {
               groups: [
                 { name: 'supabase', test: /node_modules[/\\]@supabase[/\\]/, priority: 20 },
-                // No `vendor` group: the build dir is node_modules/.cache/nuxt/.nuxt, so a node_modules
-                // test captures the #build virtual modules and, through their dependencies, the whole app,
-                // and @nuxtjs/supabase's composables would statically pull supabase-js into every page.
+                {
+                  name: 'framework',
+                  test: /[\\/]node_modules[\\/](vue|@vue|vue-router)[\\/]/,
+                  priority: 15,
+                },
+                {
+                  name: 'vendor',
+                  test: /[\\/]node_modules[\\/](@intlify|@nuxtjs[/\\]i18n|unhead|@unhead|@iconify|@nuxtjs[/\\]mdc)[\\/]/,
+                  priority: 12,
+                },
                 // Shared modules of the public site only: anything admin-related (editors, admin pages and
                 // components, their state and data) stays out, so public pages never download it.
                 {

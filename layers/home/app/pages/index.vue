@@ -29,11 +29,11 @@ await Promise.all([
 <template>
   <div>
     <HomeHero />
-    <HomeServices />
-    <HomeWork />
-    <HomeStack />
-    <HomeAbout />
-    <HomeFaq />
-    <HomeContact />
+    <LazyHomeServices />
+    <LazyHomeWork />
+    <LazyHomeStack />
+    <LazyHomeAbout />
+    <LazyHomeFaq />
+    <LazyHomeContact />
   </div>
 </template>

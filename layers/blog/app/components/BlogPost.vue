@@ -19,7 +19,7 @@ const showUpdated = computed(() => props.post.updated !== props.post.date)
   <article>
     <SiteSection padding="article" :top-border="false">
       <template #background>
-        <CoreInteractiveBackground variant="dot-matrix" />
+        <LazyCoreInteractiveBackground variant="dot-matrix" />
       </template>
       <template #label>
         <NuxtLink :to="localePath('blog')" class="eyebrow tap-y block leading-[1.6] text-muted no-underline hover:text-signal-text hover:no-underline">
