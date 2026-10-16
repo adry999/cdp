@@ -12,9 +12,21 @@ const siteLocale = useSiteLocale()
     </h2>
     <ul class="m-0 mt-7 grid list-none grid-cols-[repeat(auto-fill,minmax(min(100%,220px),1fr))] gap-4 p-0">
       <li v-for="member in TEAM" :key="member.name" class="flex flex-col gap-3">
-        <MediaFrame ratio="4/3" :src="member.photo" :alt="member.name" />
+        <MediaFrame ratio="4/3" :src="member.photo || undefined" :label="member.photo ? undefined : member.name" :alt="member.name" />
         <div>
-          <div class="text-[17px] font-medium tracking-[-0.02em]">{{ member.name }}</div>
+          <div class="flex items-center gap-2">
+            <span class="text-[17px] font-medium tracking-[-0.02em]">{{ member.name }}</span>
+            <a
+              v-if="member.linkedin"
+              :href="member.linkedin"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              class="tap-y text-muted hover:text-signal transition-colors inline-flex items-center"
+            >
+              <span class="eyebrow-sm">in</span>
+            </a>
+          </div>
           <div class="mt-0.5 eyebrow-sm text-muted">
             {{ member.role[siteLocale] }}
           </div>

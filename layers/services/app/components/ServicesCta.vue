@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type { Service } from '#layers/services/domain/service'
 
-defineProps<{ service: Service }>()
+withDefaults(defineProps<{ service: Service; number?: string }>(), {
+  number: '06',
+})
 const { t } = useI18n()
 </script>
 
 <template>
-  <SiteSection number="05" :label="t('home.contact.sectionLabel')">
+  <SiteSection :number="number" :label="t('home.contact.sectionLabel')">
     <p v-if="service.priceFrom" class="m-0 font-mono text-sm uppercase tracking-[0.08em] text-muted">
       {{ service.priceFrom }}
     </p>

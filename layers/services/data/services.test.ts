@@ -16,6 +16,12 @@ function allLocalizedTexts(): LocalizedText[] {
       texts.push(step.title)
       texts.push(step.body)
     }
+    if (service.faq) {
+      for (const faq of service.faq) {
+        texts.push(faq.question)
+        texts.push(faq.answer)
+      }
+    }
   }
   return texts
 }
@@ -70,6 +76,12 @@ describe('services data', () => {
   it('has at least 3 process steps per service', () => {
     for (const service of SERVICES) {
       expect(service.process.length).toBeGreaterThanOrEqual(3)
+    }
+  })
+
+  it('has at least 3 FAQs per service', () => {
+    for (const service of SERVICES) {
+      expect(service.faq?.length).toBeGreaterThanOrEqual(3)
     }
   })
 

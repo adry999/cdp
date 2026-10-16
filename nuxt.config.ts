@@ -203,6 +203,8 @@ export default defineNuxtConfig({
     '/en/contact': { swr: 3600 },
     '/confidentialitate': { swr: 3600 },
     '/en/privacy': { swr: 3600 },
+    '/llms.txt': { swr: 3600 },
+    '/llms-full.txt': { swr: 3600 },
     '/api/projects': { swr: 60 },
     '/api/home/settings': { swr: 60 },
     '/api/projects/**': { swr: 300 },

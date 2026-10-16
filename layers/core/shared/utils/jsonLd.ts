@@ -18,13 +18,20 @@ export function breadcrumbList(items: readonly BreadcrumbItem[]) {
   }
 }
 
-export function organizationRef(siteUrl: string) {
-  return { '@type': 'Organization', name: 'CODEPEDIA', url: siteUrl }
+export const AREA_SERVED = ['MD', 'RO', 'EU', 'US', 'CA'] as const
+
+/** Canonical @id of the studio organization, anchored on the primary EN domain. */
+export const orgId = (primaryOrigin: string) => `${primaryOrigin}/#org`
+
+export function organizationRef(primaryOrigin: string) {
+  return { '@type': 'Organization', '@id': orgId(primaryOrigin), name: 'CODEPEDIA', url: primaryOrigin }
 }
 
 export interface StudioGraphInput {
   /** The official origin of the page's locale. */
   origin: string
+  /** The primary (EN) origin where the canonical Organization entity lives. Defaults to origin. */
+  primaryOrigin?: string
   /** Raster logo URL, square and at least 112 px (what Google accepts). */
   logoUrl: string
   email: string
@@ -34,31 +41,40 @@ export interface StudioGraphInput {
   areaServed: readonly string[]
   languages: readonly string[]
   serviceNames: readonly string[]
+  sameAs?: readonly string[]
+  description?: string
+  legalName?: string
 }
 
 /** The studio as an `Organization` plus the `ProfessionalService` (a `LocalBusiness`) that belongs to it. */
 export function studioGraph(input: StudioGraphInput) {
-  const orgId = `${input.origin}/#org`
+  const primary = input.primaryOrigin ?? input.origin
+  const canonicalOrgId = orgId(primary)
+  const businessId = `${input.origin}/#business`
   const address = { '@type': 'PostalAddress', addressLocality: input.locality, addressCountry: input.country }
   return {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'Organization',
-        '@id': orgId,
+        '@id': canonicalOrgId,
         name: 'CODEPEDIA',
-        url: input.origin,
+        alternateName: 'Codepedia',
+        ...(input.legalName ? { legalName: input.legalName } : {}),
+        url: primary,
         logo: { '@type': 'ImageObject', url: input.logoUrl, width: 512, height: 512 },
         email: input.email,
         address,
+        ...(input.description ? { description: input.description } : {}),
+        ...(input.sameAs && input.sameAs.length > 0 ? { sameAs: [...input.sameAs] } : {}),
       },
       {
         '@type': 'ProfessionalService',
-        '@id': `${input.origin}/#business`,
+        '@id': businessId,
         name: 'CODEPEDIA',
         url: input.origin,
         image: input.logoUrl,
-        parentOrganization: { '@id': orgId },
+        parentOrganization: { '@id': canonicalOrgId },
         address,
         areaServed: input.areaServed,
         knowsLanguage: input.languages,
@@ -71,13 +87,16 @@ export function studioGraph(input: StudioGraphInput) {
   }
 }
 
-export function webSite(siteUrl: string, inLanguage: readonly string[]) {
+export function webSite(siteUrl: string, inLanguage: readonly string[], primaryOrigin?: string) {
+  const primary = primaryOrigin ?? siteUrl
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': `${primary}/#website`,
     name: 'CODEPEDIA',
     url: siteUrl,
     inLanguage: [...inLanguage],
+    publisher: { '@id': orgId(primary) },
   }
 }
 

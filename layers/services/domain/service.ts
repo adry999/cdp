@@ -7,6 +7,11 @@ export interface ServiceProcessStep {
   body: LocalizedText
 }
 
+export interface ServiceFaqItem {
+  question: LocalizedText
+  answer: LocalizedText
+}
+
 // `priceFrom` is null until real prices exist; the page hides the price line then.
 export interface Service {
   /** Canonical id — matches `projects.service_tag` and the admin select. Not the URL slug. */
@@ -23,6 +28,7 @@ export interface Service {
   audience?: LocalizedText[]
   features: LocalizedText[]
   process: ServiceProcessStep[]
+  faq?: ServiceFaqItem[]
   priceFrom: string | null
   qualifierStage: StageId
 }

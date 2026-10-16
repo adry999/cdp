@@ -56,6 +56,38 @@ const SERVICE_COPY: readonly ServicePageCopy[] = [
         },
       },
     ],
+    faq: [
+      {
+        question: {
+          ro: 'Cât durează realizarea unui site de prezentare?',
+          en: 'How long does it take to build a business website?',
+        },
+        answer: {
+          ro: 'Un site de prezentare este live pe un link de staging în 24–48 de ore, iar lansarea completă pe domeniul final durează de regulă 2–3 zile de la stabilirea brief-ului.',
+          en: 'A presentation website goes live on a staging preview link within 24–48 hours, with full launch on your final domain typically taking 2–3 days from brief confirmation.',
+        },
+      },
+      {
+        question: {
+          ro: 'Cum voi primi mesajele trimise de vizitatori prin formular?',
+          en: 'How will I receive messages submitted through the contact form?',
+        },
+        answer: {
+          ro: 'Integrăm formularul direct cu adresa ta de email profesional sau cu un canal privat de Telegram, astfel încât să primești notificări instant de la potențialii clienți.',
+          en: 'We integrate contact forms directly with your corporate email or a private Telegram channel so you receive instant lead alerts.',
+        },
+      },
+      {
+        question: {
+          ro: 'Voi putea edita textele și imaginile de pe site după lansare?',
+          en: 'Will I be able to edit the website copy and images after launch?',
+        },
+        answer: {
+          ro: 'Arhitectura de bază este static-first pentru viteză maximă și costuri minime de găzduire. La cerere, putem implementa un dashboard editorial simplu pentru gestionarea conținutului fără cod.',
+          en: 'The default architecture is static-first for maximum speed and minimal hosting costs. Upon request, we can build a lightweight editorial dashboard to edit text and images without touching code.',
+        },
+      },
+    ],
     priceFrom: null,
   },
   {
@@ -107,6 +139,38 @@ const SERVICE_COPY: readonly ServicePageCopy[] = [
         body: {
           ro: 'Transfer complet de repository, documentație și instruire. 30 de zile de suport tehnic inclus.',
           en: 'Full repository transfer, documentation and training. 30 days of technical support included.',
+        },
+      },
+    ],
+    faq: [
+      {
+        question: {
+          ro: 'Ce tehnologii folosiți pentru dezvoltarea aplicațiilor web?',
+          en: 'What technologies do you use for web application development?',
+        },
+        answer: {
+          ro: 'Dezvoltăm full-stack pe Nuxt (Vue) sau Next.js (React), baze de date relaționale PostgreSQL cu migrații versionate și API-uri REST sau GraphQL sigure și scalabile.',
+          en: 'We build full-stack applications using Nuxt (Vue) or Next.js (React), relational PostgreSQL databases with versioned migrations, and secure, scalable REST or GraphQL APIs.',
+        },
+      },
+      {
+        question: {
+          ro: 'Cum decurge procesul de dezvoltare și când văd rezultate?',
+          en: 'How does the development process work and when will I see results?',
+        },
+        answer: {
+          ro: 'Lucrăm în sprinturi de două săptămâni. La finalul fiecărui sprint livrăm o versiune funcțională pe un mediu de staging, permițându-ți să testezi pe cod real.',
+          en: 'We work in two-week sprints. At the end of every sprint, we deploy a working version to a staging environment so you can test real code.',
+        },
+      },
+      {
+        question: {
+          ro: 'Cine deține codul sursă după finalizarea proiectului?',
+          en: 'Who owns the source code after project completion?',
+        },
+        answer: {
+          ro: 'Deții 100% din codul sursă, baza de date și drepturile de proprietate intelectuală. Oferim transfer complet al repository-ului Git, documentație tehnică și 30 de zile de suport inclus.',
+          en: 'You retain 100% ownership of the source code, database, and IP. We provide complete Git repository transfer, technical documentation, and 30 days of included bug-fix support.',
         },
       },
     ],
@@ -164,6 +228,38 @@ const SERVICE_COPY: readonly ServicePageCopy[] = [
         },
       },
     ],
+    faq: [
+      {
+        question: {
+          ro: 'Folosiți teme prefabricate sau creați o temă custom?',
+          en: 'Do you use pre-made templates or develop a custom theme?',
+        },
+        answer: {
+          ro: 'Construim teme WordPress 100% custom, transpuse pixel-perfect din designul tău Figma, fără page builders greoi sau zeci de pluginuri inutile.',
+          en: 'We build 100% bespoke WordPress themes coded pixel-perfect from your Figma designs, without heavy page builders or unnecessary plugin bloat.',
+        },
+      },
+      {
+        question: {
+          ro: 'Unde va fi găzduit site-ul WordPress?',
+          en: 'Where will the WordPress site be hosted?',
+        },
+        answer: {
+          ro: 'Recomandăm și configurăm medii de hosting performante cu cache la nivel de server și CDN global (precum Kinsta sau WP Engine), dar putem instala soluția și pe serverul tău dedicat.',
+          en: 'We recommend and configure high-performance managed hosting with server-level caching and global CDN (such as Kinsta or WP Engine), or deploy to your own dedicated server.',
+        },
+      },
+      {
+        question: {
+          ro: 'Cum voi învăța să folosesc panoul de administrare?',
+          en: 'How will I learn to manage content in the WordPress admin?',
+        },
+        answer: {
+          ro: 'La lansare organizăm o sesiune de training dedicată de 2 ore în care parcurgem adăugarea și editarea de conținut, pagini și articole în deplină siguranță.',
+          en: 'At launch, we provide a dedicated 2-hour training session walking you through safely managing pages, articles, and media.',
+        },
+      },
+    ],
     priceFrom: null,
   },
   {
@@ -218,6 +314,38 @@ const SERVICE_COPY: readonly ServicePageCopy[] = [
         },
       },
     ],
+    faq: [
+      {
+        question: {
+          ro: 'Ce integrări sunt posibile pentru plăți și logistică în magazinul Shopify?',
+          en: 'What payment and shipping integrations are supported in Shopify?',
+        },
+        answer: {
+          ro: 'Integrăm procesatori de plăți precum Stripe, Apple Pay și Google Pay, alături de curieri și servicii de livrare locale și internaționale (DPD, Wishe, Parcelly).',
+          en: 'We integrate payment processors like Stripe, Apple Pay, and Google Pay, alongside local and international shipping providers (DPD, Wishbox, Parcelly).',
+        },
+      },
+      {
+        question: {
+          ro: 'Cum mă ajutați cu migrarea catalogului de produse?',
+          en: 'How do you assist with product catalog migration?',
+        },
+        answer: {
+          ro: 'Structurăm catalogul, configurăm atributele și variantele de produs și importăm baza de date existentă din fișiere CSV sau din platforma anterioară.',
+          en: 'We structure your product catalog, configure attributes and variants, and import existing data via CSV spreadsheets or your previous eCommerce platform.',
+        },
+      },
+      {
+        question: {
+          ro: 'Includeți instrumente de marketing și analitică pentru ecommerce?',
+          en: 'Do you configure ecommerce analytics and marketing tools?',
+        },
+        answer: {
+          ro: 'Da, configurăm fluxurile de email marketing (Klaviyo), tracking pentru conversii prin Google Ads și Facebook Pixel, plus rapoarte detaliate în dashboard-ul Shopify.',
+          en: 'Yes, we set up email marketing automations (Klaviyo), conversion tracking for Google Ads and Meta Pixel, and detailed analytics in the Shopify dashboard.',
+        },
+      },
+    ],
     priceFrom: null,
   },
   {
@@ -269,6 +397,38 @@ const SERVICE_COPY: readonly ServicePageCopy[] = [
         body: {
           ro: 'Lansăm în producție, setăm alertele și monitorizăm 30 de zile pentru a confirma că economia de timp e reală.',
           en: 'We deploy to production, set up alerts and monitor for 30 days to ensure time savings are real.',
+        },
+      },
+    ],
+    faq: [
+      {
+        question: {
+          ro: 'Cum funcționează un agent AI pe datele companiei noastre?',
+          en: 'How does a custom AI agent work on our internal company data?',
+        },
+        answer: {
+          ro: 'Utilizăm arhitecturi RAG (Retrieval-Augmented Generation) care interoghează baza ta de documente interne (PDF-uri, foi de calcul, baze de date) fără a expune datele confidențiale către antrenarea modelelor publice.',
+          en: 'We use RAG (Retrieval-Augmented Generation) architectures that securely query your internal documents (PDFs, spreadsheets, databases) without exposing private data to public model training.',
+        },
+      },
+      {
+        question: {
+          ro: 'Cu ce aplicații și sisteme se poate conecta fluxul de automatizare?',
+          en: 'Which tools and platforms can the automation workflows integrate with?',
+        },
+        answer: {
+          ro: 'Orchestrăm fluxurile prin platforme flexibile precum n8n sau Make, conectându-le la adrese de email, Slack, Google Sheets, sisteme CRM și API-uri proprietare.',
+          en: 'We orchestrate workflows using robust platforms like n8n or Make, connecting them directly to email, Slack, Google Sheets, your CRM, and proprietary APIs.',
+        },
+      },
+      {
+        question: {
+          ro: 'Cum menținem controlul asupra deciziilor luate de inteligența artificială?',
+          en: 'How do we retain control and oversight over automated AI actions?',
+        },
+        answer: {
+          ro: 'Dezvoltăm dashboard-uri cu log-uri detaliate de audit și fluxuri de aprobare umană (human-in-the-loop) pentru orice operațiune critică înainte de execuție.',
+          en: 'We build management dashboards featuring comprehensive audit logs and human-in-the-loop approval gates for critical actions prior to execution.',
         },
       },
     ],
@@ -368,6 +528,38 @@ const SERVICE_COPY: readonly ServicePageCopy[] = [
         body: {
           ro: 'Preluăm găzduirea și mentenanța, ca aplicația să funcționeze pe toată perioada de sustenabilitate cerută de finanțator.',
           en: 'We take over hosting and maintenance so the application keeps running for the whole sustainability period the funder requires.',
+        },
+      },
+    ],
+    faq: [
+      {
+        question: {
+          ro: 'Cum asigurați conformitatea soluției tehnice cu cerințele finanțatorului?',
+          en: 'How do you ensure IT compliance with grant requirements?',
+        },
+        answer: {
+          ro: 'Structurăm livrarea pe etapele prevăzute în contractul de finanțare și furnizăm toate actele necesare: specificație tehnică, facturi conforme bugetului aprobat și procese-verbale de predare-primire.',
+          en: 'We structure delivery around the milestones defined in your funding contract and supply all compliance documents: technical specs, matching budget invoices, and handover certificates.',
+        },
+      },
+      {
+        question: {
+          ro: 'Ne puteți ajuta înainte de aprobarea cererii de finanțare?',
+          en: 'Can you assist us prior to grant approval?',
+        },
+        answer: {
+          ro: 'Da, redactăm specificația tehnică preliminară și oferim o estimare bugetară realistă, structurată pe liniile de cheltuieli eligibile pentru dosarul de aplicare.',
+          en: 'Yes, we draft preliminary technical specifications and provide realistic budget estimates aligned with eligible expenditure lines for your grant application.',
+        },
+      },
+      {
+        question: {
+          ro: 'Ce se întâmplă cu găzduirea și mentenanța în perioada de sustenabilitate?',
+          en: 'What happens with hosting and maintenance during the sustainability period?',
+        },
+        answer: {
+          ro: 'Elaborăm un plan complet de sustenabilitate și asigurăm mentenanța și găzduirea pe toată perioada impusă de finanțator după finalizarea implementării.',
+          en: 'We establish a long-term sustainability plan and provide ongoing maintenance and hosting throughout the required post-implementation compliance period.',
         },
       },
     ],

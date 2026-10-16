@@ -12,7 +12,7 @@ usePageSeo({
   description: () => t('seo.home.description'),
 })
 
-useJsonLd(() => webSite(siteUrls[locale.value], ['ro', 'en']))
+useJsonLd(() => webSite(siteUrls[locale.value], ['ro', 'en'], siteUrls.en))
 </script>
 
 <template>
