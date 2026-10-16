@@ -17,8 +17,8 @@ describe('serviceJsonLd', () => {
     expect(service).toMatchObject({
       '@type': 'Service',
       name: 'Website',
-      provider: { '@type': 'Organization', url: 'https://codepedia.studio' },
-      areaServed: { '@type': 'Country', name: 'Moldova' },
+      provider: { '@type': 'Organization', '@id': 'https://codepedia.studio/#org', url: 'https://codepedia.studio' },
+      areaServed: ['MD', 'RO', 'EU', 'US', 'CA'],
     })
   })
 

@@ -11,7 +11,8 @@ rămâne vizibil ca placeholder.
       fără `streetAddress` și fără `geo`
 - [ ] Program structurat (zile și ore) pentru `openingHoursSpecification`: în
       `siteSettings.hours` e doar text liber, deci nu se publică în JSON-LD
-- [ ] Denumirea juridică exactă: `legalName` lipsește din JSON-LD până se confirmă „Codepedia SRL"
+- [x] Denumirea juridică exactă: `Codepedia SRL` configurată în Schema.org (`legalName`) (2026-10-16)
+- [x] Profil oficial `sameAs`: LinkedIn (`https://www.linkedin.com/company/codepediastudio`) adăugat în schema Organization (2026-10-16)
 - [ ] Articolele recomandate din footer sunt ultimele 3 din blog; dacă se vrea o selecție
       fixă (ex. cele despre prețuri, ca în prototip), blogul are nevoie de un câmp `featured`
 
@@ -209,7 +210,7 @@ Designul nu are versiune EN; EN tradus în cod (2026-10-09) (excepție: cele 3 �
 Hero-ul și principiile refolosesc `home.about.*` (EN existent). Restul nu are EN în design.
 
 - [x] EN de tradus: `i18n/locales/en.json` — `about.principlesLabel`, `about.team.label`, `.title`, `about.facts.*` (cheile placeholder `.photo`, `.name`, `.role`, `.placeholderNote` au fost scoase)
-- [ ] Echipa reală: nume, funcții, fotografii în `layers/content/data/team.ts`; secțiunea Echipa e ascunsă cât timp lista e goală
+- [x] Echipa: Adrian Iovu (Co-fondator & Frontend Solutions Architect) și Sergio Miron (Senior Business Development & Account Executive) configurați în `layers/content/data/team.ts` cu linkuri LinkedIn; fotografii de profil opționale (2026-10-16)
 
 ## Pagina /contact — EN de tradus
 

@@ -78,7 +78,7 @@ if (import.meta.client && phrases.length > 1) {
     <CoreInteractiveBackground v-if="heroVariant" :variant="heroVariant" />
     <div class="relative z-10">
       <SiteSection section-id="top" number="00" :label="t('home.hero.sectionLabel')" padding="heroCompact" :top-border="false">
-      <h1 class="sr-only">{{ phrases[0] }} {{ t('home.hero.titleSuffix') }}</h1>
+      <h1 class="sr-only">{{ t('seo.home.title') }} — {{ phrases.slice(0, 3).join(', ') }} {{ t('home.hero.titleSuffix') }}</h1>
       <div
         class="m-0 max-w-[22ch] text-[clamp(34px,6vw,64px)] font-semibold leading-[1.04] tracking-[-0.025em] text-pretty"
         aria-hidden="true"

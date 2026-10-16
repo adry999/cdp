@@ -17,7 +17,12 @@ describe('newsArticleSchema', () => {
   it('names CODEPEDIA as author and publisher and cites the source', () => {
     const schema = newsArticleSchema({ ...base, sourceAuthor: 'Ana Pop', sourceDate: '2026-09-30' })
     expect(schema['@type']).toBe('NewsArticle')
-    expect(schema.author).toEqual({ '@type': 'Organization', name: 'CODEPEDIA', url: 'https://codepedia.studio' })
+    expect(schema.author).toEqual({
+      '@type': 'Organization',
+      '@id': 'https://codepedia.studio/#org',
+      name: 'CODEPEDIA',
+      url: 'https://codepedia.studio',
+    })
     expect(schema.publisher).toEqual(schema.author)
     expect(schema.datePublished).toBe('2026-10-01T09:00:00.000Z')
     expect(schema.isBasedOn).toMatchObject({

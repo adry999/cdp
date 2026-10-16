@@ -56,6 +56,9 @@ describe('isCrawler', () => {
       ),
     ).toBe(true)
     expect(isCrawler('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Lighthouse')).toBe(true)
+    expect(isCrawler('Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ChatGPT-User/1.0; +https://openai.com/bot)')).toBe(true)
+    expect(isCrawler('Perplexity-User/1.0')).toBe(true)
+    expect(isCrawler('Claude-User/1.0')).toBe(true)
   })
 
   it('does not flag a normal browser', () => {

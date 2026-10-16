@@ -12,6 +12,9 @@ export const CRAWLER_WORDS = [
   'chrome-lighthouse',
   'lighthouse',
   'pagespeed',
+  'chatgpt-user',
+  'perplexity-user',
+  'claude-user',
 ]
 const CRAWLER_RE = new RegExp(CRAWLER_WORDS.join('|'), 'i')
 

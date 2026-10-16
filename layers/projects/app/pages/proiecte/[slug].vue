@@ -93,7 +93,7 @@ useJsonLd(
     description: caseStudy.value.heroLead,
     genre: project.value.kind || undefined,
     url: projectUrl.value,
-    image: caseStudy.value.heroPath ?? undefined,
+    image: ogImage.value ?? (caseStudy.value.heroPath ? absoluteUrl(siteUrl, caseStudy.value.heroPath) : undefined),
     inLanguage: locale.value === 'en' ? 'en-US' : 'ro-RO',
     creator: organizationRef(primarySiteUrl),
   }),
@@ -198,7 +198,7 @@ useJsonLd(
             <MediaFrame
               ratio="16/10"
               :src="image.path"
-              alt=""
+              :alt="`${project.title} — ${t('caseStudy.sections.gallery.label')} ${shotIndex(image.path) + 1}`"
               :sizes="galleryImages.length === 1 ? actionShotSizesFull : actionShotSizesTile"
               class="transition-colors duration-[120ms] hover:border-ink"
             />
