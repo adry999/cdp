@@ -325,16 +325,6 @@ export default defineNuxtConfig({
             codeSplitting: {
               groups: [
                 { name: 'supabase', test: /node_modules[/\\]@supabase[/\\]/, priority: 20 },
-                {
-                  name: 'framework',
-                  test: /[\\/]node_modules[\\/](vue|@vue|vue-router)[\\/]/,
-                  priority: 15,
-                },
-                {
-                  name: 'vendor',
-                  test: /[\\/]node_modules[\\/](@intlify|@nuxtjs[/\\]i18n|unhead|@unhead|@iconify|@nuxtjs[/\\]mdc)[\\/]/,
-                  priority: 12,
-                },
                 // Shared modules of the public site only: anything admin-related (editors, admin pages and
                 // components, their state and data) stays out, so public pages never download it.
                 {
@@ -371,7 +361,7 @@ export default defineNuxtConfig({
     // fonts download alongside the CSS instead of after it, which moves the text LCP forward on mobile.
     families: [
       { name: 'Inter Tight', weights: [400, 500, 600], styles: ['normal'], subsets: ['latin', 'latin-ext'], preload: true },
-      { name: 'JetBrains Mono', weights: [400, 500], styles: ['normal'], subsets: ['latin', 'latin-ext'] },
+      { name: 'JetBrains Mono', weights: [400, 500], styles: ['normal'], subsets: ['latin', 'latin-ext'], preload: true },
     ],
   },
 
