@@ -363,7 +363,7 @@ export default defineNuxtConfig({
     // fonts download alongside the CSS instead of after it, which moves the text LCP forward on mobile.
     families: [
       { name: 'Inter Tight', weights: [400, 500, 600], styles: ['normal'], subsets: ['latin', 'latin-ext'], preload: true },
-      { name: 'JetBrains Mono', weights: [400, 500], styles: ['normal'], subsets: ['latin', 'latin-ext'], preload: true },
+      { name: 'JetBrains Mono', weights: [400, 500], styles: ['normal'], subsets: ['latin', 'latin-ext'] },
     ],
   },
 

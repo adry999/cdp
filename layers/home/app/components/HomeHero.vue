@@ -35,7 +35,7 @@ if (import.meta.client && phrases.length > 1) {
   if (!reduced) {
     const TYPE_MS = 55
     const DELETE_MS = 28
-    const HOLD_MS = 1500
+    const HOLD_MS = 3500
     const GAP_MS = 350
 
     let index = 0
