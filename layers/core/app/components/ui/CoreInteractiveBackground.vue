@@ -62,6 +62,8 @@ onMounted(() => {
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const canHover = window.matchMedia('(hover: hover)').matches
+  const isMobile = window.matchMedia('(max-width: 767px)').matches
+  const isStaticMode = prefersReduced || isMobile || !canHover
 
   // Colors come from the design tokens, re-read when the theme changes. The canvas sits on
   // a dark surface when `inverted` (always) or when the page theme is dark.
@@ -243,7 +245,7 @@ onMounted(() => {
       mouse.targetAlpha = 1
 
       // Resume loop if it was asleep
-      if (animId === null && isVisible && !prefersReduced) {
+      if (animId === null && isVisible && !isStaticMode) {
         idleReady = true
         lastTime = performance.now()
         animId = requestAnimationFrame(loop)
@@ -254,7 +256,9 @@ onMounted(() => {
     }
   }
 
-  window.addEventListener('pointermove', onPointerMove, { passive: true })
+  if (!isStaticMode) {
+    window.addEventListener('pointermove', onPointerMove, { passive: true })
+  }
 
   // Trigger resize and fallback checks
   resize()
@@ -283,7 +287,7 @@ onMounted(() => {
     (entries) => {
       const entry = entries[0]
       isVisible = entry?.isIntersecting ?? true
-      if (idleReady && isVisible && animId === null && !prefersReduced) {
+      if (idleReady && isVisible && animId === null && !isStaticMode) {
         lastTime = performance.now()
         animId = requestAnimationFrame(loop)
       }
@@ -298,7 +302,7 @@ onMounted(() => {
         cancelAnimationFrame(animId)
         animId = null
       }
-    } else if (idleReady && isVisible && animId === null && !prefersReduced) {
+    } else if (idleReady && isVisible && animId === null && !isStaticMode) {
       lastTime = performance.now()
       animId = requestAnimationFrame(loop)
     }
@@ -345,7 +349,7 @@ onMounted(() => {
 
     drawFrame(ctx, now, dt)
 
-    if (isVisible && !prefersReduced) {
+    if (isVisible && !isStaticMode) {
       animId = requestAnimationFrame(loop)
     } else {
       animId = null
@@ -643,8 +647,8 @@ onMounted(() => {
     context.globalCompositeOperation = 'source-over'
   }
 
-  // Draw static baseline frame if user prefers reduced motion
-  if (prefersReduced) {
+  // Draw static baseline frame if user prefers reduced motion or on mobile/touch screens
+  if (isStaticMode) {
     const drawReduced = () => {
       if (!ctx) return
       if (props.variant === 'dot-matrix') {
@@ -690,7 +694,7 @@ onMounted(() => {
   // Theme switches: re-read the tokens; the reduced-motion frame is static, so redraw it.
   const themeObserver = new MutationObserver(() => {
     readPalette()
-    if (prefersReduced && width > 0 && height > 0) {
+    if (isStaticMode && width > 0 && height > 0) {
       ctx.clearRect(0, 0, width, height)
       drawFrame(ctx, 0, 0.016)
     }
@@ -700,7 +704,7 @@ onMounted(() => {
   onBeforeUnmount(() => {
     themeObserver.disconnect()
     if (animId !== null) cancelAnimationFrame(animId)
-    window.removeEventListener('pointermove', onPointerMove)
+    if (!isStaticMode) window.removeEventListener('pointermove', onPointerMove)
     document.removeEventListener('visibilitychange', onVisibilityChange)
     resizeObserver.disconnect()
     intersectionObserver.disconnect()
