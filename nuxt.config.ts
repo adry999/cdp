@@ -34,7 +34,7 @@ const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 const SUPABASE_BROWSER_PLUGIN = '@nuxtjs/supabase/dist/runtime/plugins/supabase.client'
 
 const STATIC_ASSET_CACHE = 'public, max-age=86400, stale-while-revalidate=604800'
-const PRERENDERED_PAGE_CACHE = 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400'
+const PRERENDERED_PAGE_CACHE = 's-maxage=3600, stale-while-revalidate=86400'
 
 // Client chunk grouping (vite.$client below). Module ids are absolute paths, so the project root
 // anchors the match: `node_modules/nuxt/dist/app/**` must not count as app code.
