@@ -2,12 +2,17 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   ci:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       # The build never calls Supabase — these just need to be well-formed so
       # the module can construct a client without throwing. Real e2e needs the
@@ -15,7 +20,8 @@ jobs:
       NUXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
       NUXT_PUBLIC_SUPABASE_ANON_KEY: placeholder
       SUPABASE_SERVICE_ROLE_KEY: placeholder
-      NUXT_PUBLIC_SITE_URL: https://codepedia.md
+      NUXT_PUBLIC_SITE_URL: https://codepedia.studio
+      NUXT_PUBLIC_SITE_URL_RO: https://codepedia.md
     steps:
       - uses: actions/checkout@v4
 
@@ -50,11 +56,13 @@ jobs:
   # job now runs for real on every PR.
   e2e:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       NUXT_PUBLIC_SUPABASE_URL: ${{ secrets.NUXT_PUBLIC_SUPABASE_URL }}
       NUXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NUXT_PUBLIC_SUPABASE_ANON_KEY }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      NUXT_PUBLIC_SITE_URL: https://codepedia.md
+      NUXT_PUBLIC_SITE_URL: https://codepedia.studio
+      NUXT_PUBLIC_SITE_URL_RO: https://codepedia.md
     steps:
       - uses: actions/checkout@v4
         if: ${{ env.NUXT_PUBLIC_SUPABASE_URL != '' }}
@@ -73,3 +81,12 @@ jobs:
 
       - run: npm run test:e2e
         if: ${{ env.NUXT_PUBLIC_SUPABASE_URL != '' }}
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ failure() && env.NUXT_PUBLIC_SUPABASE_URL != '' }}
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
