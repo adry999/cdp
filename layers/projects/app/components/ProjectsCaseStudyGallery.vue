@@ -26,7 +26,7 @@ const caseStudy = computed(() => props.project.caseStudy)
         @click="emit('open', i)"
       >
         <MediaFrame
-          ratio="16/10"
+          ratio="16/9"
           :src="shot.path"
           :alt="`${project.title} — ${t('caseStudy.sections.gallery.label')} ${i + 1}`"
           sizes="320:400px 480:480px 640:400px"
