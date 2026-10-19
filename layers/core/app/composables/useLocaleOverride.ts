@@ -6,6 +6,7 @@ export function useLocaleOverride() {
   const localeOverride = useCookie<string | null>(LOCALE_COOKIE_NAME, {
     maxAge: 60 * 60 * 24 * 365,
     sameSite: 'lax',
+    secure: true,
     path: '/',
   })
 
