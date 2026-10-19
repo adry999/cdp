@@ -16,7 +16,7 @@ const caseStudy = computed(() => props.project.caseStudy)
     :label="t('caseStudy.sections.gallery.label')"
     :heading="t('caseStudy.sections.gallery.heading')"
   >
-    <div class="mt-[clamp(24px,3vw,36px)] grid grid-cols-[repeat(auto-fill,minmax(min(100%,240px),1fr))] gap-4">
+    <div class="mt-[clamp(24px,3vw,36px)] grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-4">
       <button
         v-for="(shot, i) in caseStudy.shots"
         :key="shot.path"
