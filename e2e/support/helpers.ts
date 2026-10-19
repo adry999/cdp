@@ -11,6 +11,16 @@ export async function firstPublishedProject(request: APIRequestContext) {
   return project
 }
 
+// Same idea for news: a published item is the only fixture the detail pages need.
+export async function firstPublishedNews(request: APIRequestContext) {
+  const res = await request.get('/api/news')
+  const items = (await res.json()) as { slug_ro: string; slug_en: string | null }[]
+  test.skip(!items.length, 'No published news to test against')
+  const [item] = items
+  if (!item) throw new Error('No published news to test against')
+  return item
+}
+
 // The locale redirect only fires on `/` and `/en`; the override cookie keeps it
 // from interfering with fixed-locale flows.
 export async function pinLocale(context: BrowserContext, locale: 'ro' | 'en' = 'ro') {
