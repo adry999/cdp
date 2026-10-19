@@ -7,6 +7,7 @@ import {
   type AdminNewsListRow,
   type AdminNewsRow,
 } from '#layers/news/domain/newsSelect'
+import { newsRedirectTargets } from '#layers/news/domain/newsRedirects'
 import type { NewsPreview } from '#layers/news/domain/preview'
 
 type SupabaseClient = ReturnType<typeof useSupabaseClient<Database>>
@@ -62,9 +63,18 @@ export function createNewsAdminRepository(client: SupabaseClient) {
     },
 
     async remove(id: string) {
+      // Slugs are read before the row is gone: the sync trigger fires on update only, so a delete
+      // would otherwise leave redirects 301-ing into a 404.
+      const { data: item, error: readError } = await client.from('news_items').select('slug_ro, slug_en').eq('id', id).maybeSingle()
+      if (readError) throw failure('Noutatea nu a putut fi ștearsă.', readError)
+      if (!item) throw failure('Noutatea nu a putut fi ștearsă.', null)
+
       const { error, count } = await client.from('news_items').delete({ count: 'exact' }).eq('id', id)
       if (error) throw failure(`Noutatea nu a putut fi ștearsă: ${error.message}`, error)
       if (count !== 1) throw failure('Noutatea nu a putut fi ștearsă.', null)
+
+      const { error: redirectsError } = await client.from('redirects').delete().in('to_path', newsRedirectTargets(item))
+      if (redirectsError) throw failure('Noutatea a fost ștearsă, dar redirect-urile nu au putut fi șterse.', redirectsError)
     },
 
     async previewSource(url: string): Promise<NewsPreview> {

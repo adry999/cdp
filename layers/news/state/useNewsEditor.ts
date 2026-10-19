@@ -17,7 +17,11 @@ export async function useNewsEditor(idOrSlug: string) {
   const revalidatePublicCache = useRevalidatePublicCache()
   const isNew = idOrSlug === 'nou'
 
-  const { data: loaded } = await useAsyncData(`admin-news-${idOrSlug}`, async () => (isNew ? null : await repository.get(idOrSlug)))
+  const { data: loaded, error: loadError } = await useAsyncData(`admin-news-${idOrSlug}`, async () => (isNew ? null : await repository.get(idOrSlug)))
+  // A failed load is not a missing item: only a successful load with no row is a 404.
+  if (loadError.value) {
+    throw createError({ statusCode: 500, statusMessage: 'News item could not be loaded', cause: loadError.value })
+  }
   const original = loaded.value ?? null
   if (!isNew && !original) throw createError({ statusCode: 404, statusMessage: 'News item not found' })
 
