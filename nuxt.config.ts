@@ -131,6 +131,10 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     resendApiKey: process.env.RESEND_API_KEY,
+    // The default is Resend's sandbox sender, which only delivers to the Resend account owner's own address.
+    // A sender on codepedia.* needs that domain verified in Resend (SPF/DKIM) first.
+    mailFrom: process.env.MAIL_FROM || 'CODEPEDIA <onboarding@resend.dev>',
+    mailTo: process.env.MAIL_TO || 'contact@codepedia.md',
     // Vercel Cron sends `Authorization: Bearer $CRON_SECRET`; unset, /api/health answers 404.
     cronSecret: process.env.CRON_SECRET || '',
     // Mirrors nitro.vercel.config.bypassToken below; server/api/admin/revalidate.post.ts sends it back as
