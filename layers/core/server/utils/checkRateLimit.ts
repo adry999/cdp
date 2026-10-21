@@ -12,7 +12,7 @@ export interface RateLimit {
 // Postgres-backed so the limit holds across serverless instances
 // (supabase/migrations/20260826130000_lead_rate_limit.sql).
 export async function checkRateLimit(event: H3Event, limit: RateLimit): Promise<boolean> {
-  const ip = resolveClientIp(getHeaders(event), () => getRequestIP(event, { xForwardedFor: true }))
+  const ip = resolveClientIp(getHeaders(event), () => getRequestIP(event))
   if (!ip) {
     // One shared bucket for every unidentified visitor would let a few of them lock out the rest.
     console.warn(`[rate-limit] ${event.method} ${getRequestURL(event).pathname}: no client IP, limit skipped`)
