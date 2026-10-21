@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { MappedProject } from '#layers/projects/domain/mapProject'
+import { shotCaptions } from '#layers/projects/domain/caseStudySections'
 
 const props = defineProps<{ project: MappedProject; number: string }>()
 const emit = defineEmits<{ open: [index: number] }>()
 const { t } = useI18n()
 
 const caseStudy = computed(() => props.project.caseStudy)
+const captions = computed(() => shotCaptions(caseStudy.value.shots))
 </script>
 
 <template>
@@ -17,22 +19,26 @@ const caseStudy = computed(() => props.project.caseStudy)
     :heading="t('caseStudy.sections.gallery.heading')"
   >
     <div class="mt-[clamp(24px,3vw,36px)] grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-4">
-      <button
-        v-for="(shot, i) in caseStudy.shots"
-        :key="shot.path"
-        type="button"
-        :aria-label="t('caseStudy.lightbox.openImage', { n: i + 1 })"
-        class="block w-full cursor-zoom-in overflow-hidden rounded border border-hairline p-0 hover:border-ink"
-        @click="emit('open', i)"
-      >
-        <MediaFrame
-          ratio="16/9"
-          :src="shot.path"
-          :alt="`${project.title} — ${t('caseStudy.sections.gallery.label')} ${i + 1}`"
-          sizes="320:400px 480:480px 640:400px"
-          class="rounded-none! border-0! object-left-top!"
-        />
-      </button>
+      <figure v-for="(shot, i) in caseStudy.shots" :key="shot.path" class="m-0">
+        <button
+          type="button"
+          :aria-label="t('caseStudy.lightbox.openImage', { n: i + 1 })"
+          class="block w-full cursor-zoom-in overflow-hidden rounded border border-hairline p-0 hover:border-ink"
+          @click="emit('open', i)"
+        >
+          <MediaFrame
+            ratio="16/9"
+            :src="shot.path"
+            :alt="`${project.title} — ${t('caseStudy.sections.gallery.label')} ${i + 1}`"
+            sizes="320:400px 480:480px 640:400px"
+            class="rounded-none! border-0! object-left-top!"
+          />
+        </button>
+        <figcaption v-if="captions" class="mt-3 flex flex-col gap-1">
+          <span v-if="captions[i]?.title" class="eyebrow-sm text-ink">{{ String(i + 1).padStart(2, '0') }} · {{ captions[i]?.title }}</span>
+          <span class="text-[15px] leading-[1.5] text-muted">{{ captions[i]?.text }}</span>
+        </figcaption>
+      </figure>
     </div>
     <p v-if="caseStudy.screensDemo" class="m-0 mt-3 eyebrow-sm text-muted">{{ t('caseStudy.screensDemo') }}</p>
     <div v-if="caseStudy.links.length" class="mt-[clamp(24px,3vw,32px)] flex flex-wrap gap-[10px]">
