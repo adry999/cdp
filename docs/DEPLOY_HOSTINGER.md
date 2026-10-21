@@ -48,6 +48,7 @@ Lista completă, cu explicații, e în `.env.example`.
 | `NUXT_PUBLIC_SITE_URL` | `https://codepedia.studio` (domeniul EN) |
 | `NUXT_PUBLIC_SITE_URL_RO` | `https://codepedia.md` (domeniul RO) |
 | `RESEND_API_KEY` | opțional, emailul de lead |
+| `MAIL_FROM`, `MAIL_TO` | opționale; fără `MAIL_FROM`, expeditorul sandbox Resend livrează doar spre adresa contului Resend. Domeniul expeditorului se verifică întâi în Resend |
 | `NUXT_PUBLIC_GA_ID`, `NUXT_PUBLIC_META_PIXEL_ID` | opționale, fără ele consimțământul e inert |
 | `NUXT_PUBLIC_QUALIFIER_ENABLED`, `NUXT_PUBLIC_GRANTS_ENABLED`, `NUXT_PUBLIC_HERO_BG_VARIANT` | opționale |
 | `CRON_SECRET` | pentru `/api/health` (pasul 5) |
