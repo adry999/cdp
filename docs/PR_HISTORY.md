@@ -104,3 +104,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#107** feat(projects): Startica app — 26 de capturi noi în galerie (din pachetul de portofoliu, tăiate la 16:9) și dashboard nou pe copertă; texte alternative RO/EN pe fiecare modul.
 - **#108** feat(projects): galeria arată sub fiecare captură numele ecranului și explicația (din textul alternativ, doar când fiecare captură are textul ei); secțiunea Acțiune păstrează doar primele 3 capturi, ca imaginile să nu se mai repete.
 - **#109** fix(consent): butonul „Acceptă tot” din bannerul de cookie-uri e evidențiat (varianta `ink`), restul rămân `outline`.
+- **#110** feat(projects): Bloom — 26 de capturi noi în galerie (din pachetul de portofoliu, deja 1600×900) și ecranul Azi pe copertă; fiecare captură are titlul și explicația din pachet, afișate sub ea în galerie.
