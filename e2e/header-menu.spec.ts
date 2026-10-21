@@ -77,4 +77,19 @@ test.describe('mobile', () => {
     expect(box!.y + box!.height).toBeLessThanOrEqual(844)
     expect(box!.height).toBeGreaterThanOrEqual(44)
   })
+
+  test('main and footer are inert only while the menu is open', async ({ page }) => {
+    await page.goto('/')
+    await dismissConsentBanner(page)
+    const toggle = page.locator('header button[aria-controls="site-mobile-menu"]')
+    await expect(page.locator('main')).not.toHaveAttribute('inert', /.*/)
+
+    await toggle.click()
+    await expect(page.locator('main')).toHaveAttribute('inert', '')
+    await expect(page.locator('footer')).toHaveAttribute('inert', '')
+
+    await toggle.click()
+    await expect(page.locator('main')).not.toHaveAttribute('inert', /.*/)
+    await expect(page.locator('footer')).not.toHaveAttribute('inert', /.*/)
+  })
 })

@@ -1,5 +1,6 @@
 import { buildGaEvent } from '#layers/consent/domain/analyticsEvent'
 import { hasConsent } from '#layers/consent/domain/consent'
+import { cookieDomainCandidates } from '#layers/consent/domain/cookieDomains'
 import { consentSignals } from '#layers/consent/domain/consentSignals'
 import { buildGaInitSequence } from '#layers/consent/domain/gaInit'
 import { useCookieConsent } from '#layers/consent/state/useCookieConsent'
@@ -45,8 +46,12 @@ function installMetaPixel(): MetaPixel {
   return fbq
 }
 
+// GA and the Pixel write their cookies on the registrable domain, so a path-only expiry on
+// the current host would leave them behind: expire each name with and without every `domain=`.
 function clearCookie(name: string) {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`
+  const expired = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`
+  document.cookie = expired
+  for (const domain of cookieDomainCandidates(location.hostname)) document.cookie = `${expired}; domain=${domain}`
 }
 
 export default defineNuxtPlugin((nuxtApp) => {

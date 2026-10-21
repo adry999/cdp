@@ -10,7 +10,9 @@ import { checkAdmin } from '#layers/core/server/utils/checkAdmin'
 export async function requireAdmin(event: H3Event): Promise<{ id: string }> {
   const result = await checkAdmin({
     getUser: async () => {
-      const claims = await serverSupabaseUser(event)
+      // A malformed or expired `sb-` cookie makes getClaims throw; that is "not signed in",
+      // not a 500 that leaks the Supabase message.
+      const claims = await serverSupabaseUser(event).catch(() => null)
       return claims ? { id: claims.sub } : null
     },
     isAppUser: (id) => {

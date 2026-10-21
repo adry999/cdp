@@ -39,6 +39,8 @@ export interface ProjectPayloadInput {
   lead: { ro: string; en: string }
   contextBody: { ro: string; en: string }
   serviceTag: string | null
+  /** Free text from the form; empty is allowed, otherwise a 4-digit year. */
+  year?: string
   navServices?: string[]
   links?: { url: string; note?: { ro: string; en: string } }[]
   gallery: ProjectImageInput[]
@@ -48,6 +50,8 @@ export interface ValidationIssue {
   field: string
   message: string
 }
+
+const MIN_YEAR = 1990
 
 const REQUIRED_RO: [keyof ProjectPayloadInput, string][] = [
   ['title', 'Titlu'],
@@ -82,6 +86,14 @@ export function validateProjectPayload(input: ProjectPayloadInput): ValidationIs
       })
     } else if (RESERVED_SLUGS.includes(slug)) {
       issues.push({ field, message: `„${slug}" este rezervat și nu poate fi slug de proiect.` })
+    }
+  }
+
+  const year = input.year?.trim() ?? ''
+  if (year) {
+    const max = new Date().getFullYear() + 1
+    if (!/^\d{4}$/.test(year) || Number(year) < MIN_YEAR || Number(year) > max) {
+      issues.push({ field: 'year', message: `Anul trebuie să fie între ${MIN_YEAR} și ${max}.` })
     }
   }
 

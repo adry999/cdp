@@ -130,3 +130,25 @@ describe('usableGallery', () => {
     expect(out.map((i) => i.aspect)).toEqual(['16/9', '1/1'])
   })
 })
+
+describe('validateProjectPayload year', () => {
+  const yearIssues = (year: string) => validateProjectPayload(base({ year })).filter((i) => i.field === 'year')
+  const next = new Date().getFullYear() + 1
+
+  it('allows an empty year', () => {
+    expect(yearIssues('')).toEqual([])
+    expect(yearIssues('  ')).toEqual([])
+  })
+
+  it('accepts 4-digit years within range', () => {
+    expect(yearIssues('1990')).toEqual([])
+    expect(yearIssues('2026')).toEqual([])
+    expect(yearIssues(String(next))).toEqual([])
+  })
+
+  it('rejects non-numeric, short and out-of-range years', () => {
+    for (const year of ['abc', '20x6', '99', '12345', '1989', String(next + 1), '20.5']) {
+      expect(yearIssues(year)).toHaveLength(1)
+    }
+  })
+})
