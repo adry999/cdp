@@ -4,16 +4,15 @@ export interface MailMessage {
 }
 
 export async function sendMail(message: MailMessage): Promise<'sent' | 'skipped'> {
-  const { resendApiKey } = useRuntimeConfig()
+  const { resendApiKey, mailFrom, mailTo } = useRuntimeConfig()
   if (!resendApiKey) return 'skipped'
   await $fetch('https://api.resend.com/emails', {
     method: 'POST',
     timeout: 5000,
     headers: { Authorization: `Bearer ${resendApiKey}` },
     body: {
-      // Sandbox sender: Resend only allows other senders from a verified domain.
-      from: 'CODEPEDIA <onboarding@resend.dev>',
-      to: 'contact@codepedia.md',
+      from: mailFrom,
+      to: mailTo,
       subject: message.subject,
       text: message.text,
     },
