@@ -11,8 +11,32 @@ export interface CaseStudySectionFlags {
   midway: boolean
   result: boolean
   feedback: boolean
-  /** Shots shown in the Action grid: every real shot except the hero, which sits at the top. */
+  /** Shots shown in the Action grid: the first few real shots except the hero, which sits at the top. The gallery has them all. */
   actionShots: CaseStudy['shots']
+}
+
+const ACTION_SHOT_LIMIT = 3
+
+export interface ShotCaption {
+  title: string
+  text: string
+}
+
+/**
+ * Captions for the gallery, from each shot's alt text ("Screen: what it shows").
+ * Only when every shot has its own alt: a project whose shots share one generic alt gets none.
+ */
+function capitalize(text: string): string {
+  return text.charAt(0).toLocaleUpperCase() + text.slice(1)
+}
+
+export function shotCaptions(shots: CaseStudy['shots']): ShotCaption[] | null {
+  const alts = shots.map((shot) => shot.alt.trim())
+  if (alts.some((alt) => !alt) || new Set(alts).size !== alts.length) return null
+  return alts.map((alt) => {
+    const split = alt.indexOf(': ')
+    return split === -1 ? { title: '', text: alt } : { title: alt.slice(0, split), text: capitalize(alt.slice(split + 2)) }
+  })
 }
 
 export function hasQuote(caseStudy: Pick<CaseStudy, 'quote'>): boolean {
@@ -21,7 +45,7 @@ export function hasQuote(caseStudy: Pick<CaseStudy, 'quote'>): boolean {
 
 export function caseStudySections(caseStudy: CaseStudy): CaseStudySectionFlags {
   const { star } = caseStudy
-  const actionShots = caseStudy.shots.filter((shot) => shot.path !== caseStudy.heroPath)
+  const actionShots = caseStudy.shots.filter((shot) => shot.path !== caseStudy.heroPath).slice(0, ACTION_SHOT_LIMIT)
   return {
     situation: caseStudy.problemParagraphs.length > 0 || star.cost.length > 0,
     task: !!star.goal || star.constraints.length > 0,

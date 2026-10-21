@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { caseStudySections, numberSections } from './caseStudySections'
+import { caseStudySections, numberSections, shotCaptions } from './caseStudySections'
 import { mapProject, type ProjectRow } from './mapProject'
 
 function build(overrides: Partial<ProjectRow> = {}, locale: 'ro' | 'en' = 'ro') {
@@ -79,5 +79,30 @@ describe('numberSections', () => {
 
   it('leaves every section empty when nothing is visible', () => {
     expect(Object.values(numberSections(all)).every((n) => n === '')).toBe(true)
+  })
+})
+
+describe('action shots', () => {
+  it('keeps the first three non-hero shots for the Action grid', () => {
+    const images = [0, 1, 2, 3, 4].map((n) => ({ path: `g${n}.png`, alt_ro: `A${n}`, alt_en: null, aspect: '16/9', sort_order: n }))
+    const sections = build({ hero_path: 'g0.png', project_images: images })
+    expect(sections.actionShots.map((shot) => shot.path)).toEqual(['g1.png', 'g2.png', 'g3.png'])
+  })
+})
+
+describe('shotCaptions', () => {
+  it('splits each alt into a screen name and a description', () => {
+    expect(shotCaptions([
+      { path: 'a', alt: 'Copii: lista copiilor' },
+      { path: 'b', alt: 'Fără două puncte' },
+    ])).toEqual([
+      { title: 'Copii', text: 'Lista copiilor' },
+      { title: '', text: 'Fără două puncte' },
+    ])
+  })
+
+  it('returns null when shots share an alt or one is blank', () => {
+    expect(shotCaptions([{ path: 'a', alt: 'Site' }, { path: 'b', alt: 'Site' }])).toBeNull()
+    expect(shotCaptions([{ path: 'a', alt: 'Unu' }, { path: 'b', alt: ' ' }])).toBeNull()
   })
 })
