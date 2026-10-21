@@ -196,7 +196,7 @@ useJsonLd(
             @click="openLightbox(shotIndex(image.path))"
           >
             <MediaFrame
-              ratio="16/10"
+              ratio="16/9"
               :src="image.path"
               :alt="`${project.title} — ${t('caseStudy.sections.gallery.label')} ${shotIndex(image.path) + 1}`"
               :sizes="galleryImages.length === 1 ? actionShotSizesFull : actionShotSizesTile"
