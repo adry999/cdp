@@ -13,13 +13,15 @@
 -- from the client's current site are left out (unconfirmed).
 -- Images (1600x900 PNG from studiu-de-caz/imagini/) must be uploaded to
 -- project-media/asfactorum-site-nou/ before this runs; the paths below point there.
--- Idempotent: upserts on slug_ro and replaces the project's facts and stack.
+-- Applied as a plain insert: the Supabase MCP cancels migrations with delete statements,
+-- so it runs once (on conflict do nothing; child rows only when the project has none).
+-- Later copy changes go through the admin or a new migration.
 
 insert into public.projects (
   slug_ro, slug_en, title_ro, title_en, card_title_ro, card_title_en,
   summary_ro, summary_en, lead_ro, lead_en, kind_ro, kind_en, tags_ro, tags_en,
   year, tech, service_tag, nav_services, featured,
-  cover_alt_ro, cover_alt_en, hero_alt_ro, hero_alt_en,
+  cover_path, cover_alt_ro, cover_alt_en, hero_path, hero_alt_ro, hero_alt_en,
   context_body_ro, context_body_en, solution_body_ro, solution_body_en,
   result_body_ro, result_body_en,
   star_goal_ro, star_goal_en, star_constraints_ro, star_constraints_en,
@@ -41,8 +43,10 @@ insert into public.projects (
   2026,
   array['Bilingual website', 'Local SEO', 'Quote request form', 'Filterable portfolio', 'Blog', 'Automated emails'],
   'website', array['website'], false,
+  'https://xlrkuaxnkidslrhdelpm.supabase.co/storage/v1/object/public/project-media/asfactorum-site-nou/cover/asfactorum-acasa-1600x900.png',
   'Pagina Acasă a noului site AS Factorum: hero cu fotografie, butoane de ofertă și cele 4 servicii',
   'The home page of the new AS Factorum website: photo hero, quote buttons and the 4 services',
+  'https://xlrkuaxnkidslrhdelpm.supabase.co/storage/v1/object/public/project-media/asfactorum-site-nou/hero/asfactorum-acasa-1600x900.png',
   'Pagina Acasă a noului site AS Factorum: hero cu fotografie, butoane de ofertă și cele 4 servicii',
   'The home page of the new AS Factorum website: photo hero, quote buttons and the 4 services',
 
@@ -126,26 +130,7 @@ The design is finished and handed over for development. The build comes next, wh
   (select coalesce(max(sort_order), -1) + 1 from public.projects),
   null
 )
-on conflict (slug_ro) do update set
-  slug_en = excluded.slug_en, title_ro = excluded.title_ro, title_en = excluded.title_en,
-  card_title_ro = excluded.card_title_ro, card_title_en = excluded.card_title_en,
-  summary_ro = excluded.summary_ro, summary_en = excluded.summary_en,
-  lead_ro = excluded.lead_ro, lead_en = excluded.lead_en,
-  kind_ro = excluded.kind_ro, kind_en = excluded.kind_en,
-  tags_ro = excluded.tags_ro, tags_en = excluded.tags_en,
-  year = excluded.year, tech = excluded.tech, service_tag = excluded.service_tag,
-  nav_services = excluded.nav_services,
-  cover_alt_ro = excluded.cover_alt_ro, cover_alt_en = excluded.cover_alt_en,
-  hero_alt_ro = excluded.hero_alt_ro, hero_alt_en = excluded.hero_alt_en,
-  context_body_ro = excluded.context_body_ro, context_body_en = excluded.context_body_en,
-  solution_body_ro = excluded.solution_body_ro, solution_body_en = excluded.solution_body_en,
-  result_body_ro = excluded.result_body_ro, result_body_en = excluded.result_body_en,
-  star_goal_ro = excluded.star_goal_ro, star_goal_en = excluded.star_goal_en,
-  star_constraints_ro = excluded.star_constraints_ro, star_constraints_en = excluded.star_constraints_en,
-  star_biz_ro = excluded.star_biz_ro, star_biz_en = excluded.star_biz_en;
-
-delete from public.project_facts
- where project_id = (select id from public.projects where slug_ro = 'asfactorum-site-nou');
+on conflict (slug_ro) do nothing;
 
 insert into public.project_facts (project_id, label_ro, label_en, value_ro, value_en, sort_order)
 select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order
@@ -158,12 +143,10 @@ select p.id, f.label_ro, f.label_en, f.value_ro, f.value_en, f.sort_order
    ('Limbi', 'Languages', 'Română și engleză', 'Romanian and English', 4),
    ('Stare', 'Status', 'Design finalizat; implementarea urmează', 'Design complete; build to follow', 5)
  ) as f(label_ro, label_en, value_ro, value_en, sort_order)
- where p.slug_ro = 'asfactorum-site-nou';
+ where p.slug_ro = 'asfactorum-site-nou'
+   and not exists (select 1 from public.project_facts x where x.project_id = p.id);
 
 -- project_stack.name has no per-locale column: capability names in English, roles localized.
-delete from public.project_stack
- where project_id = (select id from public.projects where slug_ro = 'asfactorum-site-nou');
-
 insert into public.project_stack (project_id, name, role_ro, role_en, sort_order)
 select p.id, s.name, s.role_ro, s.role_en, s.sort_order
   from public.projects p
@@ -177,15 +160,8 @@ select p.id, s.name, s.role_ro, s.role_en, s.sort_order
    ('Cookie consent', 'Acceptă, Respinge și Setări; analiza traficului pornește doar după acord', 'Accept, Reject and Settings; traffic analytics start only after consent', 6),
    ('Design system', 'Tokenuri și 29 de componente din care se construiește fiecare pagină', 'Tokens and 29 components every page is built from', 7)
  ) as s(name, role_ro, role_en, sort_order)
- where p.slug_ro = 'asfactorum-site-nou';
-
-update public.projects
-   set cover_path = $a$https://xlrkuaxnkidslrhdelpm.supabase.co/storage/v1/object/public/project-media/asfactorum-site-nou/cover/asfactorum-acasa-1600x900.png$a$,
-       hero_path = $a$https://xlrkuaxnkidslrhdelpm.supabase.co/storage/v1/object/public/project-media/asfactorum-site-nou/hero/asfactorum-acasa-1600x900.png$a$
- where slug_ro = 'asfactorum-site-nou';
-
-delete from public.project_images
- where project_id = (select id from public.projects where slug_ro = 'asfactorum-site-nou');
+ where p.slug_ro = 'asfactorum-site-nou'
+   and not exists (select 1 from public.project_stack x where x.project_id = p.id);
 
 insert into public.project_images (project_id, path, alt_ro, alt_en, aspect, sort_order)
 select p.id, i.path, i.alt_ro, i.alt_en, '16/9', i.sort_order
@@ -215,4 +191,5 @@ select p.id, i.path, i.alt_ro, i.alt_en, '16/9', i.sort_order
    ($a$https://xlrkuaxnkidslrhdelpm.supabase.co/storage/v1/object/public/project-media/asfactorum-site-nou/gallery/asfactorum-ds-butoane-1600x900.png$a$, $a$Variantele BaseButton și BaseLink pe fond deschis, închis și galben$a$, $a$BaseButton and BaseLink variants on light, dark and yellow backgrounds$a$, 21),
    ($a$https://xlrkuaxnkidslrhdelpm.supabase.co/storage/v1/object/public/project-media/asfactorum-site-nou/gallery/asfactorum-ds-carduri-1600x900.png$a$, $a$Variantele ServiceCard și ProjectCard$a$, $a$ServiceCard and ProjectCard variants$a$, 22)
  ) as i(path, alt_ro, alt_en, sort_order)
- where p.slug_ro = 'asfactorum-site-nou';
+ where p.slug_ro = 'asfactorum-site-nou'
+   and not exists (select 1 from public.project_images x where x.project_id = p.id);
