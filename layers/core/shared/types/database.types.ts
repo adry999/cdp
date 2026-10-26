@@ -456,6 +456,14 @@ export type Database = {
       }
       projects: {
         Row: {
+          adapt_en: Json | null
+          adapt_ro: Json | null
+          delivered_en: Json | null
+          delivered_ro: Json | null
+          faq_en: Json | null
+          faq_ro: Json | null
+          gallery_heading_en: Json | null
+          gallery_heading_ro: Json | null
           card_title_en: string | null
           card_title_ro: string
           changes_body_en: string | null
@@ -535,6 +543,14 @@ export type Database = {
           year: number | null
         }
         Insert: {
+          adapt_en?: Json | null
+          adapt_ro?: Json | null
+          delivered_en?: Json | null
+          delivered_ro?: Json | null
+          faq_en?: Json | null
+          faq_ro?: Json | null
+          gallery_heading_en?: Json | null
+          gallery_heading_ro?: Json | null
           card_title_en?: string | null
           card_title_ro: string
           changes_body_en?: string | null
@@ -613,6 +629,14 @@ export type Database = {
           year?: number | null
         }
         Update: {
+          adapt_en?: Json | null
+          adapt_ro?: Json | null
+          delivered_en?: Json | null
+          delivered_ro?: Json | null
+          faq_en?: Json | null
+          faq_ro?: Json | null
+          gallery_heading_en?: Json | null
+          gallery_heading_ro?: Json | null
           card_title_en?: string | null
           card_title_ro?: string
           changes_body_en?: string | null

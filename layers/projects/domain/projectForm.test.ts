@@ -174,6 +174,68 @@ describe('toSavePayload', () => {
   })
 })
 
+describe('case-study sections', () => {
+  const adaptRo = {
+    heading: 'Module și integrări',
+    body: 'Text',
+    modules: [{ k: 'Reguli proprii', v: 'Taxe și reduceri' }],
+    integrations: [{ k: 'SMS', v: 'Din șabloane' }],
+    safety: [{ k: 'Backup automat', v: 'Copii pe zile' }],
+  }
+  const faqEn = { heading: 'FAQ', items: [{ q: 'Offline?', a: 'Yes.' }] }
+
+  it('round-trips every section column unchanged through the form and back', () => {
+    const row = buildAdminProjectRow({
+      adapt_ro: adaptRo,
+      adapt_en: null,
+      delivered_ro: { label: 'Ce am livrat', items: [{ k: 'Aplicația', v: 'Windows' }] },
+      delivered_en: null,
+      faq_ro: { heading: 'Întrebări frecvente', items: [{ q: 'Merge offline?', a: 'Da.' }] },
+      faq_en: faqEn,
+      gallery_heading_ro: { heading: 'Slide-uri', note: 'Date inventate' },
+      gallery_heading_en: null,
+    })
+    const payload = toSavePayload(toProjectForm(row), row.id)
+    expect(payload.adapt_ro).toEqual(adaptRo)
+    expect(payload.adapt_en).toBeNull()
+    expect(payload.delivered_ro).toEqual(row.delivered_ro)
+    expect(payload.faq_ro).toEqual(row.faq_ro)
+    expect(payload.faq_en).toEqual(faqEn)
+    expect(payload.gallery_heading_ro).toEqual(row.gallery_heading_ro)
+    expect(payload.gallery_heading_en).toBeNull()
+  })
+
+  it('gives a new project empty sections that are all stored as null', () => {
+    const payload = toSavePayload(toProjectForm(null), null)
+    for (const key of ['adapt', 'delivered', 'faq', 'gallery_heading']) {
+      expect(payload[`${key}_ro`]).toBeNull()
+      expect(payload[`${key}_en`]).toBeNull()
+    }
+  })
+
+  it('trims entries and drops blank or half-filled ones, and a heading alone is not stored', () => {
+    const form = toProjectForm(null)
+    form.sections.adapt.ro = { heading: ' Titlu ', body: '  ', modules: [{ k: ' ', v: '' }], integrations: [], safety: [] }
+    form.sections.faq.ro = { heading: ' F ', items: [{ q: ' Q ', a: ' A ' }, { q: 'Fără răspuns', a: '' }] }
+    form.sections.galleryHeading.ro = { heading: ' ', note: ' Notă ' }
+    const payload = toSavePayload(form, null)
+    expect(payload.adapt_ro).toBeNull()
+    form.sections.adapt.en = { heading: ' H ', body: '', modules: [], integrations: [], safety: [{ k: ' A ', v: ' b ' }, { k: '', v: '' }] }
+    expect(toSavePayload(form, null).adapt_en).toEqual({ heading: 'H', body: '', modules: [], integrations: [], safety: [{ k: 'A', v: 'b' }] })
+    expect(payload.faq_ro).toEqual({ heading: 'F', items: [{ q: 'Q', a: 'A' }] })
+    expect(payload.gallery_heading_ro).toEqual({ heading: '', note: 'Notă' })
+  })
+
+  it('keeps a walkthrough link with a site-relative url through the form', () => {
+    const row = buildAdminProjectRow({
+      links: [{ kind: 'walkthrough', url: '/#contact', note_ro: 'Îți arătăm aplicația', note_en: null }],
+    })
+    expect(toSavePayload(toProjectForm(row), row.id).links).toEqual([
+      { kind: 'walkthrough', url: '/#contact', note_ro: 'Îți arătăm aplicația', note_en: null },
+    ])
+  })
+})
+
 describe('replacedMediaUrls', () => {
   it('lists urls the form no longer references', () => {
     const row = buildAdminProjectRow({

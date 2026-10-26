@@ -1,6 +1,7 @@
 // Validation shared by the admin editor and the server route that persists it — the public
 // API only resolves slugs matching SLUG_RE, so anything else the editor accepts 404s live.
 import { isServiceTagId } from '#layers/core/shared/types/service-tag'
+import { isLinkKind, isLinkUrl } from '#layers/projects/domain/star'
 
 export const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
@@ -40,7 +41,7 @@ export interface ProjectPayloadInput {
   contextBody: { ro: string; en: string }
   serviceTag: string | null
   navServices?: string[]
-  links?: { url: string; note?: { ro: string; en: string } }[]
+  links?: { kind?: string; url: string; note?: { ro: string; en: string } }[]
   gallery: ProjectImageInput[]
 }
 
@@ -98,8 +99,9 @@ export function validateProjectPayload(input: ProjectPayloadInput): ValidationIs
     // A blank row is dropped on save; one with notes but no URL would vanish silently.
     if (!url && (link.note?.ro.trim() || link.note?.en.trim())) {
       issues.push({ field: `links.${i}`, message: `Linkul ${i + 1} are note, dar nu are URL.` })
-    } else if (url && !/^https?:\/\//.test(url)) {
-      issues.push({ field: `links.${i}`, message: `Linkul ${i + 1} trebuie să înceapă cu https://.` })
+    } else if (url && !(isLinkKind(link.kind) ? isLinkUrl(link.kind, url) : /^https?:\/\//.test(url))) {
+      const hint = link.kind === 'walkthrough' ? 'https:// sau cu /' : 'https://'
+      issues.push({ field: `links.${i}`, message: `Linkul ${i + 1} trebuie să înceapă cu ${hint}.` })
     }
   })
 

@@ -1,5 +1,5 @@
 // Which case-study sections have something to show. A section with nothing in it is
-// left out entirely, heading included; section numbers stay fixed (01–07).
+// left out entirely, heading included; the numbers of the sections that remain stay sequential.
 import type { MappedProject } from '#layers/projects/domain/mapProject'
 
 type CaseStudy = MappedProject['caseStudy']
@@ -10,9 +10,9 @@ export interface CaseStudySectionFlags {
   action: boolean
   midway: boolean
   result: boolean
+  adapt: boolean
   feedback: boolean
-  /** Shots shown in the Action grid: every real shot except the hero, which sits at the top. */
-  actionShots: CaseStudy['shots']
+  faq: boolean
 }
 
 export function hasQuote(caseStudy: Pick<CaseStudy, 'quote'>): boolean {
@@ -21,27 +21,22 @@ export function hasQuote(caseStudy: Pick<CaseStudy, 'quote'>): boolean {
 
 export function caseStudySections(caseStudy: CaseStudy): CaseStudySectionFlags {
   const { star } = caseStudy
-  const actionShots = caseStudy.shots.filter((shot) => shot.path !== caseStudy.heroPath)
   return {
     situation: caseStudy.problemParagraphs.length > 0 || star.cost.length > 0,
     task: !!star.goal || star.constraints.length > 0,
-    action:
-      caseStudy.solutionParagraphs.length > 0 ||
-      star.biz.length > 0 ||
-      caseStudy.stack.length > 0 ||
-      actionShots.length > 0,
+    action: caseStudy.solutionParagraphs.length > 0 || star.biz.length > 0 || caseStudy.stack.length > 0,
     midway: star.incident !== null || caseStudy.obstacleParagraphs.length > 0,
     result: caseStudy.resultParagraphs.length > 0 || star.gains.length > 0 || star.savings.length > 0,
+    adapt: caseStudy.adapt !== null,
     feedback: hasQuote(caseStudy),
-    actionShots,
+    faq: caseStudy.faq !== null,
   }
 }
 
-export type NumberedSection = 'situation' | 'task' | 'action' | 'midway' | 'result' | 'feedback' | 'gallery' | 'blog'
+// Only the story sections carry a number; adapt, gallery, faq and blog stay unnumbered.
+export type NumberedSection = 'situation' | 'task' | 'action' | 'midway' | 'result' | 'feedback'
 
-const SECTION_ORDER: readonly NumberedSection[] = [
-  'situation', 'task', 'action', 'midway', 'result', 'feedback', 'gallery', 'blog',
-]
+const SECTION_ORDER: readonly NumberedSection[] = ['situation', 'task', 'action', 'midway', 'result', 'feedback']
 
 /** Sequential labels ("01", "02", ...) for the sections that are shown, in page order. Hidden sections get an empty string. */
 export function numberSections(visible: Record<NumberedSection, boolean>): Record<NumberedSection, string> {
@@ -51,4 +46,15 @@ export function numberSections(visible: Record<NumberedSection, boolean>): Recor
     if (visible[key]) numbers[key] = String(next++).padStart(2, '0')
   }
   return numbers
+}
+
+/** The screenshot's own alt text; the generic one only when it is empty or the editor's "—" placeholder. */
+export function shotAlt(alt: string, fallback: string): string {
+  const own = alt.trim()
+  return own && own !== '—' ? own : fallback
+}
+
+/** Up to three screenshots read as a short set: the first fills the row, the rest sit side by side. */
+export function isCompactGallery(shotCount: number): boolean {
+  return shotCount > 0 && shotCount <= 3
 }
