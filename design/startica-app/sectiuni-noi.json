@@ -1,0 +1,105 @@
+{
+  "_info": "Conținut pentru coloanele noi (pasul 3 din prompt). Ordinea pe pagină: Rezultat → Adaptare (cu Siguranță) → Galerie → Întrebări → Din blog.",
+  "adapt": {
+    "heading_ro": "Module și integrări după nevoile clientului",
+    "heading_en": "Modules and integrations built around the client",
+    "body_ro": "Startica pornește de la o bază gata de folosit. Fiecare modul se activează, se modifică sau se construiește de la zero pentru regulile grădiniței, iar aplicația se leagă de serviciile pe care le folosiți deja.",
+    "body_en": "Startica starts from a ready-to-use base. Each module can be switched on, changed or built from scratch for the kindergarten's rules, and the app connects to the services you already use.",
+    "modules_ro": [
+      {"k": "Pornite pe filială", "v": "Fiecare filială folosește doar modulele de care are nevoie"},
+      {"k": "Reguli proprii", "v": "Taxe, reduceri, servicii și moduri de plată după contractele voastre"},
+      {"k": "Module noi", "v": "Activități, cercuri, transport sau orice evidență specifică"},
+      {"k": "Documente și rapoarte", "v": "Acorduri, chitanțe și rapoarte în formatul vostru"}
+    ],
+    "modules_en": [
+      {"k": "Per branch", "v": "Each branch uses only the modules it needs"},
+      {"k": "Your own rules", "v": "Fees, discounts, services and payment methods that follow your contracts"},
+      {"k": "New modules", "v": "Activities, clubs, transport or any specific records"},
+      {"k": "Documents and reports", "v": "Consent forms, receipts and reports in your format"}
+    ],
+    "integrations_ro": [
+      {"k": "Cursul zilei", "v": "Cursul oficial preluat automat și înghețat pe fiecare plată"},
+      {"k": "SMS", "v": "Mesaje către părinți din șabloane, cu previzualizare"},
+      {"k": "Bot Telegram", "v": "Notificări către părinți și echipă"},
+      {"k": "Excel, imprimante și altele", "v": "Export pentru contabil, bon termic de 58 mm, plus orice serviciu cu API"}
+    ],
+    "integrations_en": [
+      {"k": "Daily exchange rate", "v": "The official rate fetched automatically and frozen on each payment"},
+      {"k": "SMS", "v": "Messages to parents from templates, with a preview"},
+      {"k": "Telegram bot", "v": "Notifications for parents and staff"},
+      {"k": "Excel, printers and more", "v": "Accountant export, 58 mm thermal receipts, plus any service with an API"}
+    ],
+    "safety_ro": [
+      {"k": "Datele stau la voi", "v": "Pe calculatoarele grădiniței, nu într-un cloud străin"},
+      {"k": "Backup automat", "v": "Copii pe zile și luni, plus copie într-un folder extern"},
+      {"k": "Salarii sub PIN", "v": "Doar cine are PIN-ul vede și plătește salariile"},
+      {"k": "Istoric complet", "v": "Fiecare modificare, cu valoarea veche și cea nouă"}
+    ],
+    "safety_en": [
+      {"k": "Your data stays with you", "v": "On the kindergarten's computers, not in someone else's cloud"},
+      {"k": "Automatic backup", "v": "Copies by day and month, plus a copy to an external folder"},
+      {"k": "Payroll behind a PIN", "v": "Only whoever has the PIN can see and pay salaries"},
+      {"k": "Full history", "v": "Every change, with the old and the new value"}
+    ]
+  },
+  "delivered": {
+    "label_ro": "Ce am livrat",
+    "label_en": "What we delivered",
+    "items_ro": [
+      {"k": "Aplicația desktop", "v": "Pentru Windows, cu date locale"},
+      {"k": "Tipărituri", "v": "Chitanță A4, bon 58 mm, meniu, acorduri"},
+      {"k": "Design system", "v": "Culori, tipografie și componente"},
+      {"k": "Mentenanță", "v": "6 luni după lansare"}
+    ],
+    "items_en": [
+      {"k": "Desktop app", "v": "For Windows, with local data"},
+      {"k": "Printouts", "v": "A4 receipt, 58 mm receipt, menu, consent forms"},
+      {"k": "Design system", "v": "Colour, type and components"},
+      {"k": "Maintenance", "v": "6 months after launch"}
+    ]
+  },
+  "faq": {
+    "heading_ro": "Întrebări frecvente",
+    "heading_en": "FAQ",
+    "items_ro": [
+      {"q": "Aplicația merge fără internet?", "a": "Da. Datele stau pe calculatorul grădiniței, iar aplicația lucrează complet offline. Când există internet, calculatoarele se pot sincroniza între ele."},
+      {"q": "Putem aduce datele pe care le avem în Excel?", "a": "Da. La prima pornire, asistentul importă foile Excel și arată pentru fiecare ce devine în aplicație și câte rânduri are."},
+      {"q": "Se potrivește pentru un centru after-school sau un club?", "a": "Da. Modulele se pornesc după nevoie, iar activitățile proprii se adaugă ca servicii sau ca module noi."},
+      {"q": "Unde stau datele și cine le vede?", "a": "Pe calculatoarele voastre. Accesul se dă pe calculator și pe modul, salariile stau sub PIN, iar fiecare modificare rămâne în istoric."},
+      {"q": "Cât durează implementarea?", "a": "Depinde de cerințe și de complexitatea proiectului. Estimarea o facem după prima discuție."},
+      {"q": "Cât costă?", "a": "Prețul depinde de module și de adaptări. Am explicat cum se formează în articolul „Cât costă o aplicație web și de ce variază atât”."},
+      {"q": "Ne ajutați după lansare?", "a": "Da. Prezentăm aplicația, instruim echipa și vă ajutăm pe tot parcursul celor 6 luni de mentenanță."}
+    ],
+    "items_en": [
+      {"q": "Does the app work without internet?", "a": "Yes. Data lives on the kindergarten's computer and the app works fully offline. When there is internet, computers can sync with each other."},
+      {"q": "Can we bring in the data we have in Excel?", "a": "Yes. On first run, the setup assistant imports the Excel sheets and shows for each one what it becomes in the app and how many rows it has."},
+      {"q": "Does it fit an after-school centre or a club?", "a": "Yes. Modules are switched on as needed, and your own activities are added as services or new modules."},
+      {"q": "Where is the data stored and who sees it?", "a": "On your computers. Access is set per computer and per module, salaries sit behind a PIN, and every change stays in the history."},
+      {"q": "How long does implementation take?", "a": "It depends on the requirements and the complexity of the project. We estimate after the first conversation."},
+      {"q": "How much does it cost?", "a": "The price depends on the modules and the adaptations. We explain how it is built up in the article “How much a web app costs and why it varies so much”."},
+      {"q": "Do you help after launch?", "a": "Yes. We present the app, train the team and help you throughout the 6 months of maintenance."}
+    ]
+  },
+  "demo_notice": {
+    "ro": "Toate ecranele de pe această pagină folosesc date demonstrative. Numele copiilor și ale părinților, telefoanele, sumele și rechizitele bancare sunt inventate. Datele reale ale grădiniței nu sunt publicate.",
+    "en": "All screens on this page use demo data. Children's and parents' names, phone numbers, amounts and bank details are made up. The kindergarten's real data is not published."
+  },
+  "hero_cta": {
+    "ro": {"title": "Cere o prezentare", "note": "Îți arătăm aplicația în detaliu"},
+    "en": {"title": "Request a walkthrough", "note": "We'll show you the app in detail"}
+  },
+  "gallery_heading": {
+    "ro": "Câteva slide-uri din prezentare",
+    "en": "A few slides from the presentation",
+    "note_ro": "Date demonstrative, inventate · prezentarea completă o arătăm la întâlnire",
+    "note_en": "Made-up demo data · we show the full presentation in a meeting"
+  },
+  "next_cta": {
+    "heading_ro": "Vrei să vezi aplicația în detaliu?",
+    "heading_en": "Want to see the app in detail?",
+    "body_ro": "Îți facem o prezentare pe nevoile grădiniței tale: ce module îți trebuie și ce adaptăm.",
+    "body_en": "We'll walk you through it around your kindergarten's needs: which modules you need and what we adapt.",
+    "button_ro": "Programează o prezentare",
+    "button_en": "Book a walkthrough"
+  }
+}

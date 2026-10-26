@@ -21,6 +21,8 @@ export const PROJECT_SELECT = `
   star_cost_ro, star_cost_en, star_goal_ro, star_goal_en, star_constraints_ro, star_constraints_en,
   star_biz_ro, star_biz_en, star_incident_ro, star_incident_en, star_gains_ro, star_gains_en,
   star_savings_ro, star_savings_en,
+  adapt_ro, adapt_en,
+  delivered_ro, delivered_en, faq_ro, faq_en, gallery_heading_ro, gallery_heading_en,
   sort_order,
   project_facts(label_ro,label_en,value_ro,value_en,sort_order),
   project_stack(name,role_ro,role_en,sort_order),

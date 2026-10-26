@@ -1,5 +1,17 @@
 import { describe, expect, it } from 'vitest'
-import { isLinkKind, pickJson, toConstraints, toFigures, toIncident, toLinks, toStrings } from './star'
+import {
+  isLinkKind,
+  pickJson,
+  toAdapt,
+  toConstraints,
+  toDelivered,
+  toFaq,
+  toFigures,
+  toGalleryHeading,
+  toIncident,
+  toLinks,
+  toStrings,
+} from './star'
 
 describe('toFigures', () => {
   it('trims values and drops entries with neither v nor k', () => {
@@ -106,6 +118,17 @@ describe('toLinks', () => {
     ])
   })
 
+  it('allows a site-relative url only for a walkthrough link', () => {
+    expect(toLinks([{ kind: 'walkthrough', url: '/#contact', note_ro: 'Arată-mi' }])).toEqual([
+      { kind: 'walkthrough', url: '/#contact', note_ro: 'Arată-mi', note_en: null },
+    ])
+    expect(toLinks([{ kind: 'live', url: '/#contact' }, { kind: 'figma', url: '/x' }])).toEqual([])
+  })
+
+  it('rejects a protocol-relative url even for a walkthrough', () => {
+    expect(toLinks([{ kind: 'walkthrough', url: '//evil.example/x' }])).toEqual([])
+  })
+
   it('is empty for a non-array column', () => {
     expect(toLinks(null)).toEqual([])
     expect(toLinks({ kind: 'live', url: 'https://example.com' })).toEqual([])
@@ -117,6 +140,7 @@ describe('isLinkKind', () => {
     expect(isLinkKind('live')).toBe(true)
     expect(isLinkKind('preview')).toBe(true)
     expect(isLinkKind('figma')).toBe(true)
+    expect(isLinkKind('walkthrough')).toBe(true)
     expect(isLinkKind('github')).toBe(false)
     expect(isLinkKind(null)).toBe(false)
   })
@@ -146,5 +170,70 @@ describe('pickJson', () => {
   it('falls back to RO when EN holds only blank entries', () => {
     expect(pickJson([{ v: '−35%', k: 'ro' }], [{ v: '', k: '' }], 'en', toFigures)).toEqual([{ v: '−35%', k: 'ro' }])
     expect(pickJson({ found: 'ro' }, { found: '', risk: '', action: '', outcome: [] }, 'en', toIncident)?.found).toBe('ro')
+  })
+})
+
+describe('toAdapt', () => {
+  it('trims and drops blank entries', () => {
+    expect(
+      toAdapt({
+        heading: ' Module ',
+        body: ' Text ',
+        modules: [{ k: ' A ', v: ' b ' }, { k: '', v: '' }],
+        integrations: [{ k: 'SMS', v: 'x' }, 'bad'],
+        safety: [{ k: ' Backup ', v: ' zilnic ' }, { k: '', v: '' }],
+      }),
+    ).toEqual({
+      heading: 'Module',
+      body: 'Text',
+      modules: [{ k: 'A', v: 'b' }],
+      integrations: [{ k: 'SMS', v: 'x' }],
+      safety: [{ k: 'Backup', v: 'zilnic' }],
+    })
+  })
+
+  it('is null for a heading alone, a missing column or a non-object', () => {
+    expect(toAdapt({ heading: 'Doar titlu', modules: [], integrations: [], safety: [] })).toBeNull()
+    expect(toAdapt(null)).toBeNull()
+    expect(toAdapt(['x'])).toBeNull()
+  })
+
+  it('is kept with only integrations', () => {
+    expect(toAdapt({ integrations: [{ k: 'a', v: 'b' }] })?.integrations).toHaveLength(1)
+  })
+
+  it('is kept with only safety items, and safety defaults to empty', () => {
+    expect(toAdapt({ safety: [{ k: 'a', v: 'b' }] })?.safety).toHaveLength(1)
+    expect(toAdapt({ body: 'x' })?.safety).toEqual([])
+  })
+})
+
+describe('toDelivered', () => {
+  it('is null without items and keeps the label otherwise', () => {
+    expect(toDelivered({ label: 'L', items: [{ k: 'a', v: 'b' }] })).toEqual({ label: 'L', items: [{ k: 'a', v: 'b' }] })
+    expect(toDelivered({ label: 'L', items: [] })).toBeNull()
+    expect(toDelivered('x')).toBeNull()
+  })
+})
+
+describe('toFaq', () => {
+  it('keeps only entries with a question and an answer', () => {
+    expect(toFaq({ heading: 'FAQ', items: [{ q: ' Q ', a: ' A ' }, { q: 'Q2', a: '' }, { q: '', a: 'A3' }, null] })).toEqual({
+      heading: 'FAQ',
+      items: [{ q: 'Q', a: 'A' }],
+    })
+  })
+
+  it('is null without a usable entry', () => {
+    expect(toFaq({ heading: 'FAQ', items: [{ q: 'Q', a: '' }] })).toBeNull()
+    expect(toFaq(null)).toBeNull()
+  })
+})
+
+describe('toGalleryHeading', () => {
+  it('is null when both parts are blank and keeps either one otherwise', () => {
+    expect(toGalleryHeading({ heading: ' ', note: '' })).toBeNull()
+    expect(toGalleryHeading({ heading: 'Titlu' })).toEqual({ heading: 'Titlu', note: '' })
+    expect(toGalleryHeading({ note: 'Notă' })).toEqual({ heading: '', note: 'Notă' })
   })
 })
