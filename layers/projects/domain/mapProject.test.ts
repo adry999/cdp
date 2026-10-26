@@ -45,6 +45,14 @@ const baseRow: ProjectRow = {
   star_gains_en: null,
   star_savings_ro: null,
   star_savings_en: null,
+  adapt_ro: null,
+  adapt_en: null,
+  delivered_ro: null,
+  delivered_en: null,
+  faq_ro: null,
+  faq_en: null,
+  gallery_heading_ro: null,
+  gallery_heading_en: null,
   screens_demo: false,
   context_body_ro: 'Primul paragraf.\n\nAl doilea paragraf.',
   context_body_en: 'First paragraph.\n\nSecond paragraph.',
@@ -171,6 +179,53 @@ describe('mapProject', () => {
     expect(mapProject(row, 'en').caseStudy.links).toEqual([
       { kind: 'live', url: 'https://example.com', note: 'Vezi live' },
     ])
+  })
+
+  it('keeps a site-relative walkthrough link and drops it for other kinds', () => {
+    const row = {
+      ...baseRow,
+      links: [
+        { kind: 'walkthrough', url: '/#contact', note_ro: 'Îți arătăm aplicația', note_en: 'We show you the app' },
+        { kind: 'live', url: '/#contact', note_ro: null, note_en: null },
+      ],
+    }
+    expect(mapProject(row, 'en').caseStudy.links).toEqual([
+      { kind: 'walkthrough', url: '/#contact', note: 'We show you the app' },
+    ])
+  })
+
+  it('maps the adapt, delivered, faq and gallery heading columns per locale', () => {
+    const row = {
+      ...baseRow,
+      adapt_ro: { heading: 'Adaptare RO', body: 'Text RO', modules: [{ k: 'M', v: 'm' }], integrations: [{ k: 'I', v: 'i' }], safety: [{ k: 'Backup', v: 'automat' }] },
+      adapt_en: { heading: 'Adapt EN', body: 'Text EN', modules: [{ k: 'M EN', v: 'm' }], integrations: [] },
+      delivered_ro: { label: 'Livrat', items: [{ k: 'App', v: 'Windows' }] },
+      faq_ro: { heading: 'Întrebări', items: [{ q: 'Q RO', a: 'A RO' }] },
+      faq_en: { heading: 'FAQ', items: [{ q: 'Q EN', a: 'A EN' }] },
+      gallery_heading_ro: { heading: 'Slide-uri', note: 'Date demo' },
+    }
+    const ro = mapProject(row, 'ro').caseStudy
+    expect(ro.adapt).toEqual({ heading: 'Adaptare RO', body: 'Text RO', modules: [{ k: 'M', v: 'm' }], integrations: [{ k: 'I', v: 'i' }], safety: [{ k: 'Backup', v: 'automat' }] })
+    expect(ro.delivered?.label).toBe('Livrat')
+    expect(ro.faq?.items).toEqual([{ q: 'Q RO', a: 'A RO' }])
+    expect(ro.galleryHeading).toEqual({ heading: 'Slide-uri', note: 'Date demo' })
+
+    const en = mapProject(row, 'en').caseStudy
+    expect(en.adapt?.heading).toBe('Adapt EN')
+    expect(en.faq?.heading).toBe('FAQ')
+    // No EN column: the RO one is shown.
+    expect(en.galleryHeading?.note).toBe('Date demo')
+  })
+
+  it('maps empty or malformed section columns to null', () => {
+    const row = {
+      ...baseRow,
+      adapt_ro: 'text',
+      faq_ro: { items: [{ q: 'Fără răspuns', a: '' }] },
+      gallery_heading_ro: {},
+    }
+    const { adapt, delivered, faq, galleryHeading } = mapProject(row, 'ro').caseStudy
+    expect([adapt, delivered, faq, galleryHeading]).toEqual([null, null, null, null])
   })
 
   it('lists the hero screenshot first, then the gallery without repeating it', () => {

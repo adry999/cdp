@@ -15,7 +15,7 @@ function onUploading(active: boolean) {
 }
 
 function addGalleryImage() {
-  form.value.gallery.push({ path: null, altRo: '', altEn: '', aspect: '16/10' })
+  form.value.gallery.push({ path: null, altRo: '', altEn: '', aspect: '16/9' })
 }
 
 function removeGalleryImage(index: number) {
@@ -30,8 +30,8 @@ function removeGalleryImage(index: number) {
         <AdminImageUpload
           v-model="form.coverPath"
           :bucket="MEDIA_BUCKET"
-          ratio="16/10"
-          label="[ copertă card — 1200 × 750 ]"
+          ratio="16/9"
+          label="[ copertă card — 1600 × 900 ]"
           :path-prefix="`${pathPrefix}/cover`"
           @uploading="onUploading"
         />
@@ -67,8 +67,8 @@ function removeGalleryImage(index: number) {
             <AdminImageUpload
               v-model="img.path"
               :bucket="MEDIA_BUCKET"
-              ratio="16/10"
-              :label="`[ galerie ${i + 1} ]`"
+              ratio="16/9"
+              :label="`[ galerie ${i + 1} — 1600 × 900 ]`"
               :path-prefix="`${pathPrefix}/gallery-${i}`"
               @uploading="onUploading"
             />

@@ -4,6 +4,7 @@ export function useCookieConsent() {
   const consent = useCookie<ConsentState | null>(CONSENT_COOKIE_NAME, {
     maxAge: 60 * 60 * 24 * 30 * 6,
     sameSite: 'lax',
+    secure: true,
     path: '/',
     default: () => null,
   })

@@ -333,10 +333,11 @@
       "action": { "label": "Action", "heading": "The solution" },
       "midway": { "label": "Midway", "heading": "What we found midway through" },
       "result": { "label": "Result", "heading": "What the client gained" },
+      "adapt": { "label": "Adaptation" },
       "feedback": { "label": "Feedback", "heading": "What the client says" },
-      "gallery": { "label": "Gallery", "heading": "What it looks like" }
+      "gallery": { "label": "Gallery", "heading": "What it looks like" },
+      "faq": { "label": "FAQ" }
     },
-    "band": { "situation": "Situation: the business problem", "task": "Task: goal and constraints", "action": "Action: business and tech", "result": "Result: gains and savings" },
     "incident": { "found": "The finding", "risk": "The risk", "action": "What we did" },
     "otherObstacles": "Other obstacles and adjustments",
     "screensDemo": "Screens with demo data",
@@ -346,7 +347,10 @@
     "tech": "Tech",
     "gains": "Gains",
     "savings": "Savings",
-    "links": { "live": "Live site", "preview": "CODEPEDIA preview", "figma": "Figma" },
+    "links": { "live": "Live site", "preview": "CODEPEDIA preview", "figma": "Figma", "walkthrough": "Request a walkthrough" },
+    "adapt": { "modules": "Modules", "integrations": "Integrations", "safety": "Safety" },
+    "demoLabel": "Demo data",
+    "demoNotice": "All screens on this page use demo data. Children's and parents' names, phone numbers, amounts and bank details are made up. The kindergarten's real data is not published.",
     "galleryButton": "Gallery · {count} screens",
     "galleryHint": "Opens here",
     "lightbox": {
