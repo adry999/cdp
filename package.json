@@ -51,6 +51,9 @@
     "esbuild": "^0.28.1",
     "@nuxtjs/i18n": {
       "devalue": "^5.9.4"
+    },
+    "@nuxt/content": {
+      "zod": "^4.6.6"
     }
   }
 }
