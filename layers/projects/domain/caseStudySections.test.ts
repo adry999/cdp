@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { caseStudySections, isCompactGallery, numberSections, shotAlt } from './caseStudySections'
+import { caseStudySections, isCompactGallery, numberSections, shotAlt, shotCaptions } from './caseStudySections'
 import { mapProject, type ProjectRow } from './mapProject'
 
 function build(overrides: Partial<ProjectRow> = {}, locale: 'ro' | 'en' = 'ro') {
@@ -48,13 +48,13 @@ describe('caseStudySections', () => {
     expect(build({ project_stack: [{ name: 'Nuxt', role_ro: 'r', role_en: null, sort_order: 0 }] }).action).toBe(true)
   })
 
-  it('does not show action for screenshots alone: the gallery is their only place', () => {
+  it('does not show action for a few screenshots: the gallery holds them and repeating them adds nothing', () => {
     const shots = build({
       hero_path: 'h.jpg',
       project_images: [{ path: 'g.jpg', alt_ro: 'G', alt_en: null, aspect: '16/9', sort_order: 0 }],
     })
     expect(shots.action).toBe(false)
-    expect(shots).not.toHaveProperty('actionShots')
+    expect(shots.actionShots).toEqual([])
   })
 
   it('shows adapt and faq only when their column has content', () => {
@@ -121,5 +121,30 @@ describe('shotAlt', () => {
 describe('isCompactGallery', () => {
   it('is true for one to three screenshots only', () => {
     expect([0, 1, 3, 4].map(isCompactGallery)).toEqual([false, true, true, false])
+  })
+})
+
+describe('action shots', () => {
+  it('keeps the first three non-hero shots for the Action grid', () => {
+    const images = [0, 1, 2, 3, 4].map((n) => ({ path: `g${n}.png`, alt_ro: `A${n}`, alt_en: null, aspect: '16/9', sort_order: n }))
+    const sections = build({ hero_path: 'g0.png', project_images: images })
+    expect(sections.actionShots.map((shot) => shot.path)).toEqual(['g1.png', 'g2.png', 'g3.png'])
+  })
+})
+
+describe('shotCaptions', () => {
+  it('splits each alt into a screen name and a description', () => {
+    expect(shotCaptions([
+      { path: 'a', alt: 'Copii: lista copiilor' },
+      { path: 'b', alt: 'Fără două puncte' },
+    ])).toEqual([
+      { title: 'Copii', text: 'Lista copiilor' },
+      { title: '', text: 'Fără două puncte' },
+    ])
+  })
+
+  it('returns null when shots share an alt or one is blank', () => {
+    expect(shotCaptions([{ path: 'a', alt: 'Site' }, { path: 'b', alt: 'Site' }])).toBeNull()
+    expect(shotCaptions([{ path: 'a', alt: 'Unu' }, { path: 'b', alt: ' ' }])).toBeNull()
   })
 })

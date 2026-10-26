@@ -13,6 +13,32 @@ export interface CaseStudySectionFlags {
   adapt: boolean
   feedback: boolean
   faq: boolean
+  /** Shots shown in the Action grid: the first few real shots except the hero, which sits at the top. The gallery has them all, so a project whose gallery would be repeated whole shows none here. */
+  actionShots: CaseStudy['shots']
+}
+
+const ACTION_SHOT_LIMIT = 3
+
+export interface ShotCaption {
+  title: string
+  text: string
+}
+
+/**
+ * Captions for the gallery, from each shot's alt text ("Screen: what it shows").
+ * Only when every shot has its own alt: a project whose shots share one generic alt gets none.
+ */
+function capitalize(text: string): string {
+  return text.charAt(0).toLocaleUpperCase() + text.slice(1)
+}
+
+export function shotCaptions(shots: CaseStudy['shots']): ShotCaption[] | null {
+  const alts = shots.map((shot) => shot.alt.trim())
+  if (alts.some((alt) => !alt) || new Set(alts).size !== alts.length) return null
+  return alts.map((alt) => {
+    const split = alt.indexOf(': ')
+    return split === -1 ? { title: '', text: alt } : { title: alt.slice(0, split), text: capitalize(alt.slice(split + 2)) }
+  })
 }
 
 export function hasQuote(caseStudy: Pick<CaseStudy, 'quote'>): boolean {
@@ -21,15 +47,22 @@ export function hasQuote(caseStudy: Pick<CaseStudy, 'quote'>): boolean {
 
 export function caseStudySections(caseStudy: CaseStudy): CaseStudySectionFlags {
   const { star } = caseStudy
+  const galleryShots = caseStudy.shots.filter((shot) => shot.path !== caseStudy.heroPath)
+  const actionShots = galleryShots.length > ACTION_SHOT_LIMIT ? galleryShots.slice(0, ACTION_SHOT_LIMIT) : []
   return {
     situation: caseStudy.problemParagraphs.length > 0 || star.cost.length > 0,
     task: !!star.goal || star.constraints.length > 0,
-    action: caseStudy.solutionParagraphs.length > 0 || star.biz.length > 0 || caseStudy.stack.length > 0,
+    action:
+      caseStudy.solutionParagraphs.length > 0 ||
+      star.biz.length > 0 ||
+      caseStudy.stack.length > 0 ||
+      actionShots.length > 0,
     midway: star.incident !== null || caseStudy.obstacleParagraphs.length > 0,
     result: caseStudy.resultParagraphs.length > 0 || star.gains.length > 0 || star.savings.length > 0,
     adapt: caseStudy.adapt !== null,
     feedback: hasQuote(caseStudy),
     faq: caseStudy.faq !== null,
+    actionShots,
   }
 }
 

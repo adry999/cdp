@@ -2,7 +2,7 @@
 import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonLd'
 import { OG_PROJECT_SIZE, absoluteUrl } from '#layers/core/shared/utils/seo'
 import { fetchProject } from '#layers/projects/data/projectsRepository'
-import { caseStudySections, numberSections } from '#layers/projects/domain/caseStudySections'
+import { caseStudySections, numberSections, shotAlt } from '#layers/projects/domain/caseStudySections'
 import { mapProject } from '#layers/projects/domain/mapProject'
 import { softwareApplicationAbout } from '#layers/projects/domain/softwareApp'
 
@@ -40,10 +40,19 @@ const star = computed(() => caseStudy.value.star)
 // Each section shows only what exists; a section with nothing in it is left out and the numbers close up.
 const sections = computed(() => caseStudySections(caseStudy.value))
 const numbers = computed(() => numberSections(sections.value))
+const galleryImages = computed(() => sections.value.actionShots)
+// A lone screenshot fills the whole content column (about 944px at desktop); several share it as tiles of at most a third.
+// Widths are the ones in image.screens, so 1x and 2x are both served as listed.
+const actionShotSizesFull = '320:400px 480:640px 640:800px 768:960px 1024:1280px 1280:960px'
+const actionShotSizesTile = '320:400px 480:480px 640:400px'
 
 const lightboxIndex = ref<number | null>(null)
 function openLightbox(index: number) {
   lightboxIndex.value = index
+}
+// Action shots are a subset of the lightbox's shots, so they open at their place in the full list.
+function shotIndex(path: string): number {
+  return caseStudy.value.shots.findIndex((shot) => shot.path === path)
 }
 
 // The language switch and hreflang alternates only know the current route params; slugs can differ per locale.
@@ -188,6 +197,27 @@ useJsonLd(
           </ul>
         </div>
       </div>
+      <template v-if="galleryImages.length">
+        <div class="mt-[clamp(28px,3.5vw,44px)] grid grid-fit-safe-260 gap-4">
+          <button
+            v-for="image in galleryImages"
+            :key="image.path"
+            type="button"
+            :aria-label="t('caseStudy.lightbox.openImage', { n: shotIndex(image.path) + 1 })"
+            class="block w-full cursor-zoom-in rounded p-0"
+            @click="openLightbox(shotIndex(image.path))"
+          >
+            <MediaFrame
+              ratio="16/9"
+              :src="image.path"
+              :alt="shotAlt(image.alt, `${project.title} — ${t('caseStudy.sections.gallery.label')} ${shotIndex(image.path) + 1}`)"
+              :sizes="galleryImages.length === 1 ? actionShotSizesFull : actionShotSizesTile"
+              class="transition-colors duration-[120ms] hover:border-ink"
+            />
+          </button>
+        </div>
+        <p v-if="caseStudy.screensDemo" class="m-0 mt-3 eyebrow-sm text-muted">{{ t('caseStudy.screensDemo') }}</p>
+      </template>
     </ProjectsCaseStudySection>
 
     <ProjectsCaseStudySection

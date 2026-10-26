@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isCompactGallery, shotAlt } from '#layers/projects/domain/caseStudySections'
+import { isCompactGallery, shotAlt, shotCaptions } from '#layers/projects/domain/caseStudySections'
 import type { MappedProject } from '#layers/projects/domain/mapProject'
 import { isExternalLink } from '#layers/projects/domain/star'
 
@@ -20,6 +20,7 @@ const note = computed(
 function altOf(alt: string, index: number): string {
   return shotAlt(alt, `${props.project.title} — ${t('caseStudy.sections.gallery.label')} ${index + 1}`)
 }
+const captions = computed(() => shotCaptions(caseStudy.value.shots))
 </script>
 
 <template>
@@ -31,25 +32,28 @@ function altOf(alt: string, index: number): string {
   >
     <div
       class="mt-[clamp(24px,3vw,36px)] grid gap-4"
-      :class="compact ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-[repeat(auto-fill,minmax(min(100%,240px),1fr))]'"
+      :class="compact ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))]'"
     >
-      <button
-        v-for="(shot, i) in caseStudy.shots"
-        :key="shot.path"
-        type="button"
-        :aria-label="t('caseStudy.lightbox.openImage', { n: i + 1 })"
-        class="block w-full cursor-zoom-in overflow-hidden rounded border border-hairline p-0 hover:border-ink"
-        :class="compact && i === 0 ? 'col-span-full' : undefined"
-        @click="emit('open', i)"
-      >
-        <MediaFrame
-          :ratio="compact ? '16/9' : '16/10'"
-          :src="shot.path"
-          :alt="altOf(shot.alt, i)"
-          :sizes="compact && i === 0 ? '320:400px 480:640px 640:800px 768:960px 1024:1280px 1280:960px' : '320:400px 480:480px 640:400px'"
-          :class="compact ? 'rounded-none! border-0! object-contain!' : 'rounded-none! border-0! object-left-top!'"
-        />
-      </button>
+      <figure v-for="(shot, i) in caseStudy.shots" :key="shot.path" class="m-0" :class="compact && i === 0 ? 'col-span-full' : undefined">
+        <button
+          type="button"
+          :aria-label="t('caseStudy.lightbox.openImage', { n: i + 1 })"
+          class="block w-full cursor-zoom-in overflow-hidden rounded border border-hairline p-0 hover:border-ink"
+          @click="emit('open', i)"
+        >
+          <MediaFrame
+            ratio="16/9"
+            :src="shot.path"
+            :alt="altOf(shot.alt, i)"
+            :sizes="compact && i === 0 ? '320:400px 480:640px 640:800px 768:960px 1024:1280px 1280:960px' : '320:400px 480:480px 640:400px'"
+            :class="compact ? 'rounded-none! border-0! object-contain!' : 'rounded-none! border-0! object-left-top!'"
+          />
+        </button>
+        <figcaption v-if="captions" class="mt-3 flex flex-col gap-1">
+          <span v-if="captions[i]?.title" class="eyebrow-sm text-ink">{{ String(i + 1).padStart(2, '0') }} · {{ captions[i]?.title }}</span>
+          <span class="text-[15px] leading-[1.5] text-muted">{{ captions[i]?.text }}</span>
+        </figcaption>
+      </figure>
     </div>
     <p v-if="note" class="m-0 mt-3 eyebrow-sm text-muted">{{ note }}</p>
     <template v-if="caseStudy.delivered">

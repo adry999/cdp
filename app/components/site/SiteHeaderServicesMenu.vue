@@ -222,7 +222,7 @@ onBeforeUnmount(() => {
               <NuxtLink v-if="everOpened && activeProject" :to="projectTo(activeProject)" tabindex="-1" aria-hidden="true" class="block">
                 <MediaFrame
                   :key="activeProject.slug"
-                  ratio="16/10"
+                  ratio="16/9"
                   :src="activeProject.coverPath ?? undefined"
                   :alt="activeProject.coverAlt"
                   sizes="320:400px"

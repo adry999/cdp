@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { firstPublishedProject } from './support/helpers'
+import { firstPublishedNews, firstPublishedProject } from './support/helpers'
 
 test('RO homepage renders', async ({ page }) => {
   await page.setExtraHTTPHeaders({ 'x-vercel-ip-country': 'RO' })
@@ -53,6 +53,13 @@ for (const [path, lang] of [
   ['/en/about', 'en-US'],
   ['/contact', 'ro-RO'],
   ['/en/contact', 'en-US'],
+  ['/noutati', 'ro-RO'],
+  ['/en/news', 'en-US'],
+  ['/servicii', 'ro-RO'],
+  ['/en/services', 'en-US'],
+  ['/en/services/web-app', 'en-US'],
+  ['/blog/categorie/preturi', 'ro-RO'],
+  ['/en/blog/category/pricing', 'en-US'],
 ] as const) {
   test(`${path} renders`, async ({ page }) => {
     const response = await page.goto(path)
@@ -74,4 +81,32 @@ test('/llms.txt and /llms-full.txt return text/plain with 200', async ({ request
   expect(res2.headers()['content-type']).toContain('text/plain')
   const text2 = await res2.text()
   expect(text2).toContain('# CODEPEDIA')
+})
+
+test('RO news detail page renders', async ({ page, request }) => {
+  const item = await firstPublishedNews(request)
+  const response = await page.goto(`/noutati/${item.slug_ro}`)
+  expect(response?.status()).toBe(200)
+  await expect(page.locator('h1')).toBeVisible()
+})
+
+test('EN news detail page renders', async ({ page, request }) => {
+  const item = await firstPublishedNews(request)
+  const response = await page.goto(`/en/news/${item.slug_en?.trim() ? item.slug_en : item.slug_ro}`)
+  expect(response?.status()).toBe(200)
+  await expect(page.locator('h1')).toBeVisible()
+})
+
+test('/sitemap.xml returns XML with 200', async ({ request }) => {
+  const res = await request.get('/sitemap.xml')
+  expect(res.status()).toBe(200)
+  expect(res.headers()['content-type']).toContain('xml')
+  expect(await res.text()).toMatch(/^<\?xml/)
+})
+
+test('/robots.txt returns text/plain with 200', async ({ request }) => {
+  const res = await request.get('/robots.txt')
+  expect(res.status()).toBe(200)
+  expect(res.headers()['content-type']).toContain('text/plain')
+  expect(await res.text()).toContain('User-agent')
 })

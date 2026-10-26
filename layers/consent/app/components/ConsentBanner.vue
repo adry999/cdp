@@ -43,7 +43,7 @@ function save() {
         <!-- Below sm the three buttons sit in a 2-column grid instead of leaving one alone on a row. -->
         <div v-if="!customizing" class="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap sm:items-center sm:gap-3">
           <AppButton variant="outline" type="button" :class="outlineButtonClass" @click="rejectAll">{{ t('cookieBanner.rejectAll') }}</AppButton>
-          <AppButton variant="outline" type="button" :class="outlineButtonClass" @click="acceptAll">{{ t('cookieBanner.acceptAll') }}</AppButton>
+          <AppButton variant="ink" type="button" :class="inkButtonClass" @click="acceptAll">{{ t('cookieBanner.acceptAll') }}</AppButton>
           <AppButton variant="outline" type="button" class="col-span-2 sm:order-first" :class="outlineButtonClass" @click="openCustomize">{{
             t('cookieBanner.customize')
           }}</AppButton>
