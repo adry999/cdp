@@ -34,6 +34,7 @@ const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 const SUPABASE_BROWSER_PLUGIN = '@nuxtjs/supabase/dist/runtime/plugins/supabase.client'
 
 const STATIC_ASSET_CACHE = 'public, max-age=86400, stale-while-revalidate=604800'
+const PRERENDERED_PAGE_CACHE = 's-maxage=3600, stale-while-revalidate=86400'
 
 // Client chunk grouping (vite.$client below). Module ids are absolute paths, so the project root
 // anchors the match: `node_modules/nuxt/dist/app/**` must not count as app code.
@@ -108,6 +109,7 @@ const LOCALIZED_PAGES = {
 export default defineNuxtConfig({
   compatibilityDate: '2026-08-05',
   devtools: { enabled: true },
+  telemetry: false,
   // Git worktrees for parallel branches live in .worktrees/; keep them out of scanning and the dev watcher.
   ignore: ['.worktrees/**'],
 
@@ -129,6 +131,10 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     resendApiKey: process.env.RESEND_API_KEY,
+    // The default is Resend's sandbox sender, which only delivers to the Resend account owner's own address.
+    // A sender on codepedia.* needs that domain verified in Resend (SPF/DKIM) first.
+    mailFrom: process.env.MAIL_FROM || 'CODEPEDIA <onboarding@resend.dev>',
+    mailTo: process.env.MAIL_TO || 'contact@codepedia.md',
     // Vercel Cron sends `Authorization: Bearer $CRON_SECRET`; unset, /api/health answers 404.
     cronSecret: process.env.CRON_SECRET || '',
     // Mirrors nitro.vercel.config.bypassToken below; server/api/admin/revalidate.post.ts sends it back as
@@ -177,10 +183,12 @@ export default defineNuxtConfig({
     '/en/news': { swr: 300 },
     '/noutati/**': { swr: 300 },
     '/en/news/**': { swr: 300 },
-    '/blog': { prerender: true },
-    '/en/blog': { prerender: true },
-    '/blog/**': { prerender: true },
-    '/en/blog/**': { prerender: true },
+    // Prerendered files get no Cache-Control of their own, so Cloudflare's rule 4 would bypass them
+    // (docs/DEPLOY_HOSTINGER.md); same edge lifetime as the other repo-content pages.
+    '/blog': { prerender: true, headers: { 'Cache-Control': PRERENDERED_PAGE_CACHE } },
+    '/en/blog': { prerender: true, headers: { 'Cache-Control': PRERENDERED_PAGE_CACHE } },
+    '/blog/**': { prerender: true, headers: { 'Cache-Control': PRERENDERED_PAGE_CACHE } },
+    '/en/blog/**': { prerender: true, headers: { 'Cache-Control': PRERENDERED_PAGE_CACHE } },
     '/servicii': { swr: 300 },
     '/en/services': { swr: 300 },
     '/servicii/**': { swr: 300 },
@@ -203,6 +211,8 @@ export default defineNuxtConfig({
     '/en/contact': { swr: 3600 },
     '/confidentialitate': { swr: 3600 },
     '/en/privacy': { swr: 3600 },
+    '/llms.txt': { swr: 3600 },
+    '/llms-full.txt': { swr: 3600 },
     '/api/projects': { swr: 60 },
     '/api/home/settings': { swr: 60 },
     '/api/projects/**': { swr: 300 },
@@ -260,6 +270,10 @@ export default defineNuxtConfig({
     },
     // Project images live in Supabase Storage under unique paths, so a day of caching saves re-optimizing them.
     ...(process.env.VERCEL ? { vercel: { minimumCacheTTL: 86400 } } : {}),
+    // Same reason off Vercel: Supabase answers `no-cache`, so ipx falls back to max-age=300 and sharp
+    // re-encodes every image every few minutes. Uploads never overwrite (storageRepository.ts), so a year is
+    // safe. Only remote (http) sources: local public/ files keep their names and their default.
+    ipx: { http: { maxAge: 31536000 } },
   },
 
   supabase: {
@@ -322,9 +336,6 @@ export default defineNuxtConfig({
             codeSplitting: {
               groups: [
                 { name: 'supabase', test: /node_modules[/\\]@supabase[/\\]/, priority: 20 },
-                // No `vendor` group: the build dir is node_modules/.cache/nuxt/.nuxt, so a node_modules
-                // test captures the #build virtual modules and, through their dependencies, the whole app,
-                // and @nuxtjs/supabase's composables would statically pull supabase-js into every page.
                 // Shared modules of the public site only: anything admin-related (editors, admin pages and
                 // components, their state and data) stays out, so public pages never download it.
                 {

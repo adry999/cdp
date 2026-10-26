@@ -62,6 +62,8 @@ onMounted(() => {
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const canHover = window.matchMedia('(hover: hover)').matches
+  const isMobile = window.matchMedia('(max-width: 767px)').matches
+  const isStaticMode = prefersReduced || isMobile || !canHover
 
   // Colors come from the design tokens, re-read when the theme changes. The canvas sits on
   // a dark surface when `inverted` (always) or when the page theme is dark.
@@ -243,7 +245,7 @@ onMounted(() => {
       mouse.targetAlpha = 1
 
       // Resume loop if it was asleep
-      if (animId === null && isVisible && !prefersReduced) {
+      if (animId === null && isVisible && !isStaticMode) {
         idleReady = true
         lastTime = performance.now()
         animId = requestAnimationFrame(loop)
@@ -254,7 +256,9 @@ onMounted(() => {
     }
   }
 
-  window.addEventListener('pointermove', onPointerMove, { passive: true })
+  if (!isStaticMode) {
+    window.addEventListener('pointermove', onPointerMove, { passive: true })
+  }
 
   // Trigger resize and fallback checks
   resize()
@@ -283,7 +287,7 @@ onMounted(() => {
     (entries) => {
       const entry = entries[0]
       isVisible = entry?.isIntersecting ?? true
-      if (idleReady && isVisible && animId === null && !prefersReduced) {
+      if (idleReady && isVisible && animId === null && !isStaticMode) {
         lastTime = performance.now()
         animId = requestAnimationFrame(loop)
       }
@@ -298,7 +302,7 @@ onMounted(() => {
         cancelAnimationFrame(animId)
         animId = null
       }
-    } else if (idleReady && isVisible && animId === null && !prefersReduced) {
+    } else if (idleReady && isVisible && animId === null && !isStaticMode) {
       lastTime = performance.now()
       animId = requestAnimationFrame(loop)
     }
@@ -345,7 +349,7 @@ onMounted(() => {
 
     drawFrame(ctx, now, dt)
 
-    if (isVisible && !prefersReduced) {
+    if (isVisible && !isStaticMode) {
       animId = requestAnimationFrame(loop)
     } else {
       animId = null
@@ -643,18 +647,26 @@ onMounted(() => {
     context.globalCompositeOperation = 'source-over'
   }
 
-  // Draw static baseline frame if user prefers reduced motion
-  if (prefersReduced) {
-    if (props.variant === 'dot-matrix') {
-      renderDotMatrix(ctx, 0)
-    } else if (props.variant === 'constellation') {
-      renderConstellation(ctx, 0)
-    } else if (props.variant === 'light-orbs') {
-      renderLightOrbs(ctx, 0, 0.016)
+  // Draw static baseline frame if user prefers reduced motion or on mobile/touch screens
+  if (isStaticMode) {
+    const drawReduced = () => {
+      if (!ctx) return
+      if (props.variant === 'dot-matrix') {
+        renderDotMatrix(ctx, 0)
+      } else if (props.variant === 'constellation') {
+        renderConstellation(ctx, 0)
+      } else if (props.variant === 'light-orbs') {
+        renderLightOrbs(ctx, 0, 0.016)
+      }
+    }
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(drawReduced, { timeout: 2000 })
+    } else {
+      setTimeout(drawReduced, 200)
     }
   } else {
-    // A static first frame now; the animation itself starts once the page is idle.
-    drawFrame(ctx, performance.now(), 0.016)
+    // The canvas waits until the page has loaded and gone idle (or the user moves the pointer),
+    // so it never competes with the hero text paint during hydration, preserving the text LCP.
     let idleHandle: number | undefined
     const startWhenIdle = () => {
       const start = () => {
@@ -662,6 +674,8 @@ onMounted(() => {
         if (isVisible && animId === null) {
           lastTime = performance.now()
           animId = requestAnimationFrame(loop)
+        } else if (isVisible) {
+          drawFrame(ctx, performance.now(), 0.016)
         }
       }
       if (typeof window.requestIdleCallback === 'function') idleHandle = window.requestIdleCallback(start, { timeout: 2000 })
@@ -680,7 +694,7 @@ onMounted(() => {
   // Theme switches: re-read the tokens; the reduced-motion frame is static, so redraw it.
   const themeObserver = new MutationObserver(() => {
     readPalette()
-    if (prefersReduced && width > 0 && height > 0) {
+    if (isStaticMode && width > 0 && height > 0) {
       ctx.clearRect(0, 0, width, height)
       drawFrame(ctx, 0, 0.016)
     }
@@ -690,7 +704,7 @@ onMounted(() => {
   onBeforeUnmount(() => {
     themeObserver.disconnect()
     if (animId !== null) cancelAnimationFrame(animId)
-    window.removeEventListener('pointermove', onPointerMove)
+    if (!isStaticMode) window.removeEventListener('pointermove', onPointerMove)
     document.removeEventListener('visibilitychange', onVisibilityChange)
     resizeObserver.disconnect()
     intersectionObserver.disconnect()

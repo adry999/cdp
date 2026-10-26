@@ -11,7 +11,8 @@ rămâne vizibil ca placeholder.
       fără `streetAddress` și fără `geo`
 - [ ] Program structurat (zile și ore) pentru `openingHoursSpecification`: în
       `siteSettings.hours` e doar text liber, deci nu se publică în JSON-LD
-- [ ] Denumirea juridică exactă: `legalName` lipsește din JSON-LD până se confirmă „Codepedia SRL"
+- [x] Denumirea juridică exactă: `Codepedia SRL` configurată în Schema.org (`legalName`) (2026-10-16)
+- [x] Profil oficial `sameAs`: LinkedIn (`https://www.linkedin.com/company/codepediastudio`) adăugat în schema Organization (2026-10-16)
 - [ ] Articolele recomandate din footer sunt ultimele 3 din blog; dacă se vrea o selecție
       fixă (ex. cele despre prețuri, ca în prototip), blogul are nevoie de un câmp `featured`
 
@@ -56,7 +57,7 @@ domeniile, iar limba o aleg middleware-ul `locale-redirect` și variabilele de m
 nu `differentDomains`.
 
 - [ ] hPanel → **Node.js Apps → Import Git repository** (nu secțiunea simplă „Git",
-      care doar copiază fișiere în `public_html` și nu rulează build-ul). Branch: `main`
+      care doar copiază fișiere în `public_html` și nu rulează build-ul). Branch: `production`
 - [ ] Node 22.19+ (`engines` din `package.json`); install: `npm ci`; build: `npm run build`;
       start: `node .output/server/index.mjs`; port din variabila `PORT` dată de Hostinger
 - [ ] Variabile de mediu setate **înainte** de build (build-ul pică intenționat fără
@@ -70,7 +71,8 @@ nu `differentDomains`.
 - [ ] Ambele domenii (`codepedia.md`, `codepedia.studio`) atașate aceleiași aplicații;
       dacă Hostinger nu permite, a doua aplicație cu aceleași variabile (fără
       `differentDomains`)
-- [ ] Redeploy automat la push pe `main` (webhook-ul Git din hPanel)
+- [ ] Redeploy automat la push pe `production` (webhook-ul Git din hPanel); release = PR
+      `main` → `production`, vezi `docs/DEPLOY_HOSTINGER.md`
 - [x] **Geo-IP:** `locale-redirect.ts` citește `cf-ipcountry` (Cloudflare), cu
       `x-vercel-ip-country` ca rezervă (2026-10-14). De verificat în Cloudflare:
       Network → „IP Geolocation" activat (altfel header-ul lipsește)
@@ -178,7 +180,7 @@ Designul nu are versiune EN pentru indexul /servicii; EN tradus în cod (2026-10
 - [ ] Capturile Startica app, Bloom, Trucker HQ și SwissCars conțin date
       demonstrative. Nota de sub galerie nu mai apare pe site (scoasă 2026-10-09,
       livrare finală); de înlocuit cu capturi reale anonimizate dacă e cazul.
-- [ ] Copertă separată la 16/10 — acum cardul folosește captura principală.
+- [ ] Copertă separată pentru card (16:9, 1600 × 900) — acum cardul folosește captura principală.
 
 ## Conținut de decis
 
@@ -208,7 +210,7 @@ Designul nu are versiune EN; EN tradus în cod (2026-10-09) (excepție: cele 3 �
 Hero-ul și principiile refolosesc `home.about.*` (EN existent). Restul nu are EN în design.
 
 - [x] EN de tradus: `i18n/locales/en.json` — `about.principlesLabel`, `about.team.label`, `.title`, `about.facts.*` (cheile placeholder `.photo`, `.name`, `.role`, `.placeholderNote` au fost scoase)
-- [ ] Echipa reală: nume, funcții, fotografii în `layers/content/data/team.ts`; secțiunea Echipa e ascunsă cât timp lista e goală
+- [x] Echipa: Adrian Iovu (Co-fondator & Frontend Solutions Architect) și Sergio Miron (Senior Business Development & Account Executive) configurați în `layers/content/data/team.ts` cu linkuri LinkedIn; fotografii de profil opționale (2026-10-16)
 
 ## Pagina /contact — EN de tradus
 

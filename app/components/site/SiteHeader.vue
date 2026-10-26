@@ -47,7 +47,7 @@ const ctaClass =
 
 const header = ref<HTMLElement | null>(null)
 const menuToggle = ref<HTMLButtonElement | null>(null)
-const menuOpen = ref(false)
+const menuOpen = useMobileMenuOpen()
 const scrolled = ref(false)
 const isArticle = computed(() => baseName.value === 'blog-slug')
 const readProgress = useReadingProgress(isArticle)
@@ -99,6 +99,7 @@ onMounted(() => {
     window.removeEventListener('scroll', onScroll)
     wide.removeEventListener('change', onWide)
     document.body.style.overflow = ''
+    menuOpen.value = false
   })
 })
 </script>
@@ -206,7 +207,7 @@ onMounted(() => {
       />
     </div>
 
-    <SiteHeaderMobilePanel
+    <LazySiteHeaderMobilePanel
       v-if="menuOpen"
       :id="mobileMenuId"
       class="nav:hidden"

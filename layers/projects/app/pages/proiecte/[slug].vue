@@ -2,8 +2,9 @@
 import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonLd'
 import { OG_PROJECT_SIZE, absoluteUrl } from '#layers/core/shared/utils/seo'
 import { fetchProject } from '#layers/projects/data/projectsRepository'
-import { caseStudySections, numberSections } from '#layers/projects/domain/caseStudySections'
+import { caseStudySections, numberSections, shotAlt } from '#layers/projects/domain/caseStudySections'
 import { mapProject } from '#layers/projects/domain/mapProject'
+import { softwareApplicationAbout } from '#layers/projects/domain/softwareApp'
 
 const route = useRoute()
 const { t, locale } = useI18n()
@@ -36,11 +37,9 @@ const project = computed(() => mapProject(projectRow, siteLocale.value))
 
 const caseStudy = computed(() => project.value.caseStudy)
 const star = computed(() => caseStudy.value.star)
-// Each section shows only what exists; a section with nothing in it is left out (numbers stay fixed).
+// Each section shows only what exists; a section with nothing in it is left out and the numbers close up.
 const sections = computed(() => caseStudySections(caseStudy.value))
-const numbers = computed(() =>
-  numberSections({ ...sections.value, gallery: caseStudy.value.shots.length > 0, blog: true }),
-)
+const numbers = computed(() => numberSections(sections.value))
 const galleryImages = computed(() => sections.value.actionShots)
 // A lone screenshot fills the whole content column (about 944px at desktop); several share it as tiles of at most a third.
 // Widths are the ones in image.screens, so 1x and 2x are both served as listed.
@@ -93,9 +92,10 @@ useJsonLd(
     description: caseStudy.value.heroLead,
     genre: project.value.kind || undefined,
     url: projectUrl.value,
-    image: caseStudy.value.heroPath ?? undefined,
+    image: ogImage.value ?? (caseStudy.value.heroPath ? absoluteUrl(siteUrl, caseStudy.value.heroPath) : undefined),
     inLanguage: locale.value === 'en' ? 'en-US' : 'ro-RO',
     creator: organizationRef(primarySiteUrl),
+    about: softwareApplicationAbout(project.value.kind, project.value.title),
   }),
   () =>
     breadcrumbList([
@@ -103,6 +103,19 @@ useJsonLd(
       { name: t('nav.work'), url: `${siteUrl}${localePath({ name: 'proiecte' })}` },
       { name: project.value.title, url: projectUrl.value },
     ]),
+  () => {
+    const faq = caseStudy.value.faq
+    if (!faq) return null
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.items.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: { '@type': 'Answer', text: item.a },
+      })),
+    }
+  },
 )
 </script>
 
@@ -110,7 +123,6 @@ useJsonLd(
   <div>
     <ProjectsCaseStudyHero :project="project" @open-gallery="openLightbox(0)" />
     <ProjectsCaseStudyFacts :project="project" />
-    <ProjectsCaseStudyBand :sections="sections" />
 
     <ProjectsCaseStudySection
       v-if="sections.situation"
@@ -196,9 +208,9 @@ useJsonLd(
             @click="openLightbox(shotIndex(image.path))"
           >
             <MediaFrame
-              ratio="16/10"
+              ratio="16/9"
               :src="image.path"
-              alt=""
+              :alt="shotAlt(image.alt, `${project.title} — ${t('caseStudy.sections.gallery.label')} ${shotIndex(image.path) + 1}`)"
               :sizes="galleryImages.length === 1 ? actionShotSizesFull : actionShotSizesTile"
               class="transition-colors duration-[120ms] hover:border-ink"
             />
@@ -282,6 +294,8 @@ useJsonLd(
       </div>
     </ProjectsCaseStudySection>
 
+    <ProjectsCaseStudyAdapt v-if="caseStudy.adapt" :adapt="caseStudy.adapt" />
+
     <ProjectsCaseStudySection
       v-if="sections.feedback"
       :number="numbers.feedback"
@@ -294,9 +308,11 @@ useJsonLd(
       <div v-if="caseStudy.attribution" class="mt-4 eyebrow text-muted">{{ caseStudy.attribution }}</div>
     </ProjectsCaseStudySection>
 
-    <ProjectsCaseStudyGallery :project="project" :number="numbers.gallery" @open="openLightbox" />
+    <ProjectsCaseStudyGallery :project="project" @open="openLightbox" />
 
-    <BlogLinked :number="numbers.blog" :case-slug="projectRow.slug_ro" />
+    <ProjectsCaseStudyFaq v-if="caseStudy.faq" :faq="caseStudy.faq" />
+
+    <BlogLinked :case-slug="projectRow.slug_ro" />
 
     <ProjectsCaseStudyNext :project="project" />
 

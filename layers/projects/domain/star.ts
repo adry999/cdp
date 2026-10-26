@@ -22,8 +22,39 @@ export interface StarIncident {
   outcome: StarFigure[]
 }
 
-export const LINK_KINDS = ['live', 'preview', 'figma'] as const
+export const LINK_KINDS = ['live', 'preview', 'figma', 'walkthrough'] as const
 export type LinkKind = (typeof LINK_KINDS)[number]
+
+/** A titled list entry (adapt, delivered): „Backup automat” · „Copii pe zile și luni”. */
+export type CasePair = StarConstraint
+
+export interface CaseAdapt {
+  heading: string
+  body: string
+  modules: CasePair[]
+  integrations: CasePair[]
+  safety: CasePair[]
+}
+
+export interface CaseDelivered {
+  label: string
+  items: CasePair[]
+}
+
+export interface CaseFaqItem {
+  q: string
+  a: string
+}
+
+export interface CaseFaq {
+  heading: string
+  items: CaseFaqItem[]
+}
+
+export interface CaseGalleryHeading {
+  heading: string
+  note: string
+}
 
 /** One element of `projects.links`. */
 export interface ProjectLinkRow {
@@ -69,6 +100,45 @@ export function toStrings(value: Json | null | undefined): string[] {
   return list(value).map(text).filter(Boolean)
 }
 
+/** Null unless the section has a paragraph, modules, integrations or safety items (a heading alone shows nothing). */
+export function toAdapt(value: Json | null | undefined): CaseAdapt | null {
+  if (!isObject(value ?? undefined)) return null
+  const obj = value as JsonObject
+  const adapt = {
+    heading: text(obj.heading),
+    body: text(obj.body),
+    modules: toConstraints(obj.modules ?? null),
+    integrations: toConstraints(obj.integrations ?? null),
+    safety: toConstraints(obj.safety ?? null),
+  }
+  return adapt.body || adapt.modules.length || adapt.integrations.length || adapt.safety.length ? adapt : null
+}
+
+export function toDelivered(value: Json | null | undefined): CaseDelivered | null {
+  if (!isObject(value ?? undefined)) return null
+  const obj = value as JsonObject
+  const items = toConstraints(obj.items ?? null)
+  return items.length ? { label: text(obj.label), items } : null
+}
+
+/** Only entries with both a question and an answer; null without any. */
+export function toFaq(value: Json | null | undefined): CaseFaq | null {
+  if (!isObject(value ?? undefined)) return null
+  const obj = value as JsonObject
+  const items = list(obj.items ?? null)
+    .filter(isObject)
+    .map((item) => ({ q: text(item.q), a: text(item.a) }))
+    .filter((item) => item.q && item.a)
+  return items.length ? { heading: text(obj.heading), items } : null
+}
+
+export function toGalleryHeading(value: Json | null | undefined): CaseGalleryHeading | null {
+  if (!isObject(value ?? undefined)) return null
+  const obj = value as JsonObject
+  const gallery = { heading: text(obj.heading), note: text(obj.note) }
+  return gallery.heading || gallery.note ? gallery : null
+}
+
 /** Null unless at least one of found / risk / action / outcome has content. */
 export function toIncident(value: Json | null | undefined): StarIncident | null {
   if (!isObject(value ?? undefined)) return null
@@ -82,12 +152,22 @@ export function toIncident(value: Json | null | undefined): StarIncident | null 
   return incident.found || incident.risk || incident.action || incident.outcome.length ? incident : null
 }
 
+export function isExternalLink(url: string): boolean {
+  return /^https?:\/\//.test(url)
+}
+
+/** Absolute http(s) for every kind; a walkthrough may also point inside the site ("/#contact"). */
+export function isLinkUrl(kind: LinkKind, url: string): boolean {
+  if (isExternalLink(url)) return true
+  return kind === 'walkthrough' && /^\/(?!\/)/.test(url)
+}
+
 export function toLinks(value: Json | null | undefined): ProjectLinkRow[] {
   return list(value)
     .filter(isObject)
     .flatMap((item): ProjectLinkRow[] => {
       const url = text(item.url)
-      if (!isLinkKind(item.kind) || !/^https?:\/\//.test(url)) return []
+      if (!isLinkKind(item.kind) || !isLinkUrl(item.kind, url)) return []
       return [{ kind: item.kind, url, note_ro: text(item.note_ro) || null, note_en: text(item.note_en) || null }]
     })
 }

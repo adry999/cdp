@@ -1,4 +1,4 @@
-import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonLd'
+import { AREA_SERVED, breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonLd'
 
 export interface ServiceJsonLdInput {
   name: string
@@ -10,9 +10,6 @@ export interface ServiceJsonLdInput {
   crumbs: readonly { name: string, url: string }[]
 }
 
-// The studio is based in Chișinău and delivers remotely; Moldova is the only market stated on the site.
-const AREA_SERVED = { '@type': 'Country', name: 'Moldova' }
-
 export function serviceJsonLd(input: ServiceJsonLdInput) {
   return {
     service: {
@@ -22,7 +19,7 @@ export function serviceJsonLd(input: ServiceJsonLdInput) {
       description: input.description,
       url: input.url,
       provider: organizationRef(input.primaryOrigin),
-      areaServed: AREA_SERVED,
+      areaServed: [...AREA_SERVED],
     },
     breadcrumbs: breadcrumbList(input.crumbs),
   }

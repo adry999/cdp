@@ -33,15 +33,17 @@ const typedWords = computed(() => typed.value.split(' '))
 if (import.meta.client && phrases.length > 1) {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (!reduced) {
+    const isMobile = window.matchMedia('(max-width: 767px)').matches
     const TYPE_MS = 55
     const DELETE_MS = 28
-    const HOLD_MS = 1500
+    const HOLD_MS = isMobile ? 5500 : 3500
     const GAP_MS = 350
 
     let index = 0
     let char = (phrases[0] ?? '').length
     let deleting = true
     let timer: ReturnType<typeof setTimeout>
+    let idleId: number | undefined
 
     const tick = () => {
       const current = phrases[index] ?? ''
@@ -67,18 +69,32 @@ if (import.meta.client && phrases.length > 1) {
       }
     }
 
-    timer = setTimeout(tick, HOLD_MS)
-    onBeforeUnmount(() => clearTimeout(timer))
+    const startAnimation = () => {
+      timer = setTimeout(tick, HOLD_MS)
+    }
+
+    if (typeof window.requestIdleCallback === 'function') {
+      idleId = window.requestIdleCallback(startAnimation, { timeout: 3000 })
+    } else {
+      timer = setTimeout(startAnimation, 300)
+    }
+
+    onBeforeUnmount(() => {
+      if (idleId !== undefined && typeof window.cancelIdleCallback === 'function') {
+        window.cancelIdleCallback(idleId)
+      }
+      clearTimeout(timer)
+    })
   }
 }
 </script>
 
 <template>
   <div class="relative overflow-hidden">
-    <CoreInteractiveBackground v-if="heroVariant" :variant="heroVariant" />
+    <LazyCoreInteractiveBackground v-if="heroVariant" :variant="heroVariant" />
     <div class="relative z-10">
       <SiteSection section-id="top" number="00" :label="t('home.hero.sectionLabel')" padding="heroCompact" :top-border="false">
-      <h1 class="sr-only">{{ phrases[0] }} {{ t('home.hero.titleSuffix') }}</h1>
+      <h1 class="sr-only">{{ t('seo.home.title') }} — {{ phrases.slice(0, 3).join(', ') }} {{ t('home.hero.titleSuffix') }}</h1>
       <div
         class="m-0 max-w-[22ch] text-[clamp(34px,6vw,64px)] font-semibold leading-[1.04] tracking-[-0.025em] text-pretty"
         aria-hidden="true"

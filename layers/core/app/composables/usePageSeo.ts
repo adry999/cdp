@@ -39,6 +39,7 @@ export function usePageSeo({ title, description, ogTitle, image, imageSize, imag
     ogImageWidth: () => og.value.width,
     ogImageHeight: () => og.value.height,
     ogImageAlt: () => og.value.alt,
+    ogSiteName: BRAND,
     ogType: type,
     twitterCard: 'summary_large_image',
     ...(article

@@ -20,9 +20,10 @@ describe('breadcrumbList', () => {
 })
 
 describe('organizationRef', () => {
-  it('names CODEPEDIA with the site url', () => {
+  it('names CODEPEDIA with the site url and canonical @id', () => {
     expect(organizationRef('https://codepedia.md')).toEqual({
       '@type': 'Organization',
+      '@id': 'https://codepedia.md/#org',
       name: 'CODEPEDIA',
       url: 'https://codepedia.md',
     })
@@ -30,13 +31,17 @@ describe('organizationRef', () => {
 })
 
 describe('webSite', () => {
-  it('names CODEPEDIA with the site url and both languages', () => {
+  it('names CODEPEDIA with the site url, canonical @id and publisher reference', () => {
     expect(webSite('https://codepedia.md', ['ro', 'en'])).toEqual({
       '@context': 'https://schema.org',
       '@type': 'WebSite',
+      '@id': 'https://codepedia.md/#website',
       name: 'CODEPEDIA',
       url: 'https://codepedia.md',
       inLanguage: ['ro', 'en'],
+      publisher: {
+        '@id': 'https://codepedia.md/#org',
+      },
     })
   })
 })

@@ -6,6 +6,32 @@ import { listPublished, type BlogLocale } from '#layers/blog/server/repository/b
 import type { SitemapPage } from '#layers/core/shared/types/sitemap'
 import { getSiteUrl } from '#layers/core/server/utils/getSiteUrl'
 
+import { readFileSync, readdirSync } from 'node:fs'
+import { join } from 'node:path'
+import { parseFrontMatter } from '#layers/blog/domain/frontMatter'
+
+export async function listBlogPostsForLlms(event: H3Event, locale: BlogLocale): Promise<RssPost[]> {
+  return listPublishedBlogPosts(event, locale)
+}
+
+export function listRawBlogPostsForLlms(locale: BlogLocale): { slug: string; title: string; content: string }[] {
+  try {
+    const dir = join(process.cwd(), 'layers/blog/content', locale)
+    const files = readdirSync(dir).filter((f) => f.endsWith('.md')).sort()
+    return files.map((file) => {
+      const raw = readFileSync(join(dir, file), 'utf-8')
+      const fm = parseFrontMatter(raw)
+      const body = raw.replace(/^---[\s\S]*?---\r?\n/, '').trim()
+      const slug = file.replace(/\.md$/, '')
+      const title = typeof fm.title === 'string' ? fm.title : slug
+      return { slug, title, content: body }
+    })
+  } catch (error) {
+    console.warn('[llms] failed reading raw blog posts', error)
+    return []
+  }
+}
+
 async function listPublishedBlogPosts(event: H3Event, locale: BlogLocale): Promise<RssPost[]> {
   const rows = await listPublished(event, locale)
   return rows.map((row) => ({

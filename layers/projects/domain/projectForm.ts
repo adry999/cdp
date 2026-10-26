@@ -4,11 +4,19 @@ import type { ChecklistInput } from '#layers/projects/domain/adminProjectList'
 import { usableGallery, type ProjectImageInput } from '#layers/projects/domain/projectPayload'
 import type { AdminProjectRow } from '#layers/projects/domain/projectSelect'
 import {
+  toAdapt,
   toConstraints,
+  toDelivered,
+  toFaq,
   toFigures,
+  toGalleryHeading,
   toIncident,
   toLinks,
   toStrings,
+  type CaseAdapt,
+  type CaseDelivered,
+  type CaseFaq,
+  type CaseGalleryHeading,
   type LinkKind,
   type StarConstraint,
   type StarFigure,
@@ -63,6 +71,14 @@ export interface StarForm {
   savings: PerLocale<StarFigure[]>
 }
 
+/** The sections added after STAR: each locale has its own jsonb column. */
+export interface CaseSectionsForm {
+  adapt: PerLocale<CaseAdapt>
+  delivered: PerLocale<CaseDelivered>
+  faq: PerLocale<CaseFaq>
+  galleryHeading: PerLocale<CaseGalleryHeading>
+}
+
 export interface ProjectForm {
   slugRo: string
   slugEn: string
@@ -94,6 +110,7 @@ export interface ProjectForm {
   changesBody: Bilingual
   resultBody: Bilingual
   star: StarForm
+  sections: CaseSectionsForm
   screensDemo: boolean
   stats: StatForm[]
   quote: Bilingual
@@ -136,6 +153,27 @@ function toStarForm(row: AdminProjectRow | null): StarForm {
     incident: { ro: toIncidentForm(row?.star_incident_ro), en: toIncidentForm(row?.star_incident_en) },
     gains: { ro: toFigures(row?.star_gains_ro), en: toFigures(row?.star_gains_en) },
     savings: { ro: toFigures(row?.star_savings_ro), en: toFigures(row?.star_savings_en) },
+  }
+}
+
+function perLocale<T>(
+  ro: Json | null | undefined,
+  en: Json | null | undefined,
+  parse: (value: Json | null | undefined) => T | null,
+  empty: () => T,
+): PerLocale<T> {
+  return { ro: parse(ro) ?? empty(), en: parse(en) ?? empty() }
+}
+
+function toSectionsForm(row: AdminProjectRow | null): CaseSectionsForm {
+  return {
+    adapt: perLocale(row?.adapt_ro, row?.adapt_en, toAdapt, () => ({ heading: '', body: '', modules: [], integrations: [], safety: [] })),
+    delivered: perLocale(row?.delivered_ro, row?.delivered_en, toDelivered, () => ({ label: '', items: [] })),
+    faq: perLocale(row?.faq_ro, row?.faq_en, toFaq, () => ({ heading: '', items: [] })),
+    galleryHeading: perLocale(row?.gallery_heading_ro, row?.gallery_heading_en, toGalleryHeading, () => ({
+      heading: '',
+      note: '',
+    })),
   }
 }
 
@@ -186,6 +224,7 @@ export function toProjectForm(row: AdminProjectRow | null): ProjectForm {
     changesBody: bilingual(row?.changes_body_ro ?? null, row?.changes_body_en ?? null),
     resultBody: bilingual(row?.result_body_ro ?? null, row?.result_body_en ?? null),
     star: toStarForm(row),
+    sections: toSectionsForm(row),
     screensDemo: row?.screens_demo ?? false,
 
     stats: (row?.project_stats ?? []).map((stat) => ({ value: stat.value, label: bilingual(stat.label_ro, stat.label_en) })),
@@ -230,6 +269,37 @@ function cleanIncident(incident: IncidentForm): Json {
   const risk = incident.risk.trim()
   const action = incident.action.trim()
   return found || risk || action || (Array.isArray(outcome) && outcome.length) ? { found, risk, action, outcome } : null
+}
+
+function cleanPairs(items: StarConstraint[]): { k: string; v: string }[] {
+  return items.map((c) => ({ k: c.k.trim(), v: c.v.trim() })).filter((c) => c.k || c.v)
+}
+
+// A section is stored only when it has content; a heading alone would show nothing.
+function cleanAdapt(adapt: CaseAdapt): Json {
+  const body = adapt.body.trim()
+  const modules = cleanPairs(adapt.modules)
+  const integrations = cleanPairs(adapt.integrations)
+  const safety = cleanPairs(adapt.safety)
+  return body || modules.length || integrations.length || safety.length
+    ? { heading: adapt.heading.trim(), body, modules, integrations, safety }
+    : null
+}
+
+function cleanDelivered(delivered: CaseDelivered): Json {
+  const items = cleanPairs(delivered.items)
+  return items.length ? { label: delivered.label.trim(), items } : null
+}
+
+function cleanFaq(faq: CaseFaq): Json {
+  const items = faq.items.map((item) => ({ q: item.q.trim(), a: item.a.trim() })).filter((item) => item.q && item.a)
+  return items.length ? { heading: faq.heading.trim(), items } : null
+}
+
+function cleanGalleryHeading(gallery: CaseGalleryHeading): Json {
+  const heading = gallery.heading.trim()
+  const note = gallery.note.trim()
+  return heading || note ? { heading, note } : null
 }
 
 /** The argument of the `save_project` RPC; an empty English field is stored as null. */
@@ -288,6 +358,14 @@ export function toSavePayload(form: ProjectForm, projectId: string | null): Save
     star_gains_en: cleanFigures(form.star.gains.en),
     star_savings_ro: cleanFigures(form.star.savings.ro),
     star_savings_en: cleanFigures(form.star.savings.en),
+    adapt_ro: cleanAdapt(form.sections.adapt.ro),
+    adapt_en: cleanAdapt(form.sections.adapt.en),
+    delivered_ro: cleanDelivered(form.sections.delivered.ro),
+    delivered_en: cleanDelivered(form.sections.delivered.en),
+    faq_ro: cleanFaq(form.sections.faq.ro),
+    faq_en: cleanFaq(form.sections.faq.en),
+    gallery_heading_ro: cleanGalleryHeading(form.sections.galleryHeading.ro),
+    gallery_heading_en: cleanGalleryHeading(form.sections.galleryHeading.en),
     screens_demo: form.screensDemo,
     context_body_ro: form.contextBody.ro || null,
     context_body_en: form.contextBody.en || null,

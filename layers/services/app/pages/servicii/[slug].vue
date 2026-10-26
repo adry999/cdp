@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { visibleServices } from '#layers/core/shared/utils/visibleServices'
 import { SERVICES } from '#layers/services/data/services'
+import { faqPage } from '#layers/core/shared/utils/jsonLd'
 import { serviceJsonLd } from '#layers/services/domain/seo'
 import type { Service } from '#layers/services/domain/service'
 
@@ -26,6 +27,13 @@ usePageSeo({
   description: () => pick(seoDescription.ro, seoDescription.en, locale.value),
 })
 
+const serviceFaqItems = computed(() =>
+  (service.faq ?? []).map((item) => ({
+    question: pick(item.question.ro, item.question.en, locale.value),
+    answer: pick(item.answer.ro, item.answer.en, locale.value),
+  })),
+)
+
 const jsonLd = computed(() => {
   const name = pick(service.name.ro, service.name.en, locale.value)
   const url = `${siteUrl}${route.path}`
@@ -45,6 +53,7 @@ const jsonLd = computed(() => {
 useJsonLd(
   () => jsonLd.value.service,
   () => jsonLd.value.breadcrumbs,
+  () => (serviceFaqItems.value.length ? faqPage(serviceFaqItems.value) : null),
 )
 </script>
 
@@ -56,6 +65,7 @@ useJsonLd(
     <ServicesProcess :service="service" />
     <ServicesRelatedProjects :service="service" />
     <BlogLinked number="04" :service="service.routeSlug.ro" />
+    <ServicesFaq :service="service" />
     <ServicesCta :service="service" />
   </div>
 </template>

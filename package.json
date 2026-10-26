@@ -43,7 +43,7 @@
     "png-to-ico": "^3.0.2",
     "sharp": "^0.35.3",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.11",
+    "vitest": "^4.1.12",
     "vue-tsc": "^3.3.11"
   },
   "overrides": {

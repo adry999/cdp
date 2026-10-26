@@ -1,5 +1,6 @@
 import { buildGaEvent } from '#layers/consent/domain/analyticsEvent'
 import { hasConsent } from '#layers/consent/domain/consent'
+import { cookieDomainCandidates } from '#layers/consent/domain/cookieDomains'
 import { consentSignals } from '#layers/consent/domain/consentSignals'
 import { buildGaInitSequence } from '#layers/consent/domain/gaInit'
 import { useCookieConsent } from '#layers/consent/state/useCookieConsent'
@@ -39,13 +40,18 @@ function installMetaPixel(): MetaPixel {
   window._fbq ??= fbq
   const script = document.createElement('script')
   script.async = true
+  script.defer = true
   script.src = 'https://connect.facebook.net/en_US/fbevents.js'
   document.head.appendChild(script)
   return fbq
 }
 
+// GA and the Pixel write their cookies on the registrable domain, so a path-only expiry on
+// the current host would leave them behind: expire each name with and without every `domain=`.
 function clearCookie(name: string) {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`
+  const expired = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`
+  document.cookie = expired
+  for (const domain of cookieDomainCandidates(location.hostname)) document.cookie = `${expired}; domain=${domain}`
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -72,6 +78,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     const script = document.createElement('script')
     script.async = true
+    script.defer = true
     script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`
     document.head.appendChild(script)
   }
@@ -124,8 +131,18 @@ export default defineNuxtPlugin((nuxtApp) => {
     if (call) window.gtag(...call)
   })
 
-  injectGaIfConsented()
-  injectMetaPixelIfConsented()
+  const deferInit = (cb: () => void) => {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(cb, { timeout: 3000 })
+    } else {
+      setTimeout(cb, 1000)
+    }
+  }
+
+  deferInit(() => {
+    injectGaIfConsented()
+    injectMetaPixelIfConsented()
+  })
 
   watch(consent, () => {
     injectGaIfConsented()
