@@ -44,8 +44,13 @@ schimbă din proprie inițiativă, chiar dacă un document mai vechi spune altce
   `.claude/skills/`, `docs/`) fără acordul explicit al omului care lucrează cu tine. O
   regulă nouă sau schimbată intră într-un PR separat, care actualizează acest fișier.
 - **Fără dependențe noi** (inclusiv devDependencies) fără acordul ambilor developeri.
-- Totul prin branch + PR spre `main`. CI rulează `lint`, `typecheck`, `vitest` și
-  Playwright; un PR cu CI roșu nu intră în `main`.
+- Totul prin branch + PR, branch-ul pornește din `main`. Ce trebuie testat merge întâi
+  printr-un PR spre `dev` și se testează acolo; abia apoi același branch primește un PR
+  spre `main`. Ce e deja verificat (de exemplu doar documentație) merge direct spre
+  `main`. `main` e ultima treaptă înainte de deploy (`main` → `production`, vezi
+  `docs/DEPLOY_HOSTINGER.md`): un PR spre `main` nu se mergeuiește până nu e testat.
+  CI rulează `lint`, `typecheck`, `vitest` și Playwright; un PR cu CI roșu nu intră nici
+  în `dev`, nici în `main`.
 - Commit-uri mici, Conventional Commits, în engleză, la imperativ.
 - Fiecare PR nou adaugă un rând în `docs/PR_HISTORY.md` (număr, tip, ce face, o linie,
   în română), în același PR, la sfârșitul listei. PR-urile închise fără merge se

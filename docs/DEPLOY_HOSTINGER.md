@@ -25,7 +25,9 @@ Domenii: `codepedia.studio` (EN, principal) și `codepedia.md` (RO). Ambele serv
 O singură aplicație servește ambele domenii, deci un singur deploy le actualizează pe
 amândouă.
 
-1. Schimbările intră întâi în `main`, prin PR-urile obișnuite (CI verde).
+1. Ce trebuie testat intră întâi în `dev` (PR din branch-ul de lucru, CI verde) și se
+   testează acolo; apoi același branch intră în `main` printr-un PR separat. Ce e deja
+   verificat merge direct spre `main`. Un PR spre `main` se mergeuiește doar după teste.
 2. Release: PR de la `main` spre `production`
    (`gh pr create --base production --head main --title "release: <ce intră>"`), merge
    după ce CI e verde. Merge commit, ca în PR-urile #87, #89, #93.
