@@ -8,6 +8,7 @@ const LINK_KIND_LABELS: Record<LinkKind, string> = {
   live: 'Site live',
   preview: 'Preview CODEPEDIA',
   figma: 'Figma',
+  walkthrough: 'Cere o prezentare (CTA hero)',
 }
 
 const form = defineModel<ProjectForm>({ required: true })
@@ -98,7 +99,7 @@ function removeTech(index: number) {
                   <option v-for="kind in LINK_KINDS" :key="kind" :value="kind">{{ LINK_KIND_LABELS[kind] }}</option>
                 </select>
               </div>
-              <AdminField v-model="link.url" :label="`URL link ${i + 1}`" type="url" />
+              <AdminField v-model="link.url" :label="`URL link ${i + 1}`" :type="link.kind === 'walkthrough' ? 'text' : 'url'" />
             </div>
             <AdminFieldPair v-model:ro="link.note.ro" v-model:en="link.note.en" :label="`Notă link ${i + 1} (opțional)`" />
             <div class="flex gap-3 eyebrow-sm text-muted">

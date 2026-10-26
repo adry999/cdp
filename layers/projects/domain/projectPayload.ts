@@ -1,6 +1,7 @@
 // Validation shared by the admin editor and the server route that persists it — the public
 // API only resolves slugs matching SLUG_RE, so anything else the editor accepts 404s live.
 import { isServiceTagId } from '#layers/core/shared/types/service-tag'
+import { isLinkKind, isLinkUrl } from '#layers/projects/domain/star'
 
 export const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
@@ -39,8 +40,10 @@ export interface ProjectPayloadInput {
   lead: { ro: string; en: string }
   contextBody: { ro: string; en: string }
   serviceTag: string | null
+  /** Free text from the form; empty is allowed, otherwise a 4-digit year. */
+  year?: string
   navServices?: string[]
-  links?: { url: string; note?: { ro: string; en: string } }[]
+  links?: { kind?: string; url: string; note?: { ro: string; en: string } }[]
   gallery: ProjectImageInput[]
 }
 
@@ -48,6 +51,8 @@ export interface ValidationIssue {
   field: string
   message: string
 }
+
+const MIN_YEAR = 1990
 
 const REQUIRED_RO: [keyof ProjectPayloadInput, string][] = [
   ['title', 'Titlu'],
@@ -85,6 +90,14 @@ export function validateProjectPayload(input: ProjectPayloadInput): ValidationIs
     }
   }
 
+  const year = input.year?.trim() ?? ''
+  if (year) {
+    const max = new Date().getFullYear() + 1
+    if (!/^\d{4}$/.test(year) || Number(year) < MIN_YEAR || Number(year) > max) {
+      issues.push({ field: 'year', message: `Anul trebuie să fie între ${MIN_YEAR} și ${max}.` })
+    }
+  }
+
   if (input.serviceTag && !isServiceTagId(input.serviceTag)) {
     issues.push({ field: 'serviceTag', message: 'Serviciu invalid.' })
   }
@@ -98,8 +111,9 @@ export function validateProjectPayload(input: ProjectPayloadInput): ValidationIs
     // A blank row is dropped on save; one with notes but no URL would vanish silently.
     if (!url && (link.note?.ro.trim() || link.note?.en.trim())) {
       issues.push({ field: `links.${i}`, message: `Linkul ${i + 1} are note, dar nu are URL.` })
-    } else if (url && !/^https?:\/\//.test(url)) {
-      issues.push({ field: `links.${i}`, message: `Linkul ${i + 1} trebuie să înceapă cu https://.` })
+    } else if (url && !(isLinkKind(link.kind) ? isLinkUrl(link.kind, url) : /^https?:\/\//.test(url))) {
+      const hint = link.kind === 'walkthrough' ? 'https:// sau cu /' : 'https://'
+      issues.push({ field: `links.${i}`, message: `Linkul ${i + 1} trebuie să înceapă cu ${hint}.` })
     }
   })
 

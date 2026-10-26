@@ -43,7 +43,7 @@
     "png-to-ico": "^3.0.2",
     "sharp": "^0.35.3",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.11",
+    "vitest": "^4.1.12",
     "vue-tsc": "^3.3.11"
   },
   "overrides": {
@@ -51,6 +51,9 @@
     "esbuild": "^0.28.1",
     "@nuxtjs/i18n": {
       "devalue": "^5.9.4"
+    },
+    "@nuxt/content": {
+      "zod": "^4.6.6"
     }
   }
 }

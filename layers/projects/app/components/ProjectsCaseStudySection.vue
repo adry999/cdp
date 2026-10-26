@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-  number: string
+  number?: string
   label: string
   heading?: string
   sectionId?: string

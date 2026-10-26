@@ -1,7 +1,18 @@
 import type { Json } from '#layers/core/shared/types/database.types'
 import { pick } from '#layers/core/shared/utils/pick'
 import { isServiceTagId } from '#layers/core/shared/types/service-tag'
-import { pickJson, toConstraints, toFigures, toIncident, toLinks, toStrings } from '#layers/projects/domain/star'
+import {
+  pickJson,
+  toAdapt,
+  toConstraints,
+  toDelivered,
+  toFaq,
+  toFigures,
+  toGalleryHeading,
+  toIncident,
+  toLinks,
+  toStrings,
+} from '#layers/projects/domain/star'
 
 export interface ProjectFactRow {
   label_ro: string
@@ -95,6 +106,14 @@ export interface ProjectRow extends ProjectCardRow {
   star_gains_en: Json | null
   star_savings_ro: Json | null
   star_savings_en: Json | null
+  adapt_ro: Json | null
+  adapt_en: Json | null
+  delivered_ro: Json | null
+  delivered_en: Json | null
+  faq_ro: Json | null
+  faq_en: Json | null
+  gallery_heading_ro: Json | null
+  gallery_heading_en: Json | null
   project_facts: ProjectFactRow[]
   project_stack: ProjectStackRow[]
   project_stats: ProjectStatRow[]
@@ -190,7 +209,11 @@ export function mapProject(row: ProjectRow, locale: Locale) {
         savings: pickJson(row.star_savings_ro, row.star_savings_en, locale, toFigures),
         incident: pickJson(row.star_incident_ro, row.star_incident_en, locale, toIncident),
       },
-      // Every real screenshot once, hero first, for the 06 grid and the lightbox.
+      adapt: pickJson(row.adapt_ro, row.adapt_en, locale, toAdapt),
+      delivered: pickJson(row.delivered_ro, row.delivered_en, locale, toDelivered),
+      faq: pickJson(row.faq_ro, row.faq_en, locale, toFaq),
+      galleryHeading: pickJson(row.gallery_heading_ro, row.gallery_heading_en, locale, toGalleryHeading),
+      // Every real screenshot once, hero first, for the gallery and the lightbox.
       shots: [
         ...(row.hero_path ? [{ path: row.hero_path, alt: pick(row.hero_alt_ro ?? row.title_ro, row.hero_alt_en, locale) }] : []),
         ...galleryImages.map((img) => ({ path: img.path as string, alt: pick(img.alt_ro, img.alt_en, locale) })),

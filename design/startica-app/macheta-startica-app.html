@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap"><style>body{margin:0;background:#FAF8F4;color:#0B0B0B;font-family:'Inter Tight',Helvetica,Arial,sans-serif;font-size:17px;line-height:1.6;letter-spacing:-0.004em;-webkit-font-smoothing:antialiased}a{color:#0B0B0B;text-decoration:underline;text-decoration-color:#FF4D14;text-underline-offset:3px}a:hover{text-decoration-color:currentColor}*{box-sizing:border-box}</style></helmet>
+
+<sc-if value="{{ mod }}" hint-placeholder-val="{{ true }}">
+<div style="background:#0B0B0B;color:#FAF8F4">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(28px,4vw,48px) clamp(20px,5vw,64px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:clamp(20px,3vw,32px)">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#9C978E"><span style="color:#FF4D14">SEO</span> / Rezultat în Google</span>
+      <div style="background:#FFFFFF;color:#202124;border-radius:8px;padding:18px 20px;font-family:Arial,sans-serif;display:flex;flex-direction:column;gap:4px">
+        <span style="font-size:12px;color:#4d5156">codepedia.md › proiecte › startica-app</span>
+        <span style="font-size:20px;line-height:1.3;color:#1a0dab">Startica: program de evidență pentru grădiniță · CODEPEDIA</span>
+        <span style="font-size:14px;line-height:1.55;color:#4d5156">Aplicație desktop pentru grădinițe private: copii, prezență, plăți în euro și lei la cursul oficial, salarii, SMS și raport contabil. Merge offline.</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#9C978E"><span style="color:#FF4D14">Pe pagină</span> / Ce arătăm și ce nu</span>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:15px;line-height:1.5;color:#B4AFA6">
+        <span><span style="color:#FAF8F4">Arătăm:</span> problema, abordarea, rezultatul, 3 slide-uri din prezentare.</span>
+        <span><span style="color:#FAF8F4">Păstrăm pentru întâlnire:</span> toate ecranele, regulile de business, design system-ul, detaliile tehnice.</span>
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<header style="border-bottom:1px solid #E2DED6;background:#FAF8F4">
+  <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px);height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <img src="../../public/brand/codepedia-wordmark.svg" alt="CODEPEDIA" style="height:18px;display:block">
+    <nav style="display:flex;align-items:center;gap:clamp(16px,2.5vw,32px);font-size:15px;flex-wrap:wrap">
+      <span>Servicii ▾</span><span>Proiecte</span><span>Blog</span>
+      <span style="border:1px solid #0B0B0B;border-radius:4px;padding:8px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em">Discută un proiect →</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;color:#6B6862">RO/EN</span>
+    </nav>
+  </div>
+</header>
+
+<section style="position:relative;overflow:hidden;background-image:radial-gradient(#E2DED6 1px,transparent 1.2px);background-size:22px 22px">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,7vw,96px) clamp(20px,5vw,64px) clamp(32px,4vw,56px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">00</span> / Studiu de caz</span></div>
+    <div style="min-width:0;flex:1 1 560px">
+      <div style="display:flex;flex-wrap:wrap;gap:8px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span>Aplicație desktop</span><span>Windows</span><span>Plăți EUR/MDL</span><span>Lucrează offline</span></div>
+      <h1 style="margin:20px 0 0;max-width:22ch;font-size:clamp(30px,5vw,56px);font-weight:600;line-height:1.05;letter-spacing:-0.025em;text-wrap:pretty">Startica: aplicația de evidență pentru grădinițe private</h1>
+      <p style="margin:clamp(20px,2.5vw,28px) 0 0;max-width:60ch;font-size:clamp(16px,1.4vw,18px);color:#6B6862;text-wrap:pretty">Aplicație desktop pentru grădinițe private: copii, prezență, plăți în euro și lei la cursul oficial, salarii, SMS și raport contabil. Merge offline.</p>
+      <div style="margin-top:28px;display:flex;flex-wrap:wrap;gap:10px">
+        <span style="min-height:44px;display:flex;flex-direction:column;justify-content:center;gap:2px;border:1px solid #0B0B0B;border-radius:4px;background:#0B0B0B;color:#FAF8F4;padding:10px 16px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em">Cere o prezentare</span><span style="font-size:13px;opacity:.7">Îți arătăm aplicația în detaliu</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+<div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px) clamp(32px,4vw,56px)">
+  <img src="../png/01-coperta.png" alt="Startica, aplicație de administrare pentru grădiniță: coperta prezentării cu dashboard-ul aplicației" style="display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border:1px solid #E2DED6;border-radius:4px">
+  <div style="margin-top:12px;display:flex;align-items:flex-start;gap:12px;border:1px solid #E2DED6;border-radius:4px;background:#F5F2EC;padding:14px 16px">
+    <span style="flex:none;margin-top:2px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#C2370A">Date demo</span>
+    <span style="font-size:15px;line-height:1.5;color:#3d3b37;text-wrap:pretty">Toate ecranele de pe această pagină folosesc date demonstrative. Numele copiilor și ale părinților, telefoanele, sumele și rechizitele bancare sunt inventate. Datele reale ale grădiniței nu sunt publicate.</span>
+  </div>
+</div>
+
+<section style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,5vw,72px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">Date</span></div>
+    <div style="min-width:0;flex:1 1 560px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:16px">
+      <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">Client</div><div style="margin-top:8px;font-size:16px;font-weight:500">Grădiniță privată</div></div>
+      <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">Pentru cine</div><div style="margin-top:8px;font-size:16px;font-weight:500">Grădinițe private, centre after-school, rețele cu filiale</div></div>
+      <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">Tip</div><div style="margin-top:8px;font-size:16px;font-weight:500">Aplicație desktop pentru Windows</div></div>
+      <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">Domenii</div><div style="margin-top:8px;font-size:16px;font-weight:500">Copii, bani, echipă</div></div>
+      <div style="border:1px solid #E2DED6;border-radius:4px;background:#FAF8F4;padding:20px"><div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">Filiale</div><div style="margin-top:8px;font-size:16px;font-weight:500">2+</div></div>
+    </div>
+  </div>
+</section>
+
+<section style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">01</span> / Situație</span></div>
+    <div style="min-width:0;flex:1 1 560px">
+      <h2 style="margin:0;max-width:28ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em">Problema de business</h2>
+      <p style="margin:20px 0 0;max-width:64ch;color:#6B6862;text-wrap:pretty">O grădiniță privată cu mai multe filiale are de ținut împreună copiii, plățile, prezența și echipa. Taxa e stabilită în euro, părinții plătesc în lei, iar fiecare plată trebuie convertită la cursul zilei și regăsită apoi în raportul pentru contabilitate.</p>
+    </div>
+  </div>
+</section>
+
+<section style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">02</span> / Sarcină</span></div>
+    <div style="min-width:0;flex:1 1 560px">
+      <h2 style="margin:0;max-width:28ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em;text-wrap:pretty">Totul într-un singur loc, ca directoarea să vadă oricând cine a plătit, și fără internet.</h2>
+      <div style="margin-top:clamp(24px,3vw,36px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">Constrângeri</div>
+      <div style="margin-top:12px;border-bottom:1px solid #E2DED6">
+        <div style="display:flex;flex-wrap:wrap;gap:6px clamp(16px,3vw,40px);border-top:1px solid #E2DED6;padding:16px 0"><span style="flex:0 0 180px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">Două monede</span><span style="min-width:0;flex:1 1 280px;font-size:16px">Prețul în euro, încasarea în lei la cursul oficial al zilei.</span></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px clamp(16px,3vw,40px);border-top:1px solid #E2DED6;padding:16px 0"><span style="flex:0 0 180px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">Fără internet</span><span style="min-width:0;flex:1 1 280px;font-size:16px">Aplicația merge complet pe calculator.</span></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px clamp(16px,3vw,40px);border-top:1px solid #E2DED6;padding:16px 0"><span style="flex:0 0 180px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">Date sensibile</span><span style="min-width:0;flex:1 1 280px;font-size:16px">Datele copiilor și salariile, vizibile doar cui trebuie.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">03</span> / Acțiune</span></div>
+    <div style="min-width:0;flex:1 1 560px">
+      <h2 style="margin:0;max-width:28ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em">Soluția oferită</h2>
+      <p style="margin:20px 0 0;max-width:64ch;color:#6B6862;text-wrap:pretty">Nu am început cu ecrane. Am pornit de la ziua de lucru a grădiniței: dimineața prezența, peste zi plățile, seara închiderea casei, la final de lună raportul pentru contabilă. Am scris regulile împreună cu clientul, apoi am construit aplicația în ordinea zilei.</p>
+      <div style="margin-top:clamp(28px,3.5vw,44px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">A1</span> · Business</div>
+      <div style="margin-top:12px;border-bottom:1px solid #E2DED6;font-size:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:0 clamp(24px,3vw,40px)">
+        <div style="border-top:1px solid #E2DED6;padding:16px 0;text-wrap:pretty">Euro rămâne doar prețul; tot ce se încasează și se datorează e în lei.</div>
+        <div style="border-top:1px solid #E2DED6;padding:16px 0;text-wrap:pretty">Suma se împarte automat pe luni; restul devine avans.</div>
+        <div style="border-top:1px solid #E2DED6;padding:16px 0;text-wrap:pretty">Prezența se marchează copil cu copil, fără „toți prezenți”.</div>
+        <div style="border-top:1px solid #E2DED6;padding:16px 0;text-wrap:pretty">SMS-urile către părinți pleacă doar la cererea unui om.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">04</span> / Rezultat</span></div>
+    <div style="min-width:0;flex:1 1 560px">
+      <h2 style="margin:0;max-width:28ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em">Ce a câștigat clientul</h2>
+      <p style="margin:20px 0 0;max-width:64ch;color:#6B6862;text-wrap:pretty">Grădinița lucrează acum într-o singură aplicație. Directoarea vede pe un ecran cine a plătit și cine e în urmă, restanțele se calculează singure, iar raportul pentru contabilă iese direct în Excel.</p>
+      <div style="margin-top:clamp(28px,3.5vw,44px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:16px">
+        <div style="border-top:1px solid #0B0B0B;padding-top:16px"><div style="font-size:clamp(34px,4.4vw,56px);font-weight:600;line-height:1;letter-spacing:-0.03em">2+</div><div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">filiale, o aplicație</div></div>
+        <div style="border-top:1px solid #0B0B0B;padding-top:16px"><div style="font-size:clamp(34px,4.4vw,56px);font-weight:600;line-height:1;letter-spacing:-0.03em">11</div><div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">module</div></div>
+        <div style="border-top:1px solid #0B0B0B;padding-top:16px"><div style="font-size:clamp(34px,4.4vw,56px);font-weight:600;line-height:1;letter-spacing:-0.03em">0</div><div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">internet necesar</div></div>
+        <div style="border-top:1px solid #0B0B0B;padding-top:16px"><div style="font-size:clamp(34px,4.4vw,56px);font-weight:600;line-height:1;letter-spacing:-0.03em">6 luni</div><div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">mentenanță inclusă</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">05</span> / Adaptare</span></div>
+    <div style="min-width:0;flex:1 1 560px">
+      <h2 style="margin:0;max-width:28ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em">Module și integrări după nevoile clientului</h2>
+      <p style="margin:20px 0 0;max-width:64ch;color:#6B6862;text-wrap:pretty">Startica pornește de la o bază gata de folosit. Fiecare modul se activează, se modifică sau se construiește de la zero pentru regulile grădiniței, iar aplicația se leagă de serviciile pe care le folosiți deja.</p>
+      <div style="margin-top:clamp(28px,3.5vw,44px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(24px,3vw,40px)">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">M</span> · Module</div>
+          <div style="margin-top:12px;border-bottom:1px solid #E2DED6">
+            <div style="border-top:1px solid #E2DED6;padding:16px 0;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">Pornite pe filială</span><span style="font-size:15px;color:#6B6862">Fiecare filială folosește doar modulele de care are nevoie</span></div>
+            <div style="border-top:1px solid #E2DED6;padding:16px 0;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">Reguli proprii</span><span style="font-size:15px;color:#6B6862">Taxe, reduceri, servicii și moduri de plată după contractele voastre</span></div>
+            <div style="border-top:1px solid #E2DED6;padding:16px 0;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">Module noi</span><span style="font-size:15px;color:#6B6862">Activități, cercuri, transport sau orice evidență specifică</span></div>
+            <div style="border-top:1px solid #E2DED6;padding:16px 0;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">Documente și rapoarte</span><span style="font-size:15px;color:#6B6862">Acorduri, chitanțe și rapoarte în formatul vostru</span></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">I</span> · Integrări</div>
+          <div style="margin-top:12px;border-bottom:1px solid #E2DED6">
+            <div style="border-top:1px solid #E2DED6;padding:16px 0;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">Cursul zilei</span><span style="font-size:15px;color:#6B6862">Cursul oficial preluat automat și înghețat pe fiecare plată</span></div>
+            <div style="border-top:1px solid #E2DED6;padding:16px 0;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">SMS</span><span style="font-size:15px;color:#6B6862">Mesaje către părinți din șabloane, cu previzualizare</span></div>
+            <div style="border-top:1px solid #E2DED6;padding:16px 0;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">Bot Telegram</span><span style="font-size:15px;color:#6B6862">Notificări către părinți și echipă</span></div>
+            <div style="border-top:1px solid #E2DED6;padding:16px 0;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">Excel, imprimante și altele</span><span style="font-size:15px;color:#6B6862">Export pentru contabil, bon termic de 58 mm, plus orice serviciu cu API</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">06</span> / Siguranță</span></div>
+    <div style="min-width:0;flex:1 1 560px">
+      <h2 style="margin:0;max-width:28ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em;text-wrap:pretty">Siguranța datelor</h2>
+      <div style="margin-top:clamp(28px,3.5vw,44px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:24px">
+        <div style="border-top:1px solid #0B0B0B;padding-top:16px;display:flex;flex-direction:column;gap:6px"><span style="font-weight:500">Datele stau la voi</span><span style="font-size:15px;color:#6B6862">Pe calculatoarele grădiniței, nu într-un cloud străin</span></div>
+        <div style="border-top:1px solid #0B0B0B;padding-top:16px;display:flex;flex-direction:column;gap:6px"><span style="font-weight:500">Backup automat</span><span style="font-size:15px;color:#6B6862">Copii pe zile și luni, plus copie într-un folder extern</span></div>
+        <div style="border-top:1px solid #0B0B0B;padding-top:16px;display:flex;flex-direction:column;gap:6px"><span style="font-weight:500">Salarii sub PIN</span><span style="font-size:15px;color:#6B6862">Doar cine are PIN-ul vede și plătește salariile</span></div>
+        <div style="border-top:1px solid #0B0B0B;padding-top:16px;display:flex;flex-direction:column;gap:6px"><span style="font-weight:500">Istoric complet</span><span style="font-size:15px;color:#6B6862">Fiecare modificare, cu valoarea veche și cea nouă</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">07</span> / Proces</span></div>
+    <div style="min-width:0;flex:1 1 560px">
+      <h2 style="margin:0;max-width:28ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em;text-wrap:pretty">Cum lucrăm</h2>
+      <div style="margin-top:clamp(28px,3.5vw,44px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:24px">
+        <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #E2DED6;padding-top:16px"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#C2370A">01</span></div><span style="font-size:19px;font-weight:500;letter-spacing:-0.02em">Discuție și analiză</span><span style="font-size:15px;color:#6B6862;text-wrap:pretty">Pornim de la ziua de lucru a grădiniței și scriem regulile împreună.</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #E2DED6;padding-top:16px"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#C2370A">02</span></div><span style="font-size:19px;font-weight:500;letter-spacing:-0.02em">Configurare și import</span><span style="font-size:15px;color:#6B6862;text-wrap:pretty">Modulele, taxele și datele existente, aduse din Excel.</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #E2DED6;padding-top:16px"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#C2370A">03</span></div><span style="font-size:19px;font-weight:500;letter-spacing:-0.02em">Instruire</span><span style="font-size:15px;color:#6B6862;text-wrap:pretty">Prezentăm aplicația și instruim echipa, pe datele ei.</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #E2DED6;padding-top:16px"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#C2370A">04</span></div><span style="font-size:19px;font-weight:500;letter-spacing:-0.02em">Mentenanță</span><span style="font-size:15px;color:#6B6862;text-wrap:pretty">6 luni după lansare: erori, situații neprevăzute și ajutor pentru echipă pe tot parcursul.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-top:1px solid #E2DED6;background:#fffaf0;position:relative;overflow:hidden">
+  <span style="position:absolute;right:-120px;top:-140px;width:420px;height:420px;border-radius:50%;background:#f3a6be;opacity:.55"></span>
+  <span style="position:absolute;right:220px;top:-80px;width:200px;height:200px;border-radius:50%;background:#f9d257;opacity:.6"></span>
+  <div style="position:relative;max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">08</span> / Prezentare</span></div>
+    <div style="min-width:0;flex:1 1 560px">
+      <h2 style="margin:0;max-width:28ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em">Câteva slide-uri din prezentare</h2>
+      <div style="margin-top:clamp(28px,3.5vw,44px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:24px">
+        <figure style="grid-column:1/-1;margin:0;display:flex;flex-direction:column;gap:10px;min-width:0"><img src="../png/04-dashboard.png" alt="Dashboard-ul Startica: încasări, cheltuieli și ce cere atenție în luna curentă" loading="lazy" style="display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;box-shadow:0 18px 40px -18px rgba(58,71,80,.35)"><figcaption style="font-size:14px;color:#55616a">Dashboard</figcaption></figure>
+        <figure style="margin:0;display:flex;flex-direction:column;gap:10px;min-width:0"><img src="../png/21-achitare-noua.png" alt="Achitare nouă: taxa în euro, plata în lei la cursul oficial, repartizată pe luni" loading="lazy" style="display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;box-shadow:0 18px 40px -18px rgba(58,71,80,.35)"><figcaption style="font-size:14px;color:#55616a">Plata în lei la cursul zilei</figcaption></figure>
+        <figure style="margin:0;display:flex;flex-direction:column;gap:10px;min-width:0"><img src="../png/29-confirmare-si-nota-de-plata.png" alt="Confirmarea de plată și nota de plată pe A4" loading="lazy" style="display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;box-shadow:0 18px 40px -18px rgba(58,71,80,.35)"><figcaption style="font-size:14px;color:#55616a">Tipărituri</figcaption></figure>
+      </div>
+      <p style="margin:20px 0 0;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#55616a">Date demonstrative, inventate · prezentarea completă o arătăm la întâlnire</p>
+      <div style="margin-top:clamp(32px,4vw,48px);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862">Ce am livrat</div>
+      <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:0 clamp(24px,3vw,40px);border-bottom:1px solid #ddd5c6">
+        <div style="border-top:1px solid #ddd5c6;padding:16px 0;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">Aplicația desktop</span><span style="font-size:15px;color:#55616a">Pentru Windows, cu date locale</span></div>
+        <div style="border-top:1px solid #ddd5c6;padding:16px 0;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">Tipărituri</span><span style="font-size:15px;color:#55616a">Chitanță A4, bon 58 mm, meniu, acorduri</span></div>
+        <div style="border-top:1px solid #ddd5c6;padding:16px 0;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">Design system</span><span style="font-size:15px;color:#55616a">Culori, tipografie și componente</span></div>
+        <div style="border-top:1px solid #ddd5c6;padding:16px 0;display:flex;flex-direction:column;gap:4px"><span style="font-weight:500">Mentenanță</span><span style="font-size:15px;color:#55616a">6 luni după lansare</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">09</span> / Întrebări</span></div>
+    <div style="min-width:0;flex:1 1 560px">
+      <h2 style="margin:0;max-width:28ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em;text-wrap:pretty">Întrebări frecvente</h2>
+      <div style="margin-top:clamp(24px,3vw,36px);border-bottom:1px solid #E2DED6">
+        <details open style="border-top:1px solid #E2DED6;padding:18px 0"><summary style="cursor:pointer;font-size:18px;font-weight:500;letter-spacing:-0.01em;list-style-position:outside">Aplicația merge fără internet?</summary><p style="margin:12px 0 0;max-width:64ch;font-size:16px;color:#6B6862;text-wrap:pretty">Da. Datele stau pe calculatorul grădiniței, iar aplicația lucrează complet offline. Când există internet, calculatoarele se pot sincroniza între ele.</p></details>
+        <details style="border-top:1px solid #E2DED6;padding:18px 0"><summary style="cursor:pointer;font-size:18px;font-weight:500;letter-spacing:-0.01em;list-style-position:outside">Putem aduce datele pe care le avem în Excel?</summary><p style="margin:12px 0 0;max-width:64ch;font-size:16px;color:#6B6862;text-wrap:pretty">Da. La prima pornire, asistentul importă foile Excel și arată pentru fiecare ce devine în aplicație și câte rânduri are.</p></details>
+        <details style="border-top:1px solid #E2DED6;padding:18px 0"><summary style="cursor:pointer;font-size:18px;font-weight:500;letter-spacing:-0.01em;list-style-position:outside">Se potrivește pentru un centru after-school sau un club?</summary><p style="margin:12px 0 0;max-width:64ch;font-size:16px;color:#6B6862;text-wrap:pretty">Da. Modulele se pornesc după nevoie, iar activitățile proprii se adaugă ca servicii sau ca module noi.</p></details>
+        <details style="border-top:1px solid #E2DED6;padding:18px 0"><summary style="cursor:pointer;font-size:18px;font-weight:500;letter-spacing:-0.01em;list-style-position:outside">Unde stau datele și cine le vede?</summary><p style="margin:12px 0 0;max-width:64ch;font-size:16px;color:#6B6862;text-wrap:pretty">Pe calculatoarele voastre. Accesul se dă pe calculator și pe modul, salariile stau sub PIN, iar fiecare modificare rămâne în istoric.</p></details>
+        <details style="border-top:1px solid #E2DED6;padding:18px 0"><summary style="cursor:pointer;font-size:18px;font-weight:500;letter-spacing:-0.01em;list-style-position:outside">Cât durează implementarea?</summary><p style="margin:12px 0 0;max-width:64ch;font-size:16px;color:#6B6862;text-wrap:pretty">Depinde de cerințe și de complexitatea proiectului. Estimarea o facem după prima discuție.</p></details>
+        <details style="border-top:1px solid #E2DED6;padding:18px 0"><summary style="cursor:pointer;font-size:18px;font-weight:500;letter-spacing:-0.01em;list-style-position:outside">Cât costă?</summary><p style="margin:12px 0 0;max-width:64ch;font-size:16px;color:#6B6862;text-wrap:pretty">Prețul depinde de module și de adaptări. Am explicat cum se formează în articolul <a href="https://codepedia.md/blog/cat-costa-o-aplicatie-web">Cât costă o aplicație web și de ce variază atât</a>.</p></details>
+        <details style="border-top:1px solid #E2DED6;padding:18px 0"><summary style="cursor:pointer;font-size:18px;font-weight:500;letter-spacing:-0.01em;list-style-position:outside">Ne ajutați după lansare?</summary><p style="margin:12px 0 0;max-width:64ch;font-size:16px;color:#6B6862;text-wrap:pretty">Da. Prezentăm aplicația, instruim echipa și vă ajutăm pe tot parcursul celor 6 luni de mentenanță.</p></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-top:1px solid #E2DED6">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">10</span> / Din blog</span></div>
+    <div style="min-width:0;flex:1 1 560px">
+      <h2 style="margin:0;max-width:28ch;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.15;letter-spacing:-0.02em;text-wrap:pretty">Din blog</h2>
+      <div style="margin-top:clamp(24px,3vw,36px);max-width:560px;border:1px solid #E2DED6;border-radius:4px;padding:24px;display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;gap:12px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#6B6862"><span style="color:#C2370A">Prețuri</span><span>6 min</span></div>
+        <span style="font-size:19px;font-weight:500;letter-spacing:-0.02em">Cât costă o aplicație web și de ce variază atât</span>
+        <span style="font-size:15px;color:#6B6862">Ce intră în preț, cum se estimează pe module și ce costă după lansare.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#0B0B0B;color:#FAF8F4">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,104px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,48px)">
+    <div style="flex:0 0 160px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#8D8880">Următorul pas</span></div>
+    <div style="min-width:0;flex:1 1 560px;display:flex;flex-direction:column;gap:28px;align-items:flex-start">
+      <h2 style="margin:0;font-size:clamp(26px,3.4vw,40px);font-weight:500;line-height:1.12;letter-spacing:-0.025em">Vrei să vezi aplicația în detaliu?</h2>
+      <p style="margin:0;max-width:56ch;color:#B4AFA6">Îți facem o prezentare pe nevoile grădiniței tale: ce module îți trebuie și ce adaptăm.</p>
+      <span style="min-height:44px;display:flex;align-items:center;border:1px solid #FF4D14;background:#FF4D14;color:#0B0B0B;border-radius:4px;padding:10px 18px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.08em">Programează o prezentare →</span>
+      <span style="font-size:15px;color:#B4AFA6">Vezi și: <a href="https://codepedia.md/proiecte/kindergarten-app" style="color:#FAF8F4">platforma online pentru mai multe grădinițe</a></span>
+    </div>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;arataModificari&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Machetă&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return { mod: this.props.arataModificari ?? true };
+  }
+}
+</script>
+</body>
+</html>

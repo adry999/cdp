@@ -105,6 +105,14 @@ describe('validateProjectPayload', () => {
     expect(issues.map((i) => i.field)).toEqual(['links.1'])
   })
 
+  it('lets only a walkthrough link point inside the site', () => {
+    const issues = (kind: string, url: string) => validateProjectPayload(base({ links: [{ kind, url }] }))
+    expect(issues('walkthrough', '/#contact')).toEqual([])
+    expect(issues('walkthrough', 'https://example.com')).toEqual([])
+    expect(issues('walkthrough', '//evil.example')).toHaveLength(1)
+    expect(issues('live', '/#contact')).toHaveLength(1)
+  })
+
   it('flags a link that has notes but no url, which save would otherwise drop', () => {
     const issues = validateProjectPayload(base({ links: [{ url: ' ', note: { ro: 'Cont demo', en: '' } }] }))
     expect(issues.map((i) => i.field)).toEqual(['links.0'])
@@ -128,5 +136,27 @@ describe('usableGallery', () => {
       { path: 'b.jpg', altRo: 'B', altEn: '', aspect: '1/1' },
     ])
     expect(out.map((i) => i.aspect)).toEqual(['16/9', '1/1'])
+  })
+})
+
+describe('validateProjectPayload year', () => {
+  const yearIssues = (year: string) => validateProjectPayload(base({ year })).filter((i) => i.field === 'year')
+  const next = new Date().getFullYear() + 1
+
+  it('allows an empty year', () => {
+    expect(yearIssues('')).toEqual([])
+    expect(yearIssues('  ')).toEqual([])
+  })
+
+  it('accepts 4-digit years within range', () => {
+    expect(yearIssues('1990')).toEqual([])
+    expect(yearIssues('2026')).toEqual([])
+    expect(yearIssues(String(next))).toEqual([])
+  })
+
+  it('rejects non-numeric, short and out-of-range years', () => {
+    for (const year of ['abc', '20x6', '99', '12345', '1989', String(next + 1), '20.5']) {
+      expect(yearIssues(year)).toHaveLength(1)
+    }
   })
 })

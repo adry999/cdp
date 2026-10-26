@@ -54,6 +54,7 @@ const saving = computed(() => saveStatus.value === 'pending')
         <ProjectsEditorStack v-model="form" />
         <ProjectsEditorStar v-model="form" />
         <ProjectsEditorResults v-model="form" />
+        <ProjectsEditorSections v-model="form" />
         <ProjectsEditorPublish
           v-model="form"
           :busy="saving || uploading"

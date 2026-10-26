@@ -180,7 +180,7 @@ Designul nu are versiune EN pentru indexul /servicii; EN tradus în cod (2026-10
 - [ ] Capturile Startica app, Bloom, Trucker HQ și SwissCars conțin date
       demonstrative. Nota de sub galerie nu mai apare pe site (scoasă 2026-10-09,
       livrare finală); de înlocuit cu capturi reale anonimizate dacă e cazul.
-- [ ] Copertă separată la 16/10 — acum cardul folosește captura principală.
+- [ ] Copertă separată pentru card (16:9, 1600 × 900) — acum cardul folosește captura principală.
 
 ## Conținut de decis
 

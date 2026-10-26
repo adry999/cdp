@@ -35,3 +35,9 @@ Thumbs.db
 .claude/worktrees/
 supabase/.temp/
 .worktrees
+
+# npm (package-lock.json) is the only lockfile
+pnpm-lock.yaml
+yarn.lock
+bun.lock
+bun.lockb

@@ -71,7 +71,7 @@ Câmpurile respectă exact blocurile din șablonul de studiu de caz:
 - `tech[]` — listă de chip-uri, ordonată, input cu enter pentru a adăuga
 
 **Imagini**
-- copertă card (16/10), imagine principală (16/9), galerie (4/3, minim 2)
+- toate la 16/9, 1600 × 900: copertă card, imagine principală, galerie (minim 2)
 - upload în Supabase Storage, bucket public `project-media`
 - fiecare imagine are `alt_ro` / `alt_en` — obligatoriu la salvare
 - conversie la WebP + variante responsive la upload
