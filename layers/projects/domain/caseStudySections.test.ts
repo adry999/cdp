@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { caseStudySections, numberSections, shotCaptions } from './caseStudySections'
+import { caseStudySections, isCompactGallery, numberSections, shotAlt, shotCaptions } from './caseStudySections'
 import { mapProject, type ProjectRow } from './mapProject'
 
 function build(overrides: Partial<ProjectRow> = {}, locale: 'ro' | 'en' = 'ro') {
@@ -12,7 +12,8 @@ function build(overrides: Partial<ProjectRow> = {}, locale: 'ro' | 'en' = 'ro') 
     star_cost_ro: null, star_cost_en: null, star_goal_ro: null, star_goal_en: null,
     star_constraints_ro: null, star_constraints_en: null, star_biz_ro: null, star_biz_en: null,
     star_incident_ro: null, star_incident_en: null, star_gains_ro: null, star_gains_en: null,
-    star_savings_ro: null, star_savings_en: null, screens_demo: false,
+    star_savings_ro: null, star_savings_en: null, adapt_ro: null, adapt_en: null, delivered_ro: null, delivered_en: null, faq_ro: null, faq_en: null,
+    gallery_heading_ro: null, gallery_heading_en: null, screens_demo: false,
     context_body_ro: null, context_body_en: null, solution_body_ro: null, solution_body_en: null,
     obstacles_body_ro: null, obstacles_body_en: null, changes_body_ro: null, changes_body_en: null,
     result_body_ro: null, result_body_en: null, quote_ro: null, quote_en: null, quote_author: null,
@@ -27,6 +28,7 @@ describe('caseStudySections', () => {
   it('hides every section for an empty row', () => {
     expect(build()).toMatchObject({
       situation: false, task: false, action: false, midway: false, result: false, feedback: false,
+      adapt: false, faq: false,
     })
   })
 
@@ -40,12 +42,31 @@ describe('caseStudySections', () => {
     expect(build({ star_constraints_ro: [{ k: 'Termen', v: '10' }] }).task).toBe(true)
   })
 
-  it('shows action for business items, stack or non-hero shots', () => {
+  it('shows action for solution text, business items or stack', () => {
+    expect(build({ solution_body_ro: 'Text' }).action).toBe(true)
     expect(build({ star_biz_ro: ['Unu'] }).action).toBe(true)
     expect(build({ project_stack: [{ name: 'Nuxt', role_ro: 'r', role_en: null, sort_order: 0 }] }).action).toBe(true)
-    const onlyHero = build({ hero_path: 'h.jpg' })
-    expect(onlyHero.action).toBe(false)
-    expect(onlyHero.actionShots).toEqual([])
+  })
+
+  it('does not show action for a few screenshots: the gallery holds them and repeating them adds nothing', () => {
+    const shots = build({
+      hero_path: 'h.jpg',
+      project_images: [{ path: 'g.jpg', alt_ro: 'G', alt_en: null, aspect: '16/9', sort_order: 0 }],
+    })
+    expect(shots.action).toBe(false)
+    expect(shots.actionShots).toEqual([])
+  })
+
+  it('shows adapt and faq only when their column has content', () => {
+    expect(build({ adapt_ro: { heading: 'Doar titlu' } }).adapt).toBe(false)
+    expect(build({ adapt_ro: { body: 'Text' } }).adapt).toBe(true)
+    expect(build({ adapt_ro: { safety: [{ k: 'a', v: 'b' }] } }).adapt).toBe(true)
+    expect(build({ faq_ro: { items: [{ q: 'q', a: 'a' }] } }).faq).toBe(true)
+    expect(build({ faq_ro: { items: [] } }).faq).toBe(false)
+  })
+
+  it('falls back to the RO column for the section flags in English', () => {
+    expect(build({ faq_ro: { items: [{ q: 'q', a: 'a' }] } }, 'en').faq).toBe(true)
   })
 
   it('shows midway for an incident or for obstacles/changes, nothing else', () => {
@@ -69,16 +90,37 @@ describe('caseStudySections', () => {
 })
 
 describe('numberSections', () => {
-  const all = { situation: false, task: false, action: false, midway: false, result: false, feedback: false, gallery: false, blog: false }
+  const all = { situation: false, task: false, action: false, midway: false, result: false, feedback: false }
 
   it('numbers only the visible sections, in page order, without gaps', () => {
-    expect(numberSections({ ...all, situation: true, action: true, result: true, gallery: true, blog: true })).toEqual({
-      situation: '01', task: '', action: '02', midway: '', result: '03', feedback: '', gallery: '04', blog: '05',
+    expect(numberSections({ ...all, situation: true, action: true, result: true })).toEqual({
+      situation: '01', task: '', action: '02', midway: '', result: '03', feedback: '',
+    })
+  })
+
+  it('numbers the Startica story sections 01 to 05', () => {
+    expect(numberSections({ ...all, situation: true, task: true, action: true, result: true, feedback: true })).toEqual({
+      situation: '01', task: '02', action: '03', midway: '', result: '04', feedback: '05',
     })
   })
 
   it('leaves every section empty when nothing is visible', () => {
     expect(Object.values(numberSections(all)).every((n) => n === '')).toBe(true)
+  })
+})
+
+describe('shotAlt', () => {
+  it('uses the screenshot alt text and falls back only when it is empty or a placeholder dash', () => {
+    expect(shotAlt(' Dashboard Startica ', 'Titlu — Galerie 1')).toBe('Dashboard Startica')
+    expect(shotAlt('', 'Titlu — Galerie 1')).toBe('Titlu — Galerie 1')
+    expect(shotAlt('  ', 'Titlu — Galerie 1')).toBe('Titlu — Galerie 1')
+    expect(shotAlt('—', 'Titlu — Galerie 1')).toBe('Titlu — Galerie 1')
+  })
+})
+
+describe('isCompactGallery', () => {
+  it('is true for one to three screenshots only', () => {
+    expect([0, 1, 3, 4].map(isCompactGallery)).toEqual([false, true, true, false])
   })
 })
 

@@ -105,6 +105,14 @@ describe('validateProjectPayload', () => {
     expect(issues.map((i) => i.field)).toEqual(['links.1'])
   })
 
+  it('lets only a walkthrough link point inside the site', () => {
+    const issues = (kind: string, url: string) => validateProjectPayload(base({ links: [{ kind, url }] }))
+    expect(issues('walkthrough', '/#contact')).toEqual([])
+    expect(issues('walkthrough', 'https://example.com')).toEqual([])
+    expect(issues('walkthrough', '//evil.example')).toHaveLength(1)
+    expect(issues('live', '/#contact')).toHaveLength(1)
+  })
+
   it('flags a link that has notes but no url, which save would otherwise drop', () => {
     const issues = validateProjectPayload(base({ links: [{ url: ' ', note: { ro: 'Cont demo', en: '' } }] }))
     expect(issues.map((i) => i.field)).toEqual(['links.0'])
