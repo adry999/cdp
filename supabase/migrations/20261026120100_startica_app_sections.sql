@@ -11,6 +11,9 @@
 -- A payload without one of the new keys keeps the stored value on update and
 -- stores null on insert; a key sent as null clears it.
 --
+-- project_links_valid() also accepts the 'walkthrough' kind, whose url may be site-relative
+-- ("/#contact"); every other kind still needs an absolute http(s) url.
+--
 -- The last statement fills the columns for startica-app and gives it a single
 -- 'walkthrough' link (the hero button, a site-relative url). Idempotent.
 
@@ -23,6 +26,21 @@ alter table public.projects
   add column if not exists faq_en jsonb,
   add column if not exists gallery_heading_ro jsonb,
   add column if not exists gallery_heading_en jsonb;
+
+create or replace function public.project_links_valid(p_links jsonb)
+returns boolean
+language sql
+immutable
+set search_path = ''
+as $
+  select coalesce(bool_and(
+           case
+             when l->>'kind' = 'walkthrough' then coalesce(l->>'url', '') ~ '^(https?://|/[^/])'
+             else l->>'kind' in ('live', 'preview', 'figma') and coalesce(l->>'url', '') ~ '^https?://'
+           end
+         ), true)
+    from jsonb_array_elements(p_links) as l
+$;
 
 create or replace function public.save_project(payload jsonb)
 returns jsonb
