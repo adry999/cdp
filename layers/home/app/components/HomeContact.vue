@@ -6,8 +6,8 @@ const { t } = useI18n()
 const settings = useSiteSettings()
 const { isQualifierEnabled } = useQualifierAvailability()
 
-// Email/phone are never rendered into the markup, not even as mailto:/tel: hrefs, so
-// scrapers get nothing; visitors go through the qualification modal or the fallback form.
+// The email is never rendered into the markup, not even as a mailto: href, so scrapers get nothing;
+// visitors go through the qualification modal, the fallback form or the public phone number.
 const showForm = ref(false)
 
 // The button that revealed the form is removed, so focus would fall to <body>. The form is lazy: wait for its first field.
@@ -36,6 +36,9 @@ async function revealForm() {
 
     <div class="mt-[clamp(28px,3vw,44px)] grid max-w-[560px] grid-fit-180 gap-4">
       <FactCard :label="t('home.contact.facts.responseTime')" :value="settings.responseTime" />
+      <FactCard :label="t('home.contact.facts.phone')">
+        <a :href="`tel:${settings.phone}`" class="text-ink no-underline hover:text-signal-text">{{ settings.phoneDisplay }}</a>
+      </FactCard>
     </div>
 
     <template v-if="isQualifierEnabled">
