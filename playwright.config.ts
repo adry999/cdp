@@ -12,7 +12,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      testIgnore: /qualifier\.spec\.ts/,
+      testIgnore: /(qualifier|origin-guard)\.spec\.ts/,
       use: { ...devices['Desktop Chrome'], baseURL: 'http://localhost:3012' },
     },
     {
@@ -20,6 +20,13 @@ export default defineConfig({
       name: 'qualifier',
       testMatch: /qualifier\.spec\.ts/,
       use: { ...devices['Desktop Chrome'], baseURL: 'http://localhost:3013' },
+    },
+    {
+      // The origin guard is off by default; this server boots with a secret to prove it still lets the
+      // app's own internal fetches through.
+      name: 'origin-guard',
+      testMatch: /origin-guard\.spec\.ts/,
+      use: { ...devices['Desktop Chrome'], baseURL: 'http://localhost:3014' },
     },
   ],
   webServer: {

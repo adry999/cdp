@@ -444,11 +444,14 @@ export function checklistInputFromForm(form: ProjectForm): ChecklistInput {
     lead_ro: form.lead.ro,
     context_body_ro: form.contextBody.ro,
     cover_path: form.coverPath,
+    cover_alt_ro: form.coverAlt.ro,
+    hero_path: form.heroPath,
+    hero_alt_ro: form.heroAlt.ro,
     live_url: live?.url.trim() ?? null,
     win_value_ro: form.winValue.ro,
     quote_ro: form.quote.ro,
     screens_demo: form.screensDemo,
-    project_images: form.gallery.map((img) => ({ path: img.path })),
+    project_images: form.gallery.map((img) => ({ path: img.path, alt_ro: img.altRo })),
     project_stats: form.stats.map((stat) => ({ value: stat.value })),
   }
 }

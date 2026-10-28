@@ -66,6 +66,8 @@ async function save() {
     saveStatus.value = 'error'
   }
 }
+
+useSaveShortcut(save, { enabled: () => dirty.value && saveStatus.value !== 'pending' && loadStatus.value === 'success' })
 </script>
 
 <template>
