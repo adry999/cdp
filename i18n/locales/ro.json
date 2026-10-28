@@ -321,7 +321,8 @@
         "errorEmail": "Adresă de email invalidă."
       },
       "facts": {
-        "responseTime": "Timp de răspuns"
+        "responseTime": "Timp de răspuns",
+        "phone": "Telefon"
       }
     }
   },
