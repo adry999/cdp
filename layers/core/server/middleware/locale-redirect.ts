@@ -26,9 +26,7 @@ export default defineEventHandler((event) => {
 
   // Served without redirecting, yet only because of this visitor's cookie, geo or domain: a cache in front
   // must key on the same signals, or it would hand this answer to visitors who should be redirected.
-  // Note: with the `swr` route rule Nitro's cached handler overwrites Cache-Control with its own value
-  // (s-maxage, stale-while-revalidate); Vary survives. The header below therefore takes effect only on
-  // responses that are not wrapped by the swr cache.
+  // `/` and `/en` have no swr route rule (nuxt.config.ts), so nothing overwrites this header.
   setResponseHeader(event, 'Cache-Control', 'private, no-cache')
   setResponseHeader(event, 'Vary', 'Cookie, CF-IPCountry, X-Vercel-IP-Country')
 })

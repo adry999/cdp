@@ -174,9 +174,9 @@ export default defineNuxtConfig({
   sourcemap: { client: false, server: false },
 
   routeRules: {
-    // / and /en redirect by language before the cache (nitro.vercel.config.routes above).
-    '/': swrCache(300),
-    '/en': swrCache(300),
+    // / and /en are not cached: whether they redirect depends on the visitor's cookie, geo and domain
+    // (locale-redirect.ts), and the swr handler would replace that middleware's `private, no-cache` with a
+    // shared s-maxage. Their data still comes from the cached /api routes.
     '/proiecte': swrCache(300),
     '/en/work': swrCache(300),
     '/proiecte/**': swrCache(300),
