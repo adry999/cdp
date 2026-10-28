@@ -5,7 +5,7 @@ Producția rulează pe **Hostinger** (hPanel, Node.js Apps, LiteSpeed în față
 date, auth-ul de admin și storage-ul rămân pe Supabase.
 
 Domenii: `codepedia.studio` (EN, principal) și `codepedia.md` (RO). Ambele servesc
-**același build**, aceleași căi (RO fără prefix, EN sub `/en`). Fără `differentDomains`
+**același build**, aceleași căi (RO fără prefix, EN sub `/en`), dar fiecare pagină se servește doar pe domeniul limbii ei (restul primește 301, `domain-redirect.ts`). Fără `differentDomains`
 în i18n: decizie luată, vezi `AGENTS.md`. Limba o aleg middleware-ul
 `layers/core/server/middleware/locale-redirect.ts` și variabilele de mediu.
 

@@ -165,11 +165,15 @@ implementare) în `docs/superpowers/specs/` și `docs/superpowers/plans/`:
   Cloudflare `cf-ipcountry`, cu `x-vercel-ip-country` ca rezervă; RO/MD → română,
   altfel engleză) → engleză.
   Acționează doar pe `/` și `/en` — nu pe pagini adânci.
-- **Domenii multiple** — toate domeniile servesc aceleași căi (RO fără
-  prefix, EN sub `/en`), deci cache-ul ISR pe cale rămâne corect. Domeniul
-  oficial al fiecărei limbi (`NUXT_PUBLIC_SITE_URL` = EN, `NUXT_PUBLIC_SITE_URL_RO`
-  = RO) apare în canonical, `hreflang` (`app/plugins/locale-alternates.ts`),
-  sitemap și `robots.txt`, ambele filtrate pe domeniul cererii.
+- **Domenii multiple** — aceleași căi pe ambele domenii (RO fără prefix, EN sub
+  `/en`), deci cache-ul ISR pe cale rămâne corect, dar o pagină se servește doar pe
+  domeniul limbii ei: `layers/core/server/middleware/domain-redirect.ts` trimite cu 301
+  căile RO cerute pe domeniul EN, `/en/...` cerut pe domeniul RO și orice `www.` la
+  domeniul oficial (acasă, `/api`, `/admin`, fișierele statice și hosturile de preview
+  rămân neatinse). Domeniul oficial al fiecărei limbi (`NUXT_PUBLIC_SITE_URL` = EN,
+  `NUXT_PUBLIC_SITE_URL_RO` = RO, aceleași valori pe ambele aplicații) apare în
+  canonical, `hreflang` (`app/plugins/locale-alternates.ts`), sitemap și `robots.txt`,
+  ambele filtrate pe domeniul cererii.
 - **Consimțământ cookie-uri + politică de confidențialitate** —
   modulul `layers/consent/` (`state/useCookieConsent.ts`,
   `app/components/ConsentBanner.vue`, `app/plugins/analytics.client.ts`),
