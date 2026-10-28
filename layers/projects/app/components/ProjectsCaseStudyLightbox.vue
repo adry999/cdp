@@ -48,9 +48,9 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onArrowKeys))
       aria-modal="true"
       :aria-label="t('caseStudy.lightbox.label')"
       class="fixed inset-0 z-[100] flex flex-col gap-4 bg-scrim/95 p-[clamp(12px,3vw,32px)]"
-      @click.self="emit('close')"
+      @mousedown.self="emit('close')"
     >
-      <div class="flex items-center justify-between text-on-inverse eyebrow" @click.self="emit('close')">
+      <div class="flex items-center justify-between text-on-inverse eyebrow" @mousedown.self="emit('close')">
         <span aria-live="polite">{{ t('caseStudy.lightbox.counter', { current: (index ?? 0) + 1, total: shots.length }) }}</span>
         <button
           ref="closeButton"
@@ -62,7 +62,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onArrowKeys))
           {{ t('caseStudy.lightbox.closeButton') }}
         </button>
       </div>
-      <div class="flex min-h-0 flex-1 items-center justify-center gap-3" @click.self="emit('close')">
+      <div class="flex min-h-0 flex-1 items-center justify-center gap-3" @mousedown.self="emit('close')">
         <button
           type="button"
           :aria-label="t('caseStudy.lightbox.prev')"
@@ -71,7 +71,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onArrowKeys))
         >
           ←
         </button>
-        <div class="flex h-full min-w-0 flex-1 items-center justify-center" @click.self="emit('close')">
+        <div class="flex h-full min-w-0 flex-1 items-center justify-center" @mousedown.self="emit('close')">
           <NuxtImg
             :key="current.path"
             :src="current.path"
