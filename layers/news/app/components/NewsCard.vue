@@ -22,7 +22,7 @@ const to = computed(() => localePath({ name: 'noutati-slug', params: { slug: pro
     </h3>
     <p class="m-0 text-base text-muted text-pretty">{{ item.summary }}</p>
     <div class="mt-auto flex flex-wrap items-baseline gap-x-5 gap-y-2 pt-4">
-      <TextLink :to="item.sourceUrl" target="_blank" rel="noopener">{{ t('news.readAtSource') }}</TextLink>
+      <TextLink :to="item.sourceUrl" target="_blank" rel="noopener">{{ t('news.readAtSource') }}<span class="sr-only"> {{ t('a11y.newTab') }}</span></TextLink>
       <NuxtLink :to="to" class="eyebrow text-muted no-underline hover:text-ink hover:no-underline">{{ t('news.details') }}</NuxtLink>
     </div>
   </article>

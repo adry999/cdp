@@ -77,6 +77,16 @@ describe('toLeadRecord', () => {
     expect(record.name).toHaveLength(LEAD_FIELD_LIMITS.name)
   })
 
+  it('collapses CR/LF in single-line fields so they cannot inject mail headers', () => {
+    const record = toLeadRecord(
+      buildContactSubmission({ name: 'Ana\r\nBcc: x@evil.com', company: 'A\nB', message: 'l1\nl2' }),
+      null,
+    )
+    expect(record.name).toBe('Ana Bcc: x@evil.com')
+    expect(record.company).toBe('A B')
+    expect(record.message).toBe('l1\nl2')
+  })
+
   it('stores empty optional fields as null', () => {
     const record = toLeadRecord(buildContactSubmission({ company: '', budget: '', source: '', page: '' }), null)
     expect(record).toMatchObject({ company: null, budget: null, source: null, page: null, utm: null })

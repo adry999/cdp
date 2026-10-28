@@ -23,4 +23,10 @@ export default defineEventHandler((event) => {
     setResponseHeader(event, 'Vary', 'Cookie, CF-IPCountry, X-Vercel-IP-Country')
     return sendRedirect(event, `${target === 'en' ? '/en' : '/'}${search}`, 302)
   }
+
+  // Served without redirecting, yet only because of this visitor's cookie, geo or domain: a cache in front
+  // must key on the same signals, or it would hand this answer to visitors who should be redirected.
+  // `/` and `/en` have no swr route rule (nuxt.config.ts), so nothing overwrites this header.
+  setResponseHeader(event, 'Cache-Control', 'private, no-cache')
+  setResponseHeader(event, 'Vary', 'Cookie, CF-IPCountry, X-Vercel-IP-Country')
 })

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useReveal } from '#layers/home/state/useReveal'
 import { useStackGroups } from '#layers/content'
 
 const { t } = useI18n()

@@ -15,7 +15,7 @@ export function withDefaultLastmod(pages: readonly SitemapPage[], fallback: stri
   return pages.map((page) => ({ ...page, lastmod: page.lastmod ?? fallback }))
 }
 
-/** Each URL sits on its locale's official domain. x-default points at the RO URL, as on the
+/** Each URL sits on its locale's official domain. x-default points at the EN URL, as on the
  * pages themselves. A page whose EN copy is still Romanian lists only its RO URL, with no EN alternate. */
 export function toSitemapUrls(origins: SiteOrigins, pages: readonly SitemapPage[]): SitemapUrl[] {
   return pages.flatMap((page) => {
@@ -27,7 +27,7 @@ export function toSitemapUrls(origins: SiteOrigins, pages: readonly SitemapPage[
     const alt = [
       { hreflang: 'ro', href: ro },
       { hreflang: 'en', href: en },
-      { hreflang: 'x-default', href: ro },
+      { hreflang: 'x-default', href: en },
     ]
     return [
       { loc: ro, lastmod: page.lastmod, alt },

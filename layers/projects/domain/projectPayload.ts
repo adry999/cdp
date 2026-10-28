@@ -45,6 +45,10 @@ export interface ProjectPayloadInput {
   navServices?: string[]
   links?: { kind?: string; url: string; note?: { ro: string; en: string } }[]
   gallery: ProjectImageInput[]
+  coverPath?: string | null
+  coverAlt?: { ro: string; en: string }
+  heroPath?: string | null
+  heroAlt?: { ro: string; en: string }
 }
 
 export interface ValidationIssue {
@@ -86,7 +90,7 @@ export function validateProjectPayload(input: ProjectPayloadInput): ValidationIs
         message: 'Slug-ul poate conține doar litere mici, cifre și cratime.',
       })
     } else if (RESERVED_SLUGS.includes(slug)) {
-      issues.push({ field, message: `„${slug}" este rezervat și nu poate fi slug de proiect.` })
+      issues.push({ field, message: `„${slug}” este rezervat și nu poate fi slug de proiect.` })
     }
   }
 
@@ -116,6 +120,21 @@ export function validateProjectPayload(input: ProjectPayloadInput): ValidationIs
       issues.push({ field: `links.${i}`, message: `Linkul ${i + 1} trebuie să înceapă cu ${hint}.` })
     }
   })
+
+  // Alt text is only enforced on published projects, so drafts stay saveable mid-work.
+  if (input.published) {
+    if (input.coverPath?.trim() && !input.coverAlt?.ro.trim()) {
+      issues.push({ field: 'coverAlt', message: 'Textul alternativ al copertei (RO) este obligatoriu.' })
+    }
+    if (input.heroPath?.trim() && !input.heroAlt?.ro.trim()) {
+      issues.push({ field: 'heroAlt', message: 'Textul alternativ al capturii principale (RO) este obligatoriu.' })
+    }
+    input.gallery.forEach((img, i) => {
+      if (img.path?.trim() && !img.altRo.trim()) {
+        issues.push({ field: `gallery.${i}`, message: `Imaginea ${i + 1} din galerie nu are text alternativ (RO).` })
+      }
+    })
+  }
 
   return issues
 }

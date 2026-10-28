@@ -21,10 +21,11 @@ const siteLocale = useSiteLocale()
               :href="member.linkedin"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              class="tap-y text-muted hover:text-signal transition-colors inline-flex items-center"
+              :aria-label="t('about.team.linkedin', { name: member.name })"
+              class="tap-y text-muted hover:text-signal-text transition-colors inline-flex items-center"
             >
               <span class="eyebrow-sm">in</span>
+              <span class="sr-only"> {{ t('a11y.newTab') }}</span>
             </a>
           </div>
           <div class="mt-0.5 eyebrow-sm text-muted">

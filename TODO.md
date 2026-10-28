@@ -9,8 +9,8 @@ rămâne vizibil ca placeholder.
 - [ ] Număr de telefon real: nu apare în footer și nici în JSON-LD (`telephone`) până există
 - [ ] Adresa poștală completă (stradă, cod poștal): JSON-LD publică doar Chișinău / MD,
       fără `streetAddress` și fără `geo`
-- [ ] Program structurat (zile și ore) pentru `openingHoursSpecification`: în
-      `siteSettings.hours` e doar text liber, deci nu se publică în JSON-LD
+- [ ] Program structurat (zile și ore) pentru `openingHoursSpecification`:
+      `siteSettings` nu are un câmp de program, deci nu se publică în JSON-LD
 - [x] Denumirea juridică exactă: `Codepedia SRL` configurată în Schema.org (`legalName`) (2026-10-16)
 - [x] Profil oficial `sameAs`: LinkedIn (`https://www.linkedin.com/company/codepediastudio`) adăugat în schema Organization (2026-10-16)
 - [ ] Articolele recomandate din footer sunt ultimele 3 din blog; dacă se vrea o selecție
@@ -203,7 +203,7 @@ Designul nu are versiune EN; EN tradus în cod (2026-10-09) (excepție: cele 3 �
 
 - [x] EN de tradus: `i18n/locales/en.json` — `pricing.seo.*`, `pricing.sectionLabel`, `pricing.title`, `pricing.intro`
 - [x] EN de tradus: `pricing.included.*`, `pricing.afterLaunch.*` (titlu, 2 abonamente, nota despre garanție)
-- [ ] Prețuri reale: cele 5 carduri de etapă și abonamentele Mentenanță / Dezvoltare continuă (designul are 300 / 2.000 EUR, marcate demo). Etapele E și B au prețurile aprobate (400€–600€, de la 1.000€, în `home.services.stages.<id>.pricing`); A, C, D arată doar modelul de colaborare și durata (`.timing`). Abonamentele afișează `pricing.afterLaunch.plans.<id>.price` (text descriptiv, fără cifre). Întrebarea „Cât costă un proiect?” (`pricing.faq.items[0]`) nu mai conține o cifră; `layers/content/data/faqs.ts` spune deja „de la 6.000 EUR" — de confirmat că cifrele coincid
+- [ ] Prețuri reale: cele 5 carduri de etapă și abonamentele Mentenanță / Dezvoltare continuă (designul are 300 / 2.000 EUR, marcate demo). Etapele E și B au prețurile aprobate (400€–600€, de la 1.000€, în `home.services.stages.<id>.pricing`); A, C, D arată doar modelul de colaborare și durata (`.timing`). Abonamentele afișează `pricing.afterLaunch.plans.<id>.price` (text descriptiv, fără cifre). Întrebarea „Cât costă un proiect?” (`pricing.faq.items[0]`) nu mai conține o cifră, iar `layers/content/data/faqs.ts` nu mai menționează nicio sumă
 
 ## Pagina /despre — EN de tradus
 

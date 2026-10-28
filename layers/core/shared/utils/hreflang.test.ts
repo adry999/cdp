@@ -2,14 +2,21 @@ import { describe, expect, it } from 'vitest'
 import { moveToOrigin, xDefaultHref } from './hreflang'
 
 describe('xDefaultHref', () => {
-  it('is the RO URL, whatever the route', () => {
-    expect(xDefaultHref('https://codepedia.md/', 'https://codepedia.studio/en')).toBe('https://codepedia.md/')
-    expect(xDefaultHref('https://codepedia.md/blog', 'https://codepedia.studio/en/blog')).toBe('https://codepedia.md/blog')
-    expect(xDefaultHref('https://codepedia.md/servicii/website', 'x')).toBe('https://codepedia.md/servicii/website')
+  const ro = 'https://codepedia.md/blog'
+  const en = 'https://codepedia.studio/en/blog'
+
+  it('is the EN URL, whatever the route', () => {
+    expect(xDefaultHref({ ro, en }, 'x')).toBe(en)
   })
 
-  it('falls back only when there is no RO alternate', () => {
-    expect(xDefaultHref(undefined, 'https://codepedia.md/x')).toBe('https://codepedia.md/x')
+  it('falls back to the RO URL while the EN copy is pending', () => {
+    expect(xDefaultHref({ ro, en, enPending: true }, 'x')).toBe(ro)
+  })
+
+  it('falls back to RO, then to the given href, when an alternate is missing', () => {
+    expect(xDefaultHref({ ro }, 'x')).toBe(ro)
+    expect(xDefaultHref({}, 'https://codepedia.md/x')).toBe('https://codepedia.md/x')
+    expect(xDefaultHref({ enPending: true }, 'https://codepedia.md/x')).toBe('https://codepedia.md/x')
   })
 })
 

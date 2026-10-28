@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useBlogRssLink } from '#layers/blog/state/useBlogRssLink'
 import { blogIndexGraph, blogSlug, type BlogPostSummary } from '#layers/blog'
 
 const { t, locale } = useI18n()

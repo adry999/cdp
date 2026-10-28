@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useBlogRssLink } from '#layers/blog/state/useBlogRssLink'
 import { CATEGORIES, categoryFromSlug, categoryGraph, isCategoryIndexable, type BlogPostSummary } from '#layers/blog'
 
 const route = useRoute()

@@ -29,7 +29,7 @@ watch(status, (value) => {
       <div
         v-if="isOpen"
         class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-scrim/60 px-4 py-[max(24px,6vh)]"
-        @click.self="close"
+        @mousedown.self="close"
       >
         <div
           ref="panel"
@@ -61,8 +61,8 @@ watch(status, (value) => {
             </button>
           </div>
 
-          <div v-if="status !== 'success'" class="mt-5" aria-hidden="true">
-            <div class="flex gap-1.5">
+          <div v-if="status !== 'success'" class="mt-5">
+            <div class="flex gap-1.5" aria-hidden="true">
               <span
                 v-for="n in QUALIFIER_TOTAL_STEPS"
                 :key="n"
@@ -70,7 +70,7 @@ watch(status, (value) => {
                 :class="n <= step ? 'bg-signal' : 'bg-hairline'"
               />
             </div>
-            <p class="mt-2 eyebrow-sm text-muted">
+            <p class="mt-2 eyebrow-sm text-muted" aria-live="polite">
               {{ t('qualifier.progress', { current: step, total: QUALIFIER_TOTAL_STEPS }) }}
             </p>
           </div>
