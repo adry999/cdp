@@ -109,7 +109,7 @@ useJsonLd(
       </div>
 
       <div class="mt-10">
-        <AppButton variant="signal" :href="item.sourceUrl" target="_blank" rel="noopener">{{ t('news.openOriginal') }}</AppButton>
+        <AppButton variant="signal" :href="item.sourceUrl" target="_blank" rel="noopener">{{ t('news.openOriginal') }}<span class="sr-only"> {{ t('a11y.newTab') }}</span></AppButton>
         <p class="m-0 mt-4 max-w-[62ch] eyebrow-sm text-muted">{{ t('news.disclaimer', { name: item.sourceName }) }}</p>
       </div>
     </SiteSection>

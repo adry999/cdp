@@ -48,6 +48,7 @@ const linkClass =
         <template v-for="(link, i) in project.caseStudy.links" :key="i">
           <a v-if="isExternalLink(link.url)" :href="link.url" target="_blank" rel="noopener" :class="linkClass">
             <span class="eyebrow">{{ t(`caseStudy.links.${link.kind}`) }} ↗</span>
+            <span class="sr-only"> {{ t('a11y.newTab') }}</span>
             <span v-if="link.note" class="text-[13px] opacity-70">{{ link.note }}</span>
           </a>
           <NuxtLink v-else :to="internalTarget(link.url)" :class="linkClass">

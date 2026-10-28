@@ -1,4 +1,7 @@
 {
+  "a11y": {
+    "newTab": "(opens in a new tab)"
+  },
   "seo": {
     "home": {
       "title": "Full-stack web development, Chișinău",
@@ -649,7 +652,8 @@
     "principlesLabel": "How we work",
     "team": {
       "label": "Team",
-      "title": "The people you talk to directly."
+      "title": "The people you talk to directly.",
+      "linkedin": "{name} on LinkedIn"
     },
     "facts": {
       "based": {
