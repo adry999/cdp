@@ -114,19 +114,6 @@ de mediu. Nu seta nimic de limbă per domeniu.
    Verificare: `curl -sI https://<domeniu>/servicii` trebuie să arate
    `cf-cache-status: HIT` la a doua cerere; `/` rămâne `DYNAMIC` (e corect).
 
-8. Rules → Cache Rules, încă o regulă pentru HTML: **Cache key → Query string → Ignore
-   query string** (sau „Include specified query string parameters": `tag`, `serviciu`,
-   `service`, `hero`), pentru `not starts_with "/api"` și `not starts_with "/admin"` și
-   `not starts_with "/_nuxt/"`. Fără ea, `?utm_source=...`, `?fbclid=...` sau un parametru
-   aleator creează câte o intrare separată în cache-ul Cloudflare și forțează câte o
-   randare la origine. Aplicația taie deja parametrii necunoscuți din cheia cache-ului
-   Nitro (`server/middleware/zz-cache-key-query.ts`), dar fără regula asta cererea tot
-   ajunge la Node.
-9. Security → WAF → Rate limiting rules: `http.request.method eq "POST"` și
-   `http.request.uri.path in {"/api/leads" "/api/contact"}`, **5 cereri / 10 minute per
-   IP**, acțiune Block 10 minute. Formularele trimit emailuri, iar limitarea din aplicație
-   (`checkRateLimit`) e în memorie și se pierde la repornire.
-
 ## 4. Redirectul de limbă
 
 Ordinea pe `/` și `/en`: cookie `codepedia_locale` → domeniul (`.studio` EN, `.md`/`.ro` RO)
