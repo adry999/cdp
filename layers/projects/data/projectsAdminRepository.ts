@@ -23,6 +23,13 @@ function failure(message: string, cause: unknown): AppError {
   return { code: 'unexpected', message, cause }
 }
 
+const UNIQUE_VIOLATION = '23505'
+
+function saveFailure(error: { code?: string; message: string }): AppError {
+  if (error.code === UNIQUE_VIOLATION) return failure('Slug-ul există deja la alt proiect. Alege altul.', error)
+  return failure(error.message, error)
+}
+
 function toSavedProject(data: Json): SavedProject | null {
   if (typeof data !== 'object' || data === null || Array.isArray(data)) return null
   const { id, slug_ro, slug_en } = data
@@ -116,7 +123,7 @@ export function createProjectsAdminRepository(client: SupabaseClient) {
     // supabase/migrations/20260826120200_save_project_rpc.sql.
     async save(payload: { [key: string]: Json }): Promise<SavedProject> {
       const { data, error } = await client.rpc('save_project', { payload })
-      if (error) throw failure(error.message, error)
+      if (error) throw saveFailure(error)
       const saved = toSavedProject(data)
       if (!saved) throw failure('Răspuns neașteptat la salvarea proiectului.', data)
       return saved
