@@ -9,6 +9,11 @@ describe('isSaveShortcut', () => {
     expect(isSaveShortcut({ ...base, metaKey: true, key: 'S' })).toBe(true)
   })
 
+  it('accepts the physical S key on a non-Latin layout', () => {
+    expect(isSaveShortcut({ ...base, ctrlKey: true, key: 'ы', code: 'KeyS' })).toBe(true)
+    expect(isSaveShortcut({ ...base, key: 'ы', code: 'KeyS' })).toBe(false)
+  })
+
   it('ignores a bare S, other keys and Alt combinations', () => {
     expect(isSaveShortcut(base)).toBe(false)
     expect(isSaveShortcut({ ...base, ctrlKey: true, key: 'a' })).toBe(false)
