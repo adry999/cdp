@@ -101,14 +101,31 @@ de mediu. Nu seta nimic de limbă per domeniu.
      deci TTL-ul lung vine din Cloudflare (sau dintr-un `.htaccess`), nu din
      `nuxt.config.ts`. Asta rezolvă „Use efficient cache lifetimes".
    - Regula 3: numele din `public/` nu au hash, de aceea doar 1 zi și fără `immutable`.
-   - Regula 4: paginile adânci (`/servicii`, `/en/services`, `/proiecte/...`) trimit
-     `s-maxage=300, stale-while-revalidate` și niciun `Set-Cookie`, deci se pot ține la
-     margine 5 minute. Scade TTFB-ul („Document request latency"). După editări din admin,
-     `revalidate.post.ts` curăță cache-ul Nitro, dar **nu** pe cel din Cloudflare: o
-     schimbare apare cel mult după 5 minute, sau după **Purge Cache** manual.
+   - Regula 4: paginile (`/servicii`, `/en/services`, `/proiecte/...`, `/despre`, `/preturi`,
+     `/contact`, `/confidentialitate` și variantele EN) trimit `s-maxage=300,
+     stale-while-revalidate=86400` și niciun `Set-Cookie`, deci se pot ține la margine 5
+     minute. Scade TTFB-ul („Document request latency"). Toate embed meniul cu proiectele.
+     După editări din admin, `revalidate.post.ts` curăță cache-ul Nitro, dar **nu** pe cel
+     din Cloudflare: o schimbare apare cel mult după 5 minute (plus o cerere servită stale
+     cât timp pagina se reîmprospătează), sau după **Purge Cache** manual. Paginile de blog
+     sunt prerenderizate și țin 1 oră (`s-maxage=3600`), la fel `/llms.txt` și
+     `/llms-full.txt`.
 
    Verificare: `curl -sI https://<domeniu>/servicii` trebuie să arate
    `cf-cache-status: HIT` la a doua cerere; `/` rămâne `DYNAMIC` (e corect).
+
+8. Rules → Cache Rules, încă o regulă pentru HTML: **Cache key → Query string → Ignore
+   query string** (sau „Include specified query string parameters": `tag`, `serviciu`,
+   `service`, `hero`), pentru `not starts_with "/api"` și `not starts_with "/admin"` și
+   `not starts_with "/_nuxt/"`. Fără ea, `?utm_source=...`, `?fbclid=...` sau un parametru
+   aleator creează câte o intrare separată în cache-ul Cloudflare și forțează câte o
+   randare la origine. Aplicația taie deja parametrii necunoscuți din cheia cache-ului
+   Nitro (`server/middleware/zz-cache-key-query.ts`), dar fără regula asta cererea tot
+   ajunge la Node.
+9. Security → WAF → Rate limiting rules: `http.request.method eq "POST"` și
+   `http.request.uri.path in {"/api/leads" "/api/contact"}`, **5 cereri / 10 minute per
+   IP**, acțiune Block 10 minute. Formularele trimit emailuri, iar limitarea din aplicație
+   (`checkRateLimit`) e în memorie și se pierde la repornire.
 
 ## 4. Redirectul de limbă
 
