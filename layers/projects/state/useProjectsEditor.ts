@@ -48,6 +48,13 @@ export async function useProjectsEditor(slug: string) {
   // Media the last saved state referenced, so each save cleans up exactly what it replaced.
   let savedMedia = rowMediaUrls(original)
 
+  // What the database holds: a slug edit on a project that was already published creates redirects.
+  const savedSlugs = ref({
+    slugRo: form.value.slugRo,
+    slugEn: form.value.slugEn,
+    wasPublished: Boolean(original?.published_at),
+  })
+
   const { markSaved } = useUnsavedChangesGuard(form.value)
 
   const menuPreview = computed(() =>
@@ -90,6 +97,11 @@ export async function useProjectsEditor(slug: string) {
       projectId.value = saved.id
       saveStatus.value = 'success'
       markSaved()
+      savedSlugs.value = {
+        slugRo: form.value.slugRo,
+        slugEn: form.value.slugEn,
+        wasPublished: form.value.published,
+      }
 
       await revalidatePublicCache()
       // Only after the save succeeds: the published page may serve the old files until then.
@@ -136,6 +148,7 @@ export async function useProjectsEditor(slug: string) {
     form,
     isNew,
     menuPreview,
+    savedSlugs,
     saveStatus,
     saveError,
     uploading,
