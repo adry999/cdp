@@ -1,3 +1,4 @@
+import { isLocalRedirectTarget } from '#layers/core/server/utils/redirectTarget'
 import { createNewsRepository } from '#layers/news/server/repository/newsRepository'
 
 // The news_items_sync_redirects trigger writes a `redirects` row when a published slug
@@ -10,6 +11,7 @@ export default defineEventHandler(async (event) => {
 
   const data = await createNewsRepository(event).findRedirect(pathname)
   if (!data || data.to_path === pathname) return
+  if (!isLocalRedirectTarget(data.to_path)) return
 
   setResponseHeader(event, 'Cache-Control', 'public, max-age=300, s-maxage=3600')
   return sendRedirect(event, data.to_path, data.status)

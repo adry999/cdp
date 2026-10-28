@@ -1,4 +1,4 @@
-import { isLocalRedirectTarget } from '#layers/projects/server/utils/redirectTarget'
+import { isLocalRedirectTarget } from '#layers/core/server/utils/redirectTarget'
 import { createProjectRepository } from '#layers/projects/server/repository/projectRepository'
 
 // save_project() writes a `redirects` row when a published slug changes; this only matches

@@ -9,3 +9,10 @@ export function isTrustedOrigin(headerValue: string | undefined, secret: string)
   if (expected.length !== received.length) return false
   return timingSafeEqual(expected, received)
 }
+
+// Nitro's local fetch (SSR `$fetch('/api/...')`, prerender) runs requests through the h3 app on a mock
+// socket whose remote address is the empty string; a real network connection always has one. A real
+// socket that has already closed reports `undefined`, which must not count as internal.
+export function isInternalRequest(remoteAddress: string | undefined): boolean {
+  return remoteAddress === ''
+}
