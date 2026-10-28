@@ -73,12 +73,13 @@ function onKeydown(event: KeyboardEvent) {
 // The panel's button disappears with the panel, so focus goes back to the menu toggle on close.
 function onMobileContact() {
   closeMenu()
-  cta.activate(menuToggle.value)
+  // After the header's watcher released the scroll lock, so the dialog's lock does not capture it as "previous".
+  nextTick(() => cta.activate(menuToggle.value))
 }
 
 watch(() => route.fullPath, () => closeMenu())
 watch(menuOpen, (open) => {
-  document.body.style.overflow = open ? 'hidden' : ''
+  document.documentElement.style.overflow = open ? 'hidden' : ''
 })
 
 onMounted(() => {
@@ -98,7 +99,7 @@ onMounted(() => {
   onBeforeUnmount(() => {
     window.removeEventListener('scroll', onScroll)
     wide.removeEventListener('change', onWide)
-    document.body.style.overflow = ''
+    document.documentElement.style.overflow = ''
     menuOpen.value = false
   })
 })
