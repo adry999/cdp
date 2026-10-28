@@ -20,12 +20,13 @@ export async function listRawBlogPostsForLlms(locale: BlogLocale): Promise<LlmsP
   try {
     const storage = useStorage('assets:blog-content')
     const keys = (await storage.getKeys(locale)).filter((key) => key.endsWith('.md')).sort()
-    return await Promise.all(
+    const posts = await Promise.all(
       keys.map(async (key) => {
         const raw = await storage.getItemRaw(key)
         return parseLlmsPost(key.slice(key.lastIndexOf(':') + 1), Buffer.from(raw as Uint8Array | string).toString('utf-8'))
       }),
     )
+    return posts.filter((post): post is LlmsPost => post !== null)
   } catch (error) {
     console.warn('[llms] failed reading raw blog posts', error)
     return []
