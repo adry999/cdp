@@ -39,7 +39,7 @@ export function nextCopySlug(slug: string, taken: ReadonlySet<string>): string {
   return candidate
 }
 
-export type ChecklistItemId = 'content' | 'screenshots' | 'consent' | 'live' | 'figures' | 'quote'
+export type ChecklistItemId = 'content' | 'screenshots' | 'alt' | 'consent' | 'live' | 'figures' | 'quote'
 
 export interface ChecklistItem {
   id: ChecklistItemId
@@ -68,12 +68,15 @@ export type ChecklistInput = Pick<
   | 'lead_ro'
   | 'context_body_ro'
   | 'cover_path'
+  | 'cover_alt_ro'
+  | 'hero_path'
+  | 'hero_alt_ro'
   | 'live_url'
   | 'win_value_ro'
   | 'quote_ro'
   | 'screens_demo'
 > & {
-  project_images: { path: string | null }[]
+  project_images: { path: string | null; alt_ro: string | null }[]
   project_stats: { value: string }[]
 }
 
@@ -101,6 +104,16 @@ export function evaluateChecklist(row: ChecklistInput, consentConfirmed: boolean
       hint: 'Cel puțin o copertă sau o imagine în galerie.',
       required: true,
       done: filled(row.cover_path) || row.project_images.some((image) => filled(image.path)),
+    },
+    {
+      id: 'alt',
+      label: 'Text alternativ (RO)',
+      hint: 'Obligatoriu pentru coperta, captura principală și fiecare imagine din galerie.',
+      required: true,
+      done:
+        (!filled(row.cover_path) || filled(row.cover_alt_ro)) &&
+        (!filled(row.hero_path) || filled(row.hero_alt_ro)) &&
+        row.project_images.every((image) => !filled(image.path) || filled(image.alt_ro)),
     },
     {
       id: 'consent',

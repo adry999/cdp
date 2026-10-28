@@ -74,7 +74,7 @@ function removeGalleryImage(index: number) {
             />
             <div class="mt-3 flex items-start gap-3">
               <div class="flex-1">
-                <AdminFieldPair v-model:ro="img.altRo" v-model:en="img.altEn" label="Text alternativ" />
+                <AdminFieldPair v-model:ro="img.altRo" v-model:en="img.altEn" label="Text alternativ" required />
               </div>
               <button type="button" class="mt-6 cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal-text" @click="removeGalleryImage(i)">
                 Șterge

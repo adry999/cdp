@@ -5,7 +5,16 @@ export type LeadsListView = 'active' | 'archived'
 
 export async function useLeadsAdminList() {
   const repository = createLeadsAdminRepository(useSupabaseClient())
-  const view = ref<LeadsListView>('active')
+  // Kept in the URL so opening a lead and coming back lands on the same list.
+  const route = useRoute()
+  const router = useRouter()
+  const view = computed<LeadsListView>({
+    get: () => (route.query.view === 'archived' ? 'archived' : 'active'),
+    set: (next) => {
+      const { view: _previous, ...query } = route.query
+      void router.replace({ query: next === 'archived' ? { ...query, view: 'archived' } : query })
+    },
+  })
   const {
     data: leads,
     status: loadStatus,
