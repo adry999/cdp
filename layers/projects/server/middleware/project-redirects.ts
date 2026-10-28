@@ -1,4 +1,4 @@
-import { isLocalRedirectTarget } from '#layers/projects/server/utils/redirectTarget'
+import { isLocalRedirectTarget } from '#layers/core/server/utils/redirectTarget'
 import { findCachedRedirect } from '#layers/projects/server/services/findCachedRedirect'
 
 // save_project() writes a `redirects` row when a published slug changes; this only matches

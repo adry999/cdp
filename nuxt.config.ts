@@ -38,7 +38,7 @@ const STATIC_ASSET_CACHE = 'public, max-age=86400, stale-while-revalidate=604800
 // object form sends `stale-while-revalidate=86400`.
 const swrCache = (maxAge: number) => ({ cache: { swr: true, maxAge, staleMaxAge: 86400 } })
 const hostSwrCache = (maxAge: number) => ({
-  cache: { swr: true, maxAge, staleMaxAge: 86400, varies: ['host', 'x-forwarded-host'] },
+  cache: { swr: true, maxAge, staleMaxAge: 86400, varies: ['host'] },
 })
 
 const PRERENDERED_PAGE_CACHE = 's-maxage=3600, stale-while-revalidate=86400'

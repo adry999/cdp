@@ -8,6 +8,13 @@ const loading = ref(false)
 const preparing = ref(true)
 const factorId = ref('')
 const enroll = ref<{ qr: string; secret: string } | null>(null)
+const regenerated = ref(false)
+
+// Already verified in this session: the code screen has nothing left to do.
+const existingSession = useSupabaseSession().value
+if (existingSession && sessionAal(existingSession.access_token) === 'aal2') {
+  await navigateTo('/admin/projects', { replace: true })
+}
 
 // Verified factor → ask for a code; none → enroll one first. Needs the browser client.
 onMounted(async () => {
@@ -24,9 +31,11 @@ onMounted(async () => {
     return
   }
   // An abandoned enrollment leaves an unverified factor behind; it would block a new one.
-  for (const stale of data.all.filter((f) => f.factor_type === 'totp' && f.status === 'unverified')) {
+  const staleFactors = data.all.filter((f) => f.factor_type === 'totp' && f.status === 'unverified')
+  for (const stale of staleFactors) {
     await supabase.auth.mfa.unenroll({ factorId: stale.id })
   }
+  regenerated.value = staleFactors.length > 0
   const { data: created, error: enrollError } = await supabase.auth.mfa.enroll({
     factorType: 'totp',
     friendlyName: 'Codepedia admin',
@@ -49,14 +58,15 @@ async function handleSubmit() {
   })
   if (verifyError) {
     loading.value = false
-    error.value = 'Cod greșit sau expirat.'
+    error.value =
+      verifyError.status === 429 ? 'Prea multe încercări. Așteaptă puțin și încearcă din nou.' : 'Cod greșit sau expirat.'
     return
   }
   // The verified (aal2) session is published through onAuthStateChange; make sure the
   // session ref holds it before the middleware checks the level on the next route.
   await supabase.auth.refreshSession()
   loading.value = false
-  await navigateTo('/admin/projects')
+  await navigateTo('/admin/projects', { replace: true })
 }
 
 async function signOut() {
@@ -73,6 +83,9 @@ async function signOut() {
       <template v-if="enroll">
         <p class="text-[15px]">
           Scanează codul cu Google Authenticator, 1Password sau o aplicație similară, apoi introdu codul de 6 cifre.
+        </p>
+        <p v-if="regenerated" role="note" class="mt-3 text-sm text-muted">
+          Codul QR a fost regenerat — scanează-l din nou în aplicație.
         </p>
         <img :src="enroll.qr" alt="Cod QR pentru aplicația de autentificare" width="200" height="200" class="mx-auto mt-5 block h-[200px] w-[200px]" >
         <p class="mt-4 eyebrow text-muted">Cheie pentru introducere manuală</p>
