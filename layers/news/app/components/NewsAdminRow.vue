@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatAdminDate } from '#layers/core/shared/utils/formatAdminDate'
 import type { AdminNewsListRow } from '#layers/news/domain/newsSelect'
 
 defineProps<{ item: AdminNewsListRow; last: boolean; confirming: boolean; busy: boolean }>()
@@ -18,7 +19,7 @@ defineEmits<{ askDelete: []; cancelDelete: []; confirmDelete: [] }>()
       {{ item.published_at ? 'Publicat' : 'Draft' }}
     </div>
     <div class="flex-[0_0_100px] eyebrow text-muted">
-      {{ new Date(item.published_at ?? item.created_at).toLocaleDateString('ro-RO') }}
+      {{ formatAdminDate(item.published_at ?? item.created_at) }}
     </div>
     <div class="flex flex-[0_0_150px] justify-end gap-3 eyebrow">
       <template v-if="confirming">

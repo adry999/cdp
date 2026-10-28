@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatAdminDate } from '#layers/core/shared/utils/formatAdminDate'
 import { leadBudgetLabel, leadServiceLabel, leadStageLabel, leadStatusLabel } from '#layers/leads/domain/lead'
 import { useLeadsAdminList } from '#layers/leads/state/useLeadsAdminList'
 
@@ -34,7 +35,7 @@ const STATUS_CLASS: Record<string, string> = {
           :class="{ 'border-b': i === leads.length - 1 }"
         >
           <div class="flex-[0_0_100px] eyebrow text-muted">
-            {{ new Date(lead.created_at).toLocaleDateString('ro-RO') }}
+            {{ formatAdminDate(lead.created_at) }}
           </div>
           <div class="min-w-0 flex-[1_1_160px] text-[15px] text-ink">{{ lead.name }}</div>
           <div class="min-w-0 flex-[1_1_180px] text-[15px] text-muted">{{ lead.email }}</div>

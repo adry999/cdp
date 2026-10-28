@@ -34,6 +34,10 @@ const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 const SUPABASE_BROWSER_PLUGIN = '@nuxtjs/supabase/dist/runtime/plugins/supabase.client'
 
 const STATIC_ASSET_CACHE = 'public, max-age=86400, stale-while-revalidate=604800'
+// Nitro's `swr: N` sends a bare `stale-while-revalidate` (no value), which proxies read as nothing; the
+// object form sends `stale-while-revalidate=86400`.
+const swrCache = (maxAge: number) => ({ cache: { swr: true, maxAge, staleMaxAge: 86400 } })
+
 const PRERENDERED_PAGE_CACHE = 's-maxage=3600, stale-while-revalidate=86400'
 
 // Client chunk grouping (vite.$client below). Module ids are absolute paths, so the project root
@@ -166,33 +170,33 @@ export default defineNuxtConfig({
     },
   },
 
-  // Client source maps aren't shipped (nothing consumes them yet, and the largest was ~3 MB); server maps stay on.
-  sourcemap: { client: false, server: true },
+  // No source maps shipped: nothing consumes them (the largest client one was ~3 MB) and the server ones only grow the deploy.
+  sourcemap: { client: false, server: false },
 
   routeRules: {
-    // / and /en redirect by language before the cache (nitro.vercel.config.routes above).
-    '/': { swr: 300 },
-    '/en': { swr: 300 },
-    '/proiecte': { swr: 300 },
-    '/en/work': { swr: 300 },
-    '/proiecte/**': { swr: 300 },
-    '/en/work/**': { swr: 300 },
+    // / and /en are not cached: whether they redirect depends on the visitor's cookie, geo and domain
+    // (locale-redirect.ts), and the swr handler would replace that middleware's `private, no-cache` with a
+    // shared s-maxage. Their data still comes from the cached /api routes.
+    '/proiecte': swrCache(300),
+    '/en/work': swrCache(300),
+    '/proiecte/**': swrCache(300),
+    '/en/work/**': swrCache(300),
     // Blog content lives in the repo: prerendered at build (URLs listed in layers/blog/nuxt.config.ts).
     // News comes from the database (like projects), so it is cached, not prerendered.
-    '/noutati': { swr: 300 },
-    '/en/news': { swr: 300 },
-    '/noutati/**': { swr: 300 },
-    '/en/news/**': { swr: 300 },
+    '/noutati': swrCache(300),
+    '/en/news': swrCache(300),
+    '/noutati/**': swrCache(300),
+    '/en/news/**': swrCache(300),
     // Prerendered files get no Cache-Control of their own, so Cloudflare's rule 4 would bypass them
     // (docs/DEPLOY_HOSTINGER.md); same edge lifetime as the other repo-content pages.
     '/blog': { prerender: true, headers: { 'Cache-Control': PRERENDERED_PAGE_CACHE } },
     '/en/blog': { prerender: true, headers: { 'Cache-Control': PRERENDERED_PAGE_CACHE } },
     '/blog/**': { prerender: true, headers: { 'Cache-Control': PRERENDERED_PAGE_CACHE } },
     '/en/blog/**': { prerender: true, headers: { 'Cache-Control': PRERENDERED_PAGE_CACHE } },
-    '/servicii': { swr: 300 },
-    '/en/services': { swr: 300 },
-    '/servicii/**': { swr: 300 },
-    '/en/services/**': { swr: 300 },
+    '/servicii': swrCache(300),
+    '/en/services': swrCache(300),
+    '/servicii/**': swrCache(300),
+    '/en/services/**': swrCache(300),
     // A service reached by its canonical id or the other locale's slug lands on the right page.
     '/servicii/web-app': { redirect: { to: '/servicii/aplicatie-web', statusCode: 301 } },
     '/servicii/ai-automation': { redirect: { to: '/servicii/automatizare-ai', statusCode: 301 } },
@@ -202,22 +206,22 @@ export default defineNuxtConfig({
     '/en/services/granturi': { redirect: { to: '/en/services/grants', statusCode: 301 } },
     // A page reached under the other locale's path (/en/proiecte, /work) lands on the right one. Blog posts: layers/blog/nuxt.config.ts.
     ...redirectRouteRules(crossLocalePageRedirects(LOCALIZED_PAGES)),
-    // Content lives in the repo, so it only changes with a deploy, which clears the cache.
-    '/despre': { swr: 3600 },
-    '/en/about': { swr: 3600 },
-    '/preturi': { swr: 3600 },
-    '/en/pricing': { swr: 3600 },
-    '/contact': { swr: 3600 },
-    '/en/contact': { swr: 3600 },
-    '/confidentialitate': { swr: 3600 },
-    '/en/privacy': { swr: 3600 },
-    '/llms.txt': { swr: 3600 },
-    '/llms-full.txt': { swr: 3600 },
-    '/api/projects': { swr: 60 },
-    '/api/home/settings': { swr: 60 },
-    '/api/projects/**': { swr: 300 },
-    '/api/news': { swr: 60 },
-    '/api/news/**': { swr: 300 },
+    // Content lives in the repo, but these pages embed the project menu, and Cloudflare is not purged after admin edits.
+    '/despre': swrCache(300),
+    '/en/about': swrCache(300),
+    '/preturi': swrCache(300),
+    '/en/pricing': swrCache(300),
+    '/contact': swrCache(300),
+    '/en/contact': swrCache(300),
+    '/confidentialitate': swrCache(300),
+    '/en/privacy': swrCache(300),
+    '/llms.txt': swrCache(3600),
+    '/llms-full.txt': swrCache(3600),
+    '/api/projects': swrCache(60),
+    '/api/home/settings': swrCache(60),
+    '/api/projects/**': swrCache(300),
+    '/api/news': swrCache(60),
+    '/api/news/**': swrCache(300),
     // Static assets from public/ keep their names across deploys (no content hash), so no `immutable`:
     // a day fresh, then a week of stale-while-revalidate instead of the platform default of revalidating every time.
     '/brand/**': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },

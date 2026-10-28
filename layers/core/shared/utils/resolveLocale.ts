@@ -15,6 +15,10 @@ export const CRAWLER_WORDS = [
   'chatgpt-user',
   'perplexity-user',
   'claude-user',
+  'whatsapp',
+  'skypeuripreview',
+  'embedly',
+  'snapchat',
 ]
 const CRAWLER_RE = new RegExp(CRAWLER_WORDS.join('|'), 'i')
 

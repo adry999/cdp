@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useReveal } from '#layers/home/state/useReveal'
 import { mapProjectCard, selectHomeProjects, usePublishedProjects } from '#layers/projects'
 import { useSiteSettings } from '#layers/content'
 

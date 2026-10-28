@@ -56,6 +56,32 @@ describe('validateProjectPayload', () => {
     expect(issues.map((i) => i.field)).toContain('slugRo')
   })
 
+  it('requires alt text for cover, hero and gallery images only when published', () => {
+    const media = {
+      coverPath: 'c.jpg',
+      coverAlt: { ro: '', en: '' },
+      heroPath: 'h.jpg',
+      heroAlt: { ro: ' ', en: '' },
+      gallery: [{ path: 'g.jpg', altRo: '', altEn: '', aspect: '16/9' }],
+    }
+    expect(validateProjectPayload(base(media))).toEqual([])
+    const fields = validateProjectPayload(base({ ...media, published: true })).map((i) => i.field)
+    expect(fields).toEqual(['coverAlt', 'heroAlt', 'gallery.0'])
+  })
+
+  it('accepts published media with alt text and ignores empty slots', () => {
+    const issues = validateProjectPayload(
+      base({
+        published: true,
+        coverPath: 'c.jpg',
+        coverAlt: { ro: 'Copertă', en: '' },
+        heroPath: null,
+        gallery: [{ path: null, altRo: '', altEn: '', aspect: '16/9' }],
+      }),
+    )
+    expect(issues).toEqual([])
+  })
+
   it('reports every missing required field at once', () => {
     const issues = validateProjectPayload(
       base({ title: { ro: '', en: '' }, lead: { ro: '  ', en: '' } }),

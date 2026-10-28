@@ -31,7 +31,7 @@ const linkClass =
   <div>
     <SiteSection number="00" :label="t('caseStudy.sections.hero')" padding="caseHero" :top-border="false">
       <template #background>
-        <LazyCoreInteractiveBackground variant="dot-matrix" />
+        <LazyCoreInteractiveBackground hydrate-on-idle variant="dot-matrix" />
       </template>
       <div class="flex flex-wrap gap-x-4 gap-y-2 eyebrow-sm text-muted">
         <span v-for="chip in chips" :key="chip">{{ chip }}</span>
@@ -48,6 +48,7 @@ const linkClass =
         <template v-for="(link, i) in project.caseStudy.links" :key="i">
           <a v-if="isExternalLink(link.url)" :href="link.url" target="_blank" rel="noopener" :class="linkClass">
             <span class="eyebrow">{{ t(`caseStudy.links.${link.kind}`) }} ↗</span>
+            <span class="sr-only"> {{ t('a11y.newTab') }}</span>
             <span v-if="link.note" class="text-[13px] opacity-70">{{ link.note }}</span>
           </a>
           <NuxtLink v-else :to="internalTarget(link.url)" :class="linkClass">

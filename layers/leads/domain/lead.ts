@@ -1,6 +1,6 @@
 import { isStageId, type StageId } from '#layers/core/shared/types/service-stage'
 import { SERVICE_TAG_LABELS_RO, isServiceTagId, type ServiceTagId } from '#layers/core/shared/types/service-tag'
-import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
+import { EMAIL_PATTERN, clipLine, clipText } from '#layers/core/shared/utils/text'
 
 // Single source of the budget keys; select options and labels derive from it.
 export const LEAD_BUDGET_KEYS = ['under1k', '1to2k', '2to5k', 'over5k', 'unsure'] as const
@@ -138,16 +138,16 @@ function toLeadUtm(utm: Record<string, string> | undefined): Record<string, stri
 
 export function toLeadRecord(input: ContactSubmission, referrer: string | null): LeadRecord {
   return {
-    name: clipText(input.name, LEAD_FIELD_LIMITS.name),
-    email: clipText(input.email, LEAD_FIELD_LIMITS.email),
-    company: clipText(input.company, LEAD_FIELD_LIMITS.company) || null,
+    name: clipLine(input.name, LEAD_FIELD_LIMITS.name),
+    email: clipLine(input.email, LEAD_FIELD_LIMITS.email),
+    company: clipLine(input.company, LEAD_FIELD_LIMITS.company) || null,
     message: clipText(input.message, LEAD_FIELD_LIMITS.message),
-    budget: clipText(input.budget, LEAD_FIELD_LIMITS.budget) || null,
+    budget: clipLine(input.budget, LEAD_FIELD_LIMITS.budget) || null,
     stage: isStageId(input.stage) ? input.stage : null,
     service: isServiceTagId(input.service) ? input.service : null,
-    source: clipText(input.source, LEAD_FIELD_LIMITS.source) || null,
+    source: clipLine(input.source, LEAD_FIELD_LIMITS.source) || null,
     lang: input.lang === 'en' ? 'en' : 'ro',
-    page: clipText(input.page, LEAD_FIELD_LIMITS.page) || null,
+    page: clipLine(input.page, LEAD_FIELD_LIMITS.page) || null,
     referrer: referrer ? referrer.slice(0, 500) : null,
     utm: toLeadUtm(input.utm),
   }

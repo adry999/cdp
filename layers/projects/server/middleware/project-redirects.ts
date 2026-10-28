@@ -1,3 +1,4 @@
+import { isLocalRedirectTarget } from '#layers/projects/server/utils/redirectTarget'
 import { createProjectRepository } from '#layers/projects/server/repository/projectRepository'
 
 // save_project() writes a `redirects` row when a published slug changes; this only matches
@@ -15,6 +16,7 @@ export default defineEventHandler(async (event) => {
   // see `delete from redirects where from_path = to_path` in the RPC), but
   // checked again here since this table can in principle be edited directly.
   if (data.to_path === pathname) return
+  if (!isLocalRedirectTarget(data.to_path)) return
 
   setResponseHeader(event, 'Cache-Control', 'public, max-age=300, s-maxage=3600')
   return sendRedirect(event, data.to_path, data.status)

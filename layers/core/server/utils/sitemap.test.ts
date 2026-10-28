@@ -18,7 +18,7 @@ describe('toSitemapUrls', () => {
     const alt = [
       { hreflang: 'ro', href: `${base}/proiecte` },
       { hreflang: 'en', href: `${base}/en/work` },
-      { hreflang: 'x-default', href: `${base}/proiecte` },
+      { hreflang: 'x-default', href: `${base}/en/work` },
     ]
     expect(urls).toEqual([
       { loc: `${base}/proiecte`, lastmod: '2026-01-02', alt },
@@ -62,7 +62,7 @@ describe('renderSitemap', () => {
     const xml = renderSitemap(toSitemapUrls(single, [{ ro: '/', en: '/en' }]))
     expect(xml).toContain(`<loc>${base}/</loc>\n    <xhtml:link rel="alternate" hreflang="ro" href="${base}/" />`)
     expect(xml).not.toContain('<lastmod>')
-    expect(xml).toContain(`hreflang="x-default" href="${base}/" />`)
+    expect(xml).toContain(`hreflang="x-default" href="${base}/en" />`)
   })
 
   it('renders lastmod and escapes XML special characters', () => {
