@@ -53,6 +53,8 @@ function marker(ordered: boolean, index: number): string {
       <div
         v-else-if="block.type === 'table'"
         tabindex="0"
+        role="region"
+        :aria-label="t('blog.table')"
         class="mb-7 overflow-x-auto rounded border border-hairline"
       >
         <table class="w-full border-collapse text-[15px] leading-[1.45] [&_code]:bg-transparent [&_code]:p-0">

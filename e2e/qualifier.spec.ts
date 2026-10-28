@@ -181,3 +181,31 @@ test('header CTA on a service page opens the dialog with that service stage pres
   await expect(dialog).toBeVisible()
   await expect(dialog.locator('input[name="qualifier-stage"][value="A"]')).toBeChecked()
 })
+
+test('qualifier opened from the mobile menu returns focus to the menu toggle on Escape', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/servicii/aplicatie-web')
+  await dismissConsentBanner(page)
+  const toggle = page.locator('header button[aria-controls="site-mobile-menu"]')
+  await toggle.click()
+  await page.locator('#site-mobile-menu').getByText(/Discută un proiect/).click()
+  const dialog = page.getByRole('dialog', { name: DIALOG_NAME })
+  await expect(dialog).toBeVisible()
+
+  await page.keyboard.press('Escape')
+  await expect(dialog).toBeHidden()
+  await expect(toggle).toBeFocused()
+  await expect(page.locator('html')).not.toHaveCSS('overflow', 'hidden')
+})
+
+test('focus moves into the new step after Continue and Back', async ({ page }) => {
+  const { dialog } = await openFromHero(page)
+  await dialog.getByText('Am fișiere Figma sau resurse de design gata.').click()
+  await dialog.getByRole('button', { name: 'Continuă' }).click()
+  await expect(dialog.getByText('2.000 – 5.000 EUR')).toBeVisible()
+  await expect(dialog.locator('fieldset legend')).toBeFocused()
+
+  await dialog.getByRole('button', { name: 'Înapoi' }).click()
+  await expect(dialog.locator('input[name="qualifier-stage"][value="D"]')).toBeVisible()
+  await expect(dialog.locator('fieldset legend')).toBeFocused()
+})

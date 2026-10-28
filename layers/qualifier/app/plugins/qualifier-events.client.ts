@@ -10,6 +10,9 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook('qualifier:open', (request) => {
     if (!isQualifierEnabled.value) return
     // The payload comes from other layers; the hook bus does not enforce types at runtime.
-    dialog.open(isStageId(request.stage) ? request.stage : '')
+    dialog.open(
+      isStageId(request.stage) ? request.stage : '',
+      request.returnFocusTo instanceof HTMLElement ? request.returnFocusTo : null,
+    )
   })
 })

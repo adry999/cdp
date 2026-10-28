@@ -542,6 +542,7 @@
     "disclaimer": "Summary written by the CODEPEDIA team. The full article belongs to {name}."
   },
   "blog": {
+    "table": "Table, scroll horizontally",
     "seo": {
       "title": "Blog: web development, automation, architecture",
       "description": "Pricing, comparisons and guides for businesses planning a website or a web app. Written from CODEPEDIA projects."

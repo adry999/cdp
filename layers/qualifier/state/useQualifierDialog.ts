@@ -6,8 +6,13 @@ export function useQualifierDialog() {
   const isOpen = useState('qualifier:open', () => false)
   const initialStage = useState<StageId | ''>('qualifier:initial-stage', () => '')
 
-  function open(stage: StageId | '') {
+  // Where focus goes on close when the trigger is about to disappear (the mobile menu's button).
+  const returnFocusTo = useState<HTMLElement | null>('qualifier:return-focus', () => null)
+
+  function open(stage: StageId | '', trigger?: HTMLElement | null) {
     initialStage.value = stage
+    returnFocusTo.value =
+      trigger ?? (import.meta.client && document.activeElement instanceof HTMLElement ? document.activeElement : null)
     isOpen.value = true
   }
 
@@ -16,5 +21,5 @@ export function useQualifierDialog() {
     initialStage.value = ''
   }
 
-  return { isOpen, initialStage, open, close }
+  return { isOpen, initialStage, returnFocusTo, open, close }
 }
