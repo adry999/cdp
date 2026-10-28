@@ -129,7 +129,7 @@ export default defineNuxtConfig({
     fallbackToApi: false,
     // Every used icon is in the client bundle (also read during SSR), so the server ships no whole collections.
     serverBundle: false,
-    clientBundle: { icons: [...new Set([...Object.values(TECH_ICONS), ...Object.values(STACK_GROUP_ICONS)])], scan: true },
+    clientBundle: { icons: [...new Set([...Object.values(TECH_ICONS), ...Object.values(STACK_GROUP_ICONS)])] },
   },
 
   // Node's built-in SQLite instead of the better-sqlite3 native addon — no compiled binary to build or ship.
@@ -180,9 +180,12 @@ export default defineNuxtConfig({
   sourcemap: { client: false, server: false },
 
   routeRules: {
-    // / and /en are not cached: whether they redirect depends on the visitor's cookie, geo and domain
-    // (locale-redirect.ts), and the swr handler would replace that middleware's `private, no-cache` with a
-    // shared s-maxage. Their data still comes from the cached /api routes.
+    // The redirect of / and /en by cookie, geo and domain runs in a middleware, before this cache. A cached
+    // answer is Cache-Control s-maxage, which layers/core/server/plugins/locale-entry-headers.ts turns back
+    // into `private, no-cache` + Vary before sending. The server render reads no cookie or header.
+    // Not on Vercel previews: there an swr rule becomes an ISR function whose cached answer (a geo
+    // redirect included) would be served to every visitor, bypassing the middleware.
+    ...(process.env.VERCEL ? {} : { '/': swrCache(300), '/en': swrCache(300) }),
     '/proiecte': swrCache(300),
     '/en/work': swrCache(300),
     '/proiecte/**': swrCache(300),
@@ -221,9 +224,11 @@ export default defineNuxtConfig({
     '/en/contact': swrCache(300),
     '/confidentialitate': swrCache(300),
     '/en/privacy': swrCache(300),
-    // These two answer per host (RO/EN origin); Nitro's cache key is the path only, so key it on the host too.
+    // These answer per host (RO/EN origin); Nitro's cache key is the path only, so key it on the host too.
     '/llms.txt': hostSwrCache(3600),
     '/llms-full.txt': hostSwrCache(3600),
+    '/sitemap.xml': hostSwrCache(3600),
+    '/robots.txt': hostSwrCache(3600),
     '/api/projects': swrCache(60),
     '/api/home/settings': swrCache(60),
     '/api/projects/**': swrCache(300),
@@ -303,6 +308,34 @@ export default defineNuxtConfig({
       app.plugins = app.plugins.filter((plugin) => !plugin.src.replace(/\\/g, '/').includes(SUPABASE_BROWSER_PLUGIN))
       // A module upgrade that moves the plugin must fail the build, not silently ship it again.
       if (app.plugins.length === before) throw new Error(`${SUPABASE_BROWSER_PLUGIN} not found — update nuxt.config.ts`)
+    },
+    // @nuxt/fonts preloads only the first @font-face per family, in the order Google's CSS lists the subsets:
+    // latin-ext (Inter Tight 90 KB) before latin (45 KB), which carries nearly every glyph on the page.
+    // Moving latin to the front of the Google results makes it the preloaded one; the CSS keeps both faces
+    // (disjoint unicode-range), so ș and ț still load their latin-ext file on demand.
+    'fonts:providers'(providers) {
+      const google = providers.google
+      if (typeof google !== 'function') throw new Error('fonts:providers has no google provider — update nuxt.config.ts')
+      providers.google = (...factoryArgs: Parameters<typeof google>) => {
+        const provider = google(...factoryArgs)
+        return Object.assign(
+          async (...args: Parameters<typeof provider>) => {
+            const resolved = await provider(...args)
+            if (!resolved?.resolveFont) return resolved
+            return {
+              ...resolved,
+              async resolveFont(...fontArgs: Parameters<typeof resolved.resolveFont>) {
+                const result = await resolved.resolveFont(...fontArgs)
+                if (!result) return result
+                const latin = result.fonts.filter((font) => font.meta?.subset === 'latin')
+                const rest = result.fonts.filter((font) => font.meta?.subset !== 'latin')
+                return { ...result, fonts: [...latin, ...rest] }
+              },
+            }
+          },
+          { _name: provider._name, _options: provider._options },
+        )
+      }
     },
     // Otherwise every public page still prefetches the now-lazy supabase-js chunks and the admin
     // layouts with their imports (Nuxt lists the imports of a lazy layout even when the layout itself

@@ -1,5 +1,5 @@
 import { isLocalRedirectTarget } from '#layers/core/server/utils/redirectTarget'
-import { createNewsRepository } from '#layers/news/server/repository/newsRepository'
+import { findCachedRedirect } from '#layers/news/server/services/findCachedRedirect'
 
 // The news_items_sync_redirects trigger writes a `redirects` row when a published slug
 // changes; this only matches the two path shapes it writes, so other requests skip the DB round trip.
@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   const { pathname } = getRequestURL(event)
   if (!REDIRECTABLE.test(pathname)) return
 
-  const data = await createNewsRepository(event).findRedirect(pathname)
+  const data = await findCachedRedirect(event, pathname)
   if (!data || data.to_path === pathname) return
   if (!isLocalRedirectTarget(data.to_path)) return
 
