@@ -129,7 +129,7 @@ export default defineNuxtConfig({
     fallbackToApi: false,
     // Every used icon is in the client bundle (also read during SSR), so the server ships no whole collections.
     serverBundle: false,
-    clientBundle: { icons: [...new Set([...Object.values(TECH_ICONS), ...Object.values(STACK_GROUP_ICONS)])], scan: true },
+    clientBundle: { icons: [...new Set([...Object.values(TECH_ICONS), ...Object.values(STACK_GROUP_ICONS)])] },
   },
 
   // Node's built-in SQLite instead of the better-sqlite3 native addon — no compiled binary to build or ship.
@@ -221,9 +221,11 @@ export default defineNuxtConfig({
     '/en/contact': swrCache(300),
     '/confidentialitate': swrCache(300),
     '/en/privacy': swrCache(300),
-    // These two answer per host (RO/EN origin); Nitro's cache key is the path only, so key it on the host too.
+    // These answer per host (RO/EN origin); Nitro's cache key is the path only, so key it on the host too.
     '/llms.txt': hostSwrCache(3600),
     '/llms-full.txt': hostSwrCache(3600),
+    '/sitemap.xml': hostSwrCache(3600),
+    '/robots.txt': hostSwrCache(3600),
     '/api/projects': swrCache(60),
     '/api/home/settings': swrCache(60),
     '/api/projects/**': swrCache(300),
