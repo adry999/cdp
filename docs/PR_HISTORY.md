@@ -121,3 +121,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#121** chore(deps): `vitest` 4.1.12 → 5.0.5 (dev); testele, lint și typecheck trec neschimbate.
 
 - **#134** docs: skill-ul `project-conventions` adus la zi — producția pe Hostinger în spatele Cloudflare (nu Vercel), modulul `news`, rutele `llms*.txt`, pagina admin MFA, pluginul `locale-alternates`, middleware-urile din `core`; rândurile dublate #122 și #123 scoase din istoric.
+- **#142** feat(seo): `/llms.txt` EN listează doar studiile de caz traduse și are paginile index ca pagini cheie; `/llms-full.txt` primește secțiunea de studii de caz și sare peste articolele draft; pe paginile fără EN dispare și `og:locale:alternate`; `WebSite` cu `@id` per domeniu; `CollectionPage` + `ItemList` pe `/proiecte`, `/servicii`, `/noutati`; imagine implicită în `NewsArticle`; fluxurile RSS doar pe domeniul limbii lor; testul e2e verifică acasă RO.
