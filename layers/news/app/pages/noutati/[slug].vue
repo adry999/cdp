@@ -48,7 +48,9 @@ usePageSeo({
   },
 })
 
-// An English page that still shows Romanian text stays out of the index.
+// An English page that still shows Romanian text stays out of the index, and the EN alternate is dropped
+// from hreflang on the RO render too.
+useSetEnPending(() => !raw.title_en?.trim() || !raw.summary_en?.trim())
 useSeoMeta({ robots: () => (item.value.translated ? undefined : 'noindex, follow') })
 
 useJsonLd(
