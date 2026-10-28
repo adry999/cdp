@@ -2,11 +2,13 @@
 import { availableTags, mapProjectCard, usePublishedProjects } from '#layers/projects'
 import { isServiceTagId, type ServiceTagId } from '#layers/core/shared/types/service-tag'
 import { useSiteSettings } from '#layers/content'
+import { caseStudyPaths } from '#layers/projects/domain/caseStudyPaths'
 
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 const siteLocale = useSiteLocale()
+const siteUrl = useSiteUrl()
 
 const { projects: rows } = await usePublishedProjects()
 const settings = useSiteSettings()
@@ -39,6 +41,15 @@ usePageSeo({
   description: () => t('projects.seo.description'),
 })
 useBreadcrumbLd(() => t('nav.work'))
+useCollectionLd({
+  name: () => t('projects.seo.title'),
+  description: () => t('projects.seo.description'),
+  items: () =>
+    list.value.map((row) => ({
+      name: mapProjectCard(row, siteLocale.value).title,
+      url: `${siteUrl}${caseStudyPaths(row.slug_ro, row.slug_en)[siteLocale.value]}`,
+    })),
+})
 </script>
 
 <template>
