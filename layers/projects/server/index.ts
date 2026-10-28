@@ -1,6 +1,6 @@
 import type { H3Event } from 'h3'
 import { createProjectRepository, type PublishedProjectSlugs } from '#layers/projects/server/repository/projectRepository'
-import { caseStudyPaths } from '#layers/projects/domain/caseStudyPaths'
+import { caseStudySitemapPages } from '#layers/projects/domain/sitemap'
 import type { SitemapPage } from '#layers/core/shared/types/sitemap'
 import { toLastmod } from '#layers/core/server/utils/sitemap'
 
@@ -35,7 +35,7 @@ export function listPublishedProjectSlugs(event: H3Event): Promise<PublishedProj
 /** Every published case study's paths in both locales. Throws with the database. */
 export async function listCaseStudyPages(event: H3Event): Promise<SitemapPage[]> {
   const projects = await listPublishedProjectSlugs(event)
-  return projects.map(({ ro, en, updatedAt }) => ({ ...caseStudyPaths(ro, en), lastmod: toLastmod(updatedAt) }))
+  return caseStudySitemapPages(projects, toLastmod)
 }
 
 /** Published case studies for the sitemap. The sitemap must not fail with the

@@ -2,12 +2,15 @@ import type { H3Event } from 'h3'
 import { serverSupabaseClient } from '#supabase/server'
 import type { Database } from '#layers/core/shared/types/database.types'
 import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
+import { projectHasEnglish } from '#layers/projects/domain/mapProject'
 import { NAV_PROJECT_SELECT, PROJECT_CARD_SELECT, PROJECT_SELECT } from '#layers/projects/domain/projectSelect'
 
 export interface PublishedProjectSlugs {
   ro: string
   en: string | null
   updatedAt: string
+  /** The English title and lead are both filled in. */
+  hasEnglish: boolean
 }
 
 export function createProjectRepository(event: H3Event) {
@@ -57,12 +60,12 @@ export function createProjectRepository(event: H3Event) {
       const client = await serverSupabaseClient(event)
       const { data, error } = await client
         .from('projects')
-        .select('slug_ro, slug_en, updated_at')
+        .select('slug_ro, slug_en, title_en, lead_en, updated_at')
         .not('published_at', 'is', null)
         .order('sort_order')
 
       if (error) logAndThrow('listPublishedProjectSlugs', error)
-      return (data ?? []).map((p) => ({ ro: p.slug_ro, en: p.slug_en, updatedAt: p.updated_at }))
+      return (data ?? []).map((p) => ({ ro: p.slug_ro, en: p.slug_en, updatedAt: p.updated_at, hasEnglish: projectHasEnglish(p) }))
     },
 
     // Errors are ignored on purpose: a failed lookup falls through to the normal route.

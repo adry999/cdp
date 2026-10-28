@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { mapProject, mapProjectCard, type ProjectRow } from './mapProject'
+import { mapProject, mapProjectCard, projectHasEnglish, type ProjectRow } from './mapProject'
 
 const baseRow: ProjectRow = {
   slug_ro: 'saas-logistica',
@@ -79,6 +79,26 @@ const baseRow: ProjectRow = {
   project_stats: [],
   project_images: [],
 }
+
+describe('translated', () => {
+  it('is true in Romanian whatever the English fields hold', () => {
+    expect(mapProject({ ...baseRow, title_en: null, lead_en: null }, 'ro').translated).toBe(true)
+  })
+
+  it('is true in English when title and lead are both filled', () => {
+    expect(mapProject(baseRow, 'en').translated).toBe(true)
+  })
+
+  it('is false in English when the title or the lead is empty or blank', () => {
+    expect(mapProject({ ...baseRow, title_en: null }, 'en').translated).toBe(false)
+    expect(mapProject({ ...baseRow, lead_en: '   ' }, 'en').translated).toBe(false)
+  })
+
+  it('projectHasEnglish is independent of the locale', () => {
+    expect(projectHasEnglish({ title_en: 'T', lead_en: 'L' })).toBe(true)
+    expect(projectHasEnglish({ title_en: 'T', lead_en: '' })).toBe(false)
+  })
+})
 
 describe('mapProject', () => {
   it('uses slug_ro when slug_en is not set, regardless of locale', () => {
@@ -378,7 +398,7 @@ describe('mapProjectCard', () => {
   })
 
   it('is the card half of mapProject', () => {
-    const { caseStudy: _caseStudy, ...card } = mapProject(baseRow, 'ro')
+    const { caseStudy: _caseStudy, translated: _translated, ...card } = mapProject(baseRow, 'ro')
     expect(card).toEqual(mapProjectCard(baseRow, 'ro'))
   })
 })
