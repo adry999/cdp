@@ -100,7 +100,7 @@ export async function useProjectsEditor(slug: string) {
       savedSlugs.value = {
         slugRo: form.value.slugRo,
         slugEn: form.value.slugEn,
-        wasPublished: savedSlugs.value.wasPublished || form.value.published,
+        wasPublished: form.value.published,
       }
 
       await revalidatePublicCache()
