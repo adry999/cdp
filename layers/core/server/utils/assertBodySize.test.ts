@@ -11,10 +11,9 @@ describe('checkBodySize', () => {
     expect(checkBodySize('1001', 1000)).toBe('too_large')
   })
 
-  it('requires a numeric Content-Length', () => {
-    expect(checkBodySize(undefined, 1000)).toBe('length_required')
-    expect(checkBodySize('', 1000)).toBe('length_required')
-    expect(checkBodySize('abc', 1000)).toBe('length_required')
-    expect(checkBodySize('-5', 1000)).toBe('length_required')
+  it('lets through a body without a usable Content-Length (chunked via a proxy)', () => {
+    expect(checkBodySize(undefined, 1000)).toBe('ok')
+    expect(checkBodySize('', 1000)).toBe('ok')
+    expect(checkBodySize('abc', 1000)).toBe('ok')
   })
 })
