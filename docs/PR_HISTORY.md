@@ -121,3 +121,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#121** chore(deps): `vitest` 4.1.12 → 5.0.5 (dev); testele, lint și typecheck trec neschimbate.
 
 - **#134** docs: skill-ul `project-conventions` adus la zi — producția pe Hostinger în spatele Cloudflare (nu Vercel), modulul `news`, rutele `llms*.txt`, pagina admin MFA, pluginul `locale-alternates`, middleware-urile din `core`; rândurile dublate #122 și #123 scoase din istoric.
+- **#138** fix(admin): textul alternativ intră în lista de verificare de la publicare (lista de proiecte, dialogul și validarea editorului spun același lucru; dialogul se închide la eșec ca eroarea să fie vizibilă), alt obligatoriu și la galerie, slug salvat fără spații, Ctrl+S pe orice layout și pe `/admin/hero`, pagina MFA (fără întoarcere la cod după verificare, mesaj la QR regenerat și la prea multe încercări), vizualizarea „Arhivate” din solicitări păstrată în URL.
