@@ -542,6 +542,7 @@
     "disclaimer": "Rezumat scris de echipa CODEPEDIA. Articolul complet aparține {name}."
   },
   "blog": {
+    "table": "Tabel, derulează orizontal",
     "seo": {
       "title": "Blog: dezvoltare web, automatizare, arhitectură",
       "description": "Prețuri, comparații și ghiduri pentru firmele care pregătesc un site sau o aplicație. Scrise din proiectele CODEPEDIA."

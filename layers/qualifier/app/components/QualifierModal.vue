@@ -2,19 +2,27 @@
 import { useQualifierDialog } from '#layers/qualifier/state/useQualifierDialog'
 import { QUALIFIER_TOTAL_STEPS, useQualifierFlow } from '#layers/qualifier/state/useQualifierFlow'
 
-const { isOpen } = useQualifierDialog()
+const { isOpen, returnFocusTo } = useQualifierDialog()
 // Registered before the watcher below, so the flow has reset by the time the
 // dialog moves focus into its first step.
 const { step, direction, stage, budget, status, goNext, goBack, submit, close } = useQualifierFlow()
 const { t } = useI18n()
 
 const panel = ref<HTMLElement | null>(null)
-useModalLock(panel, isOpen, close)
+useModalLock(panel, isOpen, close, { returnFocusTo })
 
 const transitionName = computed(() => (direction.value === 1 ? 'q-fwd' : 'q-back'))
 const viewKey = computed(() => (status.value === 'success' ? 'success' : `step-${step.value}`))
 
 const successHeading = ref<HTMLElement | null>(null)
+
+// The focused "Next"/"Back" button unmounts with its step, so focus moves to the new step's legend.
+// `after-enter` fires once the out-in transition has mounted the new step.
+function focusStep() {
+  if (status.value === 'success') return
+  // The contact step has no legend: its first field takes the focus.
+  panel.value?.querySelector<HTMLElement>('[data-step-legend], #qual-name')?.focus()
+}
 
 watch(status, (value) => {
   if (value === 'success') {
@@ -76,7 +84,7 @@ watch(status, (value) => {
           </div>
 
           <div class="mt-6">
-            <Transition :name="transitionName" mode="out-in">
+            <Transition :name="transitionName" mode="out-in" @after-enter="focusStep">
               <QualifierStepStage
                 v-if="viewKey === 'step-1'"
                 key="step-1"

@@ -17,7 +17,7 @@ const emit = defineEmits<{ select: [value: string] }>()
 <template>
   <label
     :class="[
-      'group flex cursor-pointer gap-3.5 rounded border px-4 py-3.5 transition-colors duration-[120ms] ease-out',
+      'group flex cursor-pointer gap-3.5 rounded border px-4 py-3.5 transition-colors duration-[120ms] ease-out has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-signal',
       selected ? 'border-signal bg-hatch' : 'border-hairline hover:border-muted-ink',
     ]"
   >
@@ -45,7 +45,7 @@ const emit = defineEmits<{ select: [value: string] }>()
 
     <span class="flex min-w-0 flex-col gap-1">
       <span
-        class="text-[15px] font-medium leading-snug text-ink group-has-[:focus-visible]:underline group-has-[:focus-visible]:decoration-signal group-has-[:focus-visible]:underline-offset-4"
+        class="text-[15px] font-medium leading-snug text-ink"
       >
         {{ title }}
       </span>

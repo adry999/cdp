@@ -43,7 +43,7 @@ export function useContactCta() {
   /** Opens the dialog. `returnFocusTo` is where focus goes on close when the trigger is about to disappear. */
   function activate(returnFocusTo?: HTMLElement | null) {
     if (isQualifierEnabled.value) {
-      nuxtApp.callHook('qualifier:open', { stage: stage.value })
+      nuxtApp.callHook('qualifier:open', { stage: stage.value, returnFocusTo })
     } else {
       contactModal.open({ service: service.value, returnFocusTo })
     }
