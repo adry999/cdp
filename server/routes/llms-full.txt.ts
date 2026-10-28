@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
   const locale = isRoHost ? 'ro' : 'en'
   const origin = origins[locale]
 
-  const rawPosts = listRawBlogPostsForLlms(locale)
+  const rawPosts = await listRawBlogPostsForLlms(locale)
   const services = listServicesForLlms(event, locale)
 
   const summary =
