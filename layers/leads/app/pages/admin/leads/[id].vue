@@ -6,7 +6,7 @@ import { useLeadsAdminDetail } from '#layers/leads/state/useLeadsAdminDetail'
 definePageMeta({ layout: 'admin', i18n: false })
 
 const route = useRoute()
-const { lead, loadError, notesState, actionError, updateStatus, saveNotes, archive, remove } =
+const { lead, loadError, notesState, actionError, updateStatus, saveNotes, archive, unarchive, remove } =
   await useLeadsAdminDetail(String(route.params.id))
 
 // No row and no error means the id does not exist; a failed load is reported, not shown as "missing".
@@ -134,7 +134,8 @@ const NOTES_STATE_LABELS = {
         </p>
 
         <div class="flex flex-wrap items-center gap-6">
-          <div v-if="confirmingArchive" class="flex gap-3 eyebrow">
+          <AppButton v-if="lead.archived_at" variant="outline" class="w-fit" @click="unarchive">Dezarhivează</AppButton>
+          <div v-else-if="confirmingArchive" class="flex gap-3 eyebrow">
             <button type="button" class="cursor-pointer border-0 bg-transparent p-0 text-signal-text" @click="archive">
               Sigur? Arhivează
             </button>

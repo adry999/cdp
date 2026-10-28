@@ -34,6 +34,10 @@ export async function useLeadsAdminDetail(leadId: string) {
     if (await runAction(() => repository.archive(leadId))) await navigateTo('/admin/leads')
   }
 
+  async function unarchive() {
+    if (await runAction(() => repository.unarchive(leadId))) await navigateTo('/admin/leads')
+  }
+
   async function remove() {
     if (await runAction(() => repository.remove(leadId))) await navigateTo('/admin/leads')
   }
@@ -50,5 +54,5 @@ export async function useLeadsAdminDetail(leadId: string) {
     }
   }
 
-  return { lead, loadStatus, loadError, notesState, actionError, updateStatus, saveNotes, archive, remove }
+  return { lead, loadStatus, loadError, notesState, actionError, updateStatus, saveNotes, archive, unarchive, remove }
 }

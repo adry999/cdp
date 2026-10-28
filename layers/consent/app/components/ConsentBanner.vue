@@ -9,8 +9,7 @@ const { consent, showBanner, acceptAll, rejectAll, savePreferences } = useCookie
 const outlineButtonClass = 'px-[18px]! py-[11px]! leading-5'
 const inkButtonClass = 'px-[19px]! py-3! leading-5'
 
-// Same shared flag as app/composables/useMobileMenuOpen (root composable, not importable from a layer).
-const menuOpen = useState('site-mobile-menu-open', () => false)
+const menuOpen = useMobileMenuOpen()
 const customizing = ref(false)
 const draft = reactive({ analytics: false, marketing: false })
 
