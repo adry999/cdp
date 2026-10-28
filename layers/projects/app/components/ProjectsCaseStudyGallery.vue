@@ -37,7 +37,7 @@ const captions = computed(() => shotCaptions(caseStudy.value.shots))
       <figure v-for="(shot, i) in caseStudy.shots" :key="shot.path" class="m-0" :class="compact && i === 0 ? 'col-span-full' : undefined">
         <button
           type="button"
-          :aria-label="t('caseStudy.lightbox.openImage', { n: i + 1 })"
+          :aria-label="`${t('caseStudy.lightbox.openImage', { n: i + 1 })}: ${altOf(shot.alt, i)}`"
           class="block w-full cursor-zoom-in overflow-hidden rounded border border-hairline p-0 hover:border-ink"
           @click="emit('open', i)"
         >
@@ -79,6 +79,7 @@ const captions = computed(() => shotCaptions(caseStudy.value.shots))
         class="py-2 eyebrow text-ink underline decoration-signal underline-offset-[3px] hover:text-signal-text"
       >
         {{ t(`caseStudy.links.${link.kind}`) }} ↗
+        <span class="sr-only"> {{ t('a11y.newTab') }}</span>
       </a>
     </div>
   </ProjectsCaseStudySection>

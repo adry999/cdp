@@ -1,4 +1,7 @@
 {
+  "a11y": {
+    "newTab": "(se deschide într-o filă nouă)"
+  },
   "seo": {
     "home": {
       "title": "Dezvoltare web full-stack, Chișinău",
@@ -649,7 +652,8 @@
     "principlesLabel": "Cum lucrăm",
     "team": {
       "label": "Echipa",
-      "title": "Oamenii cu care vorbești direct."
+      "title": "Oamenii cu care vorbești direct.",
+      "linkedin": "LinkedIn – {name}"
     },
     "facts": {
       "based": {
