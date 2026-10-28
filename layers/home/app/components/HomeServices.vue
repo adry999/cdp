@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useReveal } from '#layers/home/state/useReveal'
 import type { ComponentPublicInstance } from 'vue'
 import type { StageId } from '#layers/core/shared/types/service-stage'
 import { useQualifierAvailability } from '#layers/qualifier'
