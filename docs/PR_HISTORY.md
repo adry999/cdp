@@ -121,3 +121,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#121** chore(deps): `vitest` 4.1.12 → 5.0.5 (dev); testele, lint și typecheck trec neschimbate.
 
 - **#134** docs: skill-ul `project-conventions` adus la zi — producția pe Hostinger în spatele Cloudflare (nu Vercel), modulul `news`, rutele `llms*.txt`, pagina admin MFA, pluginul `locale-alternates`, middleware-urile din `core`; rândurile dublate #122 și #123 scoase din istoric.
+- **#136** fix(core,news,e2e): garda de origine mutată în `server/middleware/` (rulează înaintea redirect-urilor din layers) și lasă să treacă cererile interne ale SSR-ului (`$fetch(\x27/api/...\x27)`, prerender), cu test e2e pe un server cu secretul setat; cheia de cache păstrează doar valori valide (`tag`, `serviciu`/`service`), fără query pe `/api` cache-uite; `llms*` variază doar după `host`; corpul cererilor chunked limitat la 32 KB; redirect-urile de noutăți doar spre căi locale.
