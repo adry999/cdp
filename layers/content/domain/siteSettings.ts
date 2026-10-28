@@ -5,6 +5,8 @@ export interface SiteSettings {
   contactEmail: string
   /** E.164, the same number as on the Google Business Profile. */
   phone: string
+  /** The same number grouped for reading, shown on the site. */
+  phoneDisplay: string
   /** Official profiles of the studio, published as the Organization's `sameAs`. */
   socialProfiles: readonly string[]
   /** Weekly hours, schema.org day names, 24-hour HH:MM. */
