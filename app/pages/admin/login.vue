@@ -8,7 +8,10 @@ const error = ref('')
 const loading = ref(false)
 
 // An admin who is already signed in has nothing to do on this page.
-if (useSupabaseSession().value) await navigateTo('/admin/projects')
+const existingSession = useSupabaseSession().value
+if (existingSession) {
+  await navigateTo(sessionAal(existingSession.access_token) === 'aal2' ? '/admin/projects' : '/admin/mfa')
+}
 
 async function handleSubmit() {
   error.value = ''
@@ -22,7 +25,7 @@ async function handleSubmit() {
     error.value = 'Email sau parolă greșită.'
     return
   }
-  await navigateTo('/admin/projects')
+  await navigateTo('/admin/mfa')
 }
 </script>
 

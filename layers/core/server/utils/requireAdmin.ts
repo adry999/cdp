@@ -13,7 +13,7 @@ export async function requireAdmin(event: H3Event): Promise<{ id: string }> {
       // A malformed or expired `sb-` cookie makes getClaims throw; that is "not signed in",
       // not a 500 that leaks the Supabase message.
       const claims = await serverSupabaseUser(event).catch(() => null)
-      return claims ? { id: claims.sub } : null
+      return claims ? { id: claims.sub, aal: typeof claims.aal === 'string' ? claims.aal : undefined } : null
     },
     isAppUser: (id) => {
       const admin = serverSupabaseServiceRole<Database>(event)
@@ -22,5 +22,6 @@ export async function requireAdmin(event: H3Event): Promise<{ id: string }> {
   })
   if (result.outcome === 'unauthenticated') throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
   if (result.outcome === 'forbidden') throw createError({ statusCode: 403, statusMessage: 'Forbidden' })
+  if (result.outcome === 'mfa_required') throw createError({ statusCode: 403, statusMessage: 'MFA required' })
   return result.user
 }

@@ -11,5 +11,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
   }
 
   if (to.path === '/admin/login') return
-  if (!useSupabaseSession().value) return navigateTo('/admin/login')
+  const session = useSupabaseSession().value
+  if (!session) return navigateTo('/admin/login')
+  // Password alone is not enough: every other admin route needs the TOTP step done (aal2).
+  // Decoded locally, so this works on the server and the client without a request.
+  if (to.path !== '/admin/mfa' && sessionAal(session.access_token) !== 'aal2') return navigateTo('/admin/mfa')
 })
