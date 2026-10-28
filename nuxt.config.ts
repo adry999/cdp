@@ -183,8 +183,9 @@ export default defineNuxtConfig({
     // The redirect of / and /en by cookie, geo and domain runs in a middleware, before this cache. A cached
     // answer is Cache-Control s-maxage, which layers/core/server/plugins/locale-entry-headers.ts turns back
     // into `private, no-cache` + Vary before sending. The server render reads no cookie or header.
-    '/': swrCache(300),
-    '/en': swrCache(300),
+    // Not on Vercel previews: there an swr rule becomes an ISR function whose cached answer (a geo
+    // redirect included) would be served to every visitor, bypassing the middleware.
+    ...(process.env.VERCEL ? {} : { '/': swrCache(300), '/en': swrCache(300) }),
     '/proiecte': swrCache(300),
     '/en/work': swrCache(300),
     '/proiecte/**': swrCache(300),
