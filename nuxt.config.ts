@@ -137,6 +137,8 @@ export default defineNuxtConfig({
     mailTo: process.env.MAIL_TO || 'contact@codepedia.md',
     // Vercel Cron sends `Authorization: Bearer $CRON_SECRET`; unset, /api/health answers 404.
     cronSecret: process.env.CRON_SECRET || '',
+    // Secret that Cloudflare sends in `x-codepedia-origin`; requests without it get 403. Empty = check off. NUXT_ORIGIN_SECRET also overrides it at runtime, no rebuild needed.
+    originSecret: process.env.NUXT_ORIGIN_SECRET || '',
     // Mirrors nitro.vercel.config.bypassToken below; server/api/admin/revalidate.post.ts sends it back as
     // `x-prerender-revalidate` to force an ISR refresh. Empty off Vercel falls back to a storage cache clear.
     isrBypassToken: process.env.VERCEL_ISR_BYPASS_TOKEN || '',
