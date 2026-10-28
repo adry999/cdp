@@ -1,4 +1,4 @@
 /** True for Ctrl+S / Cmd+S, the admin "save" shortcut. */
-export function isSaveShortcut(event: Pick<KeyboardEvent, 'key' | 'ctrlKey' | 'metaKey' | 'altKey'>): boolean {
+export function isSaveShortcut(event: { key: string; ctrlKey: boolean; metaKey: boolean; altKey: boolean }): boolean {
   return (event.ctrlKey || event.metaKey) && !event.altKey && event.key.toLowerCase() === 's'
 }
