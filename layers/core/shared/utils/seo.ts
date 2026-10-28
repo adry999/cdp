@@ -37,6 +37,9 @@ export const OG_DEFAULT_SIZE = { width: 1200, height: 630 } as const
 /** Project images are uploaded 16:9; served at 1200 wide they are 1200×675, which every platform accepts. */
 export const OG_PROJECT_SIZE = { width: 1200, height: 675 } as const
 
+/** The site-wide Open Graph image, relative to the site origin. */
+export const DEFAULT_OG_IMAGE_PATH = '/og-image.png'
+
 export interface OgImage {
   url: string
   width?: number

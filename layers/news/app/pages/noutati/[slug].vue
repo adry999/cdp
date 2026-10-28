@@ -59,6 +59,7 @@ useJsonLd(
       locale: siteLocale.value,
       url: itemUrl.value,
       primaryOrigin: primarySiteUrl,
+      origin: siteUrl,
       headline: item.value.title,
       description: item.value.summary,
       publishedAt: raw.published_at ?? raw.updated_at,

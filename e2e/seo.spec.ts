@@ -11,6 +11,7 @@ async function seoHead(page: Page) {
     return {
       canonical: document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href ?? null,
       alternates: Object.fromEntries(links.map((link) => [link.hreflang, link.href])),
+      ogLocaleAlternates: [...document.querySelectorAll<HTMLMetaElement>('meta[property="og:locale:alternate"]')].map((meta) => meta.content),
       robots: document.querySelector<HTMLMetaElement>('meta[name="robots"]')?.content ?? null,
       jsonLd: [...document.querySelectorAll('script[type="application/ld+json"]')].map((node) => node.textContent ?? ''),
     }
@@ -33,7 +34,13 @@ async function expectSeo(page: Page, path: string) {
 
 test('home pages carry canonical, hreflang and valid JSON-LD', async ({ page }) => {
   for (const path of ['/', '/en']) {
+    // Without a geo header "/" redirects to /en, which would never exercise the RO home.
+    await page.setExtraHTTPHeaders(path === '/' ? { 'x-vercel-ip-country': 'RO' } : {})
     const head = await expectSeo(page, path)
+    if (path === '/') {
+      expect(new URL(page.url()).pathname, 'the RO home is not redirected').toBe('/')
+      await expect(page.locator('html')).toHaveAttribute('lang', 'ro-RO')
+    }
     expect(head.alternates['en'], `${path} hreflang en`).toBeTruthy()
     // x-default is the English page.
     expect(head.alternates['x-default'], path).toBe(head.alternates['en'])
@@ -64,6 +71,7 @@ test('a case study carries canonical, hreflang and valid JSON-LD; a pending EN c
   } else {
     // The EN copy is still Romanian: no EN alternate, x-default falls back to the RO page.
     expect(ro.alternates['x-default']).toBe(ro.alternates['ro'])
+    expect(ro.ogLocaleAlternates.filter((locale) => locale.startsWith('en'))).toEqual([])
   }
 
   const en = await expectSeo(page, `/en/work/${project!.slug_en ?? project!.slug_ro}`)
