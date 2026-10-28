@@ -13,6 +13,7 @@ const saveLabel = computed(() => {
   return saveError.value?.message || 'Eroare'
 })
 const saving = computed(() => saveStatus.value === 'pending')
+useSaveShortcut(editor.save, { enabled: () => !saving.value && !uploading.value })
 </script>
 
 <template>
