@@ -124,8 +124,9 @@ export default defineNuxtConfig({
   icon: {
     mode: 'svg',
     fallbackToApi: false,
-    serverBundle: { collections: ['lucide', 'simple-icons'] },
-    clientBundle: { icons: [...new Set([...Object.values(TECH_ICONS), ...Object.values(STACK_GROUP_ICONS)])], scan: false },
+    // Every used icon is in the client bundle (also read during SSR), so the server ships no whole collections.
+    serverBundle: false,
+    clientBundle: { icons: [...new Set([...Object.values(TECH_ICONS), ...Object.values(STACK_GROUP_ICONS)])], scan: true },
   },
 
   // Node's built-in SQLite instead of the better-sqlite3 native addon — no compiled binary to build or ship.
