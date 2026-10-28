@@ -94,6 +94,9 @@ const ctaClass =
         >
           {{ t('nav.letsTalk') }} <span aria-hidden="true">→</span>
         </button>
+        <a :href="`tel:${settings.phone}`" :class="[linkClass, 'w-fit']">
+          {{ settings.phoneDisplay }}
+        </a>
       </div>
 
       <nav :aria-label="t('nav.services')" class="flex flex-col gap-0 nav:gap-2">

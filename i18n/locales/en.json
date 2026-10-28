@@ -321,7 +321,8 @@
         "errorEmail": "Invalid email address."
       },
       "facts": {
-        "responseTime": "Response time"
+        "responseTime": "Response time",
+        "phone": "Phone"
       }
     }
   },
