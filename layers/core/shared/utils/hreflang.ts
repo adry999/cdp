@@ -21,3 +21,10 @@ export function xDefaultHref(
   if (alternates.enPending) return alternates.ro ?? fallbackHref
   return alternates.en ?? alternates.ro ?? fallbackHref
 }
+
+/** A head tag that points at the English copy: `link[hreflang=en*]` or `meta[og:locale:alternate]` with an `en_*` locale. */
+export function isEnglishAlternateTag(tag: { tag: string; props: Record<string, unknown> }): boolean {
+  if (tag.tag === 'link') return String(tag.props.hreflang ?? '').startsWith('en')
+  if (tag.tag === 'meta' && tag.props.property === 'og:locale:alternate') return /^en([_-]|$)/i.test(String(tag.props.content ?? ''))
+  return false
+}
