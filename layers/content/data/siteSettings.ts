@@ -4,6 +4,7 @@ import type { SiteSettings } from '#layers/content/domain/siteSettings'
 export const SITE_SETTINGS: SiteSettings = {
   contactEmail: 'contact@codepedia.md',
   phone: '+37369117329',
+  phoneDisplay: '+373 69 117 329',
   socialProfiles: [
     'https://www.linkedin.com/company/codepediastudio',
     'https://www.instagram.com/codepediastudio/',

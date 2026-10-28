@@ -37,6 +37,9 @@ useBreadcrumbLd(() => t('nav.contact'))
         </ol>
         <div class="mt-9 grid max-w-[560px] grid-fit-180 gap-4">
           <FactCard :label="t('home.contact.facts.responseTime')" :value="settings.responseTime" />
+          <FactCard :label="t('home.contact.facts.phone')">
+            <a :href="`tel:${settings.phone}`" class="text-ink no-underline hover:text-signal-text">{{ settings.phoneDisplay }}</a>
+          </FactCard>
         </div>
       </div>
       <div class="min-w-0 flex-[1_1_380px]">
