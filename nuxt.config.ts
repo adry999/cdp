@@ -37,6 +37,9 @@ const STATIC_ASSET_CACHE = 'public, max-age=86400, stale-while-revalidate=604800
 // Nitro's `swr: N` sends a bare `stale-while-revalidate` (no value), which proxies read as nothing; the
 // object form sends `stale-while-revalidate=86400`.
 const swrCache = (maxAge: number) => ({ cache: { swr: true, maxAge, staleMaxAge: 86400 } })
+const hostSwrCache = (maxAge: number) => ({
+  cache: { swr: true, maxAge, staleMaxAge: 86400, varies: ['host', 'x-forwarded-host'] },
+})
 
 const PRERENDERED_PAGE_CACHE = 's-maxage=3600, stale-while-revalidate=86400'
 
@@ -218,8 +221,9 @@ export default defineNuxtConfig({
     '/en/contact': swrCache(300),
     '/confidentialitate': swrCache(300),
     '/en/privacy': swrCache(300),
-    '/llms.txt': swrCache(3600),
-    '/llms-full.txt': swrCache(3600),
+    // These two answer per host (RO/EN origin); Nitro's cache key is the path only, so key it on the host too.
+    '/llms.txt': hostSwrCache(3600),
+    '/llms-full.txt': hostSwrCache(3600),
     '/api/projects': swrCache(60),
     '/api/home/settings': swrCache(60),
     '/api/projects/**': swrCache(300),
