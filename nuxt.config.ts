@@ -304,6 +304,34 @@ export default defineNuxtConfig({
       // A module upgrade that moves the plugin must fail the build, not silently ship it again.
       if (app.plugins.length === before) throw new Error(`${SUPABASE_BROWSER_PLUGIN} not found — update nuxt.config.ts`)
     },
+    // @nuxt/fonts preloads only the first @font-face per family, in the order Google's CSS lists the subsets:
+    // latin-ext (Inter Tight 90 KB) before latin (45 KB), which carries nearly every glyph on the page.
+    // Moving latin to the front of the Google results makes it the preloaded one; the CSS keeps both faces
+    // (disjoint unicode-range), so ș and ț still load their latin-ext file on demand.
+    'fonts:providers'(providers) {
+      const google = providers.google
+      if (typeof google !== 'function') throw new Error('fonts:providers has no google provider — update nuxt.config.ts')
+      providers.google = (...factoryArgs: Parameters<typeof google>) => {
+        const provider = google(...factoryArgs)
+        return Object.assign(
+          async (...args: Parameters<typeof provider>) => {
+            const resolved = await provider(...args)
+            if (!resolved?.resolveFont) return resolved
+            return {
+              ...resolved,
+              async resolveFont(...fontArgs: Parameters<typeof resolved.resolveFont>) {
+                const result = await resolved.resolveFont(...fontArgs)
+                if (!result) return result
+                const latin = result.fonts.filter((font) => font.meta?.subset === 'latin')
+                const rest = result.fonts.filter((font) => font.meta?.subset !== 'latin')
+                return { ...result, fonts: [...latin, ...rest] }
+              },
+            }
+          },
+          { _name: provider._name, _options: provider._options },
+        )
+      }
+    },
     // Otherwise every public page still prefetches the now-lazy supabase-js chunks and the admin
     // layouts with their imports (Nuxt lists the imports of a lazy layout even when the layout itself
     // is not prefetched). Keys are source paths or chunk names, so the same admin convention applies.
