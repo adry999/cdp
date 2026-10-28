@@ -1,4 +1,4 @@
-import { moveToOrigin, xDefaultHref } from '#layers/core/shared/utils/hreflang'
+import { isEnglishAlternateTag, moveToOrigin, xDefaultHref } from '#layers/core/shared/utils/hreflang'
 import { toSiteOrigins } from '#layers/core/shared/utils/siteOrigins'
 
 // useLocaleHead builds every URL on i18n.baseUrl (NUXT_PUBLIC_SITE_URL). Here each
@@ -38,7 +38,7 @@ export default defineNuxtPlugin({
       const roHref = hrefOf((hreflang) => hreflang === 'ro')
       const enHref = hrefOf((hreflang) => hreflang.startsWith('en'))
 
-      ctx.tags = ctx.tags.filter((tag) => !(enPending && tag.tag === 'link' && String(tag.props.hreflang ?? '').startsWith('en')))
+      ctx.tags = ctx.tags.filter((tag) => !(enPending && isEnglishAlternateTag(tag)))
 
       for (const tag of ctx.tags) {
         const { props } = tag

@@ -18,6 +18,34 @@ export function breadcrumbList(items: readonly BreadcrumbItem[]) {
   }
 }
 
+export interface CollectionPageInput {
+  name: string
+  description: string
+  /** Absolute URL of the index page. */
+  url: string
+  inLanguage: string
+  items: readonly BreadcrumbItem[]
+}
+
+/** `CollectionPage` plus an `ItemList` of the entries the index page shows, in order. */
+export function collectionPage(input: CollectionPageInput) {
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'CollectionPage', name: input.name, description: input.description, url: input.url, inLanguage: input.inLanguage },
+      {
+        '@type': 'ItemList',
+        itemListElement: input.items.map((item, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          url: item.url,
+          name: item.name,
+        })),
+      },
+    ],
+  }
+}
+
 export const AREA_SERVED = ['MD', 'RO', 'EU', 'US', 'CA'] as const
 
 /** Canonical @id of the studio organization, anchored on the primary EN domain. */
@@ -92,7 +120,8 @@ export function webSite(siteUrl: string, inLanguage: readonly string[], primaryO
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    '@id': `${primary}/#website`,
+    // One WebSite entity per origin: its @id follows its url. Only the publisher stays the single org.
+    '@id': `${siteUrl}/#website`,
     name: 'CODEPEDIA',
     url: siteUrl,
     inLanguage: [...inLanguage],

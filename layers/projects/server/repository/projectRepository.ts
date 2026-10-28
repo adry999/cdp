@@ -2,7 +2,7 @@ import type { H3Event } from 'h3'
 import { serverSupabaseClient } from '#supabase/server'
 import type { Database } from '#layers/core/shared/types/database.types'
 import { logAndThrow } from '#layers/core/server/utils/logAndThrow'
-import { projectHasEnglish } from '#layers/projects/domain/mapProject'
+import { projectHasEnglish, type ProjectRow } from '#layers/projects/domain/mapProject'
 import { NAV_PROJECT_SELECT, PROJECT_CARD_SELECT, PROJECT_SELECT } from '#layers/projects/domain/projectSelect'
 
 export interface PublishedProjectSlugs {
@@ -25,6 +25,23 @@ export function createProjectRepository(event: H3Event) {
 
       if (error) logAndThrow('GET /api/projects', error)
       return data
+    },
+
+    /** Every published project with its full case-study fields, for the llms text files. */
+    async listPublishedFull(): Promise<ProjectRow[]> {
+      const client = await serverSupabaseClient(event)
+      const { data, error } = await client
+        .from('projects')
+        .select(PROJECT_SELECT)
+        .not('published_at', 'is', null)
+        .order('sort_order')
+        .order('sort_order', { foreignTable: 'project_facts' })
+        .order('sort_order', { foreignTable: 'project_stack' })
+        .order('sort_order', { foreignTable: 'project_stats' })
+        .order('sort_order', { foreignTable: 'project_images' })
+
+      if (error) logAndThrow('listPublishedFull', error)
+      return (data ?? []) as unknown as ProjectRow[]
     },
 
     async listPublishedNavRows() {

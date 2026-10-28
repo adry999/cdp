@@ -5,6 +5,7 @@ const base = {
   locale: 'ro' as const,
   url: 'https://codepedia.md/noutati/ghid',
   primaryOrigin: 'https://codepedia.studio',
+  origin: 'https://codepedia.md',
   headline: 'Titlu',
   description: 'Rezumatul nostru.',
   publishedAt: '2026-10-01T09:00:00.000Z',
@@ -32,6 +33,10 @@ describe('newsArticleSchema', () => {
       datePublished: '2026-09-30',
     })
     expect(schema.citation).toEqual(schema.isBasedOn)
+  })
+
+  it('uses the site default OG image on the item origin', () => {
+    expect(newsArticleSchema(base).image).toBe('https://codepedia.md/og-image.png')
   })
 
   it('omits unknown source fields and uses our url as the page', () => {
