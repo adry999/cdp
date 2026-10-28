@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
   const result = await revalidatePublicCache({
     bypassToken: useRuntimeConfig(event).isrBypassToken || undefined,
     siteUrl: getSiteUrl(event),
-    dataPaths: ['/api/projects/nav', '/api/home/settings', '/api/news'],
+    dataPaths: ['/api/projects', '/api/projects/nav', '/api/home/settings', '/api/news'],
     listPages: async () => [
       HOME_PAGE,
       PROJECTS_INDEX_PAGE,
