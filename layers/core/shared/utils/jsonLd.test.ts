@@ -121,7 +121,7 @@ describe('studioGraph', () => {
     expect(business).toMatchObject({ '@id': 'https://codepedia.md/#business', parentOrganization: { '@id': 'https://codepedia.md/#org' } })
   })
 
-  it('lists each service as an offer and publishes no street address, phone or geo', () => {
+  it('lists each service as an offer and publishes no street address or geo', () => {
     expect(business).toMatchObject({
       makesOffer: [
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Website' } },
@@ -131,5 +131,27 @@ describe('studioGraph', () => {
     })
     const text = JSON.stringify(graph)
     expect(text).not.toMatch(/streetAddress|telephone|geo|openingHours/)
+  })
+
+  it('adds phone and opening hours only when given', () => {
+    const withContact = studioGraph({
+      origin: 'https://codepedia.md',
+      logoUrl: 'https://codepedia.md/icon-512.png',
+      email: 'contact@codepedia.md',
+      telephone: '+37369117329',
+      openingHours: { days: ['Monday', 'Friday'], opens: '09:00', closes: '18:00' },
+      locality: 'Chișinău',
+      country: 'MD',
+      areaServed: ['MD'],
+      languages: ['ro'],
+      serviceNames: [],
+    })
+    const [org, biz] = withContact['@graph']
+    expect(org).toMatchObject({ telephone: '+37369117329' })
+    expect(biz).toMatchObject({
+      telephone: '+37369117329',
+      openingHoursSpecification: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Friday'], opens: '09:00', closes: '18:00' },
+    })
+    expect(JSON.stringify(withContact)).not.toMatch(/streetAddress|geo/)
   })
 })
