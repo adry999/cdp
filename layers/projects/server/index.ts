@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3'
 import { createProjectRepository, type PublishedProjectSlugs } from '#layers/projects/server/repository/projectRepository'
+import { llmsProjectItems, projectsLlmsSections, type LlmsProjectItem } from '#layers/projects/domain/llmsText'
 import { caseStudySitemapPages } from '#layers/projects/domain/sitemap'
 import type { SitemapPage } from '#layers/core/shared/types/sitemap'
 import { toLastmod } from '#layers/core/server/utils/sitemap'
@@ -7,20 +8,22 @@ import { toLastmod } from '#layers/core/server/utils/sitemap'
 export type { PublishedProjectSlugs }
 export { PROJECTS_INDEX_PAGE } from '#layers/projects/domain/sitemap'
 
-export interface LlmsProjectItem {
-  title: string
-  path: string
-}
+export type { LlmsProjectItem }
 
+/** Case studies with a public page in the locale (EN: only the translated ones). Empty without the database. */
 export async function listProjectsForLlms(event: H3Event, locale: 'ro' | 'en'): Promise<LlmsProjectItem[]> {
   try {
-    const cards = await createProjectRepository(event).listPublishedCards()
-    return (cards ?? []).map((card) => {
-      const slug = locale === 'en' ? (card.slug_en ?? card.slug_ro) : card.slug_ro
-      const title = (locale === 'en' ? (card.card_title_en ?? card.card_title_ro) : card.card_title_ro) || slug
-      const path = locale === 'en' ? `/en/work/${slug}` : `/proiecte/${slug}`
-      return { title, path }
-    })
+    return llmsProjectItems(await createProjectRepository(event).listPublishedFull(), locale)
+  } catch (error) {
+    console.warn('[llms] projects unavailable, skipping', error)
+    return []
+  }
+}
+
+/** The `llms-full.txt` case-study sections for the locale. Empty without the database. */
+export async function listProjectLlmsSections(event: H3Event, locale: 'ro' | 'en', origin: string): Promise<string[]> {
+  try {
+    return projectsLlmsSections(await createProjectRepository(event).listPublishedFull(), locale, origin)
   } catch (error) {
     console.warn('[llms] projects unavailable, skipping', error)
     return []
