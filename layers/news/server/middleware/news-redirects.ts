@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import { findCachedRedirect } from '#layers/news/server/services/findCachedRedirect'
-=======
 import { isLocalRedirectTarget } from '#layers/core/server/utils/redirectTarget'
-import { createNewsRepository } from '#layers/news/server/repository/newsRepository'
->>>>>>> origin/dev
+import { findCachedRedirect } from '#layers/news/server/services/findCachedRedirect'
 
 // The news_items_sync_redirects trigger writes a `redirects` row when a published slug
 // changes; this only matches the two path shapes it writes, so other requests skip the DB round trip.
