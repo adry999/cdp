@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { webSite } from '#layers/core/shared/utils/jsonLd'
+import { useHomeSettings } from '#layers/home/state/useHomeSettings'
 import { usePublishedProjects } from '#layers/projects'
 
 const { t } = useI18n()
@@ -18,10 +19,7 @@ useJsonLd(() => webSite(siteUrls[locale.value], ['ro', 'en']))
 // Fetch home settings and published projects concurrently during SSR
 // so child components (HomeHero and HomeWork) do not block sequentially.
 await Promise.all([
-  useFetch('/api/home/settings', {
-    key: 'home:settings',
-    default: () => ({ heroVariant: null }),
-  }),
+  useHomeSettings(),
   usePublishedProjects(),
 ])
 </script>

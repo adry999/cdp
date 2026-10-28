@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useHomeSettings } from '#layers/home/state/useHomeSettings'
 import { chooseHeroVariant, parseHeroPreview, type HeroChoice } from '#layers/home/domain/heroVariant'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
 const route = useRoute()
-// The admin's choice is read on the server, so the cached `/` carries it. If the read fails the hero falls back to the env variable.
-const { data: settings } = await useFetch<{ heroVariant: HeroChoice | null }>('/api/home/settings', {
-  key: 'home:settings',
-  default: () => ({ heroVariant: null }),
-})
+const { data: settings } = await useHomeSettings()
 // `?hero=` previews are applied after mount only: `/` is cached, so SSR output must not depend on the query.
 const previewChoice = ref<HeroChoice>()
 const heroVariant = computed(() =>
