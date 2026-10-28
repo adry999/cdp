@@ -121,3 +121,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#121** chore(deps): `vitest` 4.1.12 → 5.0.5 (dev); testele, lint și typecheck trec neschimbate.
 
 - **#134** docs: skill-ul `project-conventions` adus la zi — producția pe Hostinger în spatele Cloudflare (nu Vercel), modulul `news`, rutele `llms*.txt`, pagina admin MFA, pluginul `locale-alternates`, middleware-urile din `core`; rândurile dublate #122 și #123 scoase din istoric.
+- **#140** perf: preload pe subsetul latin al fonturilor (76 KB în loc de 101 KB latin-ext), redirect-urile de slug (proiecte, noutăți) citite din cache 5 min în loc de o interogare la fiecare cerere, `/sitemap.xml` și `/robots.txt` în cache per domeniu, `/` și `/en` din nou în cache-ul serverului (doar pe Node, cu `private, no-cache` + `Vary` puse la loc înainte de trimitere), `icon.clientBundle.scan` scos, comentarii învechite corectate.
