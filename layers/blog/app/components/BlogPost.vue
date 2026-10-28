@@ -28,7 +28,7 @@ const showUpdated = computed(() => props.post.updated !== props.post.date)
       </template>
       <nav :aria-label="t('blog.breadcrumb')" class="flex flex-wrap gap-2 eyebrow-sm text-muted">
         <span>CODEPEDIA</span><span aria-hidden="true">/</span>
-        <NuxtLink :to="localePath('blog')" class="tap-y text-muted no-underline hover:text-signal-text hover:no-underline">Blog</NuxtLink>
+        <NuxtLink :to="localePath('blog')" class="tap-y text-muted no-underline hover:text-signal-text hover:no-underline">{{ t('nav.blog') }}</NuxtLink>
         <span aria-hidden="true">/</span>
         <NuxtLink :to="categoryTo" class="tap-y text-signal-text no-underline hover:no-underline">{{ category.name[siteLocale] }}</NuxtLink>
       </nav>
