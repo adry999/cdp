@@ -9,6 +9,8 @@ const { consent, showBanner, acceptAll, rejectAll, savePreferences } = useCookie
 const outlineButtonClass = 'px-[18px]! py-[11px]! leading-5'
 const inkButtonClass = 'px-[19px]! py-3! leading-5'
 
+// Same shared flag as app/composables/useMobileMenuOpen (root composable, not importable from a layer).
+const menuOpen = useState('site-mobile-menu-open', () => false)
 const customizing = ref(false)
 const draft = reactive({ analytics: false, marketing: false })
 
@@ -27,7 +29,7 @@ function save() {
 <template>
   <ClientOnly>
     <div
-      v-if="showBanner"
+      v-if="showBanner && !menuOpen"
       role="region"
       :aria-label="t('cookieBanner.label')"
       class="fixed inset-x-0 bottom-0 z-30 border-t border-hairline bg-paper px-gutter py-3 sm:py-5"
