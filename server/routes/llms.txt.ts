@@ -3,7 +3,7 @@ import { originForHost } from '#layers/core/shared/utils/siteOrigins'
 import { listBlogPostsForLlms } from '#layers/blog/server'
 import { listServicesForLlms, SERVICES_INDEX_PAGE } from '#layers/services/server'
 import { listProjectsForLlms, PROJECTS_INDEX_PAGE } from '#layers/projects/server'
-import { NEWS_INDEX_PAGE } from '#layers/news'
+import { NEWS_INDEX_PAGE } from '#layers/news/server'
 
 export default defineEventHandler(async (event) => {
   const origins = getSiteOrigins(event)
