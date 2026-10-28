@@ -54,6 +54,7 @@ Lista completă, cu explicații, e în `.env.example`.
 | `NUXT_PUBLIC_GA_ID`, `NUXT_PUBLIC_META_PIXEL_ID` | opționale, fără ele consimțământul e inert |
 | `NUXT_PUBLIC_QUALIFIER_ENABLED`, `NUXT_PUBLIC_GRANTS_ENABLED`, `NUXT_PUBLIC_HERO_BG_VARIANT` | opționale |
 | `CRON_SECRET` | pentru `/api/health` (pasul 5) |
+| `NUXT_ORIGIN_SECRET` | opțională; secretul din headerul `x-codepedia-origin` setat de Cloudflare, fără el cererile primesc 403 (vezi §3). Gol = verificarea e oprită. Se poate seta și fără rebuild, doar cu restart |
 | `NUXT_PUBLIC_NOINDEX` | **nu** se setează pe live |
 
 `VERCEL_ISR_BYPASS_TOKEN` nu se folosește aici: `revalidate.post.ts` curăță cache-ul Nitro.
@@ -138,8 +139,19 @@ cerere POST). Diferențe între zone:
 
 Rămas deschis: originea răspunde direct pe IP (`curl --resolve codepedia.md:443:<IP>`
 întoarce 200 de la LiteSpeed), deci Cloudflare (inclusiv limita de mai sus) se poate
-ocoli, iar `cf-connecting-ip` se poate falsifica. Soluția: un header secret adăugat de o
-Transform Rule și verificat de aplicație, sau Authenticated Origin Pulls.
+ocoli, iar `cf-connecting-ip` se poate falsifica. Soluția e un header secret adăugat de
+Cloudflare și verificat de aplicație (`layers/core/server/middleware/00-origin-guard.ts`).
+Procedura, în ordine:
+
+1. Deploy-ul codului: cât timp `NUXT_ORIGIN_SECRET` e gol, verificarea e oprită.
+2. Cloudflare → Rules → Transform Rules → Modify Request Header: setează static
+   `x-codepedia-origin` = secretul, pe toate cererile, pe ambele zone.
+3. În hPanel setează `NUXT_ORIGIN_SECRET` la aceeași valoare și repornește aplicația.
+4. Verifică: `curl -s -o /dev/null -w "%{http_code}" --resolve codepedia.md:443:<IP> https://codepedia.md/`
+   trebuie să dea 403, iar `https://codepedia.md/` trebuie să dea 200.
+
+`.studio` trece prin Hostinger CDN după Cloudflare: după pasul 3 verifică că
+`https://codepedia.studio/` răspunde tot 200. Dacă nu, golește variabila.
 
 ## 4. Redirectul de limbă
 
