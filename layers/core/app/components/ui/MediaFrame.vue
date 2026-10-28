@@ -30,24 +30,18 @@ const intrinsicSize = computed(() => {
 </script>
 
 <template>
-  <!-- AVIF first, WebP as the fallback the <img> itself loads. NuxtPicture puts class and fetchpriority on
-       the <picture> unless they go through img-attrs; `contents` keeps the <picture> out of the layout. -->
-  <NuxtPicture
+  <NuxtImg
     v-if="src"
-    class="contents"
     :src="src"
     :alt="alt"
     :width="intrinsicSize.width"
     :height="intrinsicSize.height"
     :sizes="sizes"
-    format="avif,webp"
-    legacy-format="webp"
+    format="webp"
     :loading="priority ? 'eager' : 'lazy'"
+    :fetchpriority="priority ? 'high' : undefined"
     :preload="priority ? { fetchPriority: 'high' } : undefined"
-    :img-attrs="{
-      class: [aspectClass, 'block w-full rounded border border-hairline object-cover object-top'],
-      fetchpriority: priority ? 'high' : undefined,
-    }"
+    :class="[aspectClass, 'block w-full rounded border border-hairline object-cover object-top']"
   />
   <div
     v-else
