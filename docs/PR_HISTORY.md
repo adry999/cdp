@@ -121,3 +121,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#121** chore(deps): `vitest` 4.1.12 → 5.0.5 (dev); testele, lint și typecheck trec neschimbate.
 
 - **#134** docs: skill-ul `project-conventions` adus la zi — producția pe Hostinger în spatele Cloudflare (nu Vercel), modulul `news`, rutele `llms*.txt`, pagina admin MFA, pluginul `locale-alternates`, middleware-urile din `core`; rândurile dublate #122 și #123 scoase din istoric.
+- **#144** fix(a11y): calificarea deschisă din meniul mobil întoarce focusul pe butonul meniului, focus mutat pe pasul nou după „Următorul”/„Înapoi”, contur vizibil pe opțiunile calificării, linkul LinkedIn anunță „se deschide într-o filă nouă”, lightbox-ul nu se mai închide la tragere spre fundal, tabelele din blog au `role="region"` și etichetă, blocarea scroll-ului din meniu pe același element ca dialogurile.
