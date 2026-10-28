@@ -5,7 +5,7 @@ definePageMeta({ layout: 'admin', i18n: false })
 
 const slug = String(useRoute().params.slug)
 const editor = await useProjectsEditor(slug)
-const { form, isNew, menuPreview, saveStatus, saveError, uploading, publishing, consentConfirmed, checklist } = editor
+const { form, isNew, menuPreview, savedSlugs, saveStatus, saveError, uploading, publishing, consentConfirmed, checklist } = editor
 
 const saveLabel = computed(() => {
   if (saveStatus.value === 'pending') return 'Se salvează…'
@@ -40,7 +40,7 @@ useSaveShortcut(editor.save, { enabled: () => !saving.value && !uploading.value 
     <div class="flex-1 overflow-y-auto px-6 py-6">
       <div class="flex max-w-[880px] flex-col gap-8">
         <div class="grid grid-fit-safe-340 items-start gap-6">
-          <ProjectsEditorIdentity v-model="form" />
+          <ProjectsEditorIdentity v-model="form" :saved-slugs="savedSlugs" />
           <ProjectsEditorMenuPreview :groups="menuPreview" :published="form.published" />
         </div>
         <ProjectsEditorImages v-model="form" v-model:uploading="uploading" />

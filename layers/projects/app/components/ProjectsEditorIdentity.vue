@@ -2,6 +2,7 @@
 import { SERVICE_TAG_IDS, SERVICE_TAG_LABELS_RO } from '#layers/core/shared/types/service-tag'
 import { moveItem } from '#layers/core/shared/utils/moveItem'
 import { emptyBilingual, type ProjectForm } from '#layers/projects/domain/projectForm'
+import { slugify } from '#layers/projects/domain/projectPayload'
 import { LINK_KINDS, type LinkKind } from '#layers/projects/domain/star'
 
 const LINK_KIND_LABELS: Record<LinkKind, string> = {
@@ -12,6 +13,18 @@ const LINK_KIND_LABELS: Record<LinkKind, string> = {
 }
 
 const form = defineModel<ProjectForm>({ required: true })
+const props = defineProps<{ savedSlugs: { slugRo: string; slugEn: string; wasPublished: boolean } }>()
+
+const slugChanged = computed(
+  () =>
+    props.savedSlugs.wasPublished &&
+    (form.value.slugRo.trim() !== props.savedSlugs.slugRo || form.value.slugEn.trim() !== props.savedSlugs.slugEn),
+)
+
+function slugFromTitle() {
+  form.value.slugRo = slugify(form.value.title.ro)
+  form.value.slugEn = slugify(form.value.title.en)
+}
 
 const titleWarn = computed(() => form.value.title.ro.length > 60)
 const summaryWarn = computed(() => form.value.summary.ro.length > 200)
@@ -47,6 +60,16 @@ function removeTech(index: number) {
         <AdminField v-model="form.slugRo" label="Slug RO" />
         <AdminField v-model="form.slugEn" label="Slug EN" />
       </div>
+      <button
+        type="button"
+        class="-mt-2 w-fit cursor-pointer border-0 bg-transparent p-0 eyebrow text-muted hover:text-ink"
+        @click="slugFromTitle"
+      >
+        Generează din titluri
+      </button>
+      <p v-if="slugChanged" role="status" class="m-0 -mt-2 eyebrow-sm text-signal-text">
+        Slug-ul unui proiect publicat se schimbă: vechea adresă va redirecționa automat la cea nouă.
+      </p>
       <AdminFieldPair v-model:ro="form.title.ro" v-model:en="form.title.en" label="Titlu (H1 studiu de caz)" required />
       <AdminFieldPair v-model:ro="form.cardTitle.ro" v-model:en="form.cardTitle.en" label="Titlu card (homepage)" required />
       <div>
