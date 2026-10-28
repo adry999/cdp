@@ -38,3 +38,8 @@ test('the login page loads the Supabase client and reports wrong credentials', a
 
   await expect(page.getByText('Email sau parolă greșită.')).toBeVisible()
 })
+
+test('the second-factor page sends a signed-out visitor to the login', async ({ page }) => {
+  await page.goto('/admin/mfa')
+  await expect(page).toHaveURL(/\/admin\/login$/)
+})
