@@ -63,6 +63,10 @@ export interface StudioGraphInput {
   /** Raster logo URL, square and at least 112 px (what Google accepts). */
   logoUrl: string
   email: string
+  /** E.164 phone, the same as on the Google Business Profile. */
+  telephone?: string
+  /** Weekly hours: schema.org day names, 24-hour HH:MM. */
+  openingHours?: { days: readonly string[]; opens: string; closes: string }
   /** City and ISO country code of the headquarters; no street address is published. */
   locality: string
   country: string
@@ -92,6 +96,7 @@ export function studioGraph(input: StudioGraphInput) {
         url: primary,
         logo: { '@type': 'ImageObject', url: input.logoUrl, width: 512, height: 512 },
         email: input.email,
+        ...(input.telephone ? { telephone: input.telephone } : {}),
         address,
         ...(input.description ? { description: input.description } : {}),
         ...(input.sameAs && input.sameAs.length > 0 ? { sameAs: [...input.sameAs] } : {}),
@@ -103,7 +108,18 @@ export function studioGraph(input: StudioGraphInput) {
         url: input.origin,
         image: input.logoUrl,
         parentOrganization: { '@id': canonicalOrgId },
+        ...(input.telephone ? { telephone: input.telephone } : {}),
         address,
+        ...(input.openingHours
+          ? {
+              openingHoursSpecification: {
+                '@type': 'OpeningHoursSpecification',
+                dayOfWeek: [...input.openingHours.days],
+                opens: input.openingHours.opens,
+                closes: input.openingHours.closes,
+              },
+            }
+          : {}),
         areaServed: input.areaServed,
         knowsLanguage: input.languages,
         makesOffer: input.serviceNames.map((name) => ({

@@ -47,6 +47,8 @@ useJsonLd(() =>
         // Raster, square, ≥ 112 px: what Google accepts for an Organization logo.
         logoUrl: `${primaryOrigin}/icon-512.png`,
         email: settings.value.contactEmail,
+        telephone: settings.value.phone,
+        openingHours: settings.value.openingHours,
         locality: 'Chișinău',
         country: 'MD',
         areaServed: ['MD', 'RO', 'EU', 'US', 'CA'],
@@ -54,7 +56,7 @@ useJsonLd(() =>
         serviceNames: services.value.map((service) => service.name),
         description: t('seo.home.description'),
         legalName: 'Codepedia SRL',
-        sameAs: ['https://www.linkedin.com/company/codepediastudio'],
+        sameAs: settings.value.socialProfiles,
       }),
 )
 
