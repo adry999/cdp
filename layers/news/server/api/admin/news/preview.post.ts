@@ -1,4 +1,4 @@
-import { assertBodySize } from '#layers/core/server/utils/assertBodySize'
+import { readLimitedBody } from '#layers/core/server/utils/readLimitedBody'
 import { requireAdmin } from '#layers/core/server/utils/requireAdmin'
 import { nodeFetchDeps } from '#layers/news/server/services/nodeFetchDeps'
 import { previewNewsSource } from '#layers/news/server/services/previewNewsSource'
@@ -9,9 +9,12 @@ const MAX_URL_LENGTH = 2048
 // site name, author, date) so the editor can pre-fill them. All SSRF defences live in previewNewsSource.
 export default defineEventHandler(async (event) => {
   await requireAdmin(event)
-  assertBodySize(event)
 
-  const body = await readBody<{ url?: unknown }>(event).catch(() => null)
+  // Malformed JSON falls through to the "Link invalid." answer below; an oversized body keeps its 413.
+  const body = (await readLimitedBody(event).catch((error: unknown) => {
+    if (isError(error) && error.statusCode === 413) throw error
+    return null
+  })) as { url?: unknown } | null
   const url = typeof body?.url === 'string' ? body.url.trim() : ''
   if (!url || url.length > MAX_URL_LENGTH) {
     throw createError({ statusCode: 400, statusMessage: 'Link invalid.' })
