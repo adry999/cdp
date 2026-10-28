@@ -29,7 +29,10 @@ describe('isTrustedOrigin', () => {
 describe('isInternalRequest', () => {
   it('treats an empty remote address as an in-process request', () => {
     expect(isInternalRequest('')).toBe(true)
-    expect(isInternalRequest(undefined)).toBe(true)
+  })
+
+  it('does not trust a closed socket with no address', () => {
+    expect(isInternalRequest(undefined)).toBe(false)
   })
 
   it('treats a real connection as external', () => {
