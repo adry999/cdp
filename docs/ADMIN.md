@@ -26,6 +26,24 @@ fără deploy. Rută: `/admin`, exclusă din sitemap și `robots.txt`.
   primar ink. Wordmark-ul complet deasupra cardului, 18px. Fără „forgot password"
   în prima versiune.
 
+## Autentificare în doi pași (TOTP)
+
+- Accesul în admin cere, pe lângă parolă, un cod TOTP dintr-o aplicație de autentificare
+  (Google Authenticator, 1Password etc.). Sesiunea fără cod are nivelul `aal1`; după cod
+  devine `aal2`. Middleware-ul trimite orice rută admin cu `aal1` la `/admin/mfa`, iar
+  `requireAdmin` respinge cu 403 cererile fără `aal2`.
+- Prima autentificare după deploy: ecranul `/admin/mfa` afișează un cod QR (și cheia text)
+  pentru înrolare; după scanare se introduce primul cod de 6 cifre.
+- Autentificările următoare: parolă, apoi codul de 6 cifre.
+- Telefon pierdut: un developer șterge factorul din Supabase (Dashboard → Authentication →
+  Users → utilizatorul → MFA factors) sau cu SQL
+  `delete from auth.mfa_factors where user_id = '<id>'`. La următoarea autentificare
+  adminul se înrolează din nou.
+- Ordinea de rollout: 1) codul MFA ajunge în producție; 2) adminul se autentifică și își
+  înrolează factorul; 3) abia apoi se aplică migrarea
+  `20261028150000_is_admin_requires_aal2.sql`, care face `is_admin()` să ceară `aal2`.
+  Aplicată mai devreme, adminul pierde accesul de scriere.
+
 ## Structura navigației
 
 Sidebar `240px`, bg `#FAF8F4`, `border-right: 1px solid #E2DED6`. În cap, simbolul
