@@ -26,12 +26,26 @@ describe('domainRedirectTarget', () => {
     expect(go('www.codepedia.md', '/despre')).toBe('https://codepedia.md/despre')
   })
 
+  it('serves each blog feed on its language domain only', () => {
+    expect(go('codepedia.studio', '/blog/rss.xml')).toBe('https://codepedia.md/blog/rss.xml')
+    expect(go('codepedia.md', '/en/blog/rss.xml')).toBe('https://codepedia.studio/en/blog/rss.xml')
+    expect(go('codepedia.md', '/blog/rss.xml')).toBeNull()
+    expect(go('codepedia.studio', '/en/blog/rss.xml')).toBeNull()
+    expect(go('www.codepedia.studio', '/blog/rss.xml', '?x=1')).toBe('https://codepedia.md/blog/rss.xml?x=1')
+  })
+
+  it('keeps other files with an extension exempt, even under /blog', () => {
+    expect(go('codepedia.studio', '/blog/other.xml')).toBeNull()
+    expect(go('codepedia.studio', '/llms-full.txt')).toBeNull()
+    expect(go('codepedia.md', '/en/blog/cover.png')).toBeNull()
+  })
+
   it('drops a trailing slash in the same hop', () => {
     expect(go('codepedia.studio', '/proiecte/')).toBe('https://codepedia.md/proiecte')
   })
 
   it('does not touch the home pages, assets, the API, the admin or crawler files', () => {
-    for (const path of ['/', '/en', '/api/health', '/admin/projects', '/_nuxt/a.js', '/_ipx/w_1200/x.png', '/sitemap.xml', '/robots.txt', '/llms.txt', '/brand/logo.svg']) {
+    for (const path of ['/', '/en', '/api/health', '/admin/projects', '/_nuxt/a.js', '/_ipx/w_1200/x.png', '/sitemap.xml', '/robots.txt', '/llms.txt', '/llms-full.txt', '/brand/logo.svg']) {
       expect(go('codepedia.studio', path)).toBeNull()
       expect(go('codepedia.md', path)).toBeNull()
     }
