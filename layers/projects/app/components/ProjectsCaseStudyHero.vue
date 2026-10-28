@@ -31,7 +31,7 @@ const linkClass =
   <div>
     <SiteSection number="00" :label="t('caseStudy.sections.hero')" padding="caseHero" :top-border="false">
       <template #background>
-        <LazyCoreInteractiveBackground hydrate-on-idle variant="dot-matrix" />
+        <LazyCoreInteractiveBackground variant="dot-matrix" />
       </template>
       <div class="flex flex-wrap gap-x-4 gap-y-2 eyebrow-sm text-muted">
         <span v-for="chip in chips" :key="chip">{{ chip }}</span>

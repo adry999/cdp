@@ -19,7 +19,7 @@ useBreadcrumbLd(() => t('nav.contact'))
 <template>
   <SiteSection number="—" :label="t('home.contact.sectionLabel')" padding="hero" :top-border="false">
     <template #background>
-      <LazyCoreInteractiveBackground hydrate-on-idle variant="dot-matrix" />
+      <LazyCoreInteractiveBackground variant="dot-matrix" />
     </template>
     <div class="flex flex-wrap gap-[clamp(32px,5vw,72px)]">
       <div class="min-w-0 flex-[1_1_380px]">

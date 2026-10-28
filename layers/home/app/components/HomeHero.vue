@@ -88,7 +88,7 @@ if (import.meta.client && phrases.length > 1) {
 
 <template>
   <div class="relative overflow-hidden">
-    <LazyCoreInteractiveBackground v-if="heroVariant" hydrate-on-idle :variant="heroVariant" />
+    <LazyCoreInteractiveBackground v-if="heroVariant" :variant="heroVariant" />
     <div class="relative z-10">
       <SiteSection section-id="top" number="00" :label="t('home.hero.sectionLabel')" padding="heroCompact" :top-border="false">
       <h1 class="sr-only">{{ t('seo.home.title') }} — {{ phrases.slice(0, 3).join(', ') }} {{ t('home.hero.titleSuffix') }}</h1>

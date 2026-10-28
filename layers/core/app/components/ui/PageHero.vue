@@ -17,7 +17,7 @@ withDefaults(
 <template>
   <SiteSection section-id="top" :number="number" :label="label" :padding="padding" :top-border="false">
     <template v-if="!plain" #background>
-      <LazyCoreInteractiveBackground hydrate-on-idle variant="dot-matrix" />
+      <LazyCoreInteractiveBackground variant="dot-matrix" />
     </template>
     <h1
       class="m-0 max-w-[20ch] text-[clamp(34px,6vw,64px)] font-semibold leading-[1.04] tracking-[-0.025em] text-pretty"
