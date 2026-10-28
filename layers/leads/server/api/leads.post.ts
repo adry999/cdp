@@ -1,3 +1,4 @@
+import { assertBodySize } from '#layers/core/server/utils/assertBodySize'
 import { checkRateLimit } from '#layers/core/server/utils/checkRateLimit'
 import type { ContactSubmission } from '#layers/leads/domain/lead'
 import { createLeadRepository } from '#layers/leads/server/repository/leadRepository'
@@ -5,6 +6,7 @@ import { LEAD_RATE_LIMIT, notifyTeam } from '#layers/leads/server/services/leadN
 import { submitLead } from '#layers/leads/server/services/submitLead'
 
 export default defineEventHandler(async (event) => {
+  assertBodySize(event)
   // Anything but a JSON object is a malformed request, not a form with every field missing.
   const body: unknown = (await readBody(event)) ?? {}
   if (typeof body !== 'object' || body === null || Array.isArray(body)) {

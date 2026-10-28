@@ -20,58 +20,23 @@ function step(delta: number) {
   emit('change', (props.index + delta + total) % total)
 }
 
-function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
-    event.preventDefault()
-    emit('close')
-  } else if (event.key === 'ArrowLeft') {
+function onArrowKeys(event: KeyboardEvent) {
+  if (event.key === 'ArrowLeft') {
     event.preventDefault()
     step(-1)
   } else if (event.key === 'ArrowRight') {
     event.preventDefault()
     step(1)
-  } else if (event.key === 'Tab' && dialog.value) {
-    // Keep focus inside the dialog.
-    const focusable = Array.from(dialog.value.querySelectorAll<HTMLElement>('button'))
-    const first = focusable[0]
-    const last = focusable[focusable.length - 1]
-    if (!first || !last) return
-    const active = document.activeElement
-    if (event.shiftKey && (active === first || !dialog.value.contains(active))) {
-      event.preventDefault()
-      last.focus()
-    } else if (!event.shiftKey && (active === last || !dialog.value.contains(active))) {
-      event.preventDefault()
-      first.focus()
-    }
   }
 }
 
-let trigger: HTMLElement | null = null
-let previousOverflow = ''
-let listening = false
+// Scroll lock, Escape, the Tab trap and focus return come from useModalLock; only the arrows are local.
+useModalLock(dialog, isOpen, () => emit('close'), { focusInitial: () => closeButton.value?.focus() })
 
-function attach() {
-  if (listening) return
-  listening = true
-  trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null
-  previousOverflow = document.body.style.overflow
-  document.body.style.overflow = 'hidden'
-  document.addEventListener('keydown', onKeydown)
-  nextTick(() => closeButton.value?.focus())
-}
-
-function detach() {
-  if (!listening) return
-  listening = false
-  document.removeEventListener('keydown', onKeydown)
-  document.body.style.overflow = previousOverflow
-  trigger?.focus()
-  trigger = null
-}
-
-watch(isOpen, (open) => (open ? attach() : detach()), { flush: 'post' })
-onBeforeUnmount(detach)
+watch(isOpen, (open) => (open ? document.addEventListener('keydown', onArrowKeys) : document.removeEventListener('keydown', onArrowKeys)), {
+  flush: 'post',
+})
+onBeforeUnmount(() => document.removeEventListener('keydown', onArrowKeys))
 </script>
 
 <template>

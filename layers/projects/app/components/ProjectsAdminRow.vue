@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatAdminDate } from '#layers/core/shared/utils/formatAdminDate'
 import type { AdminProjectListRow } from '#layers/projects/domain/projectSelect'
 
 defineProps<{
@@ -82,7 +83,7 @@ const ARROW =
       {{ project.published_at ? 'Publicat' : 'Draft' }}
     </div>
     <div class="flex-[0_0_100px] eyebrow text-muted">
-      {{ project.published_at ? new Date(project.published_at).toLocaleDateString('ro-RO') : '—' }}
+      {{ project.published_at ? formatAdminDate(project.published_at) : '—' }}
     </div>
     <div class="flex flex-[0_0_260px] flex-wrap justify-end gap-x-3 gap-y-1 eyebrow">
       <button v-if="!project.published_at" type="button" :class="ACTION" class="text-ink" :disabled="busy" @click="$emit('publish')">

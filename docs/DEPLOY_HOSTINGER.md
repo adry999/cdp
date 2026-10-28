@@ -54,6 +54,7 @@ Lista completă, cu explicații, e în `.env.example`.
 | `NUXT_PUBLIC_GA_ID`, `NUXT_PUBLIC_META_PIXEL_ID` | opționale, fără ele consimțământul e inert |
 | `NUXT_PUBLIC_QUALIFIER_ENABLED`, `NUXT_PUBLIC_GRANTS_ENABLED`, `NUXT_PUBLIC_HERO_BG_VARIANT` | opționale |
 | `CRON_SECRET` | pentru `/api/health` (pasul 5) |
+| `NUXT_ORIGIN_SECRET` | opțională; secretul din headerul `x-codepedia-origin` setat de Cloudflare, fără el cererile primesc 403 (vezi §3). Gol = verificarea e oprită. Se poate seta și fără rebuild, doar cu restart |
 | `NUXT_PUBLIC_NOINDEX` | **nu** se setează pe live |
 
 `VERCEL_ISR_BYPASS_TOKEN` nu se folosește aici: `revalidate.post.ts` curăță cache-ul Nitro.
@@ -83,8 +84,8 @@ de mediu. Nu seta nimic de limbă per domeniu.
    | # | Dacă (expresie) | Setare |
    |---|---|---|
    | 1 | `http.request.uri.path eq "/"` sau `eq "/en"` sau `starts_with "/admin"` sau `starts_with "/api"` | **Bypass cache** |
-   | 2 | `starts_with "/_nuxt/"` sau `starts_with "/_fonts/"` | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 an · Browser TTL: **Override origin and use this TTL** = 1 an |
-   | 3 | `starts_with "/brand/"` sau `starts_with "/_ipx/"` sau `eq "/favicon.ico"` | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 zi · Browser TTL: **Override origin and use this TTL** = 1 zi |
+   | 2 | `starts_with "/_nuxt/"` sau `starts_with "/_fonts/"` | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 an, cu excepția **Status code TTL 400–599 = No store** · Browser TTL: **Override origin and use this TTL** = 1 an |
+   | 3 | `starts_with "/brand/"` sau `starts_with "/_ipx/"` sau `eq "/favicon.ico"` | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 zi, cu excepția **Status code TTL 400–599 = No store** · Browser TTL: **Override origin and use this TTL** = 1 zi |
    | 4 | `not starts_with "/_nuxt/"` și `not starts_with "/_fonts/"` și `not starts_with "/brand/"` și `not starts_with "/_ipx/"` și `not starts_with "/admin"` și `not starts_with "/api"` și `ne "/"` și `ne "/en"` | Eligible for cache · Edge TTL: **Use cache-control header if present, bypass cache if not** · Browser TTL: **Respect origin** |
 
    Modurile de TTL contează: LiteSpeed nu trimite `Cache-Control` pe fișierele statice, deci
@@ -100,15 +101,61 @@ de mediu. Nu seta nimic de limbă per domeniu.
      Fișierele statice le servește LiteSpeed direct de pe disc, **fără `Cache-Control`**,
      deci TTL-ul lung vine din Cloudflare (sau dintr-un `.htaccess`), nu din
      `nuxt.config.ts`. Asta rezolvă „Use efficient cache lifetimes".
+   - Excepția 400–599 la regulile 2 și 3: fără ea, un 404 pe un chunk cerut în timpul unui
+     deploy (fișierul încă lipsește) rămâne în cache un an, la margine și în browser.
    - Regula 3: numele din `public/` nu au hash, de aceea doar 1 zi și fără `immutable`.
-   - Regula 4: paginile adânci (`/servicii`, `/en/services`, `/proiecte/...`) trimit
-     `s-maxage=300, stale-while-revalidate` și niciun `Set-Cookie`, deci se pot ține la
-     margine 5 minute. Scade TTFB-ul („Document request latency"). După editări din admin,
-     `revalidate.post.ts` curăță cache-ul Nitro, dar **nu** pe cel din Cloudflare: o
-     schimbare apare cel mult după 5 minute, sau după **Purge Cache** manual.
+   - Regula 4: paginile (`/servicii`, `/en/services`, `/proiecte/...`, `/despre`, `/preturi`,
+     `/contact`, `/confidentialitate` și variantele EN) trimit `s-maxage=300,
+     stale-while-revalidate=86400` și niciun `Set-Cookie`, deci se pot ține la margine 5
+     minute. Scade TTFB-ul („Document request latency"). Toate embed meniul cu proiectele.
+     După editări din admin, `revalidate.post.ts` curăță cache-ul Nitro, dar **nu** pe cel
+     din Cloudflare: o schimbare apare cel mult după 5 minute (plus o cerere servită stale
+     cât timp pagina se reîmprospătează), sau după **Purge Cache** manual. Paginile de blog
+     sunt prerenderizate și țin 1 oră (`s-maxage=3600`), la fel `/llms.txt` și
+     `/llms-full.txt`.
 
    Verificare: `curl -sI https://<domeniu>/servicii` trebuie să arate
    `cf-cache-status: HIT` la a doua cerere; `/` rămâne `DYNAMIC` (e corect).
+
+   Cheia de cache păstrează tot query string-ul (`/proiecte?tag=…` rămâne corect). Planul
+   Free nu permite o cheie cu doar anumiți parametri („not entitled to use the custom cache
+   key override"), deci `?utm_source=…` face câte o intrare separată la Cloudflare.
+8. Security → WAF → Rate limiting rules: `http.request.method eq "POST"` și
+   `http.request.uri.path in {"/api/leads" "/api/contact"}`, caracteristici IP + colo,
+   **5 cereri / 10 secunde**, Block 10 secunde. Pe Free fereastra și blocarea pot fi doar
+   10 secunde și e o singură regulă per zonă; pe `codepedia.md` ea a înlocuit regula
+   implicită „Leaked credential check" (logarea în admin merge direct la Supabase, deci
+   aceea nu verifica nimic aici). Oprește rafalele; limita din aplicație (`checkRateLimit`,
+   3 / 10 min per IP) rămâne cea fină.
+
+### Starea aplicată (2026-10-28)
+
+Pașii 4–8 sunt aplicați pe ambele zone, verificați cu `curl` (HIT pe `/servicii`, `DYNAMIC`
+pe `/` și `/api`, 404 pe `/_nuxt/` fără cache, 301 pe `www` și `http`, 429 de la a 6-a
+cerere POST). Diferențe între zone:
+
+- `codepedia.md`: SSL **Full (strict)**; `A` spre serverul Hostinger (LiteSpeed).
+- `codepedia.studio`: SSL rămâne **Full**. Apex-ul are `A`/`AAAA` spre Hostinger CDN
+  (`hcdn`), iar `www` e CNAME spre `cdn.hstgr.net`, deci cererile trec prin două CDN-uri.
+  Certificatul originii e valid pe IPv4; pe IPv6 nu s-a putut verifica, de aceea nu e strict.
+- `ftp.codepedia.studio` e proxied, iar proxy-ul Cloudflare nu trece FTP: trebuie DNS only
+  sau șters dacă nu se folosește.
+
+Rămas deschis: originea răspunde direct pe IP (`curl --resolve codepedia.md:443:<IP>`
+întoarce 200 de la LiteSpeed), deci Cloudflare (inclusiv limita de mai sus) se poate
+ocoli, iar `cf-connecting-ip` se poate falsifica. Soluția e un header secret adăugat de
+Cloudflare și verificat de aplicație (`layers/core/server/middleware/00-origin-guard.ts`).
+Procedura, în ordine:
+
+1. Deploy-ul codului: cât timp `NUXT_ORIGIN_SECRET` e gol, verificarea e oprită.
+2. Cloudflare → Rules → Transform Rules → Modify Request Header: setează static
+   `x-codepedia-origin` = secretul, pe toate cererile, pe ambele zone.
+3. În hPanel setează `NUXT_ORIGIN_SECRET` la aceeași valoare și repornește aplicația.
+4. Verifică: `curl -s -o /dev/null -w "%{http_code}" --resolve codepedia.md:443:<IP> https://codepedia.md/`
+   trebuie să dea 403, iar `https://codepedia.md/` trebuie să dea 200.
+
+`.studio` trece prin Hostinger CDN după Cloudflare: după pasul 3 verifică că
+`https://codepedia.studio/` răspunde tot 200. Dacă nu, golește variabila.
 
 ## 4. Redirectul de limbă
 

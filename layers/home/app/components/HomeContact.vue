@@ -9,6 +9,20 @@ const { isQualifierEnabled } = useQualifierAvailability()
 // Email/phone are never rendered into the markup, not even as mailto:/tel: hrefs, so
 // scrapers get nothing; visitors go through the qualification modal or the fallback form.
 const showForm = ref(false)
+
+// The button that revealed the form is removed, so focus would fall to <body>. The form is lazy: wait for its first field.
+async function revealForm() {
+  showForm.value = true
+  await nextTick()
+  for (let i = 0; i < 20; i++) {
+    const field = document.getElementById('lead-name')
+    if (field) {
+      field.focus()
+      return
+    }
+    await new Promise(resolve => setTimeout(resolve, 50))
+  }
+}
 </script>
 
 <template>
@@ -31,7 +45,7 @@ const showForm = ref(false)
           v-if="!showForm"
           type="button"
           class="eyebrow text-muted underline underline-offset-4 transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
-          @click="showForm = true"
+          @click="revealForm"
         >
           {{ t('home.contact.preferMessage') }}
         </button>

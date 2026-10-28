@@ -108,7 +108,7 @@ export function validateNewsForm(form: NewsForm): NewsIssue[] {
   const slugRo = effectiveSlugRo(form)
   if (!slugRo) error('slugRo', 'Slug-ul (RO) este obligatoriu.')
   else if (!SLUG_RE.test(slugRo)) error('slugRo', 'Slug-ul poate conține doar litere mici, cifre și cratime.')
-  else if (slugRo === 'nou') error('slugRo', '„nou" este rezervat și nu poate fi slug.')
+  else if (slugRo === 'nou') error('slugRo', '„nou” este rezervat și nu poate fi slug.')
 
   const slugEn = form.slugEn.trim()
   if (slugEn && !SLUG_RE.test(slugEn)) error('slugEn', 'Slug-ul (EN) poate conține doar litere mici, cifre și cratime.')

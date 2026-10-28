@@ -42,6 +42,10 @@ export function usePageSeo({ title, description, ogTitle, image, imageSize, imag
     ogSiteName: BRAND,
     ogType: type,
     twitterCard: 'summary_large_image',
+    twitterTitle: () => withBrand(toValue(ogTitle ?? title)),
+    twitterDescription: () => clampDescription(toValue(description)),
+    twitterImage: () => og.value.url,
+    twitterImageAlt: () => og.value.alt,
     ...(article
       ? { articlePublishedTime: article.publishedTime, articleModifiedTime: article.modifiedTime, articleSection: article.section }
       : {}),

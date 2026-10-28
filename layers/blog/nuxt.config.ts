@@ -26,6 +26,8 @@ const enPosts = publishedRoutePosts(posts, 'en')
 export default defineNuxtConfig({
   // `nuxt build` doesn't crawl links, so every blog URL is listed here from the content files (SEO_SPEC §7).
   nitro: {
+    // The Markdown ships inside the server bundle so llms-full.txt can read it in production (read via `useStorage('assets:blog-content')`).
+    serverAssets: [{ baseName: 'blog-content', dir: contentDir }],
     prerender: { routes: blogPrerenderRoutes(roPosts, enPosts) },
   },
   // /blog/<en-slug> and /en/blog/<ro-slug> land on the post in the requested locale.

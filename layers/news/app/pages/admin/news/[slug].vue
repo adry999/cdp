@@ -12,6 +12,8 @@ const saveLabel = computed(() => {
   if (saveStatus.value === 'success') return 'Salvat'
   return saveError.value?.message || 'Eroare'
 })
+
+useSaveShortcut(save, { enabled: () => saveStatus.value !== 'pending' })
 </script>
 
 <template>
