@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { moveToOrigin, xDefaultHref } from './hreflang'
+import { isEnglishAlternateTag, moveToOrigin, xDefaultHref } from './hreflang'
 
 describe('xDefaultHref', () => {
   const ro = 'https://codepedia.md/blog'
@@ -32,5 +32,20 @@ describe('moveToOrigin', () => {
 
   it('leaves other bases alone', () => {
     expect(moveToOrigin('https://other.example/x', 'https://codepedia.studio', 'https://codepedia.md')).toBe('https://other.example/x')
+  })
+})
+
+describe('isEnglishAlternateTag', () => {
+  it('matches the EN hreflang link and the en_US og:locale:alternate meta', () => {
+    expect(isEnglishAlternateTag({ tag: 'link', props: { rel: 'alternate', hreflang: 'en' } })).toBe(true)
+    expect(isEnglishAlternateTag({ tag: 'link', props: { rel: 'alternate', hreflang: 'en-US' } })).toBe(true)
+    expect(isEnglishAlternateTag({ tag: 'meta', props: { property: 'og:locale:alternate', content: 'en_US' } })).toBe(true)
+  })
+
+  it('leaves the RO alternates and unrelated tags alone', () => {
+    expect(isEnglishAlternateTag({ tag: 'link', props: { rel: 'alternate', hreflang: 'ro' } })).toBe(false)
+    expect(isEnglishAlternateTag({ tag: 'link', props: { rel: 'alternate', hreflang: 'x-default' } })).toBe(false)
+    expect(isEnglishAlternateTag({ tag: 'meta', props: { property: 'og:locale:alternate', content: 'ro_RO' } })).toBe(false)
+    expect(isEnglishAlternateTag({ tag: 'meta', props: { property: 'og:locale', content: 'en_US' } })).toBe(false)
   })
 })

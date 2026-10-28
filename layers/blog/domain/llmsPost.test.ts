@@ -12,6 +12,16 @@ describe('parseLlmsPost', () => {
   })
 
   it('falls back to the slug when there is no title', () => {
-    expect(parseLlmsPost('no-title.md', '---\nslug: x\n---\r\nBody').title).toBe('no-title')
+    expect(parseLlmsPost('no-title.md', '---\nauthor: x\n---\r\nBody')?.title).toBe('no-title')
+  })
+
+  it('skips drafts', () => {
+    expect(parseLlmsPost('wip.md', "---\ntitle: 'WIP'\ndraft: true\n---\nBody")).toBeNull()
+    expect(parseLlmsPost('live.md', "---\ntitle: 'Live'\ndraft: false\n---\nBody")).not.toBeNull()
+  })
+
+  it('builds the slug from the front matter, falling back to the file name', () => {
+    expect(parseLlmsPost('old-name.md', "---\ntitle: 'T'\nslug: new-name\n---\nBody")?.slug).toBe('new-name')
+    expect(parseLlmsPost('old-name.md', "---\ntitle: 'T'\n---\nBody")?.slug).toBe('old-name')
   })
 })

@@ -4,6 +4,8 @@ import { fetchNewsList } from '#layers/news/data/newsRepository'
 
 const { t } = useI18n()
 const siteLocale = useSiteLocale()
+const siteUrl = useSiteUrl()
+const localePath = useLocalePath()
 
 const { data: rows, error } = await useAsyncData('news-list', () => fetchNewsList())
 // A failing database is not an empty list: answer 500 (never cached) instead of a thin, indexable page.
@@ -16,6 +18,15 @@ usePageSeo({
   description: () => t('news.seo.description'),
 })
 useBreadcrumbLd(() => t('nav.news'))
+useCollectionLd({
+  name: () => t('news.seo.title'),
+  description: () => t('news.seo.description'),
+  items: () =>
+    items.value.map((item) => ({
+      name: item.title,
+      url: `${siteUrl}${localePath({ name: 'noutati-slug', params: { slug: item.slug } })}`,
+    })),
+})
 
 // An empty index is thin content; it becomes indexable with the first item.
 useSeoMeta({ robots: () => (items.value.length ? undefined : 'noindex, follow') })

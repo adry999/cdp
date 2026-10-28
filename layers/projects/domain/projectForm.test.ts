@@ -273,7 +273,8 @@ describe('checklistInputFromForm', () => {
     form.lead.ro = 'Lead'
     form.contextBody.ro = 'Problema'
     form.coverPath = 'cover'
-    form.gallery = [{ path: 'g1', altRo: '', altEn: '', aspect: '16/10' }]
+    form.coverAlt.ro = 'Copertă'
+    form.gallery = [{ path: 'g1', altRo: 'Galerie', altEn: '', aspect: '16/10' }]
     form.links = [
       { kind: 'figma', url: 'https://figma.com/x', note: { ro: '', en: '' } },
       { kind: 'live', url: ' https://example.md ', note: { ro: '', en: '' } },
@@ -290,11 +291,14 @@ describe('checklistInputFromForm', () => {
       lead_ro: 'Lead',
       context_body_ro: 'Problema',
       cover_path: 'cover',
+      cover_alt_ro: 'Copertă',
+      hero_path: null,
+      hero_alt_ro: '',
       live_url: 'https://example.md',
       win_value_ro: '−35%',
       quote_ro: 'Citat',
       screens_demo: true,
-      project_images: [{ path: 'g1' }],
+      project_images: [{ path: 'g1', alt_ro: 'Galerie' }],
       project_stats: [{ value: '48%' }],
     })
     expect(evaluateChecklist(checklistInputFromForm(form), true).canPublish).toBe(true)

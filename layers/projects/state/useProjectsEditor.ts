@@ -50,8 +50,8 @@ export async function useProjectsEditor(slug: string) {
 
   // What the database holds: a slug edit on a project that was already published creates redirects.
   const savedSlugs = ref({
-    slugRo: form.value.slugRo,
-    slugEn: form.value.slugEn,
+    slugRo: form.value.slugRo.trim(),
+    slugEn: form.value.slugEn.trim(),
     wasPublished: Boolean(original?.published_at),
   })
 
@@ -98,8 +98,8 @@ export async function useProjectsEditor(slug: string) {
       saveStatus.value = 'success'
       markSaved()
       savedSlugs.value = {
-        slugRo: form.value.slugRo,
-        slugEn: form.value.slugEn,
+        slugRo: form.value.slugRo.trim(),
+        slugEn: form.value.slugEn.trim(),
         wasPublished: form.value.published,
       }
 
@@ -130,12 +130,11 @@ export async function useProjectsEditor(slug: string) {
   async function confirmPublish() {
     if (!checklist.value.canPublish || saveStatus.value === 'pending') return
     form.value.published = true
-    if (await save()) {
-      publishing.value = false
-    } else {
-      // Nothing was written, so the form keeps saying what the database says.
-      form.value.published = false
-    }
+    const saved = await save()
+    // Closed either way: the save error shows in the topbar, which the dialog scrim would hide.
+    publishing.value = false
+    // Nothing was written on failure, so the form keeps saying what the database says.
+    if (!saved) form.value.published = false
   }
 
   async function unpublish() {

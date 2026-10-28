@@ -1,4 +1,5 @@
 import { organizationRef } from '#layers/core/shared/utils/jsonLd'
+import { DEFAULT_OG_IMAGE_PATH } from '#layers/core/shared/utils/seo'
 
 export interface NewsArticleInput {
   locale: 'ro' | 'en'
@@ -6,6 +7,8 @@ export interface NewsArticleInput {
   url: string
   /** The primary (EN) origin, the Organization's `url`. */
   primaryOrigin: string
+  /** The official origin of the item's locale; the item's image is the site's default OG image on it. */
+  origin: string
   headline: string
   /** Our summary, never the source's text. */
   description: string
@@ -37,6 +40,7 @@ export function newsArticleSchema(input: NewsArticleInput) {
     datePublished: input.publishedAt,
     dateModified: input.modifiedAt,
     url: input.url,
+    image: `${input.origin}${DEFAULT_OG_IMAGE_PATH}`,
     mainEntityOfPage: input.url,
     inLanguage: input.locale === 'en' ? 'en-US' : 'ro-RO',
     author: org,

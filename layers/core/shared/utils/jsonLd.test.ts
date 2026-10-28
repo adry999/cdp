@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { breadcrumbList, faqPage, organizationRef, studioGraph, webSite } from './jsonLd'
+import { breadcrumbList, collectionPage, faqPage, organizationRef, studioGraph, webSite } from './jsonLd'
 
 describe('breadcrumbList', () => {
   it('numbers the items from 1 in order', () => {
@@ -14,6 +14,35 @@ describe('breadcrumbList', () => {
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'CODEPEDIA', item: 'https://codepedia.md/' },
         { '@type': 'ListItem', position: 2, name: 'Servicii', item: 'https://codepedia.md/servicii' },
+      ],
+    })
+  })
+})
+
+describe('collectionPage', () => {
+  it('pairs a CollectionPage with an ItemList numbered from 1', () => {
+    expect(
+      collectionPage({
+        name: 'Proiecte',
+        description: 'd',
+        url: 'https://codepedia.md/proiecte',
+        inLanguage: 'ro',
+        items: [
+          { name: 'A', url: 'https://codepedia.md/proiecte/a' },
+          { name: 'B', url: 'https://codepedia.md/proiecte/b' },
+        ],
+      }),
+    ).toEqual({
+      '@context': 'https://schema.org',
+      '@graph': [
+        { '@type': 'CollectionPage', name: 'Proiecte', description: 'd', url: 'https://codepedia.md/proiecte', inLanguage: 'ro' },
+        {
+          '@type': 'ItemList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, url: 'https://codepedia.md/proiecte/a', name: 'A' },
+            { '@type': 'ListItem', position: 2, url: 'https://codepedia.md/proiecte/b', name: 'B' },
+          ],
+        },
       ],
     })
   })
@@ -43,6 +72,17 @@ describe('webSite', () => {
         '@id': 'https://codepedia.md/#org',
       },
     })
+  })
+})
+
+describe('webSite per origin', () => {
+  it('derives the @id from its own url and points the publisher at the primary org', () => {
+    const ro = webSite('https://codepedia.md', ['ro'], 'https://codepedia.studio')
+    const en = webSite('https://codepedia.studio', ['en'], 'https://codepedia.studio')
+    expect(ro['@id']).toBe('https://codepedia.md/#website')
+    expect(en['@id']).toBe('https://codepedia.studio/#website')
+    expect(ro.publisher).toEqual(en.publisher)
+    expect(ro.publisher['@id']).toBe('https://codepedia.studio/#org')
   })
 })
 
