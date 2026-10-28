@@ -47,11 +47,12 @@ export function createNewsRepository(event: H3Event) {
       return data
     },
 
-    // Errors are ignored on purpose: a failed lookup falls through to the normal route.
+    // `null` = no redirect for this path. A failed lookup returns `undefined` on purpose: it falls through
+    // to the normal route and, unlike `null`, is not kept by the cache in services/findCachedRedirect.ts.
     async findRedirect(fromPath: string) {
       const client = await serverSupabaseClient<Database>(event)
-      const { data } = await client.from('redirects').select('to_path, status').eq('from_path', fromPath).maybeSingle()
-      return data
+      const { data, error } = await client.from('redirects').select('to_path, status').eq('from_path', fromPath).maybeSingle()
+      return error ? undefined : data
     },
   }
 }

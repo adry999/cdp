@@ -60,8 +60,8 @@ export type AdminProjectRow = Omit<
 
 export const ADMIN_PROJECT_LIST_SELECT = `
   slug_ro, slug_en, card_title_ro, title_ro, summary_ro, lead_ro, context_body_ro,
-  tech, cover_path, published_at, featured, sort_order, live_url, screens_demo, quote_ro, win_value_ro,
-  project_images(path), project_stats(value)
+  tech, cover_path, cover_alt_ro, hero_path, hero_alt_ro, published_at, featured, sort_order, live_url, screens_demo, quote_ro, win_value_ro,
+  project_images(path, alt_ro), project_stats(value)
 ` as const
 
 export type AdminProjectListRow = Pick<
@@ -75,6 +75,9 @@ export type AdminProjectListRow = Pick<
   | 'context_body_ro'
   | 'tech'
   | 'cover_path'
+  | 'cover_alt_ro'
+  | 'hero_path'
+  | 'hero_alt_ro'
   | 'published_at'
   | 'featured'
   | 'sort_order'
@@ -83,7 +86,7 @@ export type AdminProjectListRow = Pick<
   | 'quote_ro'
   | 'win_value_ro'
 > & {
-  project_images: Pick<Tables['project_images']['Row'], 'path'>[]
+  project_images: Pick<Tables['project_images']['Row'], 'path' | 'alt_ro'>[]
   project_stats: Pick<Tables['project_stats']['Row'], 'value'>[]
 }
 

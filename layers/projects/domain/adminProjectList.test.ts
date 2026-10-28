@@ -41,7 +41,7 @@ describe('nextCopySlug', () => {
 })
 
 describe('evaluateChecklist', () => {
-  const ready = buildAdminListRow({ cover_path: 'https://x/cover.jpg', live_url: 'https://client.md' })
+  const ready = buildAdminListRow({ cover_path: 'https://x/cover.jpg', cover_alt_ro: 'Copertă', live_url: 'https://client.md' })
   const byId = (row: Parameters<typeof evaluateChecklist>[0], consent: boolean) =>
     Object.fromEntries(evaluateChecklist(row, consent).items.map((item) => [item.id, item.done]))
 
@@ -56,7 +56,7 @@ describe('evaluateChecklist', () => {
   })
 
   it('accepts a gallery image instead of a cover', () => {
-    const row = buildAdminListRow({ live_url: 'https://x.md', project_images: [{ path: 'https://x/g.jpg' }] })
+    const row = buildAdminListRow({ live_url: 'https://x.md', project_images: [{ path: 'https://x/g.jpg', alt_ro: 'Listă' }] })
     expect(byId(row, true).screenshots).toBe(true)
   })
 
@@ -65,6 +65,19 @@ describe('evaluateChecklist', () => {
     expect(byId(buildAdminListRow({ cover_path: 'c' }), true).live).toBe(false)
     expect(byId(buildAdminListRow({ ...ready, lead_ro: '  ' }), true).content).toBe(false)
     expect(evaluateChecklist(buildAdminListRow({ ...ready, lead_ro: '' }), true).canPublish).toBe(false)
+  })
+
+  it('requires alt text for the cover, hero and every gallery image that has a file', () => {
+    const alt = (overrides: Parameters<typeof buildAdminListRow>[0]) => byId(buildAdminListRow({ ...ready, ...overrides }), true).alt
+    expect(alt({})).toBe(true)
+    expect(alt({ cover_alt_ro: '  ' })).toBe(false)
+    expect(alt({ cover_alt_ro: 'Panou' })).toBe(true)
+    expect(alt({ hero_path: 'https://x/h.jpg' })).toBe(false)
+    expect(alt({ hero_path: 'https://x/h.jpg', hero_alt_ro: 'Captură' })).toBe(true)
+    expect(alt({ project_images: [{ path: 'https://x/g.jpg', alt_ro: '' }] })).toBe(false)
+    expect(alt({ project_images: [{ path: '', alt_ro: '' }] })).toBe(true)
+    expect(alt({ project_images: [{ path: 'https://x/g.jpg', alt_ro: 'Listă' }] })).toBe(true)
+    expect(evaluateChecklist(buildAdminListRow({ ...ready, hero_path: 'h' }), true).canPublish).toBe(false)
   })
 
   it('detects figures from stats or the win value, and the quote', () => {
