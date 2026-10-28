@@ -10,10 +10,14 @@ export function moveToOrigin(href: string, fromBase: string, origin: string): st
 }
 
 /**
- * hreflang x-default: the Romanian page, on every route. Romanian is the default locale (no URL prefix,
- * .md/.ro domains) and every route exists in it, while EN copies can be missing or still untranslated.
- * `fallbackHref` is used only when the page has no RO alternate to point at.
+ * hreflang x-default: the English page. The runtime fallback for a visitor of unknown origin is English
+ * and the primary domain is the English one. A page whose EN copy is still Romanian (`enPending`) has no
+ * EN alternate to point at, so it falls back to the RO page. `fallbackHref` is used only when neither exists.
  */
-export function xDefaultHref(roHref: string | undefined, fallbackHref: string): string {
-  return roHref ?? fallbackHref
+export function xDefaultHref(
+  alternates: { ro?: string; en?: string; enPending?: boolean },
+  fallbackHref: string,
+): string {
+  if (alternates.enPending) return alternates.ro ?? fallbackHref
+  return alternates.en ?? alternates.ro ?? fallbackHref
 }

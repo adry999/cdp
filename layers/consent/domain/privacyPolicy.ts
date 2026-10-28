@@ -24,7 +24,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'Cine este operatorul',
         body: [
-          'S.R.L. „CODEPEDIA", IDNO 1023600068387, Chișinău, Republica Moldova.',
+          'S.R.L. „CODEPEDIA”, IDNO 1023600068387, Chișinău, Republica Moldova.',
           `Pentru orice întrebare despre datele tale: ${CONTACT_EMAIL_TOKEN}.`,
         ],
       },
@@ -47,7 +47,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
         body: [
           'codepedia_locale — reține limba aleasă (română/engleză). Necesar pentru funcționarea site-ului, valabil 1 an.',
           'codepedia_consent — reține alegerile tale privind cookie-urile de mai jos. Necesar pentru funcționarea site-ului, valabil 6 luni.',
-          'Google Analytics și Meta Pixel — folosite doar dacă alegi explicit „Acceptă tot" sau activezi categoriile corespunzătoare din bannerul de cookie-uri. Poți schimba alegerea oricând din linkul „Setări cookie-uri" din footer.',
+          'Google Analytics și Meta Pixel — folosite doar dacă alegi explicit „Acceptă tot” sau activezi categoriile corespunzătoare din bannerul de cookie-uri. Poți schimba alegerea oricând din linkul „Setări cookie-uri” din footer.',
         ],
       },
       {
@@ -55,7 +55,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
         body: [
           'Datele din formularul de contact și din chestionarul de calificare: pentru a răspunde solicitării tale și a face, la cererea ta, demersurile de dinaintea unei eventuale colaborări (art. 6 alin. (1) lit. b GDPR).',
           'Adresa IP (temporar) și jurnalele de găzduire: interesul legitim de a preveni abuzul și de a păstra site-ul sigur (art. 6 alin. (1) lit. f GDPR).',
-          'Analiză și marketing: doar cu acordul tău explicit (art. 6 alin. (1) lit. a GDPR). Îl poți retrage oricând din „Setări cookie-uri", fără să afecteze ce s-a prelucrat înainte.',
+          'Analiză și marketing: doar cu acordul tău explicit (art. 6 alin. (1) lit. a GDPR). Îl poți retrage oricând din „Setări cookie-uri”, fără să afecteze ce s-a prelucrat înainte.',
           'Nu luăm decizii automate și nu facem profilare care să producă efecte juridice asupra ta.',
         ],
       },

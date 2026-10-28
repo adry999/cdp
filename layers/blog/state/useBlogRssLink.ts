@@ -1,4 +1,4 @@
-import { blogPaths } from '#layers/blog'
+import { blogPaths } from '#layers/blog/domain/seo'
 
 /** `<link rel="alternate" type="application/rss+xml">` to the current locale's feed, on its official domain. */
 export function useBlogRssLink() {

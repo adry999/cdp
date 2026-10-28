@@ -59,6 +59,10 @@ describe('isCrawler', () => {
     expect(isCrawler('Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ChatGPT-User/1.0; +https://openai.com/bot)')).toBe(true)
     expect(isCrawler('Perplexity-User/1.0')).toBe(true)
     expect(isCrawler('Claude-User/1.0')).toBe(true)
+    expect(isCrawler('WhatsApp/2.23.20.0 A')).toBe(true)
+    expect(isCrawler('Mozilla/5.0 (Windows NT 10.0; WOW64) SkypeUriPreview Preview/0.5')).toBe(true)
+    expect(isCrawler('Mozilla/5.0 (compatible; Embedly/0.2; +http://support.embed.ly/)')).toBe(true)
+    expect(isCrawler('Snapchat/10.0 (iPhone)')).toBe(true)
   })
 
   it('does not flag a normal browser', () => {

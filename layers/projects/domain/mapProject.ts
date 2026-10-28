@@ -122,6 +122,11 @@ export interface ProjectRow extends ProjectCardRow {
 
 type Locale = 'ro' | 'en'
 
+/** Both the English title and lead are filled in; without them the EN case study would show Romanian text. */
+export function projectHasEnglish(row: Pick<ProjectRow, 'title_en' | 'lead_en'>): boolean {
+  return !!row.title_en?.trim() && !!row.lead_en?.trim()
+}
+
 function paragraphs(ro: string | null, en: string | null, locale: Locale): string[] {
   return pick(ro ?? '', en, locale)
     .split(/\n\s*\n/)
@@ -184,6 +189,8 @@ export function mapProject(row: ProjectRow, locale: Locale) {
 
   return {
     ...mapProjectCard(row, locale),
+    /** False when the requested locale is English but the case study has no English title or lead yet. */
+    translated: locale === 'ro' || projectHasEnglish(row),
     caseStudy: {
       tech: row.tech,
       year: row.year != null ? String(row.year) : '',
