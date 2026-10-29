@@ -44,8 +44,13 @@ schimbă din proprie inițiativă, chiar dacă un document mai vechi spune altce
   `.claude/skills/`, `docs/`) fără acordul explicit al omului care lucrează cu tine. O
   regulă nouă sau schimbată intră într-un PR separat, care actualizează acest fișier.
 - **Fără dependențe noi** (inclusiv devDependencies) fără acordul ambilor developeri.
-- Totul prin branch + PR spre `main`. CI rulează `lint`, `typecheck`, `vitest` și
-  Playwright; un PR cu CI roșu nu intră în `main`.
+- Totul prin branch + PR, branch-ul pornește din `main`. Ce trebuie testat merge întâi
+  printr-un PR spre `dev` și se testează acolo; abia apoi același branch primește un PR
+  spre `main`. Ce e deja verificat (de exemplu doar documentație) merge direct spre
+  `main`. `main` e ultima treaptă înainte de deploy (`main` → `production`, vezi
+  `docs/DEPLOY_HOSTINGER.md`): un PR spre `main` nu se mergeuiește până nu e testat.
+  CI rulează `lint`, `typecheck`, `vitest` și Playwright; un PR cu CI roșu nu intră nici
+  în `dev`, nici în `main`.
 - Commit-uri mici, Conventional Commits, în engleză, la imperativ.
 - Fiecare PR nou adaugă un rând în `docs/PR_HISTORY.md` (număr, tip, ce face, o linie,
   în română), în același PR, la sfârșitul listei. PR-urile închise fără merge se
@@ -160,11 +165,15 @@ implementare) în `docs/superpowers/specs/` și `docs/superpowers/plans/`:
   Cloudflare `cf-ipcountry`, cu `x-vercel-ip-country` ca rezervă; RO/MD → română,
   altfel engleză) → engleză.
   Acționează doar pe `/` și `/en` — nu pe pagini adânci.
-- **Domenii multiple** — toate domeniile servesc aceleași căi (RO fără
-  prefix, EN sub `/en`), deci cache-ul ISR pe cale rămâne corect. Domeniul
-  oficial al fiecărei limbi (`NUXT_PUBLIC_SITE_URL` = EN, `NUXT_PUBLIC_SITE_URL_RO`
-  = RO) apare în canonical, `hreflang` (`app/plugins/locale-alternates.ts`),
-  sitemap și `robots.txt`, ambele filtrate pe domeniul cererii.
+- **Domenii multiple** — aceleași căi pe ambele domenii (RO fără prefix, EN sub
+  `/en`), deci cache-ul ISR pe cale rămâne corect, dar o pagină se servește doar pe
+  domeniul limbii ei: `layers/core/server/middleware/domain-redirect.ts` trimite cu 301
+  căile RO cerute pe domeniul EN, `/en/...` cerut pe domeniul RO și orice `www.` la
+  domeniul oficial (acasă, `/api`, `/admin`, fișierele statice și hosturile de preview
+  rămân neatinse). Domeniul oficial al fiecărei limbi (`NUXT_PUBLIC_SITE_URL` = EN,
+  `NUXT_PUBLIC_SITE_URL_RO` = RO, aceleași valori pe ambele aplicații) apare în
+  canonical, `hreflang` (`app/plugins/locale-alternates.ts`), sitemap și `robots.txt`,
+  ambele filtrate pe domeniul cererii.
 - **Consimțământ cookie-uri + politică de confidențialitate** —
   modulul `layers/consent/` (`state/useCookieConsent.ts`,
   `app/components/ConsentBanner.vue`, `app/plugins/analytics.client.ts`),

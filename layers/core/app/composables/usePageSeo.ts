@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { BRAND, clampDescription, resolveOgImage, withBrand } from '#layers/core/shared/utils/seo'
+import { BRAND, DEFAULT_OG_IMAGE_PATH, clampDescription, resolveOgImage, withBrand } from '#layers/core/shared/utils/seo'
 
 interface PageSeo {
   title: MaybeRefOrGetter<string>
@@ -15,7 +15,7 @@ interface PageSeo {
 }
 
 export function usePageSeo({ title, description, ogTitle, image, imageSize, imageAlt, type = 'website', article }: PageSeo) {
-  const defaultImage = `${useSiteUrl()}/og-image.png`
+  const defaultImage = `${useSiteUrl()}${DEFAULT_OG_IMAGE_PATH}`
 
   // Replaces the static `%s · CODEPEDIA` template so long titles drop the suffix.
   useHead({ titleTemplate: (pageTitle?: string) => (pageTitle ? withBrand(pageTitle) : BRAND) })
@@ -42,6 +42,10 @@ export function usePageSeo({ title, description, ogTitle, image, imageSize, imag
     ogSiteName: BRAND,
     ogType: type,
     twitterCard: 'summary_large_image',
+    twitterTitle: () => withBrand(toValue(ogTitle ?? title)),
+    twitterDescription: () => clampDescription(toValue(description)),
+    twitterImage: () => og.value.url,
+    twitterImageAlt: () => og.value.alt,
     ...(article
       ? { articlePublishedTime: article.publishedTime, articleModifiedTime: article.modifiedTime, articleSection: article.section }
       : {}),

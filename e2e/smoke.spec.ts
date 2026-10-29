@@ -110,3 +110,13 @@ test('/robots.txt returns text/plain with 200', async ({ request }) => {
   expect(res.headers()['content-type']).toContain('text/plain')
   expect(await res.text()).toContain('User-agent')
 })
+
+test('llms-full.txt lists the full guides and articles', async ({ request }) => {
+  const response = await request.get('/llms-full.txt')
+  expect(response.status()).toBe(200)
+  expect(response.headers()['content-type']).toContain('text/plain')
+  const body = await response.text()
+  const guides = body.split(/^## (?:Full Guides and Articles|Ghiduri și Articole Complete)$/m)[1]
+  expect(guides, 'guides section heading').toBeDefined()
+  expect(guides).toMatch(/^### /m)
+})

@@ -4,6 +4,8 @@ import { toLastmod } from '#layers/core/server/utils/sitemap'
 import { NEWS_INDEX_PAGE, newsSitemapPages } from '#layers/news/domain/sitemap'
 import { createNewsRepository } from '#layers/news/server/repository/newsRepository'
 
+export { NEWS_INDEX_PAGE }
+
 async function listPublishedNewsPages(event: H3Event): Promise<SitemapPage[]> {
   return newsSitemapPages(await createNewsRepository(event).listPublishedForSitemap(), toLastmod)
 }

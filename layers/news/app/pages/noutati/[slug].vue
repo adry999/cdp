@@ -48,7 +48,9 @@ usePageSeo({
   },
 })
 
-// An English page that still shows Romanian text stays out of the index.
+// An English page that still shows Romanian text stays out of the index, and the EN alternate is dropped
+// from hreflang on the RO render too.
+useSetEnPending(() => !raw.title_en?.trim() || !raw.summary_en?.trim())
 useSeoMeta({ robots: () => (item.value.translated ? undefined : 'noindex, follow') })
 
 useJsonLd(
@@ -57,6 +59,7 @@ useJsonLd(
       locale: siteLocale.value,
       url: itemUrl.value,
       primaryOrigin: primarySiteUrl,
+      origin: siteUrl,
       headline: item.value.title,
       description: item.value.summary,
       publishedAt: raw.published_at ?? raw.updated_at,
@@ -109,7 +112,7 @@ useJsonLd(
       </div>
 
       <div class="mt-10">
-        <AppButton variant="signal" :href="item.sourceUrl" target="_blank" rel="noopener">{{ t('news.openOriginal') }}</AppButton>
+        <AppButton variant="signal" :href="item.sourceUrl" target="_blank" rel="noopener">{{ t('news.openOriginal') }}<span class="sr-only"> {{ t('a11y.newTab') }}</span></AppButton>
         <p class="m-0 mt-4 max-w-[62ch] eyebrow-sm text-muted">{{ t('news.disclaimer', { name: item.sourceName }) }}</p>
       </div>
     </SiteSection>

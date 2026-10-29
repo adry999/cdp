@@ -60,7 +60,7 @@ function removeGalleryImage(index: number) {
           </button>
         </div>
         <div v-if="!form.gallery.length" class="mt-2 rounded border border-dashed border-hairline p-4 text-center text-[13px] text-muted">
-          Fără imagini încă — apasă „+ Imagine".
+          Fără imagini încă — apasă „+ Imagine”.
         </div>
         <div v-else class="mt-2 grid grid-cols-2 gap-4">
           <div v-for="(img, i) in form.gallery" :key="i" class="relative">
@@ -74,7 +74,7 @@ function removeGalleryImage(index: number) {
             />
             <div class="mt-3 flex items-start gap-3">
               <div class="flex-1">
-                <AdminFieldPair v-model:ro="img.altRo" v-model:en="img.altEn" label="Text alternativ" />
+                <AdminFieldPair v-model:ro="img.altRo" v-model:en="img.altEn" label="Text alternativ" required />
               </div>
               <button type="button" class="mt-6 cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal-text" @click="removeGalleryImage(i)">
                 Șterge

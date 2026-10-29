@@ -27,8 +27,13 @@ describe('content data', () => {
     expect(FAQS.length).toBeGreaterThan(0)
   })
 
-  it('has a valid contact email', () => {
+  it('has valid contact data', () => {
     expect(EMAIL_PATTERN.test(SITE_SETTINGS.contactEmail)).toBe(true)
+    expect(SITE_SETTINGS.phone).toMatch(/^\+\d{8,15}$/)
+    expect(SITE_SETTINGS.phoneDisplay.replace(/\s/g, '')).toBe(SITE_SETTINGS.phone)
+    expect(SITE_SETTINGS.socialProfiles.every((url) => url.startsWith('https://'))).toBe(true)
+    expect(SITE_SETTINGS.openingHours.opens).toMatch(/^\d{2}:\d{2}$/)
+    expect(SITE_SETTINGS.openingHours.closes).toMatch(/^\d{2}:\d{2}$/)
   })
 
   it('has an integer copyright year', () => {

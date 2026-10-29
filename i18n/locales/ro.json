@@ -1,4 +1,7 @@
 {
+  "a11y": {
+    "newTab": "(se deschide într-o filă nouă)"
+  },
   "seo": {
     "home": {
       "title": "Dezvoltare web full-stack, Chișinău",
@@ -318,7 +321,8 @@
         "errorEmail": "Adresă de email invalidă."
       },
       "facts": {
-        "responseTime": "Timp de răspuns"
+        "responseTime": "Timp de răspuns",
+        "phone": "Telefon"
       }
     }
   },
@@ -539,6 +543,7 @@
     "disclaimer": "Rezumat scris de echipa CODEPEDIA. Articolul complet aparține {name}."
   },
   "blog": {
+    "table": "Tabel, derulează orizontal",
     "seo": {
       "title": "Blog: dezvoltare web, automatizare, arhitectură",
       "description": "Prețuri, comparații și ghiduri pentru firmele care pregătesc un site sau o aplicație. Scrise din proiectele CODEPEDIA."
@@ -649,7 +654,8 @@
     "principlesLabel": "Cum lucrăm",
     "team": {
       "label": "Echipa",
-      "title": "Oamenii cu care vorbești direct."
+      "title": "Oamenii cu care vorbești direct.",
+      "linkedin": "LinkedIn – {name}"
     },
     "facts": {
       "based": {

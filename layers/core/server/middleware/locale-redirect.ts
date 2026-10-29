@@ -1,3 +1,4 @@
+import { LOCALE_ENTRY_VARY } from '#layers/core/server/utils/localeEntryHeaders'
 import { LOCALE_COOKIE_NAME, isCrawler, resolveLocale } from '#layers/core/shared/utils/resolveLocale'
 
 export default defineEventHandler((event) => {
@@ -20,7 +21,13 @@ export default defineEventHandler((event) => {
     // must never store this redirect, or the first visitor's outcome gets
     // served to everyone behind that cache until it expires.
     setResponseHeader(event, 'Cache-Control', 'private, no-store')
-    setResponseHeader(event, 'Vary', 'Cookie, CF-IPCountry, X-Vercel-IP-Country')
+    setResponseHeader(event, 'Vary', LOCALE_ENTRY_VARY)
     return sendRedirect(event, `${target === 'en' ? '/en' : '/'}${search}`, 302)
   }
+
+  // Served without redirecting, yet only because of this visitor's cookie, geo or domain: a cache in front
+  // must key on the same signals, or it would hand this answer to visitors who should be redirected.
+  // The swr route rule of `/` and `/en` replaces this header; plugins/locale-entry-headers.ts sets it again.
+  setResponseHeader(event, 'Cache-Control', 'private, no-cache')
+  setResponseHeader(event, 'Vary', LOCALE_ENTRY_VARY)
 })

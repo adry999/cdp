@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { formatAdminDate } from '#layers/core/shared/utils/formatAdminDate'
 import { leadBudgetLabel, leadServiceLabel, leadStageLabel, leadStatusLabel } from '#layers/leads/domain/lead'
 import { useLeadsAdminList } from '#layers/leads/state/useLeadsAdminList'
 
 definePageMeta({ layout: 'admin', i18n: false })
 
-const { leads, loadError } = await useLeadsAdminList()
+const { leads, loadError, view } = await useLeadsAdminList()
 
 const STATUS_CLASS: Record<string, string> = {
   nou: 'text-signal-text',
@@ -19,11 +20,15 @@ const STATUS_CLASS: Record<string, string> = {
     <AdminTopbar title="Solicitări" />
 
     <div class="flex-1 overflow-y-auto px-6 py-6">
+      <div class="mb-4 flex gap-2">
+        <ToggleChip size="admin" :pressed="view === 'active'" @click="view = 'active'">Active</ToggleChip>
+        <ToggleChip size="admin" :pressed="view === 'archived'" @click="view = 'archived'">Arhivate</ToggleChip>
+      </div>
       <p v-if="loadError" role="alert" class="rounded border border-signal-text p-8 text-center text-signal-text">
         Solicitările nu au putut fi încărcate — reîncarcă pagina. ({{ loadError.message }})
       </p>
       <div v-else-if="!leads?.length" class="rounded border border-hairline p-8 text-center text-muted">
-        Nicio solicitare încă.
+        {{ view === 'archived' ? 'Nicio solicitare arhivată.' : 'Nicio solicitare încă.' }}
       </div>
       <div v-else class="flex flex-col">
         <NuxtLink
@@ -34,7 +39,7 @@ const STATUS_CLASS: Record<string, string> = {
           :class="{ 'border-b': i === leads.length - 1 }"
         >
           <div class="flex-[0_0_100px] eyebrow text-muted">
-            {{ new Date(lead.created_at).toLocaleDateString('ro-RO') }}
+            {{ formatAdminDate(lead.created_at) }}
           </div>
           <div class="min-w-0 flex-[1_1_160px] text-[15px] text-ink">{{ lead.name }}</div>
           <div class="min-w-0 flex-[1_1_180px] text-[15px] text-muted">{{ lead.email }}</div>

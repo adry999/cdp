@@ -22,6 +22,16 @@ export function createLeadsAdminRepository(client: SupabaseClient) {
       return data ?? []
     },
 
+    async listArchived() {
+      const { data, error } = await client
+        .from('leads')
+        .select(LEAD_LIST_COLUMNS)
+        .not('archived_at', 'is', null)
+        .order('archived_at', { ascending: false })
+      if (error) throw failure('Solicitările arhivate nu au putut fi încărcate.', error)
+      return data ?? []
+    },
+
     async countNew() {
       const { count, error } = await client
         .from('leads')
@@ -52,6 +62,11 @@ export function createLeadsAdminRepository(client: SupabaseClient) {
     async archive(id: string) {
       const { error } = await client.from('leads').update({ archived_at: new Date().toISOString() }).eq('id', id)
       if (error) throw failure(`Solicitarea nu a putut fi arhivată: ${error.message}`, error)
+    },
+
+    async unarchive(id: string) {
+      const { error } = await client.from('leads').update({ archived_at: null }).eq('id', id)
+      if (error) throw failure(`Solicitarea nu a putut fi dezarhivată: ${error.message}`, error)
     },
 
     // Erasure on request (privacy policy); RLS returns no error for a blocked delete, so the row count is checked.

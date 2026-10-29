@@ -262,8 +262,8 @@ onMounted(() => {
 
   // Trigger resize and fallback checks
   resize()
-  requestAnimationFrame(resize)
-  setTimeout(resize, 100)
+  const resizeRafId = requestAnimationFrame(resize)
+  const resizeTimerId = setTimeout(resize, 100)
 
   mouse.x = width / 2
   mouse.y = height / 2
@@ -647,6 +647,9 @@ onMounted(() => {
     context.globalCompositeOperation = 'source-over'
   }
 
+  let reducedIdleId: number | undefined
+  let reducedTimerId: ReturnType<typeof setTimeout> | undefined
+
   // Draw static baseline frame if user prefers reduced motion or on mobile/touch screens
   if (isStaticMode) {
     const drawReduced = () => {
@@ -660,9 +663,9 @@ onMounted(() => {
       }
     }
     if (typeof window.requestIdleCallback === 'function') {
-      window.requestIdleCallback(drawReduced, { timeout: 2000 })
+      reducedIdleId = window.requestIdleCallback(drawReduced, { timeout: 2000 })
     } else {
-      setTimeout(drawReduced, 200)
+      reducedTimerId = setTimeout(drawReduced, 200)
     }
   } else {
     // The canvas waits until the page has loaded and gone idle (or the user moves the pointer),
@@ -703,6 +706,10 @@ onMounted(() => {
 
   onBeforeUnmount(() => {
     themeObserver.disconnect()
+    cancelAnimationFrame(resizeRafId)
+    clearTimeout(resizeTimerId)
+    if (reducedIdleId !== undefined) window.cancelIdleCallback?.(reducedIdleId)
+    clearTimeout(reducedTimerId)
     if (animId !== null) cancelAnimationFrame(animId)
     if (!isStaticMode) window.removeEventListener('pointermove', onPointerMove)
     document.removeEventListener('visibilitychange', onVisibilityChange)

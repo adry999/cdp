@@ -83,7 +83,7 @@ async function onFileChange(e: Event) {
     >
       {{ uploading ? 'Se încarcă…' : modelValue ? 'Înlocuiește' : 'Încarcă' }}
     </button>
-    <input ref="fileInput" type="file" accept="image/*" class="hidden" @change="onFileChange" >
+    <input ref="fileInput" type="file" accept="image/jpeg,image/png,image/webp,image/avif" class="hidden" @change="onFileChange" >
     <p v-if="error" class="mt-2 font-mono text-xs text-signal-text">{{ error }}</p>
   </div>
 </template>

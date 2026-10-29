@@ -2,19 +2,27 @@
 import { useQualifierDialog } from '#layers/qualifier/state/useQualifierDialog'
 import { QUALIFIER_TOTAL_STEPS, useQualifierFlow } from '#layers/qualifier/state/useQualifierFlow'
 
-const { isOpen } = useQualifierDialog()
+const { isOpen, returnFocusTo } = useQualifierDialog()
 // Registered before the watcher below, so the flow has reset by the time the
 // dialog moves focus into its first step.
 const { step, direction, stage, budget, status, goNext, goBack, submit, close } = useQualifierFlow()
 const { t } = useI18n()
 
 const panel = ref<HTMLElement | null>(null)
-useModalLock(panel, isOpen, close)
+useModalLock(panel, isOpen, close, { returnFocusTo })
 
 const transitionName = computed(() => (direction.value === 1 ? 'q-fwd' : 'q-back'))
 const viewKey = computed(() => (status.value === 'success' ? 'success' : `step-${step.value}`))
 
 const successHeading = ref<HTMLElement | null>(null)
+
+// The focused "Next"/"Back" button unmounts with its step, so focus moves to the new step's legend.
+// `after-enter` fires once the out-in transition has mounted the new step.
+function focusStep() {
+  if (status.value === 'success') return
+  // The contact step has no legend: its first field takes the focus.
+  panel.value?.querySelector<HTMLElement>('[data-step-legend], #qual-name')?.focus()
+}
 
 watch(status, (value) => {
   if (value === 'success') {
@@ -29,7 +37,7 @@ watch(status, (value) => {
       <div
         v-if="isOpen"
         class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-scrim/60 px-4 py-[max(24px,6vh)]"
-        @click.self="close"
+        @mousedown.self="close"
       >
         <div
           ref="panel"
@@ -61,8 +69,8 @@ watch(status, (value) => {
             </button>
           </div>
 
-          <div v-if="status !== 'success'" class="mt-5" aria-hidden="true">
-            <div class="flex gap-1.5">
+          <div v-if="status !== 'success'" class="mt-5">
+            <div class="flex gap-1.5" aria-hidden="true">
               <span
                 v-for="n in QUALIFIER_TOTAL_STEPS"
                 :key="n"
@@ -70,13 +78,13 @@ watch(status, (value) => {
                 :class="n <= step ? 'bg-signal' : 'bg-hairline'"
               />
             </div>
-            <p class="mt-2 eyebrow-sm text-muted">
+            <p class="mt-2 eyebrow-sm text-muted" aria-live="polite">
               {{ t('qualifier.progress', { current: step, total: QUALIFIER_TOTAL_STEPS }) }}
             </p>
           </div>
 
           <div class="mt-6">
-            <Transition :name="transitionName" mode="out-in">
+            <Transition :name="transitionName" mode="out-in" @after-enter="focusStep">
               <QualifierStepStage
                 v-if="viewKey === 'step-1'"
                 key="step-1"

@@ -23,7 +23,7 @@ defineEmits<{ publish: []; unpublish: [] }>()
         </label>
       </div>
       <div class="flex gap-3 eyebrow">
-        <NuxtLink :to="`/proiecte/${form.slugRo}`" class="text-muted hover:text-ink">Vezi pe site</NuxtLink>
+        <NuxtLink v-if="form.published" :to="`/proiecte/${form.slugRo}`" class="text-muted hover:text-ink">Vezi pe site</NuxtLink>
       </div>
     </div>
     <p class="m-0 mt-3 text-sm text-muted">

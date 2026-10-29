@@ -6,26 +6,27 @@ import { listPublished, type BlogLocale } from '#layers/blog/server/repository/b
 import type { SitemapPage } from '#layers/core/shared/types/sitemap'
 import { getSiteUrl } from '#layers/core/server/utils/getSiteUrl'
 
-import { readFileSync, readdirSync } from 'node:fs'
-import { join } from 'node:path'
-import { parseFrontMatter } from '#layers/blog/domain/frontMatter'
+import { parseLlmsPost, type LlmsPost } from '#layers/blog/domain/llmsPost'
 
 export async function listBlogPostsForLlms(event: H3Event, locale: BlogLocale): Promise<RssPost[]> {
   return listPublishedBlogPosts(event, locale)
 }
 
-export function listRawBlogPostsForLlms(locale: BlogLocale): { slug: string; title: string; content: string }[] {
+/**
+ * The raw Markdown posts of one locale, read from the `blog-content` server assets (bundled by
+ * `layers/blog/nuxt.config.ts`): the files are not on disk next to the built `.output`.
+ */
+export async function listRawBlogPostsForLlms(locale: BlogLocale): Promise<LlmsPost[]> {
   try {
-    const dir = join(process.cwd(), 'layers/blog/content', locale)
-    const files = readdirSync(dir).filter((f) => f.endsWith('.md')).sort()
-    return files.map((file) => {
-      const raw = readFileSync(join(dir, file), 'utf-8')
-      const fm = parseFrontMatter(raw)
-      const body = raw.replace(/^---[\s\S]*?---\r?\n/, '').trim()
-      const slug = file.replace(/\.md$/, '')
-      const title = typeof fm.title === 'string' ? fm.title : slug
-      return { slug, title, content: body }
-    })
+    const storage = useStorage('assets:blog-content')
+    const keys = (await storage.getKeys(locale)).filter((key) => key.endsWith('.md')).sort()
+    const posts = await Promise.all(
+      keys.map(async (key) => {
+        const raw = await storage.getItemRaw(key)
+        return parseLlmsPost(key.slice(key.lastIndexOf(':') + 1), Buffer.from(raw as Uint8Array | string).toString('utf-8'))
+      }),
+    )
+    return posts.filter((post): post is LlmsPost => post !== null)
   } catch (error) {
     console.warn('[llms] failed reading raw blog posts', error)
     return []

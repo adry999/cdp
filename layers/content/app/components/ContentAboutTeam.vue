@@ -21,8 +21,8 @@ const siteLocale = useSiteLocale()
               :href="member.linkedin"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              class="tap-y text-muted hover:text-signal transition-colors inline-flex items-center"
+              :aria-label="`${t('about.team.linkedin', { name: member.name })} ${t('a11y.newTab')}`"
+              class="tap-y text-muted hover:text-signal-text transition-colors inline-flex items-center"
             >
               <span class="eyebrow-sm">in</span>
             </a>

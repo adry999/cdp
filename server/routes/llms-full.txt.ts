@@ -2,6 +2,7 @@ import { getSiteOrigins } from '#layers/core/server/utils/getSiteUrl'
 import { originForHost } from '#layers/core/shared/utils/siteOrigins'
 import { listRawBlogPostsForLlms } from '#layers/blog/server'
 import { listServicesForLlms } from '#layers/services/server'
+import { listProjectLlmsSections } from '#layers/projects/server'
 import { FAQS } from '#layers/content/server'
 
 export default defineEventHandler(async (event) => {
@@ -10,7 +11,10 @@ export default defineEventHandler(async (event) => {
   const locale = isRoHost ? 'ro' : 'en'
   const origin = origins[locale]
 
-  const rawPosts = listRawBlogPostsForLlms(locale)
+  const [rawPosts, projectSections] = await Promise.all([
+    listRawBlogPostsForLlms(locale),
+    listProjectLlmsSections(event, locale, origin),
+  ])
   const services = listServicesForLlms(event, locale)
 
   const summary =
@@ -39,6 +43,9 @@ export default defineEventHandler(async (event) => {
     '',
     ...FAQS.map((faq) => `### ${faq.question[locale]}\n\n${faq.answer[locale]}\n`),
     '',
+    ...(projectSections.length
+      ? [`## ${locale === 'ro' ? 'Studii de Caz' : 'Case Studies'}`, '', ...projectSections, '']
+      : []),
     `## ${locale === 'ro' ? 'Ghiduri și Articole Complete' : 'Full Guides and Articles'}`,
     '',
     ...rawPosts.map((p) => {

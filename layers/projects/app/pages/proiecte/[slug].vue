@@ -3,7 +3,7 @@ import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonL
 import { OG_PROJECT_SIZE, absoluteUrl } from '#layers/core/shared/utils/seo'
 import { fetchProject } from '#layers/projects/data/projectsRepository'
 import { caseStudySections, numberSections, shotAlt } from '#layers/projects/domain/caseStudySections'
-import { mapProject } from '#layers/projects/domain/mapProject'
+import { mapProject, projectHasEnglish } from '#layers/projects/domain/mapProject'
 import { softwareApplicationAbout } from '#layers/projects/domain/softwareApp'
 
 const route = useRoute()
@@ -34,6 +34,11 @@ if (canonicalSlug !== route.params.slug) {
 }
 
 const project = computed(() => mapProject(projectRow, siteLocale.value))
+
+// An English case study without English title and lead stays out of the index, and the EN alternate is
+// dropped from hreflang on the RO render too.
+useSetEnPending(() => !projectHasEnglish(projectRow))
+useSeoMeta({ robots: () => (project.value.translated ? undefined : 'noindex, follow') })
 
 const caseStudy = computed(() => project.value.caseStudy)
 const star = computed(() => caseStudy.value.star)

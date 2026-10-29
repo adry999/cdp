@@ -1,5 +1,5 @@
 import { isStageId, type StageId } from '#layers/core/shared/types/service-stage'
-import { EMAIL_PATTERN, clipText } from '#layers/core/shared/utils/text'
+import { EMAIL_PATTERN, clipLine, clipText } from '#layers/core/shared/utils/text'
 import {
   ROUTE_LABELS,
   STAGE_TAGS,
@@ -58,7 +58,7 @@ export function isHoneypotTriggered(raw: RawQualificationSubmission): boolean {
 }
 
 export function parseQualificationInput(raw: RawQualificationSubmission): QualificationInput | null {
-  const name = clipText(raw.name, QUALIFIER_FIELD_LIMITS.name)
+  const name = clipLine(raw.name, QUALIFIER_FIELD_LIMITS.name)
   const email = clipText(raw.email, QUALIFIER_FIELD_LIMITS.email)
 
   if (!name || !email || !EMAIL_PATTERN.test(email)) return null

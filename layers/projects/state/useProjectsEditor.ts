@@ -48,6 +48,13 @@ export async function useProjectsEditor(slug: string) {
   // Media the last saved state referenced, so each save cleans up exactly what it replaced.
   let savedMedia = rowMediaUrls(original)
 
+  // What the database holds: a slug edit on a project that was already published creates redirects.
+  const savedSlugs = ref({
+    slugRo: form.value.slugRo.trim(),
+    slugEn: form.value.slugEn.trim(),
+    wasPublished: Boolean(original?.published_at),
+  })
+
   const { markSaved } = useUnsavedChangesGuard(form.value)
 
   const menuPreview = computed(() =>
@@ -90,6 +97,11 @@ export async function useProjectsEditor(slug: string) {
       projectId.value = saved.id
       saveStatus.value = 'success'
       markSaved()
+      savedSlugs.value = {
+        slugRo: form.value.slugRo.trim(),
+        slugEn: form.value.slugEn.trim(),
+        wasPublished: form.value.published,
+      }
 
       await revalidatePublicCache()
       // Only after the save succeeds: the published page may serve the old files until then.
@@ -118,12 +130,11 @@ export async function useProjectsEditor(slug: string) {
   async function confirmPublish() {
     if (!checklist.value.canPublish || saveStatus.value === 'pending') return
     form.value.published = true
-    if (await save()) {
-      publishing.value = false
-    } else {
-      // Nothing was written, so the form keeps saying what the database says.
-      form.value.published = false
-    }
+    const saved = await save()
+    // Closed either way: the save error shows in the topbar, which the dialog scrim would hide.
+    publishing.value = false
+    // Nothing was written on failure, so the form keeps saying what the database says.
+    if (!saved) form.value.published = false
   }
 
   async function unpublish() {
@@ -136,6 +147,7 @@ export async function useProjectsEditor(slug: string) {
     form,
     isNew,
     menuPreview,
+    savedSlugs,
     saveStatus,
     saveError,
     uploading,

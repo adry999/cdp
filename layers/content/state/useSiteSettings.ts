@@ -7,6 +7,10 @@ export function useSiteSettings() {
 
   return computed(() => ({
     contactEmail: SITE_SETTINGS.contactEmail,
+    phone: SITE_SETTINGS.phone,
+    phoneDisplay: SITE_SETTINGS.phoneDisplay,
+    socialProfiles: SITE_SETTINGS.socialProfiles,
+    openingHours: SITE_SETTINGS.openingHours,
     responseTime: pick(SITE_SETTINGS.responseTime.ro, SITE_SETTINGS.responseTime.en, locale.value),
     ndaNote: pick(SITE_SETTINGS.ndaNote.ro, SITE_SETTINGS.ndaNote.en, locale.value),
     footerLine: pick(SITE_SETTINGS.footerLine.ro, SITE_SETTINGS.footerLine.en, locale.value),

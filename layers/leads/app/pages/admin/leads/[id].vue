@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { formatAdminDate } from '#layers/core/shared/utils/formatAdminDate'
 import { LEAD_STATUSES, leadBudgetLabel, leadServiceLabel, leadStageLabel, leadStatusLabel } from '#layers/leads/domain/lead'
 import { useLeadsAdminDetail } from '#layers/leads/state/useLeadsAdminDetail'
 
 definePageMeta({ layout: 'admin', i18n: false })
 
 const route = useRoute()
-const { lead, loadError, notesState, actionError, updateStatus, saveNotes, archive, remove } =
+const { lead, loadError, notesState, actionError, updateStatus, saveNotes, archive, unarchive, remove } =
   await useLeadsAdminDetail(String(route.params.id))
 
 // No row and no error means the id does not exist; a failed load is reported, not shown as "missing".
@@ -15,6 +16,7 @@ if (!lead.value && !loadError.value) {
 
 const notes = ref(lead.value?.notes ?? '')
 const confirmingRemove = ref(false)
+const confirmingArchive = ref(false)
 
 const NOTES_STATE_LABELS = {
   idle: 'Salvat automat la ieșirea din câmp',
@@ -26,7 +28,7 @@ const NOTES_STATE_LABELS = {
 
 <template>
   <div v-if="lead">
-    <AdminTopbar :title="lead.name" :back="{ to: '/admin/leads', label: 'Solicitări' }">
+    <AdminTopbar :title="lead.name" :back="{ to: lead.archived_at ? '/admin/leads?view=archived' : '/admin/leads', label: 'Solicitări' }">
       <template #actions>
         <AppButton :href="`mailto:${encodeURIComponent(lead.email)}?subject=${encodeURIComponent('Re: solicitarea ta pe CODEPEDIA')}`" variant="ink">
           Răspunde
@@ -96,7 +98,7 @@ const NOTES_STATE_LABELS = {
             </div>
             <div>
               <div class="eyebrow-sm text-muted">Dată</div>
-              <div class="mt-1 text-[15px] text-muted">{{ new Date(lead.created_at).toLocaleString('ro-RO') }}</div>
+              <div class="mt-1 text-[15px] text-muted">{{ formatAdminDate(lead.created_at, { withTime: true }) }}</div>
             </div>
           </div>
         </section>
@@ -132,7 +134,20 @@ const NOTES_STATE_LABELS = {
         </p>
 
         <div class="flex flex-wrap items-center gap-6">
-          <AppButton variant="outline" class="w-fit" @click="archive">Arhivează</AppButton>
+          <AppButton v-if="lead.archived_at" variant="outline" class="w-fit" @click="unarchive">Dezarhivează</AppButton>
+          <div v-else-if="confirmingArchive" class="flex gap-3 eyebrow">
+            <button type="button" class="cursor-pointer border-0 bg-transparent p-0 text-signal-text" @click="archive">
+              Sigur? Arhivează
+            </button>
+            <button
+              type="button"
+              class="cursor-pointer border-0 bg-transparent p-0 text-muted"
+              @click="confirmingArchive = false"
+            >
+              Anulează
+            </button>
+          </div>
+          <AppButton v-else variant="outline" class="w-fit" @click="confirmingArchive = true">Arhivează</AppButton>
           <div class="flex gap-3 eyebrow">
             <template v-if="confirmingRemove">
               <button type="button" class="cursor-pointer border-0 bg-transparent p-0 text-signal-text" @click="remove">

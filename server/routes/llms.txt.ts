@@ -1,8 +1,9 @@
 import { getSiteOrigins } from '#layers/core/server/utils/getSiteUrl'
 import { originForHost } from '#layers/core/shared/utils/siteOrigins'
 import { listBlogPostsForLlms } from '#layers/blog/server'
-import { listServicesForLlms } from '#layers/services/server'
-import { listProjectsForLlms } from '#layers/projects/server'
+import { listServicesForLlms, SERVICES_INDEX_PAGE } from '#layers/services/server'
+import { listProjectsForLlms, PROJECTS_INDEX_PAGE } from '#layers/projects/server'
+import { NEWS_INDEX_PAGE } from '#layers/news/server'
 
 export default defineEventHandler(async (event) => {
   const origins = getSiteOrigins(event)
@@ -36,6 +37,10 @@ export default defineEventHandler(async (event) => {
     ...posts.map((p) => `- [${p.title}](${origin}${locale === 'ro' ? `/blog/${p.slug}` : `/en/blog/${p.slug}`}): ${p.description}`),
     '',
     `## ${locale === 'ro' ? 'Pagini cheie' : 'Key pages'}`,
+    `- [${locale === 'ro' ? 'Servicii' : 'Services'}](${origin}${SERVICES_INDEX_PAGE[locale]})`,
+    `- [${locale === 'ro' ? 'Proiecte' : 'Work'}](${origin}${PROJECTS_INDEX_PAGE[locale]})`,
+    `- [Blog](${origin}${locale === 'ro' ? '/blog' : '/en/blog'})`,
+    `- [${locale === 'ro' ? 'Noutăți' : 'News'}](${origin}${NEWS_INDEX_PAGE[locale]})`,
     `- [${locale === 'ro' ? 'Prețuri' : 'Pricing'}](${origin}${locale === 'ro' ? '/preturi' : '/en/pricing'})`,
     `- [${locale === 'ro' ? 'Despre noi' : 'About'}](${origin}${locale === 'ro' ? '/despre' : '/en/about'})`,
     `- [${locale === 'ro' ? 'Contact' : 'Contact'}](${origin}${locale === 'ro' ? '/contact' : '/en/contact'})`,

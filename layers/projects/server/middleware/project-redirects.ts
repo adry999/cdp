@@ -1,4 +1,5 @@
-import { createProjectRepository } from '#layers/projects/server/repository/projectRepository'
+import { isLocalRedirectTarget } from '#layers/core/server/utils/redirectTarget'
+import { findCachedRedirect } from '#layers/projects/server/services/findCachedRedirect'
 
 // save_project() writes a `redirects` row when a published slug changes; this only matches
 // the two path shapes it writes, so other requests skip the DB round trip.
@@ -8,13 +9,14 @@ export default defineEventHandler(async (event) => {
   const { pathname } = getRequestURL(event)
   if (!REDIRECTABLE.test(pathname)) return
 
-  const data = await createProjectRepository(event).findRedirect(pathname)
+  const data = await findCachedRedirect(event, pathname)
   if (!data) return
 
   // A redirect target the RPC itself already refuses to create (self-loop —
   // see `delete from redirects where from_path = to_path` in the RPC), but
   // checked again here since this table can in principle be edited directly.
   if (data.to_path === pathname) return
+  if (!isLocalRedirectTarget(data.to_path)) return
 
   setResponseHeader(event, 'Cache-Control', 'public, max-age=300, s-maxage=3600')
   return sendRedirect(event, data.to_path, data.status)

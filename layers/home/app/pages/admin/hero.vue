@@ -35,10 +35,14 @@ const loadStatus = ref<AsyncStatus>('pending')
 const saveStatus = ref<AsyncStatus>('idle')
 const error = ref<AppError | null>(null)
 
+// The guard snapshots a plain object; `selected` is its only field.
+const { markSaved } = useUnsavedChangesGuard(reactive({ selected }))
+
 onMounted(async () => {
   try {
     stored.value = await repository.getHeroVariant()
     selected.value = stored.value
+    markSaved()
     loadStatus.value = 'success'
   } catch (caught) {
     error.value = toAppError(caught)
@@ -54,6 +58,7 @@ async function save() {
   try {
     await repository.setHeroVariant(selected.value)
     stored.value = selected.value
+    markSaved()
     saveStatus.value = 'success'
     await revalidatePublicCache()
   } catch (caught) {
@@ -61,6 +66,8 @@ async function save() {
     saveStatus.value = 'error'
   }
 }
+
+useSaveShortcut(save, { enabled: () => dirty.value && saveStatus.value !== 'pending' && loadStatus.value === 'success' })
 </script>
 
 <template>

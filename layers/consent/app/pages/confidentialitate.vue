@@ -16,7 +16,7 @@ useBreadcrumbLd(() => content.value.title)
 
 <template>
   <div class="relative overflow-hidden">
-    <LazyCoreInteractiveBackground variant="dot-matrix" />
+    <LazyCoreInteractiveBackground hydrate-on-idle variant="dot-matrix" />
     <div class="relative z-10 mx-auto max-w-[720px] px-gutter py-[clamp(48px,8vw,96px)]">
       <h1 class="m-0 max-w-[28ch] text-[clamp(28px,4vw,44px)] font-semibold leading-[1.1] tracking-[-0.025em]">
         {{ content.title }}
