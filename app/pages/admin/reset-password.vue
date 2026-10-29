@@ -1,7 +1,7 @@
 <script setup lang="ts">
-definePageMeta({ layout: 'admin-auth', i18n: false })
+import { MIN_ADMIN_PASSWORD_LENGTH, passwordMessage, passwordProblem } from '#layers/core/shared/utils/adminPassword'
 
-const MIN_PASSWORD_LENGTH = 10
+definePageMeta({ layout: 'admin-auth', i18n: false })
 
 const supabase = useSupabaseClient()
 const password = ref('')
@@ -35,12 +35,9 @@ onMounted(async () => {
 
 async function handleSubmit() {
   error.value = ''
-  if (password.value.length < MIN_PASSWORD_LENGTH) {
-    error.value = `Parola trebuie să aibă cel puțin ${MIN_PASSWORD_LENGTH} caractere.`
-    return
-  }
-  if (password.value !== confirmation.value) {
-    error.value = 'Parolele nu coincid.'
+  const problem = passwordProblem(password.value, confirmation.value)
+  if (problem) {
+    error.value = passwordMessage(problem)
     return
   }
   loading.value = true
@@ -61,12 +58,7 @@ async function handleSubmit() {
   const { error: updateError } = await supabase.auth.updateUser({ password: password.value })
   loading.value = false
   if (updateError) {
-    error.value =
-      updateError.code === 'same_password'
-        ? 'Parola nouă trebuie să difere de cea veche.'
-        : updateError.code === 'weak_password'
-          ? 'Parola e prea slabă sau a apărut într-o scurgere de date. Alege alta.'
-          : 'Nu am putut schimba parola. Cere un link nou.'
+    error.value = passwordMessage(updateError.code)
     return
   }
   // /admin/mfa asks for the code when the session is still aal1, or forwards to the projects.
@@ -91,7 +83,7 @@ async function handleSubmit() {
         label="Parolă nouă"
         type="password"
         autocomplete="new-password"
-        :minlength="MIN_PASSWORD_LENGTH"
+        :minlength="MIN_ADMIN_PASSWORD_LENGTH"
         required
       />
       <AdminField
