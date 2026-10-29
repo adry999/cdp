@@ -43,3 +43,30 @@ test('the second-factor page sends a signed-out visitor to the login', async ({ 
   await page.goto('/admin/mfa')
   await expect(page).toHaveURL(/\/admin\/login$/)
 })
+
+test('the login page sends a reset link and answers the same for any address', async ({ page }) => {
+  let resetRequested = false
+  await page.route('**/auth/v1/recover**', (route) => {
+    resetRequested = true
+    return route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      headers: { 'access-control-allow-origin': '*' },
+      body: '{}',
+    })
+  })
+
+  await page.goto('/admin/login')
+  await page.waitForLoadState('networkidle')
+  await page.getByRole('button', { name: 'Ai uitat parola?' }).click()
+  await page.getByLabel('Email').fill('e2e@example.invalid')
+  await page.getByRole('button', { name: 'Trimite linkul de resetare' }).click()
+
+  await expect(page.getByRole('status')).toContainText('Dacă adresa are cont')
+  expect(resetRequested).toBe(true)
+})
+
+test('the reset page without a recovery session asks for a new link', async ({ page }) => {
+  await page.goto('/admin/reset-password')
+  await expect(page.getByText('Linkul de resetare nu e valid sau a expirat.')).toBeVisible()
+})

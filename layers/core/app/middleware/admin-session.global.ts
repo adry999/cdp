@@ -10,7 +10,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
     await nuxtApp.runWithContext(() => supabaseBrowserPlugin(nuxtApp))
   }
 
-  if (to.path === '/admin/login') return
+  // The reset page opens from the recovery email: its session is created in the browser from
+  // the link's code, so the server never sees one. The page checks the session itself.
+  if (to.path === '/admin/login' || to.path === '/admin/reset-password') return
   const session = useSupabaseSession().value
   if (!session) return navigateTo('/admin/login')
   // Password alone is not enough: every other admin route needs the TOTP step done (aal2).
