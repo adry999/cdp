@@ -1,6 +1,10 @@
 export interface MailMessage {
   subject: string
   text: string
+  html?: string
+  /** Defaults to MAIL_TO, the team inbox. */
+  to?: string
+  replyTo?: string
 }
 
 export async function sendMail(message: MailMessage): Promise<'sent' | 'skipped'> {
@@ -12,9 +16,11 @@ export async function sendMail(message: MailMessage): Promise<'sent' | 'skipped'
     headers: { Authorization: `Bearer ${resendApiKey}` },
     body: {
       from: mailFrom,
-      to: mailTo,
+      to: message.to ?? mailTo,
       subject: message.subject,
       text: message.text,
+      html: message.html,
+      reply_to: message.replyTo,
     },
   })
   return 'sent'

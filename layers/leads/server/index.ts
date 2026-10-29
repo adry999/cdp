@@ -1,4 +1,5 @@
 export { LEAD_RATE_LIMIT, notifyTeam, type TeamNotification, type TeamNotifier } from '#layers/leads/server/services/leadNotification'
+export { confirmToVisitor, type VisitorConfirmer } from '#layers/leads/server/services/visitorConfirmation'
 export type { LeadRepository } from '#layers/leads/server/services/submitLead'
 export { createLeadRepository } from '#layers/leads/server/repository/leadRepository'
 export type { LeadRecord } from '#layers/leads/domain/lead'

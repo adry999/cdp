@@ -8,6 +8,7 @@ function buildDeps(overrides: Partial<SubmitQualificationDependencies> = {}): Su
   return {
     repository: { insertLead: vi.fn(async () => undefined) },
     notify: vi.fn(async () => 'sent' as const),
+    confirm: vi.fn(async () => 'sent' as const),
     checkRateLimit: vi.fn(async () => true),
     now: () => NOW,
     ...overrides,
@@ -51,8 +52,9 @@ describe('submitQualification', () => {
       expect.objectContaining({ name: 'Ana Pop', email: 'ana@example.com', source: 'qualifier:custom-engineering-ai' }),
     )
     expect(deps.notify).toHaveBeenCalledWith(
-      expect.objectContaining({ subject: 'Qualificare — Custom Engineering / AI — Ana Pop' }),
+      expect.objectContaining({ subject: 'Qualificare — Custom Engineering / AI — Ana Pop', replyTo: 'ana@example.com' }),
     )
+    expect(deps.confirm).toHaveBeenCalledWith({ to: 'ana@example.com', name: 'Ana Pop', lang: 'ro' })
   })
 
   it('persists the submission even when the notification is skipped', async () => {
@@ -77,7 +79,7 @@ describe('submitQualification', () => {
     expect(await submitQualification(buildQualificationSubmission(), deps)).toEqual({ outcome: 'accepted' })
     expect(deps.repository.insertLead).toHaveBeenCalled()
     expect(warn).toHaveBeenCalledWith(
-      '[qualifier] team notification failed',
+      '[qualifier] notification failed',
       cause.message,
     )
     warn.mockRestore()
