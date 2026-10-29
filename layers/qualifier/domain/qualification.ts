@@ -78,23 +78,27 @@ export function parseQualificationInput(raw: RawQualificationSubmission): Qualif
 export function buildQualificationSummary(
   input: QualificationInput,
   submittedAt: Date,
-): { subject: string; lines: string[] } {
+): {
+  subject: string
+  fields: { label: string; value: string }[]
+  message: { label: string; text: string }
+  replyTo: string
+} {
   const routeLabel = ROUTE_LABELS[resolveRoute(input.stage, input.budget)]
 
   return {
     subject: `Qualificare — ${routeLabel} — ${input.name}`,
-    lines: [
-      `Nume: ${input.name}`,
-      `Contact: ${input.email}`,
-      `Link / handle: ${input.handle || '—'}`,
-      `Etapă: ${input.stage} — ${STAGE_TAGS[input.stage]}`,
-      `Buget: ${QUALIFIER_BUDGET_LABELS[input.budget]}`,
-      `Rută alocată: ${routeLabel}`,
-      `Limbă: ${input.lang}`,
-      `Trimis: ${submittedAt.toISOString()}`,
-      '',
-      'Note:',
-      input.notes || '—',
+    fields: [
+      { label: 'Nume', value: input.name },
+      { label: 'Contact', value: input.email },
+      { label: 'Link / handle', value: input.handle || '—' },
+      { label: 'Etapă', value: `${input.stage} — ${STAGE_TAGS[input.stage]}` },
+      { label: 'Buget', value: QUALIFIER_BUDGET_LABELS[input.budget] },
+      { label: 'Rută alocată', value: routeLabel },
+      { label: 'Limbă', value: input.lang },
+      { label: 'Trimis', value: submittedAt.toISOString() },
     ],
+    message: { label: 'Note', text: input.notes || '—' },
+    replyTo: input.email,
   }
 }

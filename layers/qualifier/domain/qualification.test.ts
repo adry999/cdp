@@ -52,25 +52,24 @@ describe('buildQualificationSummary', () => {
   it('builds the team email with the resolved route', () => {
     expect(buildQualificationSummary(validInput(), SUBMITTED_AT)).toEqual({
       subject: 'Qualificare — Custom Engineering / AI — Ana Pop',
-      lines: [
-        'Nume: Ana Pop',
-        'Contact: ana@example.com',
-        'Link / handle: @ana',
-        'Etapă: A — Design-to-Code',
-        'Buget: 2.000 – 5.000 EUR',
-        'Rută alocată: Custom Engineering / AI',
-        'Limbă: ro',
-        'Trimis: 2026-01-15T10:00:00.000Z',
-        '',
-        'Note:',
-        'Vreau un site nou.',
+      fields: [
+        { label: 'Nume', value: 'Ana Pop' },
+        { label: 'Contact', value: 'ana@example.com' },
+        { label: 'Link / handle', value: '@ana' },
+        { label: 'Etapă', value: 'A — Design-to-Code' },
+        { label: 'Buget', value: '2.000 – 5.000 EUR' },
+        { label: 'Rută alocată', value: 'Custom Engineering / AI' },
+        { label: 'Limbă', value: 'ro' },
+        { label: 'Trimis', value: '2026-01-15T10:00:00.000Z' },
       ],
+      message: { label: 'Note', text: 'Vreau un site nou.' },
+      replyTo: 'ana@example.com',
     })
   })
 
   it('shows a dash for an empty handle and empty notes', () => {
-    const { lines } = buildQualificationSummary(validInput({ handle: '', notes: '' }), SUBMITTED_AT)
-    expect(lines[2]).toBe('Link / handle: —')
-    expect(lines[10]).toBe('—')
+    const { fields, message } = buildQualificationSummary(validInput({ handle: '', notes: '' }), SUBMITTED_AT)
+    expect(fields[2]).toEqual({ label: 'Link / handle', value: '—' })
+    expect(message.text).toBe('—')
   })
 })

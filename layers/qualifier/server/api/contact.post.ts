@@ -1,6 +1,6 @@
 import { checkRateLimit } from '#layers/core/server/utils/checkRateLimit'
 import { readLimitedBody } from '#layers/core/server/utils/readLimitedBody'
-import { createLeadRepository, LEAD_RATE_LIMIT, notifyTeam } from '#layers/leads/server'
+import { confirmToVisitor, createLeadRepository, LEAD_RATE_LIMIT, notifyTeam } from '#layers/leads/server'
 import type { RawQualificationSubmission } from '#layers/qualifier/domain/qualification'
 import { submitQualification } from '#layers/qualifier/server/services/submitQualification'
 
@@ -19,6 +19,7 @@ export default defineEventHandler(async (event) => {
   const result = await submitQualification(submission, {
     repository: createLeadRepository(event),
     notify: notifyTeam,
+    confirm: confirmToVisitor,
     checkRateLimit: () => checkRateLimit(event, LEAD_RATE_LIMIT),
     now: () => new Date(),
   })
