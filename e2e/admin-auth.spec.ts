@@ -70,3 +70,11 @@ test('the reset page without a recovery session asks for a new link', async ({ p
   await page.goto('/admin/reset-password')
   await expect(page.getByText('Linkul de resetare nu e valid sau a expirat.')).toBeVisible()
 })
+
+test('the admin opens light on a dark system, the public site follows the system', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' })
+  await page.goto('/admin/login')
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+  await page.goto('/')
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+})
