@@ -1,5 +1,5 @@
 import { notifyBestEffort } from '#layers/core/server/utils/notifyBestEffort'
-import type { LeadRecord, LeadRepository, TeamNotifier } from '#layers/leads/server'
+import type { LeadRecord, LeadRepository, TeamNotifier, VisitorConfirmer } from '#layers/leads/server'
 import {
   buildQualificationSummary,
   isHoneypotTriggered,
@@ -12,6 +12,7 @@ import { resolveRoute } from '#layers/qualifier/domain/routing'
 export interface SubmitQualificationDependencies {
   repository: LeadRepository
   notify: TeamNotifier
+  confirm: VisitorConfirmer
   checkRateLimit: () => Promise<boolean>
   now: () => Date
 }
@@ -55,6 +56,7 @@ export async function submitQualification(
   await deps.repository.insertLead(toLeadRecord(input))
 
   await notifyBestEffort(deps.notify, buildQualificationSummary(input, deps.now()), 'qualifier')
+  await notifyBestEffort(deps.confirm, { to: input.email, name: input.name, lang: input.lang }, 'qualifier:confirmation')
 
   return { outcome: 'accepted' }
 }
