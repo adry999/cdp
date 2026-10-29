@@ -1,12 +1,10 @@
 export const HERO_VARIANTS = ['dot-matrix', 'constellation', 'light-orbs'] as const
 export type HeroVariant = (typeof HERO_VARIANTS)[number]
 
-/** Values accepted by `?hero=` and the env var; `none` turns the background off. */
+/** Values accepted by `?hero=` and the admin; `none` turns the background off. */
 export type HeroChoice = HeroVariant | 'none'
 
 export const DEFAULT_HERO_VARIANT: HeroVariant = 'dot-matrix'
-
-const DISABLED_ALIASES = ['none', 'false', 'disabled']
 
 export function isHeroVariant(value: unknown): value is HeroVariant {
   return typeof value === 'string' && (HERO_VARIANTS as readonly string[]).includes(value)
@@ -18,27 +16,15 @@ export function parseHeroPreview(value: unknown): HeroChoice | undefined {
   return isHeroVariant(value) ? value : undefined
 }
 
-/** Resolves the configured value (env var): unknown values fall back to the default. */
-export function resolveHeroVariant(value: string | undefined): HeroVariant | null {
-  const v = value || DEFAULT_HERO_VARIANT
-  if (DISABLED_ALIASES.includes(v)) return null
-  return isHeroVariant(v) ? v : DEFAULT_HERO_VARIANT
-}
-
 export function isHeroChoice(value: unknown): value is HeroChoice {
   return value === 'none' || isHeroVariant(value)
 }
 
 /**
- * Homepage precedence: `?hero=` preview, then the admin's stored choice, then the env var.
+ * Homepage precedence: `?hero=` preview, then the admin's stored choice, then dot-matrix.
  * Returns the variant to render, or `null` for no background.
  */
-export function chooseHeroVariant(sources: {
-  preview?: HeroChoice
-  stored: HeroChoice | null
-  env: string | undefined
-}): HeroVariant | null {
-  const choice = sources.preview ?? sources.stored
-  if (choice === undefined || choice === null) return resolveHeroVariant(sources.env)
+export function chooseHeroVariant(sources: { preview?: HeroChoice; stored: HeroChoice | null }): HeroVariant | null {
+  const choice = sources.preview ?? sources.stored ?? DEFAULT_HERO_VARIANT
   return choice === 'none' ? null : choice
 }
