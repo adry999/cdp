@@ -17,8 +17,8 @@ there is no `index.ts` and no `server/index.ts`.
 ## Hero background
 
 Precedence (`chooseHeroVariant`): `?hero=` preview (client-only, after mount) ->
-`home_settings.hero_variant` when not null -> `NUXT_PUBLIC_HERO_BG_VARIANT` ->
-`dot-matrix`. The table has a single row (`id = 1`); public select, admin update.
+`home_settings.hero_variant` when not null -> `dot-matrix`. No env var: the
+background is chosen only at `/admin/hero`. The table has a single row (`id = 1`); public select, admin update.
 
 ## Server
 

@@ -4,13 +4,9 @@ import type { AsyncStatus } from '#layers/core/shared/types/async'
 import type { Database } from '#layers/core/shared/types/database.types'
 import { toAppError } from '#layers/core/shared/utils/toAppError'
 import { createHomeSettingsAdminRepository } from '#layers/home/data/homeSettingsAdminRepository'
-import { resolveHeroVariant, type HeroChoice } from '#layers/home/domain/heroVariant'
+import { DEFAULT_HERO_VARIANT, type HeroChoice } from '#layers/home/domain/heroVariant'
 
 definePageMeta({ layout: 'admin', i18n: false })
-
-const config = useRuntimeConfig()
-const envValue = (config.public.heroBgVariant as string | undefined) || 'dot-matrix'
-const envEffective = resolveHeroVariant(envValue) ?? 'none'
 
 const repository = createHomeSettingsAdminRepository(useSupabaseClient<Database>())
 const revalidatePublicCache = useRevalidatePublicCache()
@@ -22,11 +18,7 @@ const options: Option[] = [
   { id: 'constellation', label: 'constellation', description: 'Particule în derivă care se unesc prin linii portocalii lângă cursor.' },
   { id: 'light-orbs', label: 'light-orbs', description: 'Sfere luminoase moi care urmăresc cursorul.' },
   { id: 'none', label: 'none', description: 'Fără fundal interactiv.' },
-  {
-    id: null,
-    label: `Implicit (din variabila de mediu: ${envValue})`,
-    description: 'Folosește valoarea din NUXT_PUBLIC_HERO_BG_VARIANT.',
-  },
+  { id: null, label: `Implicit (${DEFAULT_HERO_VARIANT})`, description: 'Fundalul implicit al site-ului.' },
 ]
 
 const stored = ref<HeroChoice | null>(null)
@@ -83,8 +75,7 @@ useSaveShortcut(save, { enabled: () => dirty.value && saveStatus.value !== 'pend
     <div class="flex-1 overflow-y-auto px-6 py-6">
       <p class="mb-2 max-w-[640px] text-[15px] text-muted">
         Alege fundalul din hero-ul paginii principale. Modificarea ajunge la vizitatori în câteva minute (cache);
-        previzualizările de mai jos o arată imediat. „Implicit” folosește variabila de mediu
-        <code>NUXT_PUBLIC_HERO_BG_VARIANT</code> (acum: {{ envEffective }}).
+        previzualizările de mai jos o arată imediat. „Implicit” înseamnă {{ DEFAULT_HERO_VARIANT }}.
       </p>
       <p v-if="saveStatus === 'success' && !dirty" role="status" class="mb-4 eyebrow text-signal-text">Salvat.</p>
       <p v-if="error" role="alert" class="mb-4 eyebrow text-signal-text">{{ error.message }}</p>
@@ -111,8 +102,8 @@ useSaveShortcut(save, { enabled: () => dirty.value && saveStatus.value !== 'pend
             <TextLink :to="`/en?hero=${opt.id}`" target="_blank" rel="noopener">EN</TextLink>
           </div>
           <div v-else class="flex flex-[0_0_140px] justify-end gap-4">
-            <TextLink :to="`/?hero=${envEffective}`" target="_blank" rel="noopener">RO</TextLink>
-            <TextLink :to="`/en?hero=${envEffective}`" target="_blank" rel="noopener">EN</TextLink>
+            <TextLink :to="`/?hero=${DEFAULT_HERO_VARIANT}`" target="_blank" rel="noopener">RO</TextLink>
+            <TextLink :to="`/en?hero=${DEFAULT_HERO_VARIANT}`" target="_blank" rel="noopener">EN</TextLink>
           </div>
         </label>
       </fieldset>

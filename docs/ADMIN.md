@@ -15,7 +15,9 @@ fără deploy. Rută: `/admin`, exclusă din sitemap și `robots.txt`.
 4. **Admin-ul folosește același sistem vizual ca site-ul** — aceleași culori,
    fonturi, linii de 1px, radius 4. Nu introduce o bibliotecă de UI cu altă estetică.
    Diferența: densitate mai mare (padding rând `12px`, corp `15px`) și un sidebar
-   fix de `240px` în loc de coloana de etichetă de `160px`.
+   fix de `240px` în loc de coloana de etichetă de `160px`. Admin-ul se deschide în
+   tema luminoasă; tema întunecată se alege din butonul de temă din sidebar (alegerea
+   se salvează în browser și e comună cu site-ul).
 
 ## Autentificare
 
@@ -23,8 +25,15 @@ fără deploy. Rută: `/admin`, exclusă din sitemap și `robots.txt`.
 - Middleware Nuxt pe tot `/admin`; redirect la `/admin/login` dacă nu există sesiune.
 - Verificarea rolului se face **pe server** (server route / RLS), nu doar în UI.
 - Ecran de login: centrat, max `380px`, card cu bordură, două câmpuri, un buton
-  primar ink. Wordmark-ul complet deasupra cardului, 18px. Fără „forgot password"
-  în prima versiune.
+  primar ink. Wordmark-ul complet deasupra cardului, 18px.
+- „Ai uitat parola?” sub card trimite un link de resetare pe email (același mesaj
+  pentru orice adresă). Linkul deschide `/admin/reset-password`: parolă nouă (minim 10
+  caractere) + confirmare, plus codul TOTP dacă e activ. Linkul se deschide în același
+  browser din care a fost cerut. Cere în Supabase → Authentication → URL Configuration
+  Site URL `https://codepedia.md` și Redirect URLs `https://codepedia.md/**`,
+  `https://codepedia.studio/**`.
+- Parola se schimbă și din admin, pe pagina `/admin/account` (link pe emailul din
+  sidebar).
 
 ## Autentificare în doi pași (TOTP)
 
@@ -59,7 +68,9 @@ Solicitări        /admin/leads
 ```
 
 Sus, în bara de conținut: titlul secțiunii, iar în dreapta butonul de acțiune
-principală (primar ink) și emailul contului cu „Ieși".
+principală (primar ink). Jos în sidebar: emailul contului (link spre `/admin/account`),
+„Ieși” și butonul de temă. Sub `900px` sidebar-ul devine o bară sus, cu butonul
+„Meniu” care deschide navigația.
 
 ## Proiecte — cel mai important ecran
 
@@ -145,4 +156,4 @@ Doar citire, alimentat de formularul de contact.
 - **Audit**: fiecare scriere înregistrează `updated_by` și `updated_at`. Fără istoric
   de versiuni în prima etapă.
 - Admin-ul este de desktop. Sub `900px` nu se optimizează layoutul, doar se păstrează
-  utilizabil (sidebar colapsat în meniu).
+  utilizabil (sidebar-ul devine bară sus cu „Meniu”).
