@@ -6,7 +6,7 @@ useSeoMeta({ robots: 'noindex, nofollow' })
 </script>
 
 <template>
-  <div class="flex min-h-screen">
+  <div class="flex min-h-screen flex-col nav:flex-row">
     <AdminSidebar />
     <main tabindex="-1" class="flex min-w-0 flex-1 flex-col outline-none">
       <slot />
