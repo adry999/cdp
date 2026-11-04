@@ -63,6 +63,8 @@ jobs:
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       NUXT_PUBLIC_SITE_URL: https://codepedia.studio
       NUXT_PUBLIC_SITE_URL_RO: https://codepedia.md
+      # Project images are served from R2; the build adds this host to the image domains and the CSP.
+      NUXT_PUBLIC_MEDIA_URL: https://media.codepedia.md
     steps:
       - uses: actions/checkout@v4
         if: ${{ env.NUXT_PUBLIC_SUPABASE_URL != '' }}
