@@ -51,6 +51,8 @@ Lista completă, cu explicații, e în `.env.example`.
 | `NUXT_PUBLIC_SITE_URL_RO` | `https://codepedia.md` (domeniul RO) |
 | `RESEND_API_KEY` | opțional, emailul de lead |
 | `MAIL_FROM`, `MAIL_TO` | opționale; fără `MAIL_FROM`, expeditorul sandbox Resend livrează doar spre adresa contului Resend. Domeniul expeditorului se verifică întâi în Resend |
+| `NUXT_PUBLIC_MEDIA_URL` | `https://media.codepedia.md`, baza publică a bucket-ului R2 cu imaginile proiectelor (fără `/` la final) |
+| `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET` | credențialele R2 (token cu Object Read & Write), doar server; fără ele încărcarea de imagini din admin răspunde 500 |
 | `NUXT_PUBLIC_GA_ID`, `NUXT_PUBLIC_META_PIXEL_ID` | opționale, fără ele consimțământul e inert |
 | `NUXT_PUBLIC_QUALIFIER_ENABLED`, `NUXT_PUBLIC_GRANTS_ENABLED` | opționale |
 | `CRON_SECRET` | pentru `/api/health` (pasul 5) |
@@ -183,6 +185,13 @@ curl -sI -H "cf-ipcountry: US" https://codepedia.studio/en | head -5
 
 Pe `.md` apare RO, pe `.studio` apare EN. Canonical: `.studio` pentru EN, `.md` pentru RO.
 Apoi adaugă fiecare domeniu separat în Google Search Console.
+
+## Backup
+
+`npm run backup` (cere Supabase CLI autentificat și variabilele R2 din `.env`) creează
+`..\backup\<YYYY-MM-DD>\`, în afara repo-ului: `db\` (`roles.sql`, `schema.sql`, `data.sql`
+din `supabase db dump`) și `media\` (toate obiectele din R2). `data.sql` conține date
+personale din `leads`: folderul `..\backup\` nu se comite și nu se trimite nimănui.
 
 ## Probleme cunoscute
 
