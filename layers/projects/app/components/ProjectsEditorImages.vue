@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { ProjectForm } from '#layers/projects/domain/projectForm'
-import { MEDIA_BUCKET } from '#layers/projects/domain/storagePath'
+import { createProjectsMediaRepository } from '#layers/projects/data/projectsMediaRepository'
 
 const form = defineModel<ProjectForm>({ required: true })
 // True while any of the cover, hero or gallery uploads is in flight.
 const uploading = defineModel<boolean>('uploading', { default: false })
 
+const media = createProjectsMediaRepository()
 const pathPrefix = computed(() => form.value.slugRo || 'proiect-nou')
 
 let activeUploads = 0
@@ -29,7 +30,7 @@ function removeGalleryImage(index: number) {
       <div>
         <AdminImageUpload
           v-model="form.coverPath"
-          :bucket="MEDIA_BUCKET"
+          :upload="media.upload"
           ratio="16/9"
           label="[ copertă card — 1600 × 900 ]"
           :path-prefix="`${pathPrefix}/cover`"
@@ -42,7 +43,7 @@ function removeGalleryImage(index: number) {
       <div>
         <AdminImageUpload
           v-model="form.heroPath"
-          :bucket="MEDIA_BUCKET"
+          :upload="media.upload"
           ratio="16/9"
           label="[ captură principală — 1600 × 900 ]"
           :path-prefix="`${pathPrefix}/hero`"
@@ -66,7 +67,7 @@ function removeGalleryImage(index: number) {
           <div v-for="(img, i) in form.gallery" :key="i" class="relative">
             <AdminImageUpload
               v-model="img.path"
-              :bucket="MEDIA_BUCKET"
+              :upload="media.upload"
               ratio="16/9"
               :label="`[ galerie ${i + 1} — 1600 × 900 ]`"
               :path-prefix="`${pathPrefix}/gallery-${i}`"

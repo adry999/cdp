@@ -64,6 +64,10 @@ const supabaseHost = process.env.NUXT_PUBLIC_SUPABASE_URL
   ? new URL(process.env.NUXT_PUBLIC_SUPABASE_URL).hostname
   : undefined
 
+// Public base URL of the R2 media bucket, without a trailing slash. Optional: unset, project images stay on Supabase.
+const mediaUrl = (process.env.NUXT_PUBLIC_MEDIA_URL || '').replace(/\/+$/, '')
+const mediaHost = mediaUrl ? new URL(mediaUrl).hostname : undefined
+
 
 // Localized route paths (RO <-> EN). Also the source of the cross-locale redirects in routeRules.
 const LOCALIZED_PAGES = {
@@ -152,7 +156,15 @@ export default defineNuxtConfig({
     isrBypassToken: process.env.VERCEL_ISR_BYPASS_TOKEN || '',
     // Sitemap <lastmod> of the static pages (YYYY-MM-DD): they only change with a deploy.
     buildDate: new Date().toISOString().slice(0, 10),
+    // Cloudflare R2 (S3 API) credentials for the admin media endpoints in layers/projects. Server-only.
+    r2: {
+      accountId: process.env.R2_ACCOUNT_ID || '',
+      accessKeyId: process.env.R2_ACCESS_KEY_ID || '',
+      secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || '',
+      bucket: process.env.R2_BUCKET || '',
+    },
     public: {
+      mediaUrl,
       gaId: process.env.NUXT_PUBLIC_GA_ID || '',
       metaPixelId: process.env.NUXT_PUBLIC_META_PIXEL_ID || '',
       siteUrl,
@@ -164,6 +176,10 @@ export default defineNuxtConfig({
 
   nitro: {
     compressPublicAssets: { gzip: true, brotli: true },
+    // The swr cache keeps serving the last good page or payload while Supabase fails, but in memory it is lost
+    // on every restart (Hostinger stops idle apps) and the site goes 500 until the database answers again.
+    // On disk it survives restarts; entries still expire per build (Nitro's integrity hash). Vercel has ISR instead.
+    ...(process.env.VERCEL ? {} : { storage: { cache: { driver: 'fsLite', base: './.data/cache' } } }),
     // On the `vercel` preset, routeRules with `swr`/`isr` become separate Vercel Prerender Functions served
     // straight from the edge — this token lets revalidate.post.ts force one to bypass and refresh.
     vercel: {
@@ -262,7 +278,8 @@ export default defineNuxtConfig({
   image: {
     // vercel provider avoids bundling sharp, whose native binary built on Windows can't load in Vercel's Linux functions.
     provider: process.env.VERCEL ? 'vercel' : 'ipx',
-    domains: supabaseHost ? [supabaseHost] : [],
+    // Supabase stays until every image row points at R2.
+    domains: [supabaseHost, mediaHost].filter((host): host is string => !!host),
     // The vercel provider defaults to q=100, which more than doubles the bytes of a UI screenshot for no visible gain.
     quality: 75,
     // The vercel provider only serves these exact widths (they become `images.sizes` in the build output) and rounds
@@ -286,7 +303,7 @@ export default defineNuxtConfig({
     // Project images live in Supabase Storage under unique paths, so a day of caching saves re-optimizing them.
     ...(process.env.VERCEL ? { vercel: { minimumCacheTTL: 86400 } } : {}),
     // Same reason off Vercel: Supabase answers `no-cache`, so ipx falls back to max-age=300 and sharp
-    // re-encodes every image every few minutes. Uploads never overwrite (storageRepository.ts), so a year is
+    // re-encodes every image every few minutes. Uploads never overwrite (layers/projects/server/services/projectMedia.ts), so a year is
     // safe. Only remote (http) sources: local public/ files keep their names and their default.
     ipx: { http: { maxAge: 31536000 } },
   },

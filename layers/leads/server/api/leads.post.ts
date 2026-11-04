@@ -3,6 +3,7 @@ import { readLimitedBody } from '#layers/core/server/utils/readLimitedBody'
 import type { ContactSubmission } from '#layers/leads/domain/lead'
 import { createLeadRepository } from '#layers/leads/server/repository/leadRepository'
 import { LEAD_RATE_LIMIT, notifyTeam } from '#layers/leads/server/services/leadNotification'
+import { confirmToVisitor } from '#layers/leads/server/services/visitorConfirmation'
 import { submitLead } from '#layers/leads/server/services/submitLead'
 
 export default defineEventHandler(async (event) => {
@@ -16,6 +17,7 @@ export default defineEventHandler(async (event) => {
   const result = await submitLead(submission, getHeader(event, 'referer') ?? null, {
     repository: createLeadRepository(event),
     notify: notifyTeam,
+    confirm: confirmToVisitor,
     checkRateLimit: () => checkRateLimit(event, LEAD_RATE_LIMIT),
   })
 

@@ -14,6 +14,7 @@ function buildDeps(overrides: Partial<SubmitLeadDependencies> = {}) {
       }),
     },
     notify: vi.fn(async () => 'sent' as const),
+    confirm: vi.fn(async () => 'sent' as const),
     checkRateLimit: vi.fn(async () => true),
     ...overrides,
   }
@@ -28,6 +29,7 @@ describe('submitLead', () => {
     expect(deps.checkRateLimit).not.toHaveBeenCalled()
     expect(deps.repository.insertLead).not.toHaveBeenCalled()
     expect(deps.notify).not.toHaveBeenCalled()
+    expect(deps.confirm).not.toHaveBeenCalled()
   })
 
   it('returns invalid with a code per blank required field', async () => {
@@ -59,15 +61,16 @@ describe('submitLead', () => {
     expect(savedRecords[0]).toMatchObject({ name: 'Ana Popescu', company: 'Acme', referrer: 'https://codepedia.md/' })
     expect(deps.notify).toHaveBeenCalledWith({
       subject: 'Solicitare nouă — Ana Popescu',
-      lines: [
-        'Nume: Ana Popescu',
-        'Email: ana@example.com',
-        'Companie: Acme',
-        'Buget: 2.000 – 5.000 EUR',
-        '',
-        'Vrem un portal pentru clienți.',
+      fields: [
+        { label: 'Nume', value: 'Ana Popescu' },
+        { label: 'Email', value: 'ana@example.com' },
+        { label: 'Companie', value: 'Acme' },
+        { label: 'Buget', value: '2.000 – 5.000 EUR' },
       ],
+      message: { label: 'Mesaj', text: 'Vrem un portal pentru clienți.' },
+      replyTo: 'ana@example.com',
     })
+    expect(deps.confirm).toHaveBeenCalledWith({ to: 'ana@example.com', name: 'Ana Popescu', lang: 'ro' })
   })
 
   it('rejects an unknown stage before checking the rate limit', async () => {
@@ -85,7 +88,7 @@ describe('submitLead', () => {
     expect(savedRecords[0]?.stage).toBe('C')
     expect(deps.notify).toHaveBeenCalledWith(
       expect.objectContaining({
-        lines: expect.arrayContaining(['Etapă: Scalare']),
+        fields: expect.arrayContaining([{ label: 'Etapă', value: 'Scalare' }]),
       }),
     )
   })
@@ -105,7 +108,10 @@ describe('submitLead', () => {
     expect(savedRecords[0]?.service).toBe('web-app')
     expect(deps.notify).toHaveBeenCalledWith(
       expect.objectContaining({
-        lines: expect.arrayContaining(['Serviciu: Aplicație web', 'Etapă: Design → cod']),
+        fields: expect.arrayContaining([
+          { label: 'Serviciu', value: 'Aplicație web' },
+          { label: 'Etapă', value: 'Design → cod' },
+        ]),
       }),
     )
   })
@@ -120,7 +126,21 @@ describe('submitLead', () => {
     const result = await submitLead(buildContactSubmission(), null, deps)
     expect(result).toEqual({ outcome: 'accepted' })
     expect(savedRecords).toHaveLength(1)
-    expect(warn).toHaveBeenCalledWith('[leads] team notification failed', 'resend down')
+    expect(warn).toHaveBeenCalledWith('[leads] notification failed', 'resend down')
+    warn.mockRestore()
+  })
+
+  it('still accepts the lead when the visitor confirmation fails', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const { deps, savedRecords } = buildDeps({
+      confirm: vi.fn(async () => {
+        throw new Error('bounced')
+      }),
+    })
+    expect(await submitLead(buildContactSubmission(), null, deps)).toEqual({ outcome: 'accepted' })
+    expect(savedRecords).toHaveLength(1)
+    expect(deps.notify).toHaveBeenCalled()
+    expect(warn).toHaveBeenCalledWith('[leads:confirmation] notification failed', 'bounced')
     warn.mockRestore()
   })
 })

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { createStorageRepository } from '#layers/core/app/data/storageRepository'
-import type { Database } from '#layers/core/shared/types/database.types'
 import { toAppError } from '#layers/core/shared/utils/toAppError'
 import { imageExtension } from '#layers/core/shared/utils/imageExtension'
 
@@ -9,12 +7,13 @@ const props = defineProps<{
   ratio: '16/9' | '16/10' | '4/3'
   label: string
   pathPrefix: string
-  bucket: string
+  // Owned by the module that stores the image (core cannot import it): stores the file below
+  // `pathPrefix` under a fresh key and resolves to its public URL.
+  upload: (pathPrefix: string, file: File) => Promise<string>
 }>()
 // `uploading` lets the parent block its save while a file is in flight.
 const emit = defineEmits<{ 'update:modelValue': [string]; uploading: [boolean] }>()
 
-const storage = createStorageRepository(useSupabaseClient<Database>())
 const fileInput = ref<HTMLInputElement>()
 const uploading = ref(false)
 const error = ref('')
@@ -41,8 +40,7 @@ async function onFileChange(e: Event) {
 
   error.value = ''
 
-  const ext = imageExtension(file.type)
-  if (!ext) {
+  if (!imageExtension(file.type)) {
     error.value = 'Format neacceptat. Folosește JPG, PNG, WebP sau AVIF.'
     input.value = ''
     return
@@ -55,13 +53,11 @@ async function onFileChange(e: Event) {
 
   setUploading(true)
 
-  const path = `${props.pathPrefix}/${Date.now()}.${ext}`
-
   try {
     // Uploading never deletes the file it replaces: the published page keeps
     // serving that file until the project is saved. The project editor removes
     // replaced files after a successful save.
-    emit('update:modelValue', await storage.uploadPublic(props.bucket, path, file))
+    emit('update:modelValue', await props.upload(props.pathPrefix, file))
   } catch (caught) {
     error.value = 'Upload eșuat: ' + toAppError(caught).message
     setUploading(false)
