@@ -18,10 +18,13 @@ export interface R2Deps {
 export interface R2Client {
   putObject(key: string, body: Uint8Array, contentType: string): Promise<void>
   deleteObject(key: string): Promise<void>
-  copyObject(sourceKey: string, destinationKey: string): Promise<void>
+  copyObject(sourceKey: string, destinationKey: string, contentType: string): Promise<void>
   getObject(key: string): Promise<Uint8Array>
   listObjects(prefix?: string): Promise<string[]>
 }
+
+// Keys are never overwritten, so every object is cacheable forever (Cloudflare caches only responses that carry Cache-Control).
+export const IMMUTABLE = 'public, max-age=31536000, immutable'
 
 const sha256 = (data: string | Uint8Array) => createHash('sha256').update(data).digest('hex')
 const hmac = (key: string | Buffer, data: string) => createHmac('sha256', key).update(data).digest()
@@ -118,7 +121,7 @@ export function createR2Client(config: R2Config, deps: R2Deps = {}): R2Client {
     return doFetch(`https://${host}${path}${query ? `?${query}` : ''}`, {
       method,
       headers: { ...sent, authorization },
-      body: options.body,
+      body: options.body as BodyInit | undefined,
     })
   }
 
@@ -129,14 +132,21 @@ export function createR2Client(config: R2Config, deps: R2Deps = {}): R2Client {
 
   return {
     async putObject(key, body, contentType) {
-      ok(await send('PUT', key, { body, headers: { 'content-type': contentType } }), `put ${key}`)
+      ok(await send('PUT', key, { body, headers: { 'content-type': contentType, 'cache-control': IMMUTABLE } }), `put ${key}`)
     },
     async deleteObject(key) {
       ok(await send('DELETE', key), `delete ${key}`, [404])
     },
-    async copyObject(sourceKey, destinationKey) {
+    async copyObject(sourceKey, destinationKey, contentType) {
       ok(
-        await send('PUT', destinationKey, { headers: { 'x-amz-copy-source': `/${config.bucket}/${encodeKey(sourceKey)}` } }),
+        await send('PUT', destinationKey, {
+          headers: {
+            'x-amz-copy-source': `/${config.bucket}/${encodeKey(sourceKey)}`,
+            'x-amz-metadata-directive': 'REPLACE',
+            'content-type': contentType,
+            'cache-control': IMMUTABLE,
+          },
+        }),
         `copy ${sourceKey}`,
       )
     },
