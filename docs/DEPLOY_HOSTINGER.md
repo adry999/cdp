@@ -52,7 +52,7 @@ Lista completă, cu explicații, e în `.env.example`.
 | `RESEND_API_KEY` | opțional, emailul de lead |
 | `MAIL_FROM`, `MAIL_TO` | opționale; fără `MAIL_FROM`, expeditorul sandbox Resend livrează doar spre adresa contului Resend. Domeniul expeditorului se verifică întâi în Resend |
 | `NUXT_PUBLIC_GA_ID`, `NUXT_PUBLIC_META_PIXEL_ID` | opționale, fără ele consimțământul e inert |
-| `NUXT_PUBLIC_QUALIFIER_ENABLED`, `NUXT_PUBLIC_GRANTS_ENABLED`, `NUXT_PUBLIC_HERO_BG_VARIANT` | opționale |
+| `NUXT_PUBLIC_QUALIFIER_ENABLED`, `NUXT_PUBLIC_GRANTS_ENABLED` | opționale |
 | `CRON_SECRET` | pentru `/api/health` (pasul 5) |
 | `NUXT_ORIGIN_SECRET` | opțională; secretul din headerul `x-codepedia-origin` setat de Cloudflare, fără el cererile primesc 403 (vezi §3). Gol = verificarea e oprită. Se poate seta și fără rebuild, doar cu restart |
 | `NUXT_PUBLIC_NOINDEX` | **nu** se setează pe live |

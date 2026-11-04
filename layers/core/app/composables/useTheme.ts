@@ -1,4 +1,4 @@
-import { THEME_STORAGE_KEY, isTheme, oppositeTheme, resolveInitialTheme, type Theme } from '#layers/core/shared/utils/theme'
+import { THEME_STORAGE_KEY, followsSystemTheme, isTheme, oppositeTheme, resolveInitialTheme, type Theme } from '#layers/core/shared/utils/theme'
 
 // The page theme. The inline <head> script (THEME_INIT_SCRIPT) sets data-theme before first
 // paint; this state starts as 'light' on server and client alike and syncs from the DOM after
@@ -33,9 +33,11 @@ export function useTheme() {
   function initTheme() {
     const fromDom = document.documentElement.dataset.theme
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    theme.value = isTheme(fromDom) ? fromDom : resolveInitialTheme(readStored(), mq.matches)
+    theme.value = isTheme(fromDom)
+      ? fromDom
+      : resolveInitialTheme(readStored(), mq.matches, followsSystemTheme(window.location.pathname))
     mq.addEventListener('change', (event) => {
-      if (!isTheme(readStored())) apply(event.matches ? 'dark' : 'light')
+      if (!isTheme(readStored()) && followsSystemTheme(window.location.pathname)) apply(event.matches ? 'dark' : 'light')
     })
   }
 

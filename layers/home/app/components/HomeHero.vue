@@ -4,7 +4,6 @@ import { useHomeSettings } from '#layers/home/state/useHomeSettings'
 import { chooseHeroVariant, parseHeroPreview, type HeroChoice } from '#layers/home/domain/heroVariant'
 
 const { t } = useI18n()
-const config = useRuntimeConfig()
 const route = useRoute()
 const { data: settings } = await useHomeSettings()
 // `?hero=` previews are applied after mount only: `/` is cached, so SSR output must not depend on the query.
@@ -13,7 +12,6 @@ const heroVariant = computed(() =>
   chooseHeroVariant({
     preview: previewChoice.value,
     stored: settings.value?.heroVariant ?? null,
-    env: config.public.heroBgVariant as string | undefined,
   }),
 )
 onMounted(() => {

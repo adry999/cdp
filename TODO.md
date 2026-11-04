@@ -66,7 +66,7 @@ nu `differentDomains`.
       `NUXT_PUBLIC_SITE_URL=https://codepedia.studio`,
       `NUXT_PUBLIC_SITE_URL_RO=https://codepedia.md`; opționale: `RESEND_API_KEY`,
       `NUXT_PUBLIC_GA_ID`, `NUXT_PUBLIC_META_PIXEL_ID`, `NUXT_PUBLIC_QUALIFIER_ENABLED`,
-      `NUXT_PUBLIC_GRANTS_ENABLED`, `NUXT_PUBLIC_HERO_BG_VARIANT`. Nu seta
+      `NUXT_PUBLIC_GRANTS_ENABLED`. Nu seta
       `NUXT_PUBLIC_NOINDEX` pe live
 - [ ] Ambele domenii (`codepedia.md`, `codepedia.studio`) atașate aceleiași aplicații;
       dacă Hostinger nu permite, a doua aplicație cu aceleași variabile (fără

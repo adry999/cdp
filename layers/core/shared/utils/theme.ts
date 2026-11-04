@@ -6,10 +6,15 @@ export function isTheme(value: unknown): value is Theme {
   return value === 'light' || value === 'dark'
 }
 
-/** A stored choice wins; without one the system preference decides. */
-export function resolveInitialTheme(stored: string | null | undefined, prefersDark: boolean): Theme {
+/** The admin is designed light: without a stored choice it opens light; the public site follows the system. */
+export function followsSystemTheme(path: string): boolean {
+  return path !== '/admin' && !path.startsWith('/admin/')
+}
+
+/** A stored choice wins; without one the system preference decides, where the page follows it. */
+export function resolveInitialTheme(stored: string | null | undefined, prefersDark: boolean, followSystem = true): Theme {
   if (isTheme(stored)) return stored
-  return prefersDark ? 'dark' : 'light'
+  return followSystem && prefersDark ? 'dark' : 'light'
 }
 
 export function oppositeTheme(theme: Theme): Theme {
@@ -22,5 +27,6 @@ export function oppositeTheme(theme: Theme): Theme {
  */
 export const THEME_INIT_SCRIPT =
   `try{var s=localStorage.getItem("${THEME_STORAGE_KEY}");` +
-  `var t=s==="dark"||s==="light"?s:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");` +
+  `var p=location.pathname,a=p==="/admin"||p.indexOf("/admin/")===0;` +
+  `var t=s==="dark"||s==="light"?s:(!a&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");` +
   `document.documentElement.dataset.theme=t}catch(e){}`
