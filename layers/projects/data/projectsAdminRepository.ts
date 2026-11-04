@@ -9,7 +9,7 @@ import {
   type AdminProjectRow,
 } from '#layers/projects/domain/projectSelect'
 import { nextCopySlug } from '#layers/projects/domain/adminProjectList'
-import { MEDIA_BUCKET, storageKeyFromPublicUrl } from '#layers/projects/domain/storagePath'
+import { createProjectsMediaRepository } from '#layers/projects/data/projectsMediaRepository'
 
 type SupabaseClient = ReturnType<typeof useSupabaseClient<Database>>
 
@@ -42,7 +42,10 @@ function copyChildren<T extends { id: string }>(children: T[], projectId: string
   return children.map(({ id: _id, ...rest }) => ({ ...rest, project_id: projectId }))
 }
 
-export function createProjectsAdminRepository(client: SupabaseClient) {
+export function createProjectsAdminRepository(
+  client: SupabaseClient,
+  media: Pick<ReturnType<typeof createProjectsMediaRepository>, 'remove' | 'copy'> = createProjectsMediaRepository(),
+) {
   async function isMediaReferenced(url: string): Promise<boolean | null> {
     const [projectRefs, imageRefs] = await Promise.all([
       client.from('projects').select('id', { count: 'exact', head: true }).or(`cover_path.eq.${url},hero_path.eq.${url}`),
@@ -58,36 +61,21 @@ export function createProjectsAdminRepository(client: SupabaseClient) {
   // A URL another row still references belongs to another project and is kept: older
   // duplicates can share Storage keys with the project being edited or deleted.
   async function removeUnreferencedMedia(urls: string[]) {
-    const keys: string[] = []
+    const unreferenced: string[] = []
     for (const url of urls) {
-      const key = storageKeyFromPublicUrl(url, MEDIA_BUCKET)
-      if (!key) continue
-      if ((await isMediaReferenced(url)) === false) keys.push(key)
+      if ((await isMediaReferenced(url)) === false) unreferenced.push(url)
     }
-    if (!keys.length) return
-
-    const removal = await client.storage
-      .from(MEDIA_BUCKET)
-      .remove(keys)
-      .catch((thrown: unknown) => ({ data: null, error: thrown }))
-    if (removal.error) console.warn('[admin] project media: cleanup failed', keys, removal.error)
+    // The server deletes only URLs that point into the R2 bucket and ignores the rest.
+    if (unreferenced.length) await media.remove(unreferenced)
   }
 
-  // Copies the underlying Storage object rather than reusing its URL, so each URL belongs to
+  // Copies the underlying file rather than reusing its URL, so each URL belongs to
   // exactly one project — the invariant that delete cleanup and replace cleanup rely on.
   // `copied` is false when there was a file to copy but the copy failed.
   async function copyMedia(url: string | null, newPrefix: string): Promise<{ url: string | null; copied: boolean }> {
     if (!url) return { url: null, copied: true }
-    const oldKey = storageKeyFromPublicUrl(url, MEDIA_BUCKET)
-    if (!oldKey) return { url: null, copied: true }
-    const ext = oldKey.split('.').pop() || 'jpg'
-    const newKey = `${newPrefix}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
-    const { error } = await client.storage.from(MEDIA_BUCKET).copy(oldKey, newKey)
-    if (error) {
-      console.warn('[admin] project duplicate: media copy failed', oldKey, error)
-      return { url: null, copied: false }
-    }
-    return { url: client.storage.from(MEDIA_BUCKET).getPublicUrl(newKey).data.publicUrl, copied: true }
+    const copy = await media.copy(url, newPrefix)
+    return { url: copy, copied: copy !== null }
   }
 
   async function freeCopySlug(slug: string): Promise<string> {
