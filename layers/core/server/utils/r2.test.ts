@@ -46,9 +46,10 @@ describe('createR2Client', () => {
     expect(calls[0]!.init.method).toBe('PUT')
     const headers = headersOf(calls[0]!)
     expect(headers['content-type']).toBe('image/jpeg')
+    expect(headers['cache-control']).toBe('public, max-age=31536000, immutable')
     expect(headers['x-amz-date']).toBe('20261104T102030Z')
     expect(headers.authorization).toMatch(
-      /^AWS4-HMAC-SHA256 Credential=key\/20261104\/auto\/s3\/aws4_request, SignedHeaders=content-type;host;x-amz-content-sha256;x-amz-date, Signature=[0-9a-f]{64}$/,
+      /^AWS4-HMAC-SHA256 Credential=key\/20261104\/auto\/s3\/aws4_request, SignedHeaders=cache-control;content-type;host;x-amz-content-sha256;x-amz-date, Signature=[0-9a-f]{64}$/,
     )
   })
 
@@ -61,9 +62,12 @@ describe('createR2Client', () => {
 
   it('copies with a signed x-amz-copy-source header', async () => {
     const { client, calls } = setup()
-    await client.copyObject('a b/x.jpg', 'c/y.jpg')
+    await client.copyObject('a b/x.jpg', 'c/y.jpg', 'image/jpeg')
     expect(calls[0]!.url).toBe('https://acc.r2.cloudflarestorage.com/media/c/y.jpg')
     expect(headersOf(calls[0]!)['x-amz-copy-source']).toBe('/media/a%20b/x.jpg')
+    expect(headersOf(calls[0]!)['x-amz-metadata-directive']).toBe('REPLACE')
+    expect(headersOf(calls[0]!)['content-type']).toBe('image/jpeg')
+    expect(headersOf(calls[0]!)['cache-control']).toBe('public, max-age=31536000, immutable')
     expect(headersOf(calls[0]!).authorization).toContain('x-amz-copy-source')
   })
 
