@@ -176,6 +176,10 @@ export default defineNuxtConfig({
 
   nitro: {
     compressPublicAssets: { gzip: true, brotli: true },
+    // The swr cache keeps serving the last good page or payload while Supabase fails, but in memory it is lost
+    // on every restart (Hostinger stops idle apps) and the site goes 500 until the database answers again.
+    // On disk it survives restarts; entries still expire per build (Nitro's integrity hash). Vercel has ISR instead.
+    ...(process.env.VERCEL ? {} : { storage: { cache: { driver: 'fsLite', base: './.data/cache' } } }),
     // On the `vercel` preset, routeRules with `swr`/`isr` become separate Vercel Prerender Functions served
     // straight from the edge — this token lets revalidate.post.ts force one to bypass and refresh.
     vercel: {
