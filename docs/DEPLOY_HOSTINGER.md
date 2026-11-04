@@ -51,6 +51,8 @@ Lista completă, cu explicații, e în `.env.example`.
 | `NUXT_PUBLIC_SITE_URL_RO` | `https://codepedia.md` (domeniul RO) |
 | `RESEND_API_KEY` | opțional, emailul de lead |
 | `MAIL_FROM`, `MAIL_TO` | opționale; fără `MAIL_FROM`, expeditorul sandbox Resend livrează doar spre adresa contului Resend. Domeniul expeditorului se verifică întâi în Resend |
+| `NUXT_PUBLIC_MEDIA_URL` | `https://media.codepedia.md`, baza publică a bucket-ului R2 cu imaginile proiectelor (fără `/` la final) |
+| `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET` | credențialele R2 (token cu Object Read & Write), doar server; fără ele încărcarea de imagini din admin răspunde 500 |
 | `NUXT_PUBLIC_GA_ID`, `NUXT_PUBLIC_META_PIXEL_ID` | opționale, fără ele consimțământul e inert |
 | `NUXT_PUBLIC_QUALIFIER_ENABLED`, `NUXT_PUBLIC_GRANTS_ENABLED` | opționale |
 | `CRON_SECRET` | pentru `/api/health` (pasul 5) |
@@ -86,6 +88,7 @@ de mediu. Nu seta nimic de limbă per domeniu.
    | 1 | `http.request.uri.path eq "/"` sau `eq "/en"` sau `starts_with "/admin"` sau `starts_with "/api"` | **Bypass cache** |
    | 2 | `starts_with "/_nuxt/"` sau `starts_with "/_fonts/"` | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 an, cu excepția **Status code TTL 400–599 = No store** · Browser TTL: **Override origin and use this TTL** = 1 an |
    | 3 | `starts_with "/brand/"` sau `starts_with "/_ipx/"` sau `eq "/favicon.ico"` | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 zi, cu excepția **Status code TTL 400–599 = No store** · Browser TTL: **Override origin and use this TTL** = 1 zi |
+   | 3b | `starts_with "/_ipx/"` și `contains "/https:"` (imagini din Storage/R2, chei care nu se suprascriu) | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 an, cu excepția **Status code TTL 400–599 = No store** · Browser TTL: **Override origin and use this TTL** = 1 an |
    | 4 | `not starts_with "/_nuxt/"` și `not starts_with "/_fonts/"` și `not starts_with "/brand/"` și `not starts_with "/_ipx/"` și `not starts_with "/admin"` și `not starts_with "/api"` și `ne "/"` și `ne "/en"` | Eligible for cache · Edge TTL: **Use cache-control header if present, bypass cache if not** · Browser TTL: **Respect origin** |
 
    Modurile de TTL contează: LiteSpeed nu trimite `Cache-Control` pe fișierele statice, deci
@@ -183,6 +186,13 @@ curl -sI -H "cf-ipcountry: US" https://codepedia.studio/en | head -5
 
 Pe `.md` apare RO, pe `.studio` apare EN. Canonical: `.studio` pentru EN, `.md` pentru RO.
 Apoi adaugă fiecare domeniu separat în Google Search Console.
+
+## Backup
+
+`npm run backup` (cere Supabase CLI autentificat și variabilele R2 din `.env`) creează
+`..\backup\<YYYY-MM-DD>\`, în afara repo-ului: `db\` (`roles.sql`, `schema.sql`, `data.sql`
+din `supabase db dump`) și `media\` (toate obiectele din R2). `data.sql` conține date
+personale din `leads`: folderul `..\backup\` nu se comite și nu se trimite nimănui.
 
 ## Probleme cunoscute
 
