@@ -10,6 +10,6 @@ export async function notifyBestEffort<T>(
       console.warn(`[${context}] notification skipped, submission was still saved`)
     }
   } catch (error) {
-    console.warn(`[${context}] team notification failed`, error instanceof Error ? error.message : error)
+    console.warn(`[${context}] notification failed`, error instanceof Error ? error.message : error)
   }
 }
