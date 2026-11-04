@@ -6,16 +6,17 @@ import { buildCsp, inlineHandlerHashes, inlineScriptHashes } from '#layers/core/
 // <meta> tag instead. In dev Vite and the devtools inject their own inline scripts, so dev keeps
 // 'unsafe-inline'.
 export default defineNitroPlugin((nitroApp) => {
-  const supabaseUrl = useRuntimeConfig().public.supabase.url
-  const supabaseHost = supabaseUrl ? new URL(supabaseUrl).hostname : undefined
+  const { supabase, mediaUrl } = useRuntimeConfig().public
+  const supabaseHost = supabase.url ? new URL(supabase.url).hostname : undefined
+  const mediaHost = mediaUrl ? new URL(mediaUrl).hostname : undefined
 
   nitroApp.hooks.hook('render:html', (html, { event }) => {
     const markup = [...html.head, ...html.bodyPrepend, ...html.body, ...html.bodyAppend].join('\n')
     const scriptSources = import.meta.dev ? ["'unsafe-inline'"] : [...inlineScriptHashes(markup), ...inlineHandlerHashes(markup)]
     if (import.meta.prerender) {
-      html.head.unshift(`<meta http-equiv="Content-Security-Policy" content="${buildCsp({ supabaseHost, scriptSources, meta: true })}">`)
+      html.head.unshift(`<meta http-equiv="Content-Security-Policy" content="${buildCsp({ supabaseHost, mediaHost, scriptSources, meta: true })}">`)
     } else {
-      setResponseHeader(event, 'Content-Security-Policy', buildCsp({ supabaseHost, scriptSources }))
+      setResponseHeader(event, 'Content-Security-Policy', buildCsp({ supabaseHost, mediaHost, scriptSources }))
     }
   })
 })
