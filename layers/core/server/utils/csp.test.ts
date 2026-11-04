@@ -45,6 +45,12 @@ describe('buildCsp', () => {
     expect(csp).toContain(`style-src 'self' 'unsafe-inline'`)
   })
 
+  it('allows images from the media host without opening connect-src to it', () => {
+    const csp = buildCsp({ mediaHost: 'media.example.md', scriptSources: [] })
+    expect(csp).toContain(`img-src 'self' data: https://media.example.md `)
+    expect(csp).not.toMatch(/connect-src [^;]*media\.example\.md/)
+  })
+
   it('drops frame-ancestors for the meta tag and the Supabase host when unknown', () => {
     const csp = buildCsp({ scriptSources: [], meta: true })
     expect(csp).toContain(`script-src 'self' https://*.googletagmanager.com`)
