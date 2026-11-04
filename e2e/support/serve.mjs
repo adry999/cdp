@@ -3,17 +3,23 @@
 // e2e/origin-guard.spec.ts) and :3012 with the defaults. NUXT_PUBLIC_* variables
 // override runtime config at boot, so no second build is needed. Playwright
 // waits on :3012, which starts only once :3013 answers, so both servers are
-// up before the first test.
+// up before the first test. Each server runs in its own working directory: the swr cache lives on
+// disk under ./.data/cache, and a shared one would hand one server's pages (qualifier on) to another.
 import { spawn } from 'node:child_process'
+import { mkdirSync, rmSync } from 'node:fs'
 import { get } from 'node:http'
+import { resolve } from 'node:path'
 import process from 'node:process'
 import { setTimeout as delay } from 'node:timers/promises'
 
-const SERVER_ENTRY = '.output/server/index.mjs'
+const SERVER_ENTRY = resolve('.output/server/index.mjs')
 const children = []
 
 function start(env) {
-  const child = spawn(process.execPath, [SERVER_ENTRY], { env: { ...process.env, ...env }, stdio: 'inherit' })
+  const cwd = resolve('.data', `e2e-${env.PORT}`)
+  rmSync(cwd, { recursive: true, force: true })
+  mkdirSync(cwd, { recursive: true })
+  const child = spawn(process.execPath, [SERVER_ENTRY], { cwd, env: { ...process.env, ...env }, stdio: 'inherit' })
   child.on('exit', (code) => {
     for (const other of children) other.kill()
     process.exit(code ?? 1)
