@@ -10,6 +10,7 @@ import {
 } from '#layers/leads/domain/lead'
 import { notifyBestEffort } from '#layers/core/server/utils/notifyBestEffort'
 import type { TeamNotifier } from '#layers/leads/server/services/leadNotification'
+import type { VisitorConfirmer } from '#layers/leads/server/services/visitorConfirmation'
 
 export interface LeadRepository {
   insertLead(record: LeadRecord): Promise<void>
@@ -18,6 +19,7 @@ export interface LeadRepository {
 export interface SubmitLeadDependencies {
   repository: LeadRepository
   notify: TeamNotifier
+  confirm: VisitorConfirmer
   checkRateLimit: () => Promise<boolean>
 }
 
@@ -46,19 +48,20 @@ export async function submitLead(
     deps.notify,
     {
       subject: `Solicitare nouă — ${record.name}`,
-      lines: [
-        `Nume: ${record.name}`,
-        `Email: ${record.email}`,
-        `Companie: ${record.company ?? '—'}`,
-        `Buget: ${leadBudgetLabel(record.budget)}`,
-        ...(record.service ? [`Serviciu: ${leadServiceLabel(record.service)}`] : []),
-        ...(record.stage ? [`Etapă: ${leadStageLabel(record.stage)}`] : []),
-        '',
-        record.message,
+      fields: [
+        { label: 'Nume', value: record.name },
+        { label: 'Email', value: record.email },
+        { label: 'Companie', value: record.company ?? '—' },
+        { label: 'Buget', value: leadBudgetLabel(record.budget) },
+        ...(record.service ? [{ label: 'Serviciu', value: leadServiceLabel(record.service) }] : []),
+        ...(record.stage ? [{ label: 'Etapă', value: leadStageLabel(record.stage) }] : []),
       ],
+      message: { label: 'Mesaj', text: record.message },
+      replyTo: record.email,
     },
     'leads',
   )
+  await notifyBestEffort(deps.confirm, { to: record.email, name: record.name, lang: record.lang }, 'leads:confirmation')
 
   return { outcome: 'accepted' }
 }
