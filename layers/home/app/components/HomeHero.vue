@@ -22,6 +22,9 @@ onMounted(() => {
 // text for SEO and no-JS.
 const phrases = useI18nList()('home.hero.titlePhrases')
 const typed = ref(phrases[0] ?? '')
+// One pass through the phrases, then it rests on the first one and the caret stops blinking:
+// motion that runs on its own longer than 5 s must stop (WCAG 2.2.2).
+const finished = ref(false)
 // Each word is kept whole so narrow screens never split "page-uri" or "Site-uri" at the hyphen.
 const typedWords = computed(() => typed.value.split(' '))
 
@@ -56,6 +59,10 @@ if (import.meta.client && phrases.length > 1) {
         char += 1
         typed.value = current.slice(0, char)
         if (char >= current.length) {
+          if (index === 0) {
+            finished.value = true
+            return
+          }
           deleting = true
           timer = setTimeout(tick, HOLD_MS)
           return
@@ -98,7 +105,7 @@ if (import.meta.client && phrases.length > 1) {
           <span class="font-mono font-medium tracking-normal"
             ><template v-for="(word, i) in typedWords" :key="i"
               >{{ i > 0 ? ' ' : '' }}<span class="whitespace-nowrap"
-                >{{ word }}<span v-if="i === typedWords.length - 1" class="hero-caret bg-signal" aria-hidden="true" /></span
+                >{{ word }}<span v-if="i === typedWords.length - 1" class="hero-caret bg-signal" :class="{ 'hero-caret--still': finished }" aria-hidden="true" /></span
             ></template
           ></span>
         </span>
@@ -156,6 +163,10 @@ if (import.meta.client && phrases.length > 1) {
   50% {
     opacity: 0;
   }
+}
+
+.hero-caret--still {
+  animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

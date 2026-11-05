@@ -45,7 +45,7 @@ describe('domainRedirectTarget', () => {
   })
 
   it('does not touch the home pages, assets, the API, the admin or crawler files', () => {
-    for (const path of ['/', '/en', '/api/health', '/admin/projects', '/_nuxt/a.js', '/_ipx/w_1200/x.png', '/sitemap.xml', '/robots.txt', '/llms.txt', '/llms-full.txt', '/brand/logo.svg']) {
+    for (const path of ['/', '/en', '/api/health', '/admin/projects', '/_nuxt/a.js', '/_ipx/w_1200/x.png', '/sitemap.xml', '/robots.txt', '/llms.txt', '/llms-full.txt', '/brand/logo.svg', '/__nuxt_error', '/__nuxt_island/HomeHero_x.json']) {
       expect(go('codepedia.studio', path)).toBeNull()
       expect(go('codepedia.md', path)).toBeNull()
     }
