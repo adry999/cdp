@@ -98,6 +98,7 @@ de mediu. Nu seta nimic de limbă per domeniu.
    | 3 | `starts_with "/brand/"` sau `starts_with "/_ipx/"` sau `eq "/favicon.ico"` | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 zi, cu excepția **Status code TTL 400–599 = No store** · Browser TTL: **Override origin and use this TTL** = 1 zi |
    | 3b | `starts_with "/_ipx/"` și `contains "/https:"` (imagini din Storage/R2, chei care nu se suprascriu) | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 an, cu excepția **Status code TTL 400–599 = No store** · Browser TTL: **Override origin and use this TTL** = 1 an |
    | 4 | `not starts_with "/_nuxt/"` și `not starts_with "/_fonts/"` și `not starts_with "/brand/"` și `not starts_with "/_ipx/"` și `not starts_with "/admin"` și `not starts_with "/api"` și `ne "/"` și `ne "/en"` | Eligible for cache · Edge TTL: **Use cache-control header if present, bypass cache if not** · Browser TTL: **Respect origin** |
+   | 5 | `http.host eq "<domeniu>"` și path `eq` pagina de start a domeniului (`/` pe `codepedia.md`, `/en` pe `codepedia.studio`) și `not http.cookie contains "codepedia_locale="` | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 5 minute, cu excepția **Status code TTL 300–599 = No store** · Browser TTL: **Respect origin** |
 
    Modurile de TTL contează: LiteSpeed nu trimite `Cache-Control` pe fișierele statice, deci
    regulile 2 și 3 trebuie să **ignore/suprascrie** originea, altfel nu schimbă nimic. La
@@ -124,9 +125,19 @@ de mediu. Nu seta nimic de limbă per domeniu.
      cât timp pagina se reîmprospătează), sau după **Purge Cache** manual. Paginile de blog
      sunt prerenderizate și țin 1 oră (`s-maxage=3600`), la fel `/llms.txt` și
      `/llms-full.txt`.
+   - Regula 5 (suprascrie regula 1 doar pentru pagina de start a domeniului): fără cookie
+     de limbă, redirectul nu se declanșează acolo, fiindcă domeniul decide limba înaintea
+     geo-IP-ului. Deci `/` pe `.md` e mereu pagina RO și `/en` pe `.studio` e mereu pagina
+     EN, aceeași pentru toți; ținută 5 minute la margine, nu mai ajunge la Hostinger la
+     fiecare vizită. Browserul primește tot `private, no-cache` (Browser TTL: Respect
+     origin). Cu cookie-ul `codepedia_locale`, redirectul (302) trece pe la aplicație ca
+     înainte. `/` pe `.studio` și `/en` pe `.md` sunt redirecturi și rămân necache-uite.
+     Excepția 300–599 împiedică păstrarea unui redirect sau a unei erori.
 
    Verificare: `curl -sI https://<domeniu>/servicii` trebuie să arate
-   `cf-cache-status: HIT` la a doua cerere; `/` rămâne `DYNAMIC` (e corect).
+   `cf-cache-status: HIT` la a doua cerere, la fel `https://codepedia.md/` și
+   `https://codepedia.studio/en` (regula 5). Cu `-b codepedia_locale=en`,
+   `https://codepedia.md/` trebuie să dea 302 cu `DYNAMIC`.
 
    Cheia de cache păstrează tot query string-ul (`/proiecte?tag=…` rămâne corect). Planul
    Free nu permite o cheie cu doar anumiți parametri („not entitled to use the custom cache
@@ -138,6 +149,9 @@ de mediu. Nu seta nimic de limbă per domeniu.
    implicită „Leaked credential check" (logarea în admin merge direct la Supabase, deci
    aceea nu verifica nimic aici). Oprește rafalele; limita din aplicație (`checkRateLimit`,
    3 / 10 min per IP) rămâne cea fină.
+9. Caching → Tiered Cache → **Smart Tiered Cache: On**. Doar centrul Cloudflare cel mai
+   apropiat de origine cere de la Hostinger, celelalte iau de la el: mai puține cereri și
+   mai puține imagini generate pe server (contul e aproape de limita de procese).
 
 ### Starea aplicată (2026-10-28)
 
@@ -151,6 +165,9 @@ cerere POST). Diferențe între zone:
   Certificatul originii e valid pe IPv4; pe IPv6 nu s-a putut verifica, de aceea nu e strict.
 - `ftp.codepedia.studio` e proxied, iar proxy-ul Cloudflare nu trece FTP: trebuie DNS only
   sau șters dacă nu se folosește.
+
+2026-11-05: regula 5 și pasul 9 aplicate pe ambele zone, verificate cu `curl` (HIT pe `/`
+și `/en`, limba corectă în `<html lang>`, 302 neschimbat cu cookie-ul de limbă).
 
 Rămas deschis: originea răspunde direct pe IP (`curl --resolve codepedia.md:443:<IP>`
 întoarce 200 de la LiteSpeed), deci Cloudflare (inclusiv limita de mai sus) se poate
