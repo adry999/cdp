@@ -14,17 +14,21 @@ export interface CspOptions {
 // Fonts are self-hosted by @nuxt/fonts, so fonts.googleapis.com/gstatic.com aren't needed in style-src/font-src.
 // GA4/Meta Pixel hosts are inert until NUXT_PUBLIC_GA_ID/NUXT_PUBLIC_META_PIXEL_ID are set; both loaders are
 // external scripts (layers/consent/app/plugins/analytics.client.ts), so script-src needs no 'unsafe-inline'.
+// Turnstile (layers/core/app/components/ui/CoreTurnstile.vue) loads its script and challenge iframe from here.
+const TURNSTILE = 'https://challenges.cloudflare.com'
+
 export function buildCsp({ supabaseOrigin, mediaOrigin, scriptSources, meta = false }: CspOptions): string {
   const supabase = supabaseOrigin ? ` ${supabaseOrigin}` : ''
   const media = mediaOrigin ? ` ${mediaOrigin}` : ''
   const scripts = scriptSources.length ? ` ${scriptSources.join(' ')}` : ''
   return [
     `default-src 'self'`,
-    `script-src 'self'${scripts} https://*.googletagmanager.com https://connect.facebook.net`,
+    `script-src 'self'${scripts} https://*.googletagmanager.com https://connect.facebook.net ${TURNSTILE}`,
     `style-src 'self' 'unsafe-inline'`,
     `font-src 'self'`,
     `img-src 'self' data:${supabase}${media} https://*.google-analytics.com https://*.googletagmanager.com https://www.facebook.com`,
-    `connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.facebook.com${supabase}`,
+    `frame-src ${TURNSTILE}`,
+    `connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.facebook.com ${TURNSTILE}${supabase}`,
     ...(meta ? [] : [`frame-ancestors 'none'`]),
     `base-uri 'self'`,
     `form-action 'self'`,
