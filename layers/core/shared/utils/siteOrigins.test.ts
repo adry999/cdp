@@ -24,7 +24,7 @@ describe('originForHost', () => {
   })
 
   it('returns undefined for any other host', () => {
-    expect(originForHost(origins, 'codepedia-git-main.vercel.app')).toBeUndefined()
+    expect(originForHost(origins, 'preview.example.test')).toBeUndefined()
     expect(originForHost(origins, 'evilcodepedia.md')).toBeUndefined()
     expect(originForHost(origins, undefined)).toBeUndefined()
   })
