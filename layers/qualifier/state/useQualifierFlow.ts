@@ -40,12 +40,12 @@ export function useQualifierFlow() {
     step.value = Math.max(step.value - 1, 1)
   }
 
-  async function submit(payload: QualifierContactPayload) {
+  async function submit(payload: QualifierContactPayload, turnstileToken?: string) {
     if (!stage.value || !budget.value) return
     status.value = 'pending'
     error.value = null
     try {
-      await postQualification({ ...payload, stage: stage.value, budget: budget.value, lang: locale.value })
+      await postQualification({ ...payload, stage: stage.value, budget: budget.value, lang: locale.value }, turnstileToken)
       status.value = 'success'
     } catch (caught) {
       error.value = toAppError(caught)
