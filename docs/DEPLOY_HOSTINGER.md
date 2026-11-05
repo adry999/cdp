@@ -22,8 +22,15 @@ Domenii: `codepedia.studio` (EN, principal) și `codepedia.md` (RO). Ambele serv
 
 ### Cum se publică o versiune
 
-O singură aplicație servește ambele domenii, deci un singur deploy le actualizează pe
-amândouă.
+Sunt două aplicații Node.js, una pe domeniu (`codepedia.md` și `codepedia.studio`), cu
+același cod din `production` și aceleași variabile. Fiecare are build-ul ei, deci o variabilă
+schimbată se pune în ambele, iar fiecare cere **Redeploy**.
+
+**Câte un redeploy pe rând.** Contul Hostinger are o limită de procese (`max processes`),
+în care intră și firele de execuție. Două build-uri simultane, cu ambele aplicații pornite,
+o ating: build-ul pică, iar aplicația rămâne pe versiunea veche (cu variabilele vechi).
+Redeploy pe `codepedia.md`, aștepți să termine, apoi `codepedia.studio`. Dacă procesele sunt
+la limită: **Restart** pe aplicație, apoi redeploy.
 
 1. Ce trebuie testat intră întâi în `dev` (PR din branch-ul de lucru, CI verde) și se
    testează acolo; apoi același branch intră în `main` printr-un PR separat. Ce e deja
@@ -31,8 +38,8 @@ amândouă.
 2. Release: PR de la `main` spre `production`
    (`gh pr create --base production --head main --title "release: <ce intră>"`), merge
    după ce CI e verde. Merge commit, ca în PR-urile #87, #89, #93.
-3. Webhook-ul Git redeployează `production`. Dacă nu pornește singur: hPanel → Node.js
-   Apps → aplicația → **Redeploy**.
+3. Webhook-ul Git redeployează `production`. Dacă nu pornește singur sau un build pică:
+   hPanel → Node.js Apps → aplicația → **Redeploy**, câte una pe rând.
 4. Verifică ambele domenii (secțiunea 6).
 
 Schimbările doar de documentație nu cer release; ajung pe `production` la următorul.
@@ -46,7 +53,7 @@ Lista completă, cu explicații, e în `.env.example`.
 |---|---|
 | `NUXT_PUBLIC_SUPABASE_URL` | obligatorie |
 | `NUXT_PUBLIC_SUPABASE_ANON_KEY` | obligatorie |
-| `SUPABASE_SERVICE_ROLE_KEY` | obligatorie, doar server |
+| `SUPABASE_SERVICE_ROLE_KEY` | obligatorie, doar server: cheia `service_role` (JWT cu `"role":"service_role"`), **nu** cheia anon. Cu cheia anon paginile merg, dar formularul de contact și admin-ul dau 500/403. Intră în build: după schimbare, Redeploy |
 | `NUXT_PUBLIC_SITE_URL` | `https://codepedia.studio` (domeniul EN) |
 | `NUXT_PUBLIC_SITE_URL_RO` | `https://codepedia.md` (domeniul RO) |
 | `RESEND_API_KEY` | opțional, emailul de lead |
@@ -57,6 +64,7 @@ Lista completă, cu explicații, e în `.env.example`.
 | `NUXT_PUBLIC_QUALIFIER_ENABLED`, `NUXT_PUBLIC_GRANTS_ENABLED` | opționale |
 | `CRON_SECRET` | pentru `/api/health` (pasul 5) |
 | `NUXT_ORIGIN_SECRET` | opțională; secretul din headerul `x-codepedia-origin` setat de Cloudflare, fără el cererile primesc 403 (vezi §3). Gol = verificarea e oprită. Se poate seta și fără rebuild, doar cu restart |
+| `VIPS_CONCURRENCY` | `1`: sharp (optimizarea imaginilor, `/_ipx/`) pornește implicit câte un fir pe procesor al serverului, iar Hostinger le numără ca procese. Ajunge la runtime (restart) |
 | `NUXT_PUBLIC_NOINDEX` | **nu** se setează pe live |
 
 `VERCEL_ISR_BYPASS_TOKEN` nu se folosește aici: `revalidate.post.ts` curăță cache-ul Nitro.
