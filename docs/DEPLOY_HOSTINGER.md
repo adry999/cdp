@@ -62,7 +62,7 @@ Lista completă, cu explicații, e în `.env.example`.
 | `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET` | credențialele R2 (token cu Object Read & Write), doar server; fără ele încărcarea de imagini din admin răspunde 500 |
 | `NUXT_PUBLIC_GA_ID`, `NUXT_PUBLIC_META_PIXEL_ID` | opționale, fără ele consimțământul e inert |
 | `NUXT_PUBLIC_QUALIFIER_ENABLED`, `NUXT_PUBLIC_GRANTS_ENABLED` | opționale |
-| `CRON_SECRET` | pentru `/api/health` (pasul 5) |
+| `CRON_SECRET` | pentru `/api/health` (pasul 5) și `/api/cache-clear`: **aceeași valoare pe ambele aplicații**, altfel o editare din admin golește cache-ul doar pe domeniul pe care lucrezi |
 | `NUXT_ORIGIN_SECRET` | opțională; secretul din headerul `x-codepedia-origin` setat de Cloudflare, fără el cererile primesc 403 (vezi §3). Gol = verificarea e oprită. Se poate seta și fără rebuild, doar cu restart |
 | `VIPS_CONCURRENCY` | `1`: sharp (optimizarea imaginilor, `/_ipx/`) pornește implicit câte un fir pe procesor al serverului, iar Hostinger le numără ca procese. Ajunge la runtime (restart) |
 | `NUXT_PUBLIC_NOINDEX` | **nu** se setează pe live |
