@@ -99,6 +99,7 @@ de mediu. Nu seta nimic de limbă per domeniu.
    | 3b | `starts_with "/_ipx/"` și `contains "/https:"` (imagini din Storage/R2, chei care nu se suprascriu) | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 an, cu excepția **Status code TTL 400–599 = No store** · Browser TTL: **Override origin and use this TTL** = 1 an |
    | 4 | `not starts_with "/_nuxt/"` și `not starts_with "/_fonts/"` și `not starts_with "/brand/"` și `not starts_with "/_ipx/"` și `not starts_with "/admin"` și `not starts_with "/api"` și `ne "/"` și `ne "/en"` | Eligible for cache · Edge TTL: **Use cache-control header if present, bypass cache if not** · Browser TTL: **Respect origin** |
    | 5 | `http.host eq "<domeniu>"` și path `eq` pagina de start a domeniului (`/` pe `codepedia.md`, `/en` pe `codepedia.studio`) și `not http.cookie contains "codepedia_locale="` | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 5 minute, cu excepția **Status code TTL 300–599 = No store** · Browser TTL: **Respect origin** |
+   | 6 | `http.request.uri.path eq "/api/projects/nav"` | Eligible for cache · Edge TTL: **Use cache-control header if present** · Browser TTL: **Respect origin** |
 
    Modurile de TTL contează: LiteSpeed nu trimite `Cache-Control` pe fișierele statice, deci
    regulile 2 și 3 trebuie să **ignore/suprascrie** originea, altfel nu schimbă nimic. La
@@ -133,6 +134,9 @@ de mediu. Nu seta nimic de limbă per domeniu.
      origin). Cu cookie-ul `codepedia_locale`, redirectul (302) trece pe la aplicație ca
      înainte. `/` pe `.studio` și `/en` pe `.md` sunt redirecturi și rămân necache-uite.
      Excepția 300–599 împiedică păstrarea unui redirect sau a unei erori.
+   - Regula 6 (suprascrie regula 1 pentru o singură rută API): meniul cu proiecte e cerut din
+     browser pe paginile prerenderizate (blogul); fără regulă, fiecare vizită pe blog ajungea la
+     Hostinger. Răspunsul e același pentru toți (`s-maxage=300`).
 
    Verificare: `curl -sI https://<domeniu>/servicii` trebuie să arate
    `cf-cache-status: HIT` la a doua cerere, la fel `https://codepedia.md/` și
