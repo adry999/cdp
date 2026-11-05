@@ -6,7 +6,7 @@ function content(overrides: Partial<EmailContent> = {}): EmailContent {
     lang: 'ro',
     preheader: 'Previzualizare',
     heading: 'Titlu',
-    logoUrl: 'https://codepedia.md/brand/codepedia-wordmark-email.png',
+    logoUrl: 'https://codepedia.md/brand/codepedia-wordmark-email-paper.png',
     footer: 'Codepedia SRL',
     ...overrides,
   }
@@ -51,6 +51,6 @@ describe('renderEmailHtml', () => {
   it('sets the document language and the logo', () => {
     const html = renderEmailHtml(content({ lang: 'en' }))
     expect(html).toContain('<html lang="en">')
-    expect(html).toContain('src="https://codepedia.md/brand/codepedia-wordmark-email.png"')
+    expect(html).toContain('src="https://codepedia.md/brand/codepedia-wordmark-email-paper.png"')
   })
 })
