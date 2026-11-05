@@ -8,7 +8,7 @@ admin. Depends on `layers/core` and `layers/blog` (category codes and names,
 
 ## Data
 
-`supabase/migrations/20261009120000_news_items.sql` creates `public.news_items`
+`supabase/migrations/20261009101722_news_items.sql` creates `public.news_items`
 (`slug_ro`/`slug_en` unique, `title_*`, `summary_*`, optional `why_*`,
 `source_url` with an `^https?://` check, `source_name`, `source_author`,
 `source_published_on`, blog `category` code, `published_at` — null is a draft).
