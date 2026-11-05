@@ -91,7 +91,7 @@ lucru nu e specificat, întreabă înainte de a improviza.
 - **@nuxt/image** pentru imaginile de proiect; **@nuxt/fonts** cu self-hosting
   pentru Inter Tight și JetBrains Mono
 - **Hostinger** (Node.js Apps, din git) în spatele **Cloudflare** pentru producție;
-  Vercel nu se folosește. Pașii, variabilele și regulile Cloudflare:
+  Vercel nu se mai folosește deloc. Pașii, variabilele și regulile Cloudflare:
   `docs/DEPLOY_HOSTINGER.md`
 - **Vitest** pentru logica de formatare/validare, **Playwright** pentru un smoke test
   pe fiecare rută publică
@@ -113,12 +113,12 @@ exclusiv din `assets/` (vezi `docs/IDENTITY.md`).
 - Logo-ul și favicon-ul vin din `assets/` ca SVG-uri vectoriale gata de folosit.
   Citește `docs/IDENTITY.md` înainte de a le plasa. Nu redesena marca în cod, nu o
   colora, nu seta `CODEPEDIA` ca text live.
-- Componente în `app/components/`, grupate: `site/`, `admin/`, `ui/`.
-  Componentele de layout care se repetă în toate secțiunile:
-  `SiteSection.vue` (container + coloana de etichetă de 160px + slot),
-  `SectionLabel.vue`, `FactCard.vue`, `TableRow.vue`, `TechChip.vue`,
-  `MediaFrame.vue` (cu placeholder hașurat ca fallback), `AppButton.vue`
-  (variante `ink` / `signal` / `outline`).
+- Componentele stau în layer-ul care le deține, cu prefixul modulului (vezi skill-ul
+  `project-conventions`). Primitivele de layout care se repetă în toate secțiunile stau în
+  `layers/core/app/components/ui/`: `SiteSection.vue` (container + coloana de etichetă de
+  160px + slot), `SectionLabel.vue`, `FactCard.vue`, `TechChip.vue`, `MediaFrame.vue` (cu
+  placeholder hașurat ca fallback), `AppButton.vue` (variante `ink` / `signal` / `outline`)
+  și celelalte din skill.
 - Textul din interfață (nu conținutul din DB) în `i18n/locales/ro.json` și `en.json`.
   Proiectele și solicitările vin din Supabase și se editează din admin.
   Întrebările frecvente și setările site-ului (email, program, timp de răspuns,
@@ -126,7 +126,8 @@ exclusiv din `assets/` (vezi `docs/IDENTITY.md`).
   `layers/content/data/` și se editează manual în cod, RO și EN obligatoriu.
   Tabelele `faqs`, `site_settings`, `services`, `service_items`,
   `stack_groups`, `process_steps` rămân în bază, dar nu mai alimentează site-ul.
-- Fetch de date doar pe server: `useAsyncData` + server routes în `server/api/`.
+- Fetch de date doar pe server: `useAsyncData` + server routes în
+  `layers/<modul>/server/api/` (rutele transversale în `server/api/` din rădăcină).
   Cheia `service_role` nu ajunge niciodată în client.
 - Fără `any`. Tipurile de DB generate cu `supabase gen types typescript`.
 - Commit-uri mici, mesaje în engleză, imperativ.
@@ -141,7 +142,7 @@ exclusiv din `assets/` (vezi `docs/IDENTITY.md`).
    La final trebuie să fie indistinguibilă de `design/Codepedia.dc.html`.
 4. Șablonul de studiu de caz + cele trei proiecte, tot cu date hardcodate.
    Referință: `design/Proiect SaaS Logistica.dc.html`.
-5. Supabase: aplică `docs/DATA_MODEL.sql`, migrează conținutul hardcodat în seed-uri,
+5. Supabase: aplică migrațiile din `supabase/migrations/`, migrează conținutul hardcodat în seed-uri,
    comută paginile pe date din DB. Site-ul trebuie să arate identic după comutare.
 6. Auth + shell de admin + CRUD de proiecte (ecranul cel mai important).
 7. Restul admin-ului: servicii și prețuri, FAQ, setări.
@@ -155,18 +156,18 @@ browser, în ambele limbi.
 
 ## Lucru suplimentar (dincolo de pașii de mai sus)
 
-Două subsisteme au fost adăugate ulterior, la cererea clientului, dincolo de
+Câteva subsisteme au fost adăugate ulterior, la cererea clientului, dincolo de
 scopul inițial al acestui fișier. Documentate integral (design + plan de
 implementare) în `docs/superpowers/specs/` și `docs/superpowers/plans/`:
 
 - **Detectare automată a limbii** — `layers/core/server/middleware/locale-redirect.ts`.
   Ordinea: alegerea manuală din switcher (cookie `codepedia_locale`) →
   domeniul (`.studio` → engleză, `.md`/`.ro` → română) → geo-IP (header
-  Cloudflare `cf-ipcountry`, cu `x-vercel-ip-country` ca rezervă; RO/MD → română,
+  Cloudflare `cf-ipcountry`; RO/MD → română,
   altfel engleză) → engleză.
   Acționează doar pe `/` și `/en` — nu pe pagini adânci.
 - **Domenii multiple** — aceleași căi pe ambele domenii (RO fără prefix, EN sub
-  `/en`), deci cache-ul ISR pe cale rămâne corect, dar o pagină se servește doar pe
+  `/en`), deci cache-ul SWR pe cale rămâne corect, dar o pagină se servește doar pe
   domeniul limbii ei: `layers/core/server/middleware/domain-redirect.ts` trimite cu 301
   căile RO cerute pe domeniul EN, `/en/...` cerut pe domeniul RO și orice `www.` la
   domeniul oficial (acasă, `/api`, `/admin`, fișierele statice și hosturile de preview
@@ -174,6 +175,11 @@ implementare) în `docs/superpowers/specs/` și `docs/superpowers/plans/`:
   `NUXT_PUBLIC_SITE_URL_RO` = RO, aceleași valori pe ambele aplicații) apare în
   canonical, `hreflang` (`app/plugins/locale-alternates.ts`), sitemap și `robots.txt`,
   ambele filtrate pe domeniul cererii.
+- **Două aplicații în producție** — fiecare domeniu e o aplicație Node separată pe Hostinger,
+  din același cod, cu propriul cache pe disc (`.data/cache`). După o editare din admin,
+  `server/api/admin/revalidate.post.ts` golește cache-ul local și cere celuilalt domeniu
+  să-l golească pe al lui (`POST /api/cache-clear`, protejat cu `CRON_SECRET`, aceeași
+  valoare pe ambele aplicații). Redeploy-urile se fac pe rând (limita de procese a contului).
 - **Consimțământ cookie-uri + politică de confidențialitate** —
   modulul `layers/consent/` (`state/useCookieConsent.ts`,
   `app/components/ConsentBanner.vue`, `app/plugins/analytics.client.ts`),
