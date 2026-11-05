@@ -1,8 +1,9 @@
 import { withoutTrailingSlash } from '#layers/core/shared/utils/localeRoutes'
 import { originForHost, type SiteOrigins } from '#layers/core/shared/utils/siteOrigins'
 
-// Assets, the API, the admin and crawler files belong to no language; they stay on whichever domain asked.
-const NOT_A_PAGE = /^\/(?:api|admin|_nuxt|_ipx|_fonts|__nuxt_content|brand)(?:\/|$)|\.[a-z0-9]{2,5}$/i
+// Assets, the API, the admin, crawler files and Nuxt's internal error/island renders belong to no language;
+// they stay on whichever domain asked (an EN 404 is rendered through /__nuxt_error on the EN host).
+const NOT_A_PAGE = /^\/(?:api|admin|_nuxt|_ipx|_fonts|__nuxt_content|__nuxt_error|__nuxt_island|brand)(?:\/|$)|\.[a-z0-9]{2,5}$/i
 
 // The blog feeds have an extension but belong to a language: `/blog/rss.xml` is Romanian, `/en/blog/rss.xml` English.
 const LOCALIZED_FEED = /^\/(?:en\/)?blog\/rss\.xml$/
