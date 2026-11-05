@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 import { firstPublishedNews, firstPublishedProject } from './support/helpers'
 
 test('RO homepage renders', async ({ page }) => {
-  await page.setExtraHTTPHeaders({ 'x-vercel-ip-country': 'RO' })
+  await page.setExtraHTTPHeaders({ 'cf-ipcountry': 'RO' })
   const response = await page.goto('/')
   expect(response?.status()).toBe(200)
   await expect(page.locator('html')).toHaveAttribute('lang', 'ro-RO')

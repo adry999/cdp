@@ -38,7 +38,7 @@ describe('resolveLocale', () => {
   })
 
   it('falls back to geo on any other host', () => {
-    expect(resolveLocale({ geoCountry: 'MD', host: 'codepedia-git-main.vercel.app' })).toBe('ro')
+    expect(resolveLocale({ geoCountry: 'MD', host: 'preview.example.test' })).toBe('ro')
     expect(resolveLocale({ geoCountry: 'MD', host: 'evilcodepedia.studio' })).toBe('ro')
   })
 })

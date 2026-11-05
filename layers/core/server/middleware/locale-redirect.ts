@@ -9,8 +9,8 @@ export default defineEventHandler((event) => {
   if (isCrawler(userAgent)) return
 
   const cookieLocale = getCookie(event, LOCALE_COOKIE_NAME)
-  // Production sits behind Cloudflare (cf-ipcountry); x-vercel-ip-country covers Vercel previews.
-  const geoCountry = getHeader(event, 'cf-ipcountry') ?? getHeader(event, 'x-vercel-ip-country')
+  // Production sits behind Cloudflare, which sets cf-ipcountry.
+  const geoCountry = getHeader(event, 'cf-ipcountry')
   const host = getHeader(event, 'host')
 
   const target = resolveLocale({ cookieLocale, geoCountry, host })

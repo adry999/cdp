@@ -17,7 +17,7 @@ const CONTACT_EMAIL_TOKEN = '{{contactEmail}}'
 export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
   ro: {
     title: 'Politica de confidențialitate',
-    updated: 'Actualizat: 6 octombrie 2026',
+    updated: 'Actualizat: 5 noiembrie 2026',
     intro:
       'Această pagină descrie ce date colectăm prin acest site, de ce, cât timp le păstrăm și cum le poți controla. Se aplică pe toate domeniile CODEPEDIA (codepedia.studio, codepedia.md).',
     sections: [
@@ -39,7 +39,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'Ce se înregistrează automat',
         body: [
-          'La fiecare vizită, furnizorul de găzduire (Vercel) înregistrează tehnic adresa IP, pagina cerută, data și tipul de browser, pentru ca site-ul să funcționeze și să rămână sigur. Nu folosim aceste jurnale pentru a te identifica sau a-ți crea un profil.',
+          'La fiecare vizită, furnizorul de găzduire (Hostinger) și rețeaua Cloudflare, prin care trece site-ul, înregistrează tehnic adresa IP, pagina cerută, data și tipul de browser, pentru ca site-ul să funcționeze și să rămână sigur. Nu folosim aceste jurnale pentru a te identifica sau a-ți crea un profil.',
         ],
       },
       {
@@ -68,7 +68,9 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'Cu cine împărtășim datele',
         body: [
-          'Supabase — baza de date, cu servere în Uniunea Europeană (Irlanda). Vercel — găzduirea site-ului (SUA). Resend — livrarea notificării interne trimise echipei la o solicitare nouă (SUA).',
+          'Hostinger — găzduirea site-ului, cu servere în Uniunea Europeană (Germania). Supabase — baza de date, cu servere în Uniunea Europeană (Irlanda).',
+          'Cloudflare — rețeaua prin care se livrează site-ul și care îl protejează de atacuri, stocarea imaginilor de pe site și redirecționarea emailurilor trimise la adresele noastre (SUA, cu centre de date în întreaga lume).',
+          'Resend — trimiterea emailurilor legate de solicitarea ta: notificarea către echipă și confirmarea trimisă ție (SUA). Google (Gmail) — căsuța de email în care primim notificările și din care îți răspundem (SUA).',
           'Google Analytics și Meta Pixel primesc date doar dacă ai consimțit explicit.',
           'Nu vindem datele tale și nu le împărtășim în alte scopuri.',
         ],
@@ -76,7 +78,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'Transferuri în afara Uniunii Europene',
         body: [
-          'Vercel și Resend pot prelucra date în SUA. Transferul se face pe baza garanțiilor din acordurile lor de prelucrare a datelor, care includ clauzele contractuale standard ale Comisiei Europene.',
+          'Cloudflare, Resend și Google pot prelucra date în SUA. Transferul se face pe baza garanțiilor din acordurile lor de prelucrare a datelor, care includ clauzele contractuale standard ale Comisiei Europene.',
         ],
       },
       {
@@ -90,7 +92,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
   },
   en: {
     title: 'Privacy Policy',
-    updated: 'Updated: October 6, 2026',
+    updated: 'Updated: November 5, 2026',
     intro:
       'This page describes what data we collect through this site, why, how long we keep it, and how you can control it. It applies to every CODEPEDIA domain (codepedia.studio, codepedia.md).',
     sections: [
@@ -112,7 +114,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'What is logged automatically',
         body: [
-          'On every visit, our hosting provider (Vercel) technically logs your IP address, the page requested, the date and your browser type, so the site keeps working and stays secure. We do not use these logs to identify or profile you.',
+          'On every visit, our hosting provider (Hostinger) and the Cloudflare network the site runs through technically log your IP address, the page requested, the date and your browser type, so the site keeps working and stays secure. We do not use these logs to identify or profile you.',
         ],
       },
       {
@@ -141,7 +143,9 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'Who we share data with',
         body: [
-          'Supabase — the database, with servers in the European Union (Ireland). Vercel — site hosting (US). Resend — delivery of the internal notification sent to our team about a new request (US).',
+          'Hostinger — site hosting, with servers in the European Union (Germany). Supabase — the database, with servers in the European Union (Ireland).',
+          'Cloudflare — the network that delivers the site and protects it from attacks, storage of the images on the site, and forwarding of emails sent to our addresses (US, with data centres worldwide).',
+          'Resend — sending the emails about your request: the notification to our team and the confirmation sent to you (US). Google (Gmail) — the inbox where we receive notifications and reply to you from (US).',
           'Google Analytics and Meta Pixel only receive data if you explicitly consented.',
           'We do not sell your data or share it for any other purpose.',
         ],
@@ -149,7 +153,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'Transfers outside the European Union',
         body: [
-          "Vercel and Resend may process data in the US. These transfers rely on the safeguards in their data processing agreements, which include the European Commission's standard contractual clauses.",
+          "Cloudflare, Resend and Google may process data in the US. These transfers rely on the safeguards in their data processing agreements, which include the European Commission's standard contractual clauses.",
         ],
       },
       {

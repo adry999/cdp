@@ -1,7 +1,7 @@
 import { checkCronAuth } from '#layers/core/server/utils/checkCronAuth'
 import { pingDatabase } from '#layers/core/server/repository/healthRepository'
 
-// Hit daily by a Vercel cron so the free Supabase plan is not paused for inactivity.
+// Hit daily by an uptime monitor so the free Supabase plan is not paused for inactivity.
 export default defineEventHandler(async (event) => {
   const { cronSecret } = useRuntimeConfig(event)
   const auth = checkCronAuth(cronSecret, getHeader(event, 'authorization'))

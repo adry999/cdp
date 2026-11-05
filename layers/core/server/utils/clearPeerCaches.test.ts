@@ -21,7 +21,7 @@ describe('clearPeerCaches', () => {
   })
 
   it('never reaches production from localhost, a preview host or without a secret', async () => {
-    for (const [host, secret] of [['localhost:3000', 's3cret'], ['cdp-dev.vercel.app', 's3cret'], ['codepedia.md', ''], [undefined, 's3cret']] as const) {
+    for (const [host, secret] of [['localhost:3000', 's3cret'], ['preview.example.test', 's3cret'], ['codepedia.md', ''], [undefined, 's3cret']] as const) {
       const { post, result } = run(host, secret)
       expect(await result).toEqual({ cleared: 0, failed: 0 })
       expect(post).not.toHaveBeenCalled()

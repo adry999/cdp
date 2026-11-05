@@ -1,12 +1,11 @@
 import { fileURLToPath } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
-import { localeRedirectRoutes } from './layers/core/shared/utils/localeRedirectRoutes'
-import { crossLocalePageRedirects, redirectRouteRules, trailingSlashRoute } from './layers/core/shared/utils/localeRoutes'
+import { crossLocalePageRedirects, redirectRouteRules } from './layers/core/shared/utils/localeRoutes'
 import { TECH_ICONS } from './layers/core/shared/utils/techIcons'
 import { STACK_GROUP_ICONS } from './layers/content/domain/stack'
 import { THEME_INIT_SCRIPT } from './layers/core/shared/utils/theme'
 
-// Every real build, including Vercel, must supply these. Skipped in dev and in
+// Every real build must supply these. Skipped in dev and in
 // `nuxt prepare` (the postinstall step), where hosts may not expose secrets yet.
 function assertEnv(names: string[]) {
   if (process.env.NODE_ENV !== 'production' || process.argv.includes('prepare')) return
@@ -149,13 +148,10 @@ export default defineNuxtConfig({
     // A sender on codepedia.* needs that domain verified in Resend (SPF/DKIM) first.
     mailFrom: process.env.MAIL_FROM || 'CODEPEDIA <onboarding@resend.dev>',
     mailTo: process.env.MAIL_TO || 'contact@codepedia.md',
-    // Vercel Cron sends `Authorization: Bearer $CRON_SECRET`; unset, /api/health answers 404.
+    // Bearer secret for /api/health and /api/cache-clear (shared by both Hostinger apps); unset, both answer 404.
     cronSecret: process.env.CRON_SECRET || '',
     // Secret that Cloudflare sends in `x-codepedia-origin`; requests without it get 403. Empty = check off. NUXT_ORIGIN_SECRET also overrides it at runtime, no rebuild needed.
     originSecret: process.env.NUXT_ORIGIN_SECRET || '',
-    // Mirrors nitro.vercel.config.bypassToken below; server/api/admin/revalidate.post.ts sends it back as
-    // `x-prerender-revalidate` to force an ISR refresh. Empty off Vercel falls back to a storage cache clear.
-    isrBypassToken: process.env.VERCEL_ISR_BYPASS_TOKEN || '',
     // Sitemap <lastmod> of the static pages (YYYY-MM-DD): they only change with a deploy.
     buildDate: new Date().toISOString().slice(0, 10),
     // Cloudflare R2 (S3 API) credentials for the admin media endpoints in layers/projects. Server-only.
@@ -183,17 +179,8 @@ export default defineNuxtConfig({
     compressPublicAssets: { gzip: true, brotli: true },
     // The swr cache keeps serving the last good page or payload while Supabase fails, but in memory it is lost
     // on every restart (Hostinger stops idle apps) and the site goes 500 until the database answers again.
-    // On disk it survives restarts; entries still expire per build (Nitro's integrity hash). Vercel has ISR instead.
-    ...(process.env.VERCEL ? {} : { storage: { cache: { driver: 'fsLite', base: './.data/cache' } } }),
-    // On the `vercel` preset, routeRules with `swr`/`isr` become separate Vercel Prerender Functions served
-    // straight from the edge — this token lets revalidate.post.ts force one to bypass and refresh.
-    vercel: {
-      config: {
-        bypassToken: process.env.VERCEL_ISR_BYPASS_TOKEN || undefined,
-        // Run before the ISR cache, so / and /en can be cached and still redirect by language.
-        routes: [trailingSlashRoute(), ...localeRedirectRoutes()],
-      },
-    },
+    // On disk it survives restarts; entries still expire per build (Nitro's integrity hash).
+    storage: { cache: { driver: 'fsLite', base: './.data/cache' } },
   },
 
   // No source maps shipped: nothing consumes them (the largest client one was ~3 MB) and the server ones only grow the deploy.
@@ -203,9 +190,8 @@ export default defineNuxtConfig({
     // The redirect of / and /en by cookie, geo and domain runs in a middleware, before this cache. A cached
     // answer is Cache-Control s-maxage, which layers/core/server/plugins/locale-entry-headers.ts turns back
     // into `private, no-cache` + Vary before sending. The server render reads no cookie or header.
-    // Not on Vercel previews: there an swr rule becomes an ISR function whose cached answer (a geo
-    // redirect included) would be served to every visitor, bypassing the middleware.
-    ...(process.env.VERCEL ? {} : { '/': swrCache(300), '/en': swrCache(300) }),
+    '/': swrCache(300),
+    '/en': swrCache(300),
     '/proiecte': swrCache(300),
     '/en/work': swrCache(300),
     '/proiecte/**': swrCache(300),
@@ -281,15 +267,11 @@ export default defineNuxtConfig({
   },
 
   image: {
-    // vercel provider avoids bundling sharp, whose native binary built on Windows can't load in Vercel's Linux functions.
-    provider: process.env.VERCEL ? 'vercel' : 'ipx',
     // Supabase stays until every image row points at R2.
     domains: [supabaseHost, mediaHost].filter((host): host is string => !!host),
-    // The vercel provider defaults to q=100, which more than doubles the bytes of a UI screenshot for no visible gain.
+    // Keeps a UI screenshot from being encoded at a much higher default quality for no visible gain.
     quality: 75,
-    // The vercel provider only serves these exact widths (they become `images.sizes` in the build output) and rounds
-    // any other request up. The `sizes` attributes in the components pick slot widths whose 1x and 2x are in this set,
-    // so each srcset descriptor is a width Vercel really serves. The wNNN keys only carry a width.
+    // The `sizes` attributes in the components pick slot widths whose 1x and 2x are in this set. The wNNN keys only carry a width.
     screens: {
       sm: 640,
       md: 768,
@@ -305,9 +287,7 @@ export default defineNuxtConfig({
       w1200: 1200,
       w1920: 1920,
     },
-    // Project images live in Supabase Storage under unique paths, so a day of caching saves re-optimizing them.
-    ...(process.env.VERCEL ? { vercel: { minimumCacheTTL: 86400 } } : {}),
-    // Same reason off Vercel: Supabase answers `no-cache`, so ipx falls back to max-age=300 and sharp
+    // Project images live in Supabase Storage under unique paths. Supabase answers `no-cache`, so ipx falls back to max-age=300 and sharp
     // re-encodes every image every few minutes. Uploads never overwrite (layers/projects/server/services/projectMedia.ts), so a year is
     // safe. Only remote (http) sources: local public/ files keep their names and their default.
     ipx: { http: { maxAge: 31536000 } },
