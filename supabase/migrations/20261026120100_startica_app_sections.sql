@@ -32,7 +32,7 @@ returns boolean
 language sql
 immutable
 set search_path = ''
-as $
+as $$
   select coalesce(bool_and(
            case
              when l->>'kind' = 'walkthrough' then coalesce(l->>'url', '') ~ '^(https?://|/[^/])'
@@ -40,7 +40,7 @@ as $
            end
          ), true)
     from jsonb_array_elements(p_links) as l
-$;
+$$;
 
 create or replace function public.save_project(payload jsonb)
 returns jsonb
