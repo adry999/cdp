@@ -7,16 +7,16 @@ import { buildCsp, inlineHandlerHashes, inlineScriptHashes } from '#layers/core/
 // 'unsafe-inline'.
 export default defineNitroPlugin((nitroApp) => {
   const { supabase, mediaUrl } = useRuntimeConfig().public
-  const supabaseHost = supabase.url ? new URL(supabase.url).hostname : undefined
-  const mediaHost = mediaUrl ? new URL(mediaUrl).hostname : undefined
+  const supabaseOrigin = supabase.url ? new URL(supabase.url).origin : undefined
+  const mediaOrigin = mediaUrl ? new URL(mediaUrl).origin : undefined
 
   nitroApp.hooks.hook('render:html', (html, { event }) => {
     const markup = [...html.head, ...html.bodyPrepend, ...html.body, ...html.bodyAppend].join('\n')
     const scriptSources = import.meta.dev ? ["'unsafe-inline'"] : [...inlineScriptHashes(markup), ...inlineHandlerHashes(markup)]
     if (import.meta.prerender) {
-      html.head.unshift(`<meta http-equiv="Content-Security-Policy" content="${buildCsp({ supabaseHost, mediaHost, scriptSources, meta: true })}">`)
+      html.head.unshift(`<meta http-equiv="Content-Security-Policy" content="${buildCsp({ supabaseOrigin, mediaOrigin, scriptSources, meta: true })}">`)
     } else {
-      setResponseHeader(event, 'Content-Security-Policy', buildCsp({ supabaseHost, mediaHost, scriptSources }))
+      setResponseHeader(event, 'Content-Security-Policy', buildCsp({ supabaseOrigin, mediaOrigin, scriptSources }))
     }
   })
 })
