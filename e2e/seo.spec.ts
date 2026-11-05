@@ -35,7 +35,7 @@ async function expectSeo(page: Page, path: string) {
 test('home pages carry canonical, hreflang and valid JSON-LD', async ({ page }) => {
   for (const path of ['/', '/en']) {
     // Without a geo header "/" redirects to /en, which would never exercise the RO home.
-    await page.setExtraHTTPHeaders(path === '/' ? { 'x-vercel-ip-country': 'RO' } : {})
+    await page.setExtraHTTPHeaders(path === '/' ? { 'cf-ipcountry': 'RO' } : {})
     const head = await expectSeo(page, path)
     if (path === '/') {
       expect(new URL(page.url()).pathname, 'the RO home is not redirected').toBe('/')

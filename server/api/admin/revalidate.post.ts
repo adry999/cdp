@@ -1,54 +1,21 @@
 import { clearPeerCaches } from '#layers/core/server/utils/clearPeerCaches'
-import { getSiteOrigins, getSiteUrl } from '#layers/core/server/utils/getSiteUrl'
+import { getSiteOrigins } from '#layers/core/server/utils/getSiteUrl'
 import { requireAdmin } from '#layers/core/server/utils/requireAdmin'
-import { revalidatePublicCache } from '#layers/core/server/utils/revalidatePublicCache'
-import { HOME_PAGE } from '#layers/core/server/utils/sitemap'
-import { CONSENT_SITEMAP_PAGES } from '#layers/consent/server'
-import { CONTENT_SITEMAP_PAGES } from '#layers/content/server'
-import { LEADS_SITEMAP_PAGES } from '#layers/leads/server'
-import { listNewsPages } from '#layers/news/server'
-import { listCaseStudyPages, PROJECTS_INDEX_PAGE } from '#layers/projects/server'
-import { listServiceSitemapPages, SERVICES_INDEX_PAGE } from '#layers/services/server'
 
-// Every SWR page from nuxt.config.ts routeRules, in the sitemap's order. Each embeds the header
-// menu, so a project change must reach all of them. The blog is prerendered at build and left out.
+// Admin writes bypass Nuxt entirely, so nothing invalidates the cached (SWR) public pages automatically:
+// clear this app's storage cache, then ask the other Hostinger app to do the same.
 export default defineEventHandler(async (event) => {
   await requireAdmin(event)
 
-  const result = await revalidatePublicCache({
-    bypassToken: useRuntimeConfig(event).isrBypassToken || undefined,
-    siteUrl: getSiteUrl(event),
-    dataPaths: ['/api/projects', '/api/projects/nav', '/api/home/settings', '/api/news'],
-    listPages: async () => [
-      HOME_PAGE,
-      PROJECTS_INDEX_PAGE,
-      ...(await listCaseStudyPages(event)),
-      ...(await listNewsPages(event)),
-      SERVICES_INDEX_PAGE,
-      ...listServiceSitemapPages(event),
-      ...LEADS_SITEMAP_PAGES,
-      ...CONTENT_SITEMAP_PAGES,
-      ...CONSENT_SITEMAP_PAGES,
-    ],
-    clearStorageCache: () => useStorage('cache').clear(),
-    fetchPath: async (url, bypassToken, headers) => {
-      // A redirect would refresh another page than the one asked for; count it as a failure.
-      const response = await $fetch.raw(url, { headers: { 'x-prerender-revalidate': bypassToken, ...headers }, redirect: 'manual' })
-      if (response.status >= 300) throw new Error(`${url} answered ${response.status}`)
+  await useStorage('cache').clear()
+  const peers = await clearPeerCaches({
+    origins: getSiteOrigins(event),
+    currentHost: getRequestHost(event),
+    secret: useRuntimeConfig(event).cronSecret,
+    post: async (url, authorization) => {
+      const response = await fetch(url, { method: 'POST', headers: { authorization }, signal: AbortSignal.timeout(5000) })
+      if (!response.ok) throw new Error(`${url} answered ${response.status}`)
     },
   })
-
-  if (result.method === 'storage-clear') {
-    const peers = await clearPeerCaches({
-      origins: getSiteOrigins(event),
-      currentHost: getRequestHost(event),
-      secret: useRuntimeConfig(event).cronSecret,
-      post: async (url, authorization) => {
-        const response = await fetch(url, { method: 'POST', headers: { authorization }, signal: AbortSignal.timeout(5000) })
-        if (!response.ok) throw new Error(`${url} answered ${response.status}`)
-      },
-    })
-    return { success: true, method: result.method, peers }
-  }
-  return { success: result.failed === 0, ...result }
+  return { success: true, method: 'storage-clear', peers }
 })

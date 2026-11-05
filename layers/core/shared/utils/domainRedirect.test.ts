@@ -53,7 +53,7 @@ describe('domainRedirectTarget', () => {
 
   it('ignores unknown hosts and a single-domain setup', () => {
     expect(go('localhost:3000', '/proiecte')).toBeNull()
-    expect(go('cdp-git-dev.vercel.app', '/en/work')).toBeNull()
+    expect(go('preview.example.test', '/en/work')).toBeNull()
     expect(go(null, '/proiecte')).toBeNull()
     const single = { en: 'http://localhost:3000', ro: 'http://localhost:3000' }
     expect(go('localhost:3000', '/en/work', '', single)).toBeNull()

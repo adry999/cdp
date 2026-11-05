@@ -1,4 +1,0 @@
-{
-  "trailingSlash": false,
-  "crons": [{ "path": "/api/health", "schedule": "0 6 * * *" }]
-}
