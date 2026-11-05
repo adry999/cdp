@@ -43,8 +43,3 @@ export function withoutTrailingSlash(pathname: string): string | undefined {
   if (pathname.length < 2 || !pathname.endsWith('/')) return undefined
   return pathname.replace(/\/+$/, '') || undefined
 }
-
-/** Vercel route (Build Output API) sending `/x/` to `/x` with a 308. The root has no slash to remove. */
-export function trailingSlashRoute(): { src: string; status: number; headers: Record<string, string> } {
-  return { src: '^/(.+)/$', status: 308, headers: { Location: '/$1' } }
-}

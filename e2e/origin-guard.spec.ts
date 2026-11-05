@@ -4,7 +4,7 @@ import { expect, test } from '@playwright/test'
 const SECRET_HEADER = { 'x-codepedia-origin': 'e2e-origin-secret' }
 
 test('refuses requests without the origin header', async ({ request }) => {
-  expect((await request.get('/', { headers: { 'x-vercel-ip-country': 'RO' } })).status()).toBe(403)
+  expect((await request.get('/', { headers: { 'cf-ipcountry': 'RO' } })).status()).toBe(403)
   expect((await request.get('/api/projects')).status()).toBe(403)
 })
 

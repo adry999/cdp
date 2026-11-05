@@ -5,7 +5,7 @@ const LOCALE_ENTRY_PATHS = ['/', '/en']
 
 export const isLocaleEntryPath = (pathname: string) => LOCALE_ENTRY_PATHS.includes(pathname)
 
-export const LOCALE_ENTRY_VARY = 'Cookie, CF-IPCountry, X-Vercel-IP-Country'
+export const LOCALE_ENTRY_VARY = 'Cookie, CF-IPCountry'
 
 /** Headers a 200 answer on `/` or `/en` must carry; the route cache replaces the ones the middleware set. */
 export function localeEntryHeaders(pathname: string, status: number): Record<string, string> | undefined {
