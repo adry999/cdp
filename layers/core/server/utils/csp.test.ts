@@ -38,7 +38,8 @@ describe('inlineScriptHashes', () => {
 describe('buildCsp', () => {
   it('lists the script hashes and the Supabase host, with no unsafe-inline on scripts', () => {
     const csp = buildCsp({ supabaseOrigin: 'https://x.supabase.co', scriptSources: ["'sha256-abc'", "'sha256-def'"] })
-    expect(csp).toContain(`script-src 'self' 'sha256-abc' 'sha256-def' https://*.googletagmanager.com https://connect.facebook.net;`)
+    expect(csp).toContain(`script-src 'self' 'sha256-abc' 'sha256-def' https://*.googletagmanager.com https://connect.facebook.net https://challenges.cloudflare.com;`)
+    expect(csp).toContain('frame-src https://challenges.cloudflare.com;')
     expect(csp).toContain(`img-src 'self' data: https://x.supabase.co `)
     expect(csp).toContain(` https://x.supabase.co; frame-ancestors 'none';`)
     expect(csp).not.toMatch(/script-src [^;]*'unsafe-inline'/)

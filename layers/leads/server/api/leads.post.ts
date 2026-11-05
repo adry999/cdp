@@ -1,5 +1,6 @@
 import { checkRateLimit } from '#layers/core/server/utils/checkRateLimit'
 import { readLimitedBody } from '#layers/core/server/utils/readLimitedBody'
+import { requireTurnstile } from '#layers/core/server/utils/turnstile'
 import type { ContactSubmission } from '#layers/leads/domain/lead'
 import { createLeadRepository } from '#layers/leads/server/repository/leadRepository'
 import { LEAD_RATE_LIMIT, notifyTeam } from '#layers/leads/server/services/leadNotification'
@@ -7,6 +8,8 @@ import { confirmToVisitor } from '#layers/leads/server/services/visitorConfirmat
 import { submitLead } from '#layers/leads/server/services/submitLead'
 
 export default defineEventHandler(async (event) => {
+  await requireTurnstile(event, 'contact')
+
   // Anything but a JSON object is a malformed request, not a form with every field missing.
   const body: unknown = (await readLimitedBody(event)) ?? {}
   if (typeof body !== 'object' || body === null || Array.isArray(body)) {

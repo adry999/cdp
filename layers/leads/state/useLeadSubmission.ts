@@ -10,7 +10,7 @@ import {
 } from '#layers/leads/domain/lead'
 
 export interface LeadSubmissionDependencies {
-  post: (submission: ContactSubmission) => Promise<unknown>
+  post: (submission: ContactSubmission, turnstileToken?: string) => Promise<unknown>
 }
 
 export function useLeadSubmission(deps: LeadSubmissionDependencies = { post: postLead }) {
@@ -18,14 +18,14 @@ export function useLeadSubmission(deps: LeadSubmissionDependencies = { post: pos
   const fieldErrors = ref<ContactFieldErrors>({})
   const error = ref<AppError | null>(null)
 
-  async function submit(submission: ContactSubmission): Promise<boolean> {
+  async function submit(submission: ContactSubmission, turnstileToken?: string): Promise<boolean> {
     fieldErrors.value = validateContactSubmission(submission)
     if (Object.keys(fieldErrors.value).length > 0 || status.value === 'pending') return false
 
     status.value = 'pending'
     error.value = null
     try {
-      await deps.post(submission)
+      await deps.post(submission, turnstileToken)
       status.value = 'success'
       return true
     } catch (caught) {

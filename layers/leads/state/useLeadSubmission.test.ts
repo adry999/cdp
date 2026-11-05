@@ -18,8 +18,8 @@ describe('useLeadSubmission', () => {
     const { status, error, submit } = useLeadSubmission({ post })
     const submission = buildContactSubmission()
 
-    expect(await submit(submission)).toBe(true)
-    expect(post).toHaveBeenCalledWith(submission)
+    expect(await submit(submission, 'turnstile-token')).toBe(true)
+    expect(post).toHaveBeenCalledWith(submission, 'turnstile-token')
     expect(status.value).toBe('success')
     expect(error.value).toBeNull()
   })

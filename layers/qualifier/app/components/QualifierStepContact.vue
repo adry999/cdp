@@ -13,7 +13,17 @@ const props = defineProps<{
   submitting: boolean
   error: boolean
 }>()
-const emit = defineEmits<{ submit: [QualifierContactPayload]; back: [] }>()
+const emit = defineEmits<{ submit: [QualifierContactPayload, string]; back: [] }>()
+const turnstileToken = ref('')
+const turnstile = useTemplateRef<{ reset(): void }>('turnstile')
+
+// The server spent the token on the failed attempt; a retry needs a new one.
+watch(
+  () => props.error,
+  (failed) => {
+    if (failed) turnstile.value?.reset()
+  },
+)
 
 const { t } = useI18n()
 const localePath = useLocalePath()
@@ -53,7 +63,7 @@ async function handleSubmit() {
     document.getElementById(fieldErrors.name ? 'qual-name' : 'qual-email')?.focus()
     return
   }
-  emit('submit', { ...form })
+  emit('submit', { ...form }, turnstileToken.value)
 }
 </script>
 
@@ -134,6 +144,8 @@ async function handleSubmit() {
         class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       />
     </div>
+
+    <CoreTurnstile ref="turnstile" v-model="turnstileToken" action="qualifier" />
 
     <p v-if="error" role="alert" class="flex items-center gap-1.5 font-mono text-xs text-ink">
       <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ t('home.contact.form.error') }}

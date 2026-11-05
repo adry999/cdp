@@ -21,6 +21,8 @@ const serviceOptions = visibleServices(SERVICE_TAG_IDS, grantsEnabled)
 const route = useRoute()
 const localePath = useLocalePath()
 const { status, fieldErrors, submit } = useLeadSubmission()
+const turnstileToken = ref('')
+const turnstile = useTemplateRef<{ reset(): void }>('turnstile')
 
 const form = reactive({
   name: '',
@@ -73,7 +75,7 @@ const FIELD_ORDER = ['name', 'email', 'message'] as const
 
 async function handleSubmit() {
   const { service, ...fields } = form
-  await submit({ ...fields, service, stage: service ? stageForServiceTag(service) : undefined, lang: locale.value, page: route.fullPath, utm: captureUtm() })
+  await submit({ ...fields, service, stage: service ? stageForServiceTag(service) : undefined, lang: locale.value, page: route.fullPath, utm: captureUtm() }, turnstileToken.value)
   // A rejected submit leaves focus on the button; moving it to the first invalid field puts
   // the error in front of a screen-reader user (their message is linked by aria-describedby).
   const invalid = FIELD_ORDER.find((field) => fieldErrors.value[field])
@@ -91,6 +93,8 @@ watch(status, (value) => {
   if (value === 'success') {
     nextTick(() => successHeading.value?.focus())
   }
+  // The server spent the token on the failed attempt; a retry needs a new one.
+  if (value === 'error') turnstile.value?.reset()
 })
 </script>
 
@@ -237,6 +241,8 @@ watch(status, (value) => {
     </div>
       </div>
     </div>
+
+    <CoreTurnstile ref="turnstile" v-model="turnstileToken" action="contact" />
 
     <p v-if="status === 'error'" role="alert" class="flex items-center gap-1.5 font-mono text-xs text-ink">
       <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ t('home.contact.form.error') }}
