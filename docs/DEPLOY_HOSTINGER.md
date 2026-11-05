@@ -193,6 +193,36 @@ Apoi adaugă fiecare domeniu separat în Google Search Console.
 `..\backup\<YYYY-MM-DD>\`, în afara repo-ului: `db\` (`roles.sql`, `schema.sql`, `data.sql`
 din `supabase db dump`) și `media\` (toate obiectele din R2). `data.sql` conține date
 personale din `leads`: folderul `..\backup\` nu se comite și nu se trimite nimănui.
+`media-url.txt` reține adresa publică a imaginilor din acel moment (în bază URL-urile sunt absolute).
+
+### Site-ul complet pe local, din backup
+
+Fără Supabase cloud, R2 sau Hostinger; cere doar Docker și Supabase CLI.
+
+```bash
+npm run local       # pornește stack-ul Supabase local (supabase/config.toml), scrie .env.offline
+                    # și, cât timp e gol, restaurează cel mai nou backup (sau: npm run local -- ../backup/<data>)
+npm run dev:local   # site-ul pe http://localhost:3000, cu admin (aceleași conturi și MFA)
+```
+
+Imaginile stau în bucket-ul `codepedia-media` al Storage-ului local, prin API-ul S3
+(`R2_ENDPOINT`, `R2_REGION`), deci și upload-ul din admin merge. Stack-ul e minim (bază,
+Auth, REST, Storage; Studio, Realtime și restul sunt oprite în `supabase/config.toml`), fiindcă
+Docker consumă multă memorie: la final, `supabase stop` și închide Docker Desktop.
+`supabase stop` păstrează datele; `supabase stop --no-backup` le șterge, iar următorul
+`npm run local` restaurează din nou.
+
+### Mutarea pe alt host
+
+1. Proiect Supabase nou (cloud sau self-hosted) și un bucket S3 public (R2, S3, MinIO).
+2. Un fișier de env nou (ex. `.env.new`) cu variabilele din tabelul de mai sus, plus
+   `SUPABASE_DB_URL` (URI-ul Session pooler, cu parola) și, pentru alt S3 decât R2,
+   `R2_ENDPOINT` și `R2_REGION`.
+3. `node --env-file=.env.new scripts/restore.ts ../backup/<data>`: încarcă rolurile, schema
+   (dacă baza e nouă) și datele, rescrie URL-urile imaginilor spre noul `NUXT_PUBLIC_MEDIA_URL`
+   și urcă toate imaginile. Refuză o bază care are deja proiecte, deci nu suprascrie nimic.
+4. Aplicația e un server Node obișnuit: `npm run build`, apoi `node .output/server/index.mjs`,
+   cu aceleași variabile, pe orice host Node.
 
 ## Probleme cunoscute
 
