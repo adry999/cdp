@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createR2Client, signRequest } from './r2'
+import { createR2Client, signRequest, type R2Config } from './r2'
 
 const EMPTY_HASH = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
 
@@ -21,10 +21,10 @@ describe('signRequest', () => {
   })
 })
 
-function setup(respond: () => Response = () => new Response('', { status: 200 })) {
+function setup(respond: () => Response = () => new Response('', { status: 200 }), overrides: Partial<R2Config> = {}) {
   const calls: { url: string; init: RequestInit }[] = []
   const client = createR2Client(
-    { accountId: 'acc', accessKeyId: 'key', secretAccessKey: 'secret', bucket: 'media' },
+    { accountId: 'acc', accessKeyId: 'key', secretAccessKey: 'secret', bucket: 'media', ...overrides },
     {
       fetch: async (url, init) => {
         calls.push({ url: String(url), init: init ?? {} })
@@ -39,6 +39,13 @@ function setup(respond: () => Response = () => new Response('', { status: 200 })
 const headersOf = (call: { init: RequestInit }) => call.init.headers as Record<string, string>
 
 describe('createR2Client', () => {
+  it('signs for another S3 endpoint, keeping its path prefix, port and region', async () => {
+    const { client, calls } = setup(undefined, { endpoint: 'http://127.0.0.1:55321/storage/v1/s3/', region: 'local' })
+    await client.putObject('a/b.png', new Uint8Array([1]), 'image/png')
+    expect(calls[0]!.url).toBe('http://127.0.0.1:55321/storage/v1/s3/media/a/b.png')
+    expect(headersOf(calls[0]!).authorization).toMatch(/^AWS4-HMAC-SHA256 Credential=key\/20261104\/local\/s3\/aws4_request, /)
+  })
+
   it('puts an object at the encoded key with a signed content type', async () => {
     const { client, calls } = setup()
     await client.putObject('my project/cover (1).jpg', new Uint8Array([1, 2]), 'image/jpeg')
