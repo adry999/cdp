@@ -61,7 +61,7 @@ export async function submitLead(
     },
     'leads',
   )
-  await notifyBestEffort(deps.confirm, { to: record.email, name: record.name, lang: record.lang }, 'leads:confirmation')
+  await notifyBestEffort(deps.confirm, { to: record.email, lang: record.lang }, 'leads:confirmation')
 
   return { outcome: 'accepted' }
 }

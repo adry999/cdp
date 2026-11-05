@@ -211,7 +211,12 @@ export function createProjectsAdminRepository(
         })
         .select('id')
         .single()
-      if (error) throw failure('Proiectul nu a putut fi duplicat.', error)
+      if (error) {
+        // The copies belong to no project yet; without this every failed attempt orphans them in the bucket.
+        const copies = [newCover.url, newHero.url].filter((url): url is string => !!url)
+        if (copies.length) await media.remove(copies).catch((cause) => console.warn('[projects] duplicate: copied media not removed', cause))
+        throw failure('Proiectul nu a putut fi duplicat.', error)
+      }
 
       const children = await Promise.all([
         client.from('project_facts').select('*').eq('project_id', id),

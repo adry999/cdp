@@ -50,13 +50,13 @@ describe('buildVisitorEmail', () => {
 
   it('answers in Romanian from the RO domain, with the response time from the site settings', () => {
     const email = buildVisitorEmail(
-      { to: 'ana@example.com', name: 'Ana', lang: 'ro' },
+      { to: 'ana@example.com', lang: 'ro' },
       { ...settings, siteUrl: 'https://codepedia.md' },
     )
     expect(email.to).toBe('ana@example.com')
     expect(email.replyTo).toBe('contact@codepedia.md')
     expect(email.subject).toBe('Am primit solicitarea ta')
-    expect(email.text).toContain('Mulțumim, Ana.')
+    expect(email.text).toContain('Mulțumim.')
     expect(email.text).toContain('în 1 zi lucrătoare.')
     expect(email.html).toContain('href="https://codepedia.md/proiecte"')
     expect(email.html).toContain('<html lang="ro">')
@@ -64,7 +64,7 @@ describe('buildVisitorEmail', () => {
 
   it('answers in English from the EN domain', () => {
     const email = buildVisitorEmail(
-      { to: 'ana@example.com', name: 'Ana', lang: 'en' },
+      { to: 'ana@example.com', lang: 'en' },
       { ...settings, siteUrl: 'https://codepedia.studio' },
     )
     expect(email.subject).toBe('We received your request')
@@ -73,12 +73,8 @@ describe('buildVisitorEmail', () => {
     expect(email.text).toContain('codepedia.studio')
   })
 
-  it('shortens and escapes the name the visitor typed', () => {
-    const email = buildVisitorEmail(
-      { to: 'x@example.com', name: `<b>${'x'.repeat(100)}`, lang: 'ro' },
-      { ...settings, siteUrl: 'https://codepedia.md' },
-    )
-    expect(email.html).not.toContain('<b>')
-    expect(email.text).not.toContain('x'.repeat(61))
+  it('carries no text the visitor typed, only the address it goes to', () => {
+    const email = buildVisitorEmail({ to: 'x@example.com', lang: 'en' }, { ...settings, siteUrl: 'https://codepedia.studio' })
+    expect(email.text.startsWith('Thank you.')).toBe(true)
   })
 })

@@ -30,6 +30,12 @@ describe('resolvePrivacyPolicy', () => {
     expect(flatten(locale)).toContain('Resend')
   })
 
+  it.each(['ro', 'en'] as const)('names the providers the site actually runs on, not Vercel (%s)', (locale) => {
+    const text = flatten(locale)
+    for (const provider of ['Hostinger', 'Cloudflare', 'Supabase', 'Resend', 'Google']) expect(text).toContain(provider)
+    expect(text).not.toContain('Vercel')
+  })
+
   it.each(['ro', 'en'] as const)('describes the qualifier data it collects (%s)', (locale) => {
     const text = flatten(locale).toLowerCase()
     expect(text).toMatch(/qualif|calificare/)

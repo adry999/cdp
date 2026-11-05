@@ -7,7 +7,7 @@ describe('resolveClientIp', () => {
   })
 
   it('ignores headers a visitor can forge and falls back to the socket address', () => {
-    const forged = { 'x-real-ip': '3.3.3.3', 'x-forwarded-for': '5.5.5.5', 'x-vercel-forwarded-for': '6.6.6.6' }
+    const forged = { 'x-real-ip': '3.3.3.3', 'x-forwarded-for': '5.5.5.5', 'x-custom-forwarded-for': '6.6.6.6' }
     expect(resolveClientIp(forged, () => '4.4.4.4')).toBe('4.4.4.4')
   })
 

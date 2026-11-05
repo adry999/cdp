@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
-  await page.setExtraHTTPHeaders({ 'x-vercel-ip-country': 'RO' })
+  await page.setExtraHTTPHeaders({ 'cf-ipcountry': 'RO' })
 })
 
 test('banner shows on first visit and hides after accepting', async ({ page }) => {

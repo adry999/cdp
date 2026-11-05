@@ -5,7 +5,6 @@ import { SITE_SETTINGS } from '#layers/content/server'
 
 export interface VisitorConfirmation {
   to: string
-  name: string
   lang: 'ro' | 'en'
 }
 
@@ -19,13 +18,12 @@ export interface VisitorEmailSettings {
   contactEmail: string
 }
 
-// Long enough for a full name; the visitor controls this text, so it stays short.
-const NAME_LIMIT = 60
-
+// The confirmation goes to an address anyone can type into the form, so it carries no text the
+// visitor wrote: a name like "refund at bit.ly/x" would otherwise be sent from our domain.
 const COPY = {
   ro: {
     subject: 'Am primit solicitarea ta',
-    heading: (name: string) => `Mulțumim, ${name}.`,
+    heading: 'Mulțumim.',
     received: (time: string) => `Am primit solicitarea ta. O citim cu atenție și revenim cu un răspuns în ${time}.`,
     reply: 'Dacă vrei să adaugi ceva între timp, răspunde direct la acest email.',
     action: 'Vezi proiectele noastre',
@@ -34,7 +32,7 @@ const COPY = {
   },
   en: {
     subject: 'We received your request',
-    heading: (name: string) => `Thank you, ${name}.`,
+    heading: 'Thank you.',
     received: (time: string) => `We've received your request. We'll read it carefully and get back to you within ${time}.`,
     reply: "If you'd like to add anything in the meantime, just reply to this email.",
     action: 'See our work',
@@ -45,7 +43,6 @@ const COPY = {
 
 export function buildVisitorEmail(confirmation: VisitorConfirmation, settings: VisitorEmailSettings): MailMessage {
   const copy = COPY[confirmation.lang]
-  const name = confirmation.name.slice(0, NAME_LIMIT)
   const responseTime = settings.responseTime[confirmation.lang]
   const projectsUrl = `${settings.siteUrl}${copy.projectsPath}`
   const footer = copy.footer(new URL(settings.siteUrl).host)
@@ -54,11 +51,11 @@ export function buildVisitorEmail(confirmation: VisitorConfirmation, settings: V
     to: confirmation.to,
     replyTo: settings.contactEmail,
     subject: copy.subject,
-    text: [copy.heading(name), '', received, copy.reply, '', `${copy.action}: ${projectsUrl}`, '', footer].join('\n'),
+    text: [copy.heading, '', received, copy.reply, '', `${copy.action}: ${projectsUrl}`, '', footer].join('\n'),
     html: renderEmailHtml({
       lang: confirmation.lang,
       preheader: received,
-      heading: copy.heading(name),
+      heading: copy.heading,
       paragraphs: [received, copy.reply],
       action: { label: copy.action, url: projectsUrl },
       logoUrl: `${settings.siteUrl}/brand/codepedia-wordmark-email-paper.png`,
