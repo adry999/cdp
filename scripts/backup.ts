@@ -19,11 +19,14 @@ const source = dbUrl
   ? ['--db-url', dbUrl]
   : ['--project-ref', new URL(need('NUXT_PUBLIC_SUPABASE_URL')).hostname.split('.')[0]!]
 const r2 = createR2Client({
-  accountId: need('R2_ACCOUNT_ID'),
+  accountId: process.env.R2_ENDPOINT ? '' : need('R2_ACCOUNT_ID'),
   accessKeyId: need('R2_ACCESS_KEY_ID'),
   secretAccessKey: need('R2_SECRET_ACCESS_KEY'),
   bucket: need('R2_BUCKET'),
+  endpoint: process.env.R2_ENDPOINT,
+  region: process.env.R2_REGION,
 })
+const mediaUrl = need('NUXT_PUBLIC_MEDIA_URL').replace(/\/+$/, '')
 
 const target = resolve(process.cwd(), '..', 'backup', new Date().toISOString().slice(0, 10))
 const dbDir = join(target, 'db')
@@ -50,6 +53,8 @@ for (const key of keys) {
   mkdirSync(dirname(path), { recursive: true })
   writeFileSync(path, await r2.getObject(key))
 }
+// The database stores absolute media URLs: scripts/restore.ts rewrites this prefix to the target's NUXT_PUBLIC_MEDIA_URL.
+writeFileSync(join(target, 'media-url.txt'), mediaUrl)
 
 console.log(`\nBackup written to ${target}`)
 console.log(`  database: ${dbDir} (roles.sql, schema.sql, data.sql)`)

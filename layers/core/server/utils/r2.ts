@@ -1,6 +1,7 @@
 import { createHash, createHmac } from 'node:crypto'
 
-// Minimal Cloudflare R2 client (S3 API, AWS Signature V4) on node:crypto and fetch: no SDK dependency.
+// Minimal S3 client (AWS Signature V4) on node:crypto and fetch: no SDK dependency. Cloudflare R2 by default;
+// `endpoint` + `region` point it at any other S3-compatible store (local Supabase Storage, AWS S3, MinIO).
 // Relative imports only, so scripts/ can run it with Node's type stripping.
 
 export interface R2Config {
@@ -8,6 +9,10 @@ export interface R2Config {
   accessKeyId: string
   secretAccessKey: string
   bucket: string
+  /** S3 endpoint with any path prefix, e.g. `http://127.0.0.1:55321/storage/v1/s3`. Default: the R2 endpoint of `accountId`. */
+  endpoint?: string
+  /** Signing region. Default `auto` (R2). */
+  region?: string
 }
 
 export interface R2Deps {
@@ -89,14 +94,16 @@ function decodeXml(value: string): string {
 export function createR2Client(config: R2Config, deps: R2Deps = {}): R2Client {
   const doFetch = deps.fetch ?? fetch
   const now = deps.now ?? (() => new Date())
-  const host = `${config.accountId}.r2.cloudflarestorage.com`
+  const endpoint = new URL(config.endpoint || `https://${config.accountId}.r2.cloudflarestorage.com`)
+  const host = endpoint.host
+  const prefix = endpoint.pathname.replace(/\/+$/, '')
 
   async function send(
     method: string,
     key: string,
     options: { query?: Record<string, string>; body?: Uint8Array; headers?: Record<string, string> } = {},
   ): Promise<Response> {
-    const path = key ? `/${config.bucket}/${encodeKey(key)}` : `/${config.bucket}`
+    const path = `${prefix}/${config.bucket}${key ? `/${encodeKey(key)}` : ''}`
     const payloadHash = sha256(options.body ?? '')
     const headers: Record<string, string> = {
       ...options.headers,
@@ -112,13 +119,13 @@ export function createR2Client(config: R2Config, deps: R2Deps = {}): R2Client {
       payloadHash,
       accessKeyId: config.accessKeyId,
       secretAccessKey: config.secretAccessKey,
-      region: 'auto',
+      region: config.region || 'auto',
       service: 's3',
     })
     // `host` is set by fetch itself from the URL.
     const { host: _host, ...sent } = headers
     const query = canonicalQuery(options.query)
-    return doFetch(`https://${host}${path}${query ? `?${query}` : ''}`, {
+    return doFetch(`${endpoint.origin}${path}${query ? `?${query}` : ''}`, {
       method,
       headers: { ...sent, authorization },
       body: options.body as BodyInit | undefined,
