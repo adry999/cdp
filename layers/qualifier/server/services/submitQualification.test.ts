@@ -54,7 +54,7 @@ describe('submitQualification', () => {
     expect(deps.notify).toHaveBeenCalledWith(
       expect.objectContaining({ subject: 'Qualificare — Custom Engineering / AI — Ana Pop', replyTo: 'ana@example.com' }),
     )
-    expect(deps.confirm).toHaveBeenCalledWith({ to: 'ana@example.com', name: 'Ana Pop', lang: 'ro' })
+    expect(deps.confirm).toHaveBeenCalledWith({ to: 'ana@example.com', lang: 'ro' })
   })
 
   it('persists the submission even when the notification is skipped', async () => {

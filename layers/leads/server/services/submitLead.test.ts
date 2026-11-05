@@ -70,7 +70,7 @@ describe('submitLead', () => {
       message: { label: 'Mesaj', text: 'Vrem un portal pentru clienți.' },
       replyTo: 'ana@example.com',
     })
-    expect(deps.confirm).toHaveBeenCalledWith({ to: 'ana@example.com', name: 'Ana Popescu', lang: 'ro' })
+    expect(deps.confirm).toHaveBeenCalledWith({ to: 'ana@example.com', lang: 'ro' })
   })
 
   it('rejects an unknown stage before checking the rate limit', async () => {

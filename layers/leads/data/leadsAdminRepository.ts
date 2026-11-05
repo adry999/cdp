@@ -11,6 +11,13 @@ function failure(message: string, cause: unknown): AppError {
 }
 
 export function createLeadsAdminRepository(client: SupabaseClient) {
+  // RLS (or a lead deleted in another tab) blocks an update without an error; the row count tells.
+  async function updateOne(id: string, patch: Database['public']['Tables']['leads']['Update'], what: string) {
+    const { error, count } = await client.from('leads').update(patch, { count: 'exact' }).eq('id', id)
+    if (error) throw failure(`${what}: ${error.message}`, error)
+    if (count !== 1) throw failure(`${what}.`, null)
+  }
+
   return {
     async listActive() {
       const { data, error } = await client
@@ -49,25 +56,10 @@ export function createLeadsAdminRepository(client: SupabaseClient) {
       return data
     },
 
-    async updateStatus(id: string, status: LeadStatus) {
-      const { error } = await client.from('leads').update({ status }).eq('id', id)
-      if (error) throw failure(`Starea nu a putut fi schimbată: ${error.message}`, error)
-    },
-
-    async updateNotes(id: string, notes: string) {
-      const { error } = await client.from('leads').update({ notes }).eq('id', id)
-      if (error) throw failure(`Notele nu au fost salvate: ${error.message}`, error)
-    },
-
-    async archive(id: string) {
-      const { error } = await client.from('leads').update({ archived_at: new Date().toISOString() }).eq('id', id)
-      if (error) throw failure(`Solicitarea nu a putut fi arhivată: ${error.message}`, error)
-    },
-
-    async unarchive(id: string) {
-      const { error } = await client.from('leads').update({ archived_at: null }).eq('id', id)
-      if (error) throw failure(`Solicitarea nu a putut fi dezarhivată: ${error.message}`, error)
-    },
+    updateStatus: (id: string, status: LeadStatus) => updateOne(id, { status }, 'Starea nu a putut fi schimbată'),
+    updateNotes: (id: string, notes: string) => updateOne(id, { notes }, 'Notele nu au fost salvate'),
+    archive: (id: string) => updateOne(id, { archived_at: new Date().toISOString() }, 'Solicitarea nu a putut fi arhivată'),
+    unarchive: (id: string) => updateOne(id, { archived_at: null }, 'Solicitarea nu a putut fi dezarhivată'),
 
     // Erasure on request (privacy policy); RLS returns no error for a blocked delete, so the row count is checked.
     async remove(id: string) {
