@@ -63,6 +63,7 @@ Lista completă, cu explicații, e în `.env.example`.
 | `NUXT_PUBLIC_GA_ID`, `NUXT_PUBLIC_META_PIXEL_ID` | opționale, fără ele consimțământul e inert |
 | `NUXT_PUBLIC_QUALIFIER_ENABLED`, `NUXT_PUBLIC_GRANTS_ENABLED` | opționale |
 | `CRON_SECRET` | pentru `/api/health` (pasul 5) și `/api/cache-clear`: **aceeași valoare pe ambele aplicații**, altfel o editare din admin golește cache-ul doar pe domeniul pe care lucrezi |
+| `NUXT_PUBLIC_TURNSTILE_SITE_KEY`, `NUXT_TURNSTILE_SECRET_KEY` | Turnstile pe formularul de contact și pe calificator: aceleași valori pe ambele aplicații (widget-ul are ambele domenii). Goale = fără widget și fără verificare. Se citesc la pornire, deci ajunge un restart |
 | `NUXT_ORIGIN_SECRET` | opțională; secretul din headerul `x-codepedia-origin` setat de Cloudflare, fără el cererile primesc 403 (vezi §3). Gol = verificarea e oprită. Se poate seta și fără rebuild, doar cu restart |
 | `VIPS_CONCURRENCY` | `1`: sharp (optimizarea imaginilor, `/_ipx/`) pornește implicit câte un fir pe procesor al serverului, iar Hostinger le numără ca procese. Ajunge la runtime (restart) |
 | `NUXT_PUBLIC_NOINDEX` | **nu** se setează pe live |
