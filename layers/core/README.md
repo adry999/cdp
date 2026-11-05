@@ -29,7 +29,7 @@ Theme tokens and theme utilities are not here: they live in the root `app/assets
 - `requireAdmin(event)` — Supabase session (user id from the JWT `sub`) plus an `app_users` row; throws 401 / 403. Pure core in `checkAdmin`.
 - `logAndThrow`, `checkRateLimit`, `sendMail`, `notifyBestEffort`, `getSiteUrl`.
 - `sitemap.ts` — `toSitemapUrls`, `renderSitemap`, `toLastmod`, `HOME_PAGE`.
-- `revalidatePublicCache.ts` — clears Nitro's disk cache (`.data/cache`) after an admin write; `clearPeerCaches.ts` then asks the other official domain (a separate Hostinger app) to clear its own through `POST /api/cache-clear`, guarded by `CRON_SECRET` and only from an official host. Both are called by the root's `server/api/admin/revalidate.post.ts`.
+- After an admin write, the root's `server/api/admin/revalidate.post.ts` clears Nitro's disk cache (`.data/cache`); `clearPeerCaches.ts` then asks the other official domain (a separate Hostinger app) to clear its own through `POST /api/cache-clear`, guarded by `CRON_SECRET` and only from an official host.
 - `r2.ts` — S3/R2 client signed by hand (SigV4), 30 s timeout; `fetchTimeout.ts` — `withFetchTimeout`, used by `plugins/fetch-timeouts.ts` for Supabase (5 s) and the media host read by IPX (10 s).
 - `originGuard.ts`, `resolveClientIp.ts`, `emailHtml.ts`, `assertBodySize.ts`, `readLimitedBody.ts`, `checkCronAuth.ts`.
 - Middleware: `locale-redirect` (language redirect on `/` and `/en`), `domain-redirect` (each page only on its language's domain), `admin-csrf`, `noindex`, `trailing-slash`, `zz-cache-key-query`. The origin guard is the root's `server/middleware/00-origin-guard.ts`.
