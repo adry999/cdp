@@ -322,7 +322,8 @@
       },
       "facts": {
         "responseTime": "Response time",
-        "phone": "Phone"
+        "phone": "Phone",
+        "email": "Email"
       }
     }
   },
