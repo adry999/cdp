@@ -1,4 +1,5 @@
-import { getSiteUrl } from '#layers/core/server/utils/getSiteUrl'
+import { clearPeerCaches } from '#layers/core/server/utils/clearPeerCaches'
+import { getSiteOrigins, getSiteUrl } from '#layers/core/server/utils/getSiteUrl'
 import { requireAdmin } from '#layers/core/server/utils/requireAdmin'
 import { revalidatePublicCache } from '#layers/core/server/utils/revalidatePublicCache'
 import { HOME_PAGE } from '#layers/core/server/utils/sitemap'
@@ -37,6 +38,17 @@ export default defineEventHandler(async (event) => {
     },
   })
 
-  if (result.method === 'storage-clear') return { success: true, method: result.method }
+  if (result.method === 'storage-clear') {
+    const peers = await clearPeerCaches({
+      origins: getSiteOrigins(event),
+      currentHost: getRequestHost(event),
+      secret: useRuntimeConfig(event).cronSecret,
+      post: async (url, authorization) => {
+        const response = await fetch(url, { method: 'POST', headers: { authorization }, signal: AbortSignal.timeout(5000) })
+        if (!response.ok) throw new Error(`${url} answered ${response.status}`)
+      },
+    })
+    return { success: true, method: result.method, peers }
+  }
   return { success: result.failed === 0, ...result }
 })
