@@ -42,21 +42,23 @@ describe('leadsAdminRepository', () => {
 
   it('updateStatus and updateNotes send the right payload for the id', async () => {
     const { fake, repository } = setup()
+    fake.script('leads.update', { count: 1 })
     await repository.updateStatus('l1', 'in_discutie')
     await repository.updateNotes('l1', 'sunat')
     const [status, notes] = fake.callsFor('leads.update')
-    expect(status?.chain).toEqual([['update', [{ status: 'in_discutie' }]], ['eq', ['id', 'l1']]])
-    expect(notes?.chain).toEqual([['update', [{ notes: 'sunat' }]], ['eq', ['id', 'l1']]])
+    expect(status?.chain).toEqual([['update', [{ status: 'in_discutie' }, { count: 'exact' }]], ['eq', ['id', 'l1']]])
+    expect(notes?.chain).toEqual([['update', [{ notes: 'sunat' }, { count: 'exact' }]], ['eq', ['id', 'l1']]])
   })
 
   it('archive stamps archived_at and unarchive clears it', async () => {
     const { fake, repository } = setup()
+    fake.script('leads.update', { count: 1 })
     await repository.archive('l1')
     await repository.unarchive('l1')
     const [archive, unarchive] = fake.callsFor('leads.update')
     const payload = archive?.chain[0]?.[1][0] as { archived_at: string }
     expect(Number.isNaN(Date.parse(payload.archived_at))).toBe(false)
-    expect(unarchive?.chain[0]).toEqual(['update', [{ archived_at: null }]])
+    expect(unarchive?.chain[0]).toEqual(['update', [{ archived_at: null }, { count: 'exact' }]])
   })
 
   it.each([
@@ -70,13 +72,17 @@ describe('leadsAdminRepository', () => {
     await expect(run(repository)).rejects.toMatchObject({ code: 'unexpected', message: expect.stringContaining('boom') })
   })
 
-  // Auditor: only `remove` checks the affected rows. Under RLS a blocked update (or an unknown id)
-  // returns no error and no row, so these report success although nothing changed.
-  // Bug: leadsAdminRepository.ts updateStatus/updateNotes/archive/unarchive never check the row count.
-  it.todo('updateStatus throws when no row was updated')
-  it.todo('updateNotes throws when no row was updated')
-  it.todo('archive throws when no row was updated')
-  it.todo('unarchive throws when no row was updated')
+  // Under RLS a blocked update (or an unknown id) returns no error and no row.
+  it.each([
+    ['updateStatus', (r: Repository) => r.updateStatus('l1', 'nou')],
+    ['updateNotes', (r: Repository) => r.updateNotes('l1', 'n')],
+    ['archive', (r: Repository) => r.archive('l1')],
+    ['unarchive', (r: Repository) => r.unarchive('l1')],
+  ])('%s throws when no row was updated', async (_name, run) => {
+    const { fake, repository } = setup()
+    fake.script('leads.update', { count: 0 })
+    await expect(run(repository)).rejects.toMatchObject({ code: 'unexpected' })
+  })
 
   it('remove succeeds when exactly one row is deleted', async () => {
     const { fake, repository } = setup()
