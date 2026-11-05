@@ -37,7 +37,7 @@ describe('inlineScriptHashes', () => {
 
 describe('buildCsp', () => {
   it('lists the script hashes and the Supabase host, with no unsafe-inline on scripts', () => {
-    const csp = buildCsp({ supabaseHost: 'x.supabase.co', scriptSources: ["'sha256-abc'", "'sha256-def'"] })
+    const csp = buildCsp({ supabaseOrigin: 'https://x.supabase.co', scriptSources: ["'sha256-abc'", "'sha256-def'"] })
     expect(csp).toContain(`script-src 'self' 'sha256-abc' 'sha256-def' https://*.googletagmanager.com https://connect.facebook.net;`)
     expect(csp).toContain(`img-src 'self' data: https://x.supabase.co `)
     expect(csp).toContain(` https://x.supabase.co; frame-ancestors 'none';`)
@@ -46,7 +46,7 @@ describe('buildCsp', () => {
   })
 
   it('allows images from the media host without opening connect-src to it', () => {
-    const csp = buildCsp({ mediaHost: 'media.example.md', scriptSources: [] })
+    const csp = buildCsp({ mediaOrigin: 'https://media.example.md', scriptSources: [] })
     expect(csp).toContain(`img-src 'self' data: https://media.example.md `)
     expect(csp).not.toMatch(/connect-src [^;]*media\.example\.md/)
   })

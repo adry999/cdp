@@ -61,12 +61,14 @@ const isAdminModule = (id: string) =>
 // Production guarantees this via assertEnv above; in dev a missing value just skips the host-scoped image entry below.
 // The Content-Security-Policy header is set per response by layers/core/server/plugins/csp.ts (inline script hashes).
 const supabaseHost = process.env.NUXT_PUBLIC_SUPABASE_URL
-  ? new URL(process.env.NUXT_PUBLIC_SUPABASE_URL).hostname
+  ? new URL(process.env.NUXT_PUBLIC_SUPABASE_URL).host
   : undefined
 
 // Public base URL of the R2 media bucket, without a trailing slash. Optional: unset, project images stay on Supabase.
 const mediaUrl = (process.env.NUXT_PUBLIC_MEDIA_URL || '').replace(/\/+$/, '')
-const mediaHost = mediaUrl ? new URL(mediaUrl).hostname : undefined
+const mediaHost = mediaUrl ? new URL(mediaUrl).host : undefined
+// `host`, not `hostname`: it keeps the port of the local stack (127.0.0.1:55321). @nuxt/image matches the host
+// with its port and IPX normalises the list to hostnames, so both accept it; production hosts have no port.
 
 
 // Localized route paths (RO <-> EN). Also the source of the cross-locale redirects in routeRules.
@@ -157,11 +159,14 @@ export default defineNuxtConfig({
     // Sitemap <lastmod> of the static pages (YYYY-MM-DD): they only change with a deploy.
     buildDate: new Date().toISOString().slice(0, 10),
     // Cloudflare R2 (S3 API) credentials for the admin media endpoints in layers/projects. Server-only.
+    // R2_ENDPOINT + R2_REGION switch to any other S3-compatible store (the local Supabase stack: docs/DEPLOY_HOSTINGER.md).
     r2: {
       accountId: process.env.R2_ACCOUNT_ID || '',
       accessKeyId: process.env.R2_ACCESS_KEY_ID || '',
       secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || '',
       bucket: process.env.R2_BUCKET || '',
+      endpoint: process.env.R2_ENDPOINT || '',
+      region: process.env.R2_REGION || '',
     },
     public: {
       mediaUrl,

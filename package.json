@@ -8,6 +8,8 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:local": "nuxt dev --dotenv .env.offline",
+    "local": "node scripts/local.ts",
     "dev:clean": "nuxt cleanup && rm -rf node_modules/.cache && nuxt dev",
     "clean": "nuxt cleanup && rm -rf node_modules/.cache",
     "generate": "nuxt generate",

@@ -1,10 +1,10 @@
 import { createHash } from 'node:crypto'
 
 export interface CspOptions {
-  /** Supabase project host (storage images, auth and REST calls from the admin). */
-  supabaseHost?: string
-  /** Public host of the R2 media bucket (project images). */
-  mediaHost?: string
+  /** Supabase project origin, e.g. `https://x.supabase.co` (storage images, auth and REST calls from the admin). */
+  supabaseOrigin?: string
+  /** Public origin of the media bucket (project images); `http://127.0.0.1:55321` on the local stack. */
+  mediaOrigin?: string
   /** `'sha256-…'` sources for the inline scripts of the response, or `'unsafe-inline'` in dev. */
   scriptSources: readonly string[]
   /** Delivered in a `<meta http-equiv>` tag, which ignores frame-ancestors; X-Frame-Options covers those pages. */
@@ -14,9 +14,9 @@ export interface CspOptions {
 // Fonts are self-hosted by @nuxt/fonts, so fonts.googleapis.com/gstatic.com aren't needed in style-src/font-src.
 // GA4/Meta Pixel hosts are inert until NUXT_PUBLIC_GA_ID/NUXT_PUBLIC_META_PIXEL_ID are set; both loaders are
 // external scripts (layers/consent/app/plugins/analytics.client.ts), so script-src needs no 'unsafe-inline'.
-export function buildCsp({ supabaseHost, mediaHost, scriptSources, meta = false }: CspOptions): string {
-  const supabase = supabaseHost ? ` https://${supabaseHost}` : ''
-  const media = mediaHost ? ` https://${mediaHost}` : ''
+export function buildCsp({ supabaseOrigin, mediaOrigin, scriptSources, meta = false }: CspOptions): string {
+  const supabase = supabaseOrigin ? ` ${supabaseOrigin}` : ''
+  const media = mediaOrigin ? ` ${mediaOrigin}` : ''
   const scripts = scriptSources.length ? ` ${scriptSources.join(' ')}` : ''
   return [
     `default-src 'self'`,
