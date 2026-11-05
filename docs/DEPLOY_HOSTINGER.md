@@ -22,8 +22,15 @@ Domenii: `codepedia.studio` (EN, principal) și `codepedia.md` (RO). Ambele serv
 
 ### Cum se publică o versiune
 
-O singură aplicație servește ambele domenii, deci un singur deploy le actualizează pe
-amândouă.
+Sunt două aplicații Node.js, una pe domeniu (`codepedia.md` și `codepedia.studio`), cu
+același cod din `production` și aceleași variabile. Fiecare are build-ul ei, deci o variabilă
+schimbată se pune în ambele, iar fiecare cere **Redeploy**.
+
+**Câte un redeploy pe rând.** Contul Hostinger are o limită de procese (`max processes`),
+în care intră și firele de execuție. Două build-uri simultane, cu ambele aplicații pornite,
+o ating: build-ul pică, iar aplicația rămâne pe versiunea veche (cu variabilele vechi).
+Redeploy pe `codepedia.md`, aștepți să termine, apoi `codepedia.studio`. Dacă procesele sunt
+la limită: **Restart** pe aplicație, apoi redeploy.
 
 1. Ce trebuie testat intră întâi în `dev` (PR din branch-ul de lucru, CI verde) și se
    testează acolo; apoi același branch intră în `main` printr-un PR separat. Ce e deja
@@ -31,8 +38,8 @@ amândouă.
 2. Release: PR de la `main` spre `production`
    (`gh pr create --base production --head main --title "release: <ce intră>"`), merge
    după ce CI e verde. Merge commit, ca în PR-urile #87, #89, #93.
-3. Webhook-ul Git redeployează `production`. Dacă nu pornește singur: hPanel → Node.js
-   Apps → aplicația → **Redeploy**.
+3. Webhook-ul Git redeployează `production`. Dacă nu pornește singur sau un build pică:
+   hPanel → Node.js Apps → aplicația → **Redeploy**, câte una pe rând.
 4. Verifică ambele domenii (secțiunea 6).
 
 Schimbările doar de documentație nu cer release; ajung pe `production` la următorul.
@@ -46,7 +53,7 @@ Lista completă, cu explicații, e în `.env.example`.
 |---|---|
 | `NUXT_PUBLIC_SUPABASE_URL` | obligatorie |
 | `NUXT_PUBLIC_SUPABASE_ANON_KEY` | obligatorie |
-| `SUPABASE_SERVICE_ROLE_KEY` | obligatorie, doar server |
+| `SUPABASE_SERVICE_ROLE_KEY` | obligatorie, doar server: cheia `service_role` (JWT cu `"role":"service_role"`), **nu** cheia anon. Cu cheia anon paginile merg, dar formularul de contact și admin-ul dau 500/403. Intră în build: după schimbare, Redeploy |
 | `NUXT_PUBLIC_SITE_URL` | `https://codepedia.studio` (domeniul EN) |
 | `NUXT_PUBLIC_SITE_URL_RO` | `https://codepedia.md` (domeniul RO) |
 | `RESEND_API_KEY` | opțional, emailul de lead |
@@ -57,6 +64,7 @@ Lista completă, cu explicații, e în `.env.example`.
 | `NUXT_PUBLIC_QUALIFIER_ENABLED`, `NUXT_PUBLIC_GRANTS_ENABLED` | opționale |
 | `CRON_SECRET` | pentru `/api/health` (pasul 5) |
 | `NUXT_ORIGIN_SECRET` | opțională; secretul din headerul `x-codepedia-origin` setat de Cloudflare, fără el cererile primesc 403 (vezi §3). Gol = verificarea e oprită. Se poate seta și fără rebuild, doar cu restart |
+| `VIPS_CONCURRENCY` | `1`: sharp (optimizarea imaginilor, `/_ipx/`) pornește implicit câte un fir pe procesor al serverului, iar Hostinger le numără ca procese. Ajunge la runtime (restart) |
 | `NUXT_PUBLIC_NOINDEX` | **nu** se setează pe live |
 
 `VERCEL_ISR_BYPASS_TOKEN` nu se folosește aici: `revalidate.post.ts` curăță cache-ul Nitro.
@@ -90,6 +98,7 @@ de mediu. Nu seta nimic de limbă per domeniu.
    | 3 | `starts_with "/brand/"` sau `starts_with "/_ipx/"` sau `eq "/favicon.ico"` | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 zi, cu excepția **Status code TTL 400–599 = No store** · Browser TTL: **Override origin and use this TTL** = 1 zi |
    | 3b | `starts_with "/_ipx/"` și `contains "/https:"` (imagini din Storage/R2, chei care nu se suprascriu) | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 an, cu excepția **Status code TTL 400–599 = No store** · Browser TTL: **Override origin and use this TTL** = 1 an |
    | 4 | `not starts_with "/_nuxt/"` și `not starts_with "/_fonts/"` și `not starts_with "/brand/"` și `not starts_with "/_ipx/"` și `not starts_with "/admin"` și `not starts_with "/api"` și `ne "/"` și `ne "/en"` | Eligible for cache · Edge TTL: **Use cache-control header if present, bypass cache if not** · Browser TTL: **Respect origin** |
+   | 5 | `http.host eq "<domeniu>"` și path `eq` pagina de start a domeniului (`/` pe `codepedia.md`, `/en` pe `codepedia.studio`) și `not http.cookie contains "codepedia_locale="` | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 5 minute, cu excepția **Status code TTL 300–599 = No store** · Browser TTL: **Respect origin** |
 
    Modurile de TTL contează: LiteSpeed nu trimite `Cache-Control` pe fișierele statice, deci
    regulile 2 și 3 trebuie să **ignore/suprascrie** originea, altfel nu schimbă nimic. La
@@ -116,9 +125,19 @@ de mediu. Nu seta nimic de limbă per domeniu.
      cât timp pagina se reîmprospătează), sau după **Purge Cache** manual. Paginile de blog
      sunt prerenderizate și țin 1 oră (`s-maxage=3600`), la fel `/llms.txt` și
      `/llms-full.txt`.
+   - Regula 5 (suprascrie regula 1 doar pentru pagina de start a domeniului): fără cookie
+     de limbă, redirectul nu se declanșează acolo, fiindcă domeniul decide limba înaintea
+     geo-IP-ului. Deci `/` pe `.md` e mereu pagina RO și `/en` pe `.studio` e mereu pagina
+     EN, aceeași pentru toți; ținută 5 minute la margine, nu mai ajunge la Hostinger la
+     fiecare vizită. Browserul primește tot `private, no-cache` (Browser TTL: Respect
+     origin). Cu cookie-ul `codepedia_locale`, redirectul (302) trece pe la aplicație ca
+     înainte. `/` pe `.studio` și `/en` pe `.md` sunt redirecturi și rămân necache-uite.
+     Excepția 300–599 împiedică păstrarea unui redirect sau a unei erori.
 
    Verificare: `curl -sI https://<domeniu>/servicii` trebuie să arate
-   `cf-cache-status: HIT` la a doua cerere; `/` rămâne `DYNAMIC` (e corect).
+   `cf-cache-status: HIT` la a doua cerere, la fel `https://codepedia.md/` și
+   `https://codepedia.studio/en` (regula 5). Cu `-b codepedia_locale=en`,
+   `https://codepedia.md/` trebuie să dea 302 cu `DYNAMIC`.
 
    Cheia de cache păstrează tot query string-ul (`/proiecte?tag=…` rămâne corect). Planul
    Free nu permite o cheie cu doar anumiți parametri („not entitled to use the custom cache
@@ -130,6 +149,9 @@ de mediu. Nu seta nimic de limbă per domeniu.
    implicită „Leaked credential check" (logarea în admin merge direct la Supabase, deci
    aceea nu verifica nimic aici). Oprește rafalele; limita din aplicație (`checkRateLimit`,
    3 / 10 min per IP) rămâne cea fină.
+9. Caching → Tiered Cache → **Smart Tiered Cache: On**. Doar centrul Cloudflare cel mai
+   apropiat de origine cere de la Hostinger, celelalte iau de la el: mai puține cereri și
+   mai puține imagini generate pe server (contul e aproape de limita de procese).
 
 ### Starea aplicată (2026-10-28)
 
@@ -143,6 +165,9 @@ cerere POST). Diferențe între zone:
   Certificatul originii e valid pe IPv4; pe IPv6 nu s-a putut verifica, de aceea nu e strict.
 - `ftp.codepedia.studio` e proxied, iar proxy-ul Cloudflare nu trece FTP: trebuie DNS only
   sau șters dacă nu se folosește.
+
+2026-11-05: regula 5 și pasul 9 aplicate pe ambele zone, verificate cu `curl` (HIT pe `/`
+și `/en`, limba corectă în `<html lang>`, 302 neschimbat cu cookie-ul de limbă).
 
 Rămas deschis: originea răspunde direct pe IP (`curl --resolve codepedia.md:443:<IP>`
 întoarce 200 de la LiteSpeed), deci Cloudflare (inclusiv limita de mai sus) se poate
