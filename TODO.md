@@ -6,11 +6,11 @@ rămâne vizibil ca placeholder.
 ## Contact
 
 - [ ] Confirmare că `contact@codepedia.md` este adresa corectă
-- [ ] Număr de telefon real: nu apare în footer și nici în JSON-LD (`telephone`) până există
+- [x] Număr de telefon real: în `layers/content/data/siteSettings.ts`, footer și JSON-LD (`telephone`)
 - [ ] Adresa poștală completă (stradă, cod poștal): JSON-LD publică doar Chișinău / MD,
       fără `streetAddress` și fără `geo`
-- [ ] Program structurat (zile și ore) pentru `openingHoursSpecification`:
-      `siteSettings` nu are un câmp de program, deci nu se publică în JSON-LD
+- [x] Program structurat (zile și ore) pentru `openingHoursSpecification`: `openingHours` în
+      `siteSettings.ts`, publicat în JSON-LD
 - [x] Denumirea juridică exactă: `Codepedia SRL` configurată în Schema.org (`legalName`) (2026-10-16)
 - [x] Profil oficial `sameAs`: LinkedIn (`https://www.linkedin.com/company/codepediastudio`) adăugat în schema Organization (2026-10-16)
 - [ ] Articolele recomandate din footer sunt ultimele 3 din blog; dacă se vrea o selecție
@@ -36,7 +36,7 @@ Așa, `codepedia.md/en/...` funcționează, dar Google indexează doar
 `codepedia.studio/en/...`.
 
 - [x] Aceleași căi pe toate domeniile (fără `differentDomains` în i18n): cache-ul
-      ISR al Vercel e pe cale, nu pe domeniu (2026-10-06)
+      SWR al Nitro e pe cale, nu pe domeniu (2026-10-06)
 - [x] Domeniu oficial per limbă (`layers/core/shared/utils/siteOrigins.ts`), folosit
       de canonical, `hreflang`, JSON-LD, RSS și sitemap
 - [x] Redirect pe `/` și `/en`: cookie → domeniu → geo-IP → engleză
@@ -45,56 +45,33 @@ Așa, `codepedia.md/en/...` funcționează, dar Google indexează doar
       separată are nevoie de propriul origin în `siteOrigins.ts`
 - [ ] Italiană: `i18n/locales/it.json`, coloane `_it` pentru proiecte (migrare +
       admin + `save_project`), conținutul din `layers/*/data/` în IT
-- [ ] Vercel: toate domeniile pe același proiect, fără redirect între ele;
-      `NUXT_PUBLIC_SITE_URL=https://codepedia.studio`,
-      `NUXT_PUBLIC_SITE_URL_RO=https://codepedia.md`, `CRON_SECRET`
 - [ ] Google Search Console: fiecare domeniu adăugat separat
 
-## Deploy Hostinger (codepedia.md, în spatele Cloudflare)
+## Deploy Hostinger (în spatele Cloudflare)
 
-O singură aplicație Node.js, nu câte una per domeniu: build-ul servește toate
-domeniile, iar limba o aleg middleware-ul `locale-redirect` și variabilele de mediu,
-nu `differentDomains`.
+Pașii și starea aplicată: `docs/DEPLOY_HOSTINGER.md`. Două aplicații Node.js, câte una pe
+domeniu (`codepedia.md`, `codepedia.studio`), din branch-ul `production`, cu aceleași variabile.
 
-- [ ] hPanel → **Node.js Apps → Import Git repository** (nu secțiunea simplă „Git",
-      care doar copiază fișiere în `public_html` și nu rulează build-ul). Branch: `production`
-- [ ] Node 22.19+ (`engines` din `package.json`); install: `npm ci`; build: `npm run build`;
-      start: `node .output/server/index.mjs`; port din variabila `PORT` dată de Hostinger
-- [ ] Variabile de mediu setate **înainte** de build (build-ul pică intenționat fără
-      ele, vezi `assertEnv` din `nuxt.config.ts`): `NUXT_PUBLIC_SUPABASE_URL`,
-      `NUXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
-      `NUXT_PUBLIC_SITE_URL=https://codepedia.studio`,
-      `NUXT_PUBLIC_SITE_URL_RO=https://codepedia.md`; opționale: `RESEND_API_KEY`,
-      `NUXT_PUBLIC_GA_ID`, `NUXT_PUBLIC_META_PIXEL_ID`, `NUXT_PUBLIC_QUALIFIER_ENABLED`,
-      `NUXT_PUBLIC_GRANTS_ENABLED`. Nu seta
-      `NUXT_PUBLIC_NOINDEX` pe live
-- [ ] Ambele domenii (`codepedia.md`, `codepedia.studio`) atașate aceleiași aplicații;
-      dacă Hostinger nu permite, a doua aplicație cu aceleași variabile (fără
-      `differentDomains`)
-- [ ] Redeploy automat la push pe `production` (webhook-ul Git din hPanel); release = PR
-      `main` → `production`, vezi `docs/DEPLOY_HOSTINGER.md`
-- [x] **Geo-IP:** `locale-redirect.ts` citește `cf-ipcountry` (Cloudflare), cu
-      `x-vercel-ip-country` ca rezervă (2026-10-14). De verificat în Cloudflare:
-      Network → „IP Geolocation" activat (altfel header-ul lipsește)
-- [ ] Cloudflare nu are voie să cache-uiască `/` și `/en` (redirectul e per vizitator;
-      aplicația trimite `private, no-store`, dar o regulă „Cache Everything" o ignoră)
-- [ ] **Cron:** `/api/health` e apelat zilnic de Vercel Cron (`CRON_SECRET`); pe Hostinger
-      nu rulează. Fie cron job în hPanel cu `curl -H "Authorization: Bearer $CRON_SECRET"`,
-      fie un pinger extern, ca Supabase free să nu intre în pauză
-- [ ] `VERCEL_ISR_BYPASS_TOKEN` nu se folosește aici: `revalidate.post.ts` curăță cache-ul Nitro
-- [ ] Cloudflare: reguli de cache (vezi memoria „Hosting"), SSL Full (strict), HTML nu se cache-uiește
-      fără regulă explicită
+- [x] Ambele aplicații în producție pe Hostinger, env complet (2026-11-04); Vercel închis
+- [x] Cloudflare: reguli de cache 1–6, Smart Tiered Cache, origin guard, rate limit pe
+      formulare, IP Geolocation (2026-11-05)
+- [x] Cache golit pe ambele domenii după o editare din admin (`/api/cache-clear`, 2026-11-05)
+- [ ] Monitorizare externă (UptimeRobot) pe `/api/health`, pe ambele domenii; ține și
+      Supabase Free activ
+- [ ] `codepedia.studio` pe SSL **Full (strict)** după verificarea certificatului pe IPv6
+- [ ] Turnstile pe formulare (acum: honeypot, limită per IP în bază și în Cloudflare)
 
 ## Securitate (audit 2026-10-06)
 
 - [x] Aplicat `supabase/migrations/20261006114133_security_hardening.sql` pe producție (2026-10-06)
-- [ ] Supabase Auth: protecție parole compromise, MFA pe contul de admin,
-      înregistrare conturi noi oprită
+- [x] Supabase Auth: MFA pe contul de admin și `is_admin()` cu `aal2`, înregistrarea de
+      conturi noi oprită (verificat 2026-11-05)
+- [ ] Protecția împotriva parolelor compromise (Supabase Auth; disponibilă doar pe planul Pro)
 - [x] CSP fără `'unsafe-inline'` în `script-src`: hash-uri per răspuns în `layers/core/server/plugins/csp.ts`, loader Meta Pixel în TypeScript (2026-10-13)
 - [x] Actualizare dependențe: actualizările din intervalele curente au fost aplicate
       la 2026-10-13 (teste, lint, typecheck și build verificate). Alertele rămase sunt tranzitive (node-forge
       prin listhen/nitropack, esbuild, braces, @simple-git/argv-parser), iar versiunile
-      majore (@nuxt/fonts 1.x, typescript 7, vitest 5) rămân pentru o decizie separată
+      majore rămase: doar typescript 7 (@nuxt/fonts 1.x și vitest 5 sunt instalate)
 - [x] Ștergere lead din admin (2026-10-06)
 - [ ] Perioadă de retenție pentru leads + purjare automată (vezi Confidențialitate)
 

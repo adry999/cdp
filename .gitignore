@@ -22,7 +22,6 @@ playwright/.cache
 coverage
 
 # Deploy
-.vercel
 
 # Editors / OS
 .vscode

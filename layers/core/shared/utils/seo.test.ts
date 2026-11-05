@@ -66,7 +66,7 @@ describe('resolveOgImage', () => {
 
 describe('absoluteUrl', () => {
   it('prefixes a site path with the origin', () => {
-    expect(absoluteUrl('https://x.test', '/_vercel/image?w=1200')).toBe('https://x.test/_vercel/image?w=1200')
+    expect(absoluteUrl('https://x.test', '/_ipx/w_1200/x.png')).toBe('https://x.test/_ipx/w_1200/x.png')
   })
 
   it('leaves an absolute URL alone', () => {

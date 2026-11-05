@@ -31,6 +31,9 @@ export interface R2Client {
 // Keys are never overwritten, so every object is cacheable forever (Cloudflare caches only responses that carry Cache-Control).
 export const IMMUTABLE = 'public, max-age=31536000, immutable'
 
+/** Uploads are at most 8 MB from the admin; 30 s covers them on a slow uplink. */
+const R2_TIMEOUT_MS = 30_000
+
 const sha256 = (data: string | Uint8Array) => createHash('sha256').update(data).digest('hex')
 const hmac = (key: string | Buffer, data: string) => createHmac('sha256', key).update(data).digest()
 
@@ -129,6 +132,8 @@ export function createR2Client(config: R2Config, deps: R2Deps = {}): R2Client {
       method,
       headers: { ...sent, authorization },
       body: options.body as BodyInit | undefined,
+      // A stalled R2 would otherwise hold the admin request (and a Hostinger process) for minutes.
+      signal: AbortSignal.timeout(R2_TIMEOUT_MS),
     })
   }
 

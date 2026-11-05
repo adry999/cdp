@@ -45,7 +45,7 @@ describe('domainRedirectTarget', () => {
   })
 
   it('does not touch the home pages, assets, the API, the admin or crawler files', () => {
-    for (const path of ['/', '/en', '/api/health', '/admin/projects', '/_nuxt/a.js', '/_ipx/w_1200/x.png', '/sitemap.xml', '/robots.txt', '/llms.txt', '/llms-full.txt', '/brand/logo.svg']) {
+    for (const path of ['/', '/en', '/api/health', '/admin/projects', '/_nuxt/a.js', '/_ipx/w_1200/x.png', '/sitemap.xml', '/robots.txt', '/llms.txt', '/llms-full.txt', '/brand/logo.svg', '/__nuxt_error', '/__nuxt_island/HomeHero_x.json']) {
       expect(go('codepedia.studio', path)).toBeNull()
       expect(go('codepedia.md', path)).toBeNull()
     }
@@ -53,7 +53,7 @@ describe('domainRedirectTarget', () => {
 
   it('ignores unknown hosts and a single-domain setup', () => {
     expect(go('localhost:3000', '/proiecte')).toBeNull()
-    expect(go('cdp-git-dev.vercel.app', '/en/work')).toBeNull()
+    expect(go('preview.example.test', '/en/work')).toBeNull()
     expect(go(null, '/proiecte')).toBeNull()
     const single = { en: 'http://localhost:3000', ro: 'http://localhost:3000' }
     expect(go('localhost:3000', '/en/work', '', single)).toBeNull()

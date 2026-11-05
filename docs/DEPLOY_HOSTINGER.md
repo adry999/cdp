@@ -1,8 +1,8 @@
 # Deploy pe Hostinger (producție)
 
 Producția rulează pe **Hostinger** (hPanel, Node.js Apps, LiteSpeed în față), în spatele
-**Cloudflare**. Vercel nu se folosește (rămâne doar `vercel.json` din istoric). Baza de
-date, auth-ul de admin și storage-ul rămân pe Supabase.
+**Cloudflare**. Vercel nu se mai folosește. Baza de date și auth-ul de admin sunt pe
+Supabase, imaginile pe Cloudflare R2 (`media.codepedia.md`).
 
 Domenii: `codepedia.studio` (EN, principal) și `codepedia.md` (RO). Ambele servesc
 **același build**, aceleași căi (RO fără prefix, EN sub `/en`), dar fiecare pagină se servește doar pe domeniul limbii ei (restul primește 301, `domain-redirect.ts`). Fără `differentDomains`
@@ -62,12 +62,11 @@ Lista completă, cu explicații, e în `.env.example`.
 | `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET` | credențialele R2 (token cu Object Read & Write), doar server; fără ele încărcarea de imagini din admin răspunde 500 |
 | `NUXT_PUBLIC_GA_ID`, `NUXT_PUBLIC_META_PIXEL_ID` | opționale, fără ele consimțământul e inert |
 | `NUXT_PUBLIC_QUALIFIER_ENABLED`, `NUXT_PUBLIC_GRANTS_ENABLED` | opționale |
-| `CRON_SECRET` | pentru `/api/health` (pasul 5) |
+| `CRON_SECRET` | pentru `/api/health` (pasul 5) și `/api/cache-clear`: **aceeași valoare pe ambele aplicații**, altfel o editare din admin golește cache-ul doar pe domeniul pe care lucrezi |
 | `NUXT_ORIGIN_SECRET` | opțională; secretul din headerul `x-codepedia-origin` setat de Cloudflare, fără el cererile primesc 403 (vezi §3). Gol = verificarea e oprită. Se poate seta și fără rebuild, doar cu restart |
 | `VIPS_CONCURRENCY` | `1`: sharp (optimizarea imaginilor, `/_ipx/`) pornește implicit câte un fir pe procesor al serverului, iar Hostinger le numără ca procese. Ajunge la runtime (restart) |
 | `NUXT_PUBLIC_NOINDEX` | **nu** se setează pe live |
 
-`VERCEL_ISR_BYPASS_TOKEN` nu se folosește aici: `revalidate.post.ts` curăță cache-ul Nitro.
 
 ## 2. Domeniile
 
@@ -99,6 +98,7 @@ de mediu. Nu seta nimic de limbă per domeniu.
    | 3b | `starts_with "/_ipx/"` și `contains "/https:"` (imagini din Storage/R2, chei care nu se suprascriu) | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 1 an, cu excepția **Status code TTL 400–599 = No store** · Browser TTL: **Override origin and use this TTL** = 1 an |
    | 4 | `not starts_with "/_nuxt/"` și `not starts_with "/_fonts/"` și `not starts_with "/brand/"` și `not starts_with "/_ipx/"` și `not starts_with "/admin"` și `not starts_with "/api"` și `ne "/"` și `ne "/en"` | Eligible for cache · Edge TTL: **Use cache-control header if present, bypass cache if not** · Browser TTL: **Respect origin** |
    | 5 | `http.host eq "<domeniu>"` și path `eq` pagina de start a domeniului (`/` pe `codepedia.md`, `/en` pe `codepedia.studio`) și `not http.cookie contains "codepedia_locale="` | Eligible for cache · Edge TTL: **Ignore cache-control header and use this TTL** = 5 minute, cu excepția **Status code TTL 300–599 = No store** · Browser TTL: **Respect origin** |
+   | 6 | `http.request.uri.path eq "/api/projects/nav"` | Eligible for cache · Edge TTL: **Use cache-control header if present** · Browser TTL: **Respect origin** |
 
    Modurile de TTL contează: LiteSpeed nu trimite `Cache-Control` pe fișierele statice, deci
    regulile 2 și 3 trebuie să **ignore/suprascrie** originea, altfel nu schimbă nimic. La
@@ -133,6 +133,9 @@ de mediu. Nu seta nimic de limbă per domeniu.
      origin). Cu cookie-ul `codepedia_locale`, redirectul (302) trece pe la aplicație ca
      înainte. `/` pe `.studio` și `/en` pe `.md` sunt redirecturi și rămân necache-uite.
      Excepția 300–599 împiedică păstrarea unui redirect sau a unei erori.
+   - Regula 6 (suprascrie regula 1 pentru o singură rută API): meniul cu proiecte e cerut din
+     browser pe paginile prerenderizate (blogul); fără regulă, fiecare vizită pe blog ajungea la
+     Hostinger. Răspunsul e același pentru toți (`s-maxage=300`).
 
    Verificare: `curl -sI https://<domeniu>/servicii` trebuie să arate
    `cf-cache-status: HIT` la a doua cerere, la fel `https://codepedia.md/` și
@@ -169,7 +172,7 @@ cerere POST). Diferențe între zone:
 2026-11-05: regula 5 și pasul 9 aplicate pe ambele zone, verificate cu `curl` (HIT pe `/`
 și `/en`, limba corectă în `<html lang>`, 302 neschimbat cu cookie-ul de limbă).
 
-Rămas deschis: originea răspunde direct pe IP (`curl --resolve codepedia.md:443:<IP>`
+Rezolvat (2026-11-05, verificat: IP direct → 403, prin Cloudflare → 200). Problema era: originea răspundea direct pe IP (`curl --resolve codepedia.md:443:<IP>`
 întoarce 200 de la LiteSpeed), deci Cloudflare (inclusiv limita de mai sus) se poate
 ocoli, iar `cf-connecting-ip` se poate falsifica. Soluția e un header secret adăugat de
 Cloudflare și verificat de aplicație (`layers/core/server/middleware/00-origin-guard.ts`).
@@ -188,19 +191,21 @@ Procedura, în ordine:
 ## 4. Redirectul de limbă
 
 Ordinea pe `/` și `/en`: cookie `codepedia_locale` → domeniul (`.studio` EN, `.md`/`.ro` RO)
-→ geo-IP (`cf-ipcountry`, cu `x-vercel-ip-country` ca rezervă; RO/MD → RO, restul EN) → EN.
+→ geo-IP (`cf-ipcountry`; RO/MD → RO, restul EN) → EN.
 Crawler-ele nu sunt redirecționate.
 
-## 5. Cron
+## 5. Monitorizare și keep-alive
 
-`/api/health` ține baza Supabase free din a intra în pauză. Pe Vercel îl apela Vercel Cron;
-pe Hostinger nu rulează. Cron job zilnic în hPanel:
+`/api/health` face un ping la bază: răspunde 200 când Supabase merge, 503 când nu. Un monitor
+extern (UptimeRobot, la 5 minute, pe ambele domenii) anunță o pană în câteva minute (paginile
+rămân 200 din cache chiar cu baza căzută, deci nu sunt un semnal bun) și ține baza Supabase
+free din a intra în pauză. Verificare manuală:
 
 ```bash
 curl -fsS -H "Authorization: Bearer $CRON_SECRET" https://codepedia.studio/api/health
 ```
 
-(sau un pinger extern). Fără `CRON_SECRET` setat, ruta răspunde 404.
+Fără `CRON_SECRET` setat, ruta răspunde 404; fără antet sau cu altul, 401.
 
 ## 6. Verificare
 
