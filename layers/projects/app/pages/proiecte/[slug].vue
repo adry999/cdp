@@ -249,7 +249,7 @@ useJsonLd(
           </div>
           <div
             v-if="star.incident.outcome.length"
-            class="grid grid-fit-safe-180 gap-4 bg-ink p-[clamp(20px,2.5vw,28px)] text-paper"
+            class="grid grid-fit-safe-180 gap-4 bg-inverse p-[clamp(20px,2.5vw,28px)] text-on-inverse"
           >
             <div v-for="(figure, i) in star.incident.outcome" :key="`${i}-${figure.k}`">
               <div class="text-[clamp(30px,3.6vw,44px)] font-semibold leading-none tracking-[-0.03em]">{{ figure.v }}</div>
