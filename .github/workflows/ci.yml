@@ -45,14 +45,14 @@ jobs:
   # the smoke tests' comment on why they resolve a project dynamically rather
   # than hardcoding one). Needs the real project's credentials as repository
   # secrets (Settings -> Secrets and variables -> Actions):
-  #   NUXT_PUBLIC_SUPABASE_URL, NUXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
-  # (the service-role key is required too: nuxt.config.ts's assertEnv fails the
-  # production build this job runs — via `npm run build` in the webServer command —
-  # without it.) Secrets are copied into env vars below rather than referenced
-  # directly in a step's `if:` — `if: ${{ secrets.X != '' }}` isn't supported the
+  #   NUXT_PUBLIC_SUPABASE_URL, NUXT_PUBLIC_SUPABASE_ANON_KEY
+  # The service-role key is NOT the real one: assertEnv only needs it to be set, no spec
+  # needs it (lead and qualifier POSTs are intercepted), and the real key would reach every
+  # PR's npm ci (a compromised postinstall could read it and bypass RLS).
+  # Secrets are copied into env vars below rather than referenced directly in a step's `if:` — `if: ${{ secrets.X != '' }}` isn't supported the
   # way `if: ${{ env.X != '' }}` is. On a fork, or before these secrets are
   # configured, the env vars are empty and every step here is skipped rather
-  # than failing the job. The three secrets are configured (2026-10-13), so the
+  # than failing the job. The two secrets are configured (2026-10-13), so the
   # job now runs for real on every PR.
   e2e:
     runs-on: ubuntu-latest
@@ -60,7 +60,7 @@ jobs:
     env:
       NUXT_PUBLIC_SUPABASE_URL: ${{ secrets.NUXT_PUBLIC_SUPABASE_URL }}
       NUXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NUXT_PUBLIC_SUPABASE_ANON_KEY }}
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: e2e-placeholder-not-a-real-key
       NUXT_PUBLIC_SITE_URL: https://codepedia.studio
       NUXT_PUBLIC_SITE_URL_RO: https://codepedia.md
       # Project images are served from R2; the build adds this host to the image domains and the CSP.

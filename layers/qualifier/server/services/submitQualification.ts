@@ -56,7 +56,7 @@ export async function submitQualification(
   await deps.repository.insertLead(toLeadRecord(input))
 
   await notifyBestEffort(deps.notify, buildQualificationSummary(input, deps.now()), 'qualifier')
-  await notifyBestEffort(deps.confirm, { to: input.email, name: input.name, lang: input.lang }, 'qualifier:confirmation')
+  await notifyBestEffort(deps.confirm, { to: input.email, lang: input.lang }, 'qualifier:confirmation')
 
   return { outcome: 'accepted' }
 }
