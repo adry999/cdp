@@ -61,7 +61,7 @@ export function buildVisitorEmail(confirmation: VisitorConfirmation, settings: V
       heading: copy.heading(name),
       paragraphs: [received, copy.reply],
       action: { label: copy.action, url: projectsUrl },
-      logoUrl: `${settings.siteUrl}/brand/codepedia-wordmark-email.png`,
+      logoUrl: `${settings.siteUrl}/brand/codepedia-wordmark-email-paper.png`,
       footer,
     }),
   }

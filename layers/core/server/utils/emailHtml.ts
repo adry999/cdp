@@ -15,11 +15,13 @@ export interface EmailContent {
   /** Free text written by a visitor, shown as-is (line breaks kept). */
   quote?: { label: string; text: string }
   action?: { label: string; url: string }
-  /** Absolute URL of public/brand/codepedia-wordmark-email.png (email clients drop SVG). */
+  /** Absolute URL of public/brand/codepedia-wordmark-email-paper.png (email clients drop SVG). */
   logoUrl: string
   footer: string
 }
 
+// Gmail dark mode inverts backgrounds but not images, so the logo PNG carries its own paper-coloured plate
+// (12/10 px, offset by the cell padding): invisible on the light card, readable on a dark one.
 // Email clients ignore stylesheets and CSS variables, so the theme tokens from main.css are
 // repeated here as literal values: paper, ink, signal, signal-text, muted, hairline, hatch.
 const COLOR = {
@@ -78,7 +80,9 @@ export function renderEmailHtml(content: EmailContent): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<style>:root{color-scheme:light only;supported-color-schemes:light only;}</style>
 <title>${text(content.heading)}</title>
 </head>
 <body style="margin:0;padding:0;background:${COLOR.hatch};">
@@ -86,7 +90,7 @@ export function renderEmailHtml(content: EmailContent): string {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${COLOR.hatch};">
 <tr><td align="center" style="padding:32px 16px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:${COLOR.paper};border:1px solid ${COLOR.hairline};border-top:2px solid ${COLOR.signal};border-radius:4px;">
-<tr><td style="padding:28px 32px 0;"><img src="${escapeXml(content.logoUrl)}" width="183" height="18" alt="CODEPEDIA" style="display:block;border:0;width:183px;height:18px;"></td></tr>
+<tr><td style="padding:18px 20px 0;"><img src="${escapeXml(content.logoUrl)}" width="207" height="38" alt="CODEPEDIA" style="display:block;border:0;width:207px;height:38px;"></td></tr>
 <tr><td style="padding:28px 32px 32px;">
 <h1 style="margin:0 0 16px;font-family:${SANS};font-size:24px;line-height:30px;font-weight:500;letter-spacing:-0.02em;color:${COLOR.ink};">${text(content.heading)}</h1>
 ${paragraphs}${fields}${quote}${action}
