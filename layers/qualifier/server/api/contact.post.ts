@@ -1,5 +1,6 @@
 import { checkRateLimit } from '#layers/core/server/utils/checkRateLimit'
 import { readLimitedBody } from '#layers/core/server/utils/readLimitedBody'
+import { requireTurnstile } from '#layers/core/server/utils/turnstile'
 import { confirmToVisitor, createLeadRepository, LEAD_RATE_LIMIT, notifyTeam } from '#layers/leads/server'
 import type { RawQualificationSubmission } from '#layers/qualifier/domain/qualification'
 import { submitQualification } from '#layers/qualifier/server/services/submitQualification'
@@ -8,6 +9,7 @@ export default defineEventHandler(async (event) => {
   if (useRuntimeConfig(event).public.qualifierEnabled !== true) {
     throw createError({ statusCode: 404, statusMessage: 'Not found' })
   }
+  await requireTurnstile(event, 'qualifier')
 
   // Anything but a JSON object is a malformed request, not a form with every field missing.
   const body: unknown = (await readLimitedBody(event)) ?? {}

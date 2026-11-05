@@ -69,7 +69,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
         heading: 'Cu cine împărtășim datele',
         body: [
           'Hostinger — găzduirea site-ului, cu servere în Uniunea Europeană (Germania). Supabase — baza de date, cu servere în Uniunea Europeană (Irlanda).',
-          'Cloudflare — rețeaua prin care se livrează site-ul și care îl protejează de atacuri, stocarea imaginilor de pe site și redirecționarea emailurilor trimise la adresele noastre (SUA, cu centre de date în întreaga lume).',
+          'Cloudflare — rețeaua prin care se livrează site-ul și care îl protejează de atacuri, verificarea anti-spam a formularelor (Turnstile), stocarea imaginilor de pe site și redirecționarea emailurilor trimise la adresele noastre (SUA, cu centre de date în întreaga lume).',
           'Resend — trimiterea emailurilor legate de solicitarea ta: notificarea către echipă și confirmarea trimisă ție (SUA). Google (Gmail) — căsuța de email în care primim notificările și din care îți răspundem (SUA).',
           'Google Analytics și Meta Pixel primesc date doar dacă ai consimțit explicit.',
           'Nu vindem datele tale și nu le împărtășim în alte scopuri.',
@@ -144,7 +144,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
         heading: 'Who we share data with',
         body: [
           'Hostinger — site hosting, with servers in the European Union (Germany). Supabase — the database, with servers in the European Union (Ireland).',
-          'Cloudflare — the network that delivers the site and protects it from attacks, storage of the images on the site, and forwarding of emails sent to our addresses (US, with data centres worldwide).',
+          'Cloudflare — the network that delivers the site and protects it from attacks, the anti-spam check on the forms (Turnstile), storage of the images on the site, and forwarding of emails sent to our addresses (US, with data centres worldwide).',
           'Resend — sending the emails about your request: the notification to our team and the confirmation sent to you (US). Google (Gmail) — the inbox where we receive notifications and reply to you from (US).',
           'Google Analytics and Meta Pixel only receive data if you explicitly consented.',
           'We do not sell your data or share it for any other purpose.',

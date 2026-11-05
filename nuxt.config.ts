@@ -152,6 +152,8 @@ export default defineNuxtConfig({
     cronSecret: process.env.CRON_SECRET || '',
     // Secret that Cloudflare sends in `x-codepedia-origin`; requests without it get 403. Empty = check off. NUXT_ORIGIN_SECRET also overrides it at runtime, no rebuild needed.
     originSecret: process.env.NUXT_ORIGIN_SECRET || '',
+    // Cloudflare Turnstile on the public forms (/api/leads, /api/contact). Unset = no check, no widget.
+    turnstileSecretKey: process.env.NUXT_TURNSTILE_SECRET_KEY || '',
     // Sitemap <lastmod> of the static pages (YYYY-MM-DD): they only change with a deploy.
     buildDate: new Date().toISOString().slice(0, 10),
     // Cloudflare R2 (S3 API) credentials for the admin media endpoints in layers/projects. Server-only.
@@ -172,6 +174,7 @@ export default defineNuxtConfig({
       siteUrlRo: process.env.NUXT_PUBLIC_SITE_URL_RO || '',
       noindex: process.env.NUXT_PUBLIC_NOINDEX === 'true',
       grantsEnabled: process.env.NUXT_PUBLIC_GRANTS_ENABLED === 'true',
+      turnstileSiteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY || '',
     },
   },
 
