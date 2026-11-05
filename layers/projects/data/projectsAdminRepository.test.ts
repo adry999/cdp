@@ -262,10 +262,15 @@ describe('projectsAdminRepository', () => {
       expect(fake.callsFor('project_facts.select')).toHaveLength(0)
     })
 
-    // Bug: projectsAdminRepository.ts duplicate(): when the insert fails after the cover, hero
-    // (and nothing else) were copied to R2, the copies are never passed to media.remove, so they
-    // stay orphaned in the bucket on every failed attempt.
-    it.todo('removes the already-copied media when the project insert fails')
+    it('removes the already-copied media when the project insert fails', async () => {
+      const { fake, media, repository } = setup()
+      scriptHappy(fake)
+      fake.script('projects.insert', { error: dbError })
+      await expect(repository.duplicate('x')).rejects.toMatchObject({ message: 'Proiectul nu a putut fi duplicat.' })
+      const copies = await Promise.all(media.copy.mock.results.map((result) => result.value as Promise<string | null>))
+      expect(copies.length).toBeGreaterThan(0)
+      expect(media.remove).toHaveBeenCalledWith(copies.filter(Boolean))
+    })
 
     it('resolves false when a child table cannot be read', async () => {
       const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
