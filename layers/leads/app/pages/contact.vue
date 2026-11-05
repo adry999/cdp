@@ -40,6 +40,9 @@ useBreadcrumbLd(() => t('nav.contact'))
           <FactCard :label="t('home.contact.facts.phone')">
             <a :href="`tel:${settings.phone}`" class="text-ink no-underline hover:text-signal-text">{{ settings.phoneDisplay }}</a>
           </FactCard>
+          <FactCard :label="t('home.contact.facts.email')" class="col-span-full">
+            <a :href="`mailto:${settings.contactEmail}`" class="text-ink no-underline hover:text-signal-text">{{ settings.contactEmail }}</a>
+          </FactCard>
         </div>
       </div>
       <div class="min-w-0 flex-[1_1_380px]">
