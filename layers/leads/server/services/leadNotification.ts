@@ -38,7 +38,7 @@ export function buildTeamEmail(notification: TeamNotification, siteUrl: string):
       fields: notification.fields,
       quote: notification.message,
       action: { label: 'Deschide solicitările', url: adminUrl },
-      logoUrl: `${siteUrl}/brand/codepedia-wordmark-email.png`,
+      logoUrl: `${siteUrl}/brand/codepedia-wordmark-email-paper.png`,
       footer: 'Notificare trimisă automat de formularul de pe site.',
     }),
   }

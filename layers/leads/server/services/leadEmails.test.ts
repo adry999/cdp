@@ -37,7 +37,7 @@ describe('buildTeamEmail', () => {
 
   it('links the admin and the logo on the given domain', () => {
     expect(email.html).toContain('href="https://codepedia.md/admin/leads"')
-    expect(email.html).toContain('https://codepedia.md/brand/codepedia-wordmark-email.png')
+    expect(email.html).toContain('https://codepedia.md/brand/codepedia-wordmark-email-paper.png')
     expect(email.html).toContain('Vrem un portal.<br>Cât costă?')
   })
 })
