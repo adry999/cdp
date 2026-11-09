@@ -24,9 +24,14 @@ function failure(message: string, cause: unknown): AppError {
 }
 
 const UNIQUE_VIOLATION = '23505'
+// 42501: save_project's admin check (also hit without MFA); PGRST301/303: the session's JWT expired or is invalid.
+const SESSION_ERRORS = new Set(['42501', 'PGRST301', 'PGRST303'])
+const SESSION_EXPIRED_MESSAGE =
+  'Sesiunea a expirat. Autentifică-te din nou într-un tab nou (/admin/login), apoi salvează: modificările rămân în pagină.'
 
 function saveFailure(error: { code?: string; message: string }): AppError {
   if (error.code === UNIQUE_VIOLATION) return failure('Slug-ul există deja la alt proiect. Alege altul.', error)
+  if (error.code && SESSION_ERRORS.has(error.code)) return failure(SESSION_EXPIRED_MESSAGE, error)
   return failure(error.message, error)
 }
 

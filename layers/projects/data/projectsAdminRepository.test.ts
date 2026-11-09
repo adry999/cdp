@@ -40,6 +40,10 @@ describe('projectsAdminRepository', () => {
       await expect(repository.save({})).rejects.toMatchObject({ code: 'unexpected' })
       fake.script('rpc.save_project', { error: { message: 'dup', code: '23505' } })
       await expect(repository.save({})).rejects.toMatchObject({ message: expect.stringContaining('Slug-ul există deja') })
+      for (const code of ['42501', 'PGRST301']) {
+        fake.script('rpc.save_project', { error: { message: 'Not authorised to edit projects', code } })
+        await expect(repository.save({})).rejects.toMatchObject({ message: expect.stringContaining('Sesiunea a expirat') })
+      }
     })
 
     it('reorder sends the slugs in one rpc and throws on error', async () => {

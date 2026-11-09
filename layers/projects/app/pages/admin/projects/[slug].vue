@@ -5,11 +5,13 @@ definePageMeta({ layout: 'admin', i18n: false })
 
 const slug = String(useRoute().params.slug)
 const editor = await useProjectsEditor(slug)
-const { form, isNew, menuPreview, savedSlugs, saveStatus, saveError, uploading, publishing, consentConfirmed, checklist } = editor
+const { form, isNew, menuPreview, savedSlugs, saveStatus, saveError, saveIssues, cacheCleared, uploading, publishing, consentConfirmed, checklist } =
+  editor
 
 const saveLabel = computed(() => {
   if (saveStatus.value === 'pending') return 'Se salvează…'
-  if (saveStatus.value === 'success') return 'Salvat'
+  // Cloudflare keeps serving the previous page until its own short cache expires.
+  if (saveStatus.value === 'success') return form.value.published ? 'Salvat · pe site în câteva minute' : 'Salvat'
   return saveError.value?.message || 'Eroare'
 })
 const saving = computed(() => saveStatus.value === 'pending')
@@ -39,6 +41,20 @@ useSaveShortcut(editor.save, { enabled: () => !saving.value && !uploading.value 
 
     <div class="flex-1 overflow-y-auto px-6 py-6">
       <div class="flex max-w-[880px] flex-col gap-8">
+        <div v-if="saveIssues.length" role="alert" class="rounded border border-signal-text px-4 py-3 text-[14px]">
+          <div class="eyebrow text-signal-text">Nu s-a salvat</div>
+          <ul class="mt-2 list-disc pl-5">
+            <li v-for="issue in saveIssues" :key="issue">{{ issue }}</li>
+          </ul>
+        </div>
+        <div
+          v-if="saveStatus === 'success' && !cacheCleared"
+          role="alert"
+          class="flex flex-wrap items-center justify-between gap-3 rounded border border-signal-text px-4 py-3 text-[14px]"
+        >
+          <span>Salvat, dar cache-ul site-ului nu s-a golit pe unul dintre domenii: acolo se vede încă versiunea veche.</span>
+          <AppButton variant="outline" @click="editor.retryRevalidate">Reîncearcă</AppButton>
+        </div>
         <div class="grid grid-fit-safe-340 items-start gap-6">
           <ProjectsEditorIdentity v-model="form" :saved-slugs="savedSlugs" />
           <ProjectsEditorMenuPreview :groups="menuPreview" :published="form.published" />
