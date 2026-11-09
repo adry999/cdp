@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { moveItem } from '#layers/core/shared/utils/moveItem'
 import type { ProjectForm } from '#layers/projects/domain/projectForm'
+import { slugify, type ProjectImageInput } from '#layers/projects/domain/projectPayload'
 import { createProjectsMediaRepository } from '#layers/projects/data/projectsMediaRepository'
 
 const form = defineModel<ProjectForm>({ required: true })
@@ -7,7 +9,17 @@ const form = defineModel<ProjectForm>({ required: true })
 const uploading = defineModel<boolean>('uploading', { default: false })
 
 const media = createProjectsMediaRepository()
-const pathPrefix = computed(() => form.value.slugRo || 'proiect-nou')
+// The server only accepts safe key segments, so a slug still being typed ("Proiect Nou") must not reach it raw.
+const pathPrefix = computed(() => slugify(form.value.slugRo) || 'proiect-nou')
+
+// Stable keys: keyed by index, removing or moving a slot would hand an in-flight upload to another image.
+const slotKeys = new WeakMap<ProjectImageInput, number>()
+let nextKey = 0
+function keyOf(img: ProjectImageInput) {
+  let key = slotKeys.get(img)
+  if (key === undefined) slotKeys.set(img, (key = nextKey++))
+  return key
+}
 
 let activeUploads = 0
 function onUploading(active: boolean) {
@@ -22,6 +34,10 @@ function addGalleryImage() {
 function removeGalleryImage(index: number) {
   form.value.gallery.splice(index, 1)
 }
+
+function moveGalleryImage(index: number, to: number) {
+  form.value.gallery = moveItem(form.value.gallery, index, to)
+}
 </script>
 
 <template>
@@ -34,6 +50,7 @@ function removeGalleryImage(index: number) {
           ratio="16/9"
           label="[ copertă card — 1600 × 900 ]"
           :path-prefix="`${pathPrefix}/cover`"
+          removable
           @uploading="onUploading"
         />
         <div class="mt-3">
@@ -47,6 +64,7 @@ function removeGalleryImage(index: number) {
           ratio="16/9"
           label="[ captură principală — 1600 × 900 ]"
           :path-prefix="`${pathPrefix}/hero`"
+          removable
           @uploading="onUploading"
         />
         <div class="mt-3">
@@ -60,26 +78,56 @@ function removeGalleryImage(index: number) {
             + Imagine
           </button>
         </div>
+        <p class="mt-1 text-[13px] text-muted">
+          Textul alternativ apare și ca descriere sub imagine pe site („Titlu: text”).
+        </p>
         <div v-if="!form.gallery.length" class="mt-2 rounded border border-dashed border-hairline p-4 text-center text-[13px] text-muted">
           Fără imagini încă — apasă „+ Imagine”.
         </div>
         <div v-else class="mt-2 grid grid-cols-2 gap-4">
-          <div v-for="(img, i) in form.gallery" :key="i" class="relative">
+          <div v-for="(img, i) in form.gallery" :key="keyOf(img)" class="relative">
             <AdminImageUpload
               v-model="img.path"
               :upload="media.upload"
               ratio="16/9"
               :label="`[ galerie ${i + 1} — 1600 × 900 ]`"
-              :path-prefix="`${pathPrefix}/gallery-${i}`"
+              :path-prefix="`${pathPrefix}/gallery`"
               @uploading="onUploading"
             />
             <div class="mt-3 flex items-start gap-3">
               <div class="flex-1">
                 <AdminFieldPair v-model:ro="img.altRo" v-model:en="img.altEn" label="Text alternativ" required />
               </div>
-              <button type="button" class="mt-6 cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal-text" @click="removeGalleryImage(i)">
-                Șterge
-              </button>
+              <div class="mt-6 flex flex-col items-end gap-2">
+                <div class="flex gap-2">
+                  <button
+                    type="button"
+                    class="cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-ink disabled:cursor-default disabled:opacity-30"
+                    :disabled="i === 0"
+                    :aria-label="`Mută imaginea ${i + 1} mai devreme`"
+                    @click="moveGalleryImage(i, i - 1)"
+                  >
+                    ←
+                  </button>
+                  <button
+                    type="button"
+                    class="cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-ink disabled:cursor-default disabled:opacity-30"
+                    :disabled="i === form.gallery.length - 1"
+                    :aria-label="`Mută imaginea ${i + 1} mai târziu`"
+                    @click="moveGalleryImage(i, i + 1)"
+                  >
+                    →
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  class="cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal-text"
+                  :aria-label="`Șterge imaginea ${i + 1}`"
+                  @click="removeGalleryImage(i)"
+                >
+                  Șterge
+                </button>
+              </div>
             </div>
           </div>
         </div>
