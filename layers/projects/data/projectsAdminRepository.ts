@@ -101,7 +101,16 @@ export function createProjectsAdminRepository(
     },
 
     async getBySlug(slug: string): Promise<AdminProjectRow | null> {
-      const { data, error } = await client.from('projects').select(ADMIN_PROJECT_SELECT).eq('slug_ro', slug).maybeSingle()
+      // save_project rewrites sort_order from array position, so unordered children would reshuffle on every save.
+      const { data, error } = await client
+        .from('projects')
+        .select(ADMIN_PROJECT_SELECT)
+        .eq('slug_ro', slug)
+        .order('sort_order', { foreignTable: 'project_facts' })
+        .order('sort_order', { foreignTable: 'project_stack' })
+        .order('sort_order', { foreignTable: 'project_stats' })
+        .order('sort_order', { foreignTable: 'project_images' })
+        .maybeSingle()
       if (error) throw failure('Proiectul nu a putut fi încărcat.', error)
       return data
     },

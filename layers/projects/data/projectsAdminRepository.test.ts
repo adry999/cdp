@@ -51,6 +51,18 @@ describe('projectsAdminRepository', () => {
     })
   })
 
+  describe('getBySlug', () => {
+    it('orders every child list by sort_order, since a save writes their array order back', async () => {
+      const { fake, repository } = setup()
+      fake.script('projects.select', { data: null })
+      await repository.getBySlug('x')
+      const orders = fake.chainOf('projects.select').filter(([method]) => method === 'order')
+      expect(orders.map(([, args]) => args)).toEqual(
+        ['project_facts', 'project_stack', 'project_stats', 'project_images'].map((table) => ['sort_order', { foreignTable: table }]),
+      )
+    })
+  })
+
   describe('setFeatured', () => {
     it('updates the flag by slug', async () => {
       const { fake, repository } = setup()
