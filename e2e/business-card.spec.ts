@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 // /c is printed as a QR code on business cards: it must never move or break.
 test('the default business-card page renders the person and the contact actions', async ({ page }) => {
-  const response = await page.goto('/c?s=carte')
+  const response = await page.goto('/c')
   expect(response?.status()).toBe(200)
   await expect(page.locator('html')).toHaveAttribute('lang', 'ro-RO')
   await expect(page.locator('h1')).toHaveText('Adrian Iovu')

@@ -19,19 +19,21 @@ person, `/c/<slug>` (`/en/c/<slug>`); `/c` without a slug opens the default pers
 
 ## Source of a request (`?s=`)
 
-The printed QR links carry where they were printed: `codepedia.md/c?s=carte`, `?s=mapa`,
-`?s=ecuson` (`/c/<slug>?s=…` for another person). `cardSource()` keeps only a short lowercase word.
+The card and the badge print one QR code, `codepedia.md/c` (`/c/<slug>` for another person), so a
+request sent from it shows `/c` as its page. An optional `?s=<word>` (e.g. `?s=mapa` on a future
+print) tells the materials apart; `cardSource()` keeps only a short lowercase word.
 
-- Budget calculator: the qualifier sends the page it was opened on (`/c?s=carte`), stored in
+- Budget calculator: the qualifier sends the page it was opened on (`/c`, or `/c?s=mapa`), stored in
   `leads.page` and shown in the admin lead detail and the team email.
-- Qualifier off: the button links to `/contact?utm_source=qr&utm_medium=<s>&utm_campaign=<slug>`,
+- Qualifier off: the button links to `/contact?utm_source=qr&utm_campaign=<slug>` (plus `utm_medium=<s>`
+  when the QR has one),
   and the contact form stores those `utm_*` with the lead.
 
 ## Adding a person
 
 Add `card` to their entry in `layers/content/data/team.ts` (`slug`, `phone`, `email`, `whatsapp`,
 `telegram`); `data/content.test.ts` checks the values. Their QR then encodes
-`https://codepedia.md/c/<slug>?s=carte`. A printed slug is permanent: never rename or remove it.
+`https://codepedia.md/c/<slug>`. A printed slug is permanent: never rename or remove it.
 
 ## Public API
 

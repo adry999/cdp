@@ -7,7 +7,7 @@ import { CARD_ICONS, SOCIAL_LABELS, socialNetworkOf } from '#layers/card/domain/
 
 // The page a printed business card's QR opens: codepedia.md/c (the default person) or /c/<slug>.
 // The card prints only this URL; numbers and links come from layers/content/data/team.ts, so they
-// change without a reprint. `?s=carte|mapa|ecuson` names where the QR was printed and travels
+// change without a reprint. An optional `?s=<word>` names where the QR was printed and travels
 // with any request sent from here (see README).
 definePageMeta({ layout: 'bare' })
 
@@ -45,7 +45,7 @@ const vcardHref = computed(() => `/vcard/${member.card.slug}.vcf${siteLocale.val
 const contactHref = computed(() =>
   localePath({
     name: 'contact',
-    query: { utm_source: 'qr', utm_medium: source.value ?? 'direct', utm_campaign: member.card.slug },
+    query: { utm_source: 'qr', utm_campaign: member.card.slug, ...(source.value ? { utm_medium: source.value } : {}) },
   }),
 )
 
