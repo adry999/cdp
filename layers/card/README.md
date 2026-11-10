@@ -29,6 +29,19 @@ print) tells the materials apart; `cardSource()` keeps only a short lowercase wo
   when the QR has one),
   and the contact form stores those `utm_*` with the lead.
 
+## Counting scans
+
+`state/useCardTracking.ts` counts the visit (once per browser session) and the clicks on save,
+WhatsApp, Telegram and the calculator, with `navigator.sendBeacon` to `POST /api/card/events`
+(`server/api/card/events.post.ts` → `services/recordCardEvent.ts`): 204, 400 for an unknown card or
+kind, 429 over 30 events per IP in 10 minutes (in memory, per app). Rows go to `card_events`
+(migration `20261110120000_card_events.sql`) with the service-role client: card, kind, `?s=` source
+and time; no IP, user agent or cookie, so no consent is needed.
+
+`/admin/card` (`app/pages/admin/card.vue`, sidebar "Cărți de vizită") shows the counts per person for
+the last 30 days or all time (`card_event_counts`, RLS: admins only) and how many leads came from a
+card page (`CARD_LEADS_FILTER`: the page `/c…` or `utm_source=qr`).
+
 ## Adding a person
 
 Add `card` to their entry in `layers/content/data/team.ts` (`slug`, `phone`, `email`, `whatsapp`,
@@ -37,5 +50,5 @@ Add `card` to their entry in `layers/content/data/team.ts` (`slug`, `phone`, `em
 
 ## Public API
 
-None: no other module uses this one. `domain/icons.ts` exports `CARD_ICONS`, which the root
+None: no other module uses this one; the root `AdminSidebar` only links to `/admin/card`. `domain/icons.ts` exports `CARD_ICONS`, which the root
 `nuxt.config.ts` adds to the icon client bundle.

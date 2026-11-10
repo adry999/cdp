@@ -4,6 +4,7 @@ import { mapProjectCard, selectHomeProjects, usePublishedProjects, type ProjectC
 import { useQualifierAvailability } from '#layers/qualifier'
 import { cardSource, findCardMember, telegramUrl, whatsappUrl } from '#layers/card/domain/cardProfile'
 import { CARD_ICONS, SOCIAL_LABELS, socialNetworkOf } from '#layers/card/domain/icons'
+import { useCardTracking } from '#layers/card/state/useCardTracking'
 
 // The page a printed business card's QR opens: codepedia.md/c (the default person) or /c/<slug>.
 // The card prints only this URL; numbers and links come from layers/content/data/team.ts, so they
@@ -40,6 +41,7 @@ const projects = computed(() =>
 )
 
 const source = computed(() => cardSource(route.query.s))
+const { track } = useCardTracking(member.card.slug, () => source.value)
 const vcardHref = computed(() => `/vcard/${member.card.slug}.vcf${siteLocale.value === 'en' ? '?lang=en' : ''}`)
 // Used only while the qualifier is off: the contact form stores utm_* with the lead.
 const contactHref = computed(() =>
@@ -50,8 +52,8 @@ const contactHref = computed(() =>
 )
 
 const chats = computed(() => [
-  ...(member.card.whatsapp ? [{ key: 'whatsapp', href: whatsappUrl(member.card.whatsapp), icon: CARD_ICONS.whatsapp, label: t('card.whatsapp') }] : []),
-  ...(member.card.telegram ? [{ key: 'telegram', href: telegramUrl(member.card.telegram), icon: CARD_ICONS.telegram, label: t('card.telegram') }] : []),
+  ...(member.card.whatsapp ? [{ key: 'whatsapp' as const, href: whatsappUrl(member.card.whatsapp), icon: CARD_ICONS.whatsapp, label: t('card.whatsapp') }] : []),
+  ...(member.card.telegram ? [{ key: 'telegram' as const, href: telegramUrl(member.card.telegram), icon: CARD_ICONS.telegram, label: t('card.telegram') }] : []),
 ])
 
 const socials = computed(() =>
@@ -94,6 +96,7 @@ useSeoMeta({ robots: 'noindex, follow' })
     <a
       :href="vcardHref"
       class="mt-7 flex min-h-[60px] items-center justify-center gap-3 rounded bg-signal px-5 text-[17px] font-semibold text-ink no-underline transition-colors duration-[120ms] hover:bg-ink hover:text-paper hover:no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
+      @click="track('save')"
     >
       <Icon :name="CARD_ICONS.save" class="h-5 w-5" aria-hidden="true" />
       {{ t('card.saveContact') }}
@@ -106,6 +109,7 @@ useSeoMeta({ robots: 'noindex, follow' })
           target="_blank"
           rel="noopener"
           class="flex min-h-[60px] items-center justify-center gap-2.5 rounded border border-ink px-3 text-[17px] text-ink no-underline transition-colors duration-[120ms] hover:border-muted hover:no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
+          @click="track(chat.key)"
         >
           <Icon :name="chat.icon" class="h-5 w-5" aria-hidden="true" />
           {{ chat.label }}
@@ -118,6 +122,7 @@ useSeoMeta({ robots: 'noindex, follow' })
       variant="outline"
       :fallback-href="contactHref"
       class="mt-3 flex! min-h-[60px] w-full items-center gap-3 text-left text-[17px]"
+      @click="track('budget')"
     >
       <Icon :name="isQualifierEnabled ? CARD_ICONS.budget : CARD_ICONS.write" class="h-5 w-5 shrink-0" aria-hidden="true" />
       <span class="flex-1">{{ isQualifierEnabled ? t('card.budget') : t('card.writeUs') }}</span>

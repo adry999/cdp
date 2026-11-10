@@ -39,3 +39,8 @@ test('the business-card page stays out of the sitemap', async ({ request }) => {
   const sitemap = await (await request.get('/sitemap.xml')).text()
   expect(sitemap).not.toMatch(/\/c[<?/]/)
 })
+
+test('the card event endpoint rejects an event for an unknown card', async ({ request }) => {
+  const response = await request.post('/api/card/events', { data: { slug: 'nobody', kind: 'view' } })
+  expect(response.status()).toBe(400)
+})
