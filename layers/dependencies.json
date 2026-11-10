@@ -8,5 +8,6 @@
   "news": ["core", "blog"],
   "projects": ["core", "qualifier", "content", "blog"],
   "home": ["core", "content", "projects", "qualifier", "leads", "services"],
-  "services": ["core", "projects", "qualifier", "content", "blog"]
+  "services": ["core", "projects", "qualifier", "content", "blog"],
+  "card": ["core", "content", "projects", "qualifier"]
 }

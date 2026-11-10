@@ -683,5 +683,22 @@
       "60-minute discovery call, if it makes sense",
       "Scope and price specification within 48 hours"
     ]
+  },
+  "card": {
+    "seo": {
+      "description": "{name}, Codepedia: save the contact or message us on WhatsApp and Telegram."
+    },
+    "tagline": "Web studio · Chișinău",
+    "studio": "CODEPEDIA · web studio",
+    "saveContact": "Save contact",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram",
+    "chat": "Message us",
+    "projectPrompt": "Got a project?",
+    "budget": "Estimate your project budget",
+    "writeUs": "Send a request",
+    "projects": "Work",
+    "allProjects": "All",
+    "links": "Links"
   }
 }
