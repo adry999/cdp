@@ -1,4 +1,5 @@
-import type { TeamCard, TeamMember } from '#layers/content'
+// Types from the server barrel: it holds only data, so the vCard route's tsconfig never pulls Vue composables.
+import type { TeamCard, TeamMember } from '#layers/content/server'
 
 export type CardMember = TeamMember & { card: TeamCard }
 

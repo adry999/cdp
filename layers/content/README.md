@@ -35,7 +35,8 @@ the public site.
   active locale.
 - `TEAM`, `DEFAULT_CARD_SLUG`, `TeamMember`, `TeamCard` — the team (`data/team.ts`); a member with
   `card` has a business-card page `/c/<slug>` (`layers/card`), and `DEFAULT_CARD_SLUG` is the one `/c`
-  opens. Also exported from `server/index.ts`, for the vCard route.
+  opens. `TEAM`, `DEFAULT_CARD_SLUG` and the two types are also exported from `server/index.ts`, for the
+  vCard route and for type imports that must not pull in the client composables.
 - `useServiceStages()`, `useStackGroups()`, `useAboutPillars()` — join the structural defs in `domain/` with their
   `home.*` i18n copy.
 - `Faq`, `LocalizedText`, `SiteSettings`, `ServiceStageDef`, `ServiceStage`,

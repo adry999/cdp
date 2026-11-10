@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { TeamMember } from '#layers/content'
+import type { TeamMember } from '#layers/content/server'
 import { cardSource, findCardMember, telegramUrl, vcardFileName, whatsappUrl } from './cardProfile'
 
 const card = { phone: '+37369117329', email: 'contact@codepedia.md', whatsapp: '', telegram: '' }
