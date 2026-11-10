@@ -11,6 +11,7 @@ export function buildQualificationSubmission(
     stage: 'A',
     budget: '2to5k',
     lang: 'ro',
+    page: '/c?s=carte',
     website: '',
     ...overrides,
   }
