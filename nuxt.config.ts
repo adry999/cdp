@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { crossLocalePageRedirects, redirectRouteRules } from './layers/core/shared/utils/localeRoutes'
 import { TECH_ICONS } from './layers/core/shared/utils/techIcons'
 import { STACK_GROUP_ICONS } from './layers/content/domain/stack'
+import { CARD_ICONS } from './layers/card/domain/icons'
 import { THEME_INIT_SCRIPT } from './layers/core/shared/utils/theme'
 
 // Every real build must supply these. Skipped in dev and in
@@ -134,7 +135,7 @@ export default defineNuxtConfig({
     fallbackToApi: false,
     // Every used icon is in the client bundle (also read during SSR), so the server ships no whole collections.
     serverBundle: false,
-    clientBundle: { icons: [...new Set([...Object.values(TECH_ICONS), ...Object.values(STACK_GROUP_ICONS)])] },
+    clientBundle: { icons: [...new Set([...Object.values(TECH_ICONS), ...Object.values(STACK_GROUP_ICONS), ...Object.values(CARD_ICONS)])] },
   },
 
   // Node's built-in SQLite instead of the better-sqlite3 native addon — no compiled binary to build or ship.
@@ -152,6 +153,8 @@ export default defineNuxtConfig({
     cronSecret: process.env.CRON_SECRET || '',
     // Secret that Cloudflare sends in `x-codepedia-origin`; requests without it get 403. Empty = check off. NUXT_ORIGIN_SECRET also overrides it at runtime, no rebuild needed.
     originSecret: process.env.NUXT_ORIGIN_SECRET || '',
+    // Cloudflare Turnstile on the public forms (/api/leads, /api/contact). Unset = no check, no widget.
+    turnstileSecretKey: process.env.NUXT_TURNSTILE_SECRET_KEY || '',
     // Sitemap <lastmod> of the static pages (YYYY-MM-DD): they only change with a deploy.
     buildDate: new Date().toISOString().slice(0, 10),
     // Cloudflare R2 (S3 API) credentials for the admin media endpoints in layers/projects. Server-only.
@@ -172,6 +175,7 @@ export default defineNuxtConfig({
       siteUrlRo: process.env.NUXT_PUBLIC_SITE_URL_RO || '',
       noindex: process.env.NUXT_PUBLIC_NOINDEX === 'true',
       grantsEnabled: process.env.NUXT_PUBLIC_GRANTS_ENABLED === 'true',
+      turnstileSiteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY || '',
     },
   },
 
@@ -230,6 +234,11 @@ export default defineNuxtConfig({
     '/en/contact': swrCache(300),
     '/confidentialitate': swrCache(300),
     '/en/privacy': swrCache(300),
+    // Business-card pages (layers/card): content in the repo, but the two projects come from the database.
+    '/c': swrCache(300),
+    '/c/**': swrCache(300),
+    '/en/c': swrCache(300),
+    '/en/c/**': swrCache(300),
     // These answer per host (RO/EN origin); Nitro's cache key is the path only, so key it on the host too.
     '/llms.txt': hostSwrCache(3600),
     '/llms-full.txt': hostSwrCache(3600),

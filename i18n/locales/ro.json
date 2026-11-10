@@ -322,7 +322,8 @@
       },
       "facts": {
         "responseTime": "Timp de răspuns",
-        "phone": "Telefon"
+        "phone": "Telefon",
+        "email": "Email"
       }
     }
   },
@@ -682,5 +683,22 @@
       "Discovery de 60 de minute, dacă are sens",
       "Specificație de scop și preț în 48 de ore"
     ]
+  },
+  "card": {
+    "seo": {
+      "description": "{name}, Codepedia: salvează contactul sau scrie-ne pe WhatsApp și Telegram."
+    },
+    "tagline": "Studio web · Chișinău",
+    "studio": "CODEPEDIA · studio web",
+    "saveContact": "Salvează contactul",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram",
+    "chat": "Scrie-ne",
+    "projectPrompt": "Ai un proiect?",
+    "budget": "Calculează bugetul proiectului",
+    "writeUs": "Trimite o cerere",
+    "projects": "Proiecte",
+    "allProjects": "Toate",
+    "links": "Linkuri"
   }
 }

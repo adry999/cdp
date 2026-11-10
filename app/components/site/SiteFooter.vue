@@ -97,6 +97,9 @@ const ctaClass =
         <a :href="`tel:${settings.phone}`" :class="[linkClass, 'w-fit']">
           {{ settings.phoneDisplay }}
         </a>
+        <a :href="`mailto:${settings.contactEmail}`" :class="[linkClass, 'w-fit']">
+          {{ settings.contactEmail }}
+        </a>
       </div>
 
       <nav :aria-label="t('nav.services')" class="flex flex-col gap-0 nav:gap-2">

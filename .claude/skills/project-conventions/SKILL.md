@@ -9,7 +9,7 @@ description: Folosește în repo-ul Codepedia (Nuxt 4 + Supabase) când decizi u
 
 Deciziile de arhitectură luate pentru acest repo. Se aplică înaintea regulilor generale din `senior-architecture`; unde diferă, câștigă acest fișier. Designul complet, cu motivația fiecărei decizii: `docs/superpowers/specs/2026-09-13-feature-driven-architecture-design.md`.
 
-**Stare:** toți pașii migrării sunt în `main`. Modulele din `layers/`: `core`, `consent`, `leads`, `qualifier`, `content`, `blog`, `news`, `projects`, `home`, `services`; dependențele lor stau în `layers/dependencies.json`. În `app/` rămân `app.vue`, `error.vue`, layout-urile, `SiteHeader`, `SiteFooter`, `app/utils/` (`siteNav`, `enPendingTranslation` — compune listele EN-în-așteptare ale modulelor), pluginul `locale-alternates`, paginile admin de login și MFA și `AdminSidebar`. Nu există `layers/admin`.
+**Stare:** toți pașii migrării sunt în `main`. Modulele din `layers/`: `core`, `consent`, `leads`, `qualifier`, `content`, `blog`, `news`, `projects`, `home`, `services`; dependențele lor stau în `layers/dependencies.json`. În `app/` rămân `app.vue`, `error.vue`, layout-urile, `SiteHeader`, `SiteFooter`, `app/utils/` (`siteNav`, `enPendingTranslation` — compune listele EN-în-așteptare ale modulelor), pluginul `locale-alternates`, composable-ul `useContactCta`, paginile admin de cont (login, MFA, cont, resetarea parolei) și `AdminSidebar`. Nu există `layers/admin`.
 
 ## Triggers
 
@@ -30,9 +30,9 @@ Un modul = un Nuxt layer în `layers/<nume>/`. Nuxt îl înregistrează automat,
 
 | Modul | Deține | Poate importa |
 |---|---|---|
-| `app/` (rădăcină) | composition root: `app.vue`, `error.vue`, layout-urile (`default`, `case-study`, `admin`, `admin-auth`), `SiteHeader`, `SiteFooter`, `utils/` (`siteNav`, `enPendingTranslation`), pluginul `locale-alternates` (canonical și hreflang pe domeniul oficial), `pages/admin/login.vue`, `pages/admin/mfa.vue`, `AdminSidebar`; tema Tailwind în `assets/css/main.css` | API-ul public al oricărui modul |
-| `server/` (rădăcină) | `routes/sitemap.xml.ts` (compune `SitemapPage`-urile declarate de fiecare modul), `routes/blog/rss.xml.ts`, `routes/en/blog/rss.xml.ts`, `routes/robots.txt.ts`, `routes/llms.txt.ts`, `routes/llms-full.txt.ts`, `api/admin/revalidate.post.ts`, `plugins/strip-powered-by.ts` | API-ul server public al oricărui modul |
-| `core` | design system (primitive UI și admin: `SiteSection`, `PageHero`, `RowList`, `FaqList`, `ToggleChip`, `TextLink`, `AdminField`, `AdminTopbar` …), contracte (`AsyncStatus`, `AppError`/`toAppError`, `LocalizedText`, `StageId`, `ServiceTagId`, `SitemapPage`, hook-ul `qualifier:open`), composables (`usePageSeo`, `useJsonLd`, `useSiteUrl`, `useSiteLocale`, `useFocusTrap`, `useMobileMenuOpen`, `useSaveShortcut` …), utilitare server (`requireAdmin` cu verificarea `aal2`, `logAndThrow`, `checkRateLimit`, `sendMail`, `notifyBestEffort`, `getSiteUrl`, helperii de sitemap), tipuri DB, middleware-urile server (redirect de domeniu și de limbă, `00-origin-guard`, cheia de cache `zz-cache-key-query`), testul de arhitectură | nimic din `layers/*` |
+| `app/` (rădăcină) | composition root: `app.vue`, `error.vue`, layout-urile (`default`, `minimal`, `admin`, `admin-auth`), `SiteHeader*`, `SiteFooter`, `SiteFooterMinimal`, `utils/` (`siteNav`, `enPendingTranslation`), `composables/useContactCta`, pluginul `locale-alternates` (canonical și hreflang pe domeniul oficial), `pages/admin/` (`login`, `mfa`, `account`, `reset-password`), `AdminSidebar`; tema Tailwind în `assets/css/main.css` | API-ul public al oricărui modul |
+| `server/` (rădăcină) | `routes/sitemap.xml.ts` (compune `SitemapPage`-urile declarate de fiecare modul), `routes/blog/rss.xml.ts`, `routes/en/blog/rss.xml.ts`, `routes/robots.txt.ts`, `routes/llms.txt.ts`, `routes/llms-full.txt.ts`, `api/admin/revalidate.post.ts` (golește cache-ul local și pe celălalt domeniu), `api/cache-clear.post.ts` (protejat cu `CRON_SECRET`), `middleware/00-origin-guard.ts`, `plugins/strip-powered-by.ts` | API-ul server public al oricărui modul |
+| `core` | design system (primitive UI și admin: `SiteSection`, `PageHero`, `RowList`, `FaqList`, `ToggleChip`, `TextLink`, `AdminField`, `AdminTopbar` …), contracte (`AsyncStatus`, `AppError`/`toAppError`, `LocalizedText`, `StageId`, `ServiceTagId`, `SitemapPage`, hook-ul `qualifier:open`), composables (`usePageSeo`, `useJsonLd`, `useSiteUrl`, `useSiteLocale`, `useFocusTrap`, `useMobileMenuOpen`, `useSaveShortcut` …), utilitare server (`requireAdmin` cu verificarea `aal2`, `logAndThrow`, `checkRateLimit`, `sendMail`, `notifyBestEffort`, `getSiteUrl`, helperii de sitemap), tipuri DB, middleware-urile server (redirect de domeniu și de limbă, cheia de cache `zz-cache-key-query`), timeout-urile pentru fetch (`plugins/fetch-timeouts.ts`), testul de arhitectură | nimic din `layers/*` |
 | `consent` | consimțământ cookie, banner, plugin analytics, pagina de confidențialitate | `core`, `#layers/content` (doar `useSiteSettings`) |
 | `leads` | pagina `/contact`, formularul de contact, `POST /api/leads`, paginile admin de solicitări | `core`, `#layers/content` (doar `useSiteSettings`) |
 | `qualifier` | modalul de calificare, `POST /api/contact` | `core`, `#layers/leads/server` |
@@ -102,7 +102,7 @@ layers/<modul>/
 
 ### Teste
 
-- `*.test.ts` lângă fișierul testat. `vitest.config.ts`: `include: ['layers/**/*.test.ts']`, alias `#layers`.
+- `*.test.ts` lângă fișierul testat. `vitest.config.ts`: `include: ['layers/**/*.test.ts', 'app/**/*.test.ts']`, alias `#layers`. Fake-ul Supabase în memorie pentru repository-uri: `layers/core/test-support/fakeSupabase.ts`.
 - Fixture-uri în `layers/<modul>/test-support/`, ca factory cu overrides.
 - Serviciile primesc dependențele ca parametru; testele dau fake-uri in-memory. Fără `vi.mock` pe module.
 - E2E în `e2e/` la rădăcină: un spec per rută publică și per flux critic, rulat pe build de producție.
@@ -111,7 +111,7 @@ layers/<modul>/
 
 ### Medii
 
-- `development` (local) · `production` (Hostinger, Node.js Apps, deploy din branch-ul `production`, în spatele Cloudflare; pașii în `docs/DEPLOY_HOSTINGER.md`). Vercel mai construiește doar preview-urile PR-urilor.
+- `development` (local) · `production` (Hostinger, Node.js Apps, deploy din branch-ul `production`, în spatele Cloudflare; pașii în `docs/DEPLOY_HOSTINGER.md`). Două aplicații Hostinger, câte una pe domeniu, din același cod; redeploy pe rând. Vercel nu se mai folosește.
 - `assertEnv()` din `nuxt.config.ts` din rădăcină oprește build-ul de producție fără variabilele obligatorii. `process.env` se citește doar în fișierele `nuxt.config.ts`.
 - O cheie nouă intră în `runtimeConfig` și în `.env.example`, cu mediul în comentariu.
 

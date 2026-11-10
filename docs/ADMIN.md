@@ -51,7 +51,8 @@ fără deploy. Rută: `/admin`, exclusă din sitemap și `robots.txt`.
 - Ordinea de rollout: 1) codul MFA ajunge în producție; 2) adminul se autentifică și își
   înrolează factorul; 3) abia apoi se aplică migrarea
   `20261028150000_is_admin_requires_aal2.sql`, care face `is_admin()` să ceară `aal2`.
-  Aplicată mai devreme, adminul pierde accesul de scriere.
+  Aplicată mai devreme, adminul pierde accesul de scriere. Stare: aplicată în producție
+  (verificat la 2026-11-05: `is_admin()` cere `aal2`).
 
 ## Structura navigației
 
@@ -60,10 +61,12 @@ Sidebar `240px`, bg `#FAF8F4`, `border-right: 1px solid #E2DED6`. În cap, simbo
 12px uppercase `0.08em`; elementul activ ink, restul muted, cu o bară de 2px
 `#FF4D14` în stânga pe cel activ.
 
-Întrebările frecvente și setările site-ului nu se mai editează din admin: se modifică direct în `layers/content/data/`. Textele serviciilor, stack-ului și procesului sunt în `i18n/locales/{ro,en}.json`.
+Întrebările frecvente și setările site-ului nu se mai editează din admin: se modifică direct în `layers/content/data/`. Paginile de servicii au conținutul în `layers/services/data/services.ts`; textele stack-ului și procesului sunt în `layers/content/` și `i18n/locales/{ro,en}.json`.
 
 ```
 Proiecte          /admin/projects
+Noutăți           /admin/news
+Hero              /admin/hero
 Solicitări        /admin/leads
 ```
 
@@ -85,7 +88,7 @@ copertă (48 × 30), titlu RO, chip-uri de tech, stare (`Draft` muted / `Publica
 - Butoane: „Proiect nou" (primar), duplicare, ștergere (cu confirmare scrisă).
 - Filtru simplu: toate / draft / publicate.
 
-### Editor `/admin/projects/[id]`
+### Editor `/admin/projects/[slug]`
 
 Un singur formular lung, salvare explicită, cu indicator „modificări nesalvate".
 Câmpurile respectă exact blocurile din șablonul de studiu de caz:

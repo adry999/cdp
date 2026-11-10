@@ -12,6 +12,7 @@ export const QUALIFIER_TOTAL_STEPS = 3
 export function useQualifierFlow() {
   const { isOpen, initialStage, close } = useQualifierDialog()
   const { locale } = useI18n()
+  const route = useRoute()
 
   const step = ref(1)
   const direction = ref<1 | -1>(1)
@@ -40,12 +41,12 @@ export function useQualifierFlow() {
     step.value = Math.max(step.value - 1, 1)
   }
 
-  async function submit(payload: QualifierContactPayload) {
+  async function submit(payload: QualifierContactPayload, turnstileToken?: string) {
     if (!stage.value || !budget.value) return
     status.value = 'pending'
     error.value = null
     try {
-      await postQualification({ ...payload, stage: stage.value, budget: budget.value, lang: locale.value })
+      await postQualification({ ...payload, stage: stage.value, budget: budget.value, lang: locale.value, page: route.fullPath }, turnstileToken)
       status.value = 'success'
     } catch (caught) {
       error.value = toAppError(caught)
