@@ -328,6 +328,13 @@
     }
   },
   "caseStudy": {
+    "star": {
+      "label": "Case study structure",
+      "situation": "Situation: the business problem",
+      "task": "Task: goal and constraints",
+      "action": "Action: business and tech",
+      "result": "Result: gains and savings"
+    },
     "otherProjects": "Other projects",
     "sections": {
       "hero": "Case study",

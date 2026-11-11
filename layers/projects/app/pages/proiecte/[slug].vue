@@ -128,6 +128,7 @@ useJsonLd(
   <div>
     <ProjectsCaseStudyHero :project="project" @open-gallery="openLightbox(0)" />
     <ProjectsCaseStudyFacts :project="project" />
+    <ProjectsCaseStudyStarBand :sections="sections" />
 
     <ProjectsCaseStudySection
       v-if="sections.situation"
