@@ -61,16 +61,16 @@
     "hero": {
       "sectionLabel": "Studio",
       "titlePhrases": [
-        "Landing Pages",
-        "Business Websites",
-        "Product Websites",
-        "Marketing Websites",
         "Web Applications",
-        "Custom APIs",
-        "Third-Party Integrations"
+        "Management Systems",
+        "Business Websites",
+        "Online Stores",
+        "AI Automations",
+        "Third-Party Integrations",
+        "Landing Pages"
       ],
       "titleSuffix": "built to bring you lasting results.",
-      "lead": "We build fast, robust, and scalable web applications for founders and growing companies — taking your product from concept to a high-impact launch that converts users and scales without technical debt.",
+      "lead": "We build web applications for businesses that have outgrown notebooks and spreadsheets: orders, stock, payments and reports in one place. You work directly with the engineers, and we agree the price and deadline of each stage before we write code.",
       "ctaPrimary": "Find out if we can help",
       "ctaSecondary": "How we work",
       "facts": {
