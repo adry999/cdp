@@ -328,6 +328,13 @@
     }
   },
   "caseStudy": {
+    "star": {
+      "label": "Structura studiului de caz",
+      "situation": "Situație: problema de business",
+      "task": "Sarcină: obiectiv și constrângeri",
+      "action": "Acțiune: business și tehnic",
+      "result": "Rezultat: câștig și economii"
+    },
     "otherProjects": "Alte proiecte",
     "sections": {
       "hero": "Studiu de caz",
@@ -496,6 +503,7 @@
       "ai-automation": "Automatizare AI",
       "granturi": "Granturi"
     },
+    "listLabel": "Studii de caz",
     "empty": "Momentan nu avem studii de caz publicate."
   },
   "services": {

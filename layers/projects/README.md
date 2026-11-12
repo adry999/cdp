@@ -79,7 +79,10 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
 
 - `ProjectsCaseStudyHero`, `ProjectsCaseStudyFacts`, `ProjectsCaseStudyNext`
   — the unnumbered case-study blocks, rendered from a `MappedProject` prop.
-  `Next` also lists every other published project (`GET /api/projects`).
+  `Next` also lists three other published projects, the same service first
+  (`selectRelatedProjects`, `GET /api/projects`).
+- `ProjectsCaseStudyStarBand` — the S · T · A · R reading guide between `Date` and
+  the first section, listing only the steps the case study has (prototype section "STAR").
 - `ProjectsCaseStudySection` — one numbered section (01–07: problem, solution,
   stack, obstacles, changes, result, feedback): label, heading, paragraphs, a
   default slot for gallery / stack / stats / quote, and the dashed "to complete"
