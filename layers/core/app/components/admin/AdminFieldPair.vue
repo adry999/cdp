@@ -32,12 +32,16 @@ function update(lang: 'ro' | 'en', event: Event) {
     </div>
     <div class="mt-2 grid grid-cols-2 gap-3">
       <div v-for="col in columns" :key="col.lang">
-        <label :id="col.labelId" :for="col.fieldId" class="mb-1 block eyebrow-sm text-muted">{{ col.lang.toUpperCase() }}</label>
+        <label :id="col.labelId" :for="col.fieldId" class="mb-1 block eyebrow-sm text-muted">
+          {{ col.lang.toUpperCase() }}
+          <!-- The public site silently falls back to RO when EN is blank, so the gap must show here. -->
+          <span v-if="col.lang === 'en' && ro.trim() && !en.trim()" class="text-signal-text">· lipsă</span>
+        </label>
         <textarea
           v-if="textarea"
           :id="col.fieldId"
           :value="models[col.lang].value"
-          rows="3"
+          rows="5"
           :aria-labelledby="`${groupId} ${col.labelId}`"
           :class="fieldClass"
           @input="update(col.lang, $event)"

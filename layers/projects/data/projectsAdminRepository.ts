@@ -24,9 +24,14 @@ function failure(message: string, cause: unknown): AppError {
 }
 
 const UNIQUE_VIOLATION = '23505'
+// 42501: save_project's admin check (also hit without MFA); PGRST301/303: the session's JWT expired or is invalid.
+const SESSION_ERRORS = new Set(['42501', 'PGRST301', 'PGRST303'])
+const SESSION_EXPIRED_MESSAGE =
+  'Sesiunea a expirat. Autentifică-te din nou într-un tab nou (/admin/login), apoi salvează: modificările rămân în pagină.'
 
 function saveFailure(error: { code?: string; message: string }): AppError {
   if (error.code === UNIQUE_VIOLATION) return failure('Slug-ul există deja la alt proiect. Alege altul.', error)
+  if (error.code && SESSION_ERRORS.has(error.code)) return failure(SESSION_EXPIRED_MESSAGE, error)
   return failure(error.message, error)
 }
 
@@ -101,7 +106,16 @@ export function createProjectsAdminRepository(
     },
 
     async getBySlug(slug: string): Promise<AdminProjectRow | null> {
-      const { data, error } = await client.from('projects').select(ADMIN_PROJECT_SELECT).eq('slug_ro', slug).maybeSingle()
+      // save_project rewrites sort_order from array position, so unordered children would reshuffle on every save.
+      const { data, error } = await client
+        .from('projects')
+        .select(ADMIN_PROJECT_SELECT)
+        .eq('slug_ro', slug)
+        .order('sort_order', { foreignTable: 'project_facts' })
+        .order('sort_order', { foreignTable: 'project_stack' })
+        .order('sort_order', { foreignTable: 'project_stats' })
+        .order('sort_order', { foreignTable: 'project_images' })
+        .maybeSingle()
       if (error) throw failure('Proiectul nu a putut fi încărcat.', error)
       return data
     },
