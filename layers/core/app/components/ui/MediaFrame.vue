@@ -20,6 +20,14 @@ const aspectClass = computed(() => {
   return 'aspect-[16/10]'
 })
 
+// A src whose file is missing (a deleted or never-uploaded media key) shows the hatched placeholder,
+// not the browser's broken-image icon with the alt text. NuxtImg also reports a failure that
+// happened before hydration (its SSR onerror marks the img), so this covers both cases.
+const failed = ref(false)
+watch(() => props.src, () => {
+  failed.value = false
+})
+
 // aspectClass already reserves layout space, so these aren't preventing CLS — they're the
 // intrinsic dimensions NuxtImg needs for its srcset, matching the admin editor's upload labels.
 const intrinsicSize = computed(() => {
@@ -31,7 +39,7 @@ const intrinsicSize = computed(() => {
 
 <template>
   <NuxtImg
-    v-if="src"
+    v-if="src && !failed"
     :src="src"
     :alt="alt"
     :width="intrinsicSize.width"
@@ -42,6 +50,7 @@ const intrinsicSize = computed(() => {
     :fetchpriority="priority ? 'high' : undefined"
     :preload="priority ? { fetchPriority: 'high' } : undefined"
     :class="[aspectClass, 'block w-full rounded border border-hairline object-cover object-top']"
+    @error="failed = true"
   />
   <div
     v-else
