@@ -161,3 +161,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#198** fix: același placeholder pentru imagini lipsă (#197, în `dev`), spre `main` pentru deploy.
 - **#199** fix: aceleași reparații din editorul de proiecte (#190), spre `dev` pentru test.
 - **#200** feat: hero-ul de pe homepage începe cu „Aplicații web” (înainte „Landing page-uri”), iar textul de sub titlu se adresează afacerilor care au crescut peste caiete și Excel, în RO și EN — din analiza de poziționare (local întâi, aplicații web, proiecte de 1.000–5.000 EUR).
+- **#201** feat: același hero cu „Aplicații web” (#200, în `dev`), spre `main`.
