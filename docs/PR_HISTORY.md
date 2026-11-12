@@ -155,3 +155,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#192** feat: aceeași pagină a cărții de vizită (#191, testată pe `dev`), spre `main` pentru deploy.
 - **#193** feat: portofoliu, din auditul de design — eticheta „Studii de caz” pe lista din `/proiecte` (nu mai repetă „Portofoliu”), „Alte proiecte” limitat la 3 (același serviciu întâi) și banda S · T · A · R din prototip pe studiul de caz.
 - **#194** fix: vulnerabilitățile raportate de Hostinger pe 2026-11-12 — `overrides` pentru `node-forge` ^1.4.3, `glob` ^14.0.2 și `minimatch` ^11.0.1, plus `eslint-plugin-import-x` 4.18.1 (compatibil cu `minimatch` 11). Rămâne `deepmerge` (low, fără versiune reparată, doar la build).
+- **#195** fix: aceleași actualizări de dependențe (#194, în `dev`), spre `main` pentru deploy.
