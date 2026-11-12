@@ -322,11 +322,19 @@
       },
       "facts": {
         "responseTime": "Timp de răspuns",
-        "phone": "Telefon"
+        "phone": "Telefon",
+        "email": "Email"
       }
     }
   },
   "caseStudy": {
+    "star": {
+      "label": "Structura studiului de caz",
+      "situation": "Situație: problema de business",
+      "task": "Sarcină: obiectiv și constrângeri",
+      "action": "Acțiune: business și tehnic",
+      "result": "Rezultat: câștig și economii"
+    },
     "otherProjects": "Alte proiecte",
     "sections": {
       "hero": "Studiu de caz",
@@ -495,6 +503,7 @@
       "ai-automation": "Automatizare AI",
       "granturi": "Granturi"
     },
+    "listLabel": "Studii de caz",
     "empty": "Momentan nu avem studii de caz publicate."
   },
   "services": {
@@ -682,5 +691,22 @@
       "Discovery de 60 de minute, dacă are sens",
       "Specificație de scop și preț în 48 de ore"
     ]
+  },
+  "card": {
+    "seo": {
+      "description": "{name}, Codepedia: salvează contactul sau scrie-ne pe WhatsApp și Telegram."
+    },
+    "tagline": "Studio web · Chișinău",
+    "studio": "CODEPEDIA · studio web",
+    "saveContact": "Salvează contactul",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram",
+    "chat": "Scrie-ne",
+    "projectPrompt": "Ai un proiect?",
+    "budget": "Calculează bugetul proiectului",
+    "writeUs": "Trimite o cerere",
+    "projects": "Proiecte",
+    "allProjects": "Toate",
+    "links": "Linkuri"
   }
 }

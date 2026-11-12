@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { withArrow } from '#layers/core/shared/utils/text'
 import { mapProjectCard, type MappedProject } from '#layers/projects/domain/mapProject'
+import { selectRelatedProjects } from '#layers/projects/domain/projectList'
 import { usePublishedProjects } from '#layers/projects/state/usePublishedProjects'
 
 const props = defineProps<{ project: MappedProject }>()
@@ -10,10 +11,12 @@ const localePath = useLocalePath()
 
 const { projects: rows } = await usePublishedProjects()
 
+// Three related projects (same service first), not the whole portfolio.
 const otherProjects = computed(() =>
-  (rows.value ?? [])
-    .map((row) => mapProjectCard(row, siteLocale.value))
-    .filter((other) => other.slug !== props.project.slug),
+  selectRelatedProjects(
+    (rows.value ?? []).map((row) => mapProjectCard(row, siteLocale.value)),
+    props.project,
+  ),
 )
 </script>
 

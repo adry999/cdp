@@ -7,6 +7,7 @@ export interface QualificationRequest extends QualifierContactPayload {
   stage: StageId
   budget: QualifierBudgetKey
   lang: string
+  page: string
 }
 
 export function postQualification(request: QualificationRequest, turnstileToken?: string): Promise<unknown> {

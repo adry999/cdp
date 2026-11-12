@@ -35,6 +35,30 @@ export type Database = {
         }
         Relationships: []
       }
+      card_events: {
+        Row: {
+          card_slug: string
+          created_at: string
+          id: number
+          kind: string
+          source: string | null
+        }
+        Insert: {
+          card_slug: string
+          created_at?: string
+          id?: never
+          kind: string
+          source?: string | null
+        }
+        Update: {
+          card_slug?: string
+          created_at?: string
+          id?: never
+          kind?: string
+          source?: string | null
+        }
+        Relationships: []
+      }
       faqs: {
         Row: {
           answer_en: string | null
@@ -938,6 +962,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      card_event_counts: {
+        Args: { p_since?: string }
+        Returns: {
+          card_slug: string
+          kind: string
+          total: number
+        }[]
+      }
       check_lead_rate_limit: {
         Args: { p_ip: string; p_max: number; p_window_seconds: number }
         Returns: boolean
