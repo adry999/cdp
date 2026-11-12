@@ -61,16 +61,16 @@
     "hero": {
       "sectionLabel": "Studio",
       "titlePhrases": [
-        "Landing page-uri",
-        "Site-uri de business",
-        "Site-uri de produs",
-        "Site-uri de marketing",
         "Aplicații web",
-        "API-uri custom",
-        "Integrări cu terți"
+        "Sisteme de gestiune",
+        "Site-uri de business",
+        "Magazine online",
+        "Automatizări cu AI",
+        "Integrări cu terți",
+        "Landing page-uri"
       ],
       "titleSuffix": "construite ca să‑ți aducă rezultate de durată.",
-      "lead": "Construim pentru fondatori și companii în creștere aplicații web rapide, robuste și scalabile — ducându-ți produsul de la concept la o lansare de impact, gata să convertească clienți și să scaleze fără datorie tehnică.",
+      "lead": "Construim aplicații web pentru afaceri care au crescut peste caiete și Excel: comenzi, stoc, plăți și rapoarte într-un singur loc. Lucrezi direct cu inginerii, iar prețul și termenul fiecărei etape le stabilim înainte să scriem cod.",
       "ctaPrimary": "Vezi dacă te putem ajuta",
       "ctaSecondary": "Cum lucrăm",
       "facts": {
