@@ -34,7 +34,7 @@ function toLeadRecord(input: QualificationInput): LeadRecord {
     budget: input.budget,
     source: `qualifier:${resolveRoute(input.stage, input.budget)}`,
     lang: input.lang,
-    page: null,
+    page: input.page || null,
     referrer: null,
     utm: null,
   }

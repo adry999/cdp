@@ -328,6 +328,13 @@
     }
   },
   "caseStudy": {
+    "star": {
+      "label": "Case study structure",
+      "situation": "Situation: the business problem",
+      "task": "Task: goal and constraints",
+      "action": "Action: business and tech",
+      "result": "Result: gains and savings"
+    },
     "otherProjects": "Other projects",
     "sections": {
       "hero": "Case study",
@@ -496,6 +503,7 @@
       "ai-automation": "AI automation",
       "granturi": "Grants"
     },
+    "listLabel": "Case studies",
     "empty": "No published case studies yet."
   },
   "services": {
@@ -683,5 +691,22 @@
       "60-minute discovery call, if it makes sense",
       "Scope and price specification within 48 hours"
     ]
+  },
+  "card": {
+    "seo": {
+      "description": "{name}, Codepedia: save the contact or message us on WhatsApp and Telegram."
+    },
+    "tagline": "Web studio · Chișinău",
+    "studio": "CODEPEDIA · web studio",
+    "saveContact": "Save contact",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram",
+    "chat": "Message us",
+    "projectPrompt": "Got a project?",
+    "budget": "Estimate your project budget",
+    "writeUs": "Send a request",
+    "projects": "Work",
+    "allProjects": "All",
+    "links": "Links"
   }
 }

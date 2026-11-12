@@ -49,7 +49,7 @@ describe('submitQualification', () => {
     const deps = buildDeps()
     expect(await submitQualification(buildQualificationSubmission(), deps)).toEqual({ outcome: 'accepted' })
     expect(deps.repository.insertLead).toHaveBeenCalledWith(
-      expect.objectContaining({ name: 'Ana Pop', email: 'ana@example.com', source: 'qualifier:custom-engineering-ai' }),
+      expect.objectContaining({ name: 'Ana Pop', email: 'ana@example.com', source: 'qualifier:custom-engineering-ai', page: '/c?s=carte' }),
     )
     expect(deps.notify).toHaveBeenCalledWith(
       expect.objectContaining({ subject: 'Qualificare — Custom Engineering / AI — Ana Pop', replyTo: 'ana@example.com' }),

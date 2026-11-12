@@ -14,7 +14,7 @@ There is no `server/index.ts`: nothing outside this layer uses its server code.
 
 ## Routes
 
-- `POST /api/contact` — `server/api/contact.post.ts` → `submitQualification` outcome: 404 flag off, 400 invalid, 429 over the rate limit, `{ success: true }` for accepted and honeypot. The submission is saved before the notification is attempted; a failed or skipped notification is logged and does not change the response.
+- `POST /api/contact` — `server/api/contact.post.ts` → `submitQualification` outcome: 404 flag off, 400 invalid, 429 over the rate limit, `{ success: true }` for accepted and honeypot. The body carries `page` (the path and query the modal was opened on, e.g. `/c?s=carte`), stored in `leads.page` and shown in the team email, so the admin sees where a lead came from. The submission is saved before the notification is attempted; a failed or skipped notification is logged and does not change the response.
 
 ## Components
 

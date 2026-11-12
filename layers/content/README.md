@@ -33,6 +33,10 @@ the public site.
 - `useSiteSettings()` → `ComputedRef<{ contactEmail, hours, responseTime,
   ndaNote, footerLine, copyrightYear }>`, localized fields resolved to the
   active locale.
+- `TEAM`, `DEFAULT_CARD_SLUG`, `TeamMember`, `TeamCard` — the team (`data/team.ts`); a member with
+  `card` has a business-card page `/c/<slug>` (`layers/card`), and `DEFAULT_CARD_SLUG` is the one `/c`
+  opens. `TEAM`, `DEFAULT_CARD_SLUG` and the two types are also exported from `server/index.ts`, for the
+  vCard route and for type imports that must not pull in the client composables.
 - `useServiceStages()`, `useStackGroups()`, `useAboutPillars()` — join the structural defs in `domain/` with their
   `home.*` i18n copy.
 - `Faq`, `LocalizedText`, `SiteSettings`, `ServiceStageDef`, `ServiceStage`,
@@ -75,6 +79,7 @@ Route names `preturi` and `despre` are mapped to localized paths in `nuxt.config
 - `layers/leads/app/pages/contact.vue`,
   `layers/consent/app/pages/confidentialitate.vue`,
   `layers/projects/app/pages/proiecte/index.vue` — `useSiteSettings()`.
+- `layers/card` — `TEAM`, `DEFAULT_CARD_SLUG`, `useSiteSettings()` for `/c` and its vCard.
 - `layers/services/app/components/ServicesIndexStages.vue` —
   `useServiceStages()`.
 - `app/utils/enPendingTranslation.ts` — `CONTENT_EN_PENDING_PATHS`;

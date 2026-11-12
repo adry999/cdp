@@ -46,6 +46,12 @@ describe('parseQualificationInput', () => {
     expect(validInput({ lang: 'en' }).lang).toBe('en')
     expect(validInput({ lang: 'ru' }).lang).toBe('ro')
   })
+
+  it('keeps the page it was sent from, clipped, and an empty string when missing', () => {
+    expect(validInput().page).toBe('/c?s=carte')
+    expect(validInput({ page: '/x'.repeat(QUALIFIER_FIELD_LIMITS.page) }).page).toHaveLength(QUALIFIER_FIELD_LIMITS.page)
+    expect(validInput({ page: undefined }).page).toBe('')
+  })
 })
 
 describe('buildQualificationSummary', () => {
@@ -60,6 +66,7 @@ describe('buildQualificationSummary', () => {
         { label: 'Buget', value: '2.000 – 5.000 EUR' },
         { label: 'Rută alocată', value: 'Custom Engineering / AI' },
         { label: 'Limbă', value: 'ro' },
+        { label: 'Pagina', value: '/c?s=carte' },
         { label: 'Trimis', value: '2026-01-15T10:00:00.000Z' },
       ],
       message: { label: 'Note', text: 'Vreau un site nou.' },

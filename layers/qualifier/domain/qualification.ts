@@ -16,6 +16,8 @@ export interface RawQualificationSubmission {
   stage?: string
   budget?: string
   lang?: string
+  /** Path + query the modal was opened on (e.g. /c?s=carte), so the admin sees where the lead came from. */
+  page?: string
   website?: string
 }
 
@@ -27,6 +29,7 @@ export interface QualificationInput {
   stage: StageId
   budget: QualifierBudgetKey
   lang: 'ro' | 'en'
+  page: string
 }
 
 export interface QualifierContactPayload {
@@ -42,6 +45,7 @@ export const QUALIFIER_FIELD_LIMITS = {
   email: 254,
   handle: 300,
   notes: 5000,
+  page: 500,
 } as const
 
 // The team inbox is Romanian-only, so these labels are not run through i18n.
@@ -72,6 +76,7 @@ export function parseQualificationInput(raw: RawQualificationSubmission): Qualif
     stage: raw.stage,
     budget: raw.budget,
     lang: raw.lang === 'en' ? 'en' : 'ro',
+    page: clipLine(raw.page, QUALIFIER_FIELD_LIMITS.page),
   }
 }
 
@@ -96,6 +101,7 @@ export function buildQualificationSummary(
       { label: 'Buget', value: QUALIFIER_BUDGET_LABELS[input.budget] },
       { label: 'Rută alocată', value: routeLabel },
       { label: 'Limbă', value: input.lang },
+      { label: 'Pagina', value: input.page || '—' },
       { label: 'Trimis', value: submittedAt.toISOString() },
     ],
     message: { label: 'Note', text: input.notes || '—' },
