@@ -43,6 +43,10 @@ export async function useProjectsEditor(slug: string) {
   const form = ref(toProjectForm(original))
   const saveStatus = ref<AsyncStatus>('idle')
   const saveError = ref<AppError | null>(null)
+  // Every validation problem of the last save attempt, listed under the topbar.
+  const saveIssues = ref<string[]>([])
+  // False when the last save could not clear the public cache here or on the other domain.
+  const cacheCleared = ref(true)
   // Set by the images section while any upload is in flight; saving then would store the old path.
   const uploading = ref(false)
   // Media the last saved state referenced, so each save cleans up exactly what it replaced.
@@ -77,6 +81,7 @@ export async function useProjectsEditor(slug: string) {
   async function save(): Promise<boolean> {
     if (saveStatus.value === 'pending') return false
     saveError.value = null
+    saveIssues.value = []
 
     if (uploading.value) {
       saveStatus.value = 'error'
@@ -87,7 +92,8 @@ export async function useProjectsEditor(slug: string) {
     const issues = validateProjectPayload({ id: projectId.value, ...form.value })
     if (issues.length) {
       saveStatus.value = 'error'
-      saveError.value = { code: 'validation', message: issues.map((issue) => issue.message).join(' ') }
+      saveError.value = { code: 'validation', message: 'Corectează câmpurile de mai jos.' }
+      saveIssues.value = issues.map((issue) => issue.message)
       return false
     }
 
@@ -103,7 +109,7 @@ export async function useProjectsEditor(slug: string) {
         wasPublished: form.value.published,
       }
 
-      await revalidatePublicCache()
+      cacheCleared.value = await revalidatePublicCache()
       // Only after the save succeeds: the published page may serve the old files until then.
       const replaced = replacedMediaUrls(savedMedia, form.value)
       savedMedia = formMediaUrls(form.value)
@@ -116,6 +122,10 @@ export async function useProjectsEditor(slug: string) {
       saveError.value = toAppError(caught)
       return false
     }
+  }
+
+  async function retryRevalidate() {
+    cacheCleared.value = await revalidatePublicCache()
   }
 
   function askPublish() {
@@ -150,11 +160,14 @@ export async function useProjectsEditor(slug: string) {
     savedSlugs,
     saveStatus,
     saveError,
+    saveIssues,
+    cacheCleared,
     uploading,
     publishing,
     consentConfirmed,
     checklist,
     save,
+    retryRevalidate,
     askPublish,
     cancelPublish,
     confirmPublish,

@@ -59,6 +59,13 @@ describe('toProjectForm', () => {
     )
     expect(form.gallery).toEqual([{ path: 'https://x/y.jpg', altRo: 'b', altEn: 'c', aspect: '16/10' }])
   })
+
+  it('shows the database placeholder for a blank alt as empty, so validation asks for real text', () => {
+    const form = toProjectForm(
+      buildAdminProjectRow({ project_images: [{ path: 'https://x/y.jpg', alt_ro: '—', alt_en: null, aspect: '16/9', sort_order: 0 }] }),
+    )
+    expect(form.gallery[0]?.altRo).toBe('')
+  })
 })
 
 describe('toSavePayload', () => {

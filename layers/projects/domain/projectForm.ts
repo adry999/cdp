@@ -210,7 +210,8 @@ export function toProjectForm(row: AdminProjectRow | null): ProjectForm {
     // toSavePayload() strips them again through usableGallery().
     gallery: (row?.project_images ?? [])
       .filter((img) => img.path)
-      .map((img) => ({ path: img.path, altRo: img.alt_ro, altEn: img.alt_en ?? '', aspect: img.aspect })),
+      // save_project stores a blank RO alt as '—' (NOT NULL column); show it as blank so the editor asks for real text.
+      .map((img) => ({ path: img.path, altRo: img.alt_ro === '—' ? '' : img.alt_ro, altEn: img.alt_en ?? '', aspect: img.aspect })),
 
     facts: (row?.project_facts.length ? row.project_facts : DEFAULT_FACTS).map((fact) => ({
       label: bilingual(fact.label_ro, fact.label_en),
