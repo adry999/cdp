@@ -11,6 +11,7 @@ const navItems = [
   { label: 'Noutăți', to: '/admin/news' },
   { label: 'Hero', to: '/admin/hero' },
   { label: 'Solicitări', to: '/admin/leads' },
+  { label: 'Cărți de vizită', to: '/admin/card' },
 ] as const
 
 function isActive(to: string) {

@@ -12,6 +12,7 @@ export const QUALIFIER_TOTAL_STEPS = 3
 export function useQualifierFlow() {
   const { isOpen, initialStage, close } = useQualifierDialog()
   const { locale } = useI18n()
+  const route = useRoute()
 
   const step = ref(1)
   const direction = ref<1 | -1>(1)
@@ -45,7 +46,7 @@ export function useQualifierFlow() {
     status.value = 'pending'
     error.value = null
     try {
-      await postQualification({ ...payload, stage: stage.value, budget: budget.value, lang: locale.value }, turnstileToken)
+      await postQualification({ ...payload, stage: stage.value, budget: budget.value, lang: locale.value, page: route.fullPath }, turnstileToken)
       status.value = 'success'
     } catch (caught) {
       error.value = toAppError(caught)

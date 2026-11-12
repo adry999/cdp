@@ -110,6 +110,8 @@ test('valid submission posts the qualification and shows the allocated route', a
     notes: 'Vreau un site nou.',
     website: '',
     lang: 'ro',
+    // Where the modal was opened, stored with the lead so the admin sees its source.
+    page: '/',
   })
 })
 
