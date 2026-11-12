@@ -159,3 +159,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#195** fix: aceleași actualizări de dependențe (#194, în `dev`), spre `main` pentru deploy.
 - **#197** fix: o imagine al cărei fișier lipsește din spațiul de stocare afișează placeholder-ul hașurat în locul imaginii sparte cu textul alt (`MediaFrame`). Două fișiere lipsesc acum din `media.codepedia.md` (coperta Startica app și `swisscars-car.jpg`) și trebuie reîncărcate din admin.
 - **#198** fix: același placeholder pentru imagini lipsă (#197, în `dev`), spre `main` pentru deploy.
+- **#?** feat: hero-ul de pe homepage începe cu „Aplicații web” (înainte „Landing page-uri”), iar textul de sub titlu se adresează afacerilor care au crescut peste caiete și Excel, în RO și EN — din analiza de poziționare (local întâi, aplicații web, proiecte de 1.000–5.000 EUR).
