@@ -162,3 +162,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#199** fix: aceleași reparații din editorul de proiecte (#190), spre `dev` pentru test.
 - **#200** feat: hero-ul de pe homepage începe cu „Aplicații web” (înainte „Landing page-uri”), iar textul de sub titlu se adresează afacerilor care au crescut peste caiete și Excel, în RO și EN — din analiza de poziționare (local întâi, aplicații web, proiecte de 1.000–5.000 EUR).
 - **#201** feat: același hero cu „Aplicații web” (#200, în `dev`), spre `main`.
+- **#202** docs: promptul pentru `CASE_STUDY_BRIEF.md` e înlocuit cu cel de portofoliu: pe lângă texte, agentul produce și 5–7 imagini de prezentare (1600 × 900, text în stânga, ecran decupat în dreapta). Limitele sunt cele din editor (titlu de pagină până la 60 de caractere), cu reguli noi scoase din verificarea celor 12 proiecte: fără calități nemăsurate, fără funcții neterminate, statutul proiectului spus clar, date demo în capturi.
