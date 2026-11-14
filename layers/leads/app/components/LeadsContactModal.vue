@@ -42,15 +42,18 @@ watch(() => route.fullPath, () => {
           aria-labelledby="contact-modal-title"
           class="relative w-full max-w-[620px] rounded border border-hairline bg-paper text-ink shadow-modal"
         >
+          <!-- Zero-height sticky row: the close button stays in reach while a tall dialog scrolls (mobile). -->
+          <div class="sticky top-0 z-10 flex h-0 justify-end">
+            <button
+              type="button"
+              class="mr-2.5 mt-2.5 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded border-0 bg-paper text-xl leading-none text-muted transition-colors hover:bg-hatch hover:text-ink"
+              :aria-label="t('contactModal.close')"
+              @click="close"
+            >
+              <span aria-hidden="true">✕</span>
+            </button>
+          </div>
           <div aria-hidden="true" class="h-0.5 rounded-t bg-signal" />
-          <button
-            type="button"
-            class="absolute right-2.5 top-2.5 flex h-11 w-11 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-xl leading-none text-muted transition-colors hover:bg-hatch hover:text-ink"
-            :aria-label="t('contactModal.close')"
-            @click="close"
-          >
-            <span aria-hidden="true">✕</span>
-          </button>
 
           <div class="flex flex-col gap-6 p-[clamp(24px,4vw,40px)]">
             <div class="flex flex-col gap-3 pr-10">
