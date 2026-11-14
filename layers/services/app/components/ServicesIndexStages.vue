@@ -1,9 +1,26 @@
 <script setup lang="ts">
+import type { StageId } from '#layers/core/shared/types/service-stage'
+import { visibleServices } from '#layers/core/shared/utils/visibleServices'
 import { useServiceStages } from '#layers/content'
+import { SERVICE_LINKS } from '#layers/services/data/serviceLinks'
 
 const { t } = useI18n()
 const stages = useServiceStages()
+const siteLocale = useSiteLocale()
+const localePath = useLocalePath()
+const { grantsEnabled } = useRuntimeConfig().public
 
+// The service pages of a stage (the services whose qualifier stage it is); a stage without one shows no row.
+const offeredServices = visibleServices(SERVICE_LINKS, grantsEnabled)
+function stageServices(stage: StageId) {
+  return offeredServices
+    .filter((service) => service.qualifierStage === stage)
+    .map((service) => ({
+      slug: service.slug,
+      name: service.name[siteLocale.value],
+      to: localePath({ name: 'servicii-slug', params: { slug: service.routeSlug[siteLocale.value] } }),
+    }))
+}
 </script>
 
 <template>
@@ -46,6 +63,10 @@ const stages = useServiceStages()
       </ul>
       <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-4">
         <QualifierCta variant="ink" :stage="stage.id">{{ stage.cta }}</QualifierCta>
+        <p v-if="stageServices(stage.id).length" class="m-0 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+          <span class="eyebrow-sm text-muted">{{ t('services.index.stageServices') }}</span>
+          <TextLink v-for="service in stageServices(stage.id)" :key="service.slug" :to="service.to">{{ service.name }}</TextLink>
+        </p>
       </div>
     </article>
   </SiteSection>

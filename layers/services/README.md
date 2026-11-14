@@ -58,6 +58,8 @@ case studies), `layers/content` (stage copy) and `layers/qualifier` (the qualifi
   Renders `projects`' `ProjectsCard` with `show-tech="false"`.
 - `ServicesIndexStages` — one `SiteSection` per stage on the index; CTA opens the
   qualifier at that stage (homepage `#contact` fallback when the flag is off).
+  Next to it, `TextLink`s to the visible services whose `qualifierStage` is that
+  stage (`SERVICE_LINKS`, `visibleServices`); a stage without one has no row.
 - `ServicesIndexCta` — dark closing CTA of the index, built from core's `ClosingCta`;
   opens the contact dialog (or the qualifier) with no stage preselected.
 - `ServicesCta` — opens the qualifier modal preselected at the service's
