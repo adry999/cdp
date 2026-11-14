@@ -20,6 +20,8 @@
     "main": "Main navigation",
     "contact": "Contact",
     "letsTalk": "Discuss a project",
+    "letsTalkShort": "Let's talk",
+    "letsTalkShortLabel": "Let's talk about a project",
     "projects": "Work",
     "groupSites": "Websites",
     "groupApps": "Apps and AI",
