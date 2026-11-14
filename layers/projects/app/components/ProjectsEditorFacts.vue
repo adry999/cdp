@@ -18,7 +18,7 @@ function removeFact(index: number) {
 </script>
 
 <template>
-  <ProjectsEditorSection title="Date">
+  <ProjectsEditorSection section="date">
     <template #action>
       <button type="button" class="tap-text eyebrow text-signal-text" @click="addFact">
         + Fapt

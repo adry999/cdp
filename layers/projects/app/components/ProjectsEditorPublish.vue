@@ -7,7 +7,7 @@ defineEmits<{ publish: []; unpublish: [] }>()
 </script>
 
 <template>
-  <ProjectsEditorSection title="Publicare">
+  <ProjectsEditorSection section="publicare">
     <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
       <div class="flex flex-wrap items-center gap-6">
         <!-- The label alone is an eyebrow: buttons inside one would take its mono face and tracking. -->

@@ -24,7 +24,7 @@ function moveQuestion(lang: 'ro' | 'en', index: number, to: number) {
 </script>
 
 <template>
-  <ProjectsEditorSection title="Secțiuni suplimentare">
+  <ProjectsEditorSection section="suplimentare">
     <div class="mt-4 flex flex-col gap-8">
       <section aria-labelledby="sec-adapt" class="flex flex-col gap-4">
         <h3 id="sec-adapt" class="eyebrow text-ink">Adaptare</h3>

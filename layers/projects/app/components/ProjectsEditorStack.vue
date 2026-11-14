@@ -18,7 +18,7 @@ function removeStackItem(index: number) {
 </script>
 
 <template>
-  <ProjectsEditorSection title="Acțiune — Tehnic (secțiunea 03)">
+  <ProjectsEditorSection section="tehnic">
     <template #action>
       <button type="button" class="tap-text eyebrow text-signal-text" @click="addStackItem">
         + Tehnologie

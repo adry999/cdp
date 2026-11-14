@@ -9,7 +9,7 @@ const locales = ['ro', 'en'] as const
 </script>
 
 <template>
-  <ProjectsEditorSection title="STAR">
+  <ProjectsEditorSection section="star">
     <div class="mt-4 flex flex-col gap-8">
       <section aria-labelledby="star-s" class="flex flex-col gap-4">
         <h3 id="star-s" class="eyebrow text-ink">Situație — Cât costa problema</h3>

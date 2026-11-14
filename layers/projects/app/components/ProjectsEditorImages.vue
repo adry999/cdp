@@ -43,7 +43,7 @@ function moveGalleryImage(index: number, to: number) {
 </script>
 
 <template>
-  <ProjectsEditorSection title="Imagini">
+  <ProjectsEditorSection section="imagini">
     <div class="mt-4 flex flex-col gap-6">
       <div>
         <AdminImageUpload

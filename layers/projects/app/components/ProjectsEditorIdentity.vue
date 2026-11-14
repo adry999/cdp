@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { SERVICE_TAG_IDS, SERVICE_TAG_LABELS_RO } from '#layers/core/shared/types/service-tag'
 import { moveItem } from '#layers/core/shared/utils/moveItem'
 import { emptyBilingual, type ProjectForm } from '#layers/projects/domain/projectForm'
 import { slugify } from '#layers/projects/domain/projectPayload'
@@ -58,7 +57,7 @@ function removeTech(index: number) {
 </script>
 
 <template>
-  <ProjectsEditorSection title="Identitate">
+  <ProjectsEditorSection section="identitate">
     <div class="mt-4 flex flex-col gap-4">
       <div class="grid grid-cols-2 gap-4">
         <AdminField v-model="form.slugRo" label="Slug RO" required :invalid="invalidFields.has('slugRo')" />
@@ -90,7 +89,7 @@ function removeTech(index: number) {
         Titlul RO depășește 60 de caractere — designul se poate strica.
       </div>
       <AdminFieldPair v-model:ro="form.lead.ro" v-model:en="form.lead.en" label="Lead (sub H1)" textarea required :invalid="invalidFields.has('lead')" />
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <AdminField v-model="form.year" label="An" :invalid="invalidFields.has('year')" />
         <div>
           <div class="eyebrow text-muted">Tech</div>
@@ -143,27 +142,6 @@ function removeTech(index: number) {
           </div>
         </div>
       </div>
-      <div>
-        <div class="eyebrow text-muted">Serviciu</div>
-        <select v-model="form.serviceTag" class="mt-2 w-full border border-hairline bg-paper px-3 py-2 outline-none focus:border-ink">
-          <option :value="null">—</option>
-          <option v-for="tag in SERVICE_TAG_IDS" :key="tag" :value="tag">
-            {{ tag }}
-          </option>
-        </select>
-      </div>
-      <fieldset class="m-0 min-w-0 border-0 p-0">
-        <legend class="p-0 eyebrow text-muted">Apare în meniu la</legend>
-        <div class="mt-2 flex flex-wrap gap-x-6 gap-y-2">
-          <label v-for="tag in SERVICE_TAG_IDS" :key="tag" class="flex items-center gap-2 text-sm">
-            <input v-model="form.navServices" type="checkbox" :value="tag" class="accent-signal">
-            {{ SERVICE_TAG_LABELS_RO[tag] }}
-          </label>
-        </div>
-        <p class="m-0 mt-2 text-xs text-muted">
-          Meniul „Servicii” afișează maximum 4 proiecte publicate per serviciu, cele de pe homepage primele.
-        </p>
-      </fieldset>
     </div>
   </ProjectsEditorSection>
 </template>
