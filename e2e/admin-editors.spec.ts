@@ -247,3 +247,69 @@ test('each admin tab is titled after its screen', async ({ page, context }) => {
   await page.goto('/admin/login')
   await expect(page).toHaveTitle('Autentificare · CODEPEDIA')
 })
+
+test('the project editor lists its sections and jumps to each under the topbar', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/admin/projects/nou')
+  await page.waitForLoadState('networkidle')
+
+  const sections = page.getByRole('navigation', { name: 'Secțiunile formularului' })
+  await expect(sections).toBeVisible()
+  await sections.getByRole('link', { name: 'Rezultat și feedback' }).click()
+
+  const heading = page.getByRole('heading', { level: 2, name: 'Rezultat și feedback' })
+  await expect(page).toHaveURL(/#rezultat$/)
+  // Smooth scrolling: wait until it has settled with the heading just below the sticky topbar.
+  await expect
+    .poll(async () => {
+      const top = await heading.evaluate((el) => el.getBoundingClientRect().top)
+      const topbarBottom = await topbar(page).evaluate((el) => el.getBoundingClientRect().bottom)
+      return top >= topbarBottom && top < topbarBottom + 120
+    })
+    .toBe(true)
+  // The list stays in view beside the form.
+  await expect(sections).toBeInViewport()
+})
+
+test('a per-language list says when RO and EN differ in length', async ({ page }) => {
+  await page.goto('/admin/projects/nou')
+  await page.waitForLoadState('networkidle')
+
+  const star = page.locator('section[aria-labelledby="star"]')
+  await expect(star.getByText('RO 1 · EN 0')).toHaveCount(0)
+  // The first "+ Cifră" belongs to the RO list.
+  await star.getByRole('button', { name: '+ Cifră' }).first().click()
+  await expect(star.getByText('RO 1 · EN 0').first()).toBeVisible()
+
+  await star.getByRole('button', { name: '+ Cifră' }).nth(1).click()
+  await expect(star.getByText(/RO \d · EN \d/)).toHaveCount(0)
+})
+
+test('admin fields show a focus ring when tabbed to', async ({ page }) => {
+  await page.goto('/admin/projects/nou')
+  await page.waitForLoadState('networkidle')
+  await page.getByLabel('Slug RO').focus()
+  await page.keyboard.press('Tab')
+
+  const slugEn = page.getByLabel('Slug EN')
+  await expect(slugEn).toBeFocused()
+  await expect(slugEn).toHaveCSS('outline-style', 'solid')
+  await expect(slugEn).toHaveCSS('outline-width', '2px')
+})
+
+test('Esc closes the admin menu on a narrow screen', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 })
+  await page.goto('/admin/projects/nou')
+  await page.waitForLoadState('networkidle')
+
+  const toggle = page.getByRole('button', { name: 'Meniu' })
+  await toggle.click()
+  const news = page.getByRole('link', { name: 'Noutăți' })
+  await expect(news).toBeVisible()
+  await news.focus()
+
+  await page.keyboard.press('Escape')
+  await expect(news).toBeHidden()
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false')
+  await expect(toggle).toBeFocused()
+})
