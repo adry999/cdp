@@ -130,6 +130,20 @@
   }
 }
 
+/* Borderless text button (admin "Sus", "Șterge", "+ Link"): padding brings the hit area to at least
+   24px tall, and the matching negative margin keeps the text, and the layout, where they were. */
+@utility tap-text {
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  padding: 0.25rem 0.375rem;
+  margin: -0.25rem -0.375rem;
+  &:disabled {
+    cursor: default;
+    opacity: 0.4;
+  }
+}
+
 @utility eyebrow {
   @apply font-mono text-[12px] uppercase tracking-[0.08em];
 }
