@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { buildAdminListRow } from '#layers/projects/test-support/buildAdminListRow'
-import { evaluateChecklist, filterCounts, filterProjects, neighborIndex, nextCopySlug } from './adminProjectList'
+import { chipOverflow, evaluateChecklist, filterCounts, filterProjects, neighborIndex, nextCopySlug } from './adminProjectList'
 
 const draft = (slug: string) => buildAdminListRow({ slug_ro: slug, published_at: null })
 const live = (slug: string) => buildAdminListRow({ slug_ro: slug, published_at: '2026-09-01T00:00:00Z' })
@@ -17,6 +17,25 @@ describe('filterProjects / filterCounts', () => {
   it('counts every filter', () => {
     expect(filterCounts(rows)).toEqual({ toate: 4, draft: 2, publicate: 2 })
     expect(filterCounts([])).toEqual({ toate: 0, draft: 0, publicate: 0 })
+  })
+})
+
+describe('chipOverflow', () => {
+  it('shows the first two chips and collapses the rest', () => {
+    expect(chipOverflow(['Vue', 'Nuxt', 'Supabase', 'Stripe', 'Resend'])).toEqual({
+      shown: ['Vue', 'Nuxt'],
+      hidden: ['Supabase', 'Stripe', 'Resend'],
+    })
+  })
+
+  it('keeps short lists whole', () => {
+    expect(chipOverflow(['Vue', 'Nuxt'])).toEqual({ shown: ['Vue', 'Nuxt'], hidden: [] })
+    expect(chipOverflow(['Vue'])).toEqual({ shown: ['Vue'], hidden: [] })
+    expect(chipOverflow([])).toEqual({ shown: [], hidden: [] })
+  })
+
+  it('takes another limit', () => {
+    expect(chipOverflow(['a', 'b', 'c'], 1)).toEqual({ shown: ['a'], hidden: ['b', 'c'] })
   })
 })
 
@@ -51,6 +70,12 @@ describe('evaluateChecklist', () => {
     expect(byId(ready, true)).toMatchObject({ figures: false, quote: false })
   })
 
+  it('publishes without a live link, flagged as recommended', () => {
+    const result = evaluateChecklist({ ...ready, live_url: null }, true)
+    expect(result.canPublish).toBe(true)
+    expect(result.items.find((item) => item.id === 'live')).toMatchObject({ done: false, required: false, recommended: true })
+  })
+
   it('blocks on missing consent', () => {
     expect(evaluateChecklist(ready, false).canPublish).toBe(false)
   })
@@ -60,9 +85,8 @@ describe('evaluateChecklist', () => {
     expect(byId(row, true).screenshots).toBe(true)
   })
 
-  it('blocks without screenshots, live link or required text', () => {
+  it('blocks without screenshots or required text', () => {
     expect(byId(buildAdminListRow({ live_url: 'https://x.md' }), true).screenshots).toBe(false)
-    expect(byId(buildAdminListRow({ cover_path: 'c' }), true).live).toBe(false)
     expect(byId(buildAdminListRow({ ...ready, lead_ro: '  ' }), true).content).toBe(false)
     expect(evaluateChecklist(buildAdminListRow({ ...ready, lead_ro: '' }), true).canPublish).toBe(false)
   })

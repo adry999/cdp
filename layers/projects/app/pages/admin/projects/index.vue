@@ -6,9 +6,27 @@ definePageMeta({ layout: 'admin', i18n: false })
 
 const list = await useProjectsAdminList()
 const { filter, filtered, counts, canReorder, featuredCount, reorderStatus, busy, notice, loadError } = list
-const { deleting, deletingProject, publishing, publishingProject, consentConfirmed, checklist } = list
+const { deleting, deletingProject, publishing, publishingProject, unpublishing, unpublishingProject, consentConfirmed, checklist } = list
+
+// A failed action is reported where it was started: in its dialog while that is open, otherwise
+// under its row. A notice at the top of the list would be off-screen for any lower row.
+const dialogOpen = computed(() => !!(deleting.value || publishing.value || unpublishing.value))
+function rowError(slug: string) {
+  return !dialogOpen.value && notice.value?.slug === slug ? notice.value.text : null
+}
+function dialogError(slug: string) {
+  return notice.value?.slug === slug ? notice.value.text : null
+}
 
 const drag = useDragReorder(list.reorder)
+
+// The rows are subgrids of this grid, so their columns line up with the header and with each other.
+// The tech column needs 1280px; the handle column exists only while the list can be reordered.
+const gridColumns = computed(() =>
+  canReorder.value
+    ? 'nav:grid-cols-[auto_auto_minmax(0,1fr)_auto_auto] xl:grid-cols-[auto_auto_minmax(0,1fr)_auto_auto_auto]'
+    : 'nav:grid-cols-[auto_minmax(0,1fr)_auto_auto] xl:grid-cols-[auto_minmax(0,1fr)_auto_auto_auto]',
+)
 </script>
 
 <template>
@@ -43,17 +61,21 @@ const drag = useDragReorder(list.reorder)
         </span>
       </div>
 
-      <p v-if="notice" role="alert" class="mb-4 rounded border border-signal-text p-3 text-sm text-signal-text">
-        {{ notice.text }}
-      </p>
-
       <p v-if="loadError" role="alert" class="rounded border border-signal-text p-8 text-center text-signal-text">
         Lista de proiecte nu a putut fi încărcată — reîncarcă pagina. ({{ loadError.message }})
       </p>
       <div v-else-if="!filtered.length" class="rounded border border-hairline p-8 text-center text-muted">
         Niciun proiect.
       </div>
-      <div v-else class="flex flex-col">
+      <div v-else class="flex flex-col nav:grid nav:gap-x-4" :class="gridColumns">
+        <div class="hidden pb-2 eyebrow-sm text-muted nav:col-span-full nav:grid nav:grid-cols-subgrid" aria-hidden="true">
+          <span v-if="canReorder" />
+          <span />
+          <span>Proiect</span>
+          <span class="hidden xl:block">Tehnologii</span>
+          <span>Stare</span>
+          <span class="text-right">Acțiuni</span>
+        </div>
         <ProjectsAdminRow
           v-for="(project, i) in filtered"
           :key="project.slug_ro"
@@ -65,14 +87,15 @@ const drag = useDragReorder(list.reorder)
           :can-move-down="i < filtered.length - 1"
           :busy="busy === project.slug_ro"
           :locked="reorderStatus === 'pending'"
+          :error="rowError(project.slug_ro)"
           @drag-start="canReorder && reorderStatus !== 'pending' && drag.start(i)"
           @drop="drag.drop(i)"
           @move-up="list.move(i, 'up')"
           @move-down="list.move(i, 'down')"
           @toggle-featured="list.toggleFeatured(project.slug_ro)"
           @publish="list.askPublish(project.slug_ro)"
-          @unpublish="list.unpublish(project.slug_ro)"
-          @ask-delete="deleting = project.slug_ro"
+          @unpublish="list.askUnpublish(project.slug_ro)"
+          @ask-delete="list.askDelete(project.slug_ro)"
           @duplicate="list.duplicate(project.slug_ro)"
         />
       </div>
@@ -84,6 +107,7 @@ const drag = useDragReorder(list.reorder)
       :title="publishingProject.card_title_ro"
       :checklist="checklist"
       :busy="busy === publishingProject.slug_ro"
+      :error="dialogError(publishingProject.slug_ro)"
       @confirm="list.confirmPublish"
       @cancel="publishing = null"
     />
@@ -99,10 +123,35 @@ const drag = useDragReorder(list.reorder)
         <strong class="font-medium">{{ deletingProject.card_title_ro }}</strong> și imaginile lui vor fi
         șterse definitiv. Acțiunea nu poate fi anulată.
       </p>
+      <p v-if="dialogError(deletingProject.slug_ro)" role="alert" class="m-0 mt-4 text-sm text-signal-text">
+        {{ dialogError(deletingProject.slug_ro) }}
+      </p>
       <template #actions>
         <AppButton variant="outline" @click="deleting = null">Anulează</AppButton>
         <AppButton variant="signal" :disabled="busy === deletingProject.slug_ro" @click="list.confirmDelete">
           {{ busy === deletingProject.slug_ro ? 'Se șterge…' : 'Șterge definitiv' }}
+        </AppButton>
+      </template>
+    </AdminDialog>
+
+    <AdminDialog
+      v-if="unpublishingProject"
+      open
+      title="Retragi proiectul?"
+      :busy="busy === unpublishingProject.slug_ro"
+      @close="unpublishing = null"
+    >
+      <p class="m-0 text-[15px]">
+        <strong class="font-medium">{{ unpublishingProject.card_title_ro }}</strong> dispare de pe site. Redirecturile
+        vechi se șterg.
+      </p>
+      <p v-if="dialogError(unpublishingProject.slug_ro)" role="alert" class="m-0 mt-4 text-sm text-signal-text">
+        {{ dialogError(unpublishingProject.slug_ro) }}
+      </p>
+      <template #actions>
+        <AppButton variant="outline" @click="unpublishing = null">Anulează</AppButton>
+        <AppButton variant="signal" :disabled="busy === unpublishingProject.slug_ro" @click="list.confirmUnpublish">
+          {{ busy === unpublishingProject.slug_ro ? 'Se retrage…' : 'Retrage' }}
         </AppButton>
       </template>
     </AdminDialog>

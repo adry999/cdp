@@ -3,13 +3,8 @@ import type { Database } from '#layers/core/shared/types/database.types'
 import { moveItem } from '#layers/core/shared/utils/moveItem'
 import { toAppError } from '#layers/core/shared/utils/toAppError'
 import { createProjectsAdminRepository } from '#layers/projects/data/projectsAdminRepository'
-import {
-  evaluateChecklist,
-  filterCounts,
-  filterProjects,
-  neighborIndex,
-  type ProjectsAdminFilter,
-} from '#layers/projects/domain/adminProjectList'
+import { filterCounts, filterProjects, neighborIndex, type ProjectsAdminFilter } from '#layers/projects/domain/adminProjectList'
+import { createProjectsAdminActions } from '#layers/projects/state/projectsAdminActions'
 
 export type { ProjectsAdminFilter }
 
@@ -29,17 +24,14 @@ export async function useProjectsAdminList() {
   const featuredCount = computed(() => (projects.value ?? []).filter((project) => project.featured).length)
 
   const reorderStatus = ref<AsyncStatus>('idle')
-  const deleting = ref<string | null>(null)
-  const publishing = ref<string | null>(null)
-  const consentConfirmed = ref(false)
-  const busy = ref<string | null>(null)
-  const notice = ref<{ tone: 'info' | 'error'; text: string } | null>(null)
-
-  const deletingProject = computed(() => projects.value?.find((project) => project.slug_ro === deleting.value) ?? null)
-  const publishingProject = computed(() => projects.value?.find((project) => project.slug_ro === publishing.value) ?? null)
-  const checklist = computed(() =>
-    publishingProject.value ? evaluateChecklist(publishingProject.value, consentConfirmed.value) : null,
-  )
+  const actions = createProjectsAdminActions({
+    projects,
+    repository,
+    sync: async () => {
+      await revalidatePublicCache()
+      await refresh()
+    },
+  })
 
   async function reorder(from: number, to: number) {
     if (!projects.value || reorderStatus.value === 'pending') return
@@ -71,70 +63,6 @@ export async function useProjectsAdminList() {
     if (target !== null) void reorder(index, target)
   }
 
-  async function run(slug: string, action: () => Promise<void>, failure: string): Promise<boolean> {
-    busy.value = slug
-    notice.value = null
-    let ok = true
-    try {
-      await action()
-    } catch (caught) {
-      console.warn('[admin] project action failed', slug, caught)
-      notice.value = { tone: 'error', text: failure }
-      ok = false
-    } finally {
-      busy.value = null
-    }
-    // Also after a failure: an action can fail halfway (row written, redirects not), so the
-    // list and the public cache must show what the database actually holds.
-    await revalidatePublicCache()
-    await refresh()
-    return ok
-  }
-
-  async function confirmDelete() {
-    const slug = deleting.value
-    if (!slug) return
-    if (await run(slug, () => repository.remove(slug), 'Proiectul nu a putut fi șters.')) deleting.value = null
-  }
-
-  async function duplicate(slug: string) {
-    let complete = true
-    const ok = await run(
-      slug,
-      async () => {
-        complete = await repository.duplicate(slug)
-      },
-      'Proiectul nu a putut fi duplicat.',
-    )
-    // Surfacing a partial copy beats a silent one the admin doesn't know about.
-    if (ok && !complete) {
-      notice.value = { tone: 'error', text: 'Proiectul a fost duplicat, dar unele elemente nu s-au copiat corect. Verifică proiectul nou.' }
-    }
-  }
-
-  function askPublish(slug: string) {
-    consentConfirmed.value = false
-    publishing.value = slug
-  }
-
-  async function confirmPublish() {
-    const project = publishingProject.value
-    if (!project || !checklist.value?.canPublish) return
-    if (await run(project.slug_ro, () => repository.setPublished(project, true), 'Proiectul nu a putut fi publicat.')) {
-      publishing.value = null
-    }
-  }
-
-  async function unpublish(slug: string) {
-    const project = projects.value?.find((row) => row.slug_ro === slug)
-    if (project) await run(slug, () => repository.setPublished(project, false), 'Proiectul nu a putut fi retras.')
-  }
-
-  async function toggleFeatured(slug: string) {
-    const project = projects.value?.find((row) => row.slug_ro === slug)
-    if (project) await run(slug, () => repository.setFeatured(slug, !project.featured), 'Afișarea pe homepage nu s-a schimbat.')
-  }
-
   return {
     filter,
     filtered,
@@ -142,23 +70,10 @@ export async function useProjectsAdminList() {
     canReorder,
     featuredCount,
     reorderStatus,
-    deleting,
-    deletingProject,
-    publishingProject,
-    publishing,
-    consentConfirmed,
-    checklist,
     loadStatus,
     loadError,
-    busy,
-    notice,
     reorder,
     move,
-    confirmDelete,
-    duplicate,
-    askPublish,
-    confirmPublish,
-    unpublish,
-    toggleFeatured,
+    ...actions,
   }
 }

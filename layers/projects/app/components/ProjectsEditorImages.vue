@@ -7,6 +7,8 @@ import { createProjectsMediaRepository } from '#layers/projects/data/projectsMed
 const form = defineModel<ProjectForm>({ required: true })
 // True while any of the cover, hero or gallery uploads is in flight.
 const uploading = defineModel<boolean>('uploading', { default: false })
+/** Fields the last failed save rejected, by `ValidationIssue.field`. */
+defineProps<{ invalidFields: ReadonlySet<string> }>()
 
 const media = createProjectsMediaRepository()
 // The server only accepts safe key segments, so a slug still being typed ("Proiect Nou") must not reach it raw.
@@ -41,7 +43,7 @@ function moveGalleryImage(index: number, to: number) {
 </script>
 
 <template>
-  <ProjectsEditorSection title="Imagini">
+  <ProjectsEditorSection section="imagini">
     <div class="mt-4 flex flex-col gap-6">
       <div>
         <AdminImageUpload
@@ -54,7 +56,7 @@ function moveGalleryImage(index: number, to: number) {
           @uploading="onUploading"
         />
         <div class="mt-3">
-          <AdminFieldPair v-model:ro="form.coverAlt.ro" v-model:en="form.coverAlt.en" label="Text alternativ copertă" required />
+          <AdminFieldPair v-model:ro="form.coverAlt.ro" v-model:en="form.coverAlt.en" label="Text alternativ copertă" required :invalid="invalidFields.has('coverAlt')" />
         </div>
       </div>
       <div>
@@ -68,13 +70,13 @@ function moveGalleryImage(index: number, to: number) {
           @uploading="onUploading"
         />
         <div class="mt-3">
-          <AdminFieldPair v-model:ro="form.heroAlt.ro" v-model:en="form.heroAlt.en" label="Text alternativ captură principală" required />
+          <AdminFieldPair v-model:ro="form.heroAlt.ro" v-model:en="form.heroAlt.en" label="Text alternativ captură principală" required :invalid="invalidFields.has('heroAlt')" />
         </div>
       </div>
       <div>
         <div class="flex items-center justify-between">
           <div class="eyebrow text-muted">Galerie</div>
-          <button type="button" class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal-text" @click="addGalleryImage">
+          <button type="button" class="tap-text eyebrow text-signal-text" @click="addGalleryImage">
             + Imagine
           </button>
         </div>
@@ -96,32 +98,32 @@ function moveGalleryImage(index: number, to: number) {
             />
             <div class="mt-3 flex items-start gap-3">
               <div class="flex-1">
-                <AdminFieldPair v-model:ro="img.altRo" v-model:en="img.altEn" label="Text alternativ" required />
+                <AdminFieldPair
+                  v-model:ro="img.altRo"
+                  v-model:en="img.altEn"
+                  label="Text alternativ"
+                  required
+                  :invalid="invalidFields.has(`gallery.${i}`)"
+                />
               </div>
               <div class="mt-6 flex flex-col items-end gap-2">
                 <div class="flex gap-2">
-                  <button
-                    type="button"
-                    class="cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-ink disabled:cursor-default disabled:opacity-30"
+                  <AdminArrowButton
+                    direction="left"
                     :disabled="i === 0"
                     :aria-label="`Mută imaginea ${i + 1} mai devreme`"
                     @click="moveGalleryImage(i, i - 1)"
-                  >
-                    ←
-                  </button>
-                  <button
-                    type="button"
-                    class="cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-ink disabled:cursor-default disabled:opacity-30"
+                  />
+                  <AdminArrowButton
+                    direction="right"
                     :disabled="i === form.gallery.length - 1"
                     :aria-label="`Mută imaginea ${i + 1} mai târziu`"
                     @click="moveGalleryImage(i, i + 1)"
-                  >
-                    →
-                  </button>
+                  />
                 </div>
                 <button
                   type="button"
-                  class="cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal-text"
+                  class="tap-text eyebrow-sm text-muted hover:text-signal-text"
                   :aria-label="`Șterge imaginea ${i + 1}`"
                   @click="removeGalleryImage(i)"
                 >

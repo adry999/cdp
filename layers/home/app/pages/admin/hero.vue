@@ -97,13 +97,13 @@ useSaveShortcut(save, { enabled: () => dirty.value && saveStatus.value !== 'pend
           <div class="flex-[0_0_90px] eyebrow text-signal-text">
             <template v-if="opt.id === stored">Activ</template>
           </div>
-          <div v-if="opt.id" class="flex flex-[0_0_140px] justify-end gap-4">
-            <TextLink :to="`/?hero=${opt.id}`" target="_blank" rel="noopener">RO</TextLink>
-            <TextLink :to="`/en?hero=${opt.id}`" target="_blank" rel="noopener">EN</TextLink>
+          <div v-if="opt.id" class="flex flex-none flex-wrap justify-end gap-x-4 gap-y-1">
+            <TextLink :to="`/?hero=${opt.id}`" target="_blank" rel="noopener">Previzualizare RO</TextLink>
+            <TextLink :to="`/en?hero=${opt.id}`" target="_blank" rel="noopener">Previzualizare EN</TextLink>
           </div>
-          <div v-else class="flex flex-[0_0_140px] justify-end gap-4">
-            <TextLink :to="`/?hero=${DEFAULT_HERO_VARIANT}`" target="_blank" rel="noopener">RO</TextLink>
-            <TextLink :to="`/en?hero=${DEFAULT_HERO_VARIANT}`" target="_blank" rel="noopener">EN</TextLink>
+          <div v-else class="flex flex-none flex-wrap justify-end gap-x-4 gap-y-1">
+            <TextLink :to="`/?hero=${DEFAULT_HERO_VARIANT}`" target="_blank" rel="noopener">Previzualizare RO</TextLink>
+            <TextLink :to="`/en?hero=${DEFAULT_HERO_VARIANT}`" target="_blank" rel="noopener">Previzualizare EN</TextLink>
           </div>
         </label>
       </fieldset>

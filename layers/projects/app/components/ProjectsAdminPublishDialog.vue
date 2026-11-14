@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PublishChecklist } from '#layers/projects/domain/adminProjectList'
 
-defineProps<{ title: string; checklist: PublishChecklist; busy: boolean }>()
+defineProps<{ title: string; checklist: PublishChecklist; busy: boolean; error?: string | null }>()
 const consent = defineModel<boolean>('consent', { required: true })
 defineEmits<{ confirm: []; cancel: [] }>()
 </script>
@@ -28,8 +28,9 @@ defineEmits<{ confirm: []; cancel: [] }>()
         <div class="min-w-0">
           <component :is="item.id === 'consent' ? 'label' : 'span'" :for="item.id === 'consent' ? 'check-consent' : undefined" class="text-[15px]">
             {{ item.label }}
-            <span class="eyebrow-sm" :class="item.done ? 'text-muted' : item.required ? 'text-signal-text' : 'text-muted'">
-              {{ item.done ? 'gata' : item.required ? 'obligatoriu' : 'opțional' }}
+            <!-- Orange only for what blocks publishing; a missing recommended item is ink, an optional one muted. -->
+            <span class="eyebrow-sm" :class="item.done ? 'text-muted' : item.required ? 'text-signal-text' : item.recommended ? 'text-ink' : 'text-muted'">
+              {{ item.done ? 'gata' : item.required ? 'obligatoriu' : item.recommended ? 'recomandat' : 'opțional' }}
             </span>
           </component>
           <p class="m-0 mt-0.5 text-sm text-muted">{{ item.hint }}</p>
@@ -39,6 +40,7 @@ defineEmits<{ confirm: []; cancel: [] }>()
     <p v-if="checklist.demoScreens" role="note" class="m-0 mt-4 rounded border border-signal-text p-3 text-sm text-signal-text">
       Atenție: doar capturi pe date demo. Nu prezenta ecranele ca pe date reale ale clientului.
     </p>
+    <p v-if="error" role="alert" class="m-0 mt-4 text-sm text-signal-text">{{ error }}</p>
     <template #actions>
       <AppButton variant="outline" @click="$emit('cancel')">Anulează</AppButton>
       <AppButton variant="signal" :disabled="!checklist.canPublish || busy" @click="$emit('confirm')">

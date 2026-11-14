@@ -28,6 +28,17 @@ export function neighborIndex(index: number, direction: 'up' | 'down', length: n
   return target < 0 || target >= length ? null : target
 }
 
+export interface ChipOverflow {
+  shown: string[]
+  /** The rest, named in the "+N" chip's tooltip and accessible label. */
+  hidden: string[]
+}
+
+/** A list row shows the first `max` tech chips; the rest collapse into one "+N" chip. */
+export function chipOverflow(items: readonly string[], max = 2): ChipOverflow {
+  return { shown: items.slice(0, max), hidden: items.slice(max) }
+}
+
 /**
  * First free `<slug>-copie`, `<slug>-copie-2`, … Checked against every slug in use (RO and EN):
  * the copy takes the same value in both columns, and either column can collide.
@@ -46,6 +57,8 @@ export interface ChecklistItem {
   label: string
   hint: string
   required: boolean
+  /** Not required, but called out while missing (shown as "recomandat"). */
+  recommended?: boolean
   done: boolean
 }
 
@@ -89,7 +102,7 @@ export function evaluateChecklist(row: ChecklistInput, consentConfirmed: boolean
     {
       id: 'content',
       label: 'Text obligatoriu (RO)',
-      hint: 'Titlu, titlu card, descriere, lead și problema — fără ele baza de date refuză publicarea.',
+      hint: 'Titlu, titlu card, descriere card, lead și situație — fără ele baza de date refuză publicarea.',
       required: true,
       done:
         filled(row.title_ro) &&
@@ -125,8 +138,9 @@ export function evaluateChecklist(row: ChecklistInput, consentConfirmed: boolean
     {
       id: 'live',
       label: 'Link live',
-      hint: 'Adresa site-ului sau a aplicației, din secțiunea Linkuri.',
-      required: true,
+      hint: 'Recomandat, nu obligatoriu: adresa site-ului sau a aplicației, din secțiunea Linkuri. Unele proiecte nu au una publică.',
+      required: false,
+      recommended: true,
       done: filled(row.live_url),
     },
     {

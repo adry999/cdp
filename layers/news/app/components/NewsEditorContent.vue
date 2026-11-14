@@ -2,11 +2,13 @@
 import { SUMMARY_SOFT_LIMIT, type NewsForm } from '#layers/news/domain/newsForm'
 
 const form = defineModel<NewsForm>({ required: true })
+/** Fields the last failed save rejected, by `NewsIssue.field`. */
+defineProps<{ invalidFields: ReadonlySet<string> }>()
 </script>
 
 <template>
   <NewsEditorSection title="Textul nostru">
-    <AdminFieldPair v-model:ro="form.title.ro" v-model:en="form.title.en" label="Titlu" required />
+    <AdminFieldPair v-model:ro="form.title.ro" v-model:en="form.title.en" label="Titlu" required :invalid="invalidFields.has('title')" />
     <div>
       <AdminFieldPair
         v-model:ro="form.summary.ro"
@@ -14,6 +16,7 @@ const form = defineModel<NewsForm>({ required: true })
         label="Rezumat (2–4 propoziții, scris de noi)"
         textarea
         required
+        :invalid="invalidFields.has('summary')"
       />
       <p
         class="m-0 mt-1 eyebrow-sm"

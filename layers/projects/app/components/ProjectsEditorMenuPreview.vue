@@ -7,9 +7,10 @@ defineProps<{ groups: MenuPreviewGroup[]; published: boolean }>()
 </script>
 
 <template>
-  <section class="rounded border border-hairline p-6">
+  <!-- Inside the "Serviciu și meniu" section, so its heading is one level below the section's. -->
+  <div class="rounded border border-hairline p-6">
     <div class="flex items-center justify-between gap-4">
-      <h2 class="m-0 text-base font-medium">Previzualizare meniu</h2>
+      <h3 class="m-0 text-base font-medium">Previzualizare meniu</h3>
       <div class="eyebrow text-muted">Max. {{ NAV_PROJECTS_PER_SERVICE }} / serviciu</div>
     </div>
     <p v-if="!published" class="m-0 mt-3 text-[13px] text-signal-text">
@@ -41,5 +42,5 @@ defineProps<{ groups: MenuPreviewGroup[]; published: boolean }>()
         <p v-else class="m-0 mt-2 text-[13px] text-muted">Niciun proiect: serviciul apare fără proiecte.</p>
       </div>
     </div>
-  </section>
+  </div>
 </template>
