@@ -9,6 +9,7 @@ useHead({ title: () => props.title })
   <!-- Sticky: the save button and its status stay in reach on long editors. On a narrow screen the
        actions wrap under the title instead of pushing the bar past the screen's edge. -->
   <div
+    data-admin-topbar
     class="sticky top-0 z-10 flex min-h-16 flex-none flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-hairline bg-paper px-6 py-1.5"
   >
     <!-- Grows from 8rem: the title shares the line with the actions and is cut first; only when even
