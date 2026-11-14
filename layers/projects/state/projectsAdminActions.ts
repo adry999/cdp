@@ -21,13 +21,18 @@ export interface ProjectsAdminActionsDeps {
 export function createProjectsAdminActions({ projects, repository, sync }: ProjectsAdminActionsDeps) {
   const deleting = ref<string | null>(null)
   const publishing = ref<string | null>(null)
+  // Unpublishing deletes the project's redirects too, so it is confirmed in a dialog first.
+  const unpublishing = ref<string | null>(null)
   const consentConfirmed = ref(false)
   const busy = ref<string | null>(null)
-  const notice = ref<{ tone: 'info' | 'error'; text: string } | null>(null)
+  // `slug` names the row the notice belongs to, so the page can show it beside that row (or in
+  // its open dialog) instead of at the top of a long list.
+  const notice = ref<{ tone: 'info' | 'error'; text: string; slug: string } | null>(null)
 
   const find = (slug: string | null) => projects.value?.find((project) => project.slug_ro === slug) ?? null
   const deletingProject = computed(() => find(deleting.value))
   const publishingProject = computed(() => find(publishing.value))
+  const unpublishingProject = computed(() => find(unpublishing.value))
   const checklist = computed(() =>
     publishingProject.value ? evaluateChecklist(publishingProject.value, consentConfirmed.value) : null,
   )
@@ -40,7 +45,7 @@ export function createProjectsAdminActions({ projects, repository, sync }: Proje
       await action()
     } catch (caught) {
       console.warn('[admin] project action failed', slug, caught)
-      notice.value = { tone: 'error', text: failure }
+      notice.value = { tone: 'error', text: failure, slug }
       ok = false
     } finally {
       busy.value = null
@@ -49,6 +54,12 @@ export function createProjectsAdminActions({ projects, repository, sync }: Proje
     // list and the public cache must show what the database actually holds.
     await sync()
     return ok
+  }
+
+  // Opening a dialog drops the last notice, so it never shows an older action's failure.
+  function askDelete(slug: string) {
+    notice.value = null
+    deleting.value = slug
   }
 
   async function confirmDelete() {
@@ -68,11 +79,16 @@ export function createProjectsAdminActions({ projects, repository, sync }: Proje
     )
     // Surfacing a partial copy beats a silent one the admin doesn't know about.
     if (ok && !complete) {
-      notice.value = { tone: 'error', text: 'Proiectul a fost duplicat, dar unele elemente nu s-au copiat corect. Verifică proiectul nou.' }
+      notice.value = {
+        tone: 'error',
+        text: 'Proiectul a fost duplicat, dar unele elemente nu s-au copiat corect. Verifică proiectul nou.',
+        slug,
+      }
     }
   }
 
   function askPublish(slug: string) {
+    notice.value = null
     consentConfirmed.value = false
     publishing.value = slug
   }
@@ -85,9 +101,18 @@ export function createProjectsAdminActions({ projects, repository, sync }: Proje
     }
   }
 
-  async function unpublish(slug: string) {
-    const project = find(slug)
-    if (project) await run(slug, () => repository.setPublished(project, false), 'Proiectul nu a putut fi retras.')
+  function askUnpublish(slug: string) {
+    notice.value = null
+    unpublishing.value = slug
+  }
+
+  // On failure the dialog stays open and shows the notice, like a failed delete.
+  async function confirmUnpublish() {
+    const project = unpublishingProject.value
+    if (!project) return
+    if (await run(project.slug_ro, () => repository.setPublished(project, false), 'Proiectul nu a putut fi retras.')) {
+      unpublishing.value = null
+    }
   }
 
   async function toggleFeatured(slug: string) {
@@ -100,15 +125,19 @@ export function createProjectsAdminActions({ projects, repository, sync }: Proje
     deletingProject,
     publishing,
     publishingProject,
+    unpublishing,
+    unpublishingProject,
     consentConfirmed,
     checklist,
     busy,
     notice,
+    askDelete,
     confirmDelete,
     duplicate,
     askPublish,
     confirmPublish,
-    unpublish,
+    askUnpublish,
+    confirmUnpublish,
     toggleFeatured,
   }
 }
