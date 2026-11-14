@@ -268,7 +268,8 @@ useJsonLd(
         </div>
       </template>
       <template v-if="caseStudy.obstacleParagraphs.length">
-        <div class="mt-[clamp(32px,4vw,48px)] eyebrow text-muted">
+        <!-- "Other obstacles" only reads right after an incident card. -->
+        <div v-if="star.incident" class="mt-[clamp(32px,4vw,48px)] eyebrow text-muted">
           {{ t('caseStudy.otherObstacles') }}
         </div>
         <p
