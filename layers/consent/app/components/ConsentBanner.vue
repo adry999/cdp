@@ -64,7 +64,7 @@ function save() {
             <button
               ref="customizeTextButton"
               type="button"
-              class="tap-y-inline cursor-pointer border-0 bg-transparent p-0 font-[inherit] text-ink underline sm:hidden"
+              class="tap-y cursor-pointer border-0 bg-transparent p-0 font-[inherit] text-ink underline sm:hidden"
               @click="customizing = true"
             >
               {{ t('cookieBanner.customize') }}
