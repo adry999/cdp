@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { moveItem } from '#layers/core/shared/utils/moveItem'
+import { localeLengthMismatch } from '#layers/projects/domain/editorSections'
 import type { ProjectForm } from '#layers/projects/domain/projectForm'
 
 // Sections after Rezultat (Adaptare, with its Siguranță list), the gallery texts and the FAQ.
@@ -7,6 +8,8 @@ import type { ProjectForm } from '#layers/projects/domain/projectForm'
 const form = defineModel<ProjectForm>({ required: true })
 
 const locales = ['ro', 'en'] as const
+
+const faqMismatch = computed(() => localeLengthMismatch(form.value.sections.faq.ro.items, form.value.sections.faq.en.items))
 
 function addQuestion(lang: 'ro' | 'en') {
   form.value.sections.faq[lang].items.push({ q: '', a: '' })
@@ -34,6 +37,7 @@ function moveQuestion(lang: 'ro' | 'en', index: number, to: number) {
             <AdminField v-model="form.sections.adapt[lang].body" as="textarea" rows="3" :label="`Paragraf ${lang.toUpperCase()}`" />
             <ProjectsEditorPairList
               v-model="form.sections.adapt[lang].modules"
+              :mismatch="localeLengthMismatch(form.sections.adapt.ro.modules, form.sections.adapt.en.modules)"
               :title="`Module ${lang.toUpperCase()}`"
               first-key="k"
               :first-label="`Titlu (${lang.toUpperCase()})`"
@@ -42,6 +46,7 @@ function moveQuestion(lang: 'ro' | 'en', index: number, to: number) {
             />
             <ProjectsEditorPairList
               v-model="form.sections.adapt[lang].integrations"
+              :mismatch="localeLengthMismatch(form.sections.adapt.ro.integrations, form.sections.adapt.en.integrations)"
               :title="`Integrări ${lang.toUpperCase()}`"
               first-key="k"
               :first-label="`Titlu (${lang.toUpperCase()})`"
@@ -50,6 +55,7 @@ function moveQuestion(lang: 'ro' | 'en', index: number, to: number) {
             />
             <ProjectsEditorPairList
               v-model="form.sections.adapt[lang].safety"
+              :mismatch="localeLengthMismatch(form.sections.adapt.ro.safety, form.sections.adapt.en.safety)"
               :title="`Siguranță ${lang.toUpperCase()}`"
               first-key="k"
               :first-label="`Titlu (${lang.toUpperCase()})`"
@@ -69,6 +75,7 @@ function moveQuestion(lang: 'ro' | 'en', index: number, to: number) {
             <AdminField v-model="form.sections.delivered[lang].label" :label="`Titlu „Ce am livrat” ${lang.toUpperCase()}`" />
             <ProjectsEditorPairList
               v-model="form.sections.delivered[lang].items"
+              :mismatch="localeLengthMismatch(form.sections.delivered.ro.items, form.sections.delivered.en.items)"
               :title="`Livrabile ${lang.toUpperCase()}`"
               first-key="k"
               :first-label="`Titlu (${lang.toUpperCase()})`"
@@ -91,6 +98,7 @@ function moveQuestion(lang: 'ro' | 'en', index: number, to: number) {
                   + Întrebare
                 </button>
               </div>
+              <p v-if="faqMismatch" class="m-0 mt-1 eyebrow-sm text-signal-text">{{ faqMismatch }}</p>
               <div class="mt-2 flex flex-col gap-3">
                 <div
                   v-for="(item, i) in form.sections.faq[lang].items"

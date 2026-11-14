@@ -7,6 +7,8 @@ const props = defineProps<{
   firstLabel: string
   secondLabel: string
   addLabel: string
+  /** "RO 3 · EN 2" when this list and its other-language twin differ in length. */
+  mismatch?: string | null
 }>()
 
 const items = defineModel<{ v: string; k: string }[]>({ required: true })
@@ -35,6 +37,8 @@ function move(index: number, to: number) {
         {{ addLabel }}
       </button>
     </div>
+    <!-- RO and EN are separate lists; when their lengths differ, one language is missing items. -->
+    <p v-if="mismatch" class="m-0 mt-1 eyebrow-sm text-signal-text">{{ mismatch }}</p>
     <div class="mt-2 flex flex-col gap-3">
       <div v-for="(item, i) in items" :key="i" class="flex flex-col gap-2 border-t border-hairline pt-3 first:border-t-0 first:pt-0">
         <AdminField v-model="item[firstKey]" :label="firstLabel" />

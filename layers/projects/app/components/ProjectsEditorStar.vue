@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { localeLengthMismatch } from '#layers/projects/domain/editorSections'
 import type { ProjectForm } from '#layers/projects/domain/projectForm'
 
 // The midway incident is no longer on the case study, so its editor is hidden;
@@ -17,6 +18,7 @@ const locales = ['ro', 'en'] as const
           <div v-for="lang in locales" :key="lang">
             <ProjectsEditorPairList
               v-model="form.star.cost[lang]"
+              :mismatch="localeLengthMismatch(form.star.cost.ro, form.star.cost.en)"
               :title="`Cifre ${lang.toUpperCase()}`"
               first-key="v"
               :first-label="`Valoare (${lang.toUpperCase()})`"
@@ -34,6 +36,7 @@ const locales = ['ro', 'en'] as const
           <div v-for="lang in locales" :key="lang">
             <ProjectsEditorPairList
               v-model="form.star.constraints[lang]"
+              :mismatch="localeLengthMismatch(form.star.constraints.ro, form.star.constraints.en)"
               :title="`Constrângeri ${lang.toUpperCase()}`"
               first-key="k"
               :first-label="`Constrângere (${lang.toUpperCase()})`"
@@ -50,6 +53,7 @@ const locales = ['ro', 'en'] as const
           <div v-for="lang in locales" :key="lang">
             <ProjectsEditorTextList
               v-model="form.star.biz[lang]"
+              :mismatch="localeLengthMismatch(form.star.biz.ro, form.star.biz.en)"
               :title="`Decizii ${lang.toUpperCase()}`"
               :item-label="`Decizie ${lang.toUpperCase()}`"
               add-label="+ Decizie"
@@ -65,6 +69,7 @@ const locales = ['ro', 'en'] as const
           <div v-for="lang in locales" :key="`g-${lang}`">
             <ProjectsEditorPairList
               v-model="form.star.gains[lang]"
+              :mismatch="localeLengthMismatch(form.star.gains.ro, form.star.gains.en)"
               :title="`+ Câștig ${lang.toUpperCase()}`"
               first-key="v"
               :first-label="`Valoare (${lang.toUpperCase()})`"
@@ -75,6 +80,7 @@ const locales = ['ro', 'en'] as const
           <div v-for="lang in locales" :key="`s-${lang}`">
             <ProjectsEditorPairList
               v-model="form.star.savings[lang]"
+              :mismatch="localeLengthMismatch(form.star.savings.ro, form.star.savings.en)"
               :title="`− Economii ${lang.toUpperCase()}`"
               first-key="v"
               :first-label="`Valoare (${lang.toUpperCase()})`"
