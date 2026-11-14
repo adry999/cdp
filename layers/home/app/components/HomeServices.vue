@@ -176,6 +176,8 @@ function startAt(id: StageId) {
       </NuxtLink>
     </p>
 
+    <ContentFixedOffer class="mt-[clamp(32px,4vw,48px)]" heading-tag="h3" details-link />
+
     <div
       v-if="grantsEnabled"
       class="mt-[clamp(32px,4vw,48px)] flex flex-col gap-4 rounded border border-accent-border bg-accent-surface p-[clamp(20px,2.5vw,28px)]"
