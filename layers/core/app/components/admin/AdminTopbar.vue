@@ -1,9 +1,13 @@
 <script setup lang="ts">
-defineProps<{ title: string; back?: { to: string; label: string } }>()
+const props = defineProps<{ title: string; back?: { to: string; label: string } }>()
+
+// Every admin screen has a topbar, so its title also names the browser tab ("Proiecte · CODEPEDIA").
+useHead({ title: () => props.title })
 </script>
 
 <template>
-  <div class="flex h-16 flex-none items-center justify-between border-b border-hairline px-6">
+  <!-- Sticky: the save button and its status stay in reach on long editors. -->
+  <div class="sticky top-0 z-10 flex h-16 flex-none items-center justify-between border-b border-hairline bg-paper px-6">
     <div class="flex items-center gap-4">
       <NuxtLink
         v-if="back"
