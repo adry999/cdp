@@ -58,8 +58,8 @@ case studies), `layers/content` (stage copy) and `layers/qualifier` (the qualifi
   Renders `projects`' `ProjectsCard` with `show-tech="false"`.
 - `ServicesIndexStages` — one `SiteSection` per stage on the index; CTA opens the
   qualifier at that stage (homepage `#contact` fallback when the flag is off).
-- `ServicesIndexCta` — dark closing CTA of the index; opens the qualifier with no
-  stage preselected.
+- `ServicesIndexCta` — dark closing CTA of the index, built from core's `ClosingCta`;
+  opens the contact dialog (or the qualifier) with no stage preselected.
 - `ServicesCta` — opens the qualifier modal preselected at the service's
   `qualifierStage`, or falls back to the homepage contact section when the
   qualifier flag is off. Shows `priceFrom` when it isn't `null`.
@@ -73,7 +73,7 @@ case studies), `layers/content` (stage copy) and `layers/qualifier` (the qualifi
 - `layers/projects` — `usePublishedProjects`, `mapProjectCard`, `ProjectsCard` for
   the related-case-studies section.
 - `layers/blog` — `BlogLinked` ("From the blog" block on `/servicii/[slug]`, the latest 3 posts whose `service` is the page's RO route slug).
-- `layers/qualifier` — `QualifierCta` (`ServicesCta`, `ServicesIndexStages`, `ServicesIndexCta`).
+- `layers/qualifier` — `QualifierCta` (`ServicesCta`, `ServicesIndexStages`).
 
 ## Consumed by
 
