@@ -76,7 +76,7 @@ function moveGalleryImage(index: number, to: number) {
       <div>
         <div class="flex items-center justify-between">
           <div class="eyebrow text-muted">Galerie</div>
-          <button type="button" class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal-text" @click="addGalleryImage">
+          <button type="button" class="tap-text eyebrow text-signal-text" @click="addGalleryImage">
             + Imagine
           </button>
         </div>
@@ -107,29 +107,23 @@ function moveGalleryImage(index: number, to: number) {
                 />
               </div>
               <div class="mt-6 flex flex-col items-end gap-2">
-                <div class="flex gap-2">
-                  <button
-                    type="button"
-                    class="cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-ink disabled:cursor-default disabled:opacity-30"
+                <div class="flex gap-1">
+                  <AdminArrowButton
+                    direction="left"
                     :disabled="i === 0"
                     :aria-label="`Mută imaginea ${i + 1} mai devreme`"
                     @click="moveGalleryImage(i, i - 1)"
-                  >
-                    ←
-                  </button>
-                  <button
-                    type="button"
-                    class="cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-ink disabled:cursor-default disabled:opacity-30"
+                  />
+                  <AdminArrowButton
+                    direction="right"
                     :disabled="i === form.gallery.length - 1"
                     :aria-label="`Mută imaginea ${i + 1} mai târziu`"
                     @click="moveGalleryImage(i, i + 1)"
-                  >
-                    →
-                  </button>
+                  />
                 </div>
                 <button
                   type="button"
-                  class="cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal-text"
+                  class="tap-text eyebrow-sm text-muted hover:text-signal-text"
                   :aria-label="`Șterge imaginea ${i + 1}`"
                   @click="removeGalleryImage(i)"
                 >

@@ -20,7 +20,7 @@ function removeFact(index: number) {
 <template>
   <ProjectsEditorSection title="Date">
     <template #action>
-      <button type="button" class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal-text" @click="addFact">
+      <button type="button" class="tap-text eyebrow text-signal-text" @click="addFact">
         + Fapt
       </button>
     </template>
@@ -42,7 +42,7 @@ function removeFact(index: number) {
         <button
           v-if="form.facts.length > 1"
           type="button"
-          class="mt-6 h-fit cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal-text"
+          class="mt-5 h-fit tap-text eyebrow-sm text-muted hover:text-signal-text"
           @click="removeFact(i)"
         >
           Șterge

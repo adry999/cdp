@@ -87,7 +87,7 @@ function moveQuestion(lang: 'ro' | 'en', index: number, to: number) {
             <div>
               <div class="flex items-center justify-between">
                 <div class="eyebrow-sm text-muted">{{ `Întrebări ${lang.toUpperCase()}` }}</div>
-                <button type="button" class="cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-signal-text" @click="addQuestion(lang)">
+                <button type="button" class="tap-text eyebrow-sm text-signal-text" @click="addQuestion(lang)">
                   + Întrebare
                 </button>
               </div>
@@ -100,9 +100,9 @@ function moveQuestion(lang: 'ro' | 'en', index: number, to: number) {
                   <AdminField v-model="item.q" :label="`Întrebare (${lang.toUpperCase()})`" />
                   <AdminField v-model="item.a" as="textarea" rows="3" :label="`Răspuns (${lang.toUpperCase()})`" />
                   <div class="flex gap-3 eyebrow-sm text-muted">
-                    <button type="button" class="cursor-pointer border-0 bg-transparent p-0 hover:text-ink" :disabled="i === 0" :aria-label="`Mută sus: întrebarea ${i + 1} ${lang.toUpperCase()}`" @click="moveQuestion(lang, i, i - 1)">Sus</button>
-                    <button type="button" class="cursor-pointer border-0 bg-transparent p-0 hover:text-ink" :disabled="i === form.sections.faq[lang].items.length - 1" :aria-label="`Mută jos: întrebarea ${i + 1} ${lang.toUpperCase()}`" @click="moveQuestion(lang, i, i + 1)">Jos</button>
-                    <button type="button" class="cursor-pointer border-0 bg-transparent p-0 hover:text-signal-text" :aria-label="`Șterge: întrebarea ${i + 1} ${lang.toUpperCase()}`" @click="removeQuestion(lang, i)">Șterge</button>
+                    <button type="button" class="tap-text hover:text-ink" :disabled="i === 0" :aria-label="`Mută sus: întrebarea ${i + 1} ${lang.toUpperCase()}`" @click="moveQuestion(lang, i, i - 1)">Sus</button>
+                    <button type="button" class="tap-text hover:text-ink" :disabled="i === form.sections.faq[lang].items.length - 1" :aria-label="`Mută jos: întrebarea ${i + 1} ${lang.toUpperCase()}`" @click="moveQuestion(lang, i, i + 1)">Jos</button>
+                    <button type="button" class="tap-text hover:text-signal-text" :aria-label="`Șterge: întrebarea ${i + 1} ${lang.toUpperCase()}`" @click="removeQuestion(lang, i)">Șterge</button>
                   </div>
                 </div>
               </div>

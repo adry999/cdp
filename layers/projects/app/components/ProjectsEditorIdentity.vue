@@ -66,7 +66,7 @@ function removeTech(index: number) {
       </div>
       <button
         type="button"
-        class="-mt-2 w-fit cursor-pointer border-0 bg-transparent p-0 eyebrow text-muted hover:text-ink"
+        class="-mt-3 w-fit tap-text eyebrow text-muted hover:text-ink"
         @click="slugFromTitle"
       >
         Generează din titluri
@@ -97,12 +97,13 @@ function removeTech(index: number) {
           <div class="mt-2 flex flex-wrap items-center gap-2">
             <TechChip v-for="(tech, i) in form.tech" :key="tech">
               {{ tech }}
-              <button type="button" class="ml-1.5 cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-signal-text" @click="removeTech(i)">×</button>
+              <button type="button" class="tap-text ml-0 min-w-6 text-muted hover:text-signal-text" :aria-label="`Șterge ${tech}`" @click="removeTech(i)">×</button>
             </TechChip>
             <input
               v-model="form.techInput"
               placeholder="+ enter"
-              class="w-24 border-0 border-b border-hairline bg-transparent py-1 text-sm outline-none focus:border-ink"
+              aria-label="Tehnologie nouă (Enter adaugă)"
+              class="w-24 border-0 border-b border-rule bg-transparent py-1 text-sm focus:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
               @keydown.enter.prevent="addTech"
             >
           </div>
@@ -113,7 +114,7 @@ function removeTech(index: number) {
       <div>
         <div class="flex items-center justify-between">
           <div class="eyebrow text-muted">Linkuri</div>
-          <button type="button" class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal-text" @click="addLink">
+          <button type="button" class="tap-text eyebrow text-signal-text" @click="addLink">
             + Link
           </button>
         </div>
@@ -122,7 +123,7 @@ function removeTech(index: number) {
             <div class="grid grid-cols-[180px_1fr] gap-4">
               <div>
                 <label :for="`link-kind-${i}`" class="block eyebrow text-muted">Tip</label>
-                <select :id="`link-kind-${i}`" v-model="link.kind" class="mt-2 w-full border border-hairline bg-paper px-3 py-2.5 outline-none focus:border-ink">
+                <select :id="`link-kind-${i}`" v-model="link.kind" class="mt-2 w-full border border-rule bg-paper px-3 py-2.5 focus:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">
                   <option v-for="kind in LINK_KINDS" :key="kind" :value="kind">{{ LINK_KIND_LABELS[kind] }}</option>
                 </select>
               </div>
@@ -135,9 +136,9 @@ function removeTech(index: number) {
             </div>
             <AdminFieldPair v-model:ro="link.note.ro" v-model:en="link.note.en" :label="`Notă link ${i + 1} (opțional)`" />
             <div class="flex gap-3 eyebrow-sm text-muted">
-              <button type="button" class="cursor-pointer border-0 bg-transparent p-0 hover:text-ink" :disabled="i === 0" :aria-label="`Mută sus link ${i + 1}`" @click="moveLink(i, i - 1)">Sus</button>
-              <button type="button" class="cursor-pointer border-0 bg-transparent p-0 hover:text-ink" :disabled="i === form.links.length - 1" :aria-label="`Mută jos link ${i + 1}`" @click="moveLink(i, i + 1)">Jos</button>
-              <button type="button" class="cursor-pointer border-0 bg-transparent p-0 hover:text-signal-text" :aria-label="`Șterge link ${i + 1}`" @click="removeLink(i)">Șterge</button>
+              <button type="button" class="tap-text hover:text-ink" :disabled="i === 0" :aria-label="`Mută sus link ${i + 1}`" @click="moveLink(i, i - 1)">Sus</button>
+              <button type="button" class="tap-text hover:text-ink" :disabled="i === form.links.length - 1" :aria-label="`Mută jos link ${i + 1}`" @click="moveLink(i, i + 1)">Jos</button>
+              <button type="button" class="tap-text hover:text-signal-text" :aria-label="`Șterge link ${i + 1}`" @click="removeLink(i)">Șterge</button>
             </div>
           </div>
         </div>

@@ -31,7 +31,7 @@ function move(index: number, to: number) {
   <div>
     <div class="flex items-center justify-between">
       <div class="eyebrow-sm text-muted">{{ title }}</div>
-      <button type="button" class="cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-signal-text" @click="add">
+      <button type="button" class="tap-text eyebrow-sm text-signal-text" @click="add">
         {{ addLabel }}
       </button>
     </div>
@@ -40,9 +40,9 @@ function move(index: number, to: number) {
         <AdminField v-model="item[firstKey]" :label="firstLabel" />
         <AdminField v-model="item[secondKey]" :label="secondLabel" />
         <div class="flex gap-3 eyebrow-sm text-muted">
-          <button type="button" class="cursor-pointer border-0 bg-transparent p-0 hover:text-ink" :disabled="i === 0" :aria-label="`Mută sus: ${title} ${i + 1}`" @click="move(i, i - 1)">Sus</button>
-          <button type="button" class="cursor-pointer border-0 bg-transparent p-0 hover:text-ink" :disabled="i === items.length - 1" :aria-label="`Mută jos: ${title} ${i + 1}`" @click="move(i, i + 1)">Jos</button>
-          <button type="button" class="cursor-pointer border-0 bg-transparent p-0 hover:text-signal-text" :aria-label="`Șterge: ${title} ${i + 1}`" @click="remove(i)">Șterge</button>
+          <button type="button" class="tap-text hover:text-ink" :disabled="i === 0" :aria-label="`Mută sus: ${title} ${i + 1}`" @click="move(i, i - 1)">Sus</button>
+          <button type="button" class="tap-text hover:text-ink" :disabled="i === items.length - 1" :aria-label="`Mută jos: ${title} ${i + 1}`" @click="move(i, i + 1)">Jos</button>
+          <button type="button" class="tap-text hover:text-signal-text" :aria-label="`Șterge: ${title} ${i + 1}`" @click="remove(i)">Șterge</button>
         </div>
       </div>
     </div>
