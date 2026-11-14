@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BlogPostSummary } from '#layers/blog'
+import { linkedPostsRequest } from '#layers/blog/data/linkedPosts'
 
 // Posts tied to a service page (`service`: RO route slug) or a case study (`caseSlug`: RO project slug).
 // Renders nothing when there are none.
@@ -11,13 +11,8 @@ const props = withDefaults(defineProps<{ service?: string; caseSlug?: string; nu
 })
 const { t, locale } = useI18n()
 
-const { data } = await useAsyncData<BlogPostSummary[]>(
-  `blog-linked-${locale.value}-${props.service ?? ''}-${props.caseSlug ?? ''}`,
-  () =>
-    $fetch('/api/blog', {
-      query: { locale: locale.value, service: props.service, case: props.caseSlug, limit: props.limit },
-    }),
-)
+const request = linkedPostsRequest(locale.value, { service: props.service, caseSlug: props.caseSlug, limit: props.limit })
+const { data } = await useAsyncData(request.key, request.fetch)
 const posts = computed(() => data.value ?? [])
 </script>
 

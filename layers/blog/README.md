@@ -44,6 +44,9 @@ only.
 - `BlogPostSummary`, `BlogPostDoc` — domain types.
 - `domain/category.ts` — category codes, localized URL slugs and names, guards.
   `CATEGORIES`, `CATEGORY_CODES`, `isCategoryCode` are re-exported from `index.ts` (used by `layers/news`).
+- `linkedPostsRequest(locale, { service, caseSlug, limit })` — the `useAsyncData` key and handler of the
+  posts `BlogLinked` shows, so a page can tell whether that block renders from the same cached request
+  (used by `/servicii/[slug]` to number its sections).
 
 ## Components
 
