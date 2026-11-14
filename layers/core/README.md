@@ -17,7 +17,7 @@ Theme tokens and theme utilities are not here: they live in the root `app/assets
 - `shared/types/service-tag.ts` — `SERVICE_TAG_IDS`, `ServiceTagId`, `isServiceTagId`.
 - `shared/types/sitemap.ts` — `SitemapPage`, `SitemapUrl`.
 - `shared/types/database.types.ts` — generated Supabase types (`Database`, `Tables`, ...).
-- `app/types/app-events.d.ts` — the `qualifier:open` and `analytics:event` hooks; `useTrackEvent()` emits the latter.
+- `app/types/app-events.d.ts` — the `qualifier:open`, `contact:open` and `analytics:event` hooks; `useTrackEvent()` emits the last one, `useContactTrigger()` emits `contact:open` from an in-page contact link (its `href` stays the no-JS path).
 - `shared/utils/serviceStage.ts` — `stageForServiceParam` (route slug, RO or EN → qualifier stage) for contact prefill.
 
 ## Shared utils
