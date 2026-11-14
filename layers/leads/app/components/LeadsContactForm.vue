@@ -280,7 +280,11 @@ watch(status, (value) => {
         :class="isModal && 'leading-[17px]'"
         :aria-disabled="status === 'pending' ? 'true' : undefined"
       >
-        {{ status === 'pending' ? t('home.contact.form.submitting') : t('home.contact.form.submit') }}
+        <!-- Both labels share one grid cell, so the button keeps the wider one's width while sending. -->
+        <span class="inline-grid">
+          <span class="[grid-area:1/1]" :class="status === 'pending' && 'invisible'">{{ t('home.contact.form.submit') }}</span>
+          <span class="[grid-area:1/1]" :class="status !== 'pending' && 'invisible'">{{ t('home.contact.form.submitting') }}</span>
+        </span>
       </AppButton>
     </div>
   </form>
