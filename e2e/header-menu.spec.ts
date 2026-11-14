@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 import { dismissConsentBanner, pinLocale } from './support/helpers'
 
 test.beforeEach(async ({ context }) => {
@@ -136,6 +136,80 @@ test.describe('mobile', () => {
     await toggle.click()
     await expect(page.locator('main')).not.toHaveAttribute('inert', /.*/)
     await expect(page.locator('footer')).not.toHaveAttribute('inert', /.*/)
+  })
+})
+
+test.describe('compact header CTA', () => {
+  test.use({ viewport: { width: 390, height: 844 } })
+
+  // The short copy of "Discută un proiect" beside the burger; the menu's own CTA reads in full.
+  const compactCta = (page: Page) =>
+    page.locator('header').getByRole('button', { name: 'Discută un proiect' }).or(
+      page.locator('header').getByRole('link', { name: 'Discută un proiect' }),
+    ).filter({ hasText: /^\s*Discută\s*$/ })
+
+  // Retried: the router can reset the scroll right after hydration. The scrolled header is 54px tall,
+  // with or without the button in it.
+  async function scrollDown(page: Page) {
+    await expect(async () => {
+      await page.evaluate(() => window.scrollTo(0, 900))
+      await expect(page.getByRole('banner')).toHaveJSProperty('offsetHeight', 54, { timeout: 1000 })
+    }).toPass()
+  }
+
+  test('appears only after scrolling and scrolls to the contact section on the home page', async ({ page }) => {
+    await page.goto('/')
+    await dismissConsentBanner(page)
+
+    await expect(compactCta(page)).toHaveCount(0)
+    await scrollDown(page)
+    await expect(compactCta(page)).toBeVisible()
+    await expect(page.getByRole('banner')).toHaveJSProperty('offsetHeight', 54)
+
+    const box = (await compactCta(page).boundingBox())!
+    const burger = (await page.locator('header button[aria-controls="site-mobile-menu"]').boundingBox())!
+    expect(box.x + box.width).toBeLessThanOrEqual(burger.x)
+
+    await compactCta(page).click()
+    await expect(page.locator('#contact')).toBeInViewport()
+  })
+
+  test('opens the contact dialog on a service page and gets focus back on close', async ({ page }) => {
+    await page.goto('/servicii/aplicatie-web')
+    await dismissConsentBanner(page)
+    await scrollDown(page)
+    const cta = compactCta(page)
+    await cta.click()
+
+    const dialog = page.getByRole('dialog', { name: 'Spune-ne problema. O rezolvăm împreună.' })
+    await expect(dialog).toBeVisible()
+    await page.keyboard.press('Escape')
+    await expect(dialog).toBeHidden()
+    await expect(cta).toBeFocused()
+  })
+
+  test('is hidden while the menu is open', async ({ page }) => {
+    await page.goto('/servicii/aplicatie-web')
+    await dismissConsentBanner(page)
+    await scrollDown(page)
+    await expect(compactCta(page)).toBeVisible()
+
+    const toggle = page.locator('header button[aria-controls="site-mobile-menu"]')
+    await toggle.click()
+    await expect(page.locator('#site-mobile-menu')).toBeVisible()
+    await expect(compactCta(page)).toHaveCount(0)
+    await toggle.click()
+    await expect(compactCta(page)).toBeVisible()
+  })
+
+  test('is absent below 360px and at desktop width', async ({ page }) => {
+    for (const viewport of [{ width: 340, height: 740 }, { width: 1280, height: 800 }]) {
+      await page.setViewportSize(viewport)
+      await page.goto('/servicii/aplicatie-web')
+      if (viewport.width === 340) await dismissConsentBanner(page)
+      await scrollDown(page)
+      await expect(compactCta(page)).toHaveCount(0)
+    }
   })
 })
 
