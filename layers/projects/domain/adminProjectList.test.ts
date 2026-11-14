@@ -70,6 +70,12 @@ describe('evaluateChecklist', () => {
     expect(byId(ready, true)).toMatchObject({ figures: false, quote: false })
   })
 
+  it('publishes without a live link, flagged as recommended', () => {
+    const result = evaluateChecklist({ ...ready, live_url: null }, true)
+    expect(result.canPublish).toBe(true)
+    expect(result.items.find((item) => item.id === 'live')).toMatchObject({ done: false, required: false, recommended: true })
+  })
+
   it('blocks on missing consent', () => {
     expect(evaluateChecklist(ready, false).canPublish).toBe(false)
   })
@@ -79,9 +85,8 @@ describe('evaluateChecklist', () => {
     expect(byId(row, true).screenshots).toBe(true)
   })
 
-  it('blocks without screenshots, live link or required text', () => {
+  it('blocks without screenshots or required text', () => {
     expect(byId(buildAdminListRow({ live_url: 'https://x.md' }), true).screenshots).toBe(false)
-    expect(byId(buildAdminListRow({ cover_path: 'c' }), true).live).toBe(false)
     expect(byId(buildAdminListRow({ ...ready, lead_ro: '  ' }), true).content).toBe(false)
     expect(evaluateChecklist(buildAdminListRow({ ...ready, lead_ro: '' }), true).canPublish).toBe(false)
   })
