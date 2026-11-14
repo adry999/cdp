@@ -2,7 +2,9 @@
 import { SERVICE_TAG_IDS, type ServiceTagId } from '#layers/core/shared/types/service-tag'
 import { serviceTagForParam, stageForServiceTag } from '#layers/core/shared/utils/serviceStage'
 import { visibleServices } from '#layers/core/shared/utils/visibleServices'
+import { hasContactDetails } from '#layers/leads/domain/contactDraft'
 import { LEAD_BUDGET_KEYS, type ContactFieldErrors } from '#layers/leads/domain/lead'
+import { useContactDraft } from '#layers/leads/state/useContactDraft'
 import { useLeadSubmission } from '#layers/leads/state/useLeadSubmission'
 
 // `modal`: the dialog's compact layout (no "how did you hear" field, name and email side by side).
@@ -24,15 +26,14 @@ const { status, fieldErrors, submit } = useLeadSubmission()
 const turnstileToken = ref('')
 const turnstile = useTemplateRef<{ reset(): void }>('turnstile')
 
+// The typed fields live in the module's draft state, so closing the dialog (which unmounts this
+// form) or leaving the page keeps them; reactive() unwraps the refs and writes go to the draft.
+// It is cleared only after a successful send.
+const { draft, clear: clearDraft } = useContactDraft(props.variant)
 const form = reactive({
-  name: '',
-  email: '',
-  company: '',
-  message: '',
-  budget: '',
+  ...toRefs(draft.value),
   // Blog CTAs link to /contact?serviciu=<slug> (RO) or ?service=<slug> (EN); unknown values are ignored.
   service: props.service ?? serviceTagForParam(route.query.serviciu ?? route.query.service),
-  source: '',
   website: '', // honeypot
 })
 
@@ -75,7 +76,10 @@ const FIELD_ORDER = ['name', 'email', 'message'] as const
 
 async function handleSubmit() {
   const { service, ...fields } = form
-  await submit({ ...fields, service, stage: service ? stageForServiceTag(service) : undefined, lang: locale.value, page: route.fullPath, utm: captureUtm() }, turnstileToken.value)
+  if (await submit({ ...fields, service, stage: service ? stageForServiceTag(service) : undefined, lang: locale.value, page: route.fullPath, utm: captureUtm() }, turnstileToken.value)) {
+    clearDraft()
+    return
+  }
   // A rejected submit leaves focus on the button; moving it to the first invalid field puts
   // the error in front of a screen-reader user (their message is linked by aria-describedby).
   const invalid = FIELD_ORDER.find((field) => fieldErrors.value[field])
@@ -85,7 +89,7 @@ async function handleSubmit() {
   }
 }
 
-const detailsOpen = ref(false)
+const detailsOpen = ref(hasContactDetails(draft.value))
 
 const successHeading = ref<HTMLElement | null>(null)
 
@@ -251,9 +255,10 @@ watch(status, (value) => {
     <div class="flex flex-col gap-4" :class="isModal && 'sm:flex-row sm:flex-wrap sm:items-center sm:justify-between'">
       <p class="m-0 text-xs text-muted" :class="isModal && 'max-w-[34ch]'">
         {{ t('home.contact.form.privacyNotice') }}
-        <NuxtLink :to="localePath('confidentialitate')" class="tap-y-inline text-ink underline">{{
+        <!-- A new tab, so the draft on this page stays where it is. -->
+        <NuxtLink :to="localePath('confidentialitate')" target="_blank" rel="noopener" class="tap-y-inline text-ink underline">{{
           t('home.contact.form.privacyNoticeLink')
-        }}</NuxtLink>
+        }}<span class="sr-only"> {{ t('a11y.newTab') }}</span></NuxtLink>
       </p>
 
       <AppButton

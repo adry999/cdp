@@ -20,7 +20,8 @@ function focusFirstField() {
 
 useModalLock(panel, isOpen, close, { returnFocusTo, focusInitial: focusFirstField })
 
-// A link followed from inside the dialog (privacy policy) leaves the page it was opened on.
+// Navigating away (browser back, a link elsewhere on the page) closes the dialog; the draft is
+// kept in state, so nothing typed is lost.
 watch(() => route.fullPath, () => {
   if (isOpen.value) close()
 })
