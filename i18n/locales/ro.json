@@ -12,7 +12,7 @@
     "chooseService": "Alege serviciul",
     "servicesToggle": "Deschide meniul Servicii",
     "services": "Servicii",
-    "work": "Portofoliu",
+    "work": "Proiecte",
     "blog": "Blog",
     "news": "Noutăți",
     "pricing": "Prețuri",
@@ -247,7 +247,7 @@
       "sectionLabel": "Proces"
     },
     "work": {
-      "sectionLabel": "Portofoliu",
+      "sectionLabel": "Proiecte",
       "title": "Proiecte cu care ne mândrim.",
       "intro": "O selecție a celor mai recente proiecte și studii de caz care ilustrează abordarea noastră în rezolvarea provocărilor tehnice și generarea de valoare pentru business.",
       "caseStudyLink": "Vezi studiul de caz →",

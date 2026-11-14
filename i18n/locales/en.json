@@ -12,7 +12,7 @@
     "chooseService": "Choose a service",
     "servicesToggle": "Open the Services menu",
     "services": "Services",
-    "work": "Portfolio",
+    "work": "Projects",
     "blog": "Blog",
     "news": "News",
     "pricing": "Pricing",
@@ -20,7 +20,7 @@
     "main": "Main navigation",
     "contact": "Contact",
     "letsTalk": "Discuss a project",
-    "projects": "Work",
+    "projects": "Projects",
     "groupSites": "Websites",
     "groupApps": "Apps and AI",
     "projectsKicker": "Projects · {service}",
@@ -247,7 +247,7 @@
       "sectionLabel": "Process"
     },
     "work": {
-      "sectionLabel": "Portfolio",
+      "sectionLabel": "Projects",
       "title": "Projects we are proud to share.",
       "intro": "A selection of our latest projects and case studies showcasing our approach to solving technical challenges and driving business value.",
       "caseStudyLink": "Read the case study →",
@@ -731,7 +731,7 @@
     "projectPrompt": "Got a project?",
     "budget": "Estimate your project budget",
     "writeUs": "Send a request",
-    "projects": "Work",
+    "projects": "Projects",
     "allProjects": "All",
     "links": "Links"
   }
