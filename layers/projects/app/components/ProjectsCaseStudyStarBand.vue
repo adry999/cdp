@@ -19,9 +19,10 @@ const steps = computed(() => STEPS.filter((step) => props.sections[step.key]))
 
 <template>
   <section v-if="steps.length >= 2" class="border-t border-hairline bg-hatch" :aria-label="t('caseStudy.star.label')">
-    <ul class="container-site m-0 grid list-none grid-fit-safe-200 gap-x-6 gap-y-3 py-5 eyebrow text-muted">
+    <!-- Phones: rows touch and each link fills a 44px row, so the hit areas never overlap (UX_LAWS, Fitts). -->
+    <ul class="container-site m-0 grid list-none grid-fit-safe-200 gap-x-6 gap-y-0 py-3 eyebrow text-muted nav:gap-y-3 nav:py-5">
       <li v-for="step in steps" :key="step.key">
-        <a :href="`#${SECTION_IDS[step.key]}`" class="tap-y text-muted no-underline transition-colors hover:text-ink">
+        <a :href="`#${SECTION_IDS[step.key]}`" class="tap-y flex min-h-11 items-center text-muted no-underline transition-colors hover:text-ink nav:inline nav:min-h-0">
           <span class="text-signal-text">{{ step.letter }}</span> · {{ t(`caseStudy.star.${step.key}`) }}
         </a>
       </li>
