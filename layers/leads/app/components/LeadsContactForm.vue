@@ -25,7 +25,7 @@ const serviceOptions = visibleServices(SERVICE_TAG_IDS, grantsEnabled)
 const route = useRoute()
 const localePath = useLocalePath()
 const settings = useSiteSettings()
-const { status, fieldErrors, error, submit } = useLeadSubmission()
+const { status, fieldErrors, error, submit, revalidate } = useLeadSubmission()
 const turnstileToken = ref('')
 const turnstile = useTemplateRef<{ reset(): void }>('turnstile')
 
@@ -77,14 +77,21 @@ function toggleService(service: ServiceTagId | undefined) {
 
 const FIELD_ORDER = ['name', 'email', 'message'] as const
 
+function currentSubmission() {
+  const { service, ...fields } = form
+  return { ...fields, service, stage: service ? stageForServiceTag(service) : undefined, lang: locale.value, page: route.fullPath, utm: captureUtm() }
+}
+
+// After the first rejected submit, an error clears (or changes) as soon as the field is fixed.
+watch(() => [form.name, form.email, form.message], () => revalidate(currentSubmission()))
+
 // A failed send names the address to write to instead; a rate limit gets its own message.
 const failureMessage = computed(() =>
   error.value?.code === 'rate_limited' ? t('home.contact.form.errorRateLimited') : t('home.contact.form.error'),
 )
 
 async function handleSubmit() {
-  const { service, ...fields } = form
-  if (await submit({ ...fields, service, stage: service ? stageForServiceTag(service) : undefined, lang: locale.value, page: route.fullPath, utm: captureUtm() }, turnstileToken.value)) {
+  if (await submit(currentSubmission(), turnstileToken.value)) {
     clearDraft()
     emit('sent')
     return
@@ -129,7 +136,7 @@ watch(status, (value) => {
           required
           :aria-invalid="fieldError('name') ? 'true' : undefined"
           :aria-describedby="fieldError('name') ? 'lead-name-error' : undefined"
-          class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink aria-invalid:border-signal"
         >
         <p v-if="fieldError('name')" id="lead-name-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
           <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('name') }}
@@ -148,7 +155,7 @@ watch(status, (value) => {
           autocomplete="email"
           :aria-invalid="fieldError('email') ? 'true' : undefined"
           :aria-describedby="fieldError('email') ? 'lead-email-error' : undefined"
-          class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink aria-invalid:border-signal"
         >
         <p v-if="fieldError('email')" id="lead-email-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
           <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('email') }}
@@ -189,7 +196,7 @@ watch(status, (value) => {
         :placeholder="t('home.contact.form.messageHint')"
         :aria-invalid="fieldError('message') ? 'true' : undefined"
         :aria-describedby="fieldError('message') ? 'lead-message-error' : undefined"
-        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-normal placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-normal placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink aria-invalid:border-signal"
       />
       <p v-if="fieldError('message')" id="lead-message-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
         <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('message') }}
