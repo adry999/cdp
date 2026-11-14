@@ -20,6 +20,8 @@
     "main": "Main navigation",
     "contact": "Contact",
     "letsTalk": "Discuss a project",
+    "letsTalkShort": "Let's talk",
+    "letsTalkShortLabel": "Let's talk about a project",
     "projects": "Work",
     "groupSites": "Websites",
     "groupApps": "Apps and AI",
@@ -522,7 +524,7 @@
         "description": "Websites, web apps, WordPress, Shopify and AI automation. Pick the stage you are at and see what we deliver and how fast."
       },
       "title": "Five stages. We start where you are now.",
-      "intro": "From a quick page to custom AI engineering. Every stage has a fixed price, a committed timeline and 30 days of fixes after launch.",
+      "intro": "From a quick page to custom AI engineering. For every stage we agree the price and the timeline before we start, and you get 30 days of fixes after launch.",
       "cta": {
         "title": "Not sure which stage you're at?",
         "body": "Describe the problem in a few lines. We reply within one working day with the right stage and an estimate.",

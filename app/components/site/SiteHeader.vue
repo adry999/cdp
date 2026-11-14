@@ -44,6 +44,10 @@ const navItems = computed<HeaderNavItem[]>(() =>
 const cta = useContactCta()
 const ctaClass =
   'flex cursor-pointer items-center gap-2.5 whitespace-nowrap [font-family:inherit] text-[length:inherit] leading-[inherit] uppercase tracking-[inherit] rounded border border-ink px-3.5 py-[9px] font-semibold text-ink transition-colors hover:border-signal hover:bg-signal hover:text-ink'
+// Phones: a compact copy of the same CTA beside the burger, once the hero's own buttons have scrolled away.
+// `tap-y` grows its hit area to 44px without making the row taller.
+const compactCtaClass =
+  'tap-y flex cursor-pointer items-center whitespace-nowrap eyebrow-sm rounded border border-ink px-2 py-[5px] font-semibold text-ink transition-colors hover:border-signal hover:bg-signal hover:text-ink'
 
 const header = ref<HTMLElement | null>(null)
 const menuToggle = ref<HTMLButtonElement | null>(null)
@@ -112,8 +116,9 @@ onMounted(() => {
     :class="scrolled && 'shadow-header'"
     @keydown="onKeydown"
   >
+    <!-- Opaque: the open mobile menu scrolls under this row (the header's own background paints below the panel). -->
     <div
-      class="container-site flex items-center justify-between gap-6 transition-[height] duration-200 motion-reduce:transition-none"
+      class="container-site flex items-center justify-between gap-3 bg-paper nav:gap-6 transition-[height] duration-200 motion-reduce:transition-none"
       :class="scrolled ? 'h-[52px]' : 'h-16'"
     >
       <NuxtLink :to="localePath('index')" class="flex min-h-11 items-center">
@@ -179,25 +184,65 @@ onMounted(() => {
         <CoreThemeToggle class="-mx-1.5" />
       </nav>
 
-      <button
-        ref="menuToggle"
-        type="button"
-        class="-mr-2.5 flex h-11 w-11 cursor-pointer flex-col items-center justify-center gap-[5px] border-0 bg-transparent nav:hidden"
-        :aria-label="t('nav.menu')"
-        :aria-expanded="menuOpen"
-        :aria-controls="mobileMenuId"
-        @click="menuOpen = !menuOpen"
-      >
-        <span
-          class="block h-0.5 w-[22px] bg-ink transition-transform duration-200 motion-reduce:transition-none"
-          :class="menuOpen && 'translate-y-[7px] rotate-45'"
-        />
-        <span class="block h-0.5 w-[22px] bg-signal transition-opacity duration-200 motion-reduce:transition-none" :class="menuOpen && 'opacity-0'" />
-        <span
-          class="block h-0.5 w-[22px] bg-ink transition-transform duration-200 motion-reduce:transition-none"
-          :class="menuOpen && '-translate-y-[7px] -rotate-45'"
-        />
-      </button>
+      <div class="flex items-center nav:hidden">
+        <!-- Only between 360px and the nav breakpoint, after scrolling, and not while the menu (with its own CTA) is open. -->
+        <Transition
+          enter-active-class="transition-opacity duration-200 motion-reduce:transition-none"
+          enter-from-class="opacity-0"
+          leave-active-class="transition-opacity duration-150 motion-reduce:transition-none"
+          leave-to-class="opacity-0"
+        >
+          <!-- 8px from the burger (UX_LAWS: space between targets); the English label is longer, so it needs 375px. -->
+          <div v-if="scrolled && !menuOpen" class="mr-2 hidden" :class="locale === 'en' ? 'min-[375px]:block' : 'min-[360px]:block'">
+            <a
+              v-if="cta.kind.value === 'anchor'"
+              :href="cta.to.value"
+              :class="compactCtaClass"
+              :aria-label="t('nav.letsTalkShortLabel')"
+            >
+              {{ t('nav.letsTalkShort') }}
+            </a>
+            <NuxtLink
+              v-else-if="cta.kind.value === 'link'"
+              :to="cta.to.value"
+              :class="compactCtaClass"
+              :aria-label="t('nav.letsTalkShortLabel')"
+            >
+              {{ t('nav.letsTalkShort') }}
+            </NuxtLink>
+            <button
+              v-else
+              type="button"
+              :class="compactCtaClass"
+              :aria-label="t('nav.letsTalkShortLabel')"
+              aria-haspopup="dialog"
+              @click="cta.activate($event.currentTarget as HTMLElement)"
+            >
+              {{ t('nav.letsTalkShort') }}
+            </button>
+          </div>
+        </Transition>
+
+        <button
+          ref="menuToggle"
+          type="button"
+          class="-mr-2.5 flex h-11 w-11 cursor-pointer flex-col items-center justify-center gap-[5px] border-0 bg-transparent nav:hidden"
+          :aria-label="t('nav.menu')"
+          :aria-expanded="menuOpen"
+          :aria-controls="mobileMenuId"
+          @click="menuOpen = !menuOpen"
+        >
+          <span
+            class="block h-0.5 w-[22px] bg-ink transition-transform duration-200 motion-reduce:transition-none"
+            :class="menuOpen && 'translate-y-[7px] rotate-45'"
+          />
+          <span class="block h-0.5 w-[22px] bg-signal transition-opacity duration-200 motion-reduce:transition-none" :class="menuOpen && 'opacity-0'" />
+          <span
+            class="block h-0.5 w-[22px] bg-ink transition-transform duration-200 motion-reduce:transition-none"
+            :class="menuOpen && '-translate-y-[7px] -rotate-45'"
+          />
+        </button>
+      </div>
     </div>
 
     <!-- Decorative: full width as the brand line, a reading-progress bar on blog articles. -->
