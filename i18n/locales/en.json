@@ -195,7 +195,8 @@
       "sectionLabel": "Stack",
       "title": "The stack we ship with.",
       "subtitle": "TypeScript on both ends, Postgres for data, deployed on Vercel. Tools we've used in production, not a wish list.",
-      "integrationNote": "Every project is unique. The best way forward is to hop on a quick call or drop us an email about your specific needs so we can discover how to help you best.",
+      "integrationNote": "Every project is unique. The best way forward is to {link} about your specific needs so we can discover how to help you best.",
+      "integrationNoteLink": "hop on a quick call or drop us an email",
       "groups": {
         "frontend": {
           "name": "Frontend & UI",
