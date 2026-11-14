@@ -3,6 +3,10 @@ import { visibleServices } from '#layers/core/shared/utils/visibleServices'
 import { SERVICES } from '#layers/services/data/services'
 import { faqPage } from '#layers/core/shared/utils/jsonLd'
 import { serviceJsonLd } from '#layers/services/domain/seo'
+import { numberServiceSections } from '#layers/services/domain/sections'
+import { projectsForService } from '#layers/services/domain/relatedProjects'
+import { usePublishedProjects } from '#layers/projects'
+import { linkedPostsRequest } from '#layers/blog'
 import type { Service } from '#layers/services/domain/service'
 
 const route = useRoute()
@@ -17,6 +21,23 @@ if (!service || visibleServices([service], useRuntimeConfig().public.grantsEnabl
 
 // Slugs differ per locale; without this the language switcher and hreflang alternates 404.
 useSetLocalizedSlugs(service.routeSlug)
+
+// Projects and posts are optional blocks; the page reads the same cached data as those blocks so the
+// numbers of the sections that are shown close up instead of skipping.
+const { projects } = await usePublishedProjects()
+const postsRequest = linkedPostsRequest(locale.value, { service: service.routeSlug.ro })
+const { data: linkedPosts } = await useAsyncData(postsRequest.key, postsRequest.fetch)
+const numbers = computed(() =>
+  numberServiceSections({
+    hero: true,
+    features: service.features.length > 0,
+    process: service.process.length > 0,
+    projects: projectsForService(projects.value ?? [], service.slug).length > 0,
+    blog: (linkedPosts.value ?? []).length > 0,
+    faq: (service.faq ?? []).length > 0,
+    cta: true,
+  }),
+)
 
 const siteUrl = useSiteUrl()
 const primarySiteUrl = useSiteUrl('en')
@@ -60,12 +81,12 @@ useJsonLd(
 <template>
   <div>
     <ServicesSwitcher />
-    <ServicesHero :service="service" />
-    <ServicesFeatures :service="service" />
-    <ServicesProcess :service="service" />
-    <ServicesRelatedProjects :service="service" />
-    <BlogLinked number="04" :service="service.routeSlug.ro" />
-    <ServicesFaq :service="service" />
-    <ServicesCta :service="service" />
+    <ServicesHero :service="service" :number="numbers.hero" />
+    <ServicesFeatures :service="service" :number="numbers.features" />
+    <ServicesProcess :service="service" :number="numbers.process" />
+    <ServicesRelatedProjects :service="service" :number="numbers.projects" />
+    <BlogLinked :number="numbers.blog" :service="service.routeSlug.ro" />
+    <ServicesFaq :service="service" :number="numbers.faq" />
+    <ServicesCta :service="service" :number="numbers.cta" />
   </div>
 </template>

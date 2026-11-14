@@ -638,12 +638,14 @@
       "plans": {
         "maintenance": {
           "label": "Retainer / Maintenance",
-          "price": "Predictable",
+          "price": "On request",
+          "note": "Predictable",
           "body": "For live products. Updates, monitoring, backups, and a fixed number of hours or monthly sprints for ongoing development."
         },
         "continuous": {
           "label": "Continuous Development",
-          "price": "Agile & Flexible",
+          "price": "On request",
+          "note": "Agile & Flexible",
           "body": "For building new products or scaling fast. Two-week sprints with regular demos and full transparency."
         }
       },

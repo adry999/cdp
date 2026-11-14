@@ -137,16 +137,25 @@ const CARD_LABEL_MAX = 3
 
 // The mono line above a card title: the project kind plus short tags, at most three. Case-study
 // tags repeat the kind (or a part of it) and end with the year, so both are dropped; without tags it falls back to tech.
-function cardLabel(kind: string, tags: readonly string[], tech: readonly string[]): string[] {
-  // "Aplicație desktop" repeats the kind "Aplicație desktop pentru Windows"; a bare "A" does not.
+// Whitespace or clause punctuation ends a phrase; a hyphen or a combining mark continues the word
+// ("Web-app", decomposed diacritics), so a tag stuck to one of those is not a repeat.
+const PHRASE_EDGE = /[\s,;:.()/]/
+
+/** The tag appears in the kind as a whole phrase, ignoring case: "Windows" in "Aplicație desktop pentru Windows". */
+function kindContainsPhrase(kind: string, tag: string): boolean {
   const kindLower = kind.toLowerCase()
-  const repeatsKind = (item: string) => {
-    const lower = item.toLowerCase()
-    if (lower === kindLower) return true
-    // The kind may continue with a space or clause punctuation: "Site de business, brand și marketing".
-    // A hyphen or a combining mark continues the word ("Web-app", decomposed diacritics), so no repeat.
-    return kindLower.startsWith(lower) && /^[\s,;:.]/.test(kindLower.slice(lower.length))
+  const tagLower = tag.toLowerCase()
+  for (let at = kindLower.indexOf(tagLower); at !== -1; at = kindLower.indexOf(tagLower, at + 1)) {
+    const before = kindLower.charAt(at - 1)
+    const after = kindLower.charAt(at + tagLower.length)
+    if ((at === 0 || PHRASE_EDGE.test(before)) && (!after || PHRASE_EDGE.test(after))) return true
   }
+  return false
+}
+
+function cardLabel(kind: string, tags: readonly string[], tech: readonly string[]): string[] {
+  // "Desktop app" repeats the kind "Windows desktop app"; a bare "A" or "Web" next to "Web-app" does not.
+  const repeatsKind = (item: string) => kindContainsPhrase(kind, item)
   const clean = (list: readonly string[]) =>
     list
       .map((item) => item.trim())

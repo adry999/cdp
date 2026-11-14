@@ -638,12 +638,14 @@
       "plans": {
         "maintenance": {
           "label": "Mentenanță",
-          "price": "Predictibil",
+          "price": "La cerere",
+          "note": "Predictibil",
           "body": "Pentru produse deja lansate. Actualizări, monitorizare, backup și un număr fix de ore sau sprinturi lunare pentru dezvoltare."
         },
         "continuous": {
           "label": "Dezvoltare continuă",
-          "price": "Agil & Flexibil",
+          "price": "La cerere",
+          "note": "Agil & Flexibil",
           "body": "Pentru construcția unui produs nou sau scalare agresivă. Sprinturi de două săptămâni cu demo."
         }
       },

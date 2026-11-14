@@ -11,6 +11,8 @@ const props = withDefaults(
   { index: undefined, tag: 'h3', size: 'md' },
 )
 
+// Below the nav breakpoint the title takes the whole row (beside the index for lg), instead of a fixed
+// column that wraps a short question into three lines next to empty space.
 const SIZES: Record<
   Size,
   { row: string; index: string; group: boolean; groupGap: string; title: string; body: string }
@@ -20,7 +22,7 @@ const SIZES: Record<
     index: 'flex-[0_0_80px] tracking-[0.08em]',
     group: true,
     groupGap: 'gap-[clamp(16px,3vw,40px)]',
-    title: 'flex-[0_0_200px] text-[19px]',
+    title: 'basis-full nav:flex-[0_0_200px] text-[19px]',
     body: 'max-w-[58ch] flex-[1_1_280px]',
   },
   md: {
@@ -28,7 +30,7 @@ const SIZES: Record<
     index: '',
     group: false,
     groupGap: '',
-    title: 'flex-[0_0_240px] text-[19px]',
+    title: 'basis-full nav:flex-[0_0_240px] text-[19px]',
     body: 'max-w-[60ch] flex-[1_1_320px]',
   },
   lg: {
@@ -36,7 +38,7 @@ const SIZES: Record<
     index: 'flex-[0_0_48px] tracking-[0.14em]',
     group: false,
     groupGap: '',
-    title: 'flex-[0_0_260px] text-xl',
+    title: 'min-w-0 flex-[1_1_260px] nav:flex-[0_0_260px] text-xl',
     body: 'flex-[1_1_300px]',
   },
 }

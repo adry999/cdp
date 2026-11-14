@@ -71,6 +71,15 @@ export type NumberedSection = 'situation' | 'task' | 'action' | 'midway' | 'resu
 
 const SECTION_ORDER: readonly NumberedSection[] = ['situation', 'task', 'action', 'midway', 'result', 'feedback']
 
+/** Anchor ids of the story sections the S · T · A · R band links to; the gallery already has "galerie". */
+export const SECTION_IDS = {
+  situation: 'situatie',
+  task: 'sarcina',
+  action: 'actiune',
+  midway: 'pe-parcurs',
+  result: 'rezultat',
+} as const satisfies Partial<Record<NumberedSection, string>>
+
 /** Sequential labels ("01", "02", ...) for the sections that are shown, in page order. Hidden sections get an empty string. */
 export function numberSections(visible: Record<NumberedSection, boolean>): Record<NumberedSection, string> {
   const numbers = Object.fromEntries(SECTION_ORDER.map((key) => [key, ''])) as Record<NumberedSection, string>
