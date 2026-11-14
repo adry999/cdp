@@ -699,6 +699,11 @@
         "label": "Limbi",
         "value": "Română · Engleză · Rusă"
       }
+    },
+    "cta": {
+      "title": "Vorbește direct cu oamenii care construiesc.",
+      "body": "Scrie-ne câteva rânduri despre ce ai nevoie. Discuți soluția tehnică direct cu inginerul care o va construi, fără intermediari.",
+      "button": "Discută cu un inginer"
     }
   },
   "contactModal": {
