@@ -45,8 +45,8 @@ const categoryId = useId()
           :id="categoryId"
           v-model="form.category"
           :aria-invalid="invalidFields.has('category') || undefined"
-          class="mt-2 w-full rounded border bg-paper px-3 py-2.5 text-[15px] outline-none"
-          :class="invalidFields.has('category') ? 'border-signal-text' : 'border-hairline focus:border-ink'"
+          class="mt-2 w-full rounded border bg-paper px-3 py-2.5 text-[15px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          :class="invalidFields.has('category') ? 'border-signal-text' : 'border-rule focus:border-ink'"
         >
           <option value="">—</option>
           <option v-for="code in NEWS_CATEGORY_OPTIONS" :key="code" :value="code">{{ CATEGORIES[code].name.ro }}</option>
