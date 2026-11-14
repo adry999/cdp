@@ -102,7 +102,7 @@ function removeTech(index: number) {
               v-model="form.techInput"
               placeholder="+ enter"
               aria-label="Tehnologie nouă (Enter adaugă)"
-              class="w-24 border-0 border-b border-rule bg-transparent py-1 text-sm focus:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+              class="w-24 border-0 border-b border-muted bg-transparent py-1 text-sm focus:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
               @keydown.enter.prevent="addTech"
             >
           </div>
@@ -122,7 +122,7 @@ function removeTech(index: number) {
             <div class="grid grid-cols-[180px_1fr] gap-4">
               <div>
                 <label :for="`link-kind-${i}`" class="block eyebrow text-muted">Tip</label>
-                <select :id="`link-kind-${i}`" v-model="link.kind" class="mt-2 w-full border border-rule bg-paper px-3 py-2.5 focus:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">
+                <select :id="`link-kind-${i}`" v-model="link.kind" class="mt-2 w-full border border-muted bg-paper px-3 py-2.5 focus:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink">
                   <option v-for="kind in LINK_KINDS" :key="kind" :value="kind">{{ LINK_KIND_LABELS[kind] }}</option>
                 </select>
               </div>
