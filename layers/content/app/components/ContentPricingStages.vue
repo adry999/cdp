@@ -35,10 +35,17 @@ const stages = useServiceStages()
           class="mt-1 flex items-center gap-2 text-[30px] font-semibold leading-[1.1] tracking-[-0.025em] text-ink"
         >
           {{ stage.pricing }}
-          <CoreInfoTip :label="t('pricing.infoLabel')">
-            {{ stage.pricingTooltip }}
-          </CoreInfoTip>
+          <!-- Below sm a 300px tooltip centred on this button would run past the card and be clipped,
+               so the explanation is printed under the price instead. -->
+          <span class="hidden sm:inline-flex">
+            <CoreInfoTip :label="t('pricing.infoLabel')">
+              {{ stage.pricingTooltip }}
+            </CoreInfoTip>
+          </span>
         </div>
+        <p v-if="stage.pricing" class="m-0 mt-2 text-sm text-muted sm:hidden">
+          {{ stage.pricingTooltip }}
+        </p>
         <ul
           class="m-0 mt-5 flex flex-1 list-none flex-col gap-2 border-t border-hairline p-0 pt-4"
         >

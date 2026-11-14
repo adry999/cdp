@@ -16,7 +16,7 @@ const columns = computed(() =>
 <template>
   <ProjectsCaseStudySection :label="t('caseStudy.sections.adapt.label')" :heading="adapt.heading || undefined">
     <p v-if="adapt.body" class="mt-5 max-w-[64ch] text-[17px] text-muted text-pretty">{{ adapt.body }}</p>
-    <div v-if="columns.length" class="mt-[clamp(28px,3.5vw,44px)] grid grid-fit-safe-300 gap-[clamp(24px,3vw,40px)]">
+    <div v-if="columns.length" class="mt-[clamp(28px,3.5vw,44px)] grid grid-fit-safe-280 gap-[clamp(24px,3vw,40px)]">
       <div v-for="column in columns" :key="column.letter">
         <div class="eyebrow text-muted"><span class="text-signal-text">{{ column.letter }}</span> · {{ column.caption }}</div>
         <ul class="m-0 mt-3 list-none border-b border-hairline p-0">

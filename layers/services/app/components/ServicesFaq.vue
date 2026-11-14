@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Service } from '#layers/services/domain/service'
 
-const props = defineProps<{ service: Service; number?: string }>()
+const props = defineProps<{ service: Service; number: string }>()
 const { t, locale } = useI18n()
 
 const items = computed(() =>
@@ -13,7 +13,7 @@ const items = computed(() =>
 </script>
 
 <template>
-  <SiteSection v-if="items.length" :number="number ?? '05'" :label="t('home.faq.sectionLabel')" section-id="faq">
+  <SiteSection v-if="items.length" :number="number" :label="t('home.faq.sectionLabel')" section-id="faq">
     <h2 class="sr-only">{{ t('home.faq.sectionLabel') }}</h2>
     <FaqList :items="items" />
   </SiteSection>
