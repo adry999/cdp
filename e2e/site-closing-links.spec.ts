@@ -62,17 +62,17 @@ for (const locale of ['ro', 'en'] as const) {
     const stages = page.locator('main article')
     await expect(stages).toHaveCount(5)
 
-    const label = locale === 'ro' ? 'Servicii:' : 'Services:'
+    // The links sit in the stage's button row, as in the prototype: every link to a service page.
     const linked: string[] = []
     let withoutRow = 0
     for (let i = 0; i < 5; i++) {
       const stage = stages.nth(i)
-      const row = stage.locator('p', { hasText: label })
-      if (!(await row.count())) {
+      const links = stage.locator(`a[href^="${prefix}/"]`)
+      if (!(await links.count())) {
         withoutRow++
         continue
       }
-      const hrefs = await row.getByRole('link').evaluateAll((links) => links.map((link) => link.getAttribute('href') ?? ''))
+      const hrefs = await links.evaluateAll((elements) => elements.map((link) => link.getAttribute('href') ?? ''))
       expect(hrefs.length).toBeGreaterThan(0)
       linked.push(...hrefs)
       if (locale === 'ro') {
@@ -81,7 +81,7 @@ for (const locale of ['ro', 'en'] as const) {
       }
     }
 
-    // Five service pages over three stages; the two stages without a service have no row.
+    // Five service pages over three stages; the two stages without a service have no links.
     expect(withoutRow).toBe(2)
     expect(new Set(linked).size).toBe(5)
     for (const href of linked) {

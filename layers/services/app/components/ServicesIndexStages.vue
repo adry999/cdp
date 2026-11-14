@@ -63,10 +63,15 @@ function stageServices(stage: StageId) {
       </ul>
       <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-4">
         <QualifierCta variant="ink" :stage="stage.id">{{ stage.cta }}</QualifierCta>
-        <p v-if="stageServices(stage.id).length" class="m-0 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-          <span class="eyebrow-sm text-muted">{{ t('services.index.stageServices') }}</span>
-          <TextLink v-for="service in stageServices(stage.id)" :key="service.slug" :to="service.to">{{ service.name }}</TextLink>
-        </p>
+        <!-- As in Codepedia Pagini.dc.html: the stage's service pages sit in the button row as mono "Name →" links. -->
+        <NuxtLink
+          v-for="service in stageServices(stage.id)"
+          :key="service.slug"
+          :to="service.to"
+          class="tap-y eyebrow text-muted no-underline transition-colors hover:text-signal-text hover:underline"
+        >
+          {{ service.name }} →
+        </NuxtLink>
       </div>
     </article>
   </SiteSection>

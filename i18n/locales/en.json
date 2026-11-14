@@ -533,8 +533,7 @@
         "title": "Not sure which stage you're at?",
         "body": "Describe the problem in a few lines. We reply within one working day with the right stage and an estimate.",
         "button": "See if we can help"
-      },
-      "stageServices": "Services:"
+      }
     }
   },
   "news": {
