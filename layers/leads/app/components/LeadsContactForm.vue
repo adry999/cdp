@@ -2,7 +2,10 @@
 import { SERVICE_TAG_IDS, type ServiceTagId } from '#layers/core/shared/types/service-tag'
 import { serviceTagForParam, stageForServiceTag } from '#layers/core/shared/utils/serviceStage'
 import { visibleServices } from '#layers/core/shared/utils/visibleServices'
+import { useSiteSettings } from '#layers/content'
+import { hasContactDetails } from '#layers/leads/domain/contactDraft'
 import { LEAD_BUDGET_KEYS, type ContactFieldErrors } from '#layers/leads/domain/lead'
+import { useContactDraft } from '#layers/leads/state/useContactDraft'
 import { useLeadSubmission } from '#layers/leads/state/useLeadSubmission'
 
 // `modal`: the dialog's compact layout (no "how did you hear" field, name and email side by side).
@@ -14,25 +17,26 @@ const props = withDefaults(defineProps<{ variant?: 'page' | 'modal'; service?: S
   service: undefined,
 })
 const isModal = computed(() => props.variant === 'modal')
+const emit = defineEmits<{ sent: [] }>()
 
 const { t, locale } = useI18n()
 const { grantsEnabled } = useRuntimeConfig().public
 const serviceOptions = visibleServices(SERVICE_TAG_IDS, grantsEnabled)
 const route = useRoute()
 const localePath = useLocalePath()
-const { status, fieldErrors, submit } = useLeadSubmission()
+const settings = useSiteSettings()
+const { status, fieldErrors, error, submit, revalidate } = useLeadSubmission()
 const turnstileToken = ref('')
 const turnstile = useTemplateRef<{ reset(): void }>('turnstile')
 
+// The typed fields live in the module's draft state, so closing the dialog (which unmounts this
+// form) or leaving the page keeps them; reactive() unwraps the refs and writes go to the draft.
+// It is cleared only after a successful send.
+const { draft, clear: clearDraft } = useContactDraft(props.variant)
 const form = reactive({
-  name: '',
-  email: '',
-  company: '',
-  message: '',
-  budget: '',
+  ...toRefs(draft.value),
   // Blog CTAs link to /contact?serviciu=<slug> (RO) or ?service=<slug> (EN); unknown values are ignored.
   service: props.service ?? serviceTagForParam(route.query.serviciu ?? route.query.service),
-  source: '',
   website: '', // honeypot
 })
 
@@ -73,9 +77,25 @@ function toggleService(service: ServiceTagId | undefined) {
 
 const FIELD_ORDER = ['name', 'email', 'message'] as const
 
-async function handleSubmit() {
+function currentSubmission() {
   const { service, ...fields } = form
-  await submit({ ...fields, service, stage: service ? stageForServiceTag(service) : undefined, lang: locale.value, page: route.fullPath, utm: captureUtm() }, turnstileToken.value)
+  return { ...fields, service, stage: service ? stageForServiceTag(service) : undefined, lang: locale.value, page: route.fullPath, utm: captureUtm() }
+}
+
+// After the first rejected submit, an error clears (or changes) as soon as the field is fixed.
+watch(() => [form.name, form.email, form.message], () => revalidate(currentSubmission()))
+
+// A failed send names the address to write to instead; a rate limit gets its own message.
+const failureMessage = computed(() =>
+  error.value?.code === 'rate_limited' ? t('home.contact.form.errorRateLimited') : t('home.contact.form.error'),
+)
+
+async function handleSubmit() {
+  if (await submit(currentSubmission(), turnstileToken.value)) {
+    clearDraft()
+    emit('sent')
+    return
+  }
   // A rejected submit leaves focus on the button; moving it to the first invalid field puts
   // the error in front of a screen-reader user (their message is linked by aria-describedby).
   const invalid = FIELD_ORDER.find((field) => fieldErrors.value[field])
@@ -85,14 +105,9 @@ async function handleSubmit() {
   }
 }
 
-const detailsOpen = ref(false)
-
-const successHeading = ref<HTMLElement | null>(null)
+const detailsOpen = ref(hasContactDetails(draft.value))
 
 watch(status, (value) => {
-  if (value === 'success') {
-    nextTick(() => successHeading.value?.focus())
-  }
   // The server spent the token on the failed attempt; a retry needs a new one.
   if (value === 'error') turnstile.value?.reset()
 })
@@ -102,7 +117,7 @@ watch(status, (value) => {
   <form
     v-if="status !== 'success'"
     class="flex flex-col"
-    :class="isModal ? 'gap-4' : 'mt-[clamp(28px,3vw,40px)] max-w-[560px] gap-6'"
+    :class="isModal ? 'gap-6' : 'mt-[clamp(28px,3vw,40px)] max-w-[560px] gap-6'"
     novalidate
     @submit.prevent="handleSubmit"
   >
@@ -121,7 +136,7 @@ watch(status, (value) => {
           required
           :aria-invalid="fieldError('name') ? 'true' : undefined"
           :aria-describedby="fieldError('name') ? 'lead-name-error' : undefined"
-          class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink aria-invalid:border-signal"
         >
         <p v-if="fieldError('name')" id="lead-name-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
           <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('name') }}
@@ -140,7 +155,7 @@ watch(status, (value) => {
           autocomplete="email"
           :aria-invalid="fieldError('email') ? 'true' : undefined"
           :aria-describedby="fieldError('email') ? 'lead-email-error' : undefined"
-          class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-[normal] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink aria-invalid:border-signal"
         >
         <p v-if="fieldError('email')" id="lead-email-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
           <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('email') }}
@@ -181,7 +196,7 @@ watch(status, (value) => {
         :placeholder="t('home.contact.form.messageHint')"
         :aria-invalid="fieldError('message') ? 'true' : undefined"
         :aria-describedby="fieldError('message') ? 'lead-message-error' : undefined"
-        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-normal placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 block w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-normal placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink aria-invalid:border-signal"
       />
       <p v-if="fieldError('message')" id="lead-message-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
         <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('message') }}
@@ -191,7 +206,7 @@ watch(status, (value) => {
     <div>
       <button
         type="button"
-        class="tap-y-inline flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-wider text-ink"
+        class="tap-y flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-wider text-ink"
         aria-controls="lead-details"
         :aria-expanded="detailsOpen ? 'true' : 'false'"
         @click="detailsOpen = !detailsOpen"
@@ -244,16 +259,18 @@ watch(status, (value) => {
 
     <CoreTurnstile ref="turnstile" v-model="turnstileToken" action="contact" />
 
-    <p v-if="status === 'error'" role="alert" class="flex items-center gap-1.5 font-mono text-xs text-ink">
-      <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ t('home.contact.form.error') }}
-    </p>
+    <div v-if="status === 'error'" role="alert" class="flex flex-col gap-1 rounded border border-ink bg-hatch p-3 text-sm text-ink">
+      <p class="m-0">{{ failureMessage }}</p>
+      <a :href="`mailto:${settings.contactEmail}`" class="tap-y w-fit font-medium text-ink underline">{{ settings.contactEmail }}</a>
+    </div>
 
     <div class="flex flex-col gap-4" :class="isModal && 'sm:flex-row sm:flex-wrap sm:items-center sm:justify-between'">
       <p class="m-0 text-xs text-muted" :class="isModal && 'max-w-[34ch]'">
         {{ t('home.contact.form.privacyNotice') }}
-        <NuxtLink :to="localePath('confidentialitate')" class="tap-y-inline text-ink underline">{{
+        <!-- A new tab, so the draft on this page stays where it is. -->
+        <NuxtLink :to="localePath('confidentialitate')" target="_blank" rel="noopener" class="tap-y-inline text-ink underline">{{
           t('home.contact.form.privacyNoticeLink')
-        }}</NuxtLink>
+        }}<span class="sr-only"> {{ t('a11y.newTab') }}</span></NuxtLink>
       </p>
 
       <AppButton
@@ -263,13 +280,15 @@ watch(status, (value) => {
         :class="isModal && 'leading-[17px]'"
         :aria-disabled="status === 'pending' ? 'true' : undefined"
       >
-        {{ status === 'pending' ? t('home.contact.form.submitting') : t('home.contact.form.submit') }}
+        <!-- Both labels share one grid cell, so the button keeps the wider one's width while sending. -->
+        <span class="inline-grid">
+          <span class="[grid-area:1/1]" :class="status === 'pending' && 'invisible'">{{ t('home.contact.form.submit') }}</span>
+          <span class="[grid-area:1/1]" :class="status !== 'pending' && 'invisible'">{{ t('home.contact.form.submitting') }}</span>
+        </span>
       </AppButton>
     </div>
   </form>
   <slot v-else name="success">
-    <div role="status" class="mt-[clamp(28px,3vw,40px)] max-w-[560px]">
-      <p ref="successHeading" tabindex="-1" class="text-base outline-none">{{ t('home.contact.form.success') }}</p>
-    </div>
+    <LeadsContactSuccess class="mt-[clamp(28px,3vw,40px)] max-w-[560px]" />
   </slot>
 </template>

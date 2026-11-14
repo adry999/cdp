@@ -54,4 +54,21 @@ describe('useLeadSubmission', () => {
     expect(post).toHaveBeenCalledTimes(1)
     expect(status.value).toBe('success')
   })
+
+  it('re-validates on edit only after the first submit', async () => {
+    const post = vi.fn(async () => ({ success: true }))
+    const { fieldErrors, submit, revalidate } = useLeadSubmission({ post })
+
+    revalidate(buildContactSubmission({ name: '' }))
+    expect(fieldErrors.value).toEqual({})
+
+    await submit(buildContactSubmission({ name: '', email: 'ana' }))
+    expect(fieldErrors.value).toEqual({ name: 'required', email: 'invalid_email' })
+
+    revalidate(buildContactSubmission({ name: 'Ana', email: 'ana' }))
+    expect(fieldErrors.value).toEqual({ email: 'invalid_email' })
+    revalidate(buildContactSubmission({ name: 'Ana' }))
+    expect(fieldErrors.value).toEqual({})
+    expect(post).not.toHaveBeenCalled()
+  })
 })

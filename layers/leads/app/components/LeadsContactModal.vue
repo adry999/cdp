@@ -3,16 +3,16 @@ import { useContactModal } from '#layers/leads/state/useContactModal'
 
 const { isOpen, service, returnFocusTo, close } = useContactModal()
 const { t } = useI18n()
-const i18nList = useI18nList()
-const steps = computed(() => i18nList('contactPage.steps'))
 const route = useRoute()
 
 const panel = ref<HTMLElement | null>(null)
 
-// The confirmation takes focus so a screen reader announces it.
-function focusStatus(element: unknown) {
-  if (element instanceof HTMLElement) nextTick(() => element.focus())
-}
+// After a successful send the confirmation replaces the form; the lead paragraph (which invites
+// a description) goes with it. Each opening starts on the form again.
+const sent = ref(false)
+watch(isOpen, (open) => {
+  if (open) sent.value = false
+})
 
 function focusFirstField() {
   panel.value?.querySelector<HTMLElement>('#lead-name')?.focus()
@@ -20,7 +20,8 @@ function focusFirstField() {
 
 useModalLock(panel, isOpen, close, { returnFocusTo, focusInitial: focusFirstField })
 
-// A link followed from inside the dialog (privacy policy) leaves the page it was opened on.
+// Navigating away (browser back, a link elsewhere on the page) closes the dialog; the draft is
+// kept in state, so nothing typed is lost.
 watch(() => route.fullPath, () => {
   if (isOpen.value) close()
 })
@@ -41,15 +42,18 @@ watch(() => route.fullPath, () => {
           aria-labelledby="contact-modal-title"
           class="relative w-full max-w-[620px] rounded border border-hairline bg-paper text-ink shadow-modal"
         >
+          <!-- Zero-height sticky row: the close button stays in reach while a tall dialog scrolls (mobile). -->
+          <div class="sticky top-0 z-10 flex h-0 justify-end">
+            <button
+              type="button"
+              class="mr-2.5 mt-2.5 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded border-0 bg-paper text-xl leading-none text-muted transition-colors hover:bg-hatch hover:text-ink"
+              :aria-label="t('contactModal.close')"
+              @click="close"
+            >
+              <span aria-hidden="true">✕</span>
+            </button>
+          </div>
           <div aria-hidden="true" class="h-0.5 rounded-t bg-signal" />
-          <button
-            type="button"
-            class="absolute right-2.5 top-2.5 flex h-11 w-11 cursor-pointer items-center justify-center rounded border-0 bg-transparent text-xl leading-none text-muted transition-colors hover:bg-hatch hover:text-ink"
-            :aria-label="t('contactModal.close')"
-            @click="close"
-          >
-            <span aria-hidden="true">✕</span>
-          </button>
 
           <div class="flex flex-col gap-6 p-[clamp(24px,4vw,40px)]">
             <div class="flex flex-col gap-3 pr-10">
@@ -60,24 +64,14 @@ watch(() => route.fullPath, () => {
               <h2 id="contact-modal-title" class="m-0 text-[clamp(24px,3vw,32px)] font-semibold leading-[1.1] tracking-[-0.025em] text-pretty">
                 {{ t('home.contact.title') }}
               </h2>
-              <p class="m-0 text-base text-muted text-pretty">{{ t('home.contact.lead') }}</p>
+              <p v-if="!sent" class="m-0 text-base text-muted text-pretty">{{ t('home.contact.lead') }}</p>
             </div>
 
-            <LeadsContactForm variant="modal" :service="service">
+            <LeadsContactForm variant="modal" :service="service" @sent="sent = true">
               <template #success>
-                <div role="status" class="flex flex-col gap-5 border-t border-hairline pt-6">
-                  <div class="flex items-center gap-3">
-                    <span aria-hidden="true" class="flex h-9 w-9 items-center justify-center rounded-full bg-signal text-lg text-ink">✓</span>
-                    <p :ref="focusStatus" class="m-0 text-lg font-semibold outline-none" tabindex="-1">{{ t('home.contact.form.success') }}</p>
-                  </div>
-                  <ol class="m-0 flex list-none flex-col border-b border-hairline p-0">
-                    <li v-for="(step, index) in steps" :key="step" class="flex gap-4 border-t border-hairline py-3 text-[15px]">
-                      <span class="font-mono text-xs text-signal-text">{{ String(index + 1).padStart(2, '0') }}</span>
-                      {{ step }}
-                    </li>
-                  </ol>
+                <LeadsContactSuccess>
                   <AppButton variant="outline" class="w-fit" @click="close">{{ t('contactModal.done') }}</AppButton>
-                </div>
+                </LeadsContactSuccess>
               </template>
             </LeadsContactForm>
           </div>
