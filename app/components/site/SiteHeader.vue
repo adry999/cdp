@@ -192,7 +192,8 @@ onMounted(() => {
           leave-active-class="transition-opacity duration-150 motion-reduce:transition-none"
           leave-to-class="opacity-0"
         >
-          <div v-if="scrolled && !menuOpen" class="hidden min-[360px]:block">
+          <!-- 8px from the burger (UX_LAWS: space between targets); the English label is longer, so it needs 375px. -->
+          <div v-if="scrolled && !menuOpen" class="mr-2 hidden" :class="locale === 'en' ? 'min-[375px]:block' : 'min-[360px]:block'">
             <a
               v-if="cta.kind.value === 'anchor'"
               :href="cta.to.value"
