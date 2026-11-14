@@ -95,7 +95,7 @@ useSeoMeta({ robots: 'noindex, follow' })
 
     <a
       :href="vcardHref"
-      class="mt-7 flex min-h-[60px] items-center justify-center gap-3 rounded bg-signal px-5 text-[17px] font-semibold text-ink no-underline transition-colors duration-[120ms] hover:bg-ink hover:text-paper hover:no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
+      class="mt-7 flex min-h-[60px] items-center justify-center gap-3 rounded bg-signal px-5 text-[17px] font-semibold text-on-signal no-underline transition-colors duration-[120ms] hover:bg-ink hover:text-paper hover:no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
       @click="track('save')"
     >
       <Icon :name="CARD_ICONS.save" class="h-5 w-5" aria-hidden="true" />
