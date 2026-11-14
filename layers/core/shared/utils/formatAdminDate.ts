@@ -7,6 +7,12 @@ const dateTimeFormat = new Intl.DateTimeFormat('ro-RO', {
   timeStyle: 'medium',
 })
 
+const timeFormat = new Intl.DateTimeFormat('ro-RO', {
+  timeZone: ADMIN_TIME_ZONE,
+  hour: '2-digit',
+  minute: '2-digit',
+})
+
 /**
  * Admin dates in a fixed zone: without one the server and the browser format the same instant
  * differently and Vue reports a hydration mismatch.
@@ -15,4 +21,9 @@ export function formatAdminDate(iso: string, options: { withTime?: boolean } = {
   const date = new Date(iso)
   if (Number.isNaN(date.getTime())) return ''
   return (options.withTime ? dateTimeFormat : dateFormat).format(date)
+}
+
+/** Hours and minutes in the admin's zone ("09:05"), for "Salvat · 09:05". */
+export function formatAdminTime(date: Date): string {
+  return Number.isNaN(date.getTime()) ? '' : timeFormat.format(date)
 }
