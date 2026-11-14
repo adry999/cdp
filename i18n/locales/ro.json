@@ -547,6 +547,7 @@
       "intro": "Articole și știri din alte surse, alese de echipa CODEPEDIA, cu un rezumat și link la original."
     },
     "empty": "Nu sunt încă noutăți publicate.",
+    "emptyBlogLink": "Citește blogul →",
     "latest": "Cele mai noi",
     "readAtSource": "Citește la sursă ↗",
     "openOriginal": "Citește articolul original ↗",

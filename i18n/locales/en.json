@@ -547,6 +547,7 @@
       "intro": "Articles and news from other sources, picked by the CODEPEDIA team, with a summary and a link to the original."
     },
     "empty": "No news published yet.",
+    "emptyBlogLink": "Read the blog →",
     "latest": "Latest",
     "readAtSource": "Read at the source ↗",
     "openOriginal": "Read the original article ↗",
