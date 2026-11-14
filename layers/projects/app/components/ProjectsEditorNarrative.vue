@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Bilingual } from '#layers/projects/domain/projectForm'
 
-defineProps<{ title: string; required?: boolean }>()
+defineProps<{ title: string; required?: boolean; invalid?: boolean }>()
 
 const body = defineModel<Bilingual>({ required: true })
 </script>
@@ -15,6 +15,7 @@ const body = defineModel<Bilingual>({ required: true })
         label="Text (paragrafe separate de o linie goală)"
         textarea
         :required="required"
+        :invalid="invalid"
       />
       <slot />
     </div>
