@@ -597,10 +597,24 @@
     "stagesLabel": "Stages",
     "seo": {
       "title": "Pricing for websites and web apps",
-      "description": "How we work: a technical diagnostic first, then a monthly subscription or dedicated sprints. The code stays in your accounts, no hidden costs."
+      "description": "Fixed-price management apps from €1,500, or a monthly subscription and dedicated sprints for larger projects. The code stays in your accounts, no hidden costs."
     },
     "title": "Your tech team on subscription.",
     "intro": "Every business has unique requirements. Instead of blind estimates and blown budgets, we perform a technical diagnostic, then become your engineering team through a long-term partnership.",
+    "offer": {
+      "label": "Offer",
+      "kicker": "Fixed price",
+      "title": "A management app for your business, from €1,500.",
+      "body": "For businesses that track orders, stock or payments in notebooks and Excel. You pick two of six modules: orders, stock, customers, payments, reports, users with roles. The price and the deadline are written into the specification before we start, and each extra module is quoted separately.",
+      "facts": [
+        "4–6 weeks to launch",
+        "2 modules of your choice",
+        "Free diagnostic call",
+        "30 days of bug fixing"
+      ],
+      "cta": "Request a call",
+      "details": "What's included →"
+    },
     "included": {
       "label": "Always included",
       "items": [
@@ -640,7 +654,7 @@
       "items": [
         {
           "question": "What does a project cost?",
-          "answer": "Most of our partnerships operate on a monthly retainer or sprint basis. Before writing code, we conduct a paid diagnostic (audit), resulting in a clear technical specification and roadmap."
+          "answer": "A management app with two modules starts at €1,500, at a fixed price, after a free call. Larger projects run on a monthly retainer or sprint basis: before writing code, we conduct a paid diagnostic (audit), resulting in a clear technical specification and roadmap."
         },
         {
           "question": "Do you take over someone else's project?",
