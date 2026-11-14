@@ -109,3 +109,141 @@ test('an editor with unsaved changes asks before leaving', async ({ page }) => {
   await expect.poll(() => question).toContain('modificări nesalvate')
   await expect(page).toHaveURL(/\/admin\/news\/nou$/)
 })
+
+// The topbar of an admin screen: the bar that holds the page's h1.
+const topbar = (page: Page) => page.locator('div:has(> div > h1)')
+
+// Instant, not the site's smooth scrolling, so the assertions run against the bottom of the form.
+async function scrollToBottom(page: Page) {
+  await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' }))
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(3000)
+}
+
+test('the project editor keeps Save in view at the bottom of the form', async ({ page }) => {
+  await page.goto('/admin/projects/nou')
+  // After hydration: the router scrolls to the top once the page has loaded.
+  await page.waitForLoadState('networkidle')
+  await scrollToBottom(page)
+  await expect(page.getByRole('button', { name: 'Salvează' })).toBeInViewport({ ratio: 1 })
+})
+
+test('a failed save brings its reasons into view and marks the fields', async ({ page }) => {
+  await page.goto('/admin/projects/nou')
+  await page.waitForLoadState('networkidle')
+  await scrollToBottom(page)
+  await page.keyboard.press('Control+s')
+
+  const alert = page.getByRole('alert').filter({ hasText: 'Nu s-a salvat' })
+  await expect(alert).toBeFocused()
+  await expect(alert).toBeInViewport()
+  await expect(alert).toContainText('Situație (RO) este obligatorie.')
+  await expect(alert).toContainText('Slug RO este obligatoriu.')
+  await expect(alert).toContainText('Slug EN este obligatoriu.')
+
+  const slugRo = page.getByLabel('Slug RO')
+  await expect(slugRo).toHaveAttribute('aria-invalid', 'true')
+  // The mark goes as soon as the field is fixed.
+  await slugRo.fill('e2e-proiect')
+  await expect(slugRo).not.toHaveAttribute('aria-invalid')
+})
+
+test('the project editor says when edits are unsaved, and when they are saved', async ({ page }) => {
+  const project = { id: '00000000-0000-4000-8000-0000000000p1', slug_ro: 'e2e-proiect', slug_en: 'e2e-project' }
+  let saveStatus = 500
+  await page.route(`${supabaseUrl}/rest/v1/rpc/save_project`, (route) =>
+    route.fulfill(
+      saveStatus === 200
+        ? { status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(project) }
+        : { status: 500, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ message: 'Eroare e2e' }) },
+    ),
+  )
+  // The saved project reopens under its slug; its row is read in the browser.
+  await page.route(`${supabaseUrl}/rest/v1/projects?*slug_ro=eq.e2e-proiect*`, (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      headers: { 'access-control-allow-origin': '*' },
+      body: JSON.stringify([
+        {
+          ...project,
+          published_at: null,
+          title_ro: 'Titlu e2e',
+          card_title_ro: 'Card e2e',
+          summary_ro: 'Descriere e2e',
+          lead_ro: 'Lead e2e',
+          context_body_ro: 'Situație e2e',
+          project_facts: [],
+          project_stack: [],
+          project_stats: [],
+          project_images: [],
+        },
+      ]),
+    }),
+  )
+  await page.route('**/api/admin/revalidate', (route) =>
+    route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ peers: { failed: 0 } }) }),
+  )
+
+  await page.goto('/admin/projects/nou')
+  await page.waitForLoadState('networkidle')
+  await expect(topbar(page)).not.toContainText('Modificări nesalvate')
+
+  await page.getByLabel('Slug RO').fill(project.slug_ro)
+  await page.getByLabel('Slug EN').fill(project.slug_en)
+  await page.getByRole('textbox', { name: /^Titlu \(H1 studiu de caz\).* RO$/ }).fill('Titlu e2e')
+  await page.getByRole('textbox', { name: /^Titlu card \(homepage\).* RO$/ }).fill('Card e2e')
+  await page.getByRole('textbox', { name: /^Descriere card.* RO$/ }).fill('Descriere e2e')
+  await page.getByRole('textbox', { name: /^Lead \(sub H1\).* RO$/ }).fill('Lead e2e')
+  await page.getByRole('textbox', { name: /^Text \(paragrafe.* RO$/ }).first().fill('Situație e2e')
+  await expect(topbar(page)).toContainText('Modificări nesalvate')
+
+  // A server error is spelled out under the topbar, not only in the status label.
+  await page.getByRole('button', { name: 'Salvează' }).click()
+  const alert = page.getByRole('alert').filter({ hasText: 'Nu s-a salvat' })
+  await expect(alert).toContainText('Eroare e2e')
+  await expect(alert).toBeFocused()
+  await expect(topbar(page)).toContainText('Modificări nesalvate')
+
+  saveStatus = 200
+  await page.getByRole('button', { name: 'Salvează' }).click()
+  await expect(page).toHaveURL(/\/admin\/projects\/e2e-proiect$/)
+  await expect(page.getByRole('heading', { level: 1, name: 'Card e2e' })).toBeVisible()
+  await expect(topbar(page)).toContainText('Salvat')
+  await expect(topbar(page)).not.toContainText('Modificări nesalvate')
+})
+
+test('the news topbar shows the stored state, not the unsaved checkbox', async ({ page }) => {
+  await page.goto('/admin/news/nou')
+  await page.waitForLoadState('networkidle')
+  await expect(topbar(page)).toContainText('Draft')
+
+  await page.getByRole('checkbox', { name: 'Draft' }).check()
+  await expect(page.getByRole('checkbox', { name: 'Publicat' })).toBeChecked()
+  await expect(topbar(page)).toContainText('Draft')
+  await expect(topbar(page)).not.toContainText('Publicat')
+  await expect(topbar(page)).toContainText('Modificări nesalvate')
+})
+
+test('a failed news save lists its issues under the topbar', async ({ page }) => {
+  await page.goto('/admin/news/nou')
+  await page.waitForLoadState('networkidle')
+  await page.getByRole('button', { name: 'Salvează' }).click()
+
+  const alert = page.getByRole('alert').filter({ hasText: 'Nu s-a salvat' })
+  await expect(alert).toBeFocused()
+  await expect(alert.getByRole('listitem')).toContainText(['Titlul (RO) este obligatoriu.', 'Link-ul sursei este obligatoriu.'])
+  await expect(page.getByLabel('Link către original')).toHaveAttribute('aria-invalid', 'true')
+})
+
+test('each admin tab is titled after its screen', async ({ page, context }) => {
+  await page.goto('/admin/projects')
+  await expect(page).toHaveTitle('Proiecte · CODEPEDIA')
+  await page.goto('/admin/projects/nou')
+  await expect(page).toHaveTitle('Proiect nou · CODEPEDIA')
+  await page.goto('/admin/news/nou')
+  await expect(page).toHaveTitle('Noutate nouă · CODEPEDIA')
+
+  await context.clearCookies()
+  await page.goto('/admin/login')
+  await expect(page).toHaveTitle('Autentificare · CODEPEDIA')
+})
