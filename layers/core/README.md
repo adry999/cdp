@@ -46,7 +46,7 @@ Theme tokens and theme utilities are not here: they live in the root `app/assets
 
 ## Admin primitives — `app/components/admin/`
 
-`AdminField`, `AdminFieldPair`, `AdminImageUpload`, `AdminTopbar`.
+`AdminField`, `AdminFieldPair`, `AdminImageUpload`, `AdminSaveIssues` (why the last save failed, under an editor's topbar), `AdminTopbar` (sticky; also sets the tab title).
 
 ## Theme utilities (root `app/assets/css/main.css`)
 
