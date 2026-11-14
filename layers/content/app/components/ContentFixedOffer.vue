@@ -49,7 +49,7 @@ const detailsHref = computed(() => `${localePath('preturi')}#oferta`)
       <NuxtLink
         v-if="detailsLink"
         :to="detailsHref"
-        class="eyebrow text-ink underline decoration-signal underline-offset-4 hover:text-signal-text"
+        class="tap-y eyebrow text-ink underline decoration-signal underline-offset-4 hover:text-signal-text"
       >
         {{ t('pricing.offer.details') }}
       </NuxtLink>

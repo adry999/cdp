@@ -48,10 +48,10 @@ useBreadcrumbLd(() => t('nav.contact'))
           <div class="mt-9 grid max-w-[560px] grid-fit-180 gap-4">
             <FactCard :label="t('home.contact.facts.responseTime')" :value="settings.responseTime" />
             <FactCard :label="t('home.contact.facts.phone')">
-              <a :href="`tel:${settings.phone}`" class="text-ink no-underline hover:text-signal-text">{{ settings.phoneDisplay }}</a>
+              <a :href="`tel:${settings.phone}`" class="tap-y text-ink no-underline hover:text-signal-text">{{ settings.phoneDisplay }}</a>
             </FactCard>
             <FactCard :label="t('home.contact.facts.email')" class="col-span-full">
-              <a :href="`mailto:${settings.contactEmail}`" class="text-ink no-underline hover:text-signal-text">{{ settings.contactEmail }}</a>
+              <a :href="`mailto:${settings.contactEmail}`" class="tap-y text-ink no-underline hover:text-signal-text">{{ settings.contactEmail }}</a>
             </FactCard>
           </div>
         </div>
