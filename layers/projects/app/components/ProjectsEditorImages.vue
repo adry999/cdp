@@ -107,7 +107,7 @@ function moveGalleryImage(index: number, to: number) {
                 />
               </div>
               <div class="mt-6 flex flex-col items-end gap-2">
-                <div class="flex gap-1">
+                <div class="flex gap-2">
                   <AdminArrowButton
                     direction="left"
                     :disabled="i === 0"

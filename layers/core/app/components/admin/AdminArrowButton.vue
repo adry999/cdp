@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// A 24px bordered arrow for moving an item in an admin list (projects, gallery images). The
+// A bordered arrow, 44px on phones and 32px from the nav breakpoint, for moving an item in an admin list (projects, gallery images). The
 // caller names it with `aria-label` ("Mută X mai sus"): the arrow itself says nothing.
 defineProps<{ direction: 'up' | 'down' | 'left' | 'right' }>()
 
@@ -14,7 +14,7 @@ const PATHS = {
 <template>
   <button
     type="button"
-    class="flex size-6 flex-none cursor-pointer items-center justify-center rounded border border-rule bg-transparent p-0 text-muted hover:border-ink hover:text-ink disabled:cursor-not-allowed disabled:opacity-30"
+    class="flex size-11 flex-none cursor-pointer items-center justify-center rounded border border-muted nav:size-8 bg-transparent p-0 text-muted hover:border-ink hover:text-ink disabled:cursor-not-allowed disabled:opacity-30"
   >
     <svg viewBox="0 0 10 10" class="size-2.5" aria-hidden="true">
       <path :d="PATHS[direction]" fill="none" stroke="currentColor" stroke-width="1.5" />

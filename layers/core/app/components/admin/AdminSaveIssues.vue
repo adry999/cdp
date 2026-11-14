@@ -7,6 +7,10 @@ defineProps<{ issues: readonly string[]; message?: string | null }>()
 const el = ref<HTMLElement | null>(null)
 
 function reveal() {
+  // The sticky topbar grows when its actions wrap (phones, long titles, "Modificări nesalvate"),
+  // so the alert's offset is read from the bar itself rather than fixed in CSS.
+  const topbar = document.querySelector<HTMLElement>('[data-admin-topbar]')
+  if (el.value) el.value.style.scrollMarginTop = `${(topbar?.offsetHeight ?? 64) + 16}px`
   el.value?.scrollIntoView({ block: 'start' })
   el.value?.focus({ preventScroll: true })
 }
@@ -20,7 +24,7 @@ defineExpose({ reveal })
     ref="el"
     role="alert"
     tabindex="-1"
-    class="scroll-mt-24 rounded border border-signal-text px-4 py-3 text-[14px] outline-none"
+    class="rounded border border-signal-text px-4 py-3 text-[14px] outline-none"
   >
     <div class="eyebrow text-signal-text">Nu s-a salvat</div>
     <ul v-if="issues.length" class="mt-2 list-disc pl-5">

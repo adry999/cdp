@@ -108,7 +108,7 @@ useSaveShortcut(save, { enabled: () => !saving.value && !uploading.value })
             <li v-for="item in PROJECT_EDITOR_SECTIONS" :key="item.id">
               <a
                 :href="`#${item.id}`"
-                class="-ml-px block border-l border-transparent py-1 pl-3 text-[13px] text-muted no-underline hover:border-ink hover:text-ink hover:no-underline"
+                class="-ml-px flex min-h-8 items-center border-l border-transparent py-1 pl-3 text-[13px] text-muted no-underline hover:border-ink hover:text-ink hover:no-underline"
               >
                 {{ item.title }}
               </a>
