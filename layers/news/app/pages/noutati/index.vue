@@ -40,7 +40,12 @@ useSeoMeta({ robots: () => (items.value.length ? undefined : 'noindex, follow') 
       <div v-if="items.length" class="grid grid-cols-[repeat(auto-fill,minmax(min(100%,280px),1fr))] gap-[clamp(16px,2vw,24px)]">
         <NewsCard v-for="item in items" :key="item.slug" :item="item" />
       </div>
-      <p v-else class="m-0 text-base text-muted">{{ t('news.empty') }}</p>
+      <template v-else>
+        <p class="m-0 text-base text-muted">{{ t('news.empty') }}</p>
+        <p class="m-0 mt-5">
+          <TextLink :to="localePath('blog')">{{ t('news.emptyBlogLink') }}</TextLink>
+        </p>
+      </template>
     </SiteSection>
   </div>
 </template>

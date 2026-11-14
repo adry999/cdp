@@ -76,5 +76,6 @@ useCollectionLd({
       </template>
       <p v-else class="m-0 text-base text-muted">{{ t('projects.empty') }}</p>
     </SiteSection>
+    <ClosingCta :title="t('projects.cta.title')" :body="t('projects.cta.body')" :button="t('projects.cta.button')" />
   </div>
 </template>

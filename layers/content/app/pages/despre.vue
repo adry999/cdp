@@ -44,5 +44,7 @@ useBreadcrumbLd(() => t('nav.about'))
         </div>
       </div>
     </section>
+
+    <ClosingCta :title="t('about.cta.title')" :body="t('about.cta.body')" :button="t('about.cta.button')" />
   </div>
 </template>

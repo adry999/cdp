@@ -30,6 +30,16 @@ export function stageForServiceTag(tag: ServiceTagId): StageId {
   return SERVICE_STAGES[tag]
 }
 
+/**
+ * The service a stage stands for, when exactly one of the `offered` services has that stage
+ * ("AI automation" → `ai-automation`); undefined when several share it (an express page can be a
+ * website, WordPress or Shopify) or none does.
+ */
+export function serviceTagForStage(stage: StageId, offered: readonly ServiceTagId[]): ServiceTagId | undefined {
+  const matches = offered.filter((tag) => SERVICE_STAGES[tag] === stage)
+  return matches.length === 1 ? matches[0] : undefined
+}
+
 /** The service for a route slug or a `?serviciu=` / `?service=` value (RO or EN); undefined when unknown. */
 export function serviceTagForParam(value: unknown): ServiceTagId | undefined {
   const raw = Array.isArray(value) ? value[0] : value

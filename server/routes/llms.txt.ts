@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
     '',
     `## ${locale === 'ro' ? 'Pagini cheie' : 'Key pages'}`,
     `- [${locale === 'ro' ? 'Servicii' : 'Services'}](${origin}${SERVICES_INDEX_PAGE[locale]})`,
-    `- [${locale === 'ro' ? 'Proiecte' : 'Work'}](${origin}${PROJECTS_INDEX_PAGE[locale]})`,
+    `- [${locale === 'ro' ? 'Proiecte' : 'Projects'}](${origin}${PROJECTS_INDEX_PAGE[locale]})`,
     `- [Blog](${origin}${locale === 'ro' ? '/blog' : '/en/blog'})`,
     `- [${locale === 'ro' ? 'Noutăți' : 'News'}](${origin}${NEWS_INDEX_PAGE[locale]})`,
     `- [${locale === 'ro' ? 'Prețuri' : 'Pricing'}](${origin}${locale === 'ro' ? '/preturi' : '/en/pricing'})`,

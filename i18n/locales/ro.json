@@ -12,7 +12,7 @@
     "chooseService": "Alege serviciul",
     "servicesToggle": "Deschide meniul Servicii",
     "services": "Servicii",
-    "work": "Portofoliu",
+    "work": "Proiecte",
     "blog": "Blog",
     "news": "Noutăți",
     "pricing": "Prețuri",
@@ -195,7 +195,8 @@
       "sectionLabel": "Stack",
       "title": "Tehnologiile cu care livrăm.",
       "subtitle": "TypeScript pe frontend și backend, Postgres pentru date, deploy pe Vercel. Unelte folosite deja în producție, nu o listă de dorințe.",
-      "integrationNote": "Fiecare proiect are particularitățile sale. Cel mai bine este să ne auzim la un apel sau pe email legat de nevoile tale specifice, pentru a descoperi cum te putem ajuta la maximum.",
+      "integrationNote": "Fiecare proiect are particularitățile sale. Cel mai bine este să {link} legat de nevoile tale specifice, pentru a descoperi cum te putem ajuta la maximum.",
+      "integrationNoteLink": "ne auzim la un apel sau pe email",
       "groups": {
         "frontend": {
           "name": "Frontend & UI",
@@ -246,7 +247,7 @@
       "sectionLabel": "Proces"
     },
     "work": {
-      "sectionLabel": "Portofoliu",
+      "sectionLabel": "Proiecte",
       "title": "Proiecte cu care ne mândrim.",
       "intro": "O selecție a celor mai recente proiecte și studii de caz care ilustrează abordarea noastră în rezolvarea provocărilor tehnice și generarea de valoare pentru business.",
       "caseStudyLink": "Vezi studiul de caz →",
@@ -504,7 +505,12 @@
       "granturi": "Granturi"
     },
     "listLabel": "Studii de caz",
-    "empty": "Momentan nu avem studii de caz publicate."
+    "empty": "Momentan nu avem studii de caz publicate.",
+    "cta": {
+      "title": "Ai un proiect asemănător?",
+      "body": "Spune-ne ce vrei să construiești și unde ai ajuns cu el. Ne uităm împreună și îți spunem deschis dacă și cum te putem ajuta.",
+      "button": "Spune-ne despre proiect"
+    }
   },
   "services": {
     "features": {
@@ -540,6 +546,7 @@
       "intro": "Articole și știri din alte surse, alese de echipa CODEPEDIA, cu un rezumat și link la original."
     },
     "empty": "Nu sunt încă noutăți publicate.",
+    "emptyBlogLink": "Citește blogul →",
     "latest": "Cele mai noi",
     "readAtSource": "Citește la sursă ↗",
     "openOriginal": "Citește articolul original ↗",
@@ -693,6 +700,11 @@
         "label": "Limbi",
         "value": "Română · Engleză · Rusă"
       }
+    },
+    "cta": {
+      "title": "Vorbește direct cu oamenii care construiesc.",
+      "body": "Scrie-ne câteva rânduri despre ce ai nevoie. Discuți soluția tehnică direct cu inginerul care o va construi, fără intermediari.",
+      "button": "Discută cu un inginer"
     }
   },
   "contactModal": {
