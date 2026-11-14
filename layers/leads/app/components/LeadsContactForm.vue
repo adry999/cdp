@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<{ variant?: 'page' | 'modal'; service?: S
   service: undefined,
 })
 const isModal = computed(() => props.variant === 'modal')
+const emit = defineEmits<{ sent: [] }>()
 
 const { t, locale } = useI18n()
 const { grantsEnabled } = useRuntimeConfig().public
@@ -78,6 +79,7 @@ async function handleSubmit() {
   const { service, ...fields } = form
   if (await submit({ ...fields, service, stage: service ? stageForServiceTag(service) : undefined, lang: locale.value, page: route.fullPath, utm: captureUtm() }, turnstileToken.value)) {
     clearDraft()
+    emit('sent')
     return
   }
   // A rejected submit leaves focus on the button; moving it to the first invalid field puts
@@ -91,12 +93,7 @@ async function handleSubmit() {
 
 const detailsOpen = ref(hasContactDetails(draft.value))
 
-const successHeading = ref<HTMLElement | null>(null)
-
 watch(status, (value) => {
-  if (value === 'success') {
-    nextTick(() => successHeading.value?.focus())
-  }
   // The server spent the token on the failed attempt; a retry needs a new one.
   if (value === 'error') turnstile.value?.reset()
 })
@@ -273,8 +270,6 @@ watch(status, (value) => {
     </div>
   </form>
   <slot v-else name="success">
-    <div role="status" class="mt-[clamp(28px,3vw,40px)] max-w-[560px]">
-      <p ref="successHeading" tabindex="-1" class="text-base outline-none">{{ t('home.contact.form.success') }}</p>
-    </div>
+    <LeadsContactSuccess class="mt-[clamp(28px,3vw,40px)] max-w-[560px]" />
   </slot>
 </template>

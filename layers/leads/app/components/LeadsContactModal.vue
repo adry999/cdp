@@ -3,16 +3,16 @@ import { useContactModal } from '#layers/leads/state/useContactModal'
 
 const { isOpen, service, returnFocusTo, close } = useContactModal()
 const { t } = useI18n()
-const i18nList = useI18nList()
-const steps = computed(() => i18nList('contactPage.steps'))
 const route = useRoute()
 
 const panel = ref<HTMLElement | null>(null)
 
-// The confirmation takes focus so a screen reader announces it.
-function focusStatus(element: unknown) {
-  if (element instanceof HTMLElement) nextTick(() => element.focus())
-}
+// After a successful send the confirmation replaces the form; the lead paragraph (which invites
+// a description) goes with it. Each opening starts on the form again.
+const sent = ref(false)
+watch(isOpen, (open) => {
+  if (open) sent.value = false
+})
 
 function focusFirstField() {
   panel.value?.querySelector<HTMLElement>('#lead-name')?.focus()
@@ -61,24 +61,14 @@ watch(() => route.fullPath, () => {
               <h2 id="contact-modal-title" class="m-0 text-[clamp(24px,3vw,32px)] font-semibold leading-[1.1] tracking-[-0.025em] text-pretty">
                 {{ t('home.contact.title') }}
               </h2>
-              <p class="m-0 text-base text-muted text-pretty">{{ t('home.contact.lead') }}</p>
+              <p v-if="!sent" class="m-0 text-base text-muted text-pretty">{{ t('home.contact.lead') }}</p>
             </div>
 
-            <LeadsContactForm variant="modal" :service="service">
+            <LeadsContactForm variant="modal" :service="service" @sent="sent = true">
               <template #success>
-                <div role="status" class="flex flex-col gap-5 border-t border-hairline pt-6">
-                  <div class="flex items-center gap-3">
-                    <span aria-hidden="true" class="flex h-9 w-9 items-center justify-center rounded-full bg-signal text-lg text-ink">✓</span>
-                    <p :ref="focusStatus" class="m-0 text-lg font-semibold outline-none" tabindex="-1">{{ t('home.contact.form.success') }}</p>
-                  </div>
-                  <ol class="m-0 flex list-none flex-col border-b border-hairline p-0">
-                    <li v-for="(step, index) in steps" :key="step" class="flex gap-4 border-t border-hairline py-3 text-[15px]">
-                      <span class="font-mono text-xs text-signal-text">{{ String(index + 1).padStart(2, '0') }}</span>
-                      {{ step }}
-                    </li>
-                  </ol>
+                <LeadsContactSuccess>
                   <AppButton variant="outline" class="w-fit" @click="close">{{ t('contactModal.done') }}</AppButton>
-                </div>
+                </LeadsContactSuccess>
               </template>
             </LeadsContactForm>
           </div>
