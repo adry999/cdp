@@ -18,7 +18,7 @@ const rowClass =
   'flex min-h-11 items-baseline gap-4 text-[32px] font-semibold leading-[1.1] tracking-[-0.02em] text-ink no-underline hover:text-ink'
 
 const ctaClass =
-  'sticky bottom-0 mt-auto flex min-h-14 w-full cursor-pointer border-0 items-center justify-between rounded bg-signal px-5 eyebrow text-[13px] font-semibold text-ink no-underline hover:text-ink hover:opacity-90'
+  'flex min-h-14 w-full cursor-pointer border-0 items-center justify-between rounded bg-signal px-5 eyebrow text-[13px] font-semibold text-ink no-underline hover:text-ink hover:opacity-90'
 
 function number(index: number): string {
   return String(index).padStart(2, '0')
@@ -28,7 +28,7 @@ function number(index: number): string {
 <template>
   <div
     :id="id"
-    class="fixed inset-0 -z-10 flex flex-col gap-7 overflow-y-auto bg-paper px-gutter pb-7 pt-[88px]"
+    class="fixed inset-0 -z-10 flex flex-col gap-7 overflow-y-auto bg-paper px-gutter pt-[88px]"
   >
     <nav :aria-label="t('nav.main')" class="flex flex-col">
       <div class="flex flex-col gap-4 border-b border-hairline py-4">
@@ -79,17 +79,21 @@ function number(index: number): string {
       <CoreThemeToggle variant="row" />
     </div>
 
-    <a v-if="ctaKind === 'anchor'" :href="ctaTo" :class="ctaClass" @click="emit('close')">
-      {{ t('nav.letsTalk') }}
-      <span aria-hidden="true">→</span>
-    </a>
-    <NuxtLink v-else-if="ctaKind === 'link'" :to="ctaTo" :class="ctaClass" @click="emit('close')">
-      {{ t('nav.letsTalk') }}
-      <span aria-hidden="true">→</span>
-    </NuxtLink>
-    <button v-else type="button" :class="ctaClass" aria-haspopup="dialog" @click="emit('contact')">
-      {{ t('nav.letsTalk') }}
-      <span aria-hidden="true">→</span>
-    </button>
+    <!-- Sticky on a solid band that includes the panel's bottom padding: on short screens the rows
+         scroll behind the band and the last one ends above the CTA, never under or below it. -->
+    <div class="sticky bottom-0 mt-auto bg-paper pb-7 pt-3">
+      <a v-if="ctaKind === 'anchor'" :href="ctaTo" :class="ctaClass" @click="emit('close')">
+        {{ t('nav.letsTalk') }}
+        <span aria-hidden="true">→</span>
+      </a>
+      <NuxtLink v-else-if="ctaKind === 'link'" :to="ctaTo" :class="ctaClass" @click="emit('close')">
+        {{ t('nav.letsTalk') }}
+        <span aria-hidden="true">→</span>
+      </NuxtLink>
+      <button v-else type="button" :class="ctaClass" aria-haspopup="dialog" @click="emit('contact')">
+        {{ t('nav.letsTalk') }}
+        <span aria-hidden="true">→</span>
+      </button>
+    </div>
   </div>
 </template>
