@@ -17,8 +17,10 @@ withDefaults(
 const ro = defineModel<string>('ro', { default: '' })
 const en = defineModel<string>('en', { default: '' })
 
-const fieldClass = 'w-full rounded border px-3 py-2.5 text-[15px] outline-none'
-const IDLE_BORDER = 'border-hairline focus:border-ink'
+// Same border and focus treatment as AdminField.
+const fieldClass =
+  'w-full rounded border px-3 py-2.5 text-[15px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink'
+const IDLE_BORDER = 'border-rule focus:border-ink'
 const INVALID_BORDER = 'border-signal-text'
 
 // aria-labelledby combines the shared group heading with each column's RO/EN label into

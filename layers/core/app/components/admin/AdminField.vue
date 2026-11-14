@@ -21,9 +21,11 @@ const props = withDefaults(
 const model = defineModel<string>({ default: '' })
 const fieldId = props.id ?? useId()
 
+// The border is on `rule`: `hairline` on paper barely shows where a field starts. A click turns
+// it ink; the keyboard also gets the ring every focusable element has.
 const fieldClass = computed(() => [
-  'mt-2 w-full rounded border px-3 py-2.5 text-[15px] outline-none',
-  props.invalid ? 'border-signal-text' : 'border-hairline focus:border-ink',
+  'mt-2 w-full rounded border px-3 py-2.5 text-[15px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink',
+  props.invalid ? 'border-signal-text' : 'border-rule focus:border-ink',
 ])
 </script>
 
