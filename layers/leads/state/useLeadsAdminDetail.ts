@@ -13,6 +13,8 @@ export async function useLeadsAdminDetail(leadId: string) {
   const loadError = computed(() => (error.value ? toAppError(error.value) : null))
 
   const notesState = ref<AsyncStatus>('idle')
+  // When the notes last reached the database, so the line under them changes after each save.
+  const notesSavedAt = ref<Date | null>(null)
   // Kept apart so each failure shows next to the control that caused it: the status chips, or
   // the archive and delete actions.
   const statusError = ref<AppError | null>(null)
@@ -50,6 +52,7 @@ export async function useLeadsAdminDetail(leadId: string) {
     notesState.value = 'pending'
     try {
       await repository.updateNotes(leadId, notes)
+      notesSavedAt.value = new Date()
       notesState.value = 'success'
     } catch (caught) {
       // The notes line itself shows the failure, next to the field it concerns.
@@ -58,5 +61,5 @@ export async function useLeadsAdminDetail(leadId: string) {
     }
   }
 
-  return { lead, loadStatus, loadError, notesState, statusError, actionError, updateStatus, saveNotes, archive, unarchive, remove }
+  return { lead, loadStatus, loadError, notesState, notesSavedAt, statusError, actionError, updateStatus, saveNotes, archive, unarchive, remove }
 }
