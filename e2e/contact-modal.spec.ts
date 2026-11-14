@@ -29,7 +29,7 @@ test('header CTA on a service page sends a lead with that service and its stage'
   await dialog.locator('#lead-message').fill('Vrem un portal pentru clienți.')
   await dialog.locator('button[type="submit"]').click()
 
-  await expect(dialog.getByText('Trimis. Primești un răspuns într-o zi lucrătoare.')).toBeVisible()
+  await expect(dialog.getByText('Mulțumim! Primești un răspuns într-o zi lucrătoare.')).toBeVisible()
   expect(body).toMatchObject({
     name: 'Ana Popescu',
     email: 'ana@example.com',
@@ -147,7 +147,7 @@ test('the draft survives closing the dialog by scrim, Escape and ✕, and is cle
   await dialog.locator('#lead-email').fill('ana@example.com')
   await dialog.locator('button[type="submit"]').click()
   const confirmation = dialog.getByRole('status')
-  await expect(confirmation).toContainText('Trimis. Primești un răspuns într-o zi lucrătoare.')
+  await expect(confirmation).toContainText('Mulțumim! Primești un răspuns într-o zi lucrătoare.')
   await expect(confirmation.locator('li')).toHaveCount(3)
   await expect(dialog.getByText('O descriere scurtă a problemei este suficientă', { exact: false })).toHaveCount(0)
 

@@ -315,7 +315,7 @@
         "privacyNoticeLink": "privacy policy",
         "submit": "Find out if we can help",
         "submitting": "Sending…",
-        "success": "Sent. You'll get a reply within one working day.",
+        "success": "Thank you! You'll get a reply within one working day.",
         "error": "Something went wrong. Try again or email us directly.",
         "errorRateLimited": "Too many attempts. Try again in a few minutes.",
         "errorRequired": "Required field.",

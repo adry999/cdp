@@ -38,7 +38,7 @@ test('RO valid submission posts the payload and shows the success message', asyn
 
   // The same confirmation as the dialog: the sentence and the three next steps, without a Close button.
   const confirmation = page.locator('#contact').getByRole('status')
-  await expect(confirmation).toContainText('Trimis. Primești un răspuns într-o zi lucrătoare.')
+  await expect(confirmation).toContainText('Mulțumim! Primești un răspuns într-o zi lucrătoare.')
   await expect(confirmation.locator('li')).toHaveCount(3)
   await expect(confirmation.getByRole('button')).toHaveCount(0)
   expect(body).toMatchObject({
@@ -167,9 +167,9 @@ test('/contact shows the shared confirmation after a send', async ({ page }) => 
   await fillValid(page)
   await page.locator('form button[type="submit"]').click()
 
-  const confirmation = page.getByRole('status').filter({ hasText: 'Trimis.' })
+  const confirmation = page.getByRole('status').filter({ hasText: 'Mulțumim!' })
   await expect(confirmation).toBeVisible()
   await expect(confirmation.locator('li')).toHaveCount(3)
   await expect(confirmation.getByRole('button')).toHaveCount(0)
-  await expect(page.getByText('Trimis. Primești un răspuns într-o zi lucrătoare.')).toBeFocused()
+  await expect(page.getByText('Mulțumim! Primești un răspuns într-o zi lucrătoare.')).toBeFocused()
 })

@@ -261,7 +261,7 @@ watch(status, (value) => {
 
     <div v-if="status === 'error'" role="alert" class="flex flex-col gap-1 rounded border border-ink bg-hatch p-3 text-sm text-ink">
       <p class="m-0">{{ failureMessage }}</p>
-      <a :href="`mailto:${settings.contactEmail}`" class="tap-y-inline w-fit font-medium text-ink underline">{{ settings.contactEmail }}</a>
+      <a :href="`mailto:${settings.contactEmail}`" class="tap-y w-fit font-medium text-ink underline">{{ settings.contactEmail }}</a>
     </div>
 
     <div class="flex flex-col gap-4" :class="isModal && 'sm:flex-row sm:flex-wrap sm:items-center sm:justify-between'">
