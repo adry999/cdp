@@ -23,6 +23,15 @@ function internalTarget(url: string): string {
   return `${localePath(path || '/')}${hash ? `#${hash}` : ''}`
 }
 
+// A link to the homepage contact section opens the contact dialog in place, like the page's other
+// contact buttons, with the project's service; the href stays for a visit without JavaScript.
+const contact = useContactTrigger()
+const isContactAnchor = (url: string) => /^\/?#contact$/.test(url)
+
+function openContact(event: MouseEvent, url: string) {
+  if (isContactAnchor(url)) contact.open(event, { service: props.project.serviceTag ?? undefined })
+}
+
 const linkClass =
   'flex min-h-11 flex-col justify-center gap-0.5 rounded border border-ink px-4 py-[10px] text-ink no-underline hover:bg-ink hover:text-paper hover:no-underline'
 </script>
@@ -51,7 +60,13 @@ const linkClass =
             <span class="sr-only"> {{ t('a11y.newTab') }}</span>
             <span v-if="link.note" class="text-[13px] opacity-70">{{ link.note }}</span>
           </a>
-          <NuxtLink v-else :to="internalTarget(link.url)" :class="linkClass">
+          <NuxtLink
+            v-else
+            :to="internalTarget(link.url)"
+            :class="linkClass"
+            :aria-haspopup="isContactAnchor(link.url) ? 'dialog' : undefined"
+            @click.capture="openContact($event, link.url)"
+          >
             <span class="eyebrow">{{ t(`caseStudy.links.${link.kind}`) }}</span>
             <span v-if="link.note" class="text-[13px] opacity-70">{{ link.note }}</span>
           </NuxtLink>
