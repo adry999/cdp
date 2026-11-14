@@ -142,15 +142,15 @@ function startAt(id: StageId) {
           </div>
 
           <div class="mt-6 flex flex-col gap-4">
-            <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
+            <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 motion-reduce:transition-none motion-reduce:hover:translate-x-0 cursor-default">
               <div class="eyebrow mb-2 text-muted transition-colors duration-500 group-hover:text-signal-text">{{ t('home.services.whereYouAreLabel') }}</div>
               <p class="m-0 max-w-[58ch] text-base text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whereYouAre }}</p>
             </div>
-            <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
+            <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 motion-reduce:transition-none motion-reduce:hover:translate-x-0 cursor-default">
               <div class="eyebrow mb-2 text-muted transition-colors duration-500 group-hover:text-signal-text">{{ t('home.services.whyUsLabel') }}</div>
               <p class="m-0 max-w-[58ch] text-base text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whyUs }}</p>
             </div>
-            <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 cursor-default">
+            <div class="group border-l-[3px] border-hairline pl-5 py-1 transition-all duration-500 hover:border-signal hover:translate-x-2 motion-reduce:transition-none motion-reduce:hover:translate-x-0 cursor-default">
               <div class="eyebrow mb-2 text-muted transition-colors duration-500 group-hover:text-signal-text">{{ t('home.services.whatYouGetLabel') }}</div>
               <p class="m-0 max-w-[58ch] text-base text-muted transition-colors duration-500 group-hover:text-ink">{{ stage.whatYouGet }}</p>
             </div>
