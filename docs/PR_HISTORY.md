@@ -167,3 +167,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#204** feat: aceeași ofertă cu preț fix (#203, în `dev`), spre `main`.
 - **#217** fix: calitatea imaginilor redimensionate crește de la 75 la 90 (`image.quality`). Imaginile proiectelor sunt capturi de interfață: la 75 textul mic avea halou, iar liniile subțiri dispăreau. Cost: circa 15 KB în plus la o imagine de 1280 px. Adresele `/_ipx/` se schimbă (`q_90`), deci prima afișare după deploy regenerează fiecare variantă. Spre `dev` pentru test.
 - **#218** fix: aceeași calitate 90 pentru imaginile redimensionate (#217, în `dev`), spre `main`.
+- **#220** fix: efectul de fundal din hero (punctele și lumina portocalie) stă în repaus în colțul din dreapta sus, nu în centru, unde acoperea titlul și textul la prima încărcare și pe ecranele tactile. Poziția de repaus e calculată de `backgroundRestPoint`, cu test. Spre `dev` pentru test.
