@@ -505,7 +505,12 @@
       "granturi": "Granturi"
     },
     "listLabel": "Studii de caz",
-    "empty": "Momentan nu avem studii de caz publicate."
+    "empty": "Momentan nu avem studii de caz publicate.",
+    "cta": {
+      "title": "Ai un proiect asemănător?",
+      "body": "Spune-ne ce vrei să construiești și unde ai ajuns cu el. Ne uităm împreună și îți spunem deschis dacă și cum te putem ajuta.",
+      "button": "Spune-ne despre proiect"
+    }
   },
   "services": {
     "features": {

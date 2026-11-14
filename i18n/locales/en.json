@@ -505,7 +505,12 @@
       "granturi": "Grants"
     },
     "listLabel": "Case studies",
-    "empty": "No published case studies yet."
+    "empty": "No published case studies yet.",
+    "cta": {
+      "title": "Have a project like these?",
+      "body": "Tell us what you want to build and where it stands today. We look at it together and tell you plainly whether and how we can help.",
+      "button": "Tell us about your project"
+    }
   },
   "services": {
     "features": {
