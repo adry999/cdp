@@ -53,6 +53,7 @@ const PLAN_IDS = ['maintenance', 'continuous'] as const
           <div class="mt-3 text-[26px] font-semibold tracking-[-0.02em]">
             {{ t(`pricing.afterLaunch.plans.${id}.price`) }}
           </div>
+          <div class="mt-1 eyebrow-sm text-muted">{{ t(`pricing.afterLaunch.plans.${id}.note`) }}</div>
           <p class="m-0 mt-2.5 text-[15px] text-muted">{{ t(`pricing.afterLaunch.plans.${id}.body`) }}</p>
         </div>
       </div>
