@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { buildAdminListRow } from '#layers/projects/test-support/buildAdminListRow'
-import { evaluateChecklist, filterCounts, filterProjects, neighborIndex, nextCopySlug } from './adminProjectList'
+import { chipOverflow, evaluateChecklist, filterCounts, filterProjects, neighborIndex, nextCopySlug } from './adminProjectList'
 
 const draft = (slug: string) => buildAdminListRow({ slug_ro: slug, published_at: null })
 const live = (slug: string) => buildAdminListRow({ slug_ro: slug, published_at: '2026-09-01T00:00:00Z' })
@@ -17,6 +17,25 @@ describe('filterProjects / filterCounts', () => {
   it('counts every filter', () => {
     expect(filterCounts(rows)).toEqual({ toate: 4, draft: 2, publicate: 2 })
     expect(filterCounts([])).toEqual({ toate: 0, draft: 0, publicate: 0 })
+  })
+})
+
+describe('chipOverflow', () => {
+  it('shows the first two chips and collapses the rest', () => {
+    expect(chipOverflow(['Vue', 'Nuxt', 'Supabase', 'Stripe', 'Resend'])).toEqual({
+      shown: ['Vue', 'Nuxt'],
+      hidden: ['Supabase', 'Stripe', 'Resend'],
+    })
+  })
+
+  it('keeps short lists whole', () => {
+    expect(chipOverflow(['Vue', 'Nuxt'])).toEqual({ shown: ['Vue', 'Nuxt'], hidden: [] })
+    expect(chipOverflow(['Vue'])).toEqual({ shown: ['Vue'], hidden: [] })
+    expect(chipOverflow([])).toEqual({ shown: [], hidden: [] })
+  })
+
+  it('takes another limit', () => {
+    expect(chipOverflow(['a', 'b', 'c'], 1)).toEqual({ shown: ['a'], hidden: ['b', 'c'] })
   })
 })
 
