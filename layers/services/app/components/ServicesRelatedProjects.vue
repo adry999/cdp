@@ -3,7 +3,7 @@ import type { Service } from '#layers/services/domain/service'
 import { mapProjectCard, usePublishedProjects } from '#layers/projects'
 import { projectsForService } from '#layers/services/domain/relatedProjects'
 
-const props = defineProps<{ service: Service }>()
+const props = defineProps<{ service: Service; number: string }>()
 const { t } = useI18n()
 const siteLocale = useSiteLocale()
 
@@ -16,7 +16,7 @@ const list = computed(() =>
 </script>
 
 <template>
-  <SiteSection v-if="list.length" number="03" :label="t('services.projects.label')">
+  <SiteSection v-if="list.length" :number="number" :label="t('services.projects.label')">
     <h2 class="sr-only">{{ t('services.projects.label') }}</h2>
     <div class="grid grid-fit-280 gap-4">
       <ProjectsCard v-for="project in list" :key="project.slug" :project="project" :show-tech="false" />

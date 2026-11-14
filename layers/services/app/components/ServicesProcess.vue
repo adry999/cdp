@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Service } from '#layers/services/domain/service'
 
-defineProps<{ service: Service }>()
+defineProps<{ service: Service; number: string }>()
 const { t, locale } = useI18n()
 </script>
 
 <template>
-  <SiteSection number="02" :label="t('home.process.sectionLabel')">
+  <SiteSection v-if="service.process.length" :number="number" :label="t('home.process.sectionLabel')">
     <h2 class="sr-only">{{ t('home.process.sectionLabel') }}</h2>
     <RowList>
       <RowListItem
