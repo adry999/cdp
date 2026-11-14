@@ -61,16 +61,16 @@
     "hero": {
       "sectionLabel": "Studio",
       "titlePhrases": [
-        "Landing page-uri",
-        "Site-uri de business",
-        "Site-uri de produs",
-        "Site-uri de marketing",
         "Aplicații web",
-        "API-uri custom",
-        "Integrări cu terți"
+        "Sisteme de gestiune",
+        "Site-uri de business",
+        "Magazine online",
+        "Automatizări cu AI",
+        "Integrări cu terți",
+        "Landing page-uri"
       ],
       "titleSuffix": "construite ca să‑ți aducă rezultate de durată.",
-      "lead": "Construim pentru fondatori și companii în creștere aplicații web rapide, robuste și scalabile — ducându-ți produsul de la concept la o lansare de impact, gata să convertească clienți și să scaleze fără datorie tehnică.",
+      "lead": "Construim aplicații web pentru afaceri care au crescut peste caiete și Excel: comenzi, stoc, plăți și rapoarte într-un singur loc. Lucrezi direct cu inginerii, iar prețul și termenul fiecărei etape le stabilim înainte să scriem cod.",
       "ctaPrimary": "Vezi dacă te putem ajuta",
       "ctaSecondary": "Cum lucrăm",
       "facts": {
@@ -597,10 +597,24 @@
     "stagesLabel": "Etape",
     "seo": {
       "title": "Prețuri pentru site-uri și aplicații web",
-      "description": "Cum lucrăm: o analiză tehnică la început, apoi abonament lunar sau sprinturi dedicate. Codul rămâne în conturile tale, fără costuri ascunse."
+      "description": "Aplicații de gestiune la preț fix, de la 1.500€, sau abonament lunar și sprinturi pentru proiecte mari. Codul rămâne în conturile tale, fără costuri ascunse."
     },
     "title": "Echipa ta tehnică, la abonament.",
     "intro": "Fiecare afacere are cerințe unice. În loc de estimări oarbe și bugete depășite, facem o analiză tehnică (diagnostic), apoi devenim echipa ta tehnică printr-un parteneriat pe termen lung.",
+    "offer": {
+      "label": "Ofertă",
+      "kicker": "Preț fix",
+      "title": "Aplicație de gestiune pentru afacerea ta, de la 1.500€.",
+      "body": "Pentru afaceri care țin comenzile, stocul sau plățile în caiete și Excel. Alegi două module din șase: comenzi, stoc, clienți, plăți, rapoarte, utilizatori cu roluri. Prețul și termenul sunt scrise în specificație înainte să începem, iar fiecare modul în plus se ofertează separat.",
+      "facts": [
+        "4–6 săptămâni până la lansare",
+        "2 module la alegere",
+        "Discuție de diagnostic gratuită",
+        "30 de zile de remedieri"
+      ],
+      "cta": "Cere o discuție",
+      "details": "Ce include →"
+    },
     "included": {
       "label": "Inclus mereu",
       "items": [
@@ -640,7 +654,7 @@
       "items": [
         {
           "question": "Cât costă un proiect?",
-          "answer": "Majoritatea colaborărilor noastre se desfășoară pe bază de abonament lunar sau sprinturi. Înainte de a scrie cod, realizăm un audit plătit (diagnostic) în urma căruia primești specificația tehnică și planul de dezvoltare."
+          "answer": "O aplicație de gestiune cu două module pornește de la 1.500€, la preț fix, după o discuție gratuită. Proiectele mai mari se desfășoară pe bază de abonament lunar sau sprinturi: înainte de a scrie cod, realizăm un audit plătit (diagnostic) în urma căruia primești specificația tehnică și planul de dezvoltare."
         },
         {
           "question": "Preluați proiecte începute de altcineva?",

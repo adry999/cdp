@@ -40,6 +40,10 @@ describe('projectsAdminRepository', () => {
       await expect(repository.save({})).rejects.toMatchObject({ code: 'unexpected' })
       fake.script('rpc.save_project', { error: { message: 'dup', code: '23505' } })
       await expect(repository.save({})).rejects.toMatchObject({ message: expect.stringContaining('Slug-ul există deja') })
+      for (const code of ['42501', 'PGRST301']) {
+        fake.script('rpc.save_project', { error: { message: 'Not authorised to edit projects', code } })
+        await expect(repository.save({})).rejects.toMatchObject({ message: expect.stringContaining('Sesiunea a expirat') })
+      }
     })
 
     it('reorder sends the slugs in one rpc and throws on error', async () => {
@@ -48,6 +52,18 @@ describe('projectsAdminRepository', () => {
       expect(fake.chainOf('rpc.reorder_projects')).toEqual([['rpc', [{ slugs: ['a', 'b'] }]]])
       fake.script('rpc.reorder_projects', { error: dbError })
       await expect(repository.reorder(['a'])).rejects.toMatchObject({ message: 'Ordinea nu s-a salvat.' })
+    })
+  })
+
+  describe('getBySlug', () => {
+    it('orders every child list by sort_order, since a save writes their array order back', async () => {
+      const { fake, repository } = setup()
+      fake.script('projects.select', { data: null })
+      await repository.getBySlug('x')
+      const orders = fake.chainOf('projects.select').filter(([method]) => method === 'order')
+      expect(orders.map(([, args]) => args)).toEqual(
+        ['project_facts', 'project_stack', 'project_stats', 'project_images'].map((table) => ['sort_order', { foreignTable: table }]),
+      )
     })
   })
 
