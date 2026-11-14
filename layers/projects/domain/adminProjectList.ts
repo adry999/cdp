@@ -89,7 +89,7 @@ export function evaluateChecklist(row: ChecklistInput, consentConfirmed: boolean
     {
       id: 'content',
       label: 'Text obligatoriu (RO)',
-      hint: 'Titlu, titlu card, descriere, lead și problema — fără ele baza de date refuză publicarea.',
+      hint: 'Titlu, titlu card, descriere card, lead și situație — fără ele baza de date refuză publicarea.',
       required: true,
       done:
         filled(row.title_ro) &&

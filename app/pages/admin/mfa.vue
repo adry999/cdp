@@ -1,5 +1,6 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'admin-auth', i18n: false })
+useHead({ title: 'Verificare în doi pași' })
 
 const supabase = useSupabaseClient()
 const code = ref('')
