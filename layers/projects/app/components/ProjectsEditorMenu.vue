@@ -19,7 +19,7 @@ const serviceId = useId()
           <select
             :id="serviceId"
             v-model="form.serviceTag"
-            class="mt-2 w-full border border-rule bg-paper px-3 py-2 focus:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+            class="mt-2 w-full border border-muted bg-paper px-3 py-2 focus:border-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
           >
             <option :value="null">—</option>
             <option v-for="tag in SERVICE_TAG_IDS" :key="tag" :value="tag">
@@ -30,7 +30,7 @@ const serviceId = useId()
         <fieldset class="m-0 min-w-0 border-0 p-0">
           <legend class="p-0 eyebrow text-muted">Apare în meniu la</legend>
           <div class="mt-2 flex flex-wrap gap-x-6 gap-y-2">
-            <label v-for="tag in SERVICE_TAG_IDS" :key="tag" class="flex items-center gap-2 text-sm">
+            <label v-for="tag in SERVICE_TAG_IDS" :key="tag" class="flex min-h-11 items-center gap-2 text-sm nav:min-h-8">
               <input v-model="form.navServices" type="checkbox" :value="tag" class="accent-signal">
               {{ SERVICE_TAG_LABELS_RO[tag] }}
             </label>

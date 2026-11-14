@@ -47,7 +47,7 @@ const notesLabel = computed(() => {
             </div>
             <div>
               <div class="eyebrow text-muted">Email</div>
-              <div class="mt-1 break-all text-[15px]"><a :href="`mailto:${encodeURIComponent(lead.email)}`">{{ lead.email }}</a></div>
+              <div class="mt-1 break-all text-[15px]"><a :href="`mailto:${encodeURIComponent(lead.email)}`" class="tap-y">{{ lead.email }}</a></div>
             </div>
             <div>
               <div class="eyebrow text-muted">Companie</div>

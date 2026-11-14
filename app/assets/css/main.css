@@ -132,12 +132,19 @@
 
 /* Borderless text button (admin "Sus", "Șterge", "+ Link"): padding brings the hit area to at least
    24px tall, and the matching negative margin keeps the text, and the layout, where they were. */
+/* Text-only action in the admin. The padding is the hit area (44px tall on phones, 32px from the nav
+   breakpoint, UX_LAWS Fitts); the negative block margin keeps the row height. The inline margin gives
+   back only 2px of the padding, so neighbours in a 12px gap keep 8px between their hit areas. */
 @utility tap-text {
   cursor: pointer;
   border: 0;
   background: transparent;
-  padding: 0.25rem 0.375rem;
-  margin: -0.25rem -0.375rem;
+  padding: 0.75rem 0.375rem;
+  margin: -0.75rem -0.125rem;
+  @media (min-width: 56.25rem) {
+    padding-block: 0.5rem;
+    margin-block: -0.5rem;
+  }
   &:disabled {
     cursor: default;
     opacity: 0.4;

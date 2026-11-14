@@ -65,7 +65,7 @@ function onDragStart(event: DragEvent) {
         :class="locked ? 'cursor-not-allowed' : 'cursor-grab'"
         @dragstart="onDragStart"
       >⠿</span>
-      <div class="flex flex-col gap-0.5">
+      <div class="flex flex-col gap-2">
         <AdminArrowButton direction="up" :disabled="!canMoveUp || busy || locked" :aria-label="`Mută ${project.card_title_ro} mai sus`" @click="$emit('moveUp')" />
         <AdminArrowButton direction="down" :disabled="!canMoveDown || busy || locked" :aria-label="`Mută ${project.card_title_ro} mai jos`" @click="$emit('moveDown')" />
       </div>
@@ -83,7 +83,7 @@ function onDragStart(event: DragEvent) {
         <NuxtLink
           :to="`/admin/projects/${project.slug_ro}`"
           :title="project.card_title_ro"
-          class="min-w-0 max-w-full truncate text-[15px] text-ink no-underline hover:text-signal-text hover:no-underline"
+          class="-my-2.5 min-w-0 max-w-full truncate py-2.5 text-[15px] nav:-my-1 nav:py-1 text-ink no-underline hover:text-signal-text hover:no-underline"
         >
           {{ project.card_title_ro }}
         </NuxtLink>
