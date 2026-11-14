@@ -6,8 +6,9 @@ const { t } = useI18n()
 const settings = useSiteSettings()
 const { isQualifierEnabled } = useQualifierAvailability()
 
-// The email is never rendered into the markup, not even as a mailto: href, so scrapers get nothing;
-// visitors go through the qualification modal, the fallback form or the public phone number.
+// The email is not rendered into the server markup, not even as a mailto: href, so scrapers get nothing;
+// visitors go through the qualification modal, the fallback form or the public phone number. Only the
+// form's failure message, shown in the browser after a send fails, names the address.
 const showForm = ref(false)
 
 // The button that revealed the form is removed, so focus would fall to <body>. The form is lazy: wait for its first field.

@@ -2,6 +2,7 @@
 import { SERVICE_TAG_IDS, type ServiceTagId } from '#layers/core/shared/types/service-tag'
 import { serviceTagForParam, stageForServiceTag } from '#layers/core/shared/utils/serviceStage'
 import { visibleServices } from '#layers/core/shared/utils/visibleServices'
+import { useSiteSettings } from '#layers/content'
 import { hasContactDetails } from '#layers/leads/domain/contactDraft'
 import { LEAD_BUDGET_KEYS, type ContactFieldErrors } from '#layers/leads/domain/lead'
 import { useContactDraft } from '#layers/leads/state/useContactDraft'
@@ -23,7 +24,8 @@ const { grantsEnabled } = useRuntimeConfig().public
 const serviceOptions = visibleServices(SERVICE_TAG_IDS, grantsEnabled)
 const route = useRoute()
 const localePath = useLocalePath()
-const { status, fieldErrors, submit } = useLeadSubmission()
+const settings = useSiteSettings()
+const { status, fieldErrors, error, submit } = useLeadSubmission()
 const turnstileToken = ref('')
 const turnstile = useTemplateRef<{ reset(): void }>('turnstile')
 
@@ -74,6 +76,11 @@ function toggleService(service: ServiceTagId | undefined) {
 }
 
 const FIELD_ORDER = ['name', 'email', 'message'] as const
+
+// A failed send names the address to write to instead; a rate limit gets its own message.
+const failureMessage = computed(() =>
+  error.value?.code === 'rate_limited' ? t('home.contact.form.errorRateLimited') : t('home.contact.form.error'),
+)
 
 async function handleSubmit() {
   const { service, ...fields } = form
@@ -245,9 +252,10 @@ watch(status, (value) => {
 
     <CoreTurnstile ref="turnstile" v-model="turnstileToken" action="contact" />
 
-    <p v-if="status === 'error'" role="alert" class="flex items-center gap-1.5 font-mono text-xs text-ink">
-      <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ t('home.contact.form.error') }}
-    </p>
+    <div v-if="status === 'error'" role="alert" class="flex flex-col gap-1 rounded border border-ink bg-hatch p-3 text-sm text-ink">
+      <p class="m-0">{{ failureMessage }}</p>
+      <a :href="`mailto:${settings.contactEmail}`" class="tap-y-inline w-fit font-medium text-ink underline">{{ settings.contactEmail }}</a>
+    </div>
 
     <div class="flex flex-col gap-4" :class="isModal && 'sm:flex-row sm:flex-wrap sm:items-center sm:justify-between'">
       <p class="m-0 text-xs text-muted" :class="isModal && 'max-w-[34ch]'">
