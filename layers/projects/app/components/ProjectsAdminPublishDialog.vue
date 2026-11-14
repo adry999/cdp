@@ -28,7 +28,8 @@ defineEmits<{ confirm: []; cancel: [] }>()
         <div class="min-w-0">
           <component :is="item.id === 'consent' ? 'label' : 'span'" :for="item.id === 'consent' ? 'check-consent' : undefined" class="text-[15px]">
             {{ item.label }}
-            <span class="eyebrow-sm" :class="item.done || !(item.required || item.recommended) ? 'text-muted' : 'text-signal-text'">
+            <!-- Orange only for what blocks publishing; a missing recommended item is ink, an optional one muted. -->
+            <span class="eyebrow-sm" :class="item.done ? 'text-muted' : item.required ? 'text-signal-text' : item.recommended ? 'text-ink' : 'text-muted'">
               {{ item.done ? 'gata' : item.required ? 'obligatoriu' : item.recommended ? 'recomandat' : 'opțional' }}
             </span>
           </component>
