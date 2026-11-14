@@ -2,7 +2,7 @@
 import { breadcrumbList, organizationRef } from '#layers/core/shared/utils/jsonLd'
 import { OG_PROJECT_SIZE, absoluteUrl } from '#layers/core/shared/utils/seo'
 import { fetchProject } from '#layers/projects/data/projectsRepository'
-import { caseStudySections, numberSections, shotAlt } from '#layers/projects/domain/caseStudySections'
+import { SECTION_IDS, caseStudySections, numberSections, shotAlt } from '#layers/projects/domain/caseStudySections'
 import { mapProject, projectHasEnglish } from '#layers/projects/domain/mapProject'
 import { softwareApplicationAbout } from '#layers/projects/domain/softwareApp'
 
@@ -133,6 +133,7 @@ useJsonLd(
     <ProjectsCaseStudySection
       v-if="sections.situation"
       :number="numbers.situation"
+      :section-id="SECTION_IDS.situation"
       :label="t('caseStudy.sections.situation.label')"
       :heading="t('caseStudy.sections.situation.heading')"
     >
@@ -149,7 +150,12 @@ useJsonLd(
       </div>
     </ProjectsCaseStudySection>
 
-    <ProjectsCaseStudySection v-if="sections.task" :number="numbers.task" :label="t('caseStudy.sections.task.label')">
+    <ProjectsCaseStudySection
+      v-if="sections.task"
+      :number="numbers.task"
+      :section-id="SECTION_IDS.task"
+      :label="t('caseStudy.sections.task.label')"
+    >
       <h2 v-if="star.goal" class="m-0 max-w-[28ch] heading-section text-pretty">{{ star.goal }}</h2>
       <template v-if="star.constraints.length">
         <div class="eyebrow text-muted" :class="star.goal ? 'mt-[clamp(24px,3vw,36px)]' : undefined">
@@ -171,6 +177,7 @@ useJsonLd(
     <ProjectsCaseStudySection
       v-if="sections.action"
       :number="numbers.action"
+      :section-id="SECTION_IDS.action"
       :label="t('caseStudy.sections.action.label')"
       :heading="t('caseStudy.sections.action.heading')"
     >
@@ -229,6 +236,7 @@ useJsonLd(
     <ProjectsCaseStudySection
       v-if="sections.midway"
       :number="numbers.midway"
+      :section-id="SECTION_IDS.midway"
       :label="t('caseStudy.sections.midway.label')"
       :heading="t('caseStudy.sections.midway.heading')"
     >
@@ -276,6 +284,7 @@ useJsonLd(
     <ProjectsCaseStudySection
       v-if="sections.result"
       :number="numbers.result"
+      :section-id="SECTION_IDS.result"
       :label="t('caseStudy.sections.result.label')"
       :heading="t('caseStudy.sections.result.heading')"
     >
