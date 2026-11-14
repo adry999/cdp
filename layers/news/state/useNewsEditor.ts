@@ -17,6 +17,11 @@ export async function useNewsEditor(idOrSlug: string) {
   const revalidatePublicCache = useRevalidatePublicCache()
   const isNew = idOrSlug === 'nou'
 
+  // The guard must be registered before the first await (see useUnsavedChangesGuard); the form
+  // gets the loaded item below.
+  const form = ref(toNewsForm(null))
+  const { markSaved } = useUnsavedChangesGuard(() => form.value)
+
   const { data: loaded, error: loadError } = await useAsyncData(`admin-news-${idOrSlug}`, async () => (isNew ? null : await repository.get(idOrSlug)))
   // A failed load is not a missing item: only a successful load with no row is a 404.
   if (loadError.value) {
@@ -25,15 +30,15 @@ export async function useNewsEditor(idOrSlug: string) {
   const original = loaded.value ?? null
   if (!isNew && !original) throw createError({ statusCode: 404, statusMessage: 'News item not found' })
 
+  form.value = toNewsForm(original)
+  markSaved()
+
   const itemId = ref<string | null>(original?.id ?? null)
-  const form = ref(toNewsForm(original))
   const saveStatus = ref<AsyncStatus>('idle')
   const saveError = ref<AppError | null>(null)
   const prefillStatus = ref<AsyncStatus>('idle')
   const prefillError = ref<AppError | null>(null)
   const deleteError = ref<AppError | null>(null)
-
-  const { markSaved } = useUnsavedChangesGuard(form.value)
 
   const issues = computed(() => validateNewsForm(form.value))
   const warnings = computed(() => issues.value.filter((issue) => issue.severity === 'warning'))
