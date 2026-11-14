@@ -278,8 +278,9 @@ export default defineNuxtConfig({
   image: {
     // Supabase stays until every image row points at R2.
     domains: [supabaseHost, mediaHost].filter((host): host is string => !!host),
-    // Keeps a UI screenshot from being encoded at a much higher default quality for no visible gain.
-    quality: 75,
+    // Project images are UI screenshots: at 75 the small text gets halos and thin grid lines disappear. 90 keeps
+    // them, for about 15 KB more on a 1280px image.
+    quality: 90,
     // The `sizes` attributes in the components pick slot widths whose 1x and 2x are in this set. The wNNN keys only carry a width.
     screens: {
       sm: 640,
