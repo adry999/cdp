@@ -59,7 +59,7 @@ const linkClass =
         <button
           v-if="shotCount && !hasWalkthrough"
           type="button"
-          class="flex min-h-11 cursor-pointer flex-col justify-center gap-0.5 rounded border border-ink bg-ink px-4 py-[10px] text-left font-[inherit] text-paper hover:border-signal hover:bg-signal hover:text-ink"
+          class="flex min-h-11 cursor-pointer flex-col justify-center gap-0.5 rounded border border-ink bg-ink px-4 py-[10px] text-left font-[inherit] text-paper hover:border-signal hover:bg-signal hover:text-on-signal"
           @click="emit('openGallery')"
         >
           <span class="eyebrow">{{ t('caseStudy.galleryButton', { count: shotCount }) }}</span>

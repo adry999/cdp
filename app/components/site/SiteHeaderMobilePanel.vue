@@ -18,7 +18,7 @@ const rowClass =
   'flex min-h-11 items-baseline gap-4 text-[32px] font-semibold leading-[1.1] tracking-[-0.02em] text-ink no-underline hover:text-ink'
 
 const ctaClass =
-  'sticky bottom-0 mt-auto flex min-h-14 w-full cursor-pointer border-0 items-center justify-between rounded bg-signal px-5 eyebrow text-[13px] font-semibold text-ink no-underline hover:text-ink hover:opacity-90'
+  'sticky bottom-0 mt-auto flex min-h-14 w-full cursor-pointer border-0 items-center justify-between rounded bg-signal px-5 eyebrow text-[13px] font-semibold text-on-signal no-underline hover:text-on-signal hover:opacity-90'
 
 function number(index: number): string {
   return String(index).padStart(2, '0')
