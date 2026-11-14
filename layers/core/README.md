@@ -46,11 +46,11 @@ Theme tokens and theme utilities are not here: they live in the root `app/assets
 
 ## Admin primitives — `app/components/admin/`
 
-`AdminField`, `AdminFieldPair`, `AdminImageUpload`, `AdminTopbar`.
+`AdminArrowButton` (24px bordered arrow for reordering), `AdminField`, `AdminFieldPair`, `AdminImageUpload`, `AdminSaveIssues` (why the last save failed, under an editor's topbar), `AdminTopbar` (sticky; also sets the tab title).
 
 ## Theme utilities (root `app/assets/css/main.css`)
 
-`media-placeholder`, `eyebrow`, `eyebrow-sm`, `heading-section`, `heading-display`, `heading-card`, `container-site`, `grid-fit-<px>`, `grid-fit-safe-<px>`.
+`media-placeholder`, `tap-y`, `tap-y-inline`, `tap-text` (borderless admin text button padded to 24px without moving), `eyebrow`, `eyebrow-sm`, `heading-section`, `heading-display`, `heading-card`, `container-site`, `grid-fit-<px>`, `grid-fit-safe-<px>`.
 
 ## Tests
 

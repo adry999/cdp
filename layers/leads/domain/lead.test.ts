@@ -9,6 +9,7 @@ import {
   isLeadStatus,
   leadBudgetLabel,
   leadServiceLabel,
+  leadServiceStage,
   leadStageLabel,
   leadStatusLabel,
   toLeadRecord,
@@ -186,5 +187,14 @@ describe('leadServiceLabel', () => {
     expect(leadServiceLabel('ai-automation')).toBe('Automatizare cu AI')
     expect(leadServiceLabel(null)).toBe('—')
     expect(leadServiceLabel('seo')).toBe('seo')
+  })
+})
+
+describe('leadServiceStage', () => {
+  it('joins the chosen service and stage, leaving out what is missing', () => {
+    expect(leadServiceStage('website', 'B')).toBe('Website · Concept')
+    expect(leadServiceStage(null, 'D')).toBe('AI')
+    expect(leadServiceStage('web-app', null)).toBe('Aplicație web')
+    expect(leadServiceStage(null, null)).toBe('')
   })
 })

@@ -7,7 +7,7 @@ const form = defineModel<ProjectForm>({ required: true })
 </script>
 
 <template>
-  <ProjectsEditorSection title="Rezultat și feedback (secțiunile 04–05)">
+  <ProjectsEditorSection section="rezultat">
     <div class="mt-4 flex flex-col gap-4">
       <AdminFieldPair v-model:ro="form.resultBody.ro" v-model:en="form.resultBody.en" label="Text rezultat (paragrafe separate de o linie goală)" textarea />
 

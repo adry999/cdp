@@ -58,36 +58,37 @@ export interface ValidationIssue {
 
 const MIN_YEAR = 1990
 
+// Each message names the field as the editor labels it.
 const REQUIRED_RO: [keyof ProjectPayloadInput, string][] = [
-  ['title', 'Titlu'],
-  ['cardTitle', 'Titlu card'],
-  ['summary', 'Descriere card'],
-  ['lead', 'Lead'],
-  ['contextBody', 'Problema'],
+  ['title', 'Titlu (RO) este obligatoriu.'],
+  ['cardTitle', 'Titlu card (RO) este obligatoriu.'],
+  ['summary', 'Descriere card (RO) este obligatorie.'],
+  ['lead', 'Lead (RO) este obligatoriu.'],
+  ['contextBody', 'Situație (RO) este obligatorie.'],
 ]
 
 // Returns every problem at once rather than the first, so the editor can mark all offending fields in one pass.
 export function validateProjectPayload(input: ProjectPayloadInput): ValidationIssue[] {
   const issues: ValidationIssue[] = []
 
-  for (const [key, label] of REQUIRED_RO) {
+  for (const [key, message] of REQUIRED_RO) {
     const value = input[key] as { ro: string } | undefined
     if (!value?.ro?.trim()) {
-      issues.push({ field: key, message: `${label} (RO) este obligatoriu.` })
+      issues.push({ field: key, message })
     }
   }
 
-  for (const [field, value] of [
-    ['slugRo', input.slugRo],
-    ['slugEn', input.slugEn],
+  for (const [field, label, value] of [
+    ['slugRo', 'Slug RO', input.slugRo],
+    ['slugEn', 'Slug EN', input.slugEn],
   ] as const) {
     const slug = value?.trim() ?? ''
     if (!slug) {
-      issues.push({ field, message: 'Slug-ul este obligatoriu.' })
+      issues.push({ field, message: `${label} este obligatoriu.` })
     } else if (!SLUG_RE.test(slug)) {
       issues.push({
         field,
-        message: 'Slug-ul poate conține doar litere mici, cifre și cratime.',
+        message: `${label} poate conține doar litere mici, cifre și cratime.`,
       })
     } else if (RESERVED_SLUGS.includes(slug)) {
       issues.push({ field, message: `„${slug}” este rezervat și nu poate fi slug de proiect.` })

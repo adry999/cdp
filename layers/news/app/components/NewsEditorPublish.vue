@@ -3,7 +3,12 @@ import { effectiveSlugRo, type NewsForm } from '#layers/news/domain/newsForm'
 import { slugify } from '#layers/news/domain/slug'
 
 const form = defineModel<NewsForm>({ required: true })
-defineProps<{ isNew: boolean; deleteError: string | null }>()
+defineProps<{
+  isNew: boolean
+  deleteError: string | null
+  /** Fields the last failed save rejected, by `NewsIssue.field`. */
+  invalidFields: ReadonlySet<string>
+}>()
 defineEmits<{ remove: [] }>()
 
 const confirmingRemove = ref(false)
@@ -18,8 +23,13 @@ function slugFromTitle() {
 <template>
   <NewsEditorSection title="Adresă și publicare">
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      <AdminField v-model="form.slugRo" label="Slug RO" :placeholder="slugPreview || 'din titlu'" />
-      <AdminField v-model="form.slugEn" label="Slug EN (gol = ca RO)" />
+      <AdminField
+        v-model="form.slugRo"
+        label="Slug RO"
+        :placeholder="slugPreview || 'din titlu'"
+        :invalid="invalidFields.has('slugRo')"
+      />
+      <AdminField v-model="form.slugEn" label="Slug EN (gol = ca RO)" :invalid="invalidFields.has('slugEn')" />
     </div>
     <button
       type="button"

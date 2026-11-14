@@ -18,14 +18,26 @@ function isActive(to: string) {
   return route.path.startsWith(to)
 }
 
-// Below the nav breakpoint the menu folds under a button; a new page closes it.
+// Below the nav breakpoint the menu folds under a button; a new page or Esc closes it. Esc hands
+// focus back to the button when it was inside the menu, so the keyboard isn't left on a hidden link.
 const menuOpen = ref(false)
+const menuButton = ref<HTMLButtonElement | null>(null)
+const menu = ref<HTMLElement | null>(null)
 watch(
   () => route.path,
   () => {
     menuOpen.value = false
   },
 )
+
+function closeOnEscape(event: KeyboardEvent) {
+  if (event.key !== 'Escape' || !menuOpen.value) return
+  const focusWasInMenu = !!menu.value?.contains(document.activeElement)
+  menuOpen.value = false
+  if (focusWasInMenu) menuButton.value?.focus()
+}
+onMounted(() => document.addEventListener('keydown', closeOnEscape))
+onBeforeUnmount(() => document.removeEventListener('keydown', closeOnEscape))
 
 async function logout() {
   await supabase.auth.signOut()
@@ -43,8 +55,9 @@ async function logout() {
         <img src="/brand/codepedia-mark-inverse.svg" alt="" width="32" height="20" class="hidden h-5 w-auto dark:block" >
       </NuxtLink>
       <button
+        ref="menuButton"
         type="button"
-        class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-muted hover:text-ink nav:hidden"
+        class="tap-text eyebrow text-muted hover:text-ink nav:hidden"
         aria-controls="admin-menu"
         :aria-expanded="menuOpen"
         @click="menuOpen = !menuOpen"
@@ -52,7 +65,7 @@ async function logout() {
         {{ menuOpen ? 'Închide' : 'Meniu' }}
       </button>
     </div>
-    <div id="admin-menu" class="flex-1 flex-col nav:flex" :class="menuOpen ? 'flex' : 'hidden'">
+    <div id="admin-menu" ref="menu" class="flex-1 flex-col nav:flex" :class="menuOpen ? 'flex' : 'hidden'">
       <nav class="flex flex-col py-3">
         <NuxtLink
           v-for="item in navItems"
@@ -79,7 +92,7 @@ async function logout() {
           {{ user?.email }}
         </NuxtLink>
         <div class="mt-3 flex items-center justify-between">
-          <button type="button" class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-muted hover:text-signal-text" @click="logout">
+          <button type="button" class="tap-text eyebrow text-muted hover:text-signal-text" @click="logout">
             Ieși
           </button>
           <CoreThemeToggle class="-mr-1.5" />

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatAdminDate } from './formatAdminDate'
+import { formatAdminDate, formatAdminTime } from './formatAdminDate'
 
 describe('formatAdminDate', () => {
   it('formats a date in Chisinau time', () => {
@@ -19,5 +19,16 @@ describe('formatAdminDate', () => {
 
   it('returns an empty string for an invalid date', () => {
     expect(formatAdminDate('nope')).toBe('')
+  })
+})
+
+describe('formatAdminTime', () => {
+  it('gives hours and minutes in Chisinau time', () => {
+    expect(formatAdminTime(new Date('2026-06-15T06:05:00Z'))).toBe('09:05')
+    expect(formatAdminTime(new Date('2026-01-15T22:30:00Z'))).toBe('00:30')
+  })
+
+  it('returns an empty string for an invalid date', () => {
+    expect(formatAdminTime(new Date('nope'))).toBe('')
   })
 })

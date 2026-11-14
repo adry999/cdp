@@ -1,5 +1,6 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'admin-auth', i18n: false })
+useHead({ title: 'Autentificare' })
 
 const supabase = useSupabaseClient()
 const requestUrl = useRequestURL()

@@ -2,6 +2,7 @@
 import { MIN_ADMIN_PASSWORD_LENGTH, passwordMessage, passwordProblem } from '#layers/core/shared/utils/adminPassword'
 
 definePageMeta({ layout: 'admin-auth', i18n: false })
+useHead({ title: 'Parolă nouă' })
 
 const supabase = useSupabaseClient()
 const password = ref('')
