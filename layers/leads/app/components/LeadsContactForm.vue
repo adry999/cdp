@@ -117,7 +117,7 @@ watch(status, (value) => {
   <form
     v-if="status !== 'success'"
     class="flex flex-col"
-    :class="isModal ? 'gap-4' : 'mt-[clamp(28px,3vw,40px)] max-w-[560px] gap-6'"
+    :class="isModal ? 'gap-6' : 'mt-[clamp(28px,3vw,40px)] max-w-[560px] gap-6'"
     novalidate
     @submit.prevent="handleSubmit"
   >
@@ -196,7 +196,7 @@ watch(status, (value) => {
         :placeholder="t('home.contact.form.messageHint')"
         :aria-invalid="fieldError('message') ? 'true' : undefined"
         :aria-describedby="fieldError('message') ? 'lead-message-error' : undefined"
-        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-normal placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink aria-invalid:border-signal"
+        class="mt-2 block w-full rounded border border-muted bg-paper px-3.5 py-3 text-base leading-normal placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink aria-invalid:border-signal"
       />
       <p v-if="fieldError('message')" id="lead-message-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
         <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldError('message') }}
@@ -206,7 +206,7 @@ watch(status, (value) => {
     <div>
       <button
         type="button"
-        class="tap-y-inline flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-wider text-ink"
+        class="tap-y flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 font-mono text-xs uppercase tracking-wider text-ink"
         aria-controls="lead-details"
         :aria-expanded="detailsOpen ? 'true' : 'false'"
         @click="detailsOpen = !detailsOpen"
