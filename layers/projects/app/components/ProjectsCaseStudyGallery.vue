@@ -32,7 +32,7 @@ const captions = computed(() => shotCaptions(caseStudy.value.shots))
   >
     <div
       class="mt-[clamp(24px,3vw,36px)] grid gap-4"
-      :class="compact ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))]'"
+      :class="compact ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))]'"
     >
       <figure v-for="(shot, i) in caseStudy.shots" :key="shot.path" class="m-0" :class="compact && i === 0 ? 'col-span-full' : undefined">
         <button
@@ -51,7 +51,8 @@ const captions = computed(() => shotCaptions(caseStudy.value.shots))
         </button>
         <figcaption v-if="captions" class="mt-3 flex flex-col gap-1">
           <span v-if="captions[i]?.title" class="eyebrow-sm text-ink">{{ String(i + 1).padStart(2, '0') }} · {{ captions[i]?.title }}</span>
-          <span class="text-[15px] leading-[1.5] text-muted">{{ captions[i]?.text }}</span>
+          <!-- A long gallery sits two to a row on phones: the title stays, the sentence would make each tile a page tall. -->
+          <span class="text-[15px] leading-[1.5] text-muted" :class="compact ? undefined : 'hidden sm:block'">{{ captions[i]?.text }}</span>
         </figcaption>
       </figure>
     </div>
