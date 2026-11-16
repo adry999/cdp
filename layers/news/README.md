@@ -105,7 +105,7 @@ tested with fakes); `nodeFetchDeps.ts` is the real network:
 ## Depends on
 
 - `layers/core` — `PageHero`, `SiteSection`, `TextLink`, `AppButton`,
-  `AdminTopbar`, `AdminField`, `AdminFieldPair`, `ToggleChip`, `usePageSeo`,
+  `AdminTopbar`, `AdminField`, `AdminFieldPair`, `AdminSaveIssues`, `ToggleChip`, `usePageSeo`,
   `useJsonLd`, `useSiteLocale`, `useSiteUrl`, `breadcrumbList`,
   `organizationRef`, `pick`, `SitemapPage`, `requireAdmin`, `logAndThrow`,
   `toLastmod`, `useUnsavedChangesGuard`, the generated `Database` types.

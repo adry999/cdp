@@ -13,21 +13,25 @@ export async function useLeadsAdminDetail(leadId: string) {
   const loadError = computed(() => (error.value ? toAppError(error.value) : null))
 
   const notesState = ref<AsyncStatus>('idle')
+  // Kept apart so each failure shows next to the control that caused it: the status chips, or
+  // the archive and delete actions.
+  const statusError = ref<AppError | null>(null)
   const actionError = ref<AppError | null>(null)
 
-  async function runAction(action: () => Promise<void>): Promise<boolean> {
+  async function runAction(action: () => Promise<void>, target = actionError): Promise<boolean> {
+    statusError.value = null
     actionError.value = null
     try {
       await action()
       return true
     } catch (caught) {
-      actionError.value = toAppError(caught)
+      target.value = toAppError(caught)
       return false
     }
   }
 
   async function updateStatus(status: LeadStatus) {
-    if (await runAction(() => repository.updateStatus(leadId, status))) await refresh()
+    if (await runAction(() => repository.updateStatus(leadId, status), statusError)) await refresh()
   }
 
   async function archive() {
@@ -54,5 +58,5 @@ export async function useLeadsAdminDetail(leadId: string) {
     }
   }
 
-  return { lead, loadStatus, loadError, notesState, actionError, updateStatus, saveNotes, archive, unarchive, remove }
+  return { lead, loadStatus, loadError, notesState, statusError, actionError, updateStatus, saveNotes, archive, unarchive, remove }
 }

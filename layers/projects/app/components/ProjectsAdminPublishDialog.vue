@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PublishChecklist } from '#layers/projects/domain/adminProjectList'
 
-defineProps<{ title: string; checklist: PublishChecklist; busy: boolean }>()
+defineProps<{ title: string; checklist: PublishChecklist; busy: boolean; error?: string | null }>()
 const consent = defineModel<boolean>('consent', { required: true })
 defineEmits<{ confirm: []; cancel: [] }>()
 </script>
@@ -39,6 +39,7 @@ defineEmits<{ confirm: []; cancel: [] }>()
     <p v-if="checklist.demoScreens" role="note" class="m-0 mt-4 rounded border border-signal-text p-3 text-sm text-signal-text">
       Atenție: doar capturi pe date demo. Nu prezenta ecranele ca pe date reale ale clientului.
     </p>
+    <p v-if="error" role="alert" class="m-0 mt-4 text-sm text-signal-text">{{ error }}</p>
     <template #actions>
       <AppButton variant="outline" @click="$emit('cancel')">Anulează</AppButton>
       <AppButton variant="signal" :disabled="!checklist.canPublish || busy" @click="$emit('confirm')">

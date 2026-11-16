@@ -72,7 +72,8 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
   `admin` layout. Writes go straight from the browser to Supabase via
   `save_project()` (see `supabase/migrations/20260826120200_save_project_rpc.sql`),
   not through a Nuxt server route. The pages only compose: list state lives in
-  `useProjectsAdminList`, the editor in `useProjectsEditor`, all queries in
+  `useProjectsAdminList` (its row actions in `state/projectsAdminActions.ts`, with the
+  repository passed in so they are unit-tested), the editor in `useProjectsEditor`, all queries in
   `data/projectsAdminRepository.ts`.
 
 ## Components
@@ -125,13 +126,13 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
 - `data/projectsRepository.ts` — `fetchProjectCards`, `fetchProject`, behind `usePublishedProjects` and the case-study page.
 - `data/projectsAdminRepository.ts` — `createProjectsAdminRepository(client)`: `list`,
   `getBySlug`, `save`, `reorder`, `remove`, `duplicate`, `removeUnreferencedMedia`.
-- `state/usePublishedProjects.ts`, `state/useProjectsAdminList.ts`,
+- `state/usePublishedProjects.ts`, `state/useProjectsAdminList.ts`, `state/projectsAdminActions.ts`,
   `state/useProjectsEditor.ts` — see above.
 - `test-support/buildAdminProjectRow.ts` — fixture factory for `AdminProjectRow`.
 
 ## Depends on
 
-- `layers/core` — `pick`, `AdminTopbar`, `AdminField`, `AdminFieldPair`,
+- `layers/core` — `pick`, `AdminTopbar`, `AdminField`, `AdminFieldPair`, `AdminSaveIssues`, `AdminDialog`,
   `AdminImageUpload`, `AppButton`, `TechChip`, `SiteSection`, `MediaFrame`,
   `PageHero`, `FactCard`, `SectionLabel`, `useUnsavedChangesGuard`, `useDragReorder`, `moveItem`,
   `useLocaleOverride`, `usePageSeo`, `useJsonLd`, `useSiteLocale`, `useSiteUrl`,

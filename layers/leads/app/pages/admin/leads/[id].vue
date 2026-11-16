@@ -6,7 +6,7 @@ import { useLeadsAdminDetail } from '#layers/leads/state/useLeadsAdminDetail'
 definePageMeta({ layout: 'admin', i18n: false })
 
 const route = useRoute()
-const { lead, loadError, notesState, actionError, updateStatus, saveNotes, archive, unarchive, remove } =
+const { lead, loadError, notesState, statusError, actionError, updateStatus, saveNotes, archive, unarchive, remove } =
   await useLeadsAdminDetail(String(route.params.id))
 
 // No row and no error means the id does not exist; a failed load is reported, not shown as "missing".
@@ -116,6 +116,9 @@ const NOTES_STATE_LABELS = {
               {{ leadStatusLabel(status) }}
             </ToggleChip>
           </div>
+          <p v-if="statusError" role="alert" class="m-0 mt-3 text-sm text-signal-text">
+            {{ statusError.message }}
+          </p>
         </section>
 
         <section class="rounded border border-hairline p-6">

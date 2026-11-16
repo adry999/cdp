@@ -13,7 +13,11 @@ const LINK_KIND_LABELS: Record<LinkKind, string> = {
 }
 
 const form = defineModel<ProjectForm>({ required: true })
-const props = defineProps<{ savedSlugs: { slugRo: string; slugEn: string; wasPublished: boolean } }>()
+const props = defineProps<{
+  savedSlugs: { slugRo: string; slugEn: string; wasPublished: boolean }
+  /** Fields the last failed save rejected, by `ValidationIssue.field`. */
+  invalidFields: ReadonlySet<string>
+}>()
 
 const slugChanged = computed(
   () =>
@@ -57,8 +61,8 @@ function removeTech(index: number) {
   <ProjectsEditorSection title="Identitate">
     <div class="mt-4 flex flex-col gap-4">
       <div class="grid grid-cols-2 gap-4">
-        <AdminField v-model="form.slugRo" label="Slug RO" />
-        <AdminField v-model="form.slugEn" label="Slug EN" />
+        <AdminField v-model="form.slugRo" label="Slug RO" required :invalid="invalidFields.has('slugRo')" />
+        <AdminField v-model="form.slugEn" label="Slug EN" required :invalid="invalidFields.has('slugEn')" />
       </div>
       <button
         type="button"
@@ -70,10 +74,10 @@ function removeTech(index: number) {
       <p v-if="slugChanged" role="status" class="m-0 -mt-2 eyebrow-sm text-signal-text">
         Slug-ul unui proiect publicat se schimbă: vechea adresă va redirecționa automat la cea nouă.
       </p>
-      <AdminFieldPair v-model:ro="form.title.ro" v-model:en="form.title.en" label="Titlu (H1 studiu de caz)" required />
-      <AdminFieldPair v-model:ro="form.cardTitle.ro" v-model:en="form.cardTitle.en" label="Titlu card (homepage)" required />
+      <AdminFieldPair v-model:ro="form.title.ro" v-model:en="form.title.en" label="Titlu (H1 studiu de caz)" required :invalid="invalidFields.has('title')" />
+      <AdminFieldPair v-model:ro="form.cardTitle.ro" v-model:en="form.cardTitle.en" label="Titlu card (homepage)" required :invalid="invalidFields.has('cardTitle')" />
       <div>
-        <AdminFieldPair v-model:ro="form.summary.ro" v-model:en="form.summary.en" label="Descriere card" textarea required />
+        <AdminFieldPair v-model:ro="form.summary.ro" v-model:en="form.summary.en" label="Descriere card" textarea required :invalid="invalidFields.has('summary')" />
         <div class="mt-1 text-right eyebrow-sm" :class="summaryWarn ? 'text-signal-text' : 'text-muted'">
           {{ form.summary.ro.length }} / 200
         </div>
@@ -85,9 +89,9 @@ function removeTech(index: number) {
       <div v-if="titleWarn" class="eyebrow-sm text-signal-text">
         Titlul RO depășește 60 de caractere — designul se poate strica.
       </div>
-      <AdminFieldPair v-model:ro="form.lead.ro" v-model:en="form.lead.en" label="Lead (sub H1)" textarea required />
+      <AdminFieldPair v-model:ro="form.lead.ro" v-model:en="form.lead.en" label="Lead (sub H1)" textarea required :invalid="invalidFields.has('lead')" />
       <div class="grid grid-cols-2 gap-4">
-        <AdminField v-model="form.year" label="An" />
+        <AdminField v-model="form.year" label="An" :invalid="invalidFields.has('year')" />
         <div>
           <div class="eyebrow text-muted">Tech</div>
           <div class="mt-2 flex flex-wrap items-center gap-2">
@@ -122,7 +126,12 @@ function removeTech(index: number) {
                   <option v-for="kind in LINK_KINDS" :key="kind" :value="kind">{{ LINK_KIND_LABELS[kind] }}</option>
                 </select>
               </div>
-              <AdminField v-model="link.url" :label="`URL link ${i + 1}`" :type="link.kind === 'walkthrough' ? 'text' : 'url'" />
+              <AdminField
+                v-model="link.url"
+                :label="`URL link ${i + 1}`"
+                :type="link.kind === 'walkthrough' ? 'text' : 'url'"
+                :invalid="invalidFields.has(`links.${i}`)"
+              />
             </div>
             <AdminFieldPair v-model:ro="link.note.ro" v-model:en="link.note.en" :label="`Notă link ${i + 1} (opțional)`" />
             <div class="flex gap-3 eyebrow-sm text-muted">

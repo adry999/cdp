@@ -1,10 +1,18 @@
 <script setup lang="ts">
-defineProps<{ title: string; back?: { to: string; label: string } }>()
+const props = defineProps<{ title: string; back?: { to: string; label: string } }>()
+
+// Every admin screen has a topbar, so its title also names the browser tab ("Proiecte · CODEPEDIA").
+useHead({ title: () => props.title })
 </script>
 
 <template>
-  <div class="flex h-16 flex-none items-center justify-between border-b border-hairline px-6">
-    <div class="flex items-center gap-4">
+  <!-- Sticky: the save button and its status stay in reach on long editors. On a narrow screen the
+       actions wrap under the title instead of pushing the bar past the screen's edge. -->
+  <div
+    data-admin-topbar
+    class="sticky top-0 z-10 flex min-h-16 flex-none flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-hairline bg-paper px-6 py-1.5"
+  >
+    <div class="flex min-w-0 items-center gap-4">
       <NuxtLink
         v-if="back"
         :to="back.to"
@@ -14,7 +22,7 @@ defineProps<{ title: string; back?: { to: string; label: string } }>()
       </NuxtLink>
       <h1 class="m-0 text-lg font-medium tracking-[-0.02em]">{{ title }}</h1>
     </div>
-    <div class="flex items-center gap-4">
+    <div class="ml-auto flex flex-wrap items-center justify-end gap-x-4 gap-y-2">
       <slot name="actions" />
     </div>
   </div>

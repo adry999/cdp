@@ -12,6 +12,8 @@ defineProps<{
   busy: boolean
   // A reorder is being saved; moving again would interleave writes.
   locked: boolean
+  /** Why the last action on this row failed, shown under it. */
+  error?: string | null
 }>()
 
 defineEmits<{
@@ -26,7 +28,9 @@ defineEmits<{
   duplicate: []
 }>()
 
-const ACTION = 'cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-ink disabled:cursor-not-allowed disabled:opacity-60'
+// One class for every row action, buttons and the link alike: buttons don't inherit the eyebrow's case.
+const ACTION =
+  'eyebrow cursor-pointer border-0 bg-transparent p-0 no-underline hover:no-underline disabled:cursor-not-allowed disabled:opacity-60'
 const ARROW =
   'flex size-5 cursor-pointer items-center justify-center rounded border border-hairline bg-transparent p-0 text-muted hover:border-ink hover:text-ink disabled:cursor-not-allowed disabled:opacity-30'
 </script>
@@ -60,18 +64,16 @@ const ARROW =
     <div v-else class="h-[30px] w-12 flex-none rounded border border-hairline media-placeholder [--placeholder-mark:20px]" />
     <div class="min-w-0 flex-[2_1_200px] text-[15px]">
       {{ project.card_title_ro }}
-      <button
-        type="button"
-        class="ml-1 cursor-pointer border-0 bg-transparent p-0 align-middle leading-none"
-        :class="project.featured ? 'text-signal' : 'text-hairline hover:text-muted'"
-        :aria-pressed="project.featured"
+      <ToggleChip
+        size="admin"
+        class="ml-2 align-middle disabled:cursor-not-allowed disabled:opacity-60"
+        :pressed="project.featured"
         :disabled="busy"
-        :title="project.featured ? 'Afișat pe homepage' : 'Nu apare pe homepage'"
+        :aria-label="`Homepage: ${project.card_title_ro}`"
         @click="$emit('toggleFeatured')"
       >
-        <span aria-hidden="true">●</span>
-        <span class="sr-only">Afișat pe homepage</span>
-      </button>
+        Homepage
+      </ToggleChip>
       <div v-if="!project.published_at && project.screens_demo" class="eyebrow-sm mt-1 text-signal-text">
         Doar capturi pe date demo
       </div>
@@ -85,21 +87,21 @@ const ARROW =
     <div class="flex-[0_0_100px] eyebrow text-muted">
       {{ project.published_at ? formatAdminDate(project.published_at) : '—' }}
     </div>
-    <div class="flex flex-[0_0_260px] flex-wrap justify-end gap-x-3 gap-y-1 eyebrow">
+    <div class="flex flex-[0_0_260px] flex-wrap justify-end gap-x-3 gap-y-1">
       <button v-if="!project.published_at" type="button" :class="ACTION" class="text-ink" :disabled="busy" @click="$emit('publish')">
         Publică
       </button>
-      <button v-else type="button" :class="ACTION" :disabled="busy" @click="$emit('unpublish')">Retrage</button>
-      <NuxtLink :to="`/admin/projects/${project.slug_ro}`" class="text-muted hover:text-ink">Editează</NuxtLink>
-      <button type="button" :class="ACTION" :disabled="busy" @click="$emit('duplicate')">Duplică</button>
-      <button
-        type="button"
-        class="cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-signal-text disabled:opacity-60"
-        :disabled="busy"
-        @click="$emit('askDelete')"
-      >
+      <button v-else type="button" :class="ACTION" class="text-muted hover:text-ink" :disabled="busy" @click="$emit('unpublish')">
+        Retrage
+      </button>
+      <NuxtLink :to="`/admin/projects/${project.slug_ro}`" :class="ACTION" class="text-muted hover:text-ink">Editează</NuxtLink>
+      <button type="button" :class="ACTION" class="text-muted hover:text-ink" :disabled="busy" @click="$emit('duplicate')">
+        Duplică
+      </button>
+      <button type="button" :class="ACTION" class="text-muted hover:text-signal-text" :disabled="busy" @click="$emit('askDelete')">
         Șterge
       </button>
     </div>
+    <p v-if="error" role="alert" class="m-0 basis-full text-sm text-signal-text">{{ error }}</p>
   </div>
 </template>

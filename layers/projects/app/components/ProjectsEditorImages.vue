@@ -7,6 +7,8 @@ import { createProjectsMediaRepository } from '#layers/projects/data/projectsMed
 const form = defineModel<ProjectForm>({ required: true })
 // True while any of the cover, hero or gallery uploads is in flight.
 const uploading = defineModel<boolean>('uploading', { default: false })
+/** Fields the last failed save rejected, by `ValidationIssue.field`. */
+defineProps<{ invalidFields: ReadonlySet<string> }>()
 
 const media = createProjectsMediaRepository()
 // The server only accepts safe key segments, so a slug still being typed ("Proiect Nou") must not reach it raw.
@@ -54,7 +56,7 @@ function moveGalleryImage(index: number, to: number) {
           @uploading="onUploading"
         />
         <div class="mt-3">
-          <AdminFieldPair v-model:ro="form.coverAlt.ro" v-model:en="form.coverAlt.en" label="Text alternativ copertă" required />
+          <AdminFieldPair v-model:ro="form.coverAlt.ro" v-model:en="form.coverAlt.en" label="Text alternativ copertă" required :invalid="invalidFields.has('coverAlt')" />
         </div>
       </div>
       <div>
@@ -68,7 +70,7 @@ function moveGalleryImage(index: number, to: number) {
           @uploading="onUploading"
         />
         <div class="mt-3">
-          <AdminFieldPair v-model:ro="form.heroAlt.ro" v-model:en="form.heroAlt.en" label="Text alternativ captură principală" required />
+          <AdminFieldPair v-model:ro="form.heroAlt.ro" v-model:en="form.heroAlt.en" label="Text alternativ captură principală" required :invalid="invalidFields.has('heroAlt')" />
         </div>
       </div>
       <div>
@@ -96,7 +98,13 @@ function moveGalleryImage(index: number, to: number) {
             />
             <div class="mt-3 flex items-start gap-3">
               <div class="flex-1">
-                <AdminFieldPair v-model:ro="img.altRo" v-model:en="img.altEn" label="Text alternativ" required />
+                <AdminFieldPair
+                  v-model:ro="img.altRo"
+                  v-model:en="img.altEn"
+                  label="Text alternativ"
+                  required
+                  :invalid="invalidFields.has(`gallery.${i}`)"
+                />
               </div>
               <div class="mt-6 flex flex-col items-end gap-2">
                 <div class="flex gap-2">
