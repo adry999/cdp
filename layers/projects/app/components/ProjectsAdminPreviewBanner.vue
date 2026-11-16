@@ -13,8 +13,10 @@ const note = computed(() =>
     ? 'Ce e salvat acum în admin. Pe site apare la câteva minute după salvare.'
     : 'Ce e salvat acum în admin. Vizitatorii nu văd pagina, iar motoarele de căutare nu o indexează.',
 )
-// Hit area 44px on phones, 32px from the nav breakpoint (tap-text pads it without growing the bar).
-const link = 'tap-text min-h-11 nav:min-h-8 eyebrow text-paper underline underline-offset-4 hover:decoration-2'
+// Hit area 44px on phones, 32px from the nav breakpoint (tap-text pads it without growing the bar). The
+// focus ring is paper, not signal: signal on the light bar of the dark theme reads under 3:1.
+const link =
+  'tap-text min-h-11 nav:min-h-8 eyebrow text-paper underline underline-offset-4 hover:decoration-2 focus-visible:outline-paper'
 </script>
 
 <template>
