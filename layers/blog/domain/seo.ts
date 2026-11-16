@@ -1,5 +1,5 @@
 import { breadcrumbList, faqPage, organizationRef, type FaqEntry } from '#layers/core/shared/utils/jsonLd'
-import type { InlineNode, PostBlock } from './body'
+import { inlineText, type PostBlock } from './body'
 import { CATEGORIES, type CategoryCode } from './category'
 import { blogPaths } from './paths'
 
@@ -8,16 +8,6 @@ export { blogPaths, ogImagePath } from './paths'
 type Locale = 'ro' | 'en'
 
 const SCHEMA = 'https://schema.org'
-
-function inlineText(nodes: readonly InlineNode[]): string {
-  return nodes
-    .map((node) => {
-      if (node.type === 'break') return ' '
-      if (node.type === 'text' || node.type === 'code') return node.text
-      return inlineText(node.children)
-    })
-    .join('')
-}
 
 /** The FAQ questions rendered on the page, as plain text (one answer = its paragraphs joined by a space). */
 export function faqEntries(blocks: readonly PostBlock[]): FaqEntry[] {
