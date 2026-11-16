@@ -42,12 +42,12 @@ describe('resolvePrivacyPolicy', () => {
     expect(text).toMatch(/budget|buget/)
   })
 
-  it.each(['ro', 'en'] as const)(
-    'leaves a visible placeholder for the lead retention period, not an invented figure (%s)',
-    (locale) => {
-      expect(flatten(locale)).toMatch(/\[ de completat \]|\[ to be completed \]/)
-    },
-  )
+  // The 12 months were set by the owners (2026-11-16); no placeholder may be left on the public page.
+  it.each(['ro', 'en'] as const)('states the 12-month lead retention period and keeps no placeholder (%s)', (locale) => {
+    const text = flatten(locale)
+    expect(text).toMatch(/12 luni|12 months/)
+    expect(text).not.toMatch(/\[ de completat \]|\[ to be completed \]/)
+  })
 
   it.each(['ro', 'en'] as const)('mentions a supervisory authority complaint right (%s)', (locale) => {
     const text = flatten(locale).toLowerCase()
