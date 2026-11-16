@@ -91,10 +91,13 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
 - `ProjectsCard` — the project card (`HomeWork`'s original markup), `project`
   + `showTech` (default `true`) props. `showTech: false` drops the tech line
   and tightens the heading's top margin — what `ServicesRelatedProjects` uses.
-- `ProjectsAdminRow` — one row of the admin list (drag handle, thumbnail, inline
-  delete confirmation); stateless, emits the actions.
-- `ProjectsEditorIdentity` also holds the "Apare în meniu la" checkboxes (`nav_services`, saved by `save_project`).
-- `ProjectsEditorSection` plus `ProjectsEditorIdentity`, `Images`, `Facts`,
+- `ProjectsAdminRow` — one row of the admin list, a subgrid of the list's columns (drag handle,
+  thumbnail, title linking to the editor, two tech chips and a "+N" from `chipOverflow`);
+  stateless, emits the actions.
+- `ProjectsEditorMenu` — the service select and the "Apare în meniu la" checkboxes
+  (`nav_services`, saved by `save_project`), beside `ProjectsEditorMenuPreview`.
+- `ProjectsEditorSection` (an `h2` anchor named in `domain/editorSections.ts`, which also feeds the
+  editor's side list) plus `ProjectsEditorIdentity`, `Menu`, `Images`, `Facts`,
   `Narrative` (one text section, used four times), `Stack`, `Results`, `Publish` —
   the sections of the admin editor; each takes the `ProjectForm` through `v-model`.
 - `ProjectsFilterChips` — the `/proiecte` tag chips, `tags` + `active` props,

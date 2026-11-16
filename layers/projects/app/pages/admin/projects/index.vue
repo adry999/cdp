@@ -19,6 +19,14 @@ function dialogError(slug: string) {
 }
 
 const drag = useDragReorder(list.reorder)
+
+// The rows are subgrids of this grid, so their columns line up with the header and with each other.
+// The tech column needs 1280px; the handle column exists only while the list can be reordered.
+const gridColumns = computed(() =>
+  canReorder.value
+    ? 'nav:grid-cols-[auto_auto_minmax(0,1fr)_auto_auto] xl:grid-cols-[auto_auto_minmax(0,1fr)_auto_auto_auto]'
+    : 'nav:grid-cols-[auto_minmax(0,1fr)_auto_auto] xl:grid-cols-[auto_minmax(0,1fr)_auto_auto_auto]',
+)
 </script>
 
 <template>
@@ -59,7 +67,15 @@ const drag = useDragReorder(list.reorder)
       <div v-else-if="!filtered.length" class="rounded border border-hairline p-8 text-center text-muted">
         Niciun proiect.
       </div>
-      <div v-else class="flex flex-col">
+      <div v-else class="flex flex-col nav:grid nav:gap-x-4" :class="gridColumns">
+        <div class="hidden pb-2 eyebrow-sm text-muted nav:col-span-full nav:grid nav:grid-cols-subgrid" aria-hidden="true">
+          <span v-if="canReorder" />
+          <span />
+          <span>Proiect</span>
+          <span class="hidden xl:block">Tehnologii</span>
+          <span>Stare</span>
+          <span class="text-right">Acțiuni</span>
+        </div>
         <ProjectsAdminRow
           v-for="(project, i) in filtered"
           :key="project.slug_ro"
