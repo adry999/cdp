@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { SERVICE_TAG_IDS } from '#layers/core/shared/types/service-tag'
-import { serviceTagForParam, stageForServiceParam, stageForServiceTag } from './serviceStage'
+import { serviceTagForParam, serviceTagForStage, stageForServiceParam, stageForServiceTag } from './serviceStage'
 
 describe('stageForServiceParam', () => {
   it('resolves RO and EN route slugs', () => {
@@ -45,5 +45,21 @@ describe('stageForServiceTag', () => {
   it('has a stage for every service', () => {
     for (const tag of SERVICE_TAG_IDS) expect(stageForServiceTag(tag)).toMatch(/^[A-E]$/)
     expect(stageForServiceTag('web-app')).toBe('A')
+  })
+})
+
+describe('serviceTagForStage', () => {
+  const withoutGrants = SERVICE_TAG_IDS.filter((tag) => tag !== 'granturi')
+
+  it('names the service when exactly one offered service has the stage', () => {
+    expect(serviceTagForStage('D', SERVICE_TAG_IDS)).toBe('ai-automation')
+    expect(serviceTagForStage('A', withoutGrants)).toBe('web-app')
+  })
+
+  it('names none when several offered services share the stage, or none has it', () => {
+    expect(serviceTagForStage('A', SERVICE_TAG_IDS)).toBeUndefined()
+    expect(serviceTagForStage('E', SERVICE_TAG_IDS)).toBeUndefined()
+    expect(serviceTagForStage('B', SERVICE_TAG_IDS)).toBeUndefined()
+    expect(serviceTagForStage('C', SERVICE_TAG_IDS)).toBeUndefined()
   })
 })

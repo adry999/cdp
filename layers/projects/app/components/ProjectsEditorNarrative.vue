@@ -1,13 +1,14 @@
 <script setup lang="ts">
+import type { ProjectEditorSectionId } from '#layers/projects/domain/editorSections'
 import type { Bilingual } from '#layers/projects/domain/projectForm'
 
-defineProps<{ title: string; required?: boolean }>()
+defineProps<{ section: ProjectEditorSectionId; required?: boolean; invalid?: boolean }>()
 
 const body = defineModel<Bilingual>({ required: true })
 </script>
 
 <template>
-  <ProjectsEditorSection :title="title">
+  <ProjectsEditorSection :section="section">
     <div class="mt-4 flex flex-col gap-4">
       <AdminFieldPair
         v-model:ro="body.ro"
@@ -15,6 +16,7 @@ const body = defineModel<Bilingual>({ required: true })
         label="Text (paragrafe separate de o linie goală)"
         textarea
         :required="required"
+        :invalid="invalid"
       />
       <slot />
     </div>

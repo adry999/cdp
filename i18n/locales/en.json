@@ -12,7 +12,7 @@
     "chooseService": "Choose a service",
     "servicesToggle": "Open the Services menu",
     "services": "Services",
-    "work": "Portfolio",
+    "work": "Projects",
     "blog": "Blog",
     "news": "News",
     "pricing": "Pricing",
@@ -20,7 +20,9 @@
     "main": "Main navigation",
     "contact": "Contact",
     "letsTalk": "Discuss a project",
-    "projects": "Work",
+    "letsTalkShort": "Let's talk",
+    "letsTalkShortLabel": "Let's talk about a project",
+    "projects": "Projects",
     "groupSites": "Websites",
     "groupApps": "Apps and AI",
     "projectsKicker": "Projects · {service}",
@@ -195,7 +197,8 @@
       "sectionLabel": "Stack",
       "title": "The stack we ship with.",
       "subtitle": "TypeScript on both ends, Postgres for data, deployed on Vercel. Tools we've used in production, not a wish list.",
-      "integrationNote": "Every project is unique. The best way forward is to hop on a quick call or drop us an email about your specific needs so we can discover how to help you best.",
+      "integrationNote": "Every project is unique. The best way forward is to {link} about your specific needs so we can discover how to help you best.",
+      "integrationNoteLink": "hop on a quick call or drop us an email",
       "groups": {
         "frontend": {
           "name": "Frontend & UI",
@@ -246,7 +249,7 @@
       "sectionLabel": "Process"
     },
     "work": {
-      "sectionLabel": "Portfolio",
+      "sectionLabel": "Projects",
       "title": "Projects we are proud to share.",
       "intro": "A selection of our latest projects and case studies showcasing our approach to solving technical challenges and driving business value.",
       "caseStudyLink": "Read the case study →",
@@ -315,8 +318,9 @@
         "privacyNoticeLink": "privacy policy",
         "submit": "Find out if we can help",
         "submitting": "Sending…",
-        "success": "Sent. You'll get a reply within one working day.",
+        "success": "Thank you! You'll get a reply within one working day.",
         "error": "Something went wrong. Try again or email us directly.",
+        "errorRateLimited": "Too many attempts. Try again in a few minutes.",
         "errorRequired": "Required field.",
         "errorEmail": "Invalid email address."
       },
@@ -503,7 +507,12 @@
       "granturi": "Grants"
     },
     "listLabel": "Case studies",
-    "empty": "No published case studies yet."
+    "empty": "No published case studies yet.",
+    "cta": {
+      "title": "Have a project like these?",
+      "body": "Tell us what you want to build and where it stands today. We look at it together and tell you plainly whether and how we can help.",
+      "button": "Tell us about your project"
+    }
   },
   "services": {
     "features": {
@@ -521,7 +530,7 @@
         "description": "Websites, web apps, WordPress, Shopify and AI automation. Pick the stage you are at and see what we deliver and how fast."
       },
       "title": "Five stages. We start where you are now.",
-      "intro": "From a quick page to custom AI engineering. Every stage has a fixed price, a committed timeline and 30 days of fixes after launch.",
+      "intro": "From a quick page to custom AI engineering. For every stage we agree the price and the timeline before we start, and you get 30 days of fixes after launch.",
       "cta": {
         "title": "Not sure which stage you're at?",
         "body": "Describe the problem in a few lines. We reply within one working day with the right stage and an estimate.",
@@ -539,6 +548,7 @@
       "intro": "Articles and news from other sources, picked by the CODEPEDIA team, with a summary and a link to the original."
     },
     "empty": "No news published yet.",
+    "emptyBlogLink": "Read the blog →",
     "latest": "Latest",
     "readAtSource": "Read at the source ↗",
     "openOriginal": "Read the original article ↗",
@@ -637,12 +647,14 @@
       "plans": {
         "maintenance": {
           "label": "Retainer / Maintenance",
-          "price": "Predictable",
+          "price": "On request",
+          "note": "Predictable",
           "body": "For live products. Updates, monitoring, backups, and a fixed number of hours or monthly sprints for ongoing development."
         },
         "continuous": {
           "label": "Continuous Development",
-          "price": "Agile & Flexible",
+          "price": "On request",
+          "note": "Agile & Flexible",
           "body": "For building new products or scaling fast. Two-week sprints with regular demos and full transparency."
         }
       },
@@ -692,6 +704,11 @@
         "label": "Languages",
         "value": "Romanian · English · Russian"
       }
+    },
+    "cta": {
+      "title": "Talk directly to the people who build it.",
+      "body": "Send us a few lines about what you need. You discuss the technical solution directly with the engineer who will build it, with no go-betweens.",
+      "button": "Talk to an engineer"
     }
   },
   "contactModal": {
@@ -718,7 +735,7 @@
     "projectPrompt": "Got a project?",
     "budget": "Estimate your project budget",
     "writeUs": "Send a request",
-    "projects": "Work",
+    "projects": "Projects",
     "allProjects": "All",
     "links": "Links"
   }

@@ -4,7 +4,7 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 
 ## Public API (client) — `index.ts`
 
-- `useLeadSubmission()` → `{ status: AsyncStatus, fieldErrors, error: AppError | null, submit(submission) }`.
+- `useLeadSubmission()` → `{ status: AsyncStatus, fieldErrors, error: AppError | null, submit(submission), revalidate(submission) }`. `revalidate` refreshes `fieldErrors` on every edit, but only after the first submit.
 - `useContactModal()` → `{ isOpen, service, returnFocusTo, open({ service?, returnFocusTo? }), close }` — state of the contact dialog. `open` pre-selects a service chip and remembers where focus returns on close (default: the element focused at that moment). The root `useContactCta` composable (`app/composables/`) decides what a "Discută un proiect" button does: scroll to `#contact` on the homepage, link to `/contact` on that page, open the qualifier when `NUXT_PUBLIC_QUALIFIER_ENABLED` is on, otherwise this dialog.
 - `ContactSubmission`, `ContactFieldErrors` — domain types for a compatible submission.
 - `LEADS_EN_PENDING_PATHS` — RO paths whose EN copy is still Romanian (`/contact`); composed by the root `app/utils/enPendingTranslation.ts`.
@@ -28,13 +28,14 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 
 ## Components
 
-- `LeadsContactModal` — the dialog (teleported to `body`, mounted once in the default layout when the qualifier is off): focus moves to the first field, Tab is trapped (core `useFocusTrap`), Escape and a click on the backdrop close it, the page scroll is locked, focus returns to the trigger. Wraps `LeadsContactForm variant="modal"` and replaces its success message with the next-steps list. Service chips (Website … Grants, the grants one only when `grantsEnabled`, plus "Nu știu") pre-select the service of the page it was opened from; the submission carries `service` and that service's qualifier stage as `stage` (null for "Nu știu"), so the stage column in the admin keeps working.
-- `LeadsContactForm` — props `variant` (`'page'` default, `'modal'`: no "how did you hear" field, name and email side by side) and `service` (pre-selected service chip, modal only: the modal shows service chips, the page variant keeps the stage chips and sends no `service`); a `#success` slot replaces the confirmation. Inline contact form; pre-selects the stage chip from `?serviciu=<ro slug>` / `?service=<en slug>` (core's `stageForServiceParam`; unknown values ignored, never overrides a picked stage); maps domain error codes to `home.contact.form.*` i18n keys.
+- `LeadsContactModal` — the dialog (teleported to `body`, mounted once in the default layout when the qualifier is off): focus moves to the first field, Tab is trapped (core `useFocusTrap`), Escape and a click on the backdrop close it, the page scroll is locked, focus returns to the trigger. Wraps `LeadsContactForm variant="modal"`; after a send it shows `LeadsContactSuccess` with a Close button and hides its lead paragraph. The close button sits in a sticky row, so it stays in reach when the dialog scrolls on a phone. Service chips (Website … Grants, the grants one only when `grantsEnabled`, plus "Nu știu") pre-select the service of the page it was opened from; the submission carries `service` and that service's qualifier stage as `stage` (null for "Nu știu"), so the stage column in the admin keeps working.
+- `LeadsContactSuccess` — the confirmation after a send, shared by the dialog, `/contact` and the homepage: check mark, the sentence (focused on mount), the three next steps (`contactPage.steps`); the default slot takes actions (the dialog's Close).
+- `LeadsContactForm` — props `variant` (`'page'` default, `'modal'`: no "how did you hear" field, name and email side by side) and `service` (pre-selected service chip, modal only: the modal shows service chips, the page variant keeps the stage chips and sends no `service`); a `#success` slot replaces the confirmation (default: `LeadsContactSuccess`); emits `sent` after a successful send. The typed fields live in `useState('leads:contact-draft:<variant>')` (`state/useContactDraft.ts`), so closing the dialog or leaving the page keeps them; they are cleared only after a successful send. A failed send shows a bordered block with the `contactEmail` from `useSiteSettings()` as a `mailto:` link, with its own message for a 429. The privacy-policy link opens in a new tab. Inline contact form; pre-selects the stage chip from `?serviciu=<ro slug>` / `?service=<en slug>` (core's `stageForServiceParam`; unknown values ignored, never overrides a picked stage); maps domain error codes to `home.contact.form.*` i18n keys.
 
 ## Depends on
 
 - `layers/core` — `AsyncStatus`, `AppError`, `toAppError`, `EMAIL_PATTERN`, `clipText`, `AppButton`, `AdminTopbar`, server utils `logAndThrow`, `checkRateLimit`, `sendMail`, `notifyBestEffort`, `CoreHoneypotField`, `AdminField`, `ToggleChip`, `usePageSeo`, `useI18nList`, plus `SiteSection`, `FactCard`.
-- `layers/content` — `useSiteSettings` (only), for the contact page facts.
+- `layers/content` — `useSiteSettings` (only), for the contact page facts and the address in the form's failure message.
 
 ## Consumed by
 
