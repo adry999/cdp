@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import type { Service } from '#layers/services/domain/service'
 
-withDefaults(defineProps<{ service: Service; number?: string }>(), {
-  number: '06',
-})
+defineProps<{ service: Service; number: string }>()
 const { t } = useI18n()
 </script>
 
