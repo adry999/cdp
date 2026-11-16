@@ -2,9 +2,9 @@
 import { useServiceStages } from '#layers/content'
 
 const { t } = useI18n()
-const localePath = useLocalePath()
 const stages = useServiceStages()
-
+// A stage button opens the contact dialog (or the qualifier) in place, on that stage.
+const contact = useContactTrigger()
 </script>
 
 <template>
@@ -48,7 +48,12 @@ const stages = useServiceStages()
         </ul>
         <div class="mt-6">
           <!-- One signal button per viewport: the first stage is the primary CTA. -->
-          <AppButton :variant="i === 0 ? 'signal' : 'outline'" :href="localePath('contact')">
+          <AppButton
+            :variant="i === 0 ? 'signal' : 'outline'"
+            :href="contact.href.value"
+            :aria-haspopup="contact.opensDialog.value ? 'dialog' : undefined"
+            @click.capture="contact.open($event, { stage: stage.id })"
+          >
             {{ stage.cta }}
           </AppButton>
         </div>

@@ -195,7 +195,8 @@
       "sectionLabel": "Stack",
       "title": "Tehnologiile cu care livrăm.",
       "subtitle": "TypeScript pe frontend și backend, Postgres pentru date, deploy pe Vercel. Unelte folosite deja în producție, nu o listă de dorințe.",
-      "integrationNote": "Fiecare proiect are particularitățile sale. Cel mai bine este să ne auzim la un apel sau pe email legat de nevoile tale specifice, pentru a descoperi cum te putem ajuta la maximum.",
+      "integrationNote": "Fiecare proiect are particularitățile sale. Cel mai bine este să {link} legat de nevoile tale specifice, pentru a descoperi cum te putem ajuta la maximum.",
+      "integrationNoteLink": "ne auzim la un apel sau pe email",
       "groups": {
         "frontend": {
           "name": "Frontend & UI",
