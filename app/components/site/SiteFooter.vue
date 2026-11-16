@@ -70,7 +70,7 @@ const ctaClass =
 <template>
   <footer class="border-t border-hairline">
     <div
-      class="container-site grid grid-fit-safe-200 gap-[clamp(32px,4vw,48px)] pb-[clamp(32px,4vw,48px)] pt-[clamp(48px,6vw,80px)]"
+      class="container-site grid grid-cols-1 gap-[clamp(32px,4vw,48px)] sm:grid-cols-2 lg:grid-cols-4 pb-[clamp(32px,4vw,48px)] pt-[clamp(48px,6vw,80px)]"
     >
       <div class="flex min-w-0 flex-col gap-[18px]">
         <NuxtLink :to="localePath('index')" class="tap-y flex w-fit">

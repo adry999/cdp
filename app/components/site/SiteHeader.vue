@@ -112,8 +112,9 @@ onMounted(() => {
     :class="scrolled && 'shadow-header'"
     @keydown="onKeydown"
   >
+    <!-- Opaque: the open mobile menu scrolls under this row (the header's own background paints below the panel). -->
     <div
-      class="container-site flex items-center justify-between gap-6 transition-[height] duration-200 motion-reduce:transition-none"
+      class="container-site flex items-center justify-between gap-6 bg-paper transition-[height] duration-200 motion-reduce:transition-none"
       :class="scrolled ? 'h-[52px]' : 'h-16'"
     >
       <NuxtLink :to="localePath('index')" class="flex min-h-11 items-center">

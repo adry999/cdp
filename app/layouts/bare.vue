@@ -10,10 +10,11 @@ const { isQualifierEnabled } = useQualifierAvailability()
 <template>
   <div class="flex min-h-screen flex-col">
     <a href="#main-content" class="skip-link">{{ t('nav.skipToContent') }}</a>
+    <!-- Fixed to the bottom of the viewport, but early in the tab order: the choice is reachable without tabbing through the page. -->
+    <LazyConsentBanner />
     <main id="main-content" class="flex-1">
       <slot />
     </main>
-    <LazyConsentBanner />
     <LazyQualifierModalHost v-if="isQualifierEnabled" />
     <LazyLeadsContactModalHost v-else />
   </div>
