@@ -184,6 +184,25 @@ test('header CTA on a service page opens the dialog with that service stage pres
   await expect(dialog.locator('input[name="qualifier-stage"][value="A"]')).toBeChecked()
 })
 
+test('the service page button still opens the qualifier with that service stage', async ({ page }) => {
+  await page.goto('/servicii/aplicatie-web')
+  await dismissConsentBanner(page)
+  await page.locator('main').getByRole('button', { name: 'Începe un proiect' }).click()
+  const dialog = page.getByRole('dialog', { name: DIALOG_NAME })
+  await expect(dialog).toBeVisible()
+  await expect(dialog.locator('input[name="qualifier-stage"][value="A"]')).toBeChecked()
+})
+
+test('a pricing stage button opens the qualifier on that stage, in place', async ({ page }) => {
+  await page.goto('/preturi')
+  await dismissConsentBanner(page)
+  await page.locator('#stages').getByRole('link', { name: 'Automatizează-mi fluxul' }).click()
+  const dialog = page.getByRole('dialog', { name: DIALOG_NAME })
+  await expect(dialog).toBeVisible()
+  await expect(dialog.locator('input[name="qualifier-stage"][value="D"]')).toBeChecked()
+  expect(new URL(page.url()).pathname).toBe('/preturi')
+})
+
 test('qualifier opened from the mobile menu returns focus to the menu toggle on Escape', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/servicii/aplicatie-web')

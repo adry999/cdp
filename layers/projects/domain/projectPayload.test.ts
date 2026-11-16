@@ -89,9 +89,17 @@ describe('validateProjectPayload', () => {
     expect(issues.map((i) => i.field)).toEqual(expect.arrayContaining(['title', 'lead']))
   })
 
-  it('requires the problem text (RO)', () => {
+  it('requires the situation text (RO), named as the editor labels it', () => {
     const issues = validateProjectPayload(base({ contextBody: { ro: ' ', en: 'x' } }))
-    expect(issues).toEqual([{ field: 'contextBody', message: 'Problema (RO) este obligatoriu.' }])
+    expect(issues).toEqual([{ field: 'contextBody', message: 'Situație (RO) este obligatorie.' }])
+  })
+
+  it('says which slug is missing', () => {
+    const issues = validateProjectPayload(base({ slugRo: '', slugEn: ' ' }))
+    expect(issues).toEqual([
+      { field: 'slugRo', message: 'Slug RO este obligatoriu.' },
+      { field: 'slugEn', message: 'Slug EN este obligatoriu.' },
+    ])
   })
 
   it('allows publishing with no gallery images', () => {

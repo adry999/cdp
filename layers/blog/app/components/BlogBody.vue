@@ -11,7 +11,7 @@ function marker(ordered: boolean, index: number): string {
 </script>
 
 <template>
-  <div class="max-w-[70ch] leading-[1.7]">
+  <div class="max-w-[58ch] leading-[1.7]">
     <template v-for="(block, i) in blocks" :key="i">
       <div
         v-if="block.type === 'callout'"
@@ -96,13 +96,13 @@ function marker(ordered: boolean, index: number): string {
 
       <div
         v-else-if="block.type === 'cta'"
-        class="mt-12 flex flex-col gap-5 rounded bg-inverse p-[clamp(24px,3vw,36px)] text-on-inverse"
+        class="mt-12 flex flex-col gap-5 rounded bg-inverse p-[clamp(24px,3vw,36px)] text-on-inverse dark:border dark:border-muted"
       >
         <span class="eyebrow-sm text-signal">{{ t('blog.next') }}</span>
         <p class="m-0 text-[clamp(19px,2vw,23px)] leading-[1.35] tracking-[-0.01em] text-pretty">{{ block.text }}</p>
         <NuxtLink
           :to="block.href"
-          class="flex min-h-11 items-center self-start rounded bg-signal px-5 eyebrow text-ink no-underline hover:bg-paper hover:text-ink hover:no-underline"
+          class="flex min-h-11 items-center self-start rounded bg-signal px-5 eyebrow text-on-signal no-underline hover:bg-paper hover:text-ink hover:no-underline"
           @click="track('blog_cta_click', { post_slug: postSlug, service })"
         >
           {{ block.label }} →
