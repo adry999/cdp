@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { backgroundRestPoint } from '#layers/core/shared/utils/backgroundRestPoint'
 import { parseColorToRgb } from '#layers/core/shared/utils/parseColorToRgb'
 
 export type BackgroundVariant = 'dot-matrix' | 'constellation' | 'light-orbs'
@@ -104,6 +105,16 @@ onMounted(() => {
     active: false,
     alpha: 0.85,
     targetAlpha: 0.85,
+  }
+
+  // Until a pointer moves over the box (and always on touch screens) the lens rests in the top-right
+  // corner, so the glow and the displaced dots never sit on the text.
+  function restMouse() {
+    const rest = backgroundRestPoint(width, height)
+    mouse.x = rest.x
+    mouse.y = rest.y
+    mouse.targetX = rest.x
+    mouse.targetY = rest.y
   }
 
   // Variant 1: Dot Matrix state
@@ -217,6 +228,7 @@ onMounted(() => {
     canvas.style.height = `${height}px`
 
     ctx?.setTransform(dpr, 0, 0, dpr, 0, 0)
+    if (!mouse.active) restMouse()
 
     if (props.variant === 'dot-matrix') {
       initGrid()
@@ -264,11 +276,6 @@ onMounted(() => {
   resize()
   const resizeRafId = requestAnimationFrame(resize)
   const resizeTimerId = setTimeout(resize, 100)
-
-  mouse.x = width / 2
-  mouse.y = height / 2
-  mouse.targetX = width / 2
-  mouse.targetY = height / 2
 
   const resizeObserver = new ResizeObserver(() => {
     resize()
@@ -340,8 +347,9 @@ onMounted(() => {
     // On mobile touch devices or idle, maintain gentle organic drift
     if (!canHover && !mouse.active) {
       const timeSec = now * 0.001
-      mouse.x = width / 2 + Math.cos(timeSec * 0.7) * (width * 0.15)
-      mouse.y = height / 2 + Math.sin(timeSec * 0.9) * (height * 0.15)
+      const rest = backgroundRestPoint(width, height)
+      mouse.x = rest.x + Math.cos(timeSec * 0.7) * (width * 0.03)
+      mouse.y = rest.y + Math.sin(timeSec * 0.9) * (height * 0.02)
       mouse.alpha = 0.6
     }
 
@@ -597,12 +605,13 @@ onMounted(() => {
 
     context.globalCompositeOperation = isDark ? 'screen' : 'source-over'
 
+    const rest = backgroundRestPoint(width, height)
     for (let i = 0; i < orbs.length; i++) {
       const orb = orbs[i]!
 
       const idleRadius = 60 + i * 50
-      const idleX = width / 2 + Math.cos(timeSec * 0.8 + orb.angle) * idleRadius
-      const idleY = height / 2 + Math.sin(timeSec * 0.6 + orb.angle) * (idleRadius * 0.65)
+      const idleX = rest.x + Math.cos(timeSec * 0.8 + orb.angle) * idleRadius
+      const idleY = rest.y + Math.sin(timeSec * 0.6 + orb.angle) * (idleRadius * 0.65)
 
       const targetX = mouse.active ? mouse.x + Math.cos(orb.angle + timeSec) * (30 * (i + 1)) : idleX
       const targetY = mouse.active ? mouse.y + Math.sin(orb.angle + timeSec) * (30 * (i + 1)) : idleY
