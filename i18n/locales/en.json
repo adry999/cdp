@@ -474,7 +474,7 @@
       }
     },
     "contact": {
-      "email": "Work email or contact info",
+      "email": "Work email",
       "handle": "Instagram / LinkedIn / website (optional)",
       "notes": "Project notes or a specific request (optional)",
       "submit": "Send request"
