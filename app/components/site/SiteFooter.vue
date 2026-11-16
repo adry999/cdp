@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCookieConsent } from '#layers/consent'
 import { useSiteSettings } from '#layers/content'
+import { useNewsLink } from '#layers/news'
 import { SERVICE_LINKS } from '#layers/services'
 import { visibleServices } from '#layers/core/shared/utils/visibleServices'
 import { studioGraph } from '#layers/core/shared/utils/jsonLd'
@@ -13,6 +14,7 @@ const settings = useSiteSettings()
 const cta = useContactCta()
 const { grantsEnabled } = useRuntimeConfig().public
 const serviceLinks = visibleServices(SERVICE_LINKS, grantsEnabled)
+const { showNewsLink } = useNewsLink()
 
 const services = computed(() =>
   serviceLinks.map((service) => ({
@@ -27,7 +29,8 @@ const studioLinks = computed(() => [
   { id: 'pricing', label: t('nav.pricing'), to: localePath('preturi') },
   { id: 'about', label: t('nav.about'), to: localePath('despre') },
   { id: 'blog', label: t('nav.blog'), to: localePath('blog') },
-  { id: 'news', label: t('nav.news'), to: localePath('noutati') },
+  // Only while something is published: an empty /noutati is a dead end.
+  ...(showNewsLink.value ? [{ id: 'news', label: t('nav.news'), to: localePath('noutati') }] : []),
   { id: 'contact', label: t('nav.contact'), to: localePath('contact') },
 ])
 
@@ -64,13 +67,13 @@ const columnLabelClass = 'eyebrow-sm text-muted'
 // Rows grow to 44px on mobile and 32px on desktop; the gap shrinks so the column keeps about the same height.
 const linkClass = 'py-2.5 text-[15px] text-ink no-underline hover:text-signal-text hover:no-underline nav:py-1'
 const ctaClass =
-  'inline-flex w-fit cursor-pointer items-center gap-2.5 rounded border-0 bg-signal px-4 py-[11px] text-[15px] font-medium text-ink no-underline transition-colors hover:bg-ink hover:text-paper hover:no-underline'
+  'inline-flex w-fit cursor-pointer items-center gap-2.5 rounded border-0 bg-signal px-4 py-[11px] text-[15px] font-medium text-on-signal no-underline transition-colors hover:bg-ink hover:text-paper hover:no-underline'
 </script>
 
 <template>
   <footer class="border-t border-hairline">
     <div
-      class="container-site grid grid-fit-safe-200 gap-[clamp(32px,4vw,48px)] pb-[clamp(32px,4vw,48px)] pt-[clamp(48px,6vw,80px)]"
+      class="container-site grid grid-cols-1 gap-[clamp(32px,4vw,48px)] sm:grid-cols-2 lg:grid-cols-4 pb-[clamp(32px,4vw,48px)] pt-[clamp(48px,6vw,80px)]"
     >
       <div class="flex min-w-0 flex-col gap-[18px]">
         <NuxtLink :to="localePath('index')" class="tap-y flex w-fit">

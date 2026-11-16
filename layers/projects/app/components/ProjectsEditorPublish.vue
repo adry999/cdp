@@ -7,11 +7,12 @@ defineEmits<{ publish: []; unpublish: [] }>()
 </script>
 
 <template>
-  <ProjectsEditorSection title="Publicare">
+  <ProjectsEditorSection section="publicare">
     <div class="mt-4 flex flex-wrap items-center justify-between gap-4">
       <div class="flex flex-wrap items-center gap-6">
-        <div class="flex items-center gap-3 eyebrow">
-          <span :class="form.published ? 'text-signal-text' : 'text-muted'">
+        <!-- The label alone is an eyebrow: buttons inside one would take its mono face and tracking. -->
+        <div class="flex items-center gap-3">
+          <span class="eyebrow" :class="form.published ? 'text-signal-text' : 'text-muted'">
             {{ form.published ? 'Publicat' : 'Draft' }}
           </span>
           <AppButton v-if="form.published" variant="outline" :disabled="busy" @click="$emit('unpublish')">Retrage</AppButton>
@@ -27,7 +28,8 @@ defineEmits<{ publish: []; unpublish: [] }>()
       </div>
     </div>
     <p class="m-0 mt-3 text-sm text-muted">
-      Publicarea trece prin checklist-ul de publicare și salvează proiectul. Retragerea salvează imediat.
+      Publicarea trece prin checklist-ul de publicare și salvează proiectul. Retragerea cere confirmare, apoi salvează
+      proiectul.
     </p>
   </ProjectsEditorSection>
 </template>

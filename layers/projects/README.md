@@ -72,7 +72,8 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
   `admin` layout. Writes go straight from the browser to Supabase via
   `save_project()` (see `supabase/migrations/20260826120200_save_project_rpc.sql`),
   not through a Nuxt server route. The pages only compose: list state lives in
-  `useProjectsAdminList`, the editor in `useProjectsEditor`, all queries in
+  `useProjectsAdminList` (its row actions in `state/projectsAdminActions.ts`, with the
+  repository passed in so they are unit-tested), the editor in `useProjectsEditor`, all queries in
   `data/projectsAdminRepository.ts`.
 
 ## Components
@@ -90,10 +91,13 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
 - `ProjectsCard` — the project card (`HomeWork`'s original markup), `project`
   + `showTech` (default `true`) props. `showTech: false` drops the tech line
   and tightens the heading's top margin — what `ServicesRelatedProjects` uses.
-- `ProjectsAdminRow` — one row of the admin list (drag handle, thumbnail, inline
-  delete confirmation); stateless, emits the actions.
-- `ProjectsEditorIdentity` also holds the "Apare în meniu la" checkboxes (`nav_services`, saved by `save_project`).
-- `ProjectsEditorSection` plus `ProjectsEditorIdentity`, `Images`, `Facts`,
+- `ProjectsAdminRow` — one row of the admin list, a subgrid of the list's columns (drag handle,
+  thumbnail, title linking to the editor, two tech chips and a "+N" from `chipOverflow`);
+  stateless, emits the actions.
+- `ProjectsEditorMenu` — the service select and the "Apare în meniu la" checkboxes
+  (`nav_services`, saved by `save_project`), beside `ProjectsEditorMenuPreview`.
+- `ProjectsEditorSection` (an `h2` anchor named in `domain/editorSections.ts`, which also feeds the
+  editor's side list) plus `ProjectsEditorIdentity`, `Menu`, `Images`, `Facts`,
   `Narrative` (one text section, used four times), `Stack`, `Results`, `Publish` —
   the sections of the admin editor; each takes the `ProjectForm` through `v-model`.
 - `ProjectsFilterChips` — the `/proiecte` tag chips, `tags` + `active` props,
@@ -125,13 +129,13 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
 - `data/projectsRepository.ts` — `fetchProjectCards`, `fetchProject`, behind `usePublishedProjects` and the case-study page.
 - `data/projectsAdminRepository.ts` — `createProjectsAdminRepository(client)`: `list`,
   `getBySlug`, `save`, `reorder`, `remove`, `duplicate`, `removeUnreferencedMedia`.
-- `state/usePublishedProjects.ts`, `state/useProjectsAdminList.ts`,
+- `state/usePublishedProjects.ts`, `state/useProjectsAdminList.ts`, `state/projectsAdminActions.ts`,
   `state/useProjectsEditor.ts` — see above.
 - `test-support/buildAdminProjectRow.ts` — fixture factory for `AdminProjectRow`.
 
 ## Depends on
 
-- `layers/core` — `pick`, `AdminTopbar`, `AdminField`, `AdminFieldPair`,
+- `layers/core` — `pick`, `AdminTopbar`, `AdminField`, `AdminFieldPair`, `AdminSaveIssues`, `AdminDialog`,
   `AdminImageUpload`, `AppButton`, `TechChip`, `SiteSection`, `MediaFrame`,
   `PageHero`, `FactCard`, `SectionLabel`, `useUnsavedChangesGuard`, `useDragReorder`, `moveItem`,
   `useLocaleOverride`, `usePageSeo`, `useJsonLd`, `useSiteLocale`, `useSiteUrl`,

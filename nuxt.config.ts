@@ -135,7 +135,8 @@ export default defineNuxtConfig({
     fallbackToApi: false,
     // Every used icon is in the client bundle (also read during SSR), so the server ships no whole collections.
     serverBundle: false,
-    clientBundle: { icons: [...new Set([...Object.values(TECH_ICONS), ...Object.values(STACK_GROUP_ICONS), ...Object.values(CARD_ICONS)])] },
+    // UI icons used by name in templates are listed here next to the data-driven maps.
+    clientBundle: { icons: [...new Set([...Object.values(TECH_ICONS), ...Object.values(STACK_GROUP_ICONS), ...Object.values(CARD_ICONS), 'lucide:chevron-down'])] },
   },
 
   // Node's built-in SQLite instead of the better-sqlite3 native addon — no compiled binary to build or ship.
