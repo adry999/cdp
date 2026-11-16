@@ -73,7 +73,7 @@ domeniu (`codepedia.md`, `codepedia.studio`), din branch-ul `production`, cu ace
       prin listhen/nitropack, esbuild, braces, @simple-git/argv-parser), iar versiunile
       majore rămase: doar typescript 7 (@nuxt/fonts 1.x și vitest 5 sunt instalate)
 - [x] Ștergere lead din admin (2026-10-06)
-- [ ] Perioadă de retenție pentru leads + purjare automată (vezi Confidențialitate)
+- [ ] Purjare automată a leads mai vechi de 12 luni (perioada e stabilită, vezi Confidențialitate); până atunci, ștergere manuală din admin
 
 ## Email
 
@@ -84,9 +84,9 @@ domeniu (`codepedia.md`, `codepedia.studio`), din branch-ul `production`, cu ace
 
 ## Confidențialitate
 
-- [ ] Perioada de retenție pentru `leads` (formular de contact + chestionar de
-      calificare) — `layers/consent/domain/privacyPolicy.ts`, secțiunea „Cât timp
-      păstrăm datele" / "How long we keep data"
+- [x] Perioada de retenție pentru `leads` (formular de contact + chestionar de
+      calificare): 12 luni de la ultimul mesaj, dacă nu începe o colaborare (2026-11-16),
+      în `layers/consent/domain/privacyPolicy.ts`, secțiunea „Cât timp păstrăm datele"
 
 ## Studii de caz — per proiect
 
