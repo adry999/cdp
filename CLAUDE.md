@@ -9,3 +9,6 @@ duplica aici: o regulă nouă intră în `AGENTS.md`.
 
 - Skill-ul `project-conventions` (`.claude/skills/project-conventions/SKILL.md`) se
   aplică la orice cod nou sau mutat.
+- Skill-ul `ui-ux-pro-max` (`.claude/skills/ui-ux-pro-max/`) se aplică la orice schimbare de
+  interfață, ca verificare (regula e în `AGENTS.md`); căutarea se rulează cum scrie în
+  `.claude/skills/ui-ux-pro-max/SOURCE.md`.
