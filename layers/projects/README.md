@@ -45,9 +45,6 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
   every `projects` / `redirects` query (published cards, case study by slug,
   slug list, redirect lookup), through the session client; failures go through
   `logAndThrow`. Handlers and middleware call it, never Supabase directly.
-- `server/repository/projectPreviewRepository.ts` — `createProjectPreviewRepository(event)`:
-  the one service-role read (a saved project by `slug_ro`, draft or published), behind
-  `server/services/projectPreview.ts`, which calls `requireAdmin` before anything else.
 - `domain/caseStudyPaths.ts` — `caseStudyPaths(slugRo, slugEn)`, the public
   `/proiecte/..` and `/en/work/..` paths.
 
@@ -81,9 +78,8 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
 
 - `/admin/preview/projects/[slug]` — `app/pages/admin/preview/projects/[slug].vue`, `bare` layout: the
   draft preview. The saved project (draft or published) rendered with `ProjectsCaseStudy` under
-  `ProjectsAdminPreviewBanner`, RO only, `noindex, nofollow`. Loaded in the browser from
-  `GET /api/admin/projects/[slug]/preview` (admin only, 401/403 otherwise), so no draft is ever in
-  server-rendered HTML; `/admin/**` is `private, no-store` and outside the SWR rules of `/proiecte/**`.
+  `ProjectsAdminPreviewBanner`, RO only, `noindex, nofollow`. Loaded in the browser with the editor's
+  `getBySlug` (the admin session and RLS, no API route), so no draft is ever in server-rendered HTML; `/admin/**` is `private, no-store` and outside the SWR rules of `/proiecte/**`.
   Linked as „Vezi ca draft" from the editor once the project is saved.
 
 ## Components

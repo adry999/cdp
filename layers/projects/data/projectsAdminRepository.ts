@@ -10,7 +10,6 @@ import {
 } from '#layers/projects/domain/projectSelect'
 import { nextCopySlug } from '#layers/projects/domain/adminProjectList'
 import { createProjectsMediaRepository } from '#layers/projects/data/projectsMediaRepository'
-import type { ProjectPreview } from '#layers/projects/domain/projectPreview'
 
 type SupabaseClient = ReturnType<typeof useSupabaseClient<Database>>
 
@@ -274,9 +273,4 @@ export function createProjectsAdminRepository(
       return complete
     },
   }
-}
-
-/** The saved project for the draft preview page; 401/403 without an admin session, 404 for an unknown slug. */
-export function fetchProjectPreview(slug: string) {
-  return $fetch<ProjectPreview>(`/api/admin/projects/${encodeURIComponent(slug)}/preview`)
 }
