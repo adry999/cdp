@@ -37,12 +37,13 @@ useBreadcrumbLd(() => t('nav.about'))
 
     <ContentAboutTeam />
 
-    <section class="border-t border-hairline">
-      <div class="container-site py-[clamp(40px,5vw,64px)]">
-        <div class="grid grid-fit-180 gap-4">
-          <FactCard v-for="id in FACT_IDS" :key="id" :label="t(`about.facts.${id}.label`)" :value="t(`about.facts.${id}.value`)" />
-        </div>
+    <!-- In the content column, like the sections above (and the facts on a case study). -->
+    <SiteSection padding="xs">
+      <div class="grid grid-fit-safe-180 gap-4">
+        <FactCard v-for="id in FACT_IDS" :key="id" :label="t(`about.facts.${id}.label`)" :value="t(`about.facts.${id}.value`)" />
       </div>
-    </section>
+    </SiteSection>
+
+    <ClosingCta :title="t('about.cta.title')" :body="t('about.cta.body')" :button="t('about.cta.button')" />
   </div>
 </template>

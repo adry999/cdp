@@ -22,7 +22,7 @@ const siteLocale = useSiteLocale()
               target="_blank"
               rel="noopener noreferrer"
               :aria-label="`${t('about.team.linkedin', { name: member.name })} ${t('a11y.newTab')}`"
-              class="tap-y text-muted hover:text-signal-text transition-colors inline-flex items-center"
+              class="relative inline-flex items-center text-muted transition-colors before:absolute before:top-1/2 before:left-1/2 before:size-11 before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] hover:text-signal-text"
             >
               <span class="eyebrow-sm">in</span>
             </a>

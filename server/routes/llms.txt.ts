@@ -3,7 +3,7 @@ import { originForHost } from '#layers/core/shared/utils/siteOrigins'
 import { listBlogPostsForLlms } from '#layers/blog/server'
 import { listServicesForLlms, SERVICES_INDEX_PAGE } from '#layers/services/server'
 import { listProjectsForLlms, PROJECTS_INDEX_PAGE } from '#layers/projects/server'
-import { NEWS_INDEX_PAGE } from '#layers/news/server'
+import { listNewsSitemapPages, NEWS_INDEX_PAGE } from '#layers/news/server'
 
 export default defineEventHandler(async (event) => {
   const origins = getSiteOrigins(event)
@@ -11,9 +11,11 @@ export default defineEventHandler(async (event) => {
   const locale = isRoHost ? 'ro' : 'en'
   const origin = origins[locale]
 
-  const [posts, projects] = await Promise.all([
+  const [posts, projects, newsPages] = await Promise.all([
     listBlogPostsForLlms(event, locale),
     listProjectsForLlms(event, locale),
+    // Empty while nothing is published; the news page is then left out, as in the footer and the sitemap.
+    listNewsSitemapPages(event),
   ])
   const services = listServicesForLlms(event, locale)
 
@@ -38,9 +40,9 @@ export default defineEventHandler(async (event) => {
     '',
     `## ${locale === 'ro' ? 'Pagini cheie' : 'Key pages'}`,
     `- [${locale === 'ro' ? 'Servicii' : 'Services'}](${origin}${SERVICES_INDEX_PAGE[locale]})`,
-    `- [${locale === 'ro' ? 'Proiecte' : 'Work'}](${origin}${PROJECTS_INDEX_PAGE[locale]})`,
+    `- [${locale === 'ro' ? 'Proiecte' : 'Projects'}](${origin}${PROJECTS_INDEX_PAGE[locale]})`,
     `- [Blog](${origin}${locale === 'ro' ? '/blog' : '/en/blog'})`,
-    `- [${locale === 'ro' ? 'Noutăți' : 'News'}](${origin}${NEWS_INDEX_PAGE[locale]})`,
+    ...(newsPages.length ? [`- [${locale === 'ro' ? 'Noutăți' : 'News'}](${origin}${NEWS_INDEX_PAGE[locale]})`] : []),
     `- [${locale === 'ro' ? 'Prețuri' : 'Pricing'}](${origin}${locale === 'ro' ? '/preturi' : '/en/pricing'})`,
     `- [${locale === 'ro' ? 'Despre noi' : 'About'}](${origin}${locale === 'ro' ? '/despre' : '/en/about'})`,
     `- [${locale === 'ro' ? 'Contact' : 'Contact'}](${origin}${locale === 'ro' ? '/contact' : '/en/contact'})`,

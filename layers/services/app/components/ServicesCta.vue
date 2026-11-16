@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import type { Service } from '#layers/services/domain/service'
 
-withDefaults(defineProps<{ service: Service; number?: string }>(), {
-  number: '06',
-})
+defineProps<{ service: Service; number: string }>()
 const { t } = useI18n()
 </script>
 
@@ -13,7 +11,7 @@ const { t } = useI18n()
       {{ service.priceFrom }}
     </p>
     <div class="mt-5 flex flex-wrap gap-3">
-      <QualifierCta variant="signal" :stage="service.qualifierStage">{{ t('qualifier.trigger') }}</QualifierCta>
+      <QualifierCta variant="signal" :stage="service.qualifierStage" :service="service.slug">{{ t('qualifier.trigger') }}</QualifierCta>
     </div>
   </SiteSection>
 </template>

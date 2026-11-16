@@ -1,5 +1,6 @@
 export { mapNews, newsPaths, newsSlug } from './domain/news'
 export { NEWS_INDEX_PAGE } from './domain/sitemap'
 export { newsArticleSchema } from './domain/seo'
+export { useNewsLink } from './state/useNewsLink'
 export type { NewsView } from './domain/news'
 export type { NewsRow } from './domain/newsSelect'
