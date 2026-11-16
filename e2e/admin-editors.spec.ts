@@ -147,6 +147,8 @@ test('the project editor says when edits are unsaved, and when they are saved', 
   await page.goto('/admin/projects/nou')
   await page.waitForLoadState('networkidle')
   await expect(topbar(page)).not.toContainText('Modificări nesalvate')
+  // Nothing is saved yet, so there is nothing to preview.
+  await expect(page.getByRole('link', { name: /Vezi ca draft/ })).toHaveCount(0)
 
   await page.getByLabel('Slug RO').fill(project.slug_ro)
   await page.getByLabel('Slug EN').fill(project.slug_en)
@@ -170,6 +172,11 @@ test('the project editor says when edits are unsaved, and when they are saved', 
   await expect(page.getByRole('heading', { level: 1, name: 'Card e2e' })).toBeVisible()
   await expect(topbar(page)).toContainText('Salvat')
   await expect(topbar(page)).not.toContainText('Modificări nesalvate')
+
+  // Once saved, the draft can be seen as its page, in a new tab.
+  const preview = page.getByRole('link', { name: /Vezi ca draft/ })
+  await expect(preview).toHaveAttribute('href', '/admin/preview/projects/e2e-proiect')
+  await expect(preview).toHaveAttribute('target', '_blank')
 })
 
 test('the news topbar shows the stored state, not the unsaved checkbox', async ({ page }) => {
