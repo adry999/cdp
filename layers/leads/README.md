@@ -42,3 +42,4 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 - `app/components/admin/AdminSidebar.vue` — `useNewLeadsCount` for the "Solicitări" badge.
 - `layers/qualifier` — `notifyTeam`, `createLeadRepository`, `LeadRepository`, `LeadRecord`, `LEAD_RATE_LIMIT` via `#layers/leads/server`, in `server/services/submitQualification.ts` and `server/api/contact.post.ts`.
 - `app/utils/enPendingTranslation.ts` — `LEADS_EN_PENDING_PATHS`; `server/routes/sitemap.xml.ts` — `LEADS_SITEMAP_PAGES`.
+- `layers/qualifier` — `LeadsSendFailure` (`app/components/`), the block a failed send shows next to the submit button: the message passed in `message`, then the `contactEmail` of `useSiteSettings()` as a `mailto:` link (`role="alert"`). The qualifier may use leads but not content, so the address reaches it through this component.
