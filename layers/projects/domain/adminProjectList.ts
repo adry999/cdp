@@ -57,6 +57,8 @@ export interface ChecklistItem {
   label: string
   hint: string
   required: boolean
+  /** Not required, but called out while missing (shown as "recomandat"). */
+  recommended?: boolean
   done: boolean
 }
 
@@ -136,8 +138,9 @@ export function evaluateChecklist(row: ChecklistInput, consentConfirmed: boolean
     {
       id: 'live',
       label: 'Link live',
-      hint: 'Adresa site-ului sau a aplicației, din secțiunea Linkuri.',
-      required: true,
+      hint: 'Recomandat, nu obligatoriu: adresa site-ului sau a aplicației, din secțiunea Linkuri. Unele proiecte nu au una publică.',
+      required: false,
+      recommended: true,
       done: filled(row.live_url),
     },
     {
