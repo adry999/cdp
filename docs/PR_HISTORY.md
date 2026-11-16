@@ -183,4 +183,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#221** fix: aceeași poziție de repaus în colțul din dreapta sus pentru efectul din hero (#220, în `dev`), spre `main`.
 - **#223** chore: integrează în `dev`, printr-o singură ramură, cele 12 PR-uri deschise din altă sesiune (#205–#216). Cinci conflicte rezolvate păstrând schimbările ambelor părți (culoarea `text-on-signal` din #206 peste componentele mutate sau adăugate în #207, #209 și #214; `nav.projects` „Projects”, blocul de final de pe `/despre` și grila de pe pagina de servicii din #215). Rândurile din acest istoric sunt din nou în ordine numerică.
 - **#224** fix: nota de sub etapele de servicii de pe homepage nu mai contrazice oferta de dedesubt: proiectele mari încep cu un audit tehnic, iar aplicația de gestiune la preț fix cu o discuție gratuită (RO și EN).
-- **#225** feat: lotul din `dev` spre `main`: #205–#216 (prin #223) și nota de sub servicii (#224).
+- **#227** feat: lotul din `dev` spre `main`: #205–#216 (prin #223) și nota de sub servicii (#224).
