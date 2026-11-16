@@ -36,15 +36,17 @@ watch(status, (value) => {
     <Transition name="q-modal" appear>
       <div
         v-if="isOpen"
-        class="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-scrim/60 px-4 py-[max(24px,6vh)]"
+        class="fixed inset-0 z-[100] flex scroll-pb-24 items-start justify-center overflow-y-auto bg-scrim/60 px-4 pt-[max(24px,6vh)]"
         @mousedown.self="close"
       >
         <div
           ref="panel"
+        <!-- The space below the panel is its margin, not this backdrop's padding: a sticky row in a
+             step (the "Continuă" row) would otherwise stop that far above the screen's bottom edge. -->
           role="dialog"
           aria-modal="true"
           aria-labelledby="qualifier-title"
-          class="relative w-full max-w-[560px] rounded-lg border border-hairline bg-paper p-[clamp(20px,4vw,36px)] shadow-modal"
+          class="relative mb-[max(24px,6vh)] w-full max-w-[560px] rounded-lg border border-hairline bg-paper p-[clamp(20px,4vw,36px)] shadow-modal"
         >
           <div class="flex items-start justify-between gap-4">
             <div>
