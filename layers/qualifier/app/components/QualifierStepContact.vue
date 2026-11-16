@@ -6,6 +6,7 @@ import {
 } from '#layers/qualifier/domain/routing'
 import type { StageId } from '#layers/core/shared/types/service-stage'
 import type { QualifierContactPayload } from '#layers/qualifier/domain/qualification'
+import { useQualifierDraft } from '#layers/qualifier/state/useQualifierDraft'
 
 const props = defineProps<{
   stage: StageId
@@ -31,13 +32,15 @@ const localePath = useLocalePath()
 const route = computed(() => resolveRoute(props.stage, props.budget))
 const offer = computed(() => offerKey(props.stage, route.value))
 
-const form = reactive<QualifierContactPayload>({
-  name: '',
-  email: '',
-  handle: '',
-  notes: '',
-  website: '',
-})
+// Starts from the draft and writes every edit back to it, so closing the dialog keeps what was
+// typed. A copy rather than a live binding: a successful send clears the draft while this step is
+// still fading out, and its fields must not blank out on screen.
+const { draft } = useQualifierDraft()
+const form = reactive<QualifierContactPayload>({ ...draft.value.contact, website: '' })
+watch(
+  () => ({ name: form.name, email: form.email, handle: form.handle, notes: form.notes }),
+  (contact) => Object.assign(draft.value.contact, contact),
+)
 
 const fieldErrors = reactive<{ name?: string; email?: string }>({})
 

@@ -3,8 +3,8 @@ import { useQualifierDialog } from '#layers/qualifier/state/useQualifierDialog'
 import { QUALIFIER_TOTAL_STEPS, useQualifierFlow } from '#layers/qualifier/state/useQualifierFlow'
 
 const { isOpen, returnFocusTo } = useQualifierDialog()
-// Registered before the watcher below, so the flow has reset by the time the
-// dialog moves focus into its first step.
+// Registered before the watcher below, so the flow has resumed by the time the
+// dialog moves focus into it.
 const { step, direction, stage, budget, status, goNext, goBack, submit, close } = useQualifierFlow()
 const { t } = useI18n()
 
