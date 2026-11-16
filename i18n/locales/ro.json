@@ -12,7 +12,7 @@
     "chooseService": "Alege serviciul",
     "servicesToggle": "Deschide meniul Servicii",
     "services": "Servicii",
-    "work": "Portofoliu",
+    "work": "Proiecte",
     "blog": "Blog",
     "news": "Noutăți",
     "pricing": "Prețuri",
@@ -20,6 +20,8 @@
     "main": "Navigare principală",
     "contact": "Contact",
     "letsTalk": "Discută un proiect",
+    "letsTalkShort": "Discută",
+    "letsTalkShortLabel": "Discută un proiect",
     "projects": "Proiecte",
     "groupSites": "Site-uri",
     "groupApps": "Aplicații și AI",
@@ -195,7 +197,8 @@
       "sectionLabel": "Stack",
       "title": "Tehnologiile cu care livrăm.",
       "subtitle": "TypeScript pe frontend și backend, Postgres pentru date, deploy pe Vercel. Unelte folosite deja în producție, nu o listă de dorințe.",
-      "integrationNote": "Fiecare proiect are particularitățile sale. Cel mai bine este să ne auzim la un apel sau pe email legat de nevoile tale specifice, pentru a descoperi cum te putem ajuta la maximum.",
+      "integrationNote": "Fiecare proiect are particularitățile sale. Cel mai bine este să {link} legat de nevoile tale specifice, pentru a descoperi cum te putem ajuta la maximum.",
+      "integrationNoteLink": "ne auzim la un apel sau pe email",
       "groups": {
         "frontend": {
           "name": "Frontend & UI",
@@ -246,7 +249,7 @@
       "sectionLabel": "Proces"
     },
     "work": {
-      "sectionLabel": "Portofoliu",
+      "sectionLabel": "Proiecte",
       "title": "Proiecte cu care ne mândrim.",
       "intro": "O selecție a celor mai recente proiecte și studii de caz care ilustrează abordarea noastră în rezolvarea provocărilor tehnice și generarea de valoare pentru business.",
       "caseStudyLink": "Vezi studiul de caz →",
@@ -315,8 +318,9 @@
         "privacyNoticeLink": "politica de confidențialitate",
         "submit": "Vezi dacă te putem ajuta",
         "submitting": "Se trimite…",
-        "success": "Trimis. Primești un răspuns într-o zi lucrătoare.",
+        "success": "Mulțumim! Primești un răspuns într-o zi lucrătoare.",
         "error": "Ceva n-a mers. Încearcă din nou sau scrie direct pe email.",
+        "errorRateLimited": "Prea multe încercări. Încearcă din nou peste câteva minute.",
         "errorRequired": "Câmp obligatoriu.",
         "errorEmail": "Adresă de email invalidă."
       },
@@ -504,7 +508,12 @@
       "granturi": "Granturi"
     },
     "listLabel": "Studii de caz",
-    "empty": "Momentan nu avem studii de caz publicate."
+    "empty": "Momentan nu avem studii de caz publicate.",
+    "cta": {
+      "title": "Ai un proiect asemănător?",
+      "body": "Spune-ne ce vrei să construiești și unde ai ajuns cu el. Ne uităm împreună și îți spunem deschis dacă și cum te putem ajuta.",
+      "button": "Spune-ne despre proiect"
+    }
   },
   "services": {
     "features": {
@@ -522,7 +531,7 @@
         "description": "Site-uri de prezentare, aplicații web, WordPress, Shopify și automatizări cu AI. Alege etapa în care ești și vezi ce livrăm, în cât timp."
       },
       "title": "Cinci etape. Pornim de unde ești acum.",
-      "intro": "De la o pagină rapidă până la inginerie AI la comandă. Fiecare etapă are preț fix, termen asumat și 30 de zile de remedieri după lansare.",
+      "intro": "De la o pagină rapidă până la inginerie AI la comandă. Pentru fiecare etapă stabilim prețul și termenul înainte să începem, iar după lansare ai 30 de zile de remedieri.",
       "cta": {
         "title": "Nu știi în ce etapă ești?",
         "body": "Descrie problema în câteva rânduri. Îți răspundem într-o zi lucrătoare cu etapa potrivită și o estimare.",
@@ -540,6 +549,7 @@
       "intro": "Articole și știri din alte surse, alese de echipa CODEPEDIA, cu un rezumat și link la original."
     },
     "empty": "Nu sunt încă noutăți publicate.",
+    "emptyBlogLink": "Citește blogul →",
     "latest": "Cele mai noi",
     "readAtSource": "Citește la sursă ↗",
     "openOriginal": "Citește articolul original ↗",
@@ -638,12 +648,14 @@
       "plans": {
         "maintenance": {
           "label": "Mentenanță",
-          "price": "Predictibil",
+          "price": "La cerere",
+          "note": "Predictibil",
           "body": "Pentru produse deja lansate. Actualizări, monitorizare, backup și un număr fix de ore sau sprinturi lunare pentru dezvoltare."
         },
         "continuous": {
           "label": "Dezvoltare continuă",
-          "price": "Agil & Flexibil",
+          "price": "La cerere",
+          "note": "Agil & Flexibil",
           "body": "Pentru construcția unui produs nou sau scalare agresivă. Sprinturi de două săptămâni cu demo."
         }
       },
@@ -693,6 +705,11 @@
         "label": "Limbi",
         "value": "Română · Engleză · Rusă"
       }
+    },
+    "cta": {
+      "title": "Vorbește direct cu oamenii care construiesc.",
+      "body": "Scrie-ne câteva rânduri despre ce ai nevoie. Discuți soluția tehnică direct cu inginerul care o va construi, fără intermediari.",
+      "button": "Discută cu un inginer"
     }
   },
   "contactModal": {

@@ -43,6 +43,11 @@ export function leadServiceLabel(value: string | null): string {
   return isServiceTagId(value) ? SERVICE_TAG_LABELS_RO[value] : value
 }
 
+/** Service and stage on one line of the admin list ("Website · Concept"); empty when neither was chosen. */
+export function leadServiceStage(service: string | null, stage: string | null): string {
+  return [service && leadServiceLabel(service), stage && leadStageLabel(stage)].filter(Boolean).join(' · ')
+}
+
 export const LEAD_STATUSES = ['nou', 'in_discutie', 'castigat', 'refuzat'] as const
 export type LeadStatus = (typeof LEAD_STATUSES)[number]
 

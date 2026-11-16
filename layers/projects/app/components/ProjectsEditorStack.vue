@@ -18,9 +18,9 @@ function removeStackItem(index: number) {
 </script>
 
 <template>
-  <ProjectsEditorSection title="Acțiune — Tehnic (secțiunea 03)">
+  <ProjectsEditorSection section="tehnic">
     <template #action>
-      <button type="button" class="cursor-pointer border-0 bg-transparent p-0 eyebrow text-signal-text" @click="addStackItem">
+      <button type="button" class="tap-text eyebrow text-signal-text" @click="addStackItem">
         + Tehnologie
       </button>
     </template>
@@ -41,7 +41,7 @@ function removeStackItem(index: number) {
         <div class="flex-1">
           <AdminFieldPair v-model:ro="item.role.ro" v-model:en="item.role.en" label="Rol" />
         </div>
-        <button type="button" class="mb-2.5 cursor-pointer border-0 bg-transparent p-0 eyebrow-sm text-muted hover:text-signal-text" @click="removeStackItem(i)">
+        <button type="button" class="mb-1.5 tap-text eyebrow-sm text-muted hover:text-signal-text" @click="removeStackItem(i)">
           Șterge
         </button>
       </div>

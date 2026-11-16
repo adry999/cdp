@@ -10,7 +10,7 @@ defineEmits<{ askDelete: []; cancelDelete: []; confirmDelete: [] }>()
   <div class="flex flex-wrap items-center gap-4 border-t border-hairline py-3" :class="{ 'border-b': last }">
     <NuxtLink
       :to="`/admin/news/${item.slug_ro}`"
-      class="min-w-0 flex-[2_1_220px] text-[15px] text-ink no-underline hover:text-signal-text hover:no-underline"
+      class="tap-y min-w-0 flex-[2_1_220px] text-[15px] text-ink no-underline hover:text-signal-text hover:no-underline"
     >
       {{ item.title_ro }}
     </NuxtLink>
@@ -23,14 +23,14 @@ defineEmits<{ askDelete: []; cancelDelete: []; confirmDelete: [] }>()
     </div>
     <div class="flex flex-[0_0_150px] justify-end gap-3 eyebrow">
       <template v-if="confirming">
-        <button type="button" class="cursor-pointer border-0 bg-transparent p-0 text-signal-text" :disabled="busy" @click="$emit('confirmDelete')">
+        <button type="button" class="tap-text text-signal-text" :disabled="busy" @click="$emit('confirmDelete')">
           {{ busy ? 'Șterge…' : 'Sigur? Șterge' }}
         </button>
-        <button type="button" class="cursor-pointer border-0 bg-transparent p-0 text-muted" @click="$emit('cancelDelete')">Anulează</button>
+        <button type="button" class="tap-text text-muted" @click="$emit('cancelDelete')">Anulează</button>
       </template>
       <template v-else>
-        <NuxtLink :to="`/admin/news/${item.slug_ro}`" class="text-muted hover:text-ink">Editează</NuxtLink>
-        <button type="button" class="cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-signal-text" @click="$emit('askDelete')">
+        <NuxtLink :to="`/admin/news/${item.slug_ro}`" class="tap-text text-muted hover:text-ink">Editează</NuxtLink>
+        <button type="button" class="tap-text text-muted hover:text-signal-text" @click="$emit('askDelete')">
           Șterge
         </button>
       </template>
