@@ -7,6 +7,9 @@ const { isOpen, returnFocusTo } = useQualifierDialog()
 // dialog moves focus into it.
 const { step, direction, stage, budget, status, goNext, goBack, submit, close } = useQualifierFlow()
 const { t } = useI18n()
+const i18nList = useI18nList()
+// The studio's next steps after any enquiry, shared with the contact dialog's confirmation.
+const nextSteps = computed(() => i18nList('contactPage.steps'))
 
 const panel = ref<HTMLElement | null>(null)
 useModalLock(panel, isOpen, close, { returnFocusTo })
@@ -18,17 +21,16 @@ const successHeading = ref<HTMLElement | null>(null)
 
 // The focused "Next"/"Back" button unmounts with its step, so focus moves to the new step's legend.
 // `after-enter` fires once the out-in transition has mounted the new step.
+// The confirmation takes the focus the same way, so a screen reader announces it; it cannot be
+// focused earlier, while the contact step is still fading out.
 function focusStep() {
-  if (status.value === 'success') return
+  if (status.value === 'success') {
+    successHeading.value?.focus()
+    return
+  }
   // The contact step has no legend: its first field takes the focus.
   panel.value?.querySelector<HTMLElement>('[data-step-legend], #qual-name')?.focus()
 }
-
-watch(status, (value) => {
-  if (value === 'success') {
-    nextTick(() => successHeading.value?.focus())
-  }
-})
 </script>
 
 <template>
@@ -39,10 +41,10 @@ watch(status, (value) => {
         class="fixed inset-0 z-[100] flex scroll-pb-24 items-start justify-center overflow-y-auto bg-scrim/60 px-4 pt-[max(24px,6vh)]"
         @mousedown.self="close"
       >
-        <div
-          ref="panel"
         <!-- The space below the panel is its margin, not this backdrop's padding: a sticky row in a
              step (the "Continuă" row) would otherwise stop that far above the screen's bottom edge. -->
+        <div
+          ref="panel"
           role="dialog"
           aria-modal="true"
           aria-labelledby="qualifier-title"
@@ -110,16 +112,21 @@ watch(status, (value) => {
                 @submit="submit"
                 @back="goBack"
               />
-              <div v-else key="success" role="status" class="py-2 text-center">
-                <h3 ref="successHeading" tabindex="-1" class="mt-2 text-[clamp(18px,2.6vw,22px)] font-semibold tracking-[-0.02em] outline-none">
-                  {{ t('qualifier.success.title') }}
-                </h3>
-                <p class="mx-auto mt-3 max-w-[38ch] text-[15px] leading-relaxed text-muted">
-                  {{ t('qualifier.success.body') }}
-                </p>
-                <div class="mt-6 flex justify-center">
-                  <AppButton variant="ink" @click="close">{{ t('qualifier.success.done') }}</AppButton>
+              <!-- Same confirmation as the contact dialog's: thanks, then what happens next and when. -->
+              <div v-else key="success" role="status" class="flex flex-col gap-5">
+                <div class="flex items-center gap-3">
+                  <span aria-hidden="true" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-signal text-lg text-inverse">✓</span>
+                  <h3 ref="successHeading" tabindex="-1" class="m-0 text-lg font-semibold leading-snug outline-none">
+                    {{ t('qualifier.success.title') }}
+                  </h3>
                 </div>
+                <ol class="m-0 flex list-none flex-col border-b border-hairline p-0">
+                  <li v-for="(item, index) in nextSteps" :key="item" class="flex gap-4 border-t border-hairline py-3 text-[15px]">
+                    <span class="font-mono text-xs text-signal-text">{{ String(index + 1).padStart(2, '0') }}</span>
+                    {{ item }}
+                  </li>
+                </ol>
+                <AppButton variant="outline" class="w-fit" @click="close">{{ t('qualifier.success.done') }}</AppButton>
               </div>
             </Transition>
           </div>

@@ -481,7 +481,6 @@
     },
     "success": {
       "title": "Thanks — we've got your details.",
-      "body": "We'll review what you sent and get back to you within one working day with next steps.",
       "done": "Close"
     }
   },
