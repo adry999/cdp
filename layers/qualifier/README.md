@@ -31,3 +31,9 @@ There is no `server/index.ts`: nothing outside this layer uses its server code.
 
 - `app/layouts/default.vue` — `useQualifierAvailability`, `QualifierModal`.
 - `layers/home` — `QualifierCta`, `useQualifierAvailability`; `layers/projects`, `layers/services` — `QualifierCta`.
+
+## Flow state
+
+- The answers live in `useState('qualifier:draft')` (`state/useQualifierDraft.ts`, shape and rules in `domain/draft.ts`): the step, the stage, the budget and the typed contact fields (not the honeypot). Closing the dialog (Escape, ×, a click on the backdrop) keeps them, and the next opening resumes where the visitor left. An opening that names a different stage (`qualifier:open({ stage })`) goes back to step 1 with that stage chosen and keeps the budget and the fields (`resumeDraft`). Only a successful send clears the draft.
+- Step 1's "Continuă" row is sticky at the bottom of the dialog's scroll area, so it stays in view under the five long stage cards on a phone; the backdrop's `scroll-padding-bottom` keeps a keyboard-focused card clear of it.
+- The confirmation repeats the contact dialog's: thanks, then the studio's next steps (`contactPage.steps`). A failed send shows `LeadsSendFailure` from `layers/leads` (client component) above the submit row, with the contact email as a `mailto:` link.
