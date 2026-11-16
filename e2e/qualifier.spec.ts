@@ -129,8 +129,9 @@ test('delivery failure keeps the contact step and shows the error', async ({ pag
   await dialog.locator('#qual-email').fill('ana@example.com')
   await dialog.getByRole('button', { name: 'Trimite solicitarea' }).click()
 
-  await expect(dialog.getByRole('alert')).toHaveText('Ceva n-a mers. Încearcă din nou sau scrie direct pe email.')
-  await expect(dialog.locator('#qual-name')).toBeVisible()
+  // The block also carries the address to write to (see the mailto test below).
+  await expect(dialog.getByRole('alert')).toContainText('Ceva n-a mers. Încearcă din nou sau scrie direct pe email.')
+  await expect(dialog.locator('#qual-name')).toHaveValue('Ana Pop')
 })
 
 test('EN dialog opens from /en and posts the English locale', async ({ page, context }) => {
@@ -210,4 +211,140 @@ test('focus moves into the new step after Continue and Back', async ({ page }) =
   await dialog.getByRole('button', { name: 'Înapoi' }).click()
   await expect(dialog.locator('input[name="qualifier-stage"][value="D"]')).toBeVisible()
   await expect(dialog.locator('fieldset legend')).toBeFocused()
+})
+
+test('the close button is a full touch target on a phone and on a desktop', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  const { trigger, dialog } = await openFromHero(page)
+  const close = dialog.getByRole('button', { name: 'Închide' })
+  let box = await close.boundingBox()
+  expect(box?.width).toBeGreaterThanOrEqual(44)
+  expect(box?.height).toBeGreaterThanOrEqual(44)
+
+  await page.keyboard.press('Escape')
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await trigger.click()
+  box = await close.boundingBox()
+  expect(box?.width).toBeGreaterThanOrEqual(32)
+  expect(box?.height).toBeGreaterThanOrEqual(32)
+})
+
+test('closing and reopening keeps the step, the choices and the typed contact fields', async ({ page }) => {
+  const dialog = await reachContactStep(page)
+  await dialog.locator('#qual-name').fill('Ana Pop')
+  await dialog.locator('#qual-email').fill('ana@example.com')
+  await dialog.locator('#qual-notes').fill('Vreau un site nou.')
+
+  // A click on the backdrop closes the dialog; nothing typed is lost.
+  await page.mouse.click(5, 5)
+  await expect(dialog).toBeHidden()
+  await page.locator('#top').getByRole('button', { name: 'Vezi dacă te putem ajuta' }).click()
+  await expect(dialog.getByText('Pasul 3 din 3')).toBeVisible()
+  await expect(dialog.locator('#qual-name')).toHaveValue('Ana Pop')
+  await expect(dialog.locator('#qual-email')).toHaveValue('ana@example.com')
+  await expect(dialog.locator('#qual-notes')).toHaveValue('Vreau un site nou.')
+
+  // A button for another stage lands on step 1 with that stage chosen; budget and fields stay.
+  await page.keyboard.press('Escape')
+  await page.locator('#servicii [role="tabpanel"]').getByRole('button').click()
+  await expect(dialog.locator('input[name="qualifier-stage"][value="E"]')).toBeChecked()
+  await dialog.getByRole('button', { name: 'Continuă' }).click()
+  await expect(dialog.locator('input[name="qualifier-budget"][value="2to5k"]')).toBeChecked()
+  await dialog.getByRole('button', { name: 'Continuă' }).click()
+  await expect(dialog.locator('#qual-name')).toHaveValue('Ana Pop')
+})
+
+test('a successful send clears the flow for the next opening', async ({ page }) => {
+  await page.route('**/api/contact', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true }) })
+  })
+  const dialog = await reachContactStep(page)
+  await dialog.locator('#qual-name').fill('Ana Pop')
+  await dialog.locator('#qual-email').fill('ana@example.com')
+  await dialog.getByRole('button', { name: 'Trimite solicitarea' }).click()
+  await expect(dialog.getByText('Mulțumim — am primit detaliile.')).toBeVisible()
+
+  await dialog.getByRole('button', { name: 'Închide' }).last().click()
+  await page.locator('#top').getByRole('button', { name: 'Vezi dacă te putem ajuta' }).click()
+  await expect(dialog.getByText('Pasul 1 din 3')).toBeVisible()
+  await expect(dialog.locator('input[name="qualifier-stage"]:checked')).toHaveCount(0)
+})
+
+test('"Continuă" stays on screen on a phone once a stage is chosen, without covering the last card', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  const { dialog } = await openFromHero(page)
+  await dialog.getByText('Am fișiere Figma sau resurse de design gata.').click()
+
+  const next = dialog.getByRole('button', { name: 'Continuă' })
+  await expect(next).toBeInViewport({ ratio: 1 })
+  // Nothing sits on top of it: the click lands on the button itself.
+  const box = await next.boundingBox()
+  if (!box) throw new Error('"Continuă" has no box')
+  const hit = await page.evaluate(
+    ({ x, y }) => document.elementFromPoint(x, y)?.closest('button')?.textContent?.trim(),
+    { x: box.x + box.width / 2, y: box.y + box.height / 2 },
+  )
+  expect(hit).toBe('Continuă')
+
+  // Scrolled to the end, the row sits below the last card instead of over it.
+  await dialog.evaluate((panel) => panel.parentElement?.scrollTo({ top: panel.parentElement.scrollHeight }))
+  const lastCard = dialog.locator('label').filter({ has: page.locator('input[value="D"]') })
+  const cardBox = await lastCard.boundingBox()
+  const nextBox = await next.boundingBox()
+  expect((cardBox?.y ?? 0) + (cardBox?.height ?? 0)).toBeLessThanOrEqual(nextBox?.y ?? 0)
+})
+
+test('the confirmation lists what happens next and when', async ({ page }) => {
+  await page.route('**/api/contact', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true }) })
+  })
+  const dialog = await reachContactStep(page)
+  await dialog.locator('#qual-name').fill('Ana Pop')
+  await dialog.locator('#qual-email').fill('ana@example.com')
+  await dialog.getByRole('button', { name: 'Trimite solicitarea' }).click()
+
+  const status = dialog.getByRole('status')
+  await expect(status.getByRole('heading', { name: 'Mulțumim — am primit detaliile.' })).toBeFocused()
+  await expect(status.getByRole('listitem')).toHaveText([
+    /Răspuns scris în 1 zi lucrătoare/,
+    /Discovery de 60 de minute/,
+    /Specificație de scop și preț în 48 de ore/,
+  ])
+})
+
+test('a failed send shows the contact email as a mailto link and keeps the fields', async ({ page }) => {
+  await page.route('**/api/contact', async (route) => {
+    await route.fulfill({ status: 502, contentType: 'application/json', body: JSON.stringify({ statusCode: 502 }) })
+  })
+  const dialog = await reachContactStep(page)
+  await dialog.locator('#qual-name').fill('Ana Pop')
+  await dialog.locator('#qual-email').fill('ana@example.com')
+  await dialog.getByRole('button', { name: 'Trimite solicitarea' }).click()
+
+  const alert = dialog.getByRole('alert')
+  await expect(alert).toContainText('Ceva n-a mers.')
+  await expect(alert.getByRole('link')).toHaveAttribute('href', /^mailto:[^@\s]+@[^@\s]+$/)
+  await expect(dialog.locator('#qual-name')).toHaveValue('Ana Pop')
+  await expect(dialog.locator('#qual-email')).toHaveValue('ana@example.com')
+})
+
+test('the contact field asks for an email, as the server only accepts one', async ({ page }) => {
+  const dialog = await reachContactStep(page)
+  await expect(dialog.getByLabel('Email de lucru', { exact: true })).toHaveAttribute('type', 'email')
+})
+
+test('a stage card picked with the arrow keys on a phone is not hidden behind the "Continuă" row', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  const { dialog } = await openFromHero(page)
+  await dialog.locator('input[name="qualifier-stage"]').first().focus()
+  await page.keyboard.press('Space')
+  const row = dialog.getByRole('button', { name: 'Continuă' }).locator('..')
+  for (let presses = 0; presses < 4; presses++) {
+    await page.keyboard.press('ArrowDown')
+    const card = dialog.locator('label').filter({ has: page.locator('input:checked') })
+    await expect.poll(async () => {
+      const [cardBox, rowBox] = await Promise.all([card.boundingBox(), row.boundingBox()])
+      return (cardBox?.y ?? 0) + (cardBox?.height ?? 0) <= (rowBox?.y ?? 0) + 1
+    }).toBe(true)
+  }
 })
