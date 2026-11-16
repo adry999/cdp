@@ -20,27 +20,34 @@ export async function useProjectsEditor(slug: string) {
   const revalidatePublicCache = useRevalidatePublicCache()
   const isNew = slug === 'nou'
 
-  const { data: loaded, error: loadError } = await useAsyncData(`admin-project-${slug}`, async () =>
-    isNew ? null : await repository.getBySlug(slug),
-  )
+  // Everything that needs the component or the Nuxt context runs before the first await: the
+  // guard registers a route guard (see useUnsavedChangesGuard), and both loads start together
+  // because a second useAsyncData after an await has no Nuxt context on the server.
+  const form = ref(toProjectForm(null))
+  const { markSaved } = useUnsavedChangesGuard(() => form.value)
+
+  const [{ data: loaded, error: loadError }, { data: previewRows }] = await Promise.all([
+    useAsyncData(`admin-project-${slug}`, async () => (isNew ? null : await repository.getBySlug(slug))),
+    // A failed preview load must not block editing: the panel just renders empty groups.
+    useAsyncData(`admin-project-menu-preview-${slug}`, () =>
+      repository.listForMenuPreview().catch((caught: unknown) => {
+        console.warn('[admin] menu preview: load failed', caught)
+        return []
+      }),
+    ),
+  ])
   // A load failure or an unknown slug must not open an empty "new project" form: saving it
   // would create a project the admin never meant to.
   if (loadError.value) {
     throw createError({ statusCode: 500, statusMessage: 'Project could not be loaded', cause: loadError.value })
   }
   if (!isNew && !loaded.value) throw createError({ statusCode: 404, statusMessage: 'Project not found' })
-
-  // A failed preview load must not block editing: the panel just renders empty groups.
-  const { data: previewRows } = await useAsyncData(`admin-project-menu-preview-${slug}`, () =>
-    repository.listForMenuPreview().catch((caught: unknown) => {
-      console.warn('[admin] menu preview: load failed', caught)
-      return []
-    }),
-  )
   const original = loaded.value ?? null
 
+  form.value = toProjectForm(original)
+  markSaved()
+
   const projectId = ref<string | null>(original?.id ?? null)
-  const form = ref(toProjectForm(original))
   const saveStatus = ref<AsyncStatus>('idle')
   const saveError = ref<AppError | null>(null)
   // Every validation problem of the last save attempt, listed under the topbar.
@@ -58,8 +65,6 @@ export async function useProjectsEditor(slug: string) {
     slugEn: form.value.slugEn.trim(),
     wasPublished: Boolean(original?.published_at),
   })
-
-  const { markSaved } = useUnsavedChangesGuard(form.value)
 
   const menuPreview = computed(() =>
     buildMenuPreview(previewRows.value ?? [], {
