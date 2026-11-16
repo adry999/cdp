@@ -61,7 +61,7 @@ watch(status, (value) => {
             </div>
             <button
               type="button"
-              class="-mr-1 -mt-1 shrink-0 rounded p-2 font-mono text-lg leading-none text-muted transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
+              class="-mr-3 -mt-2.5 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded font-mono text-lg leading-none text-muted transition-colors hover:bg-hatch hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal"
               :aria-label="t('qualifier.close')"
               @click="close"
             >
