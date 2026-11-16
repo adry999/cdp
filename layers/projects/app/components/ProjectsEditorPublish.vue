@@ -29,12 +29,12 @@ defineEmits<{ publish: []; unpublish: [] }>()
         </label>
       </div>
       <div class="flex gap-3 eyebrow">
-        <NuxtLink v-if="form.published" :to="`/proiecte/${form.slugRo}`" class="tap-text text-muted hover:text-ink">Vezi pe site</NuxtLink>
+        <NuxtLink v-if="form.published" :to="`/proiecte/${form.slugRo}`" class="tap-text min-h-11 nav:min-h-8 text-muted hover:text-ink">Vezi pe site</NuxtLink>
         <NuxtLink
           v-if="previewSlug"
           :to="projectPreviewPath(previewSlug)"
           target="_blank"
-          class="tap-text text-muted hover:text-ink"
+          class="tap-text min-h-11 nav:min-h-8 text-muted hover:text-ink"
         >
           Vezi ca draft<span class="sr-only"> (se deschide într-un tab nou)</span>
         </NuxtLink>
