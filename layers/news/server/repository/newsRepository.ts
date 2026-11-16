@@ -21,6 +21,18 @@ export function createNewsRepository(event: H3Event) {
       return data
     },
 
+    // A count only (HEAD request, no rows): the site-wide news link needs to know whether there is any.
+    async countPublished() {
+      const client = await serverSupabaseClient<Database>(event)
+      const { count, error } = await client
+        .from('news_items')
+        .select('slug_ro', { count: 'exact', head: true })
+        .not('published_at', 'is', null)
+
+      if (error) logAndThrow('GET /api/news/count', error)
+      return count ?? 0
+    },
+
     async findPublishedBySlug(slug: string) {
       const client = await serverSupabaseClient<Database>(event)
       const { data, error } = await client

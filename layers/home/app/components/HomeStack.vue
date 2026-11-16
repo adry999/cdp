@@ -3,6 +3,7 @@ import { useReveal } from '#layers/home/state/useReveal'
 import { useStackGroups } from '#layers/content'
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 const groups = useStackGroups()
 
 // Benefit copy is "Lead: sentence." — lead in ink, rest muted.
@@ -64,8 +65,10 @@ const { el: sectionEl, isVisible: drawn, hasMounted: mounted } = useReveal({ onc
       </article>
     </div>
 
-    <p class="mb-0 mt-[clamp(20px,2.5vw,28px)] max-w-[62ch] text-sm text-muted">
-      {{ t('home.stack.integrationNote') }}
-    </p>
+    <i18n-t keypath="home.stack.integrationNote" tag="p" scope="global" class="mb-0 mt-[clamp(20px,2.5vw,28px)] max-w-[62ch] text-sm text-muted">
+      <template #link>
+        <NuxtLink :to="`${localePath('index')}#contact`" class="text-ink underline decoration-signal underline-offset-[3px] hover:text-signal-text">{{ t('home.stack.integrationNoteLink') }}</NuxtLink>
+      </template>
+    </i18n-t>
   </SiteSection>
 </template>

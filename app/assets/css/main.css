@@ -25,6 +25,9 @@
   /* Surfaces that stay dark in both themes (inverted sections, tooltips, footer-like blocks). */
   --color-inverse: #0B0B0B;
   --color-on-inverse: #FAF8F4;
+  /* Text on the signal orange. Not overridden in dark: the light ink of the dark theme reads at
+     2.89:1 on #FF4D14, near-black at 5.93:1. */
+  --color-on-signal: #0B0B0B;
   /* Backdrop behind dialogs; stays near-black in both themes so it always dims the page. */
   --color-scrim: #0B0B0B;
   /* Highlighted block (grants): a warm surface with a translucent signal border. */
@@ -127,6 +130,27 @@
     height: 100%;
     min-height: 24px;
     transform: translateY(-50%);
+  }
+}
+
+/* Borderless text button (admin "Sus", "Șterge", "+ Link"): padding brings the hit area to at least
+   24px tall, and the matching negative margin keeps the text, and the layout, where they were. */
+/* Text-only action in the admin. The padding is the hit area (44px tall on phones, 32px from the nav
+   breakpoint, UX_LAWS Fitts); the negative block margin keeps the row height. The inline margin gives
+   back only 2px of the padding, so neighbours in a 12px gap keep 8px between their hit areas. */
+@utility tap-text {
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  padding: 0.75rem 0.375rem;
+  margin: -0.75rem -0.125rem;
+  @media (min-width: 56.25rem) {
+    padding-block: 0.5rem;
+    margin-block: -0.5rem;
+  }
+  &:disabled {
+    cursor: default;
+    opacity: 0.4;
   }
 }
 

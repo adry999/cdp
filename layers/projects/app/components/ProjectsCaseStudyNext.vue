@@ -30,7 +30,7 @@ const otherProjects = computed(() =>
     </h2>
     <div class="mt-[clamp(20px,2.5vw,32px)]">
       <!-- No mailto: on purpose — the work email is never put into markup. -->
-      <QualifierCta variant="signal">{{ t('caseStudy.cta') }}</QualifierCta>
+      <QualifierCta variant="signal" :service="project.serviceTag ?? undefined">{{ t('caseStudy.cta') }}</QualifierCta>
     </div>
     <template v-if="otherProjects.length">
       <div class="mt-[clamp(40px,5vw,64px)] eyebrow text-muted-ink">

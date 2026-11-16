@@ -10,12 +10,13 @@ const menuOpen = useMobileMenuOpen()
 <template>
   <div class="flex min-h-screen flex-col">
     <a href="#main-content" class="skip-link">{{ t('nav.skipToContent') }}</a>
+    <!-- Fixed to the bottom of the viewport, but early in the tab order: the choice is reachable without tabbing through the page. -->
+    <LazyConsentBanner />
     <SiteHeader />
     <main id="main-content" class="flex-1" :inert="menuOpen">
       <slot />
     </main>
     <SiteFooterMinimal :inert="menuOpen" />
-    <LazyConsentBanner />
     <LazyQualifierModalHost v-if="isQualifierEnabled" />
     <LazyLeadsContactModalHost v-else />
   </div>

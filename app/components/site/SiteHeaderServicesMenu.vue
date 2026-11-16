@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { MappedNavProject } from '#layers/projects'
+import type { ComponentPublicInstance } from 'vue'
 
 const props = defineProps<{
   groups: NavServiceGroup[]
@@ -33,8 +34,13 @@ let ignoreHoverUntil = 0
 
 const allServices = computed(() => props.groups.flatMap((group) => group.services))
 const selected = computed(() => allServices.value.find((s) => s.slug === selectedSlug.value) ?? allServices.value[0])
-const projects = computed(() => (selected.value ? (props.projectsByService[selected.value.slug] ?? []) : []))
+const projects = computed(() => (selected.value ? projectsOf(selected.value.slug) : []))
 const activeProject = computed(() => projects.value[projectIndex.value] ?? projects.value[0])
+const serviceLinks = ref<Record<string, ComponentPublicInstance | null>>({})
+
+function projectsOf(slug: string): MappedNavProject[] {
+  return props.projectsByService[slug] ?? []
+}
 
 watch(
   () => props.currentSlug,
@@ -52,6 +58,21 @@ function selectService(slug: string) {
   if (slug === selectedSlug.value) return
   selectedSlug.value = slug
   projectIndex.value = 0
+}
+
+// Roving tabindex: only the selected service is in the tab sequence, so Tab goes from it straight to
+// its projects. ArrowUp/ArrowDown move the selection (and focus) through the list.
+function onServiceKeydown(event: KeyboardEvent) {
+  if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return
+  const list = allServices.value
+  if (!list.length) return
+  event.preventDefault()
+  const current = list.findIndex((s) => s.slug === selected.value?.slug)
+  const next = list[(current + (event.key === 'ArrowDown' ? 1 : -1) + list.length) % list.length]
+  if (!next) return
+  selectService(next.slug)
+  const el = serviceLinks.value[next.slug]?.$el
+  if (el instanceof HTMLElement) el.focus()
 }
 
 function openMenu() {
@@ -157,14 +178,19 @@ onBeforeUnmount(() => {
       <button
         ref="toggleButton"
         type="button"
-        class="inline-flex min-h-8 min-w-8 cursor-pointer items-center justify-center border-0 bg-transparent p-0 text-[9px] hover:text-signal-text"
+        class="inline-flex min-h-8 min-w-8 cursor-pointer items-center justify-center border-0 bg-transparent p-0 hover:text-signal-text"
         :class="active ? 'text-ink' : 'text-muted'"
         :aria-label="t('nav.servicesToggle')"
         :aria-expanded="open"
         :aria-controls="panelId"
         @click="toggleMenu"
       >
-        <span aria-hidden="true" class="inline-block transition-transform duration-200 motion-reduce:transition-none" :class="open && 'rotate-180'">▾</span>
+        <Icon
+          name="lucide:chevron-down"
+          aria-hidden="true"
+          class="size-3.5 transition-transform duration-200 motion-reduce:transition-none"
+          :class="open && 'rotate-180'"
+        />
       </button>
     </div>
 
@@ -177,12 +203,13 @@ onBeforeUnmount(() => {
         <div
           class="pointer-events-auto grid w-[min(860px,100%)] grid-cols-[230px_minmax(0,1fr)] overflow-hidden rounded-b border border-t-0 border-hairline bg-paper font-sans text-base normal-case tracking-normal shadow-dropdown"
         >
-          <div class="flex flex-col gap-5 border-r border-hairline bg-panel py-[22px]">
+          <div class="flex flex-col gap-5 border-r border-hairline bg-panel py-[22px]" @keydown="onServiceKeydown">
             <div v-for="group in groups" :key="group.label" class="flex flex-col">
               <div class="px-5 pb-2 eyebrow-sm text-muted">{{ group.label }}</div>
               <NuxtLink
                 v-for="service in group.services"
                 :key="service.slug"
+                :ref="(el) => (serviceLinks[service.slug] = el as ComponentPublicInstance | null)"
                 :to="service.to"
                 class="block border-l-2 py-[9px] pl-[18px] pr-5 text-[15px] leading-[1.3] hover:text-ink"
                 :class="
@@ -190,6 +217,7 @@ onBeforeUnmount(() => {
                     ? 'border-signal bg-transparent font-semibold text-ink'
                     : 'border-transparent text-muted'
                 "
+                :tabindex="selected?.slug === service.slug ? 0 : -1"
                 :aria-current="service.slug === currentSlug ? 'page' : undefined"
                 @mouseenter="selectService(service.slug)"
                 @focus="selectService(service.slug)"
@@ -199,42 +227,59 @@ onBeforeUnmount(() => {
             </div>
           </div>
 
-          <div v-if="selected" class="flex min-w-0 flex-col gap-4 px-6 py-[22px]">
-            <div class="eyebrow-sm text-muted">
-              {{ projects.length ? t('nav.projectsKicker', { service: selected.name }) : selected.name }}
-            </div>
-
-            <div v-if="projects.length" class="grid grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] items-start gap-5">
-              <div class="flex flex-col gap-0.5">
-                <NuxtLink
-                  v-for="(project, index) in projects"
-                  :key="project.slug"
-                  :to="projectTo(project)"
-                  class="flex flex-col gap-0.5 rounded-[3px] px-2.5 py-[9px] text-ink"
-                  :class="index === projectIndex ? 'bg-hatch' : 'bg-transparent'"
-                  @mouseenter="projectIndex = index"
-                  @focus="projectIndex = index"
-                >
-                  <span class="line-clamp-2 text-[15px] font-semibold leading-[1.25]">{{ project.title }}</span>
-                  <span v-if="project.subtitle" class="line-clamp-2 text-[13px] leading-[1.3] text-muted">{{ project.subtitle }}</span>
-                </NuxtLink>
+          <!-- One pane per service, stacked in the same cell and hidden but the selected one: the panel keeps
+               the height of the tallest pane, so the bottom links stay put while the selection moves. -->
+          <div class="grid min-w-0">
+            <div
+              v-for="service in allServices"
+              :key="service.slug"
+              class="col-start-1 row-start-1 flex min-w-0 flex-col gap-4 px-6 py-[22px]"
+              :class="service.slug !== selected?.slug && 'invisible'"
+            >
+              <div class="eyebrow-sm text-muted">
+                {{ projectsOf(service.slug).length ? t('nav.projectsKicker', { service: service.name }) : service.name }}
               </div>
-              <NuxtLink v-if="everOpened && activeProject" :to="projectTo(activeProject)" tabindex="-1" aria-hidden="true" class="block">
-                <MediaFrame
-                  :key="activeProject.slug"
-                  ratio="16/9"
-                  :src="activeProject.coverPath ?? undefined"
-                  :alt="activeProject.coverAlt"
-                  sizes="320:400px"
-                  class="rounded-[3px]! bg-hatch object-left-top"
-                />
-              </NuxtLink>
-            </div>
-            <p v-else class="m-0 max-w-[46ch] text-[17px] leading-normal text-ink text-pretty">{{ selected.intro }}</p>
 
-            <div class="mt-auto flex flex-wrap justify-between gap-3 border-t border-hairline pt-2 eyebrow-sm">
-              <NuxtLink :to="selected.to" class="inline-flex min-h-8 items-center text-ink underline-offset-4 hover:text-signal-text hover:underline">{{ t('nav.aboutService') }} →</NuxtLink>
-              <NuxtLink :to="allProjectsTo" class="inline-flex min-h-8 items-center text-ink underline-offset-4 hover:text-signal-text hover:underline">{{ t('nav.allProjects') }} →</NuxtLink>
+              <div v-if="projectsOf(service.slug).length" class="grid grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] items-start gap-5">
+                <div class="flex flex-col gap-0.5">
+                  <NuxtLink
+                    v-for="(project, index) in projectsOf(service.slug)"
+                    :key="project.slug"
+                    :to="projectTo(project)"
+                    class="flex flex-col gap-0.5 rounded-[3px] px-2.5 py-[9px] text-ink"
+                    :class="service.slug === selected?.slug && index === projectIndex ? 'bg-hatch' : 'bg-transparent'"
+                    @mouseenter="projectIndex = index"
+                    @focus="projectIndex = index"
+                  >
+                    <span class="line-clamp-2 text-[15px] font-semibold leading-[1.25]">{{ project.title }}</span>
+                    <span v-if="project.subtitle" class="line-clamp-2 text-[13px] leading-[1.3] text-muted">{{ project.subtitle }}</span>
+                  </NuxtLink>
+                </div>
+                <NuxtLink
+                  v-if="everOpened && activeProject && service.slug === selected?.slug"
+                  :to="projectTo(activeProject)"
+                  tabindex="-1"
+                  aria-hidden="true"
+                  class="block"
+                >
+                  <MediaFrame
+                    :key="activeProject.slug"
+                    ratio="16/9"
+                    :src="activeProject.coverPath ?? undefined"
+                    :alt="activeProject.coverAlt"
+                    sizes="320:400px"
+                    class="rounded-[3px]! bg-hatch object-left-top"
+                  />
+                </NuxtLink>
+                <!-- Same box as the cover, without loading an image for every service. -->
+                <div v-else aria-hidden="true" class="aspect-[16/9]" />
+              </div>
+              <p v-else class="m-0 max-w-[46ch] text-[17px] leading-normal text-ink text-pretty">{{ service.intro }}</p>
+
+              <div class="mt-auto flex flex-wrap justify-between gap-3 border-t border-hairline pt-2 eyebrow-sm">
+                <NuxtLink :to="service.to" class="inline-flex min-h-8 items-center text-ink underline-offset-4 hover:text-signal-text hover:underline">{{ t('nav.aboutService') }} →</NuxtLink>
+                <NuxtLink :to="allProjectsTo" class="inline-flex min-h-8 items-center text-ink underline-offset-4 hover:text-signal-text hover:underline">{{ t('nav.allProjects') }} →</NuxtLink>
+              </div>
             </div>
           </div>
         </div>

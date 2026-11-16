@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { formatAdminDate } from '#layers/core/shared/utils/formatAdminDate'
+import { formatAdminDate, formatAdminTime } from '#layers/core/shared/utils/formatAdminDate'
 import { LEAD_STATUSES, leadBudgetLabel, leadServiceLabel, leadStageLabel, leadStatusLabel } from '#layers/leads/domain/lead'
 import { useLeadsAdminDetail } from '#layers/leads/state/useLeadsAdminDetail'
 
 definePageMeta({ layout: 'admin', i18n: false })
 
 const route = useRoute()
-const { lead, loadError, notesState, actionError, updateStatus, saveNotes, archive, unarchive, remove } =
+const { lead, loadError, notesState, notesSavedAt, statusError, actionError, updateStatus, saveNotes, archive, unarchive, remove } =
   await useLeadsAdminDetail(String(route.params.id))
 
 // No row and no error means the id does not exist; a failed load is reported, not shown as "missing".
@@ -18,12 +18,13 @@ const notes = ref(lead.value?.notes ?? '')
 const confirmingRemove = ref(false)
 const confirmingArchive = ref(false)
 
-const NOTES_STATE_LABELS = {
-  idle: 'Salvat automat la ieșirea din câmp',
-  pending: 'Se salvează…',
-  success: 'Salvat automat la ieșirea din câmp',
-  error: 'Notele nu au fost salvate — încearcă din nou',
-} as const
+// The notes still save on blur; after a save the line says when, so it reads differently from before.
+const notesLabel = computed(() => {
+  if (notesState.value === 'pending') return 'Se salvează…'
+  if (notesState.value === 'error') return 'Notele nu au fost salvate — încearcă din nou'
+  if (notesState.value === 'success' && notesSavedAt.value) return `Salvat · ${formatAdminTime(notesSavedAt.value)}`
+  return 'Salvat automat la ieșirea din câmp'
+})
 </script>
 
 <template>
@@ -46,7 +47,7 @@ const NOTES_STATE_LABELS = {
             </div>
             <div>
               <div class="eyebrow text-muted">Email</div>
-              <div class="mt-1 text-[15px]">{{ lead.email }}</div>
+              <div class="mt-1 break-all text-[15px]"><a :href="`mailto:${encodeURIComponent(lead.email)}`" class="tap-y">{{ lead.email }}</a></div>
             </div>
             <div>
               <div class="eyebrow text-muted">Companie</div>
@@ -116,6 +117,9 @@ const NOTES_STATE_LABELS = {
               {{ leadStatusLabel(status) }}
             </ToggleChip>
           </div>
+          <p v-if="statusError" role="alert" class="m-0 mt-3 text-sm text-signal-text">
+            {{ statusError.message }}
+          </p>
         </section>
 
         <section class="rounded border border-hairline p-6">
@@ -125,7 +129,7 @@ const NOTES_STATE_LABELS = {
             class="mt-1 eyebrow-sm"
             :class="notesState === 'error' ? 'text-signal-text' : 'text-muted'"
           >
-            {{ NOTES_STATE_LABELS[notesState] }}
+            {{ notesLabel }}
           </p>
         </section>
 
@@ -136,12 +140,12 @@ const NOTES_STATE_LABELS = {
         <div class="flex flex-wrap items-center gap-6">
           <AppButton v-if="lead.archived_at" variant="outline" class="w-fit" @click="unarchive">Dezarhivează</AppButton>
           <div v-else-if="confirmingArchive" class="flex gap-3 eyebrow">
-            <button type="button" class="cursor-pointer border-0 bg-transparent p-0 text-signal-text" @click="archive">
+            <button type="button" class="tap-text text-signal-text" @click="archive">
               Sigur? Arhivează
             </button>
             <button
               type="button"
-              class="cursor-pointer border-0 bg-transparent p-0 text-muted"
+              class="tap-text text-muted hover:text-ink"
               @click="confirmingArchive = false"
             >
               Anulează
@@ -150,12 +154,12 @@ const NOTES_STATE_LABELS = {
           <AppButton v-else variant="outline" class="w-fit" @click="confirmingArchive = true">Arhivează</AppButton>
           <div class="flex gap-3 eyebrow">
             <template v-if="confirmingRemove">
-              <button type="button" class="cursor-pointer border-0 bg-transparent p-0 text-signal-text" @click="remove">
+              <button type="button" class="tap-text text-signal-text" @click="remove">
                 Sigur? Șterge definitiv
               </button>
               <button
                 type="button"
-                class="cursor-pointer border-0 bg-transparent p-0 text-muted"
+                class="tap-text text-muted hover:text-ink"
                 @click="confirmingRemove = false"
               >
                 Anulează
@@ -164,7 +168,7 @@ const NOTES_STATE_LABELS = {
             <button
               v-else
               type="button"
-              class="cursor-pointer border-0 bg-transparent p-0 text-muted hover:text-signal-text"
+              class="tap-text text-muted hover:text-signal-text"
               @click="confirmingRemove = true"
             >
               Șterge definitiv

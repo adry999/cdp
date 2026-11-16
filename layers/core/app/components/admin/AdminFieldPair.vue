@@ -1,14 +1,27 @@
 <script setup lang="ts">
-withDefaults(defineProps<{ label: string; textarea?: boolean; required?: boolean }>(), {
-  textarea: false,
-  required: false,
-})
+withDefaults(
+  defineProps<{
+    label: string
+    textarea?: boolean
+    required?: boolean
+    /** Set when the last save attempt rejected the RO text, the only column validation requires. */
+    invalid?: boolean
+  }>(),
+  {
+    textarea: false,
+    required: false,
+    invalid: false,
+  },
+)
 
 const ro = defineModel<string>('ro', { default: '' })
 const en = defineModel<string>('en', { default: '' })
 
+// Same border and focus treatment as AdminField.
 const fieldClass =
-  'w-full rounded border border-hairline px-3 py-2.5 text-[15px] outline-none focus:border-ink'
+  'w-full rounded border px-3 py-2.5 text-base nav:text-[15px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink'
+const IDLE_BORDER = 'border-muted focus:border-ink'
+const INVALID_BORDER = 'border-signal-text'
 
 // aria-labelledby combines the shared group heading with each column's RO/EN label into
 // one accessible name ("Titlu RO") without changing what's visually shown.
@@ -43,7 +56,8 @@ function update(lang: 'ro' | 'en', event: Event) {
           :value="models[col.lang].value"
           rows="5"
           :aria-labelledby="`${groupId} ${col.labelId}`"
-          :class="fieldClass"
+          :aria-invalid="(invalid && col.lang === 'ro') || undefined"
+          :class="[fieldClass, invalid && col.lang === 'ro' ? INVALID_BORDER : IDLE_BORDER]"
           @input="update(col.lang, $event)"
         />
         <input
@@ -52,7 +66,8 @@ function update(lang: 'ro' | 'en', event: Event) {
           :value="models[col.lang].value"
           type="text"
           :aria-labelledby="`${groupId} ${col.labelId}`"
-          :class="fieldClass"
+          :aria-invalid="(invalid && col.lang === 'ro') || undefined"
+          :class="[fieldClass, invalid && col.lang === 'ro' ? INVALID_BORDER : IDLE_BORDER]"
           @input="update(col.lang, $event)"
         >
       </div>
