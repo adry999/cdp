@@ -115,7 +115,7 @@ function focusStep() {
               <!-- Same confirmation as the contact dialog's: thanks, then what happens next and when. -->
               <div v-else key="success" role="status" class="flex flex-col gap-5">
                 <div class="flex items-center gap-3">
-                  <span aria-hidden="true" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-signal text-lg text-inverse">✓</span>
+                  <span aria-hidden="true" class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-signal text-lg text-on-signal">✓</span>
                   <h3 ref="successHeading" tabindex="-1" class="m-0 text-lg font-semibold leading-snug outline-none">
                     {{ t('qualifier.success.title') }}
                   </h3>
