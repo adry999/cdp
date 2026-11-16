@@ -31,6 +31,10 @@ there is no multi-table transaction to protect, and RLS is the whole access rule
 - `newsArticleSchema(input)` — the `NewsArticle` JSON-LD: CODEPEDIA is author
   and publisher (`organizationRef`), the original is `isBasedOn` and `citation`.
 - `NEWS_INDEX_PAGE`, `NewsView`, `NewsRow`.
+- `useNewsLink()` — `{ showNewsLink }`, true while at least one item is published
+  (`GET /api/news/count`, rule in `domain/newsLink.ts`); false when the count
+  fails. The footer shows its "Noutăți" link only then. Fetched on the client on
+  prerendered pages (the blog), in the server payload elsewhere.
 
 ## Public API (server) — `server/index.ts`
 
@@ -51,6 +55,8 @@ there is no multi-table transaction to protect, and RLS is the whole access rule
   `NewsArticle` + `BreadcrumbList`. Canonical is our own URL; hreflang pairs the
   two slugs via `useSetI18nParams`. The English page of an untranslated item is
   `noindex`. 404 for an unknown or unpublished slug.
+- `GET /api/news/count` — `{ count }` of published items (a `HEAD` count, no rows),
+  for the footer link; cached by the `/api/news/**` route rule.
 - `GET /api/news`, `GET /api/news/[slug]` — published rows only, through
   `server/repository/newsRepository.ts` (session client + RLS). Route rules:
   `swr: 60` / `swr: 300` for the API, `swr: 300` for the pages. Admin writes
@@ -115,5 +121,7 @@ tested with fakes); `nodeFetchDeps.ts` is the real network:
 ## Consumed by
 
 - `server/routes/sitemap.xml.ts` — `listNewsSitemapPages` via `#layers/news/server`.
-- The header, footer and admin sidebar link to the routes by name or path,
-  without importing from this layer.
+- `app/components/site/SiteFooter.vue` — `useNewsLink` decides whether the
+  footer links to `/noutati`.
+- The header and admin sidebar link to the routes by name or path, without
+  importing from this layer.

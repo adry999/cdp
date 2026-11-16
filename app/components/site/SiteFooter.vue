@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCookieConsent } from '#layers/consent'
 import { useSiteSettings } from '#layers/content'
+import { useNewsLink } from '#layers/news'
 import { SERVICE_LINKS } from '#layers/services'
 import { visibleServices } from '#layers/core/shared/utils/visibleServices'
 import { studioGraph } from '#layers/core/shared/utils/jsonLd'
@@ -13,6 +14,7 @@ const settings = useSiteSettings()
 const cta = useContactCta()
 const { grantsEnabled } = useRuntimeConfig().public
 const serviceLinks = visibleServices(SERVICE_LINKS, grantsEnabled)
+const { showNewsLink } = useNewsLink()
 
 const services = computed(() =>
   serviceLinks.map((service) => ({
@@ -27,7 +29,8 @@ const studioLinks = computed(() => [
   { id: 'pricing', label: t('nav.pricing'), to: localePath('preturi') },
   { id: 'about', label: t('nav.about'), to: localePath('despre') },
   { id: 'blog', label: t('nav.blog'), to: localePath('blog') },
-  { id: 'news', label: t('nav.news'), to: localePath('noutati') },
+  // Only while something is published: an empty /noutati is a dead end.
+  ...(showNewsLink.value ? [{ id: 'news', label: t('nav.news'), to: localePath('noutati') }] : []),
   { id: 'contact', label: t('nav.contact'), to: localePath('contact') },
 ])
 

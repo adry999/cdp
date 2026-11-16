@@ -43,5 +43,7 @@ useBreadcrumbLd(() => t('nav.about'))
         <FactCard v-for="id in FACT_IDS" :key="id" :label="t(`about.facts.${id}.label`)" :value="t(`about.facts.${id}.value`)" />
       </div>
     </SiteSection>
+
+    <ClosingCta :title="t('about.cta.title')" :body="t('about.cta.body')" :button="t('about.cta.button')" />
   </div>
 </template>
