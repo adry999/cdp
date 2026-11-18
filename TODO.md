@@ -73,7 +73,8 @@ domeniu (`codepedia.md`, `codepedia.studio`), din branch-ul `production`, cu ace
       prin listhen/nitropack, esbuild, braces, @simple-git/argv-parser), iar versiunile
       majore rămase: doar typescript 7 (@nuxt/fonts 1.x și vitest 5 sunt instalate)
 - [x] Ștergere lead din admin (2026-10-06)
-- [ ] Perioadă de retenție pentru leads + purjare automată (vezi Confidențialitate)
+- [x] Perioadă de retenție pentru leads + purjare automată (2026-11-18): 12 luni de la ultima
+      activitate, fără cele câștigate; în bază, la fiecare solicitare nouă (`leads_purge_stale`)
 
 ## Email
 
