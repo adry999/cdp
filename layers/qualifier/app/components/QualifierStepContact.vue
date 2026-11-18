@@ -6,6 +6,7 @@ import {
 } from '#layers/qualifier/domain/routing'
 import type { StageId } from '#layers/core/shared/types/service-stage'
 import type { QualifierContactPayload } from '#layers/qualifier/domain/qualification'
+import { useQualifierDraft } from '#layers/qualifier/state/useQualifierDraft'
 
 const props = defineProps<{
   stage: StageId
@@ -31,13 +32,15 @@ const localePath = useLocalePath()
 const route = computed(() => resolveRoute(props.stage, props.budget))
 const offer = computed(() => offerKey(props.stage, route.value))
 
-const form = reactive<QualifierContactPayload>({
-  name: '',
-  email: '',
-  handle: '',
-  notes: '',
-  website: '',
-})
+// Starts from the draft and writes every edit back to it, so closing the dialog keeps what was
+// typed. A copy rather than a live binding: a successful send clears the draft while this step is
+// still fading out, and its fields must not blank out on screen.
+const { draft } = useQualifierDraft()
+const form = reactive<QualifierContactPayload>({ ...draft.value.contact, website: '' })
+watch(
+  () => ({ name: form.name, email: form.email, handle: form.handle, notes: form.notes }),
+  (contact) => Object.assign(draft.value.contact, contact),
+)
 
 const fieldErrors = reactive<{ name?: string; email?: string }>({})
 
@@ -45,7 +48,7 @@ function validate() {
   fieldErrors.name = form.name.trim() ? undefined : t('home.contact.form.errorRequired')
   fieldErrors.email = !form.email.trim()
     ? t('home.contact.form.errorRequired')
-    : EMAIL_PATTERN.test(form.email)
+    : EMAIL_PATTERN.test(form.email.trim())
       ? undefined
       : t('home.contact.form.errorEmail')
   return !fieldErrors.name && !fieldErrors.email
@@ -95,7 +98,7 @@ async function handleSubmit() {
         required
         :aria-invalid="fieldErrors.name ? 'true' : undefined"
         :aria-describedby="fieldErrors.name ? 'qual-name-error' : undefined"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
       <p v-if="fieldErrors.name" id="qual-name-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
         <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldErrors.name }}
@@ -114,7 +117,7 @@ async function handleSubmit() {
         autocomplete="email"
         :aria-invalid="fieldErrors.email ? 'true' : undefined"
         :aria-describedby="fieldErrors.email ? 'qual-email-error' : undefined"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
       <p v-if="fieldErrors.email" id="qual-email-error" class="mt-1 flex items-center gap-1.5 font-mono text-xs text-ink">
         <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ fieldErrors.email }}
@@ -129,7 +132,7 @@ async function handleSubmit() {
         id="qual-handle"
         v-model="form.handle"
         type="text"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       >
     </div>
 
@@ -141,15 +144,11 @@ async function handleSubmit() {
         id="qual-notes"
         v-model="form.notes"
         rows="3"
-        class="mt-2 w-full rounded border border-muted px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+        class="mt-2 w-full rounded border border-muted bg-paper px-3.5 py-3 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
       />
     </div>
 
     <CoreTurnstile ref="turnstile" v-model="turnstileToken" action="qualifier" />
-
-    <p v-if="error" role="alert" class="flex items-center gap-1.5 font-mono text-xs text-ink">
-      <span aria-hidden="true" class="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />{{ t('home.contact.form.error') }}
-    </p>
 
     <p class="text-xs text-muted">
       {{ t('home.contact.form.privacyNotice') }}
@@ -157,6 +156,8 @@ async function handleSubmit() {
         {{ t('home.contact.form.privacyNoticeLink') }}
       </NuxtLink>
     </p>
+
+    <LeadsSendFailure v-if="error" :message="t('home.contact.form.error')" />
 
     <div class="flex items-center justify-between">
       <AppButton variant="outline" type="button" :aria-disabled="submitting ? 'true' : undefined" @click="goBack">

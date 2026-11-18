@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import type { PostBlock } from '#layers/blog'
+import { compactTableColumns } from '#layers/blog/domain/table'
 
-defineProps<{ blocks: PostBlock[]; postSlug: string; service: string }>()
+const props = defineProps<{ blocks: PostBlock[]; postSlug: string; service: string }>()
 const { t } = useI18n()
 const track = useTrackEvent()
+
+// Per block, the table columns that drop the minimum cell width (see compactTableColumns).
+const compactColumns = computed(() =>
+  props.blocks.map((block) => (block.type === 'table' ? compactTableColumns(block.head) : [])),
+)
 
 function marker(ordered: boolean, index: number): string {
   return ordered ? String(index + 1).padStart(2, '0') : '—'
@@ -50,34 +56,46 @@ function marker(ordered: boolean, index: number): string {
         </li>
       </component>
 
-      <div
-        v-else-if="block.type === 'table'"
-        tabindex="0"
-        role="region"
-        :aria-label="t('blog.table')"
-        class="mb-7 overflow-x-auto rounded border border-hairline"
-      >
-        <table class="w-full border-collapse text-[15px] leading-[1.45] [&_code]:bg-transparent [&_code]:p-0">
-          <thead>
-            <tr>
-              <th
-                v-for="(cell, k) in block.head"
-                :key="k"
-                scope="col"
-                class="border-b border-hairline bg-hatch sm:whitespace-nowrap px-3.5 py-2.5 text-left eyebrow-sm font-normal text-muted"
-              >
-                <BlogInline :nodes="cell" />
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(row, r) in block.rows" :key="r">
-              <td v-for="(cell, k) in row" :key="k" class="min-w-[96px] border-b border-hairline px-3.5 sm:min-w-[120px] py-2.5 align-top">
-                <BlogInline :nodes="cell" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div v-else-if="block.type === 'table'" class="blog-table relative mb-7">
+        <div
+          tabindex="0"
+          role="region"
+          :aria-label="t('blog.table')"
+          class="blog-table-scroller overflow-x-auto rounded border border-hairline"
+        >
+          <table class="w-full border-collapse text-[15px] leading-[1.45] [&_code]:bg-transparent [&_code]:p-0">
+            <thead>
+              <tr>
+                <th
+                  v-for="(cell, k) in block.head"
+                  :key="k"
+                  scope="col"
+                  class="border-b border-hairline bg-hatch sm:whitespace-nowrap px-3.5 py-2.5 text-left eyebrow-sm font-normal text-muted"
+                >
+                  <BlogInline :nodes="cell" />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(row, r) in block.rows" :key="r">
+                <td
+                  v-for="(cell, k) in row"
+                  :key="k"
+                  class="border-b border-hairline px-3.5 py-2.5 align-top"
+                  :class="!compactColumns[i]?.[k] && 'min-w-[96px] sm:min-w-[120px]'"
+                >
+                  <BlogInline :nodes="cell" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Fades the right edge while more of the table is hidden there; see the style block. -->
+        <div
+          aria-hidden="true"
+          data-table-cue
+          class="blog-table-cue pointer-events-none absolute inset-y-px right-px w-12 rounded-r-[3px] bg-linear-to-l from-paper to-transparent"
+        />
       </div>
 
       <div v-else-if="block.type === 'faq'" class="mb-8 border-t border-ink">
@@ -111,3 +129,36 @@ function marker(ordered: boolean, index: number): string {
     </template>
   </div>
 </template>
+
+<style scoped>
+/* The scroll cue of a table wider than the column (a phone): visible while part of the table is
+   hidden on the right, faded out at the end of the scroll. CSS only, driven by the scroller's own
+   position. A table that fits has no scrollable overflow, so its scroll timeline is inactive and
+   the cue keeps its hidden base style; so does a browser without scroll-driven animations. */
+.blog-table-cue {
+  opacity: 0;
+}
+
+@supports (animation-timeline: scroll()) {
+  .blog-table {
+    timeline-scope: --blog-table;
+  }
+  .blog-table-scroller {
+    scroll-timeline: --blog-table x;
+  }
+  .blog-table-cue {
+    animation: blog-table-cue linear both;
+    animation-timeline: --blog-table;
+  }
+}
+
+@keyframes blog-table-cue {
+  0%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+</style>

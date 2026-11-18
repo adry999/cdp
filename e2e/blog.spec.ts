@@ -44,3 +44,33 @@ test('the EN RSS feed responds with XML', async ({ request }) => {
   expect(response.status()).toBe(200)
   expect(response.headers()['content-type']).toContain('xml')
 })
+
+// Four-column tables are wider than a phone; a table that does not fit must show the fade on its
+// right edge (and lose it at the end of the scroll), and a one-character "#" column stays narrow.
+for (const path of ['/blog/cat-costa-un-site', '/blog/automatizare-ai-pentru-imm', '/en/blog/how-much-does-a-website-cost', '/en/blog/ai-automation-for-small-business']) {
+  test(`every table on ${path} fits a 390px screen or shows the scroll cue`, async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto(path)
+    const tables = page.locator('.blog-table')
+    expect(await tables.count()).toBeGreaterThan(0)
+
+    for (const table of await tables.all()) {
+      const scroller = table.getByRole('region')
+      const cue = table.locator('[data-table-cue]')
+      const cueOpacity = () => cue.evaluate((element) => Number(getComputedStyle(element).opacity))
+      const overflows = await scroller.evaluate((element) => element.scrollWidth > element.clientWidth + 1)
+      if (!overflows) {
+        expect(await cueOpacity()).toBe(0)
+        continue
+      }
+      expect(await cueOpacity()).toBeGreaterThan(0.9)
+      await scroller.evaluate((element) => element.scrollTo({ left: element.scrollWidth }))
+      await expect.poll(cueOpacity).toBeLessThan(0.05)
+    }
+
+    const shortColumn = page.locator('.blog-table th', { hasText: /^#$/ })
+    if (await shortColumn.count()) {
+      expect((await shortColumn.first().boundingBox())?.width).toBeLessThan(60)
+    }
+  })
+}
