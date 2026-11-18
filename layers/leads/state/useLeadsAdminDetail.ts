@@ -54,6 +54,8 @@ export async function useLeadsAdminDetail(leadId: string) {
       await repository.updateNotes(leadId, notes)
       notesSavedAt.value = new Date()
       notesState.value = 'success'
+      // The database moves the lead's last activity, and with it the automatic deletion date shown.
+      await refresh()
     } catch (caught) {
       // The notes line itself shows the failure, next to the field it concerns.
       console.warn('[leads] saving notes failed', caught)

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { formatAdminDate, formatAdminTime } from '#layers/core/shared/utils/formatAdminDate'
 import { LEAD_STATUSES, leadBudgetLabel, leadServiceLabel, leadStageLabel, leadStatusLabel } from '#layers/leads/domain/lead'
+import { LEAD_RETENTION_MONTHS, leadPurgeDate } from '#layers/leads/domain/leadRetention'
 import { useLeadsAdminDetail } from '#layers/leads/state/useLeadsAdminDetail'
 
 definePageMeta({ layout: 'admin', i18n: false })
@@ -15,6 +16,13 @@ if (!lead.value && !loadError.value) {
 }
 
 const notes = ref(lead.value?.notes ?? '')
+// The privacy policy promises the deletion; the admin sees when, before it happens.
+const purgeNote = computed(() => {
+  if (!lead.value) return ''
+  const date = leadPurgeDate(lead.value)
+  if (!date) return 'Nu se șterge automat: solicitarea e câștigată.'
+  return `Se șterge automat după ${formatAdminDate(date.toISOString())}, la ${LEAD_RETENTION_MONTHS} luni de la ultima activitate (stare sau note). Solicitările câștigate nu se șterg.`
+})
 const confirmingRemove = ref(false)
 const confirmingArchive = ref(false)
 
@@ -120,6 +128,7 @@ const notesLabel = computed(() => {
           <p v-if="statusError" role="alert" class="m-0 mt-3 text-sm text-signal-text">
             {{ statusError.message }}
           </p>
+          <p class="m-0 mt-3 text-sm text-muted">{{ purgeNote }}</p>
         </section>
 
         <section class="rounded border border-hairline p-6">
