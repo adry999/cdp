@@ -5,6 +5,7 @@ import { TECH_ICONS } from './layers/core/shared/utils/techIcons'
 import { STACK_GROUP_ICONS } from './layers/content/domain/stack'
 import { CARD_ICONS } from './layers/card/domain/icons'
 import { THEME_INIT_SCRIPT } from './layers/core/shared/utils/theme'
+import { isSecretSupabaseKey } from './layers/core/shared/utils/supabaseSecretKey'
 
 // Every real build must supply these. Skipped in dev and in
 // `nuxt prepare` (the postinstall step), where hosts may not expose secrets yet.
@@ -24,6 +25,24 @@ assertEnv([
   'NUXT_PUBLIC_SUPABASE_ANON_KEY',
   'SUPABASE_SERVICE_ROLE_KEY',
 ])
+
+// The public Supabase key is written into every page's runtime config, so a service_role or secret key
+// here hands full database access to any visitor. Same order as @nuxtjs/supabase reads them.
+const publicSupabaseKey = [
+  process.env.NUXT_PUBLIC_SUPABASE_KEY,
+  process.env.SUPABASE_KEY,
+  process.env.SUPABASE_PUBLISHABLE_KEY,
+  process.env.SUPABASE_ANON_KEY,
+  process.env.NUXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+  process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY,
+].find(Boolean)
+if (publicSupabaseKey && isSecretSupabaseKey(publicSupabaseKey)) {
+  throw new Error(
+    'The public Supabase key (NUXT_PUBLIC_SUPABASE_ANON_KEY or one of NUXT_PUBLIC_SUPABASE_KEY, SUPABASE_KEY, SUPABASE_ANON_KEY) ' +
+      'is a service_role/secret key, which would be sent to every visitor. Use the anon/publishable key there; the ' +
+      'service_role key belongs only in SUPABASE_SERVICE_ROLE_KEY. See docs/DEPLOY_HOSTINGER.md.',
+  )
+}
 
 // The primary (EN) domain; NUXT_PUBLIC_SITE_URL_RO is the official RO domain and defaults to it.
 const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000'
