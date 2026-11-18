@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { Service } from '#layers/services/domain/service'
 
-defineProps<{ service: Service }>()
+defineProps<{ service: Service; number: string }>()
 const { t, locale } = useI18n()
 
 const label = computed(() => t('services.features.heading'))
 </script>
 
 <template>
-  <SiteSection number="01" :label="label">
+  <SiteSection v-if="service.features.length" :number="number" :label="label">
     <h2 class="sr-only">{{ label }}</h2>
     <ul class="m-0 flex list-none flex-col gap-4 p-0">
       <li v-for="(feature, i) in service.features" :key="i" class="flex max-w-[64ch] gap-3 text-base text-muted">

@@ -17,8 +17,11 @@ export function useLeadSubmission(deps: LeadSubmissionDependencies = { post: pos
   const status = ref<AsyncStatus>('idle')
   const fieldErrors = ref<ContactFieldErrors>({})
   const error = ref<AppError | null>(null)
+  // Set by the first submit: from then on the field errors follow the values as the visitor types.
+  const tried = ref(false)
 
   async function submit(submission: ContactSubmission, turnstileToken?: string): Promise<boolean> {
+    tried.value = true
     fieldErrors.value = validateContactSubmission(submission)
     if (Object.keys(fieldErrors.value).length > 0 || status.value === 'pending') return false
 
@@ -35,5 +38,10 @@ export function useLeadSubmission(deps: LeadSubmissionDependencies = { post: pos
     }
   }
 
-  return { status, fieldErrors, error, submit }
+  // Called on every edit; before the first submit it stays silent, so nothing is flagged mid-typing.
+  function revalidate(submission: ContactSubmission) {
+    if (tried.value) fieldErrors.value = validateContactSubmission(submission)
+  }
+
+  return { status, fieldErrors, error, submit, revalidate }
 }

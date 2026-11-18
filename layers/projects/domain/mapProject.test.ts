@@ -368,6 +368,24 @@ describe('mapProjectCard', () => {
     expect(mapProjectCard(decomposed, 'ro').label).toEqual(['Platformă de rezervări', 'Platforma', 'Offline'])
   })
 
+  it('drops tags the kind contains as a whole phrase, anywhere in it', () => {
+    const desktop = { ...baseRow, kind_ro: 'Aplicație desktop pentru Windows', tags_ro: ['Windows', 'Plăți EUR/MDL'] }
+    expect(mapProjectCard(desktop, 'ro').label).toEqual(['Aplicație desktop pentru Windows', 'Plăți EUR/MDL'])
+    const en = { ...baseRow, kind_en: 'Windows desktop app', tags_en: ['Desktop app', 'Offline'] }
+    expect(mapProjectCard(en, 'en').label).toEqual(['Windows desktop app', 'Offline'])
+    const internal = { ...baseRow, kind_en: 'Internal management web app', tags_en: ['Web app', 'Admin roles'] }
+    expect(mapProjectCard(internal, 'en').label).toEqual(['Internal management web app', 'Admin roles'])
+    const site = { ...baseRow, kind_en: 'Bilingual business website', tags_en: ['business website', 'SEO'] }
+    expect(mapProjectCard(site, 'en').label).toEqual(['Bilingual business website', 'SEO'])
+  })
+
+  it('keeps tags that only match part of a word inside the kind', () => {
+    const row = { ...baseRow, kind_en: 'Windows desktop app', tags_en: ['Window', 'Top app', 'Apps'] }
+    expect(mapProjectCard(row, 'en').label).toEqual(['Windows desktop app', 'Window', 'Top app'])
+    const hyphen = { ...baseRow, kind_ro: 'Platformă de e-commerce', tags_ro: ['Commerce', 'Plăți'] }
+    expect(mapProjectCard(hyphen, 'ro').label).toEqual(['Platformă de e-commerce', 'Commerce', 'Plăți'])
+  })
+
   it('drops tags that repeat the kind or are only a year', () => {
     const row = { ...baseRow, tags_ro: ['Aplicație web', 'Gestiune internă', '2026'] }
     expect(mapProjectCard(row, 'ro').label).toEqual(['Aplicație web', 'Gestiune internă'])
