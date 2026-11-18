@@ -11,7 +11,8 @@ fără deploy. Rută: `/admin`, exclusă din sitemap și `robots.txt`.
    în același formular — nu în două ecrane separate. RO este obligatoriu, EN este
    opțional; dacă EN lipsește, site-ul afișează RO cu fallback silențios.
 3. **Draft / publicat** pe fiecare entitate. Nimic nu apare pe site fără
-   `published_at`. Preview de draft prin token în URL.
+   `published_at`. Preview de draft (deocamdată la proiecte) doar din sesiunea de admin cu MFA
+   (`/admin/preview/projects/<slug>`), fără token: linkul nu se trimite cuiva din afara admin-ului.
 4. **Admin-ul folosește același sistem vizual ca site-ul** — aceleași culori,
    fonturi, linii de 1px, radius 4. Nu introduce o bibliotecă de UI cu altă estetică.
    Diferența: densitate mai mare (padding rând `12px`, corp `15px`) și un sidebar
@@ -125,7 +126,7 @@ ca să încapă `48%`, `0`, `1 200 €`) și `label_ro/_en`. Plus `quote_ro/_en`
 nu se randează pe site.
 
 **Publicare** — comutator draft / publicat, `published_at`, „Vezi pe site" și
-„Vezi ca draft" (link cu token).
+„Vezi ca draft" (pagina proiectului așa cum e salvat, într-un tab nou, doar cu sesiunea de admin).
 
 ### Validări
 
