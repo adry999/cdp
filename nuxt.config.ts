@@ -263,6 +263,8 @@ export default defineNuxtConfig({
     '/apple-touch-icon.png': { headers: { 'Cache-Control': STATIC_ASSET_CACHE } },
     '/admin': { redirect: { to: '/admin/projects', statusCode: 302 } },
     '/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
+    // The draft preview renders a case study (layers/projects): never cached, never indexed, even if the link leaks.
+    '/admin/preview/**': { headers: { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow' } },
     '/api/admin/**': { headers: { 'Cache-Control': 'private, no-store' } },
 
     '/**': {

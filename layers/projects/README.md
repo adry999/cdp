@@ -76,7 +76,16 @@ The root sitemap (`server/routes/sitemap.xml.ts`) consumes the first two.
   repository passed in so they are unit-tested), the editor in `useProjectsEditor`, all queries in
   `data/projectsAdminRepository.ts`.
 
+- `/admin/preview/projects/[slug]` — `app/pages/admin/preview/projects/[slug].vue`, `bare` layout: the
+  draft preview. The saved project (draft or published) rendered with `ProjectsCaseStudy` under
+  `ProjectsAdminPreviewBanner`, RO only, `noindex, nofollow`. Loaded in the browser with the editor's
+  `getBySlug` (the admin session and RLS, no API route), so no draft is ever in server-rendered HTML; `/admin/**` is `private, no-store` and outside the SWR rules of `/proiecte/**`.
+  Linked as „Vezi ca draft" from the editor once the project is saved.
+
 ## Components
+
+- `ProjectsCaseStudy` — the whole case-study body from a `MappedProject` (sections, gallery, FAQ,
+  lightbox): what `/proiecte/[slug]` and the draft preview both render.
 
 - `ProjectsCaseStudyHero`, `ProjectsCaseStudyFacts`, `ProjectsCaseStudyNext`
   — the unnumbered case-study blocks, rendered from a `MappedProject` prop.
