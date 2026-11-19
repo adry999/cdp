@@ -37,6 +37,11 @@ schimbă din proprie inițiativă, chiar dacă un document mai vechi spune altce
 
 ## Reguli de lucru în echipă
 
+- **Orice schimbare de interfață se verifică pe `design/design_handoff_codepedia_nuxt/UX_LAWS.md`**
+  și cu skill-ul `ui-ux-pro-max` (`.claude/skills/ui-ux-pro-max/`, folosit doar ca listă de
+  verificare: accesibilitate, ținte de atingere, contrast, formulare; nu generează design nou,
+  designul rămâne cel din prototipuri). Descrierea PR-ului spune „UX laws: OK” sau excepțiile,
+  cu motiv. Acordul ambilor developeri: 2026-11-16.
 - Doi developeri lucrează în paralel. **Nu șterge și nu rescrie munca celuilalt** fără să
   întrebi, chiar dacă pare să încalce o regulă: poate regula e cea depășită. Verifică
   autorul cu `git log --format=%an -- <fișier>`.
