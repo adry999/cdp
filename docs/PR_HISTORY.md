@@ -185,3 +185,4 @@ primește un rând aici, în același PR (regula e în `CLAUDE.md`, „Convenți
 - **#224** fix: nota de sub etapele de servicii de pe homepage nu mai contrazice oferta de dedesubt: proiectele mari încep cu un audit tehnic, iar aplicația de gestiune la preț fix cu o discuție gratuită (RO și EN).
 - **#227** feat: lotul din `dev` spre `main`: #205–#216 (prin #223) și nota de sub servicii (#224).
 - **#228** docs: skill-ul `ui-ux-pro-max` (licență MIT, copiat din nextlevelbuilder/ui-ux-pro-max-skill) intră în `.claude/skills/`, iar `AGENTS.md` cere ca orice schimbare de interfață să fie verificată pe `UX_LAWS.md` și cu acest skill, cu „UX laws: OK” sau excepțiile în descrierea PR-ului. Acordul ambilor developeri: 2026-11-16.
+- **#231** docs: `docs/ADMIN.md` descrie previzualizarea draft-urilor așa cum s-a decis: doar din sesiunea de admin cu MFA, fără token în URL, deci linkul nu se trimite clienților. Merge cu #230 (implementarea, în `dev`).
