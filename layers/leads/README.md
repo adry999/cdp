@@ -26,6 +26,15 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 - `/contact` (`/en/contact`) — `app/pages/contact.vue`: contact page with process steps, response-time and hours cards (`useSiteSettings()`) and `LeadsContactForm`. Route name `contact` is mapped to localized paths in `nuxt.config.ts` (`i18n.pages`); keep the file name.
 - `/admin/leads`, `/admin/leads/[id]` — `app/pages/admin/leads/`, admin layout. List and detail state live in `state/useLeadsAdminList.ts` and `state/useLeadsAdminDetail.ts`, queries in `data/leadsAdminRepository.ts`.
 
+## Retention
+
+Leads are deleted 12 months after their last activity unless they are won (`status = 'castigat'`), as
+the privacy policy states. It all happens in the database
+(`supabase/migrations/20261118120000_leads_retention_purge.sql`): `leads.last_activity_at` starts at
+the creation and moves on each change of status or notes; after every insert into `leads`, stale rows
+are deleted. No cron and no app code. `domain/leadRetention.ts` (`leadPurgeDate`) mirrors the rule
+for the line under the status chips on `/admin/leads/[id]`; a change to the period goes in both.
+
 ## Components
 
 - `LeadsContactModal` — the dialog (teleported to `body`, mounted once in the default layout when the qualifier is off): focus moves to the first field, Tab is trapped (core `useFocusTrap`), Escape and a click on the backdrop close it, the page scroll is locked, focus returns to the trigger. Wraps `LeadsContactForm variant="modal"`; after a send it shows `LeadsContactSuccess` with a Close button and hides its lead paragraph. The close button sits in a sticky row, so it stays in reach when the dialog scrolls on a phone. Service chips (Website … Grants, the grants one only when `grantsEnabled`, plus "Nu știu") pre-select the service of the page it was opened from; the submission carries `service` and that service's qualifier stage as `stage` (null for "Nu știu"), so the stage column in the admin keeps working.
@@ -43,3 +52,4 @@ Contact intake end to end: the public contact form, lead persistence, the team n
 - `app/components/admin/AdminSidebar.vue` — `useNewLeadsCount` for the "Solicitări" badge.
 - `layers/qualifier` — `notifyTeam`, `createLeadRepository`, `LeadRepository`, `LeadRecord`, `LEAD_RATE_LIMIT` via `#layers/leads/server`, in `server/services/submitQualification.ts` and `server/api/contact.post.ts`.
 - `app/utils/enPendingTranslation.ts` — `LEADS_EN_PENDING_PATHS`; `server/routes/sitemap.xml.ts` — `LEADS_SITEMAP_PAGES`.
+- `layers/qualifier` — `LeadsSendFailure` (`app/components/`), the block a failed send shows next to the submit button: the message passed in `message`, then the `contactEmail` of `useSiteSettings()` as a `mailto:` link (`role="alert"`). The qualifier may use leads but not content, so the address reaches it through this component.

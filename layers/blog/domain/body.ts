@@ -34,6 +34,17 @@ export interface PostBody {
   toc: TocItem[]
 }
 
+/** The visible text of inline nodes (a line break counts as a space). */
+export function inlineText(nodes: readonly InlineNode[]): string {
+  return nodes
+    .map((node) => {
+      if (node.type === 'break') return ' '
+      if (node.type === 'text' || node.type === 'code') return node.text
+      return inlineText(node.children)
+    })
+    .join('')
+}
+
 /** Anchor id for a heading: lower-case ASCII words joined by dashes. */
 export function slugifyHeading(text: string): string {
   return text

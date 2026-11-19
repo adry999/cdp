@@ -478,14 +478,13 @@
       }
     },
     "contact": {
-      "email": "Email de lucru sau date de contact",
+      "email": "Email de lucru",
       "handle": "Instagram / LinkedIn / site (opțional)",
       "notes": "Note despre proiect sau o cerere anume (opțional)",
       "submit": "Trimite solicitarea"
     },
     "success": {
       "title": "Mulțumim — am primit detaliile.",
-      "body": "Analizăm ce ai trimis și revenim într-o zi lucrătoare cu pașii următori.",
       "done": "Închide"
     }
   },

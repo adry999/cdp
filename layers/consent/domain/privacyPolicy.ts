@@ -62,7 +62,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'Cât timp păstrăm datele',
         body: [
-          'Solicitările de contact sunt păstrate cât timp este necesar pentru a răspunde și evalua colaborarea. Perioada exactă de retenție: [ de completat ]. Poți cere oricând ștergerea lor.',
+          'Solicitările trimise prin formularul de contact și prin chestionarul de calificare (nume, email, mesaj, răspunsuri) sunt păstrate 12 luni de la ultimul mesaj schimbat, dacă nu începem o colaborare; după aceea le ștergem. Poți cere oricând ștergerea lor mai devreme.',
         ],
       },
       {
@@ -137,7 +137,7 @@ export const privacyPolicy: { ro: PolicyContent; en: PolicyContent } = {
       {
         heading: 'How long we keep data',
         body: [
-          'Contact requests are kept as long as necessary to respond and evaluate working together. Exact retention period: [ to be completed ]. You can ask for deletion at any time.',
+          'Requests sent through the contact form and the qualification questionnaire (name, email, message, answers) are kept for 12 months after our last exchange, unless we start working together; after that we delete them. You can ask us to delete them sooner at any time.',
         ],
       },
       {

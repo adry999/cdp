@@ -1,52 +1,12 @@
-import { expect, test, type BrowserContext, type Page } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
+import { signInAsFakeAdmin, supabaseUrl } from './support/adminSession'
 
 // The editors must open on the production build: there, a route guard registered after an await
 // throws, which dev mode only warns about. The session is fabricated; the browser's calls to
 // Supabase are answered here, and the server's own calls fail with it, which the admin already
 // tolerates (the list shows its load error, the sidebar hides the leads badge). Only new items
 // are opened, because an existing one would need the server to read it from the database.
-const supabaseUrl = (process.env.NUXT_PUBLIC_SUPABASE_URL ?? '').replace(/\/+$/, '')
-
 test.skip(!supabaseUrl, 'NUXT_PUBLIC_SUPABASE_URL is not set')
-
-const user = {
-  id: '00000000-0000-4000-8000-0000000000e2',
-  aud: 'authenticated',
-  role: 'authenticated',
-  email: 'e2e@example.invalid',
-  app_metadata: { provider: 'email' },
-  user_metadata: {},
-  created_at: '2026-01-01T00:00:00Z',
-}
-
-function fakeSession() {
-  const now = Math.floor(Date.now() / 1000)
-  const encode = (value: object) => Buffer.from(JSON.stringify(value)).toString('base64url')
-  const claims = { sub: user.id, aud: 'authenticated', role: 'authenticated', email: user.email, aal: 'aal2', iat: now, exp: now + 3600 }
-  return {
-    access_token: `${encode({ alg: 'HS256', typ: 'JWT' })}.${encode(claims)}.e2e`,
-    refresh_token: 'e2e',
-    token_type: 'bearer',
-    expires_in: 3600,
-    expires_at: now + 3600,
-    user,
-  }
-}
-
-async function signIn(context: BrowserContext) {
-  // Same name and encoding as @nuxtjs/supabase / @supabase/ssr: sb-<first host label>-auth-token, base64url JSON.
-  const name = `sb-${new URL(supabaseUrl).hostname.split('.')[0]}-auth-token`
-  const value = `base64-${Buffer.from(JSON.stringify(fakeSession())).toString('base64url')}`
-  await context.addCookies([{ name, value, domain: 'localhost', path: '/' }])
-
-  const cors = { 'access-control-allow-origin': '*', 'access-control-expose-headers': 'content-range' }
-  await context.route(`${supabaseUrl}/auth/v1/**`, (route) =>
-    route.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: JSON.stringify(user) }),
-  )
-  await context.route(`${supabaseUrl}/rest/v1/**`, (route) =>
-    route.fulfill({ status: 200, contentType: 'application/json', headers: { ...cors, 'content-range': '*/0' }, body: '[]' }),
-  )
-}
 
 function collectPageErrors(page: Page) {
   const errors: string[] = []
@@ -55,7 +15,7 @@ function collectPageErrors(page: Page) {
 }
 
 test.beforeEach(async ({ context }) => {
-  await signIn(context)
+  await signInAsFakeAdmin(context)
 })
 
 test('the project editor opens from the list and from its address', async ({ page }) => {
@@ -187,6 +147,8 @@ test('the project editor says when edits are unsaved, and when they are saved', 
   await page.goto('/admin/projects/nou')
   await page.waitForLoadState('networkidle')
   await expect(topbar(page)).not.toContainText('Modificări nesalvate')
+  // Nothing is saved yet, so there is nothing to preview.
+  await expect(page.getByRole('link', { name: /Vezi ca draft/ })).toHaveCount(0)
 
   await page.getByLabel('Slug RO').fill(project.slug_ro)
   await page.getByLabel('Slug EN').fill(project.slug_en)
@@ -210,6 +172,11 @@ test('the project editor says when edits are unsaved, and when they are saved', 
   await expect(page.getByRole('heading', { level: 1, name: 'Card e2e' })).toBeVisible()
   await expect(topbar(page)).toContainText('Salvat')
   await expect(topbar(page)).not.toContainText('Modificări nesalvate')
+
+  // Once saved, the draft can be seen as its page, in a new tab.
+  const preview = page.getByRole('link', { name: /Vezi ca draft/ })
+  await expect(preview).toHaveAttribute('href', '/admin/preview/projects/e2e-proiect')
+  await expect(preview).toHaveAttribute('target', '_blank')
 })
 
 test('the news topbar shows the stored state, not the unsaved checkbox', async ({ page }) => {

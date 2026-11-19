@@ -43,7 +43,9 @@ const cards = computed(() =>
       </div>
     </fieldset>
 
-    <div class="mt-6 flex justify-end">
+    <!-- Sticky: five long cards push "Continuă" below a phone screen; the row stays in view while
+         they scroll under it, and sits back in place below the last card at the end. -->
+    <div class="sticky bottom-0 z-10 mt-3 flex justify-end bg-paper pt-3 pb-[max(12px,env(safe-area-inset-bottom))]">
       <AppButton variant="ink" :disabled="!props.modelValue" @click="emit('next')">
         {{ t('qualifier.next') }}
       </AppButton>

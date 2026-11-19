@@ -99,6 +99,7 @@ useSaveShortcut(save, { enabled: () => !saving.value && !uploading.value })
           <ProjectsEditorPublish
             v-model="form"
             :busy="saving || uploading"
+            :preview-slug="isNew ? null : savedSlugs.slugRo"
             @publish="editor.askPublish"
             @unpublish="editor.askUnpublish"
           />

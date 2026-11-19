@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import type { ProjectForm } from '#layers/projects/domain/projectForm'
+import { projectPreviewPath } from '#layers/projects/domain/projectPreview'
 
 const form = defineModel<ProjectForm>({ required: true })
-defineProps<{ busy: boolean }>()
+defineProps<{
+  busy: boolean
+  /** The saved RO slug; null until the project is saved, when there is nothing to preview. */
+  previewSlug: string | null
+}>()
 defineEmits<{ publish: []; unpublish: [] }>()
 </script>
 
@@ -24,12 +29,21 @@ defineEmits<{ publish: []; unpublish: [] }>()
         </label>
       </div>
       <div class="flex gap-3 eyebrow">
-        <NuxtLink v-if="form.published" :to="`/proiecte/${form.slugRo}`" class="text-muted hover:text-ink">Vezi pe site</NuxtLink>
+        <NuxtLink v-if="form.published" :to="`/proiecte/${form.slugRo}`" class="tap-text min-h-11 nav:min-h-8 text-muted hover:text-ink">Vezi pe site</NuxtLink>
+        <NuxtLink
+          v-if="previewSlug"
+          :to="projectPreviewPath(previewSlug)"
+          target="_blank"
+          class="tap-text min-h-11 nav:min-h-8 text-muted hover:text-ink"
+        >
+          Vezi ca draft<span class="sr-only"> (se deschide într-un tab nou)</span>
+        </NuxtLink>
       </div>
     </div>
     <p class="m-0 mt-3 text-sm text-muted">
       Publicarea trece prin checklist-ul de publicare și salvează proiectul. Retragerea cere confirmare, apoi salvează
-      proiectul.
+      proiectul. „Vezi ca draft” deschide pagina proiectului într-un tab nou, cu ce e salvat acum, vizibilă doar în
+      admin.
     </p>
   </ProjectsEditorSection>
 </template>
